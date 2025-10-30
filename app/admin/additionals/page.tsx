@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Search, 
   Plus, 
@@ -15,7 +17,10 @@ import {
   Pencil,
   Trash2,
   Loader2,
-  Save
+  Save,
+  FolderPlus,
+  Settings2,
+  Package
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -56,14 +61,18 @@ import type { Additional, AdditionalCategory } from "@/types/supabase";
 
 export default function AdditionalsPage() {
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeTab, setActiveTab] = useState("additionals");
   const [additionals, setAdditionals] = useState<Additional[]>([]);
   const [categories, setCategories] = useState<AdditionalCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteCategoryModalOpen, setIsDeleteCategoryModalOpen] = useState(false);
   const [editingAdditional, setEditingAdditional] = useState<Additional | null>(null);
+  const [editingCategory, setEditingCategory] = useState<AdditionalCategory | null>(null);
   const [deleteAdditional, setDeleteAdditional] = useState<Additional | null>(null);
+  const [deleteCategory, setDeleteCategory] = useState<AdditionalCategory | null>(null);
   const [saving, setSaving] = useState(false);
   
   // Form state for additional
@@ -71,92 +80,67 @@ export default function AdditionalsPage() {
     name: "",
     description: "",
     price: 0,
-    category_id: "",
-    active: true
+    additional_category_id: "",
+    active: true,
+    sort_order: 0
   });
 
   // Form state for category
   const [categoryFormData, setCategoryFormData] = useState({
     name: "",
-    color: "#FF6B00"
+    color: "#FF6B00",
+    sort_order: 0
   });
 
-  // Load data with retry logic for reliability
+  // Load data
   const loadData = async () => {
     setLoading(true);
-    let retryCount = 0;
-    const maxRetries = 3;
-    
-    const attemptLoad = async (): Promise<boolean> => {
-      try {
-        // Load categories first
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from('additional_categories')
-          .select('*')
-          .order('name', { ascending: true });
+    try {
+      // Load categories
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('additional_categories')
+        .select('*')
+        .order('sort_order', { ascending: true });
 
-        if (categoriesError) {
-          console.error("Erro ao carregar categorias:", categoriesError);
-          throw categoriesError;
-        }
-
-        // Load additionals without joins
-        const { data: additionalsData, error: additionalsError } = await supabase
-          .from('additionals')
-          .select('*')
-          .order('name', { ascending: true });
-
-        if (additionalsError) {
-          console.error("Erro ao carregar adicionais:", additionalsError);
-          throw additionalsError;
-        }
-
-        setAdditionals(additionalsData || []);
-        setCategories(categoriesData || []);
-        
-        return true;
-      } catch (error) {
-        console.error(`Erro ao carregar dados (tentativa ${retryCount + 1}/${maxRetries}):`, error);
-        if (error instanceof Error) {
-          console.error("Mensagem do erro:", error.message);
-        }
-        return false;
+      if (categoriesError) {
+        console.error("Erro ao carregar categorias:", categoriesError);
+        throw categoriesError;
       }
-    };
-    
-    // Try loading with retries
-    while (retryCount < maxRetries) {
-      const success = await attemptLoad();
-      if (success) {
-        setLoading(false);
-        return;
+
+      // Load additionals
+      const { data: additionalsData, error: additionalsError } = await supabase
+        .from('additionals')
+        .select('*')
+        .order('sort_order', { ascending: true });
+
+      if (additionalsError) {
+        console.error("Erro ao carregar adicionais:", additionalsError);
+        throw additionalsError;
       }
-      
-      retryCount++;
-      if (retryCount < maxRetries) {
-        // Wait before retrying (exponential backoff)
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, retryCount) * 500));
-      }
+
+      setCategories(categoriesData || []);
+      setAdditionals(additionalsData || []);
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+      toast.error("Erro ao carregar dados");
+    } finally {
+      setLoading(false);
     }
-    
-    // All retries failed
-    toast.error("Erro ao carregar adicionais. Por favor, recarregue a página.");
-    setLoading(false);
   };
 
-  // Load data on mount with small delay to ensure Supabase is ready
   useEffect(() => {
-    const timer = setTimeout(() => {
-      loadData();
-    }, 100);
-    
-    return () => clearTimeout(timer);
+    loadData();
   }, []);
 
-  // Filter additionals based on search
+  // Filter additionals
   const filteredAdditionals = additionals.filter(additional =>
     additional.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     additional.description?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Filter categories
+  const filteredCategories = categories.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Group additionals by category
@@ -174,16 +158,17 @@ export default function AdditionalsPage() {
     return acc;
   }, {} as Record<string, { category?: AdditionalCategory, items: Additional[] }>);
 
-  // Open modal for new/edit additional
-  const openModal = (additional?: Additional) => {
+  // Open modal for additional
+  const openAdditionalModal = (additional?: Additional) => {
     if (additional) {
       setEditingAdditional(additional);
       setFormData({
         name: additional.name,
         description: additional.description || "",
         price: additional.price,
-        category_id: additional.additional_category_id?.toString() || "",
-        active: additional.active
+        additional_category_id: additional.additional_category_id?.toString() || "",
+        active: additional.active,
+        sort_order: additional.sort_order || 0
       });
     } else {
       setEditingAdditional(null);
@@ -191,11 +176,32 @@ export default function AdditionalsPage() {
         name: "",
         description: "",
         price: 0,
-        category_id: "",
-        active: true
+        additional_category_id: categories[0]?.id?.toString() || "",
+        active: true,
+        sort_order: 0
       });
     }
     setIsModalOpen(true);
+  };
+
+  // Open modal for category
+  const openCategoryModal = (category?: AdditionalCategory) => {
+    if (category) {
+      setEditingCategory(category);
+      setCategoryFormData({
+        name: category.name,
+        color: category.color || "#FF6B00",
+        sort_order: category.sort_order || 0
+      });
+    } else {
+      setEditingCategory(null);
+      setCategoryFormData({
+        name: "",
+        color: "#FF6B00",
+        sort_order: 0
+      });
+    }
+    setIsCategoryModalOpen(true);
   };
 
   // Save additional
@@ -207,12 +213,12 @@ export default function AdditionalsPage() {
         name: formData.name,
         description: formData.description || null,
         price: formData.price,
-        category_id: formData.category_id ? parseInt(formData.category_id) : null,
-        active: formData.active
+        additional_category_id: formData.additional_category_id || null,
+        active: formData.active,
+        sort_order: formData.sort_order
       };
 
       if (editingAdditional) {
-        // Update
         const { error } = await supabase
           .from('additionals')
           .update(additionalData)
@@ -221,7 +227,6 @@ export default function AdditionalsPage() {
         if (error) throw error;
         toast.success("Adicional atualizado com sucesso!");
       } else {
-        // Insert
         const { error } = await supabase
           .from('additionals')
           .insert(additionalData);
@@ -233,7 +238,7 @@ export default function AdditionalsPage() {
       setIsModalOpen(false);
       loadData();
     } catch (error) {
-      console.error('Error saving additional:', error);
+      console.error('Erro ao salvar adicional:', error);
       toast.error("Erro ao salvar adicional");
     } finally {
       setSaving(false);
@@ -245,21 +250,34 @@ export default function AdditionalsPage() {
     try {
       setSaving(true);
       
-      const { error } = await supabase
-        .from('additional_categories')
-        .insert({
-          name: categoryFormData.name,
-          color: categoryFormData.color
-        });
+      const categoryData = {
+        name: categoryFormData.name,
+        color: categoryFormData.color,
+        sort_order: categoryFormData.sort_order
+      };
 
-      if (error) throw error;
+      if (editingCategory) {
+        const { error } = await supabase
+          .from('additional_categories')
+          .update(categoryData)
+          .eq('id', editingCategory.id);
+
+        if (error) throw error;
+        toast.success("Categoria atualizada com sucesso!");
+      } else {
+        const { error } = await supabase
+          .from('additional_categories')
+          .insert(categoryData);
+
+        if (error) throw error;
+        toast.success("Categoria criada com sucesso!");
+      }
       
-      toast.success("Categoria criada com sucesso!");
       setIsCategoryModalOpen(false);
-      setCategoryFormData({ name: "", color: "#FF6B00" });
+      setCategoryFormData({ name: "", color: "#FF6B00", sort_order: 0 });
       loadData();
     } catch (error) {
-      console.error('Error saving category:', error);
+      console.error('Erro ao salvar categoria:', error);
       toast.error("Erro ao salvar categoria");
     } finally {
       setSaving(false);
@@ -267,7 +285,7 @@ export default function AdditionalsPage() {
   };
 
   // Delete additional
-  const handleDelete = async () => {
+  const handleDeleteAdditional = async () => {
     if (!deleteAdditional) return;
 
     try {
@@ -285,8 +303,44 @@ export default function AdditionalsPage() {
       setDeleteAdditional(null);
       loadData();
     } catch (error) {
-      console.error('Error deleting additional:', error);
+      console.error('Erro ao excluir adicional:', error);
       toast.error("Erro ao excluir adicional");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Delete category
+  const handleDeleteCategory = async () => {
+    if (!deleteCategory) return;
+
+    try {
+      setSaving(true);
+      
+      // Check if category has additionals
+      const additionalsInCategory = additionals.filter(a => a.additional_category_id === deleteCategory.id);
+      
+      if (additionalsInCategory.length > 0) {
+        toast.error(`Não é possível excluir categoria com ${additionalsInCategory.length} adicionais. Remova os adicionais primeiro.`);
+        setIsDeleteCategoryModalOpen(false);
+        setSaving(false);
+        return;
+      }
+      
+      const { error } = await supabase
+        .from('additional_categories')
+        .delete()
+        .eq('id', deleteCategory.id);
+
+      if (error) throw error;
+      
+      toast.success("Categoria excluída com sucesso!");
+      setIsDeleteCategoryModalOpen(false);
+      setDeleteCategory(null);
+      loadData();
+    } catch (error) {
+      console.error('Erro ao excluir categoria:', error);
+      toast.error("Erro ao excluir categoria");
     } finally {
       setSaving(false);
     }
@@ -305,18 +359,16 @@ export default function AdditionalsPage() {
       toast.success(`Adicional ${!additional.active ? 'ativado' : 'desativado'}`);
       loadData();
     } catch (error) {
-      console.error('Error toggling active status:', error);
+      console.error('Erro ao alterar status:', error);
       toast.error("Erro ao alterar status");
     }
   };
-
 
   return (
     <div className="min-h-screen relative">
       {/* Header */}
       <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
         <div className="px-6 py-4">
-          {/* Top Row: Title and Actions */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-lg bg-orange-500">
@@ -336,152 +388,220 @@ export default function AdditionalsPage() {
                   <Search className="h-4 w-4 text-white" />
                 </button>
               </div>
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Gerencie as categorias e itens adicionais do cardápio
+          </p>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div className="px-4">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full max-w-md grid-cols-2 mx-auto mb-6">
+            <TabsTrigger value="additionals" className="flex items-center gap-2">
+              <Package className="h-4 w-4" />
+              Adicionais
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="flex items-center gap-2">
+              <FolderPlus className="h-4 w-4" />
+              Categorias
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Additionals Tab */}
+          <TabsContent value="additionals" className="space-y-6">
+            <div className="flex justify-end mb-4">
               <Button 
-                variant="outline"
-                onClick={() => setIsCategoryModalOpen(true)}
-                className="rounded-full"
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+                onClick={() => openAdditionalModal()}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Adicional
+              </Button>
+            </div>
+
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+              </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
+                  <Card key={categoryName} className="overflow-hidden">
+                    <CardHeader 
+                      className="pb-3"
+                      style={{ backgroundColor: group.category?.color || '#6B7280' }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-sm font-semibold text-white">
+                          {categoryName}
+                        </h3>
+                        <Badge className="bg-white/20 text-white border-white/20">
+                          {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="p-4 space-y-3">
+                      {group.items.map((additional) => (
+                        <div 
+                          key={additional.id} 
+                          className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
+                        >
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">{additional.name}</p>
+                            {additional.description && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {additional.description}
+                              </p>
+                            )}
+                            <div className="flex items-center gap-2 mt-2">
+                              {additional.price === 0 ? (
+                                <Badge className="bg-green-500 text-white text-xs">
+                                  Grátis
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline" className="text-xs">
+                                  R$ {additional.price.toFixed(2)}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => toggleActive(additional)}
+                              className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                                additional.active 
+                                  ? 'bg-green-600 hover:bg-green-700 text-white' 
+                                  : 'bg-gray-500 hover:bg-gray-600 text-white'
+                              }`}
+                            >
+                              {additional.active ? 'Ativo' : 'Inativo'}
+                            </button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="icon" className="h-8 w-8">
+                                  <MoreVertical className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => openAdditionalModal(additional)}>
+                                  <Pencil className="h-3 w-3 mr-2" />
+                                  Editar
+                                </DropdownMenuItem>
+                                <DropdownMenuItem 
+                                  className="text-red-600"
+                                  onClick={() => {
+                                    setDeleteAdditional(additional);
+                                    setIsDeleteModalOpen(true);
+                                  }}
+                                >
+                                  <Trash2 className="h-3 w-3 mr-2" />
+                                  Excluir
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* Categories Tab */}
+          <TabsContent value="categories" className="space-y-6">
+            <div className="flex justify-end mb-4">
+              <Button 
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+                onClick={() => openCategoryModal()}
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Categoria
               </Button>
-              <Button 
-                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
-                onClick={() => openModal()}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Adicionar Item
-              </Button>
             </div>
-          </div>
 
-          {/* Subtitle */}
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            Gerencie os itens adicionais e extras do cardápio
-          </p>
-
-          {/* Active Filters */}
-          {searchTerm && (
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-sm text-gray-500 dark:text-gray-400">Filtros ativos:</span>
-              <div className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-full text-sm">
-                Pesquisa: "{searchTerm}"
-                <Trash2 
-                  className="h-3 w-3 cursor-pointer hover:text-orange-700 dark:hover:text-orange-300" 
-                  onClick={() => setSearchTerm("")}
-                />
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
               </div>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {filteredCategories.map((category) => {
+                  const categoryAdditionals = additionals.filter(a => a.additional_category_id === category.id);
+                  return (
+                    <Card key={category.id} className="overflow-hidden">
+                      <div 
+                        className="h-2"
+                        style={{ backgroundColor: category.color || '#FF6B00' }}
+                      />
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-lg">{category.name}</h3>
+                            <div className="flex items-center gap-2 mt-2">
+                              <Badge variant="outline">
+                                {categoryAdditionals.length} {categoryAdditionals.length === 1 ? 'adicional' : 'adicionais'}
+                              </Badge>
+                              <div 
+                                className="w-6 h-6 rounded border"
+                                style={{ backgroundColor: category.color }}
+                                title="Cor da categoria"
+                              />
+                            </div>
+                            {category.sort_order !== undefined && (
+                              <p className="text-xs text-gray-500 mt-2">
+                                Ordem: {category.sort_order}
+                              </p>
+                            )}
+                          </div>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => openCategoryModal(category)}>
+                                <Pencil className="h-3 w-3 mr-2" />
+                                Editar
+                              </DropdownMenuItem>
+                              <DropdownMenuItem 
+                                className="text-red-600"
+                                onClick={() => {
+                                  setDeleteCategory(category);
+                                  setIsDeleteCategoryModalOpen(true);
+                                }}
+                              >
+                                <Trash2 className="h-3 w-3 mr-2" />
+                                Excluir
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
 
-      {/* Content */}
-      <div className="p-4">
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
-            <Card key={categoryName} className="overflow-hidden">
-              <CardHeader 
-                className="pb-3"
-                style={{ backgroundColor: group.category?.color || '#6B7280' }}
-              >
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-semibold text-white">
-                    {categoryName}
-                  </h3>
-                  <Badge className="bg-white/20 text-white border-white/20">
-                    {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="p-4 space-y-3">
-                {group.items.map((additional) => (
-                  <div 
-                    key={additional.id} 
-                    className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
-                  >
-                    <div className="flex-1">
-                      <p className="font-medium text-sm">{additional.name}</p>
-                      {additional.description && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                          {additional.description}
-                        </p>
-                      )}
-                      <div className="flex items-center gap-2 mt-2">
-                        <Badge variant="outline" className="text-xs">
-                          R$ {additional.price.toFixed(2)}
-                        </Badge>
-                        {additional.price === 0 && (
-                          <Badge className="bg-green-500 text-white text-xs">
-                            Grátis
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={() => toggleActive(additional)}
-                        className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
-                          additional.active 
-                            ? 'bg-green-600 hover:bg-green-700 text-white' 
-                            : 'bg-gray-500 hover:bg-gray-600 text-white'
-                        }`}
-                      >
-                        {additional.active ? 'Ativo' : 'Inativo'}
-                      </button>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-orange-500 transition-colors">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40">
-                          <DropdownMenuItem onClick={() => openModal(additional)}>
-                            <Pencil className="h-3 w-3 mr-2" />
-                            Editar
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            className="text-red-600 dark:text-red-500"
-                            onClick={() => {
-                              setDeleteAdditional(additional);
-                              setIsDeleteModalOpen(true);
-                            }}
-                          >
-                            <Trash2 className="h-3 w-3 mr-2" />
-                            Excluir
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
-                  </div>
-                ))}
-
-                {group.items.length === 0 && (
-                  <p className="text-center text-sm text-gray-500 dark:text-gray-400 py-4">
-                    Nenhum item nesta categoria
-                  </p>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {Object.keys(groupedAdditionals).length === 0 && (
-          <div className="text-center py-12">
-            <Plus className="h-12 w-12 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
-            <p className="text-gray-500 dark:text-gray-400">
-              {searchTerm ? "Nenhum adicional encontrado" : "Nenhum adicional cadastrado"}
-            </p>
-          </div>
-        )}
-      </div>
-
-      {/* Add/Edit Additional Modal */}
-      <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>
+      {/* Additional Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{editingAdditional ? "Editar Adicional" : "Adicionar Adicional"}</DialogTitle>
+            <DialogTitle>
+              {editingAdditional ? 'Editar Adicional' : 'Novo Adicional'}
+            </DialogTitle>
             <DialogDescription>
-              {editingAdditional ? "Atualize as informações do adicional" : "Preencha as informações do novo adicional"}
+              {editingAdditional ? 'Edite as informações do adicional' : 'Adicione um novo item adicional ao cardápio'}
             </DialogDescription>
           </DialogHeader>
 
@@ -492,7 +612,7 @@ export default function AdditionalsPage() {
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Ex: Cream Cheese"
+                placeholder="Ex: Gelo, Limão"
               />
             </div>
 
@@ -502,75 +622,71 @@ export default function AdditionalsPage() {
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Descrição do adicional..."
-                rows={3}
+                placeholder="Ex: Para refrescar"
+                rows={2}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price">Preço</Label>
+                <Label htmlFor="price">Preço (R$)</Label>
                 <Input
                   id="price"
                   type="number"
                   step="0.01"
+                  min="0"
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
-                  placeholder="0.00"
                 />
               </div>
+
               <div className="space-y-2">
-                <Label htmlFor="category">Categoria</Label>
-                <Select
-                  value={formData.category_id}
-                  onValueChange={(value) => setFormData({ ...formData, category_id: value })}
-                >
-                  <SelectTrigger id="category">
-                    <SelectValue placeholder="Selecione" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((category) => (
-                      <SelectItem key={category.id} value={category.id.toString()}>
-                        {category.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <Label htmlFor="sort">Ordem</Label>
+                <Input
+                  id="sort"
+                  type="number"
+                  min="0"
+                  value={formData.sort_order}
+                  onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
+                />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label>Status</Label>
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, active: !formData.active })}
-                className={`px-4 py-2 text-sm font-medium rounded-full transition-colors w-32 ${
-                  formData.active 
-                    ? 'bg-green-600 hover:bg-green-700 text-white' 
-                    : 'bg-gray-500 hover:bg-gray-600 text-white'
-                }`}
+              <Label htmlFor="category">Categoria</Label>
+              <Select
+                value={formData.additional_category_id}
+                onValueChange={(value) => setFormData({ ...formData, additional_category_id: value })}
               >
-                {formData.active ? 'Ativo' : 'Inativo'}
-              </button>
+                <SelectTrigger id="category">
+                  <SelectValue placeholder="Selecione uma categoria" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="">Sem categoria</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category.id} value={category.id.toString()}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="active"
+                checked={formData.active}
+                onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
+              />
+              <Label htmlFor="active">Ativo</Label>
             </div>
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => {
-              setIsModalOpen(false);
-              setEditingAdditional(null);
-              setFormData({
-                name: '',
-                description: '',
-                price: 0,
-                category_id: '',
-                active: true
-              });
-              setSaving(false);
-            }}>
+            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancelar
             </Button>
-            <Button 
+            <Button
               className="bg-orange-500 hover:bg-orange-600 text-white"
               onClick={saveAdditional}
               disabled={saving || !formData.name}
@@ -591,24 +707,26 @@ export default function AdditionalsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Add Category Modal */}
-      <Dialog open={isCategoryModalOpen} onOpenChange={(open) => setIsCategoryModalOpen(open)}>
+      {/* Category Modal */}
+      <Dialog open={isCategoryModalOpen} onOpenChange={setIsCategoryModalOpen}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>Nova Categoria</DialogTitle>
+            <DialogTitle>
+              {editingCategory ? 'Editar Categoria' : 'Nova Categoria'}
+            </DialogTitle>
             <DialogDescription>
-              Crie uma nova categoria para agrupar adicionais
+              {editingCategory ? 'Edite as informações da categoria' : 'Crie uma nova categoria para agrupar adicionais'}
             </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="category-name">Nome da Categoria</Label>
+              <Label htmlFor="category-name">Nome</Label>
               <Input
                 id="category-name"
                 value={categoryFormData.name}
                 onChange={(e) => setCategoryFormData({ ...categoryFormData, name: e.target.value })}
-                placeholder="Ex: Bebidas, Extras"
+                placeholder="Ex: Refrigerante, Extras"
               />
             </div>
 
@@ -630,20 +748,27 @@ export default function AdditionalsPage() {
                 />
               </div>
             </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="category-sort">Ordem</Label>
+              <Input
+                id="category-sort"
+                type="number"
+                min="0"
+                value={categoryFormData.sort_order}
+                onChange={(e) => setCategoryFormData({ ...categoryFormData, sort_order: parseInt(e.target.value) || 0 })}
+              />
+            </div>
           </div>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => {
               setIsCategoryModalOpen(false);
-              setCategoryFormData({
-                name: '',
-                color: '#FF6B00'
-              });
-              setSaving(false);
+              setCategoryFormData({ name: '', color: '#FF6B00', sort_order: 0 });
             }}>
               Cancelar
             </Button>
-            <Button 
+            <Button
               className="bg-orange-500 hover:bg-orange-600 text-white"
               onClick={saveCategory}
               disabled={saving || !categoryFormData.name}
@@ -664,21 +789,26 @@ export default function AdditionalsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Modal */}
-      <AlertDialog open={isDeleteModalOpen} onOpenChange={(open) => setIsDeleteModalOpen(open)}>
+      {/* Delete Additional Modal */}
+      <AlertDialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+            <AlertDialogTitle>Excluir Adicional</AlertDialogTitle>
             <AlertDialogDescription>
               Tem certeza que deseja excluir o adicional "{deleteAdditional?.name}"?
               Esta ação não pode ser desfeita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel onClick={() => {
+              setIsDeleteModalOpen(false);
+              setDeleteAdditional(null);
+            }}>
+              Cancelar
+            </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-500 hover:bg-red-600 text-white"
-              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700"
+              onClick={handleDeleteAdditional}
               disabled={saving}
             >
               {saving ? (
@@ -687,7 +817,46 @@ export default function AdditionalsPage() {
                   Excluindo...
                 </>
               ) : (
-                "Excluir"
+                'Excluir'
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Category Modal */}
+      <AlertDialog open={isDeleteCategoryModalOpen} onOpenChange={setIsDeleteCategoryModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir Categoria</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir a categoria "{deleteCategory?.name}"?
+              {additionals.filter(a => a.additional_category_id === deleteCategory?.id).length > 0 && (
+                <span className="block mt-2 text-red-600">
+                  Esta categoria possui adicionais. Remova os adicionais primeiro.
+                </span>
+              )}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => {
+              setIsDeleteCategoryModalOpen(false);
+              setDeleteCategory(null);
+            }}>
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700"
+              onClick={handleDeleteCategory}
+              disabled={saving}
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Excluindo...
+                </>
+              ) : (
+                'Excluir'
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
