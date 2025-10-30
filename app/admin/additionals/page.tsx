@@ -8,7 +8,6 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Search, 
   Plus, 
@@ -18,9 +17,7 @@ import {
   Trash2,
   Loader2,
   Save,
-  FolderPlus,
-  Settings2,
-  Package
+  Settings2
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -61,7 +58,6 @@ import type { Additional, AdditionalCategory } from "@/types/supabase";
 
 export default function AdditionalsPage() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState("additionals");
   const [additionals, setAdditionals] = useState<Additional[]>([]);
   const [categories, setCategories] = useState<AdditionalCategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -132,15 +128,10 @@ export default function AdditionalsPage() {
     loadData();
   }, []);
 
-  // Filter additionals
+  // Filter additionals based on search
   const filteredAdditionals = additionals.filter(additional =>
     additional.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     additional.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Filter categories
-  const filteredCategories = categories.filter(category =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Group additionals by category
@@ -158,8 +149,8 @@ export default function AdditionalsPage() {
     return acc;
   }, {} as Record<string, { category?: AdditionalCategory, items: Additional[] }>);
 
-  // Open modal for additional
-  const openAdditionalModal = (additional?: Additional) => {
+  // Open modal for new/edit additional
+  const openModal = (additional?: Additional) => {
     if (additional) {
       setEditingAdditional(additional);
       setFormData({
@@ -275,6 +266,7 @@ export default function AdditionalsPage() {
       
       setIsCategoryModalOpen(false);
       setCategoryFormData({ name: "", color: "#FF6B00", sort_order: 0 });
+      setEditingCategory(null);
       loadData();
     } catch (error) {
       console.error('Erro ao salvar categoria:', error);
@@ -285,7 +277,7 @@ export default function AdditionalsPage() {
   };
 
   // Delete additional
-  const handleDeleteAdditional = async () => {
+  const handleDelete = async () => {
     if (!deleteAdditional) return;
 
     try {
@@ -388,209 +380,158 @@ export default function AdditionalsPage() {
                   <Search className="h-4 w-4 text-white" />
                 </button>
               </div>
-            </div>
-          </div>
-
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            Gerencie as categorias e itens adicionais do cardápio
-          </p>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="px-4">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full max-w-md grid-cols-2 mx-auto mb-6">
-            <TabsTrigger value="additionals" className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
-              Adicionais
-            </TabsTrigger>
-            <TabsTrigger value="categories" className="flex items-center gap-2">
-              <FolderPlus className="h-4 w-4" />
-              Categorias
-            </TabsTrigger>
-          </TabsList>
-
-          {/* Additionals Tab */}
-          <TabsContent value="additionals" className="space-y-6">
-            <div className="flex justify-end mb-4">
               <Button 
-                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
-                onClick={() => openAdditionalModal()}
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Novo Adicional
-              </Button>
-            </div>
-
-            {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-              </div>
-            ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
-                  <Card key={categoryName} className="overflow-hidden">
-                    <CardHeader 
-                      className="pb-3"
-                      style={{ backgroundColor: group.category?.color || '#6B7280' }}
-                    >
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-sm font-semibold text-white">
-                          {categoryName}
-                        </h3>
-                        <Badge className="bg-white/20 text-white border-white/20">
-                          {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
-                        </Badge>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="p-4 space-y-3">
-                      {group.items.map((additional) => (
-                        <div 
-                          key={additional.id} 
-                          className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
-                        >
-                          <div className="flex-1">
-                            <p className="font-medium text-sm">{additional.name}</p>
-                            {additional.description && (
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                {additional.description}
-                              </p>
-                            )}
-                            <div className="flex items-center gap-2 mt-2">
-                              {additional.price === 0 ? (
-                                <Badge className="bg-green-500 text-white text-xs">
-                                  Grátis
-                                </Badge>
-                              ) : (
-                                <Badge variant="outline" className="text-xs">
-                                  R$ {additional.price.toFixed(2)}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => toggleActive(additional)}
-                              className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
-                                additional.active 
-                                  ? 'bg-green-600 hover:bg-green-700 text-white' 
-                                  : 'bg-gray-500 hover:bg-gray-600 text-white'
-                              }`}
-                            >
-                              {additional.active ? 'Ativo' : 'Inativo'}
-                            </button>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon" className="h-8 w-8">
-                                  <MoreVertical className="h-4 w-4" />
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => openAdditionalModal(additional)}>
-                                  <Pencil className="h-3 w-3 mr-2" />
-                                  Editar
-                                </DropdownMenuItem>
-                                <DropdownMenuItem 
-                                  className="text-red-600"
-                                  onClick={() => {
-                                    setDeleteAdditional(additional);
-                                    setIsDeleteModalOpen(true);
-                                  }}
-                                >
-                                  <Trash2 className="h-3 w-3 mr-2" />
-                                  Excluir
-                                </DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </TabsContent>
-
-          {/* Categories Tab */}
-          <TabsContent value="categories" className="space-y-6">
-            <div className="flex justify-end mb-4">
-              <Button 
-                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+                variant="outline"
                 onClick={() => openCategoryModal()}
+                className="rounded-full"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Categoria
               </Button>
+              <Button 
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+                onClick={() => openModal()}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Adicionar Item
+              </Button>
             </div>
+          </div>
 
-            {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Gerencie os itens adicionais e extras do cardápio
+          </p>
+
+          {searchTerm && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm text-gray-500 dark:text-gray-400">Filtros ativos:</span>
+              <div className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-full text-sm">
+                Pesquisa: "{searchTerm}"
+                <Trash2 
+                  className="h-3 w-3 cursor-pointer hover:text-orange-700 dark:hover:text-orange-300" 
+                  onClick={() => setSearchTerm("")}
+                />
               </div>
-            ) : (
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {filteredCategories.map((category) => {
-                  const categoryAdditionals = additionals.filter(a => a.additional_category_id === category.id);
-                  return (
-                    <Card key={category.id} className="overflow-hidden">
-                      <div 
-                        className="h-2"
-                        style={{ backgroundColor: category.color || '#FF6B00' }}
-                      />
-                      <CardContent className="p-4">
-                        <div className="flex items-start justify-between">
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-lg">{category.name}</h3>
-                            <div className="flex items-center gap-2 mt-2">
-                              <Badge variant="outline">
-                                {categoryAdditionals.length} {categoryAdditionals.length === 1 ? 'adicional' : 'adicionais'}
-                              </Badge>
-                              <div 
-                                className="w-6 h-6 rounded border"
-                                style={{ backgroundColor: category.color }}
-                                title="Cor da categoria"
-                              />
-                            </div>
-                            {category.sort_order !== undefined && (
-                              <p className="text-xs text-gray-500 mt-2">
-                                Ordem: {category.sort_order}
-                              </p>
-                            )}
-                          </div>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon">
-                                <MoreVertical className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => openCategoryModal(category)}>
-                                <Pencil className="h-3 w-3 mr-2" />
-                                Editar
-                              </DropdownMenuItem>
-                              <DropdownMenuItem 
-                                className="text-red-600"
-                                onClick={() => {
-                                  setDeleteCategory(category);
-                                  setIsDeleteCategoryModalOpen(true);
-                                }}
-                              >
-                                <Trash2 className="h-3 w-3 mr-2" />
-                                Excluir
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+          </div>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
+              <Card key={categoryName} className="overflow-hidden">
+                <CardHeader 
+                  className="pb-3"
+                  style={{ backgroundColor: group.category?.color || '#6B7280' }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 flex-1">
+                      <h3 className="text-sm font-semibold text-white">
+                        {categoryName}
+                      </h3>
+                      <Badge className="bg-white/20 text-white border-white/20">
+                        {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
+                      </Badge>
+                    </div>
+                    {group.category && (
+                      <div className="flex items-center gap-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-7 w-7 text-white hover:bg-white/20"
+                          onClick={() => openCategoryModal(group.category)}
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          className="h-7 w-7 text-white hover:bg-white/20"
+                          onClick={() => {
+                            setDeleteCategory(group.category);
+                            setIsDeleteCategoryModalOpen(true);
+                          }}
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 space-y-3">
+                  {group.items.map((additional) => (
+                    <div 
+                      key={additional.id} 
+                      className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
+                    >
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">{additional.name}</p>
+                        {additional.description && (
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            {additional.description}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-2 mt-2">
+                          {additional.price === 0 ? (
+                            <Badge className="bg-green-500 text-white text-xs">
+                              Grátis
+                            </Badge>
+                          ) : (
+                            <Badge variant="outline" className="text-xs">
+                              R$ {additional.price.toFixed(2)}
+                            </Badge>
+                          )}
                         </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => toggleActive(additional)}
+                          className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                            additional.active 
+                              ? 'bg-green-600 hover:bg-green-700 text-white' 
+                              : 'bg-gray-500 hover:bg-gray-600 text-white'
+                          }`}
+                        >
+                          {additional.active ? 'Ativo' : 'Inativo'}
+                        </button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => openModal(additional)}>
+                              <Pencil className="h-3 w-3 mr-2" />
+                              Editar
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              className="text-red-600"
+                              onClick={() => {
+                                setDeleteAdditional(additional);
+                                setIsDeleteModalOpen(true);
+                              }}
+                            >
+                              <Trash2 className="h-3 w-3 mr-2" />
+                              Excluir
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Additional Modal */}
@@ -765,6 +706,7 @@ export default function AdditionalsPage() {
             <Button variant="outline" onClick={() => {
               setIsCategoryModalOpen(false);
               setCategoryFormData({ name: '', color: '#FF6B00', sort_order: 0 });
+              setEditingCategory(null);
             }}>
               Cancelar
             </Button>
@@ -808,7 +750,7 @@ export default function AdditionalsPage() {
             </AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-600 hover:bg-red-700"
-              onClick={handleDeleteAdditional}
+              onClick={handleDelete}
               disabled={saving}
             >
               {saving ? (

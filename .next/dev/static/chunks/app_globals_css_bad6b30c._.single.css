@@ -2694,6 +2694,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #ffffff1a;
 }
 
+.hover\:bg-white\/20:hover {
+  background-color: #fff3;
+}
+
 .hover\:bg-yellow-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(161 98 7 / var(--tw-bg-opacity, 1));
