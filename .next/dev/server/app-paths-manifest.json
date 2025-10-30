@@ -1,8 +1,7 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/admin/additionals/page": "app/admin/additionals/page.js",
   "/admin/menu-structure/page": "app/admin/menu-structure/page.js",
-  "/api/prompt-message/route": "app/api/prompt-message/route.js",
-  "/api/prompt-upload-image/route": "app/api/prompt-upload-image/route.js",
   "/page": "app/page.js",
   "/prompt/page": "app/prompt/page.js"
 }
