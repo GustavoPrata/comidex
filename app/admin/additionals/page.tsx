@@ -42,11 +42,141 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import {
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 
 const supabase = createClient();
 import type { Additional, AdditionalCategory } from "@/types/supabase";
+
+// Sortable Additional Item Component
+function SortableAdditionalItem({ 
+  additional, 
+  onDuplicate,
+  onEdit,
+  onDelete,
+  onToggleActive 
+}: { 
+  additional: Additional;
+  onDuplicate: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+  onToggleActive: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: additional.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div 
+      ref={setNodeRef}
+      style={style}
+      className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
+    >
+      <div className="flex items-center gap-2 flex-1">
+        {/* Drag Handle - Igual ao das categorias */}
+        <div
+          {...attributes}
+          {...listeners}
+          className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
+          style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
+          onMouseDown={(e) => e.preventDefault()}
+          title="Arraste para reordenar"
+        >
+          <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+          </svg>
+        </div>
+        
+        <div className="flex-1">
+          <p className="font-medium text-sm">{additional.name}</p>
+          {additional.description && (
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              {additional.description}
+            </p>
+          )}
+          <div className="flex items-center gap-2 mt-2">
+            {additional.price === 0 ? (
+              <Badge className="bg-green-500 text-white text-xs">
+                Grátis
+              </Badge>
+            ) : (
+              <Badge variant="outline" className="text-xs">
+                R$ {additional.price.toFixed(2)}
+              </Badge>
+            )}
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex items-center gap-2">
+        {/* Status button */}
+        <button
+          onClick={onToggleActive}
+          className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+            additional.active 
+              ? 'bg-green-600 hover:bg-green-700 text-white' 
+              : 'bg-gray-500 hover:bg-gray-600 text-white'
+          }`}
+        >
+          {additional.active ? 'Ativo' : 'Inativo'}
+        </button>
+        
+        {/* Action buttons */}
+        <button
+          onClick={onDuplicate}
+          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+          title="Duplicar"
+        >
+          <Copy className="h-4 w-4" />
+        </button>
+        <button
+          onClick={onEdit}
+          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+          title="Editar"
+        >
+          <Pencil className="h-4 w-4" />
+        </button>
+        <button
+          onClick={onDelete}
+          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+          title="Excluir"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default function AdditionalsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -62,6 +192,13 @@ export default function AdditionalsPage() {
   const [deleteAdditional, setDeleteAdditional] = useState<Additional | null>(null);
   const [deleteCategory, setDeleteCategory] = useState<AdditionalCategory | null>(null);
   const [saving, setSaving] = useState(false);
+  
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
   
   // Form state for additional
   const [formData, setFormData] = useState({
@@ -140,6 +277,48 @@ export default function AdditionalsPage() {
     acc[categoryName].items.push(additional);
     return acc;
   }, {} as Record<string, { category?: AdditionalCategory, items: Additional[] }>);
+
+  // Handle drag end
+  const handleDragEnd = async (event: DragEndEvent, categoryId: string) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const categoryAdditionals = additionals.filter(a => a.additional_category_id?.toString() === categoryId);
+      const oldIndex = categoryAdditionals.findIndex(item => item.id === active.id);
+      const newIndex = categoryAdditionals.findIndex(item => item.id === over?.id);
+      
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newOrder = arrayMove(categoryAdditionals, oldIndex, newIndex);
+        
+        // Update local state immediately for smooth UX
+        const updatedAdditionals = additionals.map(item => {
+          const orderIndex = newOrder.findIndex(orderedItem => orderedItem.id === item.id);
+          if (orderIndex !== -1) {
+            return { ...item, sort_order: orderIndex };
+          }
+          return item;
+        });
+        setAdditionals(updatedAdditionals);
+        
+        // Update database
+        try {
+          const updates = newOrder.map((item, index) => 
+            supabase
+              .from('additionals')
+              .update({ sort_order: index })
+              .eq('id', item.id)
+          );
+          
+          await Promise.all(updates);
+          toast.success("Ordem atualizada com sucesso!");
+        } catch (error) {
+          console.error('Erro ao atualizar ordem:', error);
+          toast.error("Erro ao atualizar ordem");
+          loadData(); // Reload on error
+        }
+      }
+    }
+  };
 
   // Open modal for new/edit additional
   const openModal = (additional?: Additional) => {
@@ -235,7 +414,6 @@ export default function AdditionalsPage() {
       toast.error("Erro ao duplicar categoria");
     }
   };
-
 
   // Save additional
   const saveAdditional = async () => {
@@ -513,86 +691,30 @@ export default function AdditionalsPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 space-y-3">
-                  {group.items.map((additional) => (
-                      <div 
-                        key={additional.id} 
-                        className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
-                      >
-                        <div className="flex items-center gap-2 flex-1">
-                          {/* Drag Handle - Igual ao das categorias */}
-                          <div
-                            className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
-                            style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
-                            onMouseDown={(e) => e.preventDefault()}
-                            title="Arraste para reordenar"
-                          >
-                            <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
-                            </svg>
-                          </div>
-                          
-                          <div className="flex-1">
-                            <p className="font-medium text-sm">{additional.name}</p>
-                            {additional.description && (
-                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                {additional.description}
-                              </p>
-                            )}
-                            <div className="flex items-center gap-2 mt-2">
-                              {additional.price === 0 ? (
-                                <Badge className="bg-green-500 text-white text-xs">
-                                  Grátis
-                                </Badge>
-                              ) : (
-                                <Badge variant="outline" className="text-xs">
-                                  R$ {additional.price.toFixed(2)}
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          {/* Status button */}
-                          <button
-                            onClick={() => toggleActive(additional)}
-                            className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
-                              additional.active 
-                                ? 'bg-green-600 hover:bg-green-700 text-white' 
-                                : 'bg-gray-500 hover:bg-gray-600 text-white'
-                            }`}
-                          >
-                            {additional.active ? 'Ativo' : 'Inativo'}
-                          </button>
-                          
-                          {/* Action buttons */}
-                          <button
-                            onClick={() => duplicateAdditional(additional)}
-                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                            title="Duplicar"
-                          >
-                            <Copy className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => openModal(additional)}
-                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                            title="Editar"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </button>
-                          <button
-                            onClick={() => {
-                              setDeleteAdditional(additional);
-                              setIsDeleteModalOpen(true);
-                            }}
-                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                            title="Excluir"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
-                  ))}
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={(event) => handleDragEnd(event, group.category?.id?.toString() || '')}
+                  >
+                    <SortableContext
+                      items={group.items.map(item => item.id)}
+                      strategy={verticalListSortingStrategy}
+                    >
+                      {group.items.map((additional) => (
+                        <SortableAdditionalItem
+                          key={additional.id}
+                          additional={additional}
+                          onDuplicate={() => duplicateAdditional(additional)}
+                          onEdit={() => openModal(additional)}
+                          onDelete={() => {
+                            setDeleteAdditional(additional);
+                            setIsDeleteModalOpen(true);
+                          }}
+                          onToggleActive={() => toggleActive(additional)}
+                        />
+                      ))}
+                    </SortableContext>
+                  </DndContext>
                 </CardContent>
               </Card>
             ))}
