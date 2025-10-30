@@ -54,12 +54,8 @@ __turbopack_context__.s([
 ]);
 class ConsolePromptService {
     messages = [];
-    isEnabled = true;
-    constructor(){
-        // Limpar console ao iniciar
-        this.clearConsole();
-        this.printHeader();
-    }
+    isEnabled = false;
+    constructor(){}
     clearConsole() {
         if (typeof process !== 'undefined' && process.stdout) {
             // Limpar console completamente
