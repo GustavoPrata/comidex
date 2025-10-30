@@ -336,18 +336,19 @@ export default function AdditionalsPage() {
       setFormData({
         name: additional.name,
         description: additional.description || "",
-        price: additional.price,
-        additional_category_id: additional.additional_category_id?.toString() || "",
-        active: additional.active,
+        price: additional.price || 0,
+        additional_category_id: additional.additional_category_id ? String(additional.additional_category_id) : "",
+        active: additional.active !== false,
         sort_order: additional.sort_order || 0
       });
     } else {
       setEditingAdditional(null);
+      const firstCategoryId = categories.length > 0 && categories[0]?.id ? String(categories[0].id) : "";
       setFormData({
         name: "",
         description: "",
         price: 0,
-        additional_category_id: categories[0]?.id?.toString() || "",
+        additional_category_id: firstCategoryId,
         active: true,
         sort_order: 0
       });
@@ -439,13 +440,17 @@ export default function AdditionalsPage() {
     try {
       setSaving(true);
       
+      // Parse the category ID to integer or null
+      const categoryId = formData.additional_category_id ? 
+        parseInt(formData.additional_category_id) : null;
+      
       const additionalData = {
         name: formData.name,
         description: formData.description || null,
-        price: formData.price,
-        additional_category_id: formData.additional_category_id || null,
+        price: parseFloat(String(formData.price)) || 0,
+        additional_category_id: categoryId,
         active: formData.active,
-        sort_order: formData.sort_order
+        sort_order: formData.sort_order || 0
       };
 
       if (editingAdditional) {
@@ -490,6 +495,16 @@ export default function AdditionalsPage() {
       }
 
       setIsModalOpen(false);
+      // Reset form data
+      setFormData({
+        name: "",
+        description: "",
+        price: 0,
+        additional_category_id: "",
+        active: true,
+        sort_order: 0
+      });
+      setEditingAdditional(null);
     } catch (error) {
       console.error('Erro ao salvar adicional:', error);
       toast.error("Erro ao salvar adicional");
@@ -845,16 +860,19 @@ export default function AdditionalsPage() {
             <div className="space-y-2">
               <Label htmlFor="category">Categoria</Label>
               <Select
-                value={formData.additional_category_id}
-                onValueChange={(value) => setFormData({ ...formData, additional_category_id: value })}
+                value={formData.additional_category_id || "none"}
+                onValueChange={(value) => setFormData({ 
+                  ...formData, 
+                  additional_category_id: value === "none" ? "" : value 
+                })}
               >
                 <SelectTrigger id="category">
                   <SelectValue placeholder="Selecione uma categoria" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Sem categoria</SelectItem>
+                  <SelectItem value="none">Sem categoria</SelectItem>
                   {categories.map((category) => (
-                    <SelectItem key={category.id} value={category.id.toString()}>
+                    <SelectItem key={category.id} value={String(category.id)}>
                       {category.name}
                     </SelectItem>
                   ))}
