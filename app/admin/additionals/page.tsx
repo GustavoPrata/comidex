@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { 
@@ -118,16 +117,10 @@ function SortableAdditionalItem({
         
         <div className="flex-1">
           <p className="font-medium text-sm">{additional.name}</p>
-          <div className="flex items-center gap-2 mt-2">
-            {additional.price === 0 ? (
-              <Badge className="bg-green-500 text-white text-xs">
-                Grátis
-              </Badge>
-            ) : (
-              <Badge variant="outline" className="text-xs">
-                R$ {additional.price.toFixed(2)}
-              </Badge>
-            )}
+          <div className="flex items-center gap-2 mt-1">
+            <p className={`text-sm font-medium ${additional.price === 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-gray-100'}`}>
+              {additional.price === 0 ? 'Grátis' : `R$ ${additional.price.toFixed(2).replace('.', ',')}`}
+            </p>
           </div>
         </div>
       </div>
@@ -773,6 +766,26 @@ export default function AdditionalsPage() {
                       ))}
                     </SortableContext>
                   </DndContext>
+                  
+                  {/* Add new additional button */}
+                  <button
+                    onClick={() => {
+                      setFormData({
+                        name: "",
+                        price: 0,
+                        additional_category_id: group.category?.id ? String(group.category.id) : "",
+                        active: true,
+                        sort_order: 0
+                      });
+                      setEditingAdditional(null);
+                      setIsModalOpen(true);
+                    }}
+                    className="w-full py-2.5 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-orange-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-orange-500"
+                    type="button"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="text-sm font-medium">Adicionar Item</span>
+                  </button>
                 </CardContent>
               </Card>
             ))}
