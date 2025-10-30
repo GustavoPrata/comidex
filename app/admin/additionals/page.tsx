@@ -15,10 +15,7 @@ import {
   Pencil,
   Trash2,
   Loader2,
-  Save,
-  GripVertical,
-  ChevronUp,
-  ChevronDown
+  Save
 } from "lucide-react";
 import {
   Dialog,
@@ -239,40 +236,6 @@ export default function AdditionalsPage() {
     }
   };
 
-  // Move additional up/down
-  const moveAdditional = async (additional: Additional, direction: 'up' | 'down') => {
-    try {
-      const categoryAdditionals = additionals
-        .filter(a => a.additional_category_id === additional.additional_category_id)
-        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
-      
-      const currentIndex = categoryAdditionals.findIndex(a => a.id === additional.id);
-      const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
-      
-      if (targetIndex < 0 || targetIndex >= categoryAdditionals.length) return;
-      
-      const targetAdditional = categoryAdditionals[targetIndex];
-      const currentOrder = additional.sort_order || 0;
-      const targetOrder = targetAdditional.sort_order || 0;
-      
-      // Swap orders
-      await supabase
-        .from('additionals')
-        .update({ sort_order: targetOrder })
-        .eq('id', additional.id);
-        
-      await supabase
-        .from('additionals')
-        .update({ sort_order: currentOrder })
-        .eq('id', targetAdditional.id);
-      
-      toast.success(`Adicional movido para ${direction === 'up' ? 'cima' : 'baixo'}`);
-      loadData();
-    } catch (error) {
-      console.error('Erro ao mover adicional:', error);
-      toast.error("Erro ao mover adicional");
-    }
-  };
 
   // Save additional
   const saveAdditional = async () => {
@@ -550,22 +513,22 @@ export default function AdditionalsPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 space-y-3">
-                  {group.items.map((additional, index) => {
-                    const categoryItems = additionals
-                      .filter(a => a.additional_category_id === additional.additional_category_id)
-                      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
-                    const isFirst = index === 0;
-                    const isLast = index === group.items.length - 1;
-                    
-                    return (
+                  {group.items.map((additional) => (
                       <div 
                         key={additional.id} 
                         className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
                       >
                         <div className="flex items-center gap-2 flex-1">
-                          {/* Drag Handle */}
-                          <div className="cursor-move p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors">
-                            <GripVertical className="h-4 w-4 text-gray-400" />
+                          {/* Drag Handle - Igual ao das categorias */}
+                          <div
+                            className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
+                            style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            title="Arraste para reordenar"
+                          >
+                            <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
                           </div>
                           
                           <div className="flex-1">
@@ -589,27 +552,7 @@ export default function AdditionalsPage() {
                           </div>
                         </div>
                         
-                        <div className="flex items-center gap-1">
-                          {/* Position buttons */}
-                          <div className="flex flex-col gap-0.5">
-                            <button
-                              onClick={() => moveAdditional(additional, 'up')}
-                              className={`h-6 w-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors inline-flex items-center justify-center ${isFirst ? 'opacity-30 cursor-not-allowed' : ''}`}
-                              title="Mover para cima"
-                              disabled={isFirst}
-                            >
-                              <ChevronUp className="h-3 w-3" />
-                            </button>
-                            <button
-                              onClick={() => moveAdditional(additional, 'down')}
-                              className={`h-6 w-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors inline-flex items-center justify-center ${isLast ? 'opacity-30 cursor-not-allowed' : ''}`}
-                              title="Mover para baixo"
-                              disabled={isLast}
-                            >
-                              <ChevronDown className="h-3 w-3" />
-                            </button>
-                          </div>
-                          
+                        <div className="flex items-center gap-2">
                           {/* Status button */}
                           <button
                             onClick={() => toggleActive(additional)}
@@ -649,8 +592,7 @@ export default function AdditionalsPage() {
                           </button>
                         </div>
                       </div>
-                    );
-                  })}
+                  ))}
                 </CardContent>
               </Card>
             ))}
