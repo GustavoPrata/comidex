@@ -109,6 +109,29 @@ CREATE TABLE IF NOT EXISTS order_items (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Categorias de adicionais
+CREATE TABLE IF NOT EXISTS additional_categories (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  color VARCHAR(7) DEFAULT '#FF6B00',
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Adicionais (extras, substituições, etc)
+CREATE TABLE IF NOT EXISTS additionals (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  price DECIMAL(10,2) NOT NULL DEFAULT 0,
+  additional_category_id UUID REFERENCES additional_categories(id) ON DELETE SET NULL,
+  active BOOLEAN DEFAULT true,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
 -- Impressoras
 CREATE TABLE IF NOT EXISTS printers (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
