@@ -1730,10 +1730,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #ffffff1a;
 }
 
-.bg-white\/20 {
-  background-color: #fff3;
-}
-
 .bg-white\/50 {
   background-color: #ffffff80;
 }
@@ -2770,10 +2766,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .hover\:bg-white\/10:hover {
   background-color: #ffffff1a;
-}
-
-.hover\:bg-white\/20:hover {
-  background-color: #fff3;
 }
 
 .hover\:bg-yellow-700:hover {

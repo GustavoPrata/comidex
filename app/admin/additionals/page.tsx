@@ -213,7 +213,6 @@ export default function AdditionalsPage() {
   // Form state for category
   const [categoryFormData, setCategoryFormData] = useState({
     name: "",
-    color: "#FF6B00",
     sort_order: 0
   });
 
@@ -362,14 +361,12 @@ export default function AdditionalsPage() {
       setEditingCategory(category);
       setCategoryFormData({
         name: category.name,
-        color: category.color || "#FF6B00",
         sort_order: category.sort_order || 0
       });
     } else {
       setEditingCategory(null);
       setCategoryFormData({
         name: "",
-        color: "#FF6B00",
         sort_order: 0
       });
     }
@@ -416,7 +413,6 @@ export default function AdditionalsPage() {
     try {
       const newCategory = {
         name: `${category.name} (Cópia)`,
-        color: category.color,
         sort_order: (category.sort_order || 0) + 1
       };
 
@@ -509,7 +505,6 @@ export default function AdditionalsPage() {
       
       const categoryData = {
         name: categoryFormData.name,
-        color: categoryFormData.color,
         sort_order: categoryFormData.sort_order
       };
 
@@ -545,7 +540,7 @@ export default function AdditionalsPage() {
       }
       
       setIsCategoryModalOpen(false);
-      setCategoryFormData({ name: "", color: "#FF6B00", sort_order: 0 });
+      setCategoryFormData({ name: "", sort_order: 0 });
       setEditingCategory(null);
     } catch (error) {
       console.error('Erro ao salvar categoria:', error);
@@ -716,16 +711,13 @@ export default function AdditionalsPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
               <Card key={categoryName} className="overflow-hidden">
-                <CardHeader 
-                  className="pb-3"
-                  style={{ backgroundColor: group.category?.color || '#6B7280' }}
-                >
+                <CardHeader className="pb-3 bg-gray-100 dark:bg-gray-800">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 flex-1">
-                      <h3 className="text-sm font-semibold text-white">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                         {categoryName}
                       </h3>
-                      <Badge className="bg-white/20 text-white border-white/20">
+                      <Badge variant="outline">
                         {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
                       </Badge>
                     </div>
@@ -733,14 +725,14 @@ export default function AdditionalsPage() {
                       <div className="flex items-center gap-1">
                         <button
                           onClick={() => duplicateCategory(group.category!)}
-                          className="h-7 w-7 rounded-full text-white hover:bg-white/20 transition-colors inline-flex items-center justify-center"
+                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
                           title="Duplicar"
                         >
                           <Copy className="h-3.5 w-3.5" />
                         </button>
                         <button
                           onClick={() => openCategoryModal(group.category)}
-                          className="h-7 w-7 rounded-full text-white hover:bg-white/20 transition-colors inline-flex items-center justify-center"
+                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
                           title="Editar"
                         >
                           <Pencil className="h-3.5 w-3.5" />
@@ -750,7 +742,7 @@ export default function AdditionalsPage() {
                             setDeleteCategory(group.category || null);
                             setIsDeleteCategoryModalOpen(true);
                           }}
-                          className="h-7 w-7 rounded-full text-white hover:bg-white/20 transition-colors inline-flex items-center justify-center"
+                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
                           title="Excluir"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -929,25 +921,6 @@ export default function AdditionalsPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="category-color">Cor</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="category-color"
-                  type="color"
-                  value={categoryFormData.color}
-                  onChange={(e) => setCategoryFormData({ ...categoryFormData, color: e.target.value })}
-                  className="w-20"
-                />
-                <Input
-                  value={categoryFormData.color}
-                  onChange={(e) => setCategoryFormData({ ...categoryFormData, color: e.target.value })}
-                  placeholder="#FF6B00"
-                  className="flex-1"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
               <Label htmlFor="category-sort">Ordem</Label>
               <Input
                 id="category-sort"
@@ -962,7 +935,7 @@ export default function AdditionalsPage() {
           <DialogFooter>
             <Button variant="outline" onClick={() => {
               setIsCategoryModalOpen(false);
-              setCategoryFormData({ name: '', color: '#FF6B00', sort_order: 0 });
+              setCategoryFormData({ name: '', sort_order: 0 });
               setEditingCategory(null);
             }}>
               Cancelar
