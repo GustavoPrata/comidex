@@ -11,20 +11,15 @@ import { Switch } from "@/components/ui/switch";
 import { 
   Search, 
   Plus, 
-  MoreVertical,
   Copy,
   Pencil,
   Trash2,
   Loader2,
   Save,
-  Settings2
+  GripVertical,
+  ChevronUp,
+  ChevronDown
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -193,6 +188,90 @@ export default function AdditionalsPage() {
       });
     }
     setIsCategoryModalOpen(true);
+  };
+
+  // Duplicate additional
+  const duplicateAdditional = async (additional: Additional) => {
+    try {
+      const newAdditional = {
+        name: `${additional.name} (Cópia)`,
+        description: additional.description,
+        price: additional.price,
+        additional_category_id: additional.additional_category_id,
+        active: additional.active,
+        sort_order: additional.sort_order
+      };
+
+      const { error } = await supabase
+        .from('additionals')
+        .insert(newAdditional);
+
+      if (error) throw error;
+      
+      toast.success("Adicional duplicado com sucesso!");
+      loadData();
+    } catch (error) {
+      console.error('Erro ao duplicar adicional:', error);
+      toast.error("Erro ao duplicar adicional");
+    }
+  };
+
+  // Duplicate category
+  const duplicateCategory = async (category: AdditionalCategory) => {
+    try {
+      const newCategory = {
+        name: `${category.name} (Cópia)`,
+        color: category.color,
+        sort_order: category.sort_order
+      };
+
+      const { error } = await supabase
+        .from('additional_categories')
+        .insert(newCategory);
+
+      if (error) throw error;
+      
+      toast.success("Categoria duplicada com sucesso!");
+      loadData();
+    } catch (error) {
+      console.error('Erro ao duplicar categoria:', error);
+      toast.error("Erro ao duplicar categoria");
+    }
+  };
+
+  // Move additional up/down
+  const moveAdditional = async (additional: Additional, direction: 'up' | 'down') => {
+    try {
+      const categoryAdditionals = additionals
+        .filter(a => a.additional_category_id === additional.additional_category_id)
+        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+      
+      const currentIndex = categoryAdditionals.findIndex(a => a.id === additional.id);
+      const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+      
+      if (targetIndex < 0 || targetIndex >= categoryAdditionals.length) return;
+      
+      const targetAdditional = categoryAdditionals[targetIndex];
+      const currentOrder = additional.sort_order || 0;
+      const targetOrder = targetAdditional.sort_order || 0;
+      
+      // Swap orders
+      await supabase
+        .from('additionals')
+        .update({ sort_order: targetOrder })
+        .eq('id', additional.id);
+        
+      await supabase
+        .from('additionals')
+        .update({ sort_order: currentOrder })
+        .eq('id', targetAdditional.id);
+      
+      toast.success(`Adicional movido para ${direction === 'up' ? 'cima' : 'baixo'}`);
+      loadData();
+    } catch (error) {
+      console.error('Erro ao mover adicional:', error);
+      toast.error("Erro ao mover adicional");
+    }
   };
 
   // Save additional
@@ -442,91 +521,136 @@ export default function AdditionalsPage() {
                     </div>
                     {group.category && (
                       <div className="flex items-center gap-1">
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="h-7 w-7 text-white hover:bg-white/20"
+                        <button
+                          onClick={() => duplicateCategory(group.category!)}
+                          className="h-7 w-7 rounded-full text-white hover:bg-white/20 transition-colors inline-flex items-center justify-center"
+                          title="Duplicar"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                        </button>
+                        <button
                           onClick={() => openCategoryModal(group.category)}
+                          className="h-7 w-7 rounded-full text-white hover:bg-white/20 transition-colors inline-flex items-center justify-center"
+                          title="Editar"
                         >
                           <Pencil className="h-3.5 w-3.5" />
-                        </Button>
-                        <Button
-                          size="icon"
-                          variant="ghost"
-                          className="h-7 w-7 text-white hover:bg-white/20"
+                        </button>
+                        <button
                           onClick={() => {
-                            setDeleteCategory(group.category);
+                            setDeleteCategory(group.category || null);
                             setIsDeleteCategoryModalOpen(true);
                           }}
+                          className="h-7 w-7 rounded-full text-white hover:bg-white/20 transition-colors inline-flex items-center justify-center"
+                          title="Excluir"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
+                        </button>
                       </div>
                     )}
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 space-y-3">
-                  {group.items.map((additional) => (
-                    <div 
-                      key={additional.id} 
-                      className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
-                    >
-                      <div className="flex-1">
-                        <p className="font-medium text-sm">{additional.name}</p>
-                        {additional.description && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            {additional.description}
-                          </p>
-                        )}
-                        <div className="flex items-center gap-2 mt-2">
-                          {additional.price === 0 ? (
-                            <Badge className="bg-green-500 text-white text-xs">
-                              Grátis
-                            </Badge>
-                          ) : (
-                            <Badge variant="outline" className="text-xs">
-                              R$ {additional.price.toFixed(2)}
-                            </Badge>
-                          )}
+                  {group.items.map((additional, index) => {
+                    const categoryItems = additionals
+                      .filter(a => a.additional_category_id === additional.additional_category_id)
+                      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+                    const isFirst = index === 0;
+                    const isLast = index === group.items.length - 1;
+                    
+                    return (
+                      <div 
+                        key={additional.id} 
+                        className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
+                      >
+                        <div className="flex items-center gap-2 flex-1">
+                          {/* Drag Handle */}
+                          <div className="cursor-move p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors">
+                            <GripVertical className="h-4 w-4 text-gray-400" />
+                          </div>
+                          
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">{additional.name}</p>
+                            {additional.description && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {additional.description}
+                              </p>
+                            )}
+                            <div className="flex items-center gap-2 mt-2">
+                              {additional.price === 0 ? (
+                                <Badge className="bg-green-500 text-white text-xs">
+                                  Grátis
+                                </Badge>
+                              ) : (
+                                <Badge variant="outline" className="text-xs">
+                                  R$ {additional.price.toFixed(2)}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-center gap-1">
+                          {/* Position buttons */}
+                          <div className="flex flex-col gap-0.5">
+                            <button
+                              onClick={() => moveAdditional(additional, 'up')}
+                              className={`h-6 w-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors inline-flex items-center justify-center ${isFirst ? 'opacity-30 cursor-not-allowed' : ''}`}
+                              title="Mover para cima"
+                              disabled={isFirst}
+                            >
+                              <ChevronUp className="h-3 w-3" />
+                            </button>
+                            <button
+                              onClick={() => moveAdditional(additional, 'down')}
+                              className={`h-6 w-6 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors inline-flex items-center justify-center ${isLast ? 'opacity-30 cursor-not-allowed' : ''}`}
+                              title="Mover para baixo"
+                              disabled={isLast}
+                            >
+                              <ChevronDown className="h-3 w-3" />
+                            </button>
+                          </div>
+                          
+                          {/* Status button */}
+                          <button
+                            onClick={() => toggleActive(additional)}
+                            className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                              additional.active 
+                                ? 'bg-green-600 hover:bg-green-700 text-white' 
+                                : 'bg-gray-500 hover:bg-gray-600 text-white'
+                            }`}
+                          >
+                            {additional.active ? 'Ativo' : 'Inativo'}
+                          </button>
+                          
+                          {/* Action buttons */}
+                          <button
+                            onClick={() => duplicateAdditional(additional)}
+                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                            title="Duplicar"
+                          >
+                            <Copy className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => openModal(additional)}
+                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                            title="Editar"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </button>
+                          <button
+                            onClick={() => {
+                              setDeleteAdditional(additional);
+                              setIsDeleteModalOpen(true);
+                            }}
+                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                            title="Excluir"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => toggleActive(additional)}
-                          className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
-                            additional.active 
-                              ? 'bg-green-600 hover:bg-green-700 text-white' 
-                              : 'bg-gray-500 hover:bg-gray-600 text-white'
-                          }`}
-                        >
-                          {additional.active ? 'Ativo' : 'Inativo'}
-                        </button>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon" className="h-8 w-8">
-                              <MoreVertical className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => openModal(additional)}>
-                              <Pencil className="h-3 w-3 mr-2" />
-                              Editar
-                            </DropdownMenuItem>
-                            <DropdownMenuItem 
-                              className="text-red-600"
-                              onClick={() => {
-                                setDeleteAdditional(additional);
-                                setIsDeleteModalOpen(true);
-                              }}
-                            >
-                              <Trash2 className="h-3 w-3 mr-2" />
-                              Excluir
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </CardContent>
               </Card>
             ))}

@@ -1122,6 +1122,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   cursor: move;
 }
 
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -1201,6 +1205,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .gap-0 {
   gap: 0;
+}
+
+.gap-0\.5 {
+  gap: .125rem;
 }
 
 .gap-1 {
