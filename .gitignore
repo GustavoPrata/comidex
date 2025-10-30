@@ -1,0 +1,10 @@
+node_modules
+dist
+.DS_Store
+server/public
+vite.config.ts.*
+*.tar.gz
+
+# WhatsApp Auth - NEVER COMMIT!
+auth_info_baileys/
+*.session

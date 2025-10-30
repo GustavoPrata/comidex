@@ -1,0 +1,413 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Light mode - Preto, Laranja e Branco com melhor contraste */
+  :root {
+    --background: 0 0% 98%;           /* Branco levemente acinzentado */
+    --foreground: 0 0% 5%;            /* Preto suave */
+    --card: 0 0% 100%;                /* Branco puro para cards */
+    --card-foreground: 0 0% 10%;      /* Preto mais suave para texto em cards */
+    --popover: 0 0% 100%;             /* Branco para popovers */
+    --popover-foreground: 0 0% 5%;    /* Preto suave para texto em popovers */
+    --primary: 25 95% 53%;            /* Laranja vibrante */
+    --primary-foreground: 0 0% 100%;  /* Branco sobre laranja */
+    --secondary: 0 0% 96%;            /* Cinza muito claro */
+    --secondary-foreground: 0 0% 10%; /* Preto suave */
+    --muted: 0 0% 94%;                /* Cinza claro */
+    --muted-foreground: 0 0% 25%;     /* Cinza escuro melhor */
+    --accent: 25 95% 53%;             /* Laranja para acentos */
+    --accent-foreground: 0 0% 100%;   /* Branco */
+    --destructive: 0 84% 60%;         /* Vermelho apenas para erros */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 85%;               /* Borda cinza mais visível */
+    --input: 0 0% 98%;                /* Input mesma cor do background */
+    --ring: 25 95% 53%;               /* Anel de foco laranja */
+    --radius: 1rem;                   /* Bordas arredondadas */
+  }
+
+  /* Dark mode - Preto com melhor visibilidade e contraste */
+  .dark {
+    --background: 0 0% 7%;            /* Preto menos profundo para melhor visibilidade */
+    --foreground: 0 0% 95%;           /* Branco suave para menos contraste agressivo */
+    --card: 0 0% 11%;                 /* Cards mais claros para destacar do fundo */
+    --card-foreground: 0 0% 95%;      /* Branco suave para texto */
+    --popover: 0 0% 7%;               /* Popovers mesma cor do background/inputs */
+    --popover-foreground: 0 0% 95%;   /* Branco suave */
+    --primary: 25 95% 55%;            /* Laranja ligeiramente mais claro */
+    --primary-foreground: 0 0% 0%;    /* Preto sobre laranja */
+    --secondary: 0 0% 17%;            /* Cinza mais claro para melhor visibilidade */
+    --secondary-foreground: 0 0% 95%; /* Branco suave */
+    --muted: 0 0% 20%;                /* Cinza mais claro para elementos mutados */
+    --muted-foreground: 0 0% 70%;     /* Texto cinza mais claro */
+    --accent: 25 100% 60%;            /* Laranja mais brilhante no escuro */
+    --accent-foreground: 0 0% 0%;     /* Preto */
+    --destructive: 0 62% 35%;         /* Vermelho mais visível */
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 22%;               /* Bordas mais visíveis */
+    --input: 0 0% 7%;                 /* Input mesma cor do background */
+    --ring: 25 100% 60%;              /* Anel de foco laranja mais brilhante */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply scroll-smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased transition-colors duration-300;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* Elegant Japanese-inspired background design - LIGHT MODE SUBTLE */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background: 
+      /* Sophisticated gradient base - VERY SUBTLE */
+      linear-gradient(135deg, 
+        rgba(255, 140, 0, 0.02) 0%, 
+        rgba(255, 165, 0, 0.01) 50%, 
+        rgba(255, 140, 0, 0.03) 100%
+      ),
+      /* Large elegant circles - like sun/moon - SUBTLE */
+      radial-gradient(circle at 80% 20%, 
+        rgba(255, 140, 0, 0.05) 0%, 
+        rgba(255, 165, 0, 0.03) 25%, 
+        transparent 50%
+      ),
+      radial-gradient(circle at 20% 80%, 
+        rgba(255, 165, 0, 0.04) 0%, 
+        rgba(255, 140, 0, 0.02) 25%, 
+        transparent 45%
+      ),
+      /* Ambient glow - VERY SUBTLE */
+      radial-gradient(circle at 50% 50%, 
+        transparent 0%, 
+        rgba(255, 140, 0, 0.015) 100%
+      );
+    background-size: 100% 100%, 800px 800px, 700px 700px, 100% 100%;
+  }
+  
+  /* Dark mode - elegant gradient design */
+  .dark body::before {
+    background: 
+      /* Sophisticated gradient base for dark */
+      linear-gradient(135deg, 
+        rgba(255, 165, 0, 0.03) 0%, 
+        transparent 50%, 
+        rgba(255, 140, 0, 0.04) 100%
+      ),
+      /* Large elegant circles with better contrast */
+      radial-gradient(circle at 80% 20%, 
+        rgba(255, 165, 0, 0.12) 0%, 
+        rgba(255, 140, 0, 0.06) 25%, 
+        transparent 50%
+      ),
+      radial-gradient(circle at 20% 80%, 
+        rgba(255, 140, 0, 0.10) 0%, 
+        rgba(255, 165, 0, 0.05) 25%, 
+        transparent 45%
+      ),
+      /* Subtle ambient glow */
+      radial-gradient(circle at 50% 50%, 
+        transparent 0%, 
+        rgba(255, 165, 0, 0.03) 100%
+      );
+  }
+  
+  /* Japanese wave pattern (Seigaiha) - SUBTLE IN LIGHT MODE */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: 
+      repeating-radial-gradient(
+        circle at 0% 50%,
+        transparent 0,
+        transparent 20px,
+        rgba(255, 140, 0, 0.03) 20px,
+        rgba(255, 140, 0, 0.03) 21px,
+        transparent 21px,
+        transparent 40px
+      ),
+      repeating-radial-gradient(
+        circle at 100% 50%,
+        transparent 0,
+        transparent 20px,
+        rgba(255, 140, 0, 0.02) 20px,
+        rgba(255, 140, 0, 0.02) 21px,
+        transparent 21px,
+        transparent 40px
+      );
+    background-size: 60px 120px, 60px 120px;
+    background-position: 0 0, 30px 60px;
+  }
+  
+  .dark body::after {
+    opacity: 0.3;
+    background-image: 
+      repeating-radial-gradient(
+        circle at 0% 50%,
+        transparent 0,
+        transparent 20px,
+        rgba(255, 165, 0, 0.05) 20px,
+        rgba(255, 165, 0, 0.05) 21px,
+        transparent 21px,
+        transparent 40px
+      ),
+      repeating-radial-gradient(
+        circle at 100% 50%,
+        transparent 0,
+        transparent 20px,
+        rgba(255, 165, 0, 0.04) 20px,
+        rgba(255, 165, 0, 0.04) 21px,
+        transparent 21px,
+        transparent 40px
+      );
+  }
+}
+
+/* Elegant geometric Japanese pattern overlay - SUBTLE IN LIGHT MODE */
+.japanese-pattern {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: 
+    linear-gradient(30deg, transparent 40%, rgba(255, 140, 0, 0.1) 40%, rgba(255, 140, 0, 0.1) 60%, transparent 60%),
+    linear-gradient(60deg, transparent 40%, rgba(255, 140, 0, 0.08) 40%, rgba(255, 140, 0, 0.08) 60%, transparent 60%),
+    linear-gradient(90deg, transparent 40%, rgba(255, 140, 0, 0.05) 40%, rgba(255, 140, 0, 0.05) 60%, transparent 60%);
+  background-size: 50px 50px;
+}
+
+.dark .japanese-pattern {
+  opacity: 0.05;
+  background-image: 
+    linear-gradient(30deg, transparent 40%, rgba(255, 165, 0, 0.15) 40%, rgba(255, 165, 0, 0.15) 60%, transparent 60%),
+    linear-gradient(60deg, transparent 40%, rgba(255, 165, 0, 0.15) 40%, rgba(255, 165, 0, 0.15) 60%, transparent 60%),
+    linear-gradient(90deg, transparent 40%, rgba(255, 165, 0, 0.15) 40%, rgba(255, 165, 0, 0.15) 60%, transparent 60%);
+}
+
+/* Subtle decorative elements */
+.decorative-corner {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.decorative-corner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 140, 0, 0.06);
+  border-radius: 50%;
+  transform: scale(1.5);
+}
+
+.decorative-corner::after {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border: 1px solid rgba(255, 140, 0, 0.04);
+  border-radius: 50%;
+}
+
+.decorative-corner.top-left {
+  top: -100px;
+  left: -100px;
+}
+
+.decorative-corner.top-right {
+  top: -100px;
+  right: -100px;
+}
+
+.decorative-corner.bottom-left {
+  bottom: -100px;
+  left: -100px;
+}
+
+.decorative-corner.bottom-right {
+  bottom: -100px;
+  right: -100px;
+}
+
+.dark .decorative-corner::before {
+  border-color: rgba(255, 165, 0, 0.12);
+}
+
+.dark .decorative-corner::after {
+  border-color: rgba(255, 165, 0, 0.08);
+}
+
+@layer components {
+  /* Enhanced card styles with better visibility */
+  .enhanced-card {
+    @apply bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-sm;
+  }
+  
+  /* Pattern backgrounds for sections */
+  .pattern-dots {
+    background-image: radial-gradient(circle, rgba(255, 140, 0, 0.08) 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+  
+  .pattern-grid {
+    background-image: 
+      linear-gradient(rgba(255, 140, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 140, 0, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .pattern-diagonal {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 140, 0, 0.03) 10px,
+      rgba(255, 140, 0, 0.03) 11px
+    );
+  }
+  
+  .dark .pattern-dots {
+    background-image: radial-gradient(circle, rgba(255, 140, 0, 0.12) 1px, transparent 1px);
+  }
+  
+  .dark .pattern-grid {
+    background-image: 
+      linear-gradient(rgba(255, 140, 0, 0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 140, 0, 0.08) 1px, transparent 1px);
+  }
+  
+  .dark .pattern-diagonal {
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(255, 140, 0, 0.05) 10px,
+      rgba(255, 140, 0, 0.05) 11px
+    );
+  }
+  
+  /* Japanese decorative line */
+  .japanese-decoration::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 140, 0, 0.2) 25%, 
+      rgba(255, 140, 0, 0.2) 75%, 
+      transparent
+    );
+  }
+  
+  /* Paleta minimalista: apenas laranja como cor de destaque */
+  .accent-orange {
+    @apply bg-orange-500 text-white hover:bg-orange-600;
+  }
+  
+  .accent-orange-light {
+    @apply bg-orange-100 text-orange-900 dark:bg-orange-900/30 dark:text-orange-400;
+  }
+  
+  .accent-orange-outline {
+    @apply border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white;
+  }
+  
+  /* Glass effect with better contrast */
+  .glass-effect {
+    @apply backdrop-blur-lg bg-white/85 dark:bg-gray-900/85 border border-gray-200/80 dark:border-gray-700/80 shadow-sm;
+  }
+  
+  .glass-card {
+    @apply backdrop-blur-lg bg-white/90 dark:bg-gray-900/90 border border-gray-200/70 dark:border-gray-700/70 shadow-lg;
+  }
+  
+  /* Card hover minimalista */
+  .card-hover {
+    @apply transition-all duration-200 hover:shadow-xl hover:-translate-y-0.5 hover:border-orange-200 dark:hover:border-orange-900/50;
+  }
+  
+  /* Bordas arredondadas */
+  .rounded-modern {
+    @apply rounded-2xl;
+  }
+  
+  .rounded-modern-lg {
+    @apply rounded-3xl;
+  }
+  
+  /* Status com melhor visibilidade */
+  .status-success {
+    @apply text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-800/70;
+  }
+  
+  .status-error {
+    @apply text-orange-700 dark:text-orange-300 bg-orange-50 dark:bg-orange-900/30;
+  }
+  
+  .status-warning {
+    @apply text-orange-700 dark:text-orange-300 bg-orange-50 dark:bg-orange-900/30;
+  }
+  
+  .status-info {
+    @apply text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800/70;
+  }
+  
+  /* Botões com melhor contraste */
+  .btn-primary {
+    @apply bg-orange-500 text-white hover:bg-orange-600 rounded-xl px-4 py-2 transition-all shadow-sm hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900 hover:bg-gray-700 dark:hover:bg-gray-100 rounded-xl px-4 py-2 transition-all shadow-sm hover:shadow-md;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-gray-700 dark:border-gray-300 text-gray-700 dark:text-gray-300 hover:bg-gray-700 dark:hover:bg-gray-300 hover:text-white dark:hover:text-gray-900 rounded-xl px-4 py-2 transition-all;
+  }
+  
+  /* Enhanced input fields for better visibility */
+  input, textarea, select {
+    @apply bg-white dark:bg-gray-800/70 border-gray-300 dark:border-gray-600;
+  }
+  
+  /* Enhanced scrollbar for dark mode */
+  .dark ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .dark ::-webkit-scrollbar-track {
+    @apply bg-gray-800/50;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-gray-600 rounded-full;
+  }
+  
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-500;
+  }
+}

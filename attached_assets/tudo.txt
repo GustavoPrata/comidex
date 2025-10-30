@@ -1,0 +1,1614 @@
+### Groups
+- **Premium**  
+  Description: Itens inclusos no rodízio premium  
+  Price: 189.00  
+  Type: rodizio  
+  Active: 1  
+  Sort Order: 2  
+  Created At: 2025-05-31 14:28:06  
+  Updated At: 2025-06-06 20:44:52  
+  Icon ID: 40  
+
+- **Tradicional**  
+  Description: Itens inclusos no rodízio tradicional  
+  Price: 129.00  
+  Type: rodizio  
+  Active: 1  
+  Sort Order: 1  
+  Created At: 2025-05-31 14:28:06  
+  Updated At: 2025-06-06 20:44:33  
+  Icon ID: 38  
+
+- **À la Carte**  
+  Description: Itens vendidos separadamente  
+  Price: NULL  
+  Type: a_la_carte  
+  Active: 1  
+  Sort Order: 3  
+  Created At: 2025-05-31 14:28:06  
+  Updated At: 2025-06-04 22:40:29  
+  Icon ID: 53  
+
+- **Bebidas**  
+  Description: NULL  
+  Price: NULL  
+  Type: bebidas  
+  Active: 1  
+  Sort Order: 4  
+  Created At: 2025-06-04 17:16:41  
+  Updated At: 2025-06-06 20:45:10  
+  Icon ID: 55  
+
+- **Bebidas Alcoólicas**  
+  Description: NULL  
+  Price: NULL  
+  Type: bebidas  
+  Active: 1  
+  Sort Order: 5  
+  Created At: 2025-06-04 17:17:04  
+  Updated At: 2025-06-06 20:45:03  
+  Icon ID: 56  
+
+- **Vinhos**  
+  Description: NULL  
+  Price: NULL  
+  Type: bebidas  
+  Active: 1  
+  Sort Order: 6  
+  Created At: 2025-06-04 17:17:20  
+  Updated At: 2025-06-06 20:45:07  
+  Icon ID: 54  
+
+### Categories
+- **Entradas** (Group ID: 4)  
+  Description: Aberturas frescas e saborosas para começar sua experiência  
+  Active: 1  
+  Sort Order: 1  
+  Created At: 2025-05-31 17:28:06  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/IqHcJktf4dKfyvLfljHjCpWHO0bYjXXPyiEyWxQ5.jpg  
+
+- **Sashimis** (Group ID: 4)  
+  Description: Fatias delicadas de peixes frescos, um clássico japonês  
+  Active: 1  
+  Sort Order: 2  
+  Created At: 2025-06-04 19:09:57  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/GQmV6CCE685XnvcMuh3U58LYuBhWfPgejeyBg4xG.jpg  
+
+- **Carpaccios** (Group ID: 4)  
+  Description: Finas lâminas de peixe com toques cítricos e frescos  
+  Active: 1  
+  Sort Order: 4  
+  Created At: 2025-06-04 20:25:50  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/CrcbNPlOFiatWXt2ck8VpjuGR807zYO4ROoM9GlQ.jpg  
+
+- **Niguiris** (Group ID: 4)  
+  Description: Bolinhos de arroz com peixes frescos, simples e elegantes  
+  Active: 1  
+  Sort Order: 3  
+  Created At: 2025-06-04 20:27:03  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/2mYMoPJpQIu6CSZ8q0OOq278ORuwV1d6OOLiRQx4.jpg  
+
+- **Uramakis** (Group ID: 4)  
+  Description: Rolos invertidos com recheios criativos e saborosos  
+  Active: 1  
+  Sort Order: 5  
+  Created At: 2025-06-04 20:27:11  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/nBDdYRjdF8hnzz00mMe3ixbWTMrN1rig2aEhOzS5.jpg  
+
+- **Acelgamakis** (Group ID: 4)  
+  Description: Rolos especiais com ingredientes frescos e únicos  
+  Active: 1  
+  Sort Order: 6  
+  Created At: 2025-06-04 20:27:29  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/cB0v1hLfuSUyFXsV2Ci4WCXEO8kvZmtWG1lgZ448.jpg  
+
+- **Hossomakis** (Group ID: 4)  
+  Description: Rolinhos tradicionais, pequenos e cheios de sabor  
+  Active: 1  
+  Sort Order: 7  
+  Created At: 2025-06-04 20:27:55  
+  Updated At: 2025-06-06 20:34:39  
+  Image: NULL  
+
+- **Temakis** (Group ID: 4)  
+  Description: Cones de alga recheados com sabores autênticos  
+  Active: 1  
+  Sort Order: 8  
+  Created At: 2025-06-04 20:28:52  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/itD2BUCMnfnQPdzLXKRI4DKm8PRTik6N38joUYPT.jpg  
+
+- **Dyos** (Group ID: 4)  
+  Description: Duplas de sushi com combinações surpreendentes  
+  Active: 1  
+  Sort Order: 9  
+  Created At: 2025-06-04 20:29:58  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/ywkZ6fOc2icIYxfNvuBH7PQzS1WrjOY2JWgkrJx5.jpg  
+
+- **Chapas** (Group ID: 4)  
+  Description: Pratos quentes grelhados com toque oriental  
+  Active: 1  
+  Sort Order: 10  
+  Created At: 2025-06-04 20:30:25  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/bT6VPnPgfUuAT57sAukK40yJIBJhEO1kQnMRGHXx.jpg  
+
+- **Hot Rolls** (Group ID: 4)  
+  Description: Rolos fritos, crocantes e irresistíveis  
+  Active: 1  
+  Sort Order: 11  
+  Created At: 2025-06-04 20:30:32  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/TJ5bTuIySqY64I3iAvodpM2pFOnjOk5clZlNbjN1.jpg  
+
+- **Harumakis** (Group ID: 4)  
+  Description: Rolinhos primavera com recheios leves e crocantes  
+  Active: 1  
+  Sort Order: 12  
+  Created At: 2025-06-04 20:30:38  
+  Updated At: 2025-06-06 20:34:39  
+  Image: NULL  
+
+- **Estilo Pasteis** (Group ID: 4)  
+  Description: Pasteis com inspiração japonesa, leves e saborosos  
+  Active: 1  
+  Sort Order: 13  
+  Created At: 2025-06-04 20:30:52  
+  Updated At: 2025-06-06 20:34:39  
+  Image: NULL  
+
+- **Especial MAAD** (Group ID: 4)  
+  Description: Criações exclusivas do chef, uma explosão de sabores  
+  Active: 1  
+  Sort Order: 14  
+  Created At: 2025-06-04 20:31:00  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/0jK3HJkq5tz9d5q9dSOdfQ51dj0JTEjj4VE3ktlz.jpg  
+
+- **Outros** (Group ID: 4)  
+  Description: Opções variadas para todos os gostos  
+  Active: 1  
+  Sort Order: 15  
+  Created At: 2025-06-04 20:31:08  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/OC1YkE6BAv2F3u1wUEpvymdHQvy9nEQgjk4Zeegu.jpg  
+
+- **Sobremesas** (Group ID: 4)  
+  Description: Doces delicados para finalizar sua refeição  
+  Active: 1  
+  Sort Order: 16  
+  Created At: 2025-06-04 20:31:15  
+  Updated At: 2025-06-06 20:34:39  
+  Image: categories/2O3eACjS7ENVKxXCs3ObPfMTM05mFYKUFhLWU9Go.jpg  
+
+- **Kids** (Group ID: 4)  
+  Description: Pratos divertidos para os pequenos  
+  Active: 1  
+  Sort Order: 17  
+  Created At: 2025-06-04 20:31:21  
+  Updated At: 2025-06-06 20:34:39  
+  Image: NULL  
+
+- **Entradas** (Group ID: 1)  
+  Description: Aberturas frescas e saborosas para começar sua experiência  
+  Active: 1  
+  Sort Order: 1  
+  Created At: 2025-06-04 20:33:03  
+  Updated At: 2025-06-05 18:48:01  
+  Image: categories/viIinDNg8aTRDdlsfFxw8xp3y48clZkVNkPjLKYb.jpg  
+
+- **Entradas** (Group ID: 5)  
+  Description: Aberturas frescas e saborosas para começar sua experiência  
+  Active: 1  
+  Sort Order: 1  
+  Created At: 2025-06-04 20:33:13  
+  Updated At: 2025-06-04 20:33:13  
+  Image: NULL  
+
+- **Sashimis** (Group ID: 1)  
+  Description: Fatias delicadas de peixes frescos, um clássico japonês  
+  Active: 1  
+  Sort Order: 2  
+  Created At: 2025-06-04 19:09:57  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Carpaccios** (Group ID: 1)  
+  Description: Finas lâminas de peixe com toques cítricos e frescos  
+  Active: 1  
+  Sort Order: 3  
+  Created At: 2025-06-04 20:25:50  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Niguiris** (Group ID: 1)  
+  Description: Bolinhos de arroz com peixes frescos, simples e elegantes  
+  Active: 1  
+  Sort Order: 4  
+  Created At: 2025-06-04 20:27:03  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Uramakis** (Group ID: 1)  
+  Description: Rolos invertidos com recheios criativos e saborosos  
+  Active: 1  
+  Sort Order: 5  
+  Created At: 2025-06-04 20:27:11  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Acelgamakis** (Group ID: 1)  
+  Description: Rolos especiais com ingredientes frescos e únicos  
+  Active: 1  
+  Sort Order: 6  
+  Created At: 2025-06-04 20:27:29  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Hossomakis** (Group ID: 1)  
+  Description: Rolinhos tradicionais, pequenos e cheios de sabor  
+  Active: 1  
+  Sort Order: 7  
+  Created At: 2025-06-04 20:27:55  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Temakis** (Group ID: 1)  
+  Description: Cones de alga recheados com sabores autênticos  
+  Active: 1  
+  Sort Order: 8  
+  Created At: 2025-06-04 20:28:52  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Dyos** (Group ID: 1)  
+  Description: Duplas de sushi com combinações surpreendentes  
+  Active: 1  
+  Sort Order: 9  
+  Created At: 2025-06-04 20:29:58  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Chapas** (Group ID: 1)  
+  Description: Pratos quentes grelhados com toque oriental  
+  Active: 1  
+  Sort Order: 10  
+  Created At: 2025-06-04 20:30:25  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Hot Rolls** (Group ID: 1)  
+  Description: Rolos fritos, crocantes e irresistíveis  
+  Active: 1  
+  Sort Order: 11  
+  Created At: 2025-06-04 20:30:32  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Harumakis** (Group ID: 1)  
+  Description: Rolinhos primavera com recheios leves e crocantes  
+  Active: 1  
+  Sort Order: 12  
+  Created At: 2025-06-04 20:30:38  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Estilo Pasteis** (Group ID: 1)  
+  Description: Pasteis com inspiração japonesa, leves e saborosos  
+  Active: 1  
+  Sort Order: 13  
+  Created At: 2025-06-04 20:30:52  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Especial MAAD** (Group ID: 1)  
+  Description: Criações exclusivas do chef, uma explosão de sabores  
+  Active: 1  
+  Sort Order: 14  
+  Created At: 2025-06-04 20:31:00  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Outros** (Group ID: 1)  
+  Description: Opções variadas para todos os gostos  
+  Active: 1  
+  Sort Order: 15  
+  Created At: 2025-06-04 20:31:08  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Sobremesas** (Group ID: 1)  
+  Description: Doces delicados para finalizar sua refeição  
+  Active: 1  
+  Sort Order: 16  
+  Created At: 2025-06-04 20:31:15  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Kids** (Group ID: 1)  
+  Description: Pratos divertidos para os pequenos  
+  Active: 1  
+  Sort Order: 17  
+  Created At: 2025-06-04 20:31:21  
+  Updated At: 2025-06-05 18:48:01  
+  Image: NULL  
+
+- **Sashimis** (Group ID: 5)  
+  Description: Fatias delicadas de peixes frescos, um clássico japonês  
+  Active: 1  
+  Sort Order: 2  
+  Created At: 2025-06-04 19:09:57  
+  Updated At: 2025-06-04 20:25:36  
+  Image: NULL  
+
+- **Carpaccios** (Group ID: 5)  
+  Description: Finas lâminas de peixe com toques cítricos e frescos  
+  Active: 1  
+  Sort Order: 3  
+  Created At: 2025-06-04 20:25:50  
+  Updated At: 2025-06-04 20:25:50  
+  Image: NULL  
+
+- **Niguiris** (Group ID: 5)  
+  Description: Bolinhos de arroz com peixes frescos, simples e elegantes  
+  Active: 1  
+  Sort Order: 4  
+  Created At: 2025-06-04 20:27:03  
+  Updated At: 2025-06-04 20:30:12  
+  Image: NULL  
+
+- **Uramakis** (Group ID: 5)  
+  Description: Rolos invertidos com recheios criativos e saborosos  
+  Active: 1  
+  Sort Order: 5  
+  Created At: 2025-06-04 20:27:11  
+  Updated At: 2025-06-04 20:27:11  
+  Image: NULL  
+
+- **Acelgamakis** (Group ID: 5)  
+  Description: Rolos especiais com ingredientes frescos e únicos  
+  Active: 1  
+  Sort Order: 6  
+  Created At: 2025-06-04 20:27:29  
+  Updated At: 2025-06-04 20:27:29  
+  Image: NULL  
+
+- **Hossomakis** (Group ID: 5)  
+  Description: Rolinhos tradicionais, pequenos e cheios de sabor  
+  Active: 1  
+  Sort Order: 7  
+  Created At: 2025-06-04 20:27:55  
+  Updated At: 2025-06-04 20:27:55  
+  Image: NULL  
+
+- **Temakis** (Group ID: 5)  
+  Description: Cones de alga recheados com sabores autênticos  
+  Active: 1  
+  Sort Order: 8  
+  Created At: 2025-06-04 20:28:52  
+  Updated At: 2025-06-04 20:28:52  
+  Image: NULL  
+
+- **Dyos** (Group ID: 5)  
+  Description: Duplas de sushi com combinações surpreendentes  
+  Active: 1  
+  Sort Order: 9  
+  Created At: 2025-06-04 20:29:58  
+  Updated At: 2025-06-04 20:30:02  
+  Image: NULL  
+
+- **Chapas** (Group ID: 5)  
+  Description: Pratos quentes grelhados com toque oriental  
+  Active: 1  
+  Sort Order: 10  
+  Created At: 2025-06-04 20:30:25  
+  Updated At: 2025-06-04 20:30:25  
+  Image: NULL  
+
+- **Hot Rolls** (Group ID: 5)  
+  Description: Rolos fritos, crocantes e irresistíveis  
+  Active: 1  
+  Sort Order: 11  
+  Created At: 2025-06-04 20:30:32  
+  Updated At: 2025-06-04 20:30:32  
+  Image: NULL  
+
+- **Harumakis** (Group ID: 5)  
+  Description: Rolinhos primavera com recheios leves e crocantes  
+  Active: 1  
+  Sort Order: 12  
+  Created At: 2025-06-04 20:30:38  
+  Updated At: 2025-06-04 20:30:38  
+  Image: NULL  
+
+- **Estilo Pasteis** (Group ID: 5)  
+  Description: Pasteis com inspiração japonesa, leves e saborosos  
+  Active: 1  
+  Sort Order: 13  
+  Created At: 2025-06-04 20:30:52  
+  Updated At: 2025-06-04 20:30:52  
+  Image: NULL  
+
+- **Especial MAAD** (Group ID: 5)  
+  Description: Criações exclusivas do chef, uma explosão de sabores  
+  Active: 1  
+  Sort Order: 14  
+  Created At: 2025-06-04 20:31:00  
+  Updated At: 2025-06-04 20:31:00  
+  Image: NULL  
+
+- **Outros** (Group ID: 5)  
+  Description: Opções variadas para todos os gostos  
+  Active: 1  
+  Sort Order: 15  
+  Created At: 2025-06-04 20:31:08  
+  Updated At: 2025-06-04 20:31:08  
+  Image: NULL  
+
+- **Sobremesas** (Group ID: 5)  
+  Description: Doces delicados para finalizar sua refeição  
+  Active: 1  
+  Sort Order: 16  
+  Created At: 2025-06-04 20:31:15  
+  Updated At: 2025-06-04 20:31:15  
+  Image: NULL  
+
+- **Kids** (Group ID: 5)  
+  Description: Pratos divertidos para os pequenos  
+  Active: 1  
+  Sort Order: 17  
+  Created At: 2025-06-04 20:31:21  
+  Updated At: 2025-06-04 20:31:21  
+  Image: NULL  
+
+### Items
+- **Salada da Casa** (Category ID: 77, Group ID: 1)  
+  Description: Vinagrete de camarão, sunomono, gengibre, ceviche e nachos de salmão  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Sunomono** (Category ID: 77, Group ID: 1)  
+  Description: Finas fatias de pepino japonês curtidas no molho agridoce  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Vinagrete de Camarão** (Category ID: 77, Group ID: 1)  
+  Description: Camarões marinados com legumes frescos em um vinagrete cítrico e aromático  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Ceviche** (Category ID: 77, Group ID: 1)  
+  Description: Peixe, curtidos no molho de laranja, limão, pimenta-dedo-de-moça, salsinha, cebola roxa, molho de pimenta e azeite extra virgem  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Ceviche Especial** (Category ID: 77, Group ID: 1)  
+  Description: Peixe, curtidos no molho de laranja, limão, pimenta-dedo-de-moça, salsinha, cebola roxa, molho de pimenta e azeite extra virgem  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Tartar** (Category ID: 77, Group ID: 1)  
+  Description: Salmão finamente picado com molho especial, marinado na cebola roxa.  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Sashimi Salmão** (Category ID: 79, Group ID: 1)  
+  Description: Fatias frescas de salmão, perfeitas para os amantes de peixe cru  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Sashimi Atum** (Category ID: 79, Group ID: 1)  
+  Description: Fatias delicadas de atum, com sabor intenso e textura suave  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Sashimi Peixe Prego/Limão** (Category ID: 79, Group ID: 1)  
+  Description: Fatias de peixe prego com um toque refrescante de limão  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Sashimi Tilápia** (Category ID: 79, Group ID: 1)  
+  Description: Fatias leves e frescas de tilápia, com sabor suave  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Sashimi Polvo** (Category ID: 79, Group ID: 1)  
+  Description: Fatias finas de polvo, com textura única e sabor marcante  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Carpaccio Salmão Trufado** (Category ID: 80, Group ID: 1)  
+  Description: Finas lâminas de salmão com toque sofisticado de trufas  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Carpaccio Polvo Trufado** (Category ID: 80, Group ID: 1)  
+  Description: Lâminas de polvo com aroma refinado de trufas  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Carpaccio Camarão Trufado** (Category ID: 80, Group ID: 1)  
+  Description: Camarões em fatias finas com toque especial de trufas  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Carpaccio Misto Trufado** (Category ID: 80, Group ID: 1)  
+  Description: Combinação de peixes e frutos do mar com sabor trufado  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Niguiri Salmão** (Category ID: 81, Group ID: 1)  
+  Description: Bolinho de arroz com fatia fresca de salmão  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Niguiri Salmão Especial** (Category ID: 81, Group ID: 1)  
+  Description: Salmão selecionado sobre arroz, com toque especial do chef  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Niguiri Atum** (Category ID: 81, Group ID: 1)  
+  Description: Bolinho de arroz com atum fresco e sabor marcante  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Niguiri Polvo** (Category ID: 81, Group ID: 1)  
+  Description: Arroz coberto com fatia de polvo, textura única  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Niguiri Camarão** (Category ID: 81, Group ID: 1)  
+  Description: Camarão selecionado sobre bolinho de arroz  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Niguiri Salmão Fry Ouro** (Category ID: 81, Group ID: 1)  
+  Description: Salmão frito com toque dourado sobre arroz  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Salmão** (Category ID: 82, Group ID: 1)  
+  Description: Rolo invertido com salmão fresco e recheio cremoso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Atum** (Category ID: 82, Group ID: 1)  
+  Description: Rolo com atum fresco e toque de molho especial  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Camarão** (Category ID: 82, Group ID: 1)  
+  Description: Rolo invertido com camarão suculento e molho delicado  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki California** (Category ID: 82, Group ID: 1)  
+  Description: Rolo com kani, pepino e manga, refrescante e leve  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Filadélfia** (Category ID: 82, Group ID: 1)  
+  Description: Rolo com salmão, cream cheese e toque de cebolinha  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Filadélfia Fry** (Category ID: 82, Group ID: 1)  
+  Description: Rolo frito com salmão, cream cheese e crocância  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Salmão Fry** (Category ID: 82, Group ID: 1)  
+  Description: Rolo frito com salmão, crocante e saboroso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 7  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Salmão Mel Fry** (Category ID: 82, Group ID: 1)  
+  Description: Rolo frito com salmão e toque doce de mel  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 8  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Salmão Fry Ouro** (Category ID: 82, Group ID: 1)  
+  Description: Rolo frito com salmão e toque premium dourado  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 9  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Uramaki Camarão Fry Ouro** (Category ID: 82, Group ID: 1)  
+  Description: Rolo frito com camarão e toque dourado especial  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 10  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Acelgamaki Salmão** (Category ID: 83, Group ID: 1)  
+  Description: Rolo especial com salmão fresco e ingredientes únicos  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Acelgamaki Salmão Fry** (Category ID: 83, Group ID: 1)  
+  Description: Rolo especial frito com salmão, crocante e saboroso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Acelgamaki Atum** (Category ID: 83, Group ID: 1)  
+  Description: Rolo especial com atum e combinação única de sabores  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-09 03:46:08  
+  Printer ID: NULL  
+
+- **Shakemaki** (Category ID: 84, Group ID: 1)  
+  Description: Hossomaki com salmão fresco, simples e clássico  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Kappamaki** (Category ID: 84, Group ID: 1)  
+  Description: Hossomaki com pepino, leve e refrescante  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Tekamaki** (Category ID: 84, Group ID: 1)  
+  Description: Hossomaki com atum, puro e tradicional  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Temaki Salmão** (Category ID: 85, Group ID: 1)  
+  Description: Cone de alga com salmão fresco e recheio cremoso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Temaki Salmão Fry** (Category ID: 85, Group ID: 1)  
+  Description: Cone de alga com salmão frito, crocante e saboroso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Temaki Atum** (Category ID: 85, Group ID: 1)  
+  Description: Cone de alga com atum fresco e molho especial  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Temaki Camarão** (Category ID: 85, Group ID: 1)  
+  Description: Cone de alga com camarão suculento e recheio leve  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Temaki California** (Category ID: 85, Group ID: 1)  
+  Description: Cone de alga com kani, pepino e manga, bem refrescante  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Temaki Skin Fry** (Category ID: 85, Group ID: 1)  
+  Description: Cone de alga com pele de salmão frita, crocante e única  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Temaki Hot Roll** (Category ID: 85, Group ID: 1)  
+  Description: Cone de alga com rolo frito, quente e irresistível  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 7  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Joe Salmão** (Category ID: 86, Group ID: 1)  
+  Description: Dupla de sushi com salmão fresco e molho delicado  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Joe Camarão** (Category ID: 86, Group ID: 1)  
+  Description: Dupla de sushi com camarão e toque especial do chef  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Joe Geleia Framboesa** (Category ID: 86, Group ID: 1)  
+  Description: Dupla de sushi com geleia de framboesa, doce e única  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Joe Sugar** (Category ID: 86, Group ID: 1)  
+  Description: Dupla de sushi com toque açucarado e criativo  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Joe Couve Fry** (Category ID: 86, Group ID: 1)  
+  Description: Dupla de sushi com couve frita, crocante e original  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Joe Shimeji** (Category ID: 86, Group ID: 1)  
+  Description: Dupla de sushi com shimeji, saboroso e delicado  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Chapa Shimeji** (Category ID: 87, Group ID: 1)  
+  Description: Cogumelos shimeji grelhados com molho oriental  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Chapa Shitake** (Category ID: 87, Group ID: 1)  
+  Description: Cogumelos shitake grelhados com toque asiático  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Chapa Mista** (Category ID: 87, Group ID: 1)  
+  Description: Mix de frutos do mar grelhados com molho especial  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Chapa Polvo** (Category ID: 87, Group ID: 1)  
+  Description: Polvo grelhado com temperos orientais, suculento  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Chapa Salmão** (Category ID: 87, Group ID: 1)  
+  Description: Salmão grelhado com molho leve e aromático  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Chapa Camarão** (Category ID: 87, Group ID: 1)  
+  Description: Camarões grelhados com toque oriental, irresistíveis  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Hot Roll Salmão** (Category ID: 88, Group ID: 1)  
+  Description: Rolo frito com salmão, crocante e delicioso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Hot Roll Camarão** (Category ID: 88, Group ID: 1)  
+  Description: Rolo frito com camarão, quente e saboroso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Hot Roll Shimeji** (Category ID: 88, Group ID: 1)  
+  Description: Rolo frito com shimeji, leve e crocante  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Hot Roll Filadelfia** (Category ID: 88, Group ID: 1)  
+  Description: Rolo frito com salmão e cream cheese, irresistível  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Hot Roll Doritos** (Category ID: 88, Group ID: 1)  
+  Description: Rolo frito com toque crocante de Doritos  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Harumaki Queijo** (Category ID: 89, Group ID: 1)  
+  Description: Rolinho primavera com recheio cremoso de queijo  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Harumaki Legumes** (Category ID: 89, Group ID: 1)  
+  Description: Rolinho primavera com legumes frescos e crocantes  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Harumaki Filadelfia** (Category ID: 89, Group ID: 1)  
+  Description: Rolinho primavera com salmão e cream cheese  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Pastel Salmão** (Category ID: 90, Group ID: 1)  
+  Description: Pastel crocante com recheio de salmão fresco  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Pastel Camarão** (Category ID: 90, Group ID: 1)  
+  Description: Pastel com camarão suculento e temperos orientais  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Pastel Bacalhau** (Category ID: 90, Group ID: 1)  
+  Description: Pastel com recheio de bacalhau, rico e saboroso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Guioza Suína** (Category ID: 90, Group ID: 1)  
+  Description: Pastelzinho japonês com recheio suculento de carne suína  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Guioza Bovina** (Category ID: 90, Group ID: 1)  
+  Description: Pastelzinho japonês com recheio de carne bovina  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Salmão MAAD** (Category ID: 91, Group ID: 1)  
+  Description: Criação exclusiva com salmão, cheia de sabor  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Camarão MAAD** (Category ID: 91, Group ID: 1)  
+  Description: Criação única com camarão, surpreendente e deliciosa  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Atum MAAD** (Category ID: 91, Group ID: 1)  
+  Description: Criação especial com atum, rica em sabores  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Kaka MAAD** (Category ID: 91, Group ID: 1)  
+  Description: Combinação exclusiva do chef, única e inesquecível  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Ebi Hot Shake MAAD** (Category ID: 91, Group ID: 1)  
+  Description: Criação quente com camarão, vibrante e saborosa  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Dubai MAAD** (Category ID: 91, Group ID: 1)  
+  Description: Criação premium com toque exótico e sofisticado  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Fire MAAD** (Category ID: 91, Group ID: 1)  
+  Description: Criação ousada com toque quente e sabor marcante  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 7  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Batera Salmão** (Category ID: 92, Group ID: 1)  
+  Description: Sushi prensado com salmão fresco e molho especial  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 1  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Batera Atum** (Category ID: 92, Group ID: 1)  
+  Description: Sushi prensado com atum, rico e saboroso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 2  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Lula Com Salmão** (Category ID: 92, Group ID: 1)  
+  Description: Combinação de lula e salmão, fresca e harmoniosa  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 3  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Polvo no gelo** (Category ID: 92, Group ID: 1)  
+  Description: Polvo servido gelado com toque refrescante  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 4  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Yakissoba Carne** (Category ID: 92, Group ID: 1)  
+  Description: Macarrão frito com carne e legumes, ao molho oriental  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 5  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Yakissoba Frango** (Category ID: 92, Group ID: 1)  
+  Description: Macarrão frito com frango e legumes, saboroso  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 6  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Yakissoba Frutos do Mar** (Category ID: 92, Group ID: 1)  
+  Description: Macarrão frito com frutos do mar, rico e suculento  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 7  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Kibe Atum** (Category ID: 92, Group ID: 1)  
+  Description: Kibe com recheio de atum, crocante e original  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 8  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Tempura Legumes** (Category ID: 92, Group ID: 1)  
+  Description: Legumes fritos em massa leve, crocantes e saborosos  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 9  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Tempura Camarão** (Category ID: 92, Group ID: 1)  
+  Description: Camarões fritos em tempura, leves e crocantes  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 10  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Roru Tomato** (Category ID: 92, Group ID: 1)  
+  Description: Rolo especial com toque de tomate, fresco e único  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 11  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL  
+
+- **Missoshiro** (Category ID: 92, Group ID: 1)  
+  Description: Sopa tradicional japonesa com missô e tofu  
+  Quantity: NULL  
+  Price: NULL  
+  Image: NULL  
+  Active: 1  
+  Available: 1  
+  Spicy: 0  
+  Sort Order: 12  
+  Created At: 2025-06-04 23:33:00  
+  Updated At: 2025-06-06 21:11:30  
+  Printer ID: NULL
