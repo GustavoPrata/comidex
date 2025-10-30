@@ -36,8 +36,6 @@ export interface Database {
         Row: {
           id: number
           name: string
-          description: string | null
-          color: string
           sort_order: number
           active: boolean
           created_at: string
@@ -50,7 +48,6 @@ export interface Database {
         Row: {
           id: number
           name: string
-          description: string | null
           price: number
           active: boolean
           additional_category_id: number

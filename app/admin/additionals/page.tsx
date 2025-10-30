@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { 
   Search, 
@@ -119,11 +118,6 @@ function SortableAdditionalItem({
         
         <div className="flex-1">
           <p className="font-medium text-sm">{additional.name}</p>
-          {additional.description && (
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-              {additional.description}
-            </p>
-          )}
           <div className="flex items-center gap-2 mt-2">
             {additional.price === 0 ? (
               <Badge className="bg-green-500 text-white text-xs">
@@ -203,7 +197,6 @@ export default function AdditionalsPage() {
   // Form state for additional
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
     price: 0,
     additional_category_id: "",
     active: true,
@@ -258,8 +251,7 @@ export default function AdditionalsPage() {
 
   // Filter additionals based on search
   const filteredAdditionals = additionals.filter(additional =>
-    additional.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    additional.description?.toLowerCase().includes(searchTerm.toLowerCase())
+    additional.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Group additionals by category
@@ -335,7 +327,6 @@ export default function AdditionalsPage() {
       setEditingAdditional(additional);
       setFormData({
         name: additional.name,
-        description: additional.description || "",
         price: additional.price || 0,
         additional_category_id: additional.additional_category_id ? String(additional.additional_category_id) : "",
         active: additional.active !== false,
@@ -346,7 +337,6 @@ export default function AdditionalsPage() {
       const firstCategoryId = categories.length > 0 && categories[0]?.id ? String(categories[0].id) : "";
       setFormData({
         name: "",
-        description: "",
         price: 0,
         additional_category_id: firstCategoryId,
         active: true,
@@ -379,7 +369,6 @@ export default function AdditionalsPage() {
     try {
       const newAdditional = {
         name: `${additional.name} (Cópia)`,
-        description: additional.description,
         price: additional.price,
         additional_category_id: additional.additional_category_id,
         active: additional.active,
@@ -446,7 +435,6 @@ export default function AdditionalsPage() {
       
       const additionalData = {
         name: formData.name,
-        description: formData.description || null,
         price: parseFloat(String(formData.price)) || 0,
         additional_category_id: categoryId,
         active: formData.active,
@@ -498,7 +486,6 @@ export default function AdditionalsPage() {
       // Reset form data
       setFormData({
         name: "",
-        description: "",
         price: 0,
         additional_category_id: "",
         active: true,
@@ -813,17 +800,6 @@ export default function AdditionalsPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Ex: Gelo, Limão"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="description">Descrição</Label>
-              <Textarea
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Ex: Para refrescar"
-                rows={2}
               />
             </div>
 
