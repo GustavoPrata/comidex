@@ -426,12 +426,21 @@ export default function AdditionalsPage() {
       const categoryId = formData.additional_category_id ? 
         parseInt(formData.additional_category_id) : null;
       
+      // Calculate sort_order for new items
+      let sort_order = formData.sort_order || 0;
+      if (!editingAdditional) {
+        // Get max sort_order for this category and add 1
+        const categoryAdditionals = additionals.filter(a => a.additional_category_id === categoryId);
+        const maxOrder = categoryAdditionals.reduce((max, a) => Math.max(max, a.sort_order || 0), 0);
+        sort_order = maxOrder + 1;
+      }
+      
       const additionalData = {
         name: formData.name,
         price: parseFloat(String(formData.price)) || 0,
         additional_category_id: categoryId,
         active: formData.active,
-        sort_order: formData.sort_order || 0
+        sort_order: sort_order
       };
 
       if (editingAdditional) {
@@ -498,9 +507,17 @@ export default function AdditionalsPage() {
     try {
       setSaving(true);
       
+      // Calculate sort_order for new categories
+      let sort_order = categoryFormData.sort_order || 0;
+      if (!editingCategory) {
+        // Get max sort_order and add 1
+        const maxOrder = categories.reduce((max, c) => Math.max(max, c.sort_order || 0), 0);
+        sort_order = maxOrder + 1;
+      }
+      
       const categoryData = {
         name: categoryFormData.name,
-        sort_order: categoryFormData.sort_order
+        sort_order: sort_order
       };
 
       if (editingCategory) {
@@ -816,29 +833,16 @@ export default function AdditionalsPage() {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="price">Preço (R$)</Label>
-                <Input
-                  id="price"
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="sort">Ordem</Label>
-                <Input
-                  id="sort"
-                  type="number"
-                  min="0"
-                  value={formData.sort_order}
-                  onChange={(e) => setFormData({ ...formData, sort_order: parseInt(e.target.value) || 0 })}
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="price">Preço (R$)</Label>
+              <Input
+                id="price"
+                type="number"
+                step="0.01"
+                min="0"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+              />
             </div>
 
             <div className="space-y-2">
@@ -919,17 +923,6 @@ export default function AdditionalsPage() {
                 value={categoryFormData.name}
                 onChange={(e) => setCategoryFormData({ ...categoryFormData, name: e.target.value })}
                 placeholder="Ex: Refrigerante, Extras"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="category-sort">Ordem</Label>
-              <Input
-                id="category-sort"
-                type="number"
-                min="0"
-                value={categoryFormData.sort_order}
-                onChange={(e) => setCategoryFormData({ ...categoryFormData, sort_order: parseInt(e.target.value) || 0 })}
               />
             </div>
           </div>
