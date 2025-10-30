@@ -14,7 +14,6 @@ import {
   Copy,
   Pencil,
   Trash2,
-  Layers,
   Loader2,
   Save
 } from "lucide-react";
@@ -321,7 +320,7 @@ export default function AdditionalsPage() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-lg bg-orange-500">
-                <Layers className="h-5 w-5 text-white" />
+                <Plus className="h-5 w-5 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Adicionais</h1>
             </div>
@@ -468,7 +467,7 @@ export default function AdditionalsPage() {
 
         {Object.keys(groupedAdditionals).length === 0 && (
           <div className="text-center py-12">
-            <Layers className="h-12 w-12 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
+            <Plus className="h-12 w-12 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
             <p className="text-gray-500 dark:text-gray-400">
               {searchTerm ? "Nenhum adicional encontrado" : "Nenhum adicional cadastrado"}
             </p>
