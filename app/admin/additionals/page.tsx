@@ -283,7 +283,10 @@ export default function AdditionalsPage() {
     const { active, over } = event;
 
     if (active.id !== over?.id) {
-      const categoryAdditionals = additionals.filter(a => a.additional_category_id?.toString() === categoryId);
+      const categoryAdditionals = additionals
+        .filter(a => a.additional_category_id?.toString() === categoryId)
+        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+      
       const oldIndex = categoryAdditionals.findIndex(item => item.id === active.id);
       const newIndex = categoryAdditionals.findIndex(item => item.id === over?.id);
       
@@ -291,14 +294,21 @@ export default function AdditionalsPage() {
         const newOrder = arrayMove(categoryAdditionals, oldIndex, newIndex);
         
         // Update local state immediately for smooth UX
-        const updatedAdditionals = additionals.map(item => {
-          const orderIndex = newOrder.findIndex(orderedItem => orderedItem.id === item.id);
-          if (orderIndex !== -1) {
-            return { ...item, sort_order: orderIndex };
-          }
-          return item;
-        });
-        setAdditionals(updatedAdditionals);
+        const otherAdditionals = additionals.filter(a => a.additional_category_id?.toString() !== categoryId);
+        const updatedCategoryAdditionals = newOrder.map((item, index) => ({
+          ...item,
+          sort_order: index
+        }));
+        
+        const newAdditionals = [...otherAdditionals, ...updatedCategoryAdditionals]
+          .sort((a, b) => {
+            if (a.additional_category_id === b.additional_category_id) {
+              return (a.sort_order || 0) - (b.sort_order || 0);
+            }
+            return 0;
+          });
+        
+        setAdditionals(newAdditionals);
         
         // Update database
         try {
@@ -375,17 +385,26 @@ export default function AdditionalsPage() {
         price: additional.price,
         additional_category_id: additional.additional_category_id,
         active: additional.active,
-        sort_order: additional.sort_order
+        sort_order: (additional.sort_order || 0) + 1
       };
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('additionals')
-        .insert(newAdditional);
+        .insert(newAdditional)
+        .select()
+        .single();
 
       if (error) throw error;
       
+      // Update local state
+      setAdditionals(prev => [...prev, data].sort((a, b) => {
+        if (a.additional_category_id === b.additional_category_id) {
+          return (a.sort_order || 0) - (b.sort_order || 0);
+        }
+        return 0;
+      }));
+      
       toast.success("Adicional duplicado com sucesso!");
-      loadData();
     } catch (error) {
       console.error('Erro ao duplicar adicional:', error);
       toast.error("Erro ao duplicar adicional");
@@ -398,17 +417,21 @@ export default function AdditionalsPage() {
       const newCategory = {
         name: `${category.name} (Cópia)`,
         color: category.color,
-        sort_order: category.sort_order
+        sort_order: (category.sort_order || 0) + 1
       };
 
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('additional_categories')
-        .insert(newCategory);
+        .insert(newCategory)
+        .select()
+        .single();
 
       if (error) throw error;
       
+      // Update local state
+      setCategories(prev => [...prev, data].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)));
+      
       toast.success("Categoria duplicada com sucesso!");
-      loadData();
     } catch (error) {
       console.error('Erro ao duplicar categoria:', error);
       toast.error("Erro ao duplicar categoria");
@@ -430,24 +453,47 @@ export default function AdditionalsPage() {
       };
 
       if (editingAdditional) {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('additionals')
           .update(additionalData)
-          .eq('id', editingAdditional.id);
+          .eq('id', editingAdditional.id)
+          .select()
+          .single();
 
         if (error) throw error;
+        
+        // Update local state
+        setAdditionals(prev => prev.map(item => 
+          item.id === editingAdditional.id ? data : item
+        ).sort((a, b) => {
+          if (a.additional_category_id === b.additional_category_id) {
+            return (a.sort_order || 0) - (b.sort_order || 0);
+          }
+          return 0;
+        }));
+        
         toast.success("Adicional atualizado com sucesso!");
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('additionals')
-          .insert(additionalData);
+          .insert(additionalData)
+          .select()
+          .single();
 
         if (error) throw error;
+        
+        // Update local state
+        setAdditionals(prev => [...prev, data].sort((a, b) => {
+          if (a.additional_category_id === b.additional_category_id) {
+            return (a.sort_order || 0) - (b.sort_order || 0);
+          }
+          return 0;
+        }));
+        
         toast.success("Adicional criado com sucesso!");
       }
 
       setIsModalOpen(false);
-      loadData();
     } catch (error) {
       console.error('Erro ao salvar adicional:', error);
       toast.error("Erro ao salvar adicional");
@@ -468,26 +514,39 @@ export default function AdditionalsPage() {
       };
 
       if (editingCategory) {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('additional_categories')
           .update(categoryData)
-          .eq('id', editingCategory.id);
+          .eq('id', editingCategory.id)
+          .select()
+          .single();
 
         if (error) throw error;
+        
+        // Update local state
+        setCategories(prev => prev.map(item => 
+          item.id === editingCategory.id ? data : item
+        ).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)));
+        
         toast.success("Categoria atualizada com sucesso!");
       } else {
-        const { error } = await supabase
+        const { data, error } = await supabase
           .from('additional_categories')
-          .insert(categoryData);
+          .insert(categoryData)
+          .select()
+          .single();
 
         if (error) throw error;
+        
+        // Update local state
+        setCategories(prev => [...prev, data].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)));
+        
         toast.success("Categoria criada com sucesso!");
       }
       
       setIsCategoryModalOpen(false);
       setCategoryFormData({ name: "", color: "#FF6B00", sort_order: 0 });
       setEditingCategory(null);
-      loadData();
     } catch (error) {
       console.error('Erro ao salvar categoria:', error);
       toast.error("Erro ao salvar categoria");
@@ -510,10 +569,12 @@ export default function AdditionalsPage() {
 
       if (error) throw error;
       
+      // Update local state
+      setAdditionals(prev => prev.filter(item => item.id !== deleteAdditional.id));
+      
       toast.success("Adicional excluído com sucesso!");
       setIsDeleteModalOpen(false);
       setDeleteAdditional(null);
-      loadData();
     } catch (error) {
       console.error('Erro ao excluir adicional:', error);
       toast.error("Erro ao excluir adicional");
@@ -546,10 +607,12 @@ export default function AdditionalsPage() {
 
       if (error) throw error;
       
+      // Update local state
+      setCategories(prev => prev.filter(item => item.id !== deleteCategory.id));
+      
       toast.success("Categoria excluída com sucesso!");
       setIsDeleteCategoryModalOpen(false);
       setDeleteCategory(null);
-      loadData();
     } catch (error) {
       console.error('Erro ao excluir categoria:', error);
       toast.error("Erro ao excluir categoria");
@@ -561,15 +624,21 @@ export default function AdditionalsPage() {
   // Toggle active status
   const toggleActive = async (additional: Additional) => {
     try {
+      const newStatus = !additional.active;
+      
       const { error } = await supabase
         .from('additionals')
-        .update({ active: !additional.active })
+        .update({ active: newStatus })
         .eq('id', additional.id);
 
       if (error) throw error;
       
-      toast.success(`Adicional ${!additional.active ? 'ativado' : 'desativado'}`);
-      loadData();
+      // Update local state
+      setAdditionals(prev => prev.map(item => 
+        item.id === additional.id ? { ...item, active: newStatus } : item
+      ));
+      
+      toast.success(`Adicional ${newStatus ? 'ativado' : 'desativado'}`);
     } catch (error) {
       console.error('Erro ao alterar status:', error);
       toast.error("Erro ao alterar status");
