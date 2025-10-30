@@ -156,7 +156,7 @@ export default function AdditionalsPage() {
 
   // Group additionals by category
   const groupedAdditionals = filteredAdditionals.reduce((acc, additional) => {
-    const category = categories.find(c => c.id === additional.category_id);
+    const category = categories.find(c => c.id === additional.additional_category_id);
     const categoryName = category?.name || "Sem Categoria";
     
     if (!acc[categoryName]) {
@@ -177,7 +177,7 @@ export default function AdditionalsPage() {
         name: additional.name,
         description: additional.description || "",
         price: additional.price,
-        category_id: additional.category_id?.toString() || "",
+        category_id: additional.additional_category_id?.toString() || "",
         active: additional.active
       });
     } else {
@@ -307,32 +307,40 @@ export default function AdditionalsPage() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen relative">
       {/* Header */}
-      <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800">
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
         <div className="px-6 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/20">
-                  <Wine className="h-5 w-5 text-orange-600 dark:text-orange-500" />
-                </div>
-                Adicionais
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Gerencie os itens adicionais e extras do cardápio
-              </p>
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Wine className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Adicionais</h1>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
               <Button 
                 variant="outline"
                 onClick={() => setIsCategoryModalOpen(true)}
+                className="rounded-full"
               >
                 <Plus className="h-4 w-4 mr-2" />
                 Nova Categoria
               </Button>
               <Button 
-                className="bg-orange-500 hover:bg-orange-600 text-white"
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
                 onClick={() => openModal()}
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -341,21 +349,29 @@ export default function AdditionalsPage() {
             </div>
           </div>
 
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Buscar adicionais..."
-              className="pl-9"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Gerencie os itens adicionais e extras do cardápio
+          </p>
+
+          {/* Active Filters */}
+          {searchTerm && (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-sm text-gray-500 dark:text-gray-400">Filtros ativos:</span>
+              <div className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 rounded-full text-sm">
+                Pesquisa: "{searchTerm}"
+                <Trash2 
+                  className="h-3 w-3 cursor-pointer hover:text-orange-700 dark:hover:text-orange-300" 
+                  onClick={() => setSearchTerm("")}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Content */}
-      <div className="px-6 py-6">
+      <div className="p-4">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
             <Card key={categoryName} className="overflow-hidden">
