@@ -90,24 +90,27 @@ export default function AdditionalsPage() {
     
     const attemptLoad = async (): Promise<boolean> => {
       try {
-        // Load additionals with categories
-        const { data: additionalsData, error: additionalsError } = await supabase
-          .from('additionals')
-          .select(`
-            *,
-            category:additional_categories(*)
-          `)
-          .order('name', { ascending: true });
-
-        if (additionalsError) throw additionalsError;
-
-        // Load categories
+        // Load categories first
         const { data: categoriesData, error: categoriesError } = await supabase
           .from('additional_categories')
           .select('*')
           .order('name', { ascending: true });
 
-        if (categoriesError) throw categoriesError;
+        if (categoriesError) {
+          console.error("Erro ao carregar categorias:", categoriesError);
+          throw categoriesError;
+        }
+
+        // Load additionals without joins
+        const { data: additionalsData, error: additionalsError } = await supabase
+          .from('additionals')
+          .select('*')
+          .order('name', { ascending: true });
+
+        if (additionalsError) {
+          console.error("Erro ao carregar adicionais:", additionalsError);
+          throw additionalsError;
+        }
 
         setAdditionals(additionalsData || []);
         setCategories(categoriesData || []);
@@ -115,6 +118,9 @@ export default function AdditionalsPage() {
         return true;
       } catch (error) {
         console.error(`Erro ao carregar dados (tentativa ${retryCount + 1}/${maxRetries}):`, error);
+        if (error instanceof Error) {
+          console.error("Mensagem do erro:", error.message);
+        }
         return false;
       }
     };
