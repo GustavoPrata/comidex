@@ -728,14 +728,9 @@ export default function AdditionalsPage() {
               <Card key={categoryName} className="overflow-hidden">
                 <CardHeader className="pb-3 bg-gray-100 dark:bg-gray-800">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 flex-1">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                        {categoryName}
-                      </h3>
-                      <Badge variant="outline">
-                        {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
-                      </Badge>
-                    </div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      {categoryName}
+                    </h3>
                     {group.category && (
                       <div className="flex items-center gap-1">
                         <button
