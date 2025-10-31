@@ -252,17 +252,12 @@ function SortableProductRow({
             <p className="text-sm text-gray-500">{item.description}</p>
           )}
           {item.additional_categories && item.additional_categories.length > 0 && (
-            <div className="flex items-center gap-1 mt-1">
-              <Plus className="h-3 w-3 text-orange-500" />
-              <div className="flex flex-wrap gap-1">
-                {item.additional_categories.map((catName, idx) => (
-                  <span
-                    key={idx}
-                    className="text-xs px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400"
-                  >
-                    {catName}
-                  </span>
-                ))}
+            <div className="flex items-center gap-2 mt-2">
+              <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-orange-100 dark:bg-orange-900/20 rounded-full">
+                <Plus className="h-3.5 w-3.5 text-orange-600 dark:text-orange-400" />
+                <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
+                  {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
+                </span>
               </div>
             </div>
           )}
