@@ -188,6 +188,16 @@ export interface Database {
         Insert: Omit<Database['public']['Tables']['order_item_additionals']['Row'], 'id' | 'created_at'>
         Update: Partial<Database['public']['Tables']['order_item_additionals']['Insert']>
       }
+      item_additional_categories: {
+        Row: {
+          id: number
+          item_id: number
+          additional_category_id: number
+          created_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['item_additional_categories']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['item_additional_categories']['Insert']>
+      }
       payments: {
         Row: {
           id: number
@@ -219,6 +229,7 @@ export type RestaurantTable = Database['public']['Tables']['restaurant_tables'][
 export type Order = Database['public']['Tables']['orders']['Row']
 export type OrderItem = Database['public']['Tables']['order_items']['Row']
 export type OrderItemAdditional = Database['public']['Tables']['order_item_additionals']['Row']
+export type ItemAdditionalCategory = Database['public']['Tables']['item_additional_categories']['Row']
 export type Payment = Database['public']['Tables']['payments']['Row']
 export type PrintQueue = Database['public']['Tables']['print_queue']['Row']
 
@@ -233,6 +244,7 @@ export type RestaurantTableInsert = Database['public']['Tables']['restaurant_tab
 export type OrderInsert = Database['public']['Tables']['orders']['Insert']
 export type OrderItemInsert = Database['public']['Tables']['order_items']['Insert']
 export type OrderItemAdditionalInsert = Database['public']['Tables']['order_item_additionals']['Insert']
+export type ItemAdditionalCategoryInsert = Database['public']['Tables']['item_additional_categories']['Insert']
 export type PaymentInsert = Database['public']['Tables']['payments']['Insert']
 export type PrintQueueInsert = Database['public']['Tables']['print_queue']['Insert']
 
@@ -247,5 +259,6 @@ export type RestaurantTableUpdate = Database['public']['Tables']['restaurant_tab
 export type OrderUpdate = Database['public']['Tables']['orders']['Update']
 export type OrderItemUpdate = Database['public']['Tables']['order_items']['Update']
 export type OrderItemAdditionalUpdate = Database['public']['Tables']['order_item_additionals']['Update']
+export type ItemAdditionalCategoryUpdate = Database['public']['Tables']['item_additional_categories']['Update']
 export type PaymentUpdate = Database['public']['Tables']['payments']['Update']
 export type PrintQueueUpdate = Database['public']['Tables']['print_queue']['Update']
