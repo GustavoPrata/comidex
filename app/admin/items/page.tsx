@@ -1867,55 +1867,26 @@ export default function ProductsPage() {
                 
                 {/* Display active additionals */}
                 {formData.additional_category_ids.length > 0 && (
-                  <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                    <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-                      Categorias selecionadas:
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {formData.additional_category_ids.map(catId => {
-                        const category = additionalCategories.find(c => c.id === catId);
-                        const categoryAdditionals = additionals.filter(a => a.additional_category_id === catId && a.active);
-                        
-                        if (!category) return null;
-                        
-                        return (
-                          <div 
-                            key={catId}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-100 dark:bg-orange-900/30 rounded-full"
-                          >
-                            <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
-                              {category.name}
-                            </span>
-                            {categoryAdditionals.length > 0 && (
-                              <span className="text-[10px] bg-orange-500 text-white rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
-                                {categoryAdditionals.length}
-                              </span>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                    
-                    {/* Show items from selected categories */}
+                  <div className="mt-2 flex flex-wrap gap-1.5">
                     {formData.additional_category_ids.map(catId => {
                       const category = additionalCategories.find(c => c.id === catId);
                       const categoryAdditionals = additionals.filter(a => a.additional_category_id === catId && a.active);
                       
-                      if (!category || categoryAdditionals.length === 0) return null;
+                      if (!category) return null;
                       
                       return (
-                        <div key={catId} className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
-                          <p className="text-[10px] font-medium text-gray-600 dark:text-gray-400 mb-1">
-                            {category.name}:
-                          </p>
-                          <div className="text-[10px] text-gray-500 dark:text-gray-400">
-                            {categoryAdditionals.map((additional, idx) => (
-                              <span key={additional.id}>
-                                {additional.name}
-                                {idx < categoryAdditionals.length - 1 && ', '}
-                              </span>
-                            ))}
-                          </div>
+                        <div 
+                          key={catId}
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-100 dark:bg-orange-900/30 rounded-full"
+                        >
+                          <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
+                            {category.name}
+                          </span>
+                          {categoryAdditionals.length > 0 && (
+                            <span className="text-[10px] bg-orange-500 text-white rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
+                              {categoryAdditionals.length}
+                            </span>
+                          )}
                         </div>
                       );
                     })}
