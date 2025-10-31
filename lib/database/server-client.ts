@@ -1,16 +1,12 @@
 // Cliente PostgreSQL para server-side (API routes)
 import { Pool } from 'pg';
 import { cookies } from 'next/headers';
-
-// Usar a mesma connection string
-const connectionString = 'postgresql://postgres.wlqvqrgjqowervexcosv:ds4ad456sad546as654d@aws-1-us-east-1.pooler.supabase.com:5432/postgres';
+import { DATABASE_CONFIG } from './config';
 
 // Pool compartilhado para todas as requisições server-side
 const pool = new Pool({
-  connectionString,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionString: DATABASE_CONFIG.connectionString,
+  ...DATABASE_CONFIG.poolConfig
 });
 
 // Criar client server-side

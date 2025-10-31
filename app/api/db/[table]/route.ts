@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Pool } from 'pg';
+import { DATABASE_CONFIG } from '@/lib/database/config';
 
-// Conexão PostgreSQL direta
+// Conexão PostgreSQL usando a configuração centralizada
 const pool = new Pool({
-  connectionString: 'postgresql://postgres.wlqvqrgjqowervexcosv:ds4ad456sad546as654d@aws-1-us-east-1.pooler.supabase.com:5432/postgres',
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionString: DATABASE_CONFIG.connectionString,
+  ...DATABASE_CONFIG.poolConfig
 });
 
 // GET - Buscar dados
