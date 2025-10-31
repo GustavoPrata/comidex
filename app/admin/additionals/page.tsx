@@ -896,8 +896,8 @@ export default function AdditionalsPage() {
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="col-span-2 space-y-2">
                 <Label htmlFor="name">Nome</Label>
                 <Input
                   id="name"
@@ -907,7 +907,7 @@ export default function AdditionalsPage() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="col-span-1 space-y-2">
                 <Label htmlFor="price">Preço (R$)</Label>
                 <Input
                   id="price"
@@ -920,8 +920,8 @@ export default function AdditionalsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-2">
+            <div className="grid grid-cols-4 gap-3">
+              <div className="col-span-3 space-y-2">
                 <Label htmlFor="category">Categoria</Label>
                 <Select
                   value={formData.additional_category_id || "none"}
@@ -944,7 +944,7 @@ export default function AdditionalsPage() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              <div className="col-span-1 space-y-2">
                 <Label>Status</Label>
                 <button
                   type="button"
