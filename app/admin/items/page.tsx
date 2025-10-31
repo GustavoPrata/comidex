@@ -115,11 +115,11 @@ function SortableProductRow({
   setIsPriceModalOpen
 }: { 
   item: ItemWithAdditionalCategories;
-  toggleStatus: (item: Item) => void;
-  toggleAvailability: (item: Item) => void;
-  duplicateItem: (item: Item) => void;
-  openModal: (item?: Item) => void;
-  setDeleteItem: (item: Item | null) => void;
+  toggleStatus: (item: ItemWithAdditionalCategories) => void;
+  toggleAvailability: (item: ItemWithAdditionalCategories) => void;
+  duplicateItem: (item: ItemWithAdditionalCategories) => void;
+  openModal: (item?: ItemWithAdditionalCategories) => void;
+  setDeleteItem: (item: ItemWithAdditionalCategories | null) => void;
   setIsDeleteModalOpen: (open: boolean) => void;
   setUnitEditItem: (item: Item | null) => void;
   setIsUnitModalOpen: (open: boolean) => void;
@@ -712,7 +712,7 @@ export default function ProductsPage() {
     }));
 
   // Open modal for new/edit
-  const openModal = async (item?: Item) => {
+  const openModal = async (item?: ItemWithAdditionalCategories) => {
     // Check if there are no groups or categories when trying to add a new product
     if (!item && (groups.length === 0 || categories.length === 0)) {
       setEditingItem(null);
@@ -893,10 +893,36 @@ export default function ProductsPage() {
             .insert(associations);
         }
         
-        // Atualizar estado local sem recarregar página
+        // Fetch the complete item with additional categories
+        const { data: completeItem, error: fetchError } = await supabase
+          .from('items')
+          .select(`
+            *,
+            item_additional_categories (
+              additional_category_id,
+              additional_categories (
+                id,
+                name
+              )
+            )
+          `)
+          .eq('id', editingItem.id)
+          .single();
+        
+        if (fetchError) throw fetchError;
+        
+        // Process the item to include additional category names
+        const processedItem: ItemWithAdditionalCategories = {
+          ...completeItem,
+          additional_categories: completeItem.item_additional_categories?.map(
+            (iac: any) => iac.additional_categories?.name
+          ).filter(Boolean) || []
+        };
+        
+        // Atualizar estado local com dados completos
         setItems(prevItems => 
           prevItems.map(item => 
-            item.id === editingItem.id ? updatedItem : item
+            item.id === editingItem.id ? processedItem : item
           )
         );
         toast.success("Produto atualizado com sucesso!");
@@ -925,8 +951,34 @@ export default function ProductsPage() {
             .insert(associations);
         }
         
-        // Adicionar ao estado local sem recarregar página
-        setItems(prevItems => [...prevItems, newItem]);
+        // Fetch the complete item with additional categories
+        const { data: completeItem, error: fetchError } = await supabase
+          .from('items')
+          .select(`
+            *,
+            item_additional_categories (
+              additional_category_id,
+              additional_categories (
+                id,
+                name
+              )
+            )
+          `)
+          .eq('id', newItem.id)
+          .single();
+        
+        if (fetchError) throw fetchError;
+        
+        // Process the item to include additional category names
+        const processedItem: ItemWithAdditionalCategories = {
+          ...completeItem,
+          additional_categories: completeItem.item_additional_categories?.map(
+            (iac: any) => iac.additional_categories?.name
+          ).filter(Boolean) || []
+        };
+        
+        // Adicionar ao estado local com dados completos
+        setItems(prevItems => [...prevItems, processedItem]);
         toast.success("Produto criado com sucesso!");
       }
 
@@ -1059,7 +1111,7 @@ export default function ProductsPage() {
 
   // Toggle availability
   // Toggle status (active)
-  const toggleStatus = async (item: Item) => {
+  const toggleStatus = async (item: ItemWithAdditionalCategories) => {
     try {
       const { data: updatedItem, error } = await supabase
         .from('items')
@@ -1086,7 +1138,7 @@ export default function ProductsPage() {
     }
   };
 
-  const toggleAvailability = async (item: Item) => {
+  const toggleAvailability = async (item: ItemWithAdditionalCategories) => {
     try {
       const { data: updatedItem, error } = await supabase
         .from('items')
@@ -1112,7 +1164,7 @@ export default function ProductsPage() {
   };
 
   // Duplicate item
-  const duplicateItem = async (item: Item) => {
+  const duplicateItem = async (item: ItemWithAdditionalCategories) => {
     try {
       // Criar novo item apenas com campos válidos da tabela items
       const newItem = {
@@ -1137,8 +1189,54 @@ export default function ProductsPage() {
 
       if (error) throw error;
       
-      // Adicionar ao estado local sem recarregar página
-      setItems(prevItems => [...prevItems, duplicatedItem]);
+      // Duplicate additional categories if they exist
+      if (item.additional_categories && item.additional_categories.length > 0) {
+        // First, get the actual category IDs from the original item
+        const { data: originalAssociations } = await supabase
+          .from('item_additional_categories')
+          .select('additional_category_id')
+          .eq('item_id', item.id);
+        
+        if (originalAssociations && originalAssociations.length > 0) {
+          const associations = originalAssociations.map((assoc: any) => ({
+            item_id: duplicatedItem.id,
+            additional_category_id: assoc.additional_category_id
+          }));
+          
+          await supabase
+            .from('item_additional_categories')
+            .insert(associations);
+        }
+      }
+      
+      // Fetch the complete item with additional categories
+      const { data: completeItem, error: fetchError } = await supabase
+        .from('items')
+        .select(`
+          *,
+          item_additional_categories (
+            additional_category_id,
+            additional_categories (
+              id,
+              name
+            )
+          )
+        `)
+        .eq('id', duplicatedItem.id)
+        .single();
+      
+      if (fetchError) throw fetchError;
+      
+      // Process the item to include additional category names
+      const processedItem: ItemWithAdditionalCategories = {
+        ...completeItem,
+        additional_categories: completeItem.item_additional_categories?.map(
+          (iac: any) => iac.additional_categories?.name
+        ).filter(Boolean) || []
+      };
+      
+      // Adicionar ao estado local com dados completos
+      setItems(prevItems => [...prevItems, processedItem]);
       
       toast.success("Produto duplicado com sucesso!");
     } catch (error) {
