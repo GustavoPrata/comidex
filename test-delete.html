@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste de Exclusão de Categoria</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <h1>Teste de Exclusão de Categoria com Itens</h1>
+  <button onclick="testDelete()">Testar Exclusão</button>
+  <pre id="result"></pre>
+
+  <script>
+    const supabaseUrl = 'https://wlqvqrgjqowervexcosv.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndscXZxcmdqcW93ZXJ2ZXhjb3N2Iiwicm9sZSI6InNlcnZpY2UX3JvbGUiLCJpYXQiOjE3Mjk5NTQ5NTUsImV4cCI6MjA0NTUzMDk1NX0.aQGJvC7pLVa0W2kDAy-cQaKwsQHKBqCx45yHJvgLG1E';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function testDelete() {
+      const result = document.getElementById('result');
+      
+      try {
+        // 1. Pegar a primeira categoria que tem itens
+        const { data: categories } = await supabase
+          .from('additional_categories')
+          .select('*')
+          .order('id', { ascending: true })
+          .limit(1);
+        
+        if (!categories || categories.length === 0) {
+          result.textContent = 'Nenhuma categoria encontrada';
+          return;
+        }
+        
+        const category = categories[0];
+        result.textContent = `Categoria encontrada: ${category.name} (ID: ${category.id})\n`;
+        
+        // 2. Verificar quantos itens tem na categoria
+        const { data: additionals, count } = await supabase
+          .from('additionals')
+          .select('*', { count: 'exact' })
+          .eq('additional_category_id', category.id);
+        
+        result.textContent += `Itens na categoria: ${count}\n\n`;
+        
+        if (count > 0) {
+          // 3. Tentar deletar primeiro os adicionais
+          result.textContent += `Deletando ${count} adicionais...\n`;
+          const { error: deleteAdditionalsError } = await supabase
+            .from('additionals')
+            .delete()
+            .eq('additional_category_id', category.id);
+          
+          if (deleteAdditionalsError) {
+            result.textContent += `Erro ao deletar adicionais: ${deleteAdditionalsError.message}\n`;
+            return;
+          }
+          
+          result.textContent += `✓ ${count} adicionais deletados com sucesso!\n`;
+        }
+        
+        // 4. Agora deletar a categoria
+        result.textContent += `Deletando categoria "${category.name}"...\n`;
+        const { error: deleteCategoryError } = await supabase
+          .from('additional_categories')
+          .delete()
+          .eq('id', category.id);
+        
+        if (deleteCategoryError) {
+          result.textContent += `Erro ao deletar categoria: ${deleteCategoryError.message}\n`;
+          return;
+        }
+        
+        result.textContent += `✓ Categoria "${category.name}" deletada com sucesso!\n`;
+        result.textContent += `\n✅ TESTE CONCLUÍDO - Categoria e ${count} itens deletados!`;
+        
+      } catch (error) {
+        result.textContent = `Erro: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
