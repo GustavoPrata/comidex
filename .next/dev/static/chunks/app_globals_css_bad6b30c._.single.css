@@ -2651,6 +2651,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-green-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(187 247 208 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-green-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
@@ -3347,6 +3352,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:hover\:bg-gray-900:hover:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:hover\:bg-green-900\/40:hover:is(.dark *) {
+  background-color: #14532d66;
 }
 
 .dark\:hover\:bg-orange-900\/20:hover:is(.dark *) {
