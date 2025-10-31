@@ -2127,7 +2127,7 @@ function SortableProductRow({ item, toggleStatus, toggleAvailability, duplicateI
                                         lineNumber: 275,
                                         columnNumber: 13
                                     }, this),
-                                    item.price && item.price > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                    item.price !== null && item.price !== undefined && item.price > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                         className: "bg-gray-50 dark:bg-gray-900/20 text-gray-700 dark:text-gray-400 border border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/30 transition-colors text-xs px-2 py-0.5 font-medium min-w-[90px] text-center inline-block",
                                         onClick: ()=>{
                                             setPriceEditItem(item);
@@ -2638,7 +2638,7 @@ function ProductsPage() {
                 description: item.description || "",
                 quantity: quantityUnit,
                 quantityValue: quantityValue,
-                price: item.price?.toString() || "",
+                price: item.price && item.price > 0 ? item.price.toString() : "",
                 category_id: item.category_id.toString(),
                 group_id: item.group_id.toString(),
                 active: item.active,
