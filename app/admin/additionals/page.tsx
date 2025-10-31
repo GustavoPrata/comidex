@@ -247,20 +247,32 @@ export default function AdditionalsPage() {
     additional.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Group additionals by category
-  const groupedAdditionals = filteredAdditionals.reduce((acc, additional) => {
-    const category = categories.find(c => c.id === additional.additional_category_id);
-    const categoryName = category?.name || "Sem Categoria";
+  // Group additionals by category - including empty categories
+  const groupedAdditionals = categories.reduce((acc, category) => {
+    const categoryName = category.name;
+    const categoryItems = filteredAdditionals.filter(a => 
+      a.additional_category_id === category.id
+    );
     
-    if (!acc[categoryName]) {
-      acc[categoryName] = {
-        category,
-        items: []
-      };
-    }
-    acc[categoryName].items.push(additional);
+    acc[categoryName] = {
+      category,
+      items: categoryItems
+    };
+    
     return acc;
   }, {} as Record<string, { category?: AdditionalCategory, items: Additional[] }>);
+  
+  // Add items without category
+  const itemsWithoutCategory = filteredAdditionals.filter(a => 
+    !a.additional_category_id || !categories.find(c => c.id === a.additional_category_id)
+  );
+  
+  if (itemsWithoutCategory.length > 0) {
+    groupedAdditionals["Sem Categoria"] = {
+      category: undefined,
+      items: itemsWithoutCategory
+    };
+  }
 
   // Handle drag end
   const handleDragEnd = async (event: DragEndEvent, categoryId: string) => {
