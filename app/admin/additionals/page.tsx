@@ -406,8 +406,6 @@ export default function AdditionalsPage() {
   // Duplicate category
   const duplicateCategory = async (category: AdditionalCategory) => {
     try {
-      console.log('Duplicando categoria:', category);
-      
       // Step 1: Create the new category
       const newCategory = {
         name: `${category.name} (Cópia)`,
@@ -421,34 +419,33 @@ export default function AdditionalsPage() {
         .single();
 
       if (categoryError) {
-        console.error('Erro ao criar categoria:', categoryError);
         throw categoryError;
       }
       
-      console.log('Nova categoria criada:', newCategoryData);
-      
       // Step 2: Get all additionals from the original category
-      const categoryAdditionals = additionals.filter(a => {
-        // Compare both as numbers to ensure proper matching
-        const catId1 = Number(a.additional_category_id);
-        const catId2 = Number(category.id);
-        console.log(`Comparando IDs: ${catId1} === ${catId2}`, catId1 === catId2);
-        return catId1 === catId2;
-      });
+      // Debug: log to check IDs
+      console.log('Category ID:', category.id, 'Type:', typeof category.id);
+      console.log('All additionals:', additionals.map(a => ({
+        name: a.name,
+        cat_id: a.additional_category_id,
+        type: typeof a.additional_category_id
+      })));
       
-      console.log(`Encontrados ${categoryAdditionals.length} adicionais para duplicar:`, categoryAdditionals);
+      const categoryAdditionals = additionals.filter(a => 
+        a.additional_category_id === category.id
+      );
+      
+      console.log('Filtered additionals:', categoryAdditionals.length);
       
       // Step 3: Duplicate all additionals for the new category
       if (categoryAdditionals.length > 0) {
         const newAdditionals = categoryAdditionals.map((additional, index) => ({
           name: additional.name,
-          price: Number(additional.price) || 0,
-          additional_category_id: Number(newCategoryData.id),
-          active: additional.active !== false,
-          sort_order: index
+          price: additional.price,
+          additional_category_id: newCategoryData.id,
+          active: additional.active,
+          sort_order: additional.sort_order || index
         }));
-        
-        console.log('Inserindo novos adicionais:', newAdditionals);
         
         const { data: newAdditionalsData, error: additionalsError } = await supabase
           .from('additionals')
@@ -457,32 +454,22 @@ export default function AdditionalsPage() {
         
         if (additionalsError) {
           console.error('Erro ao duplicar adicionais:', additionalsError);
-          toast.error("Erro ao duplicar adicionais");
+          toast.error("Erro ao duplicar alguns adicionais");
         } else if (newAdditionalsData) {
-          console.log('Adicionais duplicados com sucesso:', newAdditionalsData);
-          
           // Update local state with new additionals
-          setAdditionals(prev => {
-            const updated = [...prev, ...newAdditionalsData].sort((a, b) => {
-              if (a.additional_category_id === b.additional_category_id) {
-                return (a.sort_order || 0) - (b.sort_order || 0);
-              }
-              return 0;
-            });
-            console.log('Estado de adicionais atualizado:', updated);
-            return updated;
-          });
+          setAdditionals(prev => [...prev, ...newAdditionalsData].sort((a, b) => {
+            if (a.additional_category_id === b.additional_category_id) {
+              return (a.sort_order || 0) - (b.sort_order || 0);
+            }
+            return 0;
+          }));
         }
       }
       
       // Update local state with new category
       setCategories(prev => [...prev, newCategoryData].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)));
       
-      if (categoryAdditionals.length > 0) {
-        toast.success(`Categoria "${category.name}" duplicada com ${categoryAdditionals.length} itens!`);
-      } else {
-        toast.success(`Categoria "${category.name}" duplicada (vazia)!`);
-      }
+      toast.success(`Categoria "${category.name}" duplicada com ${categoryAdditionals.length} itens!`);
     } catch (error) {
       console.error('Erro ao duplicar categoria:', error);
       toast.error("Erro ao duplicar categoria");
