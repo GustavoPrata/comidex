@@ -369,39 +369,6 @@ export default function AdditionalsPage() {
     setIsCategoryModalOpen(true);
   };
 
-  // Duplicate additional
-  const duplicateAdditional = async (additional: Additional) => {
-    try {
-      const newAdditional = {
-        name: `${additional.name} (Cópia)`,
-        price: additional.price,
-        additional_category_id: additional.additional_category_id,
-        active: additional.active,
-        sort_order: (additional.sort_order || 0) + 1
-      };
-
-      const { data, error } = await supabase
-        .from('additionals')
-        .insert(newAdditional)
-        .select()
-        .single();
-
-      if (error) throw error;
-      
-      // Update local state
-      setAdditionals(prev => [...prev, data].sort((a, b) => {
-        if (a.additional_category_id === b.additional_category_id) {
-          return (a.sort_order || 0) - (b.sort_order || 0);
-        }
-        return 0;
-      }));
-      
-      toast.success("Adicional duplicado com sucesso!");
-    } catch (error) {
-      console.error('Erro ao duplicar adicional:', error);
-      toast.error("Erro ao duplicar adicional");
-    }
-  };
 
   // Duplicate category
   const duplicateCategory = async (category: AdditionalCategory) => {
@@ -714,6 +681,83 @@ export default function AdditionalsPage() {
     } catch (error) {
       console.error('Erro ao alterar status:', error);
       toast.error("Erro ao alterar status");
+    }
+  };
+
+  // Duplicate additional - Insert right below original
+  const duplicateAdditional = async (additional: Additional) => {
+    try {
+      // Find all items in the same category sorted by sort_order
+      const categoryAdditionals = additionals
+        .filter(a => a.additional_category_id === additional.additional_category_id)
+        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+      
+      // Find the index of the current item
+      const currentIndex = categoryAdditionals.findIndex(a => a.id === additional.id);
+      
+      // Calculate sort_order to place it right after the original
+      let newSortOrder: number;
+      if (currentIndex < categoryAdditionals.length - 1) {
+        // There's an item after, place between current and next
+        const currentOrder = additional.sort_order || 0;
+        const nextOrder = categoryAdditionals[currentIndex + 1].sort_order || 0;
+        // Use average for placement between items
+        newSortOrder = (currentOrder + nextOrder) / 2;
+      } else {
+        // It's the last item, add 1 to its sort_order
+        newSortOrder = (additional.sort_order || 0) + 1;
+      }
+      
+      const newAdditional = {
+        name: `${additional.name} (cópia)`,
+        price: additional.price,
+        active: additional.active,
+        additional_category_id: additional.additional_category_id,
+        sort_order: newSortOrder
+      };
+
+      const { data, error } = await supabase
+        .from('additionals')
+        .insert(newAdditional)
+        .select()
+        .single();
+
+      if (error) throw error;
+      
+      // Update local state - insert at the right position
+      setAdditionals(prev => {
+        const updated = [...prev];
+        // Find where to insert based on sort_order and category
+        const insertIndex = updated.findIndex((a, idx) => {
+          // If same category and item comes after original
+          if (a.additional_category_id === additional.additional_category_id) {
+            // Find the original item index
+            const origIdx = updated.findIndex(x => x.id === additional.id);
+            // Insert right after the original
+            return idx > origIdx && (a.sort_order || 0) > newSortOrder;
+          }
+          return false;
+        });
+        
+        if (insertIndex === -1) {
+          // If no position found, find original and insert after it
+          const origIndex = updated.findIndex(a => a.id === additional.id);
+          if (origIndex !== -1) {
+            updated.splice(origIndex + 1, 0, data);
+          } else {
+            updated.push(data);
+          }
+        } else {
+          // Insert at the correct position
+          updated.splice(insertIndex, 0, data);
+        }
+        return updated;
+      });
+      
+      toast.success("Adicional duplicado com sucesso!");
+    } catch (error) {
+      console.error('Erro ao duplicar adicional:', error);
+      toast.error("Erro ao duplicar adicional");
     }
   };
 
