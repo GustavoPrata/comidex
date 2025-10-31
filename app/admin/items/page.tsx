@@ -94,6 +94,11 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 const supabase = createClient();
 import type { Item, Category, Group, AdditionalCategory } from "@/types/supabase";
 
+// Extended Item type with additional categories
+type ItemWithAdditionalCategories = Item & {
+  additional_categories?: string[];
+};
+
 // Sortable Product Row Component
 function SortableProductRow({ 
   item, 
@@ -108,7 +113,7 @@ function SortableProductRow({
   setPriceEditItem,
   setIsPriceModalOpen
 }: { 
-  item: Item;
+  item: ItemWithAdditionalCategories;
   toggleStatus: (item: Item) => void;
   toggleAvailability: (item: Item) => void;
   duplicateItem: (item: Item) => void;
@@ -413,7 +418,7 @@ export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGroup, setSelectedGroup] = useState<string>("all");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<ItemWithAdditionalCategories[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
   const [additionalCategories, setAdditionalCategories] = useState<AdditionalCategory[]>([]);
@@ -533,7 +538,7 @@ export default function ProductsPage() {
         }
         
         // Process items to include additional category names
-        const processedItems = (itemsData || []).map(item => ({
+        const processedItems: ItemWithAdditionalCategories[] = (itemsData || []).map((item: any) => ({
           ...item,
           additional_categories: item.item_additional_categories?.map(
             (iac: any) => iac.additional_categories?.name
@@ -737,7 +742,7 @@ export default function ProductsPage() {
         active: item.active,
         available: item.available,
         image: item.image || "",
-        additional_category_ids: itemAdditionalCategories?.map(ac => ac.additional_category_id) || []
+        additional_category_ids: itemAdditionalCategories?.map((ac: any) => ac.additional_category_id) || []
       });
     } else {
       setEditingItem(null);
@@ -833,7 +838,7 @@ export default function ProductsPage() {
         name: formData.name,
         description: formData.description || null,
         quantity: quantityString,
-        price: isRodizio ? null : (formData.price ? parseFloat(formData.price) : null),
+        price: isRodizio ? 0 : (formData.price ? parseFloat(formData.price) : 0),
         category_id: formData.category_id,  // Keep as string UUID
         group_id: formData.group_id,        // Keep as string UUID
         active: formData.active,
@@ -958,7 +963,7 @@ export default function ProductsPage() {
     try {
       setSaving(true);
       
-      const priceValue = priceFormData.price ? parseFloat(priceFormData.price.replace(',', '.')) : null;
+      const priceValue = priceFormData.price ? parseFloat(priceFormData.price.replace(',', '.')) : 0;
       
       const { error } = await supabase
         .from('items')
