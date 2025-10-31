@@ -1842,7 +1842,6 @@ export default function ProductsPage() {
                   }}
                 >
                   <span className="flex items-center gap-2">
-                    <Plus className="h-4 w-4" />
                     Configurar Adicionais
                   </span>
                   {formData.additional_category_ids.length > 0 && (
@@ -2150,212 +2149,122 @@ export default function ProductsPage() {
           setAdditionalsItem(null);
         }
       }}>
-        <DialogContent className="sm:max-w-[700px] max-h-[90vh]">
-          <DialogHeader className="border-b pb-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <DialogTitle className="text-xl">⚙️ Configurar Adicionais</DialogTitle>
-                <DialogDescription className="mt-1">
-                  Personalize os extras para <span className="font-medium text-orange-600">"{additionalsItem?.name || formData.name}"</span>
-                </DialogDescription>
-              </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="px-3 py-1">
-                  <Layers className="h-3 w-3 mr-1" />
-                  {additionalCategories.length} {additionalCategories.length === 1 ? 'categoria' : 'categorias'}
-                </Badge>
-              </div>
-            </div>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Configurar Adicionais</DialogTitle>
+            <DialogDescription>
+              Selecione categorias de adicionais para {additionalsItem?.name || formData.name}
+            </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4 py-4">
-            {/* Quick Actions Bar */}
+          <div className="space-y-3 py-2">
+            {/* Quick Actions */}
             {additionalCategories.length > 0 && (
-              <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg">
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Selecione as categorias disponíveis:
-                </p>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setFormData({
-                        ...formData,
-                        additional_category_ids: additionalCategories.map(c => c.id)
-                      });
-                    }}
-                    className="text-xs"
-                  >
-                    <CheckCircle className="h-3 w-3 mr-1" />
-                    Marcar Todas
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      setFormData({
-                        ...formData,
-                        additional_category_ids: []
-                      });
-                    }}
-                    className="text-xs"
-                  >
-                    <X className="h-3 w-3 mr-1" />
-                    Desmarcar
-                  </Button>
-                </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setFormData({
+                      ...formData,
+                      additional_category_ids: additionalCategories.map(c => c.id)
+                    });
+                  }}
+                  className="text-xs h-7"
+                >
+                  Marcar Todas
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    setFormData({
+                      ...formData,
+                      additional_category_ids: []
+                    });
+                  }}
+                  className="text-xs h-7"
+                >
+                  Limpar
+                </Button>
               </div>
             )}
 
             {/* Categories List */}
-            <div className="space-y-2 max-h-[400px] overflow-y-auto px-1">
+            <div className="space-y-1 max-h-[350px] overflow-y-auto">
               {additionalCategories.length > 0 ? (
                 <>
-                  {additionalCategories.map((category, index) => {
+                  {additionalCategories.map((category) => {
                     const isChecked = formData.additional_category_ids.includes(category.id);
                     return (
-                      <div
+                      <label
                         key={category.id}
                         className={`
-                          group relative flex items-center gap-4 p-4 rounded-xl border-2 transition-all duration-200 cursor-pointer
+                          flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all
                           ${isChecked 
-                            ? 'bg-gradient-to-r from-orange-50 to-orange-100/50 dark:from-orange-900/20 dark:to-orange-900/10 border-orange-400 dark:border-orange-600 shadow-sm' 
-                            : 'bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm'
+                            ? 'bg-orange-50 dark:bg-orange-900/10 border-orange-300 dark:border-orange-600' 
+                            : 'bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'
                           }
                         `}
-                        onClick={() => {
-                          if (isChecked) {
-                            setFormData({
-                              ...formData,
-                              additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
-                            });
-                          } else {
-                            setFormData({
-                              ...formData,
-                              additional_category_ids: [...formData.additional_category_ids, category.id]
-                            });
-                          }
-                        }}
                       >
-                        {/* Checkbox */}
-                        <div className="flex-shrink-0">
-                          <div className={`
-                            w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all
-                            ${isChecked 
-                              ? 'bg-orange-500 border-orange-500' 
-                              : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600"
+                          checked={isChecked}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData({
+                                ...formData,
+                                additional_category_ids: [...formData.additional_category_ids, category.id]
+                              });
+                            } else {
+                              setFormData({
+                                ...formData,
+                                additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
+                              });
                             }
-                          `}>
-                            {isChecked && (
-                              <CheckCircle className="h-4 w-4 text-white" />
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Icon */}
-                        <div className={`
-                          flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center
-                          ${isChecked 
-                            ? 'bg-orange-200 dark:bg-orange-800/30' 
-                            : 'bg-gray-100 dark:bg-gray-700/50'
-                          }
-                        `}>
-                          <Package className={`
-                            h-5 w-5 
-                            ${isChecked 
-                              ? 'text-orange-600 dark:text-orange-400' 
-                              : 'text-gray-500 dark:text-gray-400'
-                            }
-                          `} />
-                        </div>
-
-                        {/* Content */}
+                          }}
+                        />
                         <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <p className={`
-                              font-medium transition-colors
-                              ${isChecked 
-                                ? 'text-gray-900 dark:text-white' 
-                                : 'text-gray-700 dark:text-gray-300'
-                              }
-                            `}>
-                              {category.name}
-                            </p>
-                            {isChecked && (
-                              <Badge className="bg-orange-500 text-white text-xs px-2 py-0">
-                                Ativo
-                              </Badge>
-                            )}
-                          </div>
+                          <p className="text-sm font-medium">{category.name}</p>
                         </div>
-
-                        {/* Order Number */}
-                        <div className={`
-                          flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
-                          ${isChecked 
-                            ? 'bg-orange-200 dark:bg-orange-800/30 text-orange-700 dark:text-orange-300' 
-                            : 'bg-gray-100 dark:bg-gray-700/50 text-gray-500 dark:text-gray-400'
-                          }
-                        `}>
-                          {index + 1}
-                        </div>
-                      </div>
+                        {isChecked && (
+                          <Badge variant="secondary" className="text-xs">
+                            Selecionado
+                          </Badge>
+                        )}
+                      </label>
                     );
                   })}
                 </>
               ) : (
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                    <Plus className="h-10 w-10 text-gray-400" />
-                  </div>
-                  <p className="text-base font-medium text-gray-600 dark:text-gray-400 mb-2">
-                    Nenhuma categoria cadastrada
-                  </p>
-                  <p className="text-sm text-gray-500 dark:text-gray-500">
-                    Acesse o menu <span className="font-medium">"Adicionais"</span> para criar categorias
+                <div className="text-center py-8">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    Nenhuma categoria de adicionais cadastrada
                   </p>
                   <Button
                     variant="outline"
                     size="sm"
-                    className="mt-4"
                     onClick={() => {
                       setIsAdditionalsModalOpen(false);
                       window.location.href = '/admin/additionals';
                     }}
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Ir para Adicionais
+                    Criar Categorias
                   </Button>
                 </div>
               )}
             </div>
             
-            {/* Footer Status */}
+            {/* Status */}
             {formData.additional_category_ids.length > 0 && (
-              <div className="bg-gradient-to-r from-orange-50 to-orange-100/50 dark:from-orange-900/20 dark:to-orange-900/10 rounded-lg p-4 border border-orange-200 dark:border-orange-800">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
-                    <p className="font-medium text-orange-700 dark:text-orange-400">
-                      {formData.additional_category_ids.length} de {additionalCategories.length} categoria{formData.additional_category_ids.length > 1 ? 's' : ''} selecionada{formData.additional_category_ids.length > 1 ? 's' : ''}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    {formData.additional_category_ids.map((id, idx) => (
-                      <div 
-                        key={id} 
-                        className="w-2 h-2 rounded-full bg-orange-500"
-                        style={{ opacity: 1 - (idx * 0.15) }}
-                      />
-                    ))}
-                  </div>
-                </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                {formData.additional_category_ids.length} de {additionalCategories.length} selecionadas
               </div>
             )}
           </div>
           
-          <DialogFooter className="border-t pt-4">
+          <DialogFooter>
             <Button
               variant="outline"
               onClick={() => {
@@ -2363,19 +2272,16 @@ export default function ProductsPage() {
                 setAdditionalsItem(null);
               }}
             >
-              <X className="h-4 w-4 mr-2" />
               Cancelar
             </Button>
             <Button 
-              className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-sm"
+              className="bg-orange-500 hover:bg-orange-600 text-white"
               onClick={() => {
                 setIsAdditionalsModalOpen(false);
                 setAdditionalsItem(null);
-                toast.success(`${formData.additional_category_ids.length} categoria${formData.additional_category_ids.length !== 1 ? 's' : ''} configurada${formData.additional_category_ids.length !== 1 ? 's' : ''} com sucesso!`);
               }}
             >
-              <CheckCircle className="h-4 w-4 mr-2" />
-              Confirmar Seleção
+              Confirmar
             </Button>
           </DialogFooter>
         </DialogContent>
