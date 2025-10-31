@@ -277,7 +277,7 @@ function SortableProductRow({
               {item.quantity}
             </Badge>
           )}
-          {item.price && (
+          {item.price && item.price > 0 && (
             <Badge 
               className="bg-gray-50 dark:bg-gray-900/20 text-gray-700 dark:text-gray-400 border border-gray-200 dark:border-gray-700 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800/30 transition-colors text-xs px-2 py-0.5 font-medium min-w-[90px] text-center inline-block"
               onClick={() => {
