@@ -45,6 +45,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
@@ -54,6 +55,7 @@ import {
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
+  rectSortingStrategy,
 } from '@dnd-kit/sortable';
 import {
   useSortable,
@@ -93,11 +95,12 @@ function SortableCategory({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.3 : 1,
+    zIndex: isDragging ? 1000 : 1,
   };
 
   return (
-    <Card ref={setNodeRef} style={style} className="overflow-hidden h-fit">
+    <Card ref={setNodeRef} style={style} className="overflow-hidden h-fit transition-none">
       <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -106,12 +109,10 @@ function SortableCategory({
               <div
                 {...attributes}
                 {...listeners}
-                className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
-                style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
-                onMouseDown={(e) => e.preventDefault()}
+                className="cursor-grab active:cursor-grabbing p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none select-none transition-colors hover:shadow-sm flex items-center justify-center"
                 title="Arraste para reordenar categoria"
               >
-                <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 text-gray-400 hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
                 </svg>
               </div>
@@ -184,26 +185,25 @@ function SortableAdditionalItem({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.3 : 1,
+    zIndex: isDragging ? 100 : 1,
   };
 
   return (
     <div 
       ref={setNodeRef}
       style={style}
-      className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
+      className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 transition-none ${!additional.active ? 'opacity-60' : ''} ${isDragging ? 'shadow-lg' : ''}`}
     >
       <div className="flex items-center gap-2 flex-1">
-        {/* Drag Handle - Original */}
+        {/* Drag Handle */}
         <div
           {...attributes}
           {...listeners}
-          className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
-          style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
-          onMouseDown={(e) => e.preventDefault()}
+          className="cursor-grab active:cursor-grabbing p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none select-none transition-colors hover:shadow-sm flex items-center justify-center"
           title="Arraste para reordenar"
         >
-          <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-gray-400 hover:text-orange-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
           </svg>
         </div>
@@ -274,7 +274,17 @@ export default function AdditionalsPage() {
   const [saving, setSaving] = useState(false);
   
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 10, // Prevents accidental drags
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -967,7 +977,7 @@ export default function AdditionalsPage() {
           >
             <SortableContext
               items={categories.map(cat => cat.id)}
-              strategy={verticalListSortingStrategy}
+              strategy={rectSortingStrategy}
             >
               <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {Object.entries(groupedAdditionals).map(([categoryName, group]) => (

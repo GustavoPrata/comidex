@@ -1150,6 +1150,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   cursor: default;
 }
 
+.cursor-grab {
+  cursor: grab;
+}
+
 .cursor-move {
   cursor: move;
 }
@@ -2472,6 +2476,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
   transition-duration: .15s;
   transition-timing-function: cubic-bezier(.4, 0, .2, 1);
+}
+
+.transition-none {
+  transition-property: none;
 }
 
 .transition-opacity {
