@@ -862,6 +862,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   height: auto;
 }
 
+.h-fit {
+  height: fit-content;
+}
+
 .h-full {
   height: 100%;
 }
@@ -880,6 +884,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .max-h-96 {
   max-height: 24rem;
+}
+
+.max-h-\[280px\] {
+  max-height: 280px;
 }
 
 .max-h-\[60vh\] {
@@ -1215,16 +1223,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .resize-y {
   resize: vertical;
-}
-
-.columns-1 {
-  -moz-columns: 1;
-  columns: 1;
-}
-
-.break-inside-avoid {
-  -moz-column-break-inside: avoid;
-  break-inside: avoid;
 }
 
 .grid-cols-1 {
@@ -2063,6 +2061,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .pl-9 {
   padding-left: 2.25rem;
+}
+
+.pr-1 {
+  padding-right: .25rem;
 }
 
 .pr-10 {
@@ -3521,11 +3523,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 }
 
 @media (min-width: 768px) {
-  .md\:columns-2 {
-    -moz-columns: 2;
-    columns: 2;
-  }
-
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3572,11 +3569,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
     display: none;
   }
 
-  .lg\:columns-3 {
-    -moz-columns: 3;
-    columns: 3;
-  }
-
   .lg\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -3602,6 +3594,28 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+}
+
+.\[\&\:\:-webkit-scrollbar-thumb\]\:rounded-full::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+}
+
+.\[\&\:\:-webkit-scrollbar-thumb\]\:bg-gray-300::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:\[\&\:\:-webkit-scrollbar-thumb\]\:bg-gray-600:is(.dark *)::-webkit-scrollbar-thumb {
+  --tw-bg-opacity: 1;
+  background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1));
+}
+
+.\[\&\:\:-webkit-scrollbar-track\]\:bg-transparent::-webkit-scrollbar-track {
+  background-color: #0000;
+}
+
+.\[\&\:\:-webkit-scrollbar\]\:w-2::-webkit-scrollbar {
+  width: .5rem;
 }
 
 .\[\&\:has\(\[role\=checkbox\]\)\]\:pr-0:has([role="checkbox"]) {

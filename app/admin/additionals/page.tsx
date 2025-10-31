@@ -784,9 +784,9 @@ export default function AdditionalsPage() {
             <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           </div>
         ) : (
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
-              <Card key={categoryName} className="overflow-hidden break-inside-avoid mb-6">
+              <Card key={categoryName} className="overflow-hidden h-fit">
                 <CardHeader className="pb-3 bg-gray-100 dark:bg-gray-800">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
@@ -823,30 +823,34 @@ export default function AdditionalsPage() {
                   </div>
                 </CardHeader>
                 <CardContent className="p-4 space-y-3">
-                  <DndContext
-                    sensors={sensors}
-                    collisionDetection={closestCenter}
-                    onDragEnd={(event) => handleDragEnd(event, group.category?.id?.toString() || '')}
-                  >
-                    <SortableContext
-                      items={group.items.map(item => item.id)}
-                      strategy={verticalListSortingStrategy}
+                  <div className="max-h-[280px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full">
+                    <DndContext
+                      sensors={sensors}
+                      collisionDetection={closestCenter}
+                      onDragEnd={(event) => handleDragEnd(event, group.category?.id?.toString() || '')}
                     >
-                      {group.items.map((additional) => (
-                        <SortableAdditionalItem
-                          key={additional.id}
-                          additional={additional}
-                          onDuplicate={() => duplicateAdditional(additional)}
-                          onEdit={() => openModal(additional)}
-                          onDelete={() => {
-                            setDeleteAdditional(additional);
-                            setIsDeleteModalOpen(true);
-                          }}
-                          onToggleActive={() => toggleActive(additional)}
-                        />
-                      ))}
-                    </SortableContext>
-                  </DndContext>
+                      <SortableContext
+                        items={group.items.map(item => item.id)}
+                        strategy={verticalListSortingStrategy}
+                      >
+                        <div className="space-y-2">
+                          {group.items.map((additional) => (
+                            <SortableAdditionalItem
+                              key={additional.id}
+                              additional={additional}
+                              onDuplicate={() => duplicateAdditional(additional)}
+                              onEdit={() => openModal(additional)}
+                              onDelete={() => {
+                                setDeleteAdditional(additional);
+                                setIsDeleteModalOpen(true);
+                              }}
+                              onToggleActive={() => toggleActive(additional)}
+                            />
+                          ))}
+                        </div>
+                      </SortableContext>
+                    </DndContext>
+                  </div>
                   
                   {/* Add new additional button */}
                   <button
