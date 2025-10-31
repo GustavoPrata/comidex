@@ -245,6 +245,21 @@ function SortableProductRow({
           {item.description && (
             <p className="text-sm text-gray-500">{item.description}</p>
           )}
+          {item.additional_categories && item.additional_categories.length > 0 && (
+            <div className="flex items-center gap-1 mt-1">
+              <Plus className="h-3 w-3 text-orange-500" />
+              <div className="flex flex-wrap gap-1">
+                {item.additional_categories.map((catName, idx) => (
+                  <span
+                    key={idx}
+                    className="text-xs px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400"
+                  >
+                    {catName}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -468,7 +483,14 @@ export default function ProductsPage() {
           .from('items')
           .select(`
             *,
-            category:categories(*)
+            category:categories(*),
+            item_additional_categories (
+              additional_category_id,
+              additional_categories (
+                id,
+                name
+              )
+            )
           `)
           .order('sort_order', { ascending: true });
 
@@ -510,7 +532,15 @@ export default function ProductsPage() {
           throw additionalCategoriesError;
         }
         
-        setItems(itemsData || []);
+        // Process items to include additional category names
+        const processedItems = (itemsData || []).map(item => ({
+          ...item,
+          additional_categories: item.item_additional_categories?.map(
+            (iac: any) => iac.additional_categories?.name
+          ).filter(Boolean) || []
+        }));
+        
+        setItems(processedItems);
         setCategories(categoriesData || []);
         setGroups(groupsData || []);
         setAdditionalCategories(additionalCategoriesData || []);
@@ -1488,7 +1518,8 @@ export default function ProductsPage() {
                                               group_id: groupObj.id.toString(),
                                               active: true,
                                               available: true,
-                                              image: ""
+                                              image: "",
+                                              additional_category_ids: []
                                             });
                                             setEditingItem(null);
                                             setIsModalOpen(true);
@@ -1505,7 +1536,8 @@ export default function ProductsPage() {
                                               group_id: firstItem.group_id.toString(),
                                               active: true,
                                               available: true,
-                                              image: ""
+                                              image: "",
+                                              additional_category_ids: []
                                             });
                                             setEditingItem(null);
                                             setIsModalOpen(true);

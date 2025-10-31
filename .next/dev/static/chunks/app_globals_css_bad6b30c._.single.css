@@ -2847,6 +2847,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.focus\:ring-orange-400:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(251 146 60 / var(--tw-ring-opacity, 1));
+}
+
 .focus\:ring-orange-500:focus {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(249 115 22 / var(--tw-ring-opacity, 1));
@@ -2854,11 +2859,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .focus\:ring-ring:focus {
   --tw-ring-color: hsl(var(--ring));
-}
-
-.focus\:ring-orange-400:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(251 146 60 / var(--tw-ring-opacity, 1));
 }
 
 .focus\:ring-offset-2:focus {
@@ -3367,6 +3367,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
 }
 
+.dark\:hover\:bg-gray-700\/50:hover:is(.dark *) {
+  background-color: #37415180;
+}
+
 .dark\:hover\:bg-gray-800:hover:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
@@ -3399,10 +3403,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:hover\:bg-white\/10:hover:is(.dark *) {
   background-color: #ffffff1a;
-}
-
-.dark\:hover\:bg-gray-700\/50:hover:is(.dark *) {
-  background-color: #37415180;
 }
 
 .dark\:hover\:text-gray-200:hover:is(.dark *) {
