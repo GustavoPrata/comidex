@@ -471,7 +471,7 @@ export default function AdditionalsPage() {
       setSaving(true);
       
       // Parse the category ID to integer or null
-      const categoryId = formData.additional_category_id ? 
+      const categoryId = formData.additional_category_id && formData.additional_category_id !== "none" ? 
         parseInt(formData.additional_category_id) : null;
       
       // Calculate sort_order for new items
@@ -542,9 +542,10 @@ export default function AdditionalsPage() {
         sort_order: 0
       });
       setEditingAdditional(null);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao salvar adicional:', error);
-      toast.error("Erro ao salvar adicional");
+      const errorMessage = error?.message || error?.details || "Erro ao salvar adicional";
+      toast.error(errorMessage);
     } finally {
       setSaving(false);
     }
