@@ -397,8 +397,7 @@ export default function AdditionalsPage() {
       // Step 1: Create the new category
       const newCategory = {
         name: `${category.name} (Cópia)`,
-        sort_order: (categories.reduce((max, c) => Math.max(max, c.sort_order || 0), 0)) + 1,
-        active: true
+        sort_order: (categories.reduce((max, c) => Math.max(max, c.sort_order || 0), 0)) + 1
       };
 
       const { data: newCategoryData, error: categoryError } = await supabase
