@@ -406,6 +406,8 @@ export default function AdditionalsPage() {
   // Duplicate category
   const duplicateCategory = async (category: AdditionalCategory) => {
     try {
+      console.log('Duplicando categoria:', category);
+      
       // Step 1: Create the new category
       const newCategory = {
         name: `${category.name} (Cópia)`,
@@ -423,20 +425,30 @@ export default function AdditionalsPage() {
         throw categoryError;
       }
       
+      console.log('Nova categoria criada:', newCategoryData);
+      
       // Step 2: Get all additionals from the original category
-      const categoryAdditionals = additionals.filter(a => 
-        Number(a.additional_category_id) === Number(category.id)
-      );
+      const categoryAdditionals = additionals.filter(a => {
+        // Compare both as numbers to ensure proper matching
+        const catId1 = Number(a.additional_category_id);
+        const catId2 = Number(category.id);
+        console.log(`Comparando IDs: ${catId1} === ${catId2}`, catId1 === catId2);
+        return catId1 === catId2;
+      });
+      
+      console.log(`Encontrados ${categoryAdditionals.length} adicionais para duplicar:`, categoryAdditionals);
       
       // Step 3: Duplicate all additionals for the new category
       if (categoryAdditionals.length > 0) {
         const newAdditionals = categoryAdditionals.map((additional, index) => ({
           name: additional.name,
-          price: additional.price || 0,
-          additional_category_id: newCategoryData.id,
+          price: Number(additional.price) || 0,
+          additional_category_id: Number(newCategoryData.id),
           active: additional.active !== false,
           sort_order: index
         }));
+        
+        console.log('Inserindo novos adicionais:', newAdditionals);
         
         const { data: newAdditionalsData, error: additionalsError } = await supabase
           .from('additionals')
@@ -445,15 +457,21 @@ export default function AdditionalsPage() {
         
         if (additionalsError) {
           console.error('Erro ao duplicar adicionais:', additionalsError);
-          // Continue even if additionals fail
+          toast.error("Erro ao duplicar adicionais");
         } else if (newAdditionalsData) {
+          console.log('Adicionais duplicados com sucesso:', newAdditionalsData);
+          
           // Update local state with new additionals
-          setAdditionals(prev => [...prev, ...newAdditionalsData].sort((a, b) => {
-            if (a.additional_category_id === b.additional_category_id) {
-              return (a.sort_order || 0) - (b.sort_order || 0);
-            }
-            return 0;
-          }));
+          setAdditionals(prev => {
+            const updated = [...prev, ...newAdditionalsData].sort((a, b) => {
+              if (a.additional_category_id === b.additional_category_id) {
+                return (a.sort_order || 0) - (b.sort_order || 0);
+              }
+              return 0;
+            });
+            console.log('Estado de adicionais atualizado:', updated);
+            return updated;
+          });
         }
       }
       
@@ -463,7 +481,7 @@ export default function AdditionalsPage() {
       if (categoryAdditionals.length > 0) {
         toast.success(`Categoria "${category.name}" duplicada com ${categoryAdditionals.length} itens!`);
       } else {
-        toast.success(`Categoria "${category.name}" duplicada!`);
+        toast.success(`Categoria "${category.name}" duplicada (vazia)!`);
       }
     } catch (error) {
       console.error('Erro ao duplicar categoria:', error);
