@@ -1243,10 +1243,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   gap: .25rem;
 }
 
-.gap-1\.5 {
-  gap: .375rem;
-}
-
 .gap-2 {
   gap: .5rem;
 }

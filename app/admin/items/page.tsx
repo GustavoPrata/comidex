@@ -251,20 +251,20 @@ function SortableProductRow({
           {item.description && (
             <p className="text-sm text-gray-500">{item.description}</p>
           )}
-          {item.additional_categories && item.additional_categories.length > 0 && (
-            <div className="flex items-center gap-2 mt-2">
-              <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-orange-100 dark:bg-orange-900/20 rounded-full">
-                <Plus className="h-3.5 w-3.5 text-orange-600 dark:text-orange-400" />
-                <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
-                  {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
-                </span>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
       <div className="flex items-center gap-2">
+        {/* Additionals Badge */}
+        {item.additional_categories && item.additional_categories.length > 0 && (
+          <div className="flex flex-col gap-1">
+            <Badge className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center inline-flex items-center justify-center gap-1">
+              <Plus className="h-3 w-3" />
+              {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
+            </Badge>
+          </div>
+        )}
+        
         {/* Quantity & Price - Stacked */}
         <div className="flex flex-col gap-1">
           {item.quantity && (
