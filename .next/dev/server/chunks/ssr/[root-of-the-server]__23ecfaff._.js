@@ -969,6 +969,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-ssr] (ecmascript) <export default as Trash2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-ssr] (ecmascript) <export default as Loader2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/save.js [app-ssr] (ecmascript) <export default as Save>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as Package>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/dialog.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/select.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/alert-dialog.tsx [app-ssr] (ecmascript)");
@@ -1008,15 +1009,15 @@ function SortableAdditionalItem({ additional, onDuplicate, onEdit, onDelete, onT
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
         ref: setNodeRef,
         style: style,
-        className: `flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`,
+        className: `group relative flex items-center justify-between p-3 rounded-xl bg-white dark:bg-gray-900/50 hover:bg-gradient-to-r hover:from-orange-50 hover:to-white dark:hover:from-orange-950/20 dark:hover:to-gray-900/50 border border-gray-200 dark:border-gray-800 hover:border-orange-300 dark:hover:border-orange-800 shadow-sm hover:shadow-md transition-all duration-200 ${!additional.active ? 'opacity-50' : ''}`,
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-2 flex-1",
+                className: "flex items-center gap-3 flex-1",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         ...attributes,
                         ...listeners,
-                        className: "cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center",
+                        className: "cursor-move p-2 hover:bg-orange-100 dark:hover:bg-orange-900/30 rounded-lg touch-none group/drag select-none transition-all hover:shadow-sm flex items-center justify-center",
                         style: {
                             touchAction: 'none',
                             userSelect: 'none',
@@ -1026,138 +1027,163 @@ function SortableAdditionalItem({ additional, onDuplicate, onEdit, onDelete, onT
                         onMouseDown: (e)=>e.preventDefault(),
                         title: "Arraste para reordenar",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                            className: "w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200",
-                            fill: "none",
-                            stroke: "currentColor",
+                            className: "w-4 h-4 text-gray-400 group-hover/drag:text-orange-500 transition-colors duration-200",
+                            fill: "currentColor",
                             viewBox: "0 0 24 24",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                strokeLinecap: "round",
-                                strokeLinejoin: "round",
-                                strokeWidth: "2",
-                                d: "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+                                d: "M9 5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM9 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM9 23a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 23a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                lineNumber: 113,
+                                lineNumber: 114,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 112,
+                            lineNumber: 113,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/additionals/page.tsx",
-                        lineNumber: 104,
+                        lineNumber: 105,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "flex-1",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "font-medium text-sm",
+                                className: "font-semibold text-gray-900 dark:text-gray-100",
                                 children: additional.name
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                lineNumber: 118,
+                                lineNumber: 120,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "flex items-center gap-2 mt-1",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                    className: `text-sm font-medium ${additional.price === 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-gray-100'}`,
-                                    children: additional.price === 0 ? 'Grátis' : `R$ ${additional.price.toFixed(2).replace('.', ',')}`
-                                }, void 0, false, {
+                                className: "flex items-center gap-3 mt-1",
+                                children: additional.price === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "mr-1",
+                                            children: "✓"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/admin/additionals/page.tsx",
+                                            lineNumber: 124,
+                                            columnNumber: 17
+                                        }, this),
+                                        " Grátis"
+                                    ]
+                                }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 120,
-                                    columnNumber: 13
+                                    lineNumber: 123,
+                                    columnNumber: 15
+                                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                    className: "text-lg font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent",
+                                    children: [
+                                        "R$ ",
+                                        additional.price.toFixed(2).replace('.', ',')
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                    lineNumber: 127,
+                                    columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                lineNumber: 119,
+                                lineNumber: 121,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/additionals/page.tsx",
-                        lineNumber: 117,
+                        lineNumber: 119,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 102,
+                lineNumber: 103,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "flex items-center gap-2",
+                className: "flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                         onClick: onToggleActive,
-                        className: `w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${additional.active ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-500 hover:bg-gray-600 text-white'}`,
+                        className: `px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${additional.active ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-sm' : 'bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white'}`,
                         children: additional.active ? 'Ativo' : 'Inativo'
                     }, void 0, false, {
                         fileName: "[project]/app/admin/additionals/page.tsx",
-                        lineNumber: 129,
+                        lineNumber: 137,
                         columnNumber: 9
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: onDuplicate,
-                        className: "h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center",
-                        title: "Duplicar",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__["Copy"], {
-                            className: "h-4 w-4"
-                        }, void 0, false, {
-                            fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 146,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        className: "flex items-center gap-0.5 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-0.5",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: onDuplicate,
+                                className: "h-7 w-7 rounded hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center",
+                                title: "Duplicar",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__["Copy"], {
+                                    className: "h-3.5 w-3.5"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                    lineNumber: 155,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/admin/additionals/page.tsx",
+                                lineNumber: 150,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: onEdit,
+                                className: "h-7 w-7 rounded hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center",
+                                title: "Editar",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pencil$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pencil$3e$__["Pencil"], {
+                                    className: "h-3.5 w-3.5"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                    lineNumber: 162,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/admin/additionals/page.tsx",
+                                lineNumber: 157,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                onClick: onDelete,
+                                className: "h-7 w-7 rounded hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 transition-all inline-flex items-center justify-center",
+                                title: "Excluir",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
+                                    className: "h-3.5 w-3.5"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                    lineNumber: 169,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/admin/additionals/page.tsx",
+                                lineNumber: 164,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
                         fileName: "[project]/app/admin/additionals/page.tsx",
-                        lineNumber: 141,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: onEdit,
-                        className: "h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center",
-                        title: "Editar",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pencil$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pencil$3e$__["Pencil"], {
-                            className: "h-4 w-4"
-                        }, void 0, false, {
-                            fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 153,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/app/admin/additionals/page.tsx",
-                        lineNumber: 148,
-                        columnNumber: 9
-                    }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                        onClick: onDelete,
-                        className: "h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center",
-                        title: "Excluir",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
-                            className: "h-4 w-4"
-                        }, void 0, false, {
-                            fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 160,
-                            columnNumber: 11
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/app/admin/additionals/page.tsx",
-                        lineNumber: 155,
+                        lineNumber: 149,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 127,
+                lineNumber: 135,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/additionals/page.tsx",
-        lineNumber: 97,
+        lineNumber: 98,
         columnNumber: 5
     }, this);
 }
@@ -1606,12 +1632,12 @@ function AdditionalsPage() {
                                                 className: "h-5 w-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 727,
+                                                lineNumber: 737,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 726,
+                                            lineNumber: 736,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -1619,13 +1645,13 @@ function AdditionalsPage() {
                                             children: "Adicionais"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 729,
+                                            lineNumber: 739,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 725,
+                                    lineNumber: 735,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1641,7 +1667,7 @@ function AdditionalsPage() {
                                                     onChange: (e)=>setSearchTerm(e.target.value)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 733,
+                                                    lineNumber: 743,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1650,18 +1676,18 @@ function AdditionalsPage() {
                                                         className: "h-4 w-4 text-white"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                                        lineNumber: 740,
+                                                        lineNumber: 750,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 739,
+                                                    lineNumber: 749,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 732,
+                                            lineNumber: 742,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1673,14 +1699,14 @@ function AdditionalsPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 748,
+                                                    lineNumber: 758,
                                                     columnNumber: 17
                                                 }, this),
                                                 "Nova Categoria"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 743,
+                                            lineNumber: 753,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1691,26 +1717,26 @@ function AdditionalsPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 755,
+                                                    lineNumber: 765,
                                                     columnNumber: 17
                                                 }, this),
                                                 "Adicionar Item"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 751,
+                                            lineNumber: 761,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 731,
+                                    lineNumber: 741,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 724,
+                            lineNumber: 734,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1718,7 +1744,7 @@ function AdditionalsPage() {
                             children: "Gerencie os itens adicionais e extras do cardápio"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 761,
+                            lineNumber: 771,
                             columnNumber: 11
                         }, this),
                         searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1729,7 +1755,7 @@ function AdditionalsPage() {
                                     children: "Filtros ativos:"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 767,
+                                    lineNumber: 777,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1743,30 +1769,30 @@ function AdditionalsPage() {
                                             onClick: ()=>setSearchTerm("")
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 770,
+                                            lineNumber: 780,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 768,
+                                    lineNumber: 778,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 766,
+                            lineNumber: 776,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/additionals/page.tsx",
-                    lineNumber: 723,
+                    lineNumber: 733,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 722,
+                lineNumber: 732,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1777,64 +1803,107 @@ function AdditionalsPage() {
                         className: "h-8 w-8 animate-spin text-orange-500"
                     }, void 0, false, {
                         fileName: "[project]/app/admin/additionals/page.tsx",
-                        lineNumber: 784,
+                        lineNumber: 794,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/additionals/page.tsx",
-                    lineNumber: 783,
+                    lineNumber: 793,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "grid gap-6 sm:grid-cols-2 xl:grid-cols-3",
                     children: Object.entries(groupedAdditionals).map(([categoryName, group])=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                            className: "overflow-hidden h-fit",
+                            className: "overflow-hidden h-fit group relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 shadow-lg hover:shadow-2xl transition-all duration-300 border-0",
                             children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                    lineNumber: 801,
+                                    columnNumber: 17
+                                }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardHeader"], {
-                                    className: "pb-3 bg-gray-100 dark:bg-gray-800",
+                                    className: "pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20 backdrop-blur-sm",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "flex items-center justify-between",
                                         children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                className: "text-sm font-semibold text-gray-900 dark:text-gray-100",
-                                                children: categoryName
-                                            }, void 0, false, {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-3",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/additionals/page.tsx",
+                                                        lineNumber: 806,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                className: "text-lg font-bold text-gray-900 dark:text-gray-100",
+                                                                children: categoryName
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/additionals/page.tsx",
+                                                                lineNumber: 808,
+                                                                columnNumber: 25
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs text-gray-500 dark:text-gray-400 mt-0.5",
+                                                                children: [
+                                                                    group.items.length,
+                                                                    " ",
+                                                                    group.items.length === 1 ? 'item' : 'itens'
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/app/admin/additionals/page.tsx",
+                                                                lineNumber: 811,
+                                                                columnNumber: 25
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/additionals/page.tsx",
+                                                        lineNumber: 807,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 792,
+                                                lineNumber: 805,
                                                 columnNumber: 21
                                             }, this),
                                             group.category && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex items-center gap-1",
+                                                className: "flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                         onClick: ()=>duplicateCategory(group.category),
-                                                        className: "h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center",
+                                                        className: "h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center shadow-sm",
                                                         title: "Duplicar",
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$copy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Copy$3e$__["Copy"], {
                                                             className: "h-3.5 w-3.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                                            lineNumber: 802,
+                                                            lineNumber: 823,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                                        lineNumber: 797,
+                                                        lineNumber: 818,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                         onClick: ()=>openCategoryModal(group.category),
-                                                        className: "h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center",
+                                                        className: "h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center shadow-sm",
                                                         title: "Editar",
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pencil$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pencil$3e$__["Pencil"], {
                                                             className: "h-3.5 w-3.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                                            lineNumber: 809,
+                                                            lineNumber: 830,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                                        lineNumber: 804,
+                                                        lineNumber: 825,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1842,35 +1911,35 @@ function AdditionalsPage() {
                                                             setDeleteCategory(group.category || null);
                                                             setIsDeleteCategoryModalOpen(true);
                                                         },
-                                                        className: "h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center",
+                                                        className: "h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 transition-all inline-flex items-center justify-center shadow-sm",
                                                         title: "Excluir",
                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__["Trash2"], {
                                                             className: "h-3.5 w-3.5"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                                            lineNumber: 819,
+                                                            lineNumber: 840,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                                        lineNumber: 811,
+                                                        lineNumber: 832,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 796,
+                                                lineNumber: 817,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                        lineNumber: 791,
+                                        lineNumber: 804,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 790,
+                                    lineNumber: 803,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1888,11 +1957,35 @@ function AdditionalsPage() {
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: "space-y-2",
                                                         children: group.items.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "h-full flex items-center justify-center text-sm text-gray-500",
-                                                            children: "Nenhum adicional nesta categoria"
-                                                        }, void 0, false, {
+                                                            className: "h-full flex flex-col items-center justify-center py-8 text-gray-400",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"], {
+                                                                    className: "h-12 w-12 mb-3 opacity-30"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                                                    lineNumber: 860,
+                                                                    columnNumber: 31
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-sm font-medium",
+                                                                    children: "Nenhum adicional ainda"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                                                    lineNumber: 861,
+                                                                    columnNumber: 31
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-xs text-gray-400 mt-1",
+                                                                    children: "Clique no botão abaixo para adicionar"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/additionals/page.tsx",
+                                                                    lineNumber: 862,
+                                                                    columnNumber: 31
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
                                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                                            lineNumber: 838,
+                                                            lineNumber: 859,
                                                             columnNumber: 29
                                                         }, this) : group.items.map((additional)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SortableAdditionalItem, {
                                                                 additional: additional,
@@ -1905,85 +1998,99 @@ function AdditionalsPage() {
                                                                 onToggleActive: ()=>toggleActive(additional)
                                                             }, additional.id, false, {
                                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                                lineNumber: 843,
+                                                                lineNumber: 866,
                                                                 columnNumber: 31
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                                        lineNumber: 836,
+                                                        lineNumber: 857,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 832,
+                                                    lineNumber: 853,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 827,
+                                                lineNumber: 848,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 826,
+                                            lineNumber: 847,
                                             columnNumber: 19
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            onClick: ()=>{
-                                                setFormData({
-                                                    name: "",
-                                                    price: 0,
-                                                    additional_category_id: group.category?.id ? String(group.category.id) : "",
-                                                    active: true,
-                                                    sort_order: 0
-                                                });
-                                                setEditingAdditional(null);
-                                                setIsModalOpen(true);
-                                            },
-                                            className: "w-full py-2.5 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-orange-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-orange-500",
-                                            type: "button",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
-                                                    className: "h-4 w-4"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 877,
-                                                    columnNumber: 21
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-sm font-medium",
-                                                    children: "Adicionar Item"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 878,
-                                                    columnNumber: 21
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "pt-2 mt-2 border-t border-gray-100 dark:border-gray-800",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                onClick: ()=>{
+                                                    setFormData({
+                                                        name: "",
+                                                        price: 0,
+                                                        additional_category_id: group.category?.id ? String(group.category.id) : "",
+                                                        active: true,
+                                                        sort_order: 0
+                                                    });
+                                                    setEditingAdditional(null);
+                                                    setIsModalOpen(true);
+                                                },
+                                                className: "group/btn w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100/50 dark:hover:from-orange-950/20 dark:hover:to-orange-900/10 transition-all duration-300 flex items-center justify-center gap-2 text-gray-500 hover:text-orange-600",
+                                                type: "button",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "p-1 rounded-full bg-orange-100 dark:bg-orange-900/30 group-hover/btn:bg-orange-200 dark:group-hover/btn:bg-orange-800/40 transition-colors",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                                            className: "h-4 w-4 text-orange-600 dark:text-orange-400 group-hover/btn:rotate-90 transition-transform duration-300"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/additionals/page.tsx",
+                                                            lineNumber: 902,
+                                                            columnNumber: 25
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/additionals/page.tsx",
+                                                        lineNumber: 901,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                        className: "text-sm font-semibold",
+                                                        children: "Adicionar Item"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/additionals/page.tsx",
+                                                        lineNumber: 904,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/additionals/page.tsx",
+                                                lineNumber: 886,
+                                                columnNumber: 21
+                                            }, this)
+                                        }, void 0, false, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 862,
+                                            lineNumber: 885,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 825,
+                                    lineNumber: 846,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, categoryName, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 789,
+                            lineNumber: 799,
                             columnNumber: 15
                         }, this))
                 }, void 0, false, {
                     fileName: "[project]/app/admin/additionals/page.tsx",
-                    lineNumber: 787,
+                    lineNumber: 797,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 781,
+                lineNumber: 791,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -1998,20 +2105,20 @@ function AdditionalsPage() {
                                     children: editingAdditional ? 'Editar Adicional' : 'Novo Adicional'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 891,
+                                    lineNumber: 918,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: editingAdditional ? 'Edite as informações do adicional' : 'Adicione um novo item adicional ao cardápio'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 894,
+                                    lineNumber: 921,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 890,
+                            lineNumber: 917,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2028,7 +2135,7 @@ function AdditionalsPage() {
                                                     children: "Nome"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 902,
+                                                    lineNumber: 929,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2041,13 +2148,13 @@ function AdditionalsPage() {
                                                     placeholder: "Ex: Gelo, Limão"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 903,
+                                                    lineNumber: 930,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 901,
+                                            lineNumber: 928,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2058,7 +2165,7 @@ function AdditionalsPage() {
                                                     children: "Preço (R$)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 912,
+                                                    lineNumber: 939,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2073,19 +2180,19 @@ function AdditionalsPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 913,
+                                                    lineNumber: 940,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 911,
+                                            lineNumber: 938,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 900,
+                                    lineNumber: 927,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2099,7 +2206,7 @@ function AdditionalsPage() {
                                                     children: "Categoria"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 926,
+                                                    lineNumber: 953,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -2115,12 +2222,12 @@ function AdditionalsPage() {
                                                                 placeholder: "Selecione uma categoria"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                                lineNumber: 935,
+                                                                lineNumber: 962,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                                            lineNumber: 934,
+                                                            lineNumber: 961,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2130,7 +2237,7 @@ function AdditionalsPage() {
                                                                     children: "Sem categoria"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                                    lineNumber: 938,
+                                                                    lineNumber: 965,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 categories.map((category)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2138,25 +2245,25 @@ function AdditionalsPage() {
                                                                         children: category.name
                                                                     }, category.id, false, {
                                                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                                                        lineNumber: 940,
+                                                                        lineNumber: 967,
                                                                         columnNumber: 23
                                                                     }, this))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                                            lineNumber: 937,
+                                                            lineNumber: 964,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 927,
+                                                    lineNumber: 954,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 925,
+                                            lineNumber: 952,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2166,7 +2273,7 @@ function AdditionalsPage() {
                                                     children: "Status"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 949,
+                                                    lineNumber: 976,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2179,25 +2286,25 @@ function AdditionalsPage() {
                                                     children: formData.active ? 'Ativo' : 'Inativo'
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                                    lineNumber: 950,
+                                                    lineNumber: 977,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 948,
+                                            lineNumber: 975,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 924,
+                                    lineNumber: 951,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 899,
+                            lineNumber: 926,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -2208,7 +2315,7 @@ function AdditionalsPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 966,
+                                    lineNumber: 993,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2221,7 +2328,7 @@ function AdditionalsPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 976,
+                                                lineNumber: 1003,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -2232,7 +2339,7 @@ function AdditionalsPage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 981,
+                                                lineNumber: 1008,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvar"
@@ -2240,24 +2347,24 @@ function AdditionalsPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 969,
+                                    lineNumber: 996,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 965,
+                            lineNumber: 992,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/additionals/page.tsx",
-                    lineNumber: 889,
+                    lineNumber: 916,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 888,
+                lineNumber: 915,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -2272,20 +2379,20 @@ function AdditionalsPage() {
                                     children: editingCategory ? 'Editar Categoria' : 'Nova Categoria'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 994,
+                                    lineNumber: 1021,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: editingCategory ? 'Edite as informações da categoria' : 'Crie uma nova categoria para agrupar adicionais'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 997,
+                                    lineNumber: 1024,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 993,
+                            lineNumber: 1020,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2298,7 +2405,7 @@ function AdditionalsPage() {
                                         children: "Nome"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                        lineNumber: 1004,
+                                        lineNumber: 1031,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2311,18 +2418,18 @@ function AdditionalsPage() {
                                         placeholder: "Ex: Refrigerante, Extras"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/additionals/page.tsx",
-                                        lineNumber: 1005,
+                                        lineNumber: 1032,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                lineNumber: 1003,
+                                lineNumber: 1030,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 1002,
+                            lineNumber: 1029,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -2340,7 +2447,7 @@ function AdditionalsPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1015,
+                                    lineNumber: 1042,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2353,7 +2460,7 @@ function AdditionalsPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 1029,
+                                                lineNumber: 1056,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -2364,7 +2471,7 @@ function AdditionalsPage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 1034,
+                                                lineNumber: 1061,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvar"
@@ -2372,24 +2479,24 @@ function AdditionalsPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1022,
+                                    lineNumber: 1049,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 1014,
+                            lineNumber: 1041,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/additionals/page.tsx",
-                    lineNumber: 992,
+                    lineNumber: 1019,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 991,
+                lineNumber: 1018,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -2403,7 +2510,7 @@ function AdditionalsPage() {
                                     children: "Excluir Adicional"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1047,
+                                    lineNumber: 1074,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -2414,13 +2521,13 @@ function AdditionalsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1048,
+                                    lineNumber: 1075,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 1046,
+                            lineNumber: 1073,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -2433,7 +2540,7 @@ function AdditionalsPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1054,
+                                    lineNumber: 1081,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -2446,7 +2553,7 @@ function AdditionalsPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 1067,
+                                                lineNumber: 1094,
                                                 columnNumber: 19
                                             }, this),
                                             "Excluindo..."
@@ -2454,24 +2561,24 @@ function AdditionalsPage() {
                                     }, void 0, true) : 'Excluir'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1060,
+                                    lineNumber: 1087,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 1053,
+                            lineNumber: 1080,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/additionals/page.tsx",
-                    lineNumber: 1045,
+                    lineNumber: 1072,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 1044,
+                lineNumber: 1071,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -2485,7 +2592,7 @@ function AdditionalsPage() {
                                     children: "Excluir Categoria"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1082,
+                                    lineNumber: 1109,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -2506,7 +2613,7 @@ function AdditionalsPage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 1088,
+                                                lineNumber: 1115,
                                                 columnNumber: 19
                                             }, this) : null;
                                         })(),
@@ -2515,19 +2622,19 @@ function AdditionalsPage() {
                                             children: "Esta ação não pode ser desfeita."
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/additionals/page.tsx",
-                                            lineNumber: 1093,
+                                            lineNumber: 1120,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1083,
+                                    lineNumber: 1110,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 1081,
+                            lineNumber: 1108,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -2540,7 +2647,7 @@ function AdditionalsPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1097,
+                                    lineNumber: 1124,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -2553,7 +2660,7 @@ function AdditionalsPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/additionals/page.tsx",
-                                                lineNumber: 1110,
+                                                lineNumber: 1137,
                                                 columnNumber: 19
                                             }, this),
                                             "Excluindo..."
@@ -2561,30 +2668,30 @@ function AdditionalsPage() {
                                     }, void 0, true) : 'Excluir Tudo'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/additionals/page.tsx",
-                                    lineNumber: 1103,
+                                    lineNumber: 1130,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/additionals/page.tsx",
-                            lineNumber: 1096,
+                            lineNumber: 1123,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/additionals/page.tsx",
-                    lineNumber: 1080,
+                    lineNumber: 1107,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/additionals/page.tsx",
-                lineNumber: 1079,
+                lineNumber: 1106,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/additionals/page.tsx",
-        lineNumber: 720,
+        lineNumber: 730,
         columnNumber: 5
     }, this);
 }
