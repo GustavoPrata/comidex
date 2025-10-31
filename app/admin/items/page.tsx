@@ -257,29 +257,14 @@ function SortableProductRow({
       <div className="flex items-center gap-2">
         {/* Additionals Badge with Tooltip */}
         {item.additional_categories && item.additional_categories.length > 0 && (
-          <div className="flex flex-col gap-1 relative group">
-            <Badge className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center inline-flex items-center justify-center gap-1 cursor-default">
+          <div className="flex flex-col gap-1">
+            <Badge 
+              className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center inline-flex items-center justify-center gap-1"
+              title={`Categorias: ${item.additional_categories.join(', ')}`}
+            >
               <Plus className="h-3 w-3" />
               {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
             </Badge>
-            
-            {/* Tooltip on Hover */}
-            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block z-50 animate-in fade-in duration-200">
-              <div className="bg-gray-900 dark:bg-gray-800 text-white px-3 py-2 rounded-lg shadow-lg max-w-xs">
-                <p className="text-xs font-medium mb-1">Categorias de Adicionais:</p>
-                <div className="flex flex-wrap gap-1">
-                  {item.additional_categories.map((catName, idx) => (
-                    <span key={idx} className="text-[10px] bg-orange-500/20 px-1.5 py-0.5 rounded">
-                      {catName}
-                    </span>
-                  ))}
-                </div>
-                {/* Arrow pointing down */}
-                <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-[1px]">
-                  <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-900 dark:border-t-gray-800"></div>
-                </div>
-              </div>
-            </div>
           </div>
         )}
         
