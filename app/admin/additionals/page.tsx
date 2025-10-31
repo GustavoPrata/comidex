@@ -920,8 +920,8 @@ export default function AdditionalsPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-4 gap-3">
-              <div className="col-span-3 space-y-2">
+            <div className="grid grid-cols-3 gap-3">
+              <div className="col-span-2 space-y-2">
                 <Label htmlFor="category">Categoria</Label>
                 <Select
                   value={formData.additional_category_id || "none"}
