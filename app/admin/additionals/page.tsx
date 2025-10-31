@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -64,6 +64,99 @@ import { toast } from "sonner";
 
 const supabase = createClient();
 import type { Additional, AdditionalCategory } from "@/types/supabase";
+
+// Sortable Category Component
+function SortableCategory({
+  categoryName,
+  group,
+  children,
+  onDuplicate,
+  onEdit,
+  onDelete
+}: {
+  categoryName: string;
+  group: { category?: AdditionalCategory, items: Additional[] };
+  children: React.ReactNode;
+  onDuplicate: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: group.category?.id || categoryName });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <Card ref={setNodeRef} style={style} className="overflow-hidden h-fit">
+      <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {/* Drag Handle for Category */}
+            {group.category && (
+              <div
+                {...attributes}
+                {...listeners}
+                className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
+                style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
+                onMouseDown={(e) => e.preventDefault()}
+                title="Arraste para reordenar categoria"
+              >
+                <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                </svg>
+              </div>
+            )}
+            <div className="w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
+            <div>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                {categoryName}
+              </h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
+              </p>
+            </div>
+          </div>
+          {group.category && (
+            <div className="flex items-center gap-1">
+              <button
+                onClick={onDuplicate}
+                className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                title="Duplicar"
+              >
+                <Copy className="h-3.5 w-3.5" />
+              </button>
+              <button
+                onClick={onEdit}
+                className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                title="Editar"
+              >
+                <Pencil className="h-3.5 w-3.5" />
+              </button>
+              <button
+                onClick={onDelete}
+                className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                title="Excluir"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
+        </div>
+      </CardHeader>
+      {children}
+    </Card>
+  );
+}
 
 // Sortable Additional Item Component
 function SortableAdditionalItem({ 
@@ -274,7 +367,46 @@ export default function AdditionalsPage() {
     };
   }
 
-  // Handle drag end
+  // Handle drag end for categories
+  const handleDragEndCategory = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = categories.findIndex(cat => cat.id === active.id);
+      const newIndex = categories.findIndex(cat => cat.id === over?.id);
+      
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const newOrder = arrayMove(categories, oldIndex, newIndex);
+        
+        // Update local state immediately for smooth UX
+        const updatedCategories = newOrder.map((item, index) => ({
+          ...item,
+          sort_order: index
+        }));
+        
+        setCategories(updatedCategories);
+        
+        // Update database
+        try {
+          const updates = newOrder.map((item, index) => 
+            supabase
+              .from('additional_categories')
+              .update({ sort_order: index })
+              .eq('id', item.id)
+          );
+          
+          await Promise.all(updates);
+          toast.success("Ordem das categorias atualizada!");
+        } catch (error) {
+          console.error('Erro ao atualizar ordem das categorias:', error);
+          toast.error("Erro ao atualizar ordem das categorias");
+          loadData(); // Reload on error
+        }
+      }
+    }
+  };
+
+  // Handle drag end for items
   const handleDragEnd = async (event: DragEndEvent, categoryId: string) => {
     const { active, over } = event;
 
@@ -828,53 +960,31 @@ export default function AdditionalsPage() {
             <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
-              <Card key={categoryName} className="overflow-hidden h-fit">
-                <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
-                      <div>
-                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                          {categoryName}
-                        </h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                          {group.items.length} {group.items.length === 1 ? 'item' : 'itens'}
-                        </p>
-                      </div>
-                    </div>
-                    {group.category && (
-                      <div className="flex items-center gap-1">
-                        <button
-                          onClick={() => duplicateCategory(group.category!)}
-                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                          title="Duplicar"
-                        >
-                          <Copy className="h-3.5 w-3.5" />
-                        </button>
-                        <button
-                          onClick={() => openCategoryModal(group.category)}
-                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                          title="Editar"
-                        >
-                          <Pencil className="h-3.5 w-3.5" />
-                        </button>
-                        <button
-                          onClick={() => {
-                            setDeleteCategory(group.category || null);
-                            setIsDeleteCategoryModalOpen(true);
-                          }}
-                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                          title="Excluir"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent className="p-4 flex flex-col gap-3">
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEndCategory}
+          >
+            <SortableContext
+              items={categories.map(cat => cat.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
+                  <SortableCategory
+                    key={group.category?.id || categoryName}
+                    categoryName={categoryName}
+                    group={group}
+                    onDuplicate={() => group.category && duplicateCategory(group.category)}
+                    onEdit={() => group.category && openCategoryModal(group.category)}
+                    onDelete={() => {
+                      if (group.category) {
+                        setDeleteCategory(group.category);
+                        setIsDeleteCategoryModalOpen(true);
+                      }
+                    }}
+                  >
+                    <CardContent className="p-4 flex flex-col gap-3">
                   <div className="h-[280px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full">
                     <DndContext
                       sensors={sensors}
@@ -929,10 +1039,12 @@ export default function AdditionalsPage() {
                     <Plus className="h-4 w-4" />
                     <span className="text-sm font-medium">Adicionar Item</span>
                   </button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    </CardContent>
+                  </SortableCategory>
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
         )}
       </div>
 
