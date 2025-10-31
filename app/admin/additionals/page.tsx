@@ -423,19 +423,9 @@ export default function AdditionalsPage() {
       }
       
       // Step 2: Get all additionals from the original category
-      // Debug: log to check IDs
-      console.log('Category ID:', category.id, 'Type:', typeof category.id);
-      console.log('All additionals:', additionals.map(a => ({
-        name: a.name,
-        cat_id: a.additional_category_id,
-        type: typeof a.additional_category_id
-      })));
-      
       const categoryAdditionals = additionals.filter(a => 
         a.additional_category_id === category.id
       );
-      
-      console.log('Filtered additionals:', categoryAdditionals.length);
       
       // Step 3: Duplicate all additionals for the new category
       if (categoryAdditionals.length > 0) {
