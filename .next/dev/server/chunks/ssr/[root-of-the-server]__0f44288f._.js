@@ -5119,190 +5119,175 @@ function ProductsPage() {
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "space-y-3 py-2",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-1 max-h-[400px] overflow-y-auto",
-                                    children: additionalCategories.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
-                                        children: additionalCategories.map((category)=>{
-                                            const isChecked = formData.additional_category_ids.includes(category.id);
-                                            const categoryAdditionals = additionals.filter((a)=>a.additional_category_id === category.id);
-                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                                                className: `
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "space-y-1 max-h-[400px] overflow-y-auto",
+                                children: additionalCategories.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
+                                    children: additionalCategories.map((category)=>{
+                                        const isChecked = formData.additional_category_ids.includes(category.id);
+                                        const categoryAdditionals = additionals.filter((a)=>a.additional_category_id === category.id);
+                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
+                                            className: `
                           block p-3 rounded-lg border cursor-pointer transition-all
                           ${isChecked ? 'bg-orange-50 dark:bg-orange-900/10 border-orange-300 dark:border-orange-600' : 'bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'}
                         `,
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "flex items-center gap-3",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "relative",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                                                        type: "checkbox",
-                                                                        className: "sr-only",
-                                                                        checked: isChecked,
-                                                                        onChange: (e)=>{
-                                                                            if (e.target.checked) {
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    additional_category_ids: [
-                                                                                        ...formData.additional_category_ids,
-                                                                                        category.id
-                                                                                    ]
-                                                                                });
-                                                                            } else {
-                                                                                setFormData({
-                                                                                    ...formData,
-                                                                                    additional_category_ids: formData.additional_category_ids.filter((id)=>id !== category.id)
-                                                                                });
-                                                                            }
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-3",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "relative",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                                    type: "checkbox",
+                                                                    className: "sr-only",
+                                                                    checked: isChecked,
+                                                                    onChange: (e)=>{
+                                                                        if (e.target.checked) {
+                                                                            setFormData({
+                                                                                ...formData,
+                                                                                additional_category_ids: [
+                                                                                    ...formData.additional_category_ids,
+                                                                                    category.id
+                                                                                ]
+                                                                            });
+                                                                        } else {
+                                                                            setFormData({
+                                                                                ...formData,
+                                                                                additional_category_ids: formData.additional_category_ids.filter((id)=>id !== category.id)
+                                                                            });
                                                                         }
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/app/admin/items/page.tsx",
-                                                                        lineNumber: 2195,
-                                                                        columnNumber: 29
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: `
+                                                                    }
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/items/page.tsx",
+                                                                    lineNumber: 2195,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: `
                               w-5 h-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center
                               ${isChecked ? 'bg-orange-500 border-orange-500' : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-orange-300'}
                             `,
-                                                                        children: isChecked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                                                                            className: "w-3 h-3 text-white",
-                                                                            fill: "none",
-                                                                            viewBox: "0 0 24 24",
-                                                                            stroke: "currentColor",
-                                                                            strokeWidth: "3",
-                                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                                                                strokeLinecap: "round",
-                                                                                strokeLinejoin: "round",
-                                                                                d: "M5 13l4 4L19 7"
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/app/admin/items/page.tsx",
-                                                                                lineNumber: 2222,
-                                                                                columnNumber: 35
-                                                                            }, this)
+                                                                    children: isChecked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                                        className: "w-3 h-3 text-white",
+                                                                        fill: "none",
+                                                                        viewBox: "0 0 24 24",
+                                                                        stroke: "currentColor",
+                                                                        strokeWidth: "3",
+                                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                                            strokeLinecap: "round",
+                                                                            strokeLinejoin: "round",
+                                                                            d: "M5 13l4 4L19 7"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/items/page.tsx",
-                                                                            lineNumber: 2221,
-                                                                            columnNumber: 33
+                                                                            lineNumber: 2222,
+                                                                            columnNumber: 35
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/items/page.tsx",
-                                                                        lineNumber: 2213,
-                                                                        columnNumber: 29
+                                                                        lineNumber: 2221,
+                                                                        columnNumber: 33
                                                                     }, this)
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/app/admin/items/page.tsx",
-                                                                lineNumber: 2194,
-                                                                columnNumber: 27
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "flex-1",
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-sm font-medium",
-                                                                    children: category.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/items/page.tsx",
-                                                                    lineNumber: 2228,
+                                                                    lineNumber: 2213,
                                                                     columnNumber: 29
                                                                 }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/admin/items/page.tsx",
+                                                            lineNumber: 2194,
+                                                            columnNumber: 27
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex-1",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-sm font-medium",
+                                                                children: category.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/items/page.tsx",
-                                                                lineNumber: 2227,
-                                                                columnNumber: 27
-                                                            }, this),
-                                                            isChecked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
-                                                                variant: "secondary",
-                                                                className: "text-xs",
-                                                                children: "Selecionado"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/items/page.tsx",
-                                                                lineNumber: 2231,
+                                                                lineNumber: 2228,
                                                                 columnNumber: 29
                                                             }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/items/page.tsx",
-                                                        lineNumber: 2193,
-                                                        columnNumber: 25
-                                                    }, this),
-                                                    categoryAdditionals.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: "mt-2 ml-7 text-xs text-gray-600 dark:text-gray-400",
-                                                        children: categoryAdditionals.map((additional, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                children: [
-                                                                    additional.name,
-                                                                    idx < categoryAdditionals.length - 1 && ', '
-                                                                ]
-                                                            }, additional.id, true, {
-                                                                fileName: "[project]/app/admin/items/page.tsx",
-                                                                lineNumber: 2239,
-                                                                columnNumber: 31
-                                                            }, this))
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/admin/items/page.tsx",
-                                                        lineNumber: 2237,
-                                                        columnNumber: 27
-                                                    }, this)
-                                                ]
-                                            }, category.id, true, {
-                                                fileName: "[project]/app/admin/items/page.tsx",
-                                                lineNumber: 2183,
-                                                columnNumber: 23
-                                            }, this);
-                                        })
-                                    }, void 0, false) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "text-center py-8",
-                                        children: [
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                className: "text-sm text-gray-500 dark:text-gray-400 mb-2",
-                                                children: "Nenhuma categoria de adicionais cadastrada"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/admin/items/page.tsx",
-                                                lineNumber: 2252,
-                                                columnNumber: 19
-                                            }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                                variant: "outline",
-                                                size: "sm",
-                                                onClick: ()=>{
-                                                    setIsAdditionalsModalOpen(false);
-                                                    window.location.href = '/admin/additionals';
-                                                },
-                                                children: "Criar Categorias"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/admin/items/page.tsx",
-                                                lineNumber: 2255,
-                                                columnNumber: 19
-                                            }, this)
-                                        ]
-                                    }, void 0, true, {
-                                        fileName: "[project]/app/admin/items/page.tsx",
-                                        lineNumber: 2251,
-                                        columnNumber: 17
-                                    }, this)
-                                }, void 0, false, {
-                                    fileName: "[project]/app/admin/items/page.tsx",
-                                    lineNumber: 2176,
-                                    columnNumber: 13
-                                }, this),
-                                formData.additional_category_ids.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "text-sm text-gray-600 dark:text-gray-400 text-center",
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/items/page.tsx",
+                                                            lineNumber: 2227,
+                                                            columnNumber: 27
+                                                        }, this),
+                                                        isChecked && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                            variant: "secondary",
+                                                            className: "text-xs",
+                                                            children: "Selecionado"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/items/page.tsx",
+                                                            lineNumber: 2231,
+                                                            columnNumber: 29
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/admin/items/page.tsx",
+                                                    lineNumber: 2193,
+                                                    columnNumber: 25
+                                                }, this),
+                                                categoryAdditionals.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "mt-2 ml-7 text-xs text-gray-600 dark:text-gray-400",
+                                                    children: categoryAdditionals.map((additional, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: [
+                                                                additional.name,
+                                                                idx < categoryAdditionals.length - 1 && ', '
+                                                            ]
+                                                        }, additional.id, true, {
+                                                            fileName: "[project]/app/admin/items/page.tsx",
+                                                            lineNumber: 2239,
+                                                            columnNumber: 31
+                                                        }, this))
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/items/page.tsx",
+                                                    lineNumber: 2237,
+                                                    columnNumber: 27
+                                                }, this)
+                                            ]
+                                        }, category.id, true, {
+                                            fileName: "[project]/app/admin/items/page.tsx",
+                                            lineNumber: 2183,
+                                            columnNumber: 23
+                                        }, this);
+                                    })
+                                }, void 0, false) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "text-center py-8",
                                     children: [
-                                        formData.additional_category_ids.length,
-                                        " de ",
-                                        additionalCategories.length,
-                                        " selecionadas"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                            className: "text-sm text-gray-500 dark:text-gray-400 mb-2",
+                                            children: "Nenhuma categoria de adicionais cadastrada"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/admin/items/page.tsx",
+                                            lineNumber: 2252,
+                                            columnNumber: 19
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                            variant: "outline",
+                                            size: "sm",
+                                            onClick: ()=>{
+                                                setIsAdditionalsModalOpen(false);
+                                                window.location.href = '/admin/additionals';
+                                            },
+                                            children: "Criar Categorias"
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/admin/items/page.tsx",
+                                            lineNumber: 2255,
+                                            columnNumber: 19
+                                        }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/items/page.tsx",
-                                    lineNumber: 2271,
-                                    columnNumber: 15
+                                    lineNumber: 2251,
+                                    columnNumber: 17
                                 }, this)
-                            ]
-                        }, void 0, true, {
+                            }, void 0, false, {
+                                fileName: "[project]/app/admin/items/page.tsx",
+                                lineNumber: 2176,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
                             fileName: "[project]/app/admin/items/page.tsx",
                             lineNumber: 2174,
                             columnNumber: 11
@@ -5318,7 +5303,7 @@ function ProductsPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/items/page.tsx",
-                                    lineNumber: 2278,
+                                    lineNumber: 2271,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -5330,13 +5315,13 @@ function ProductsPage() {
                                     children: "Confirmar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/items/page.tsx",
-                                    lineNumber: 2287,
+                                    lineNumber: 2280,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/items/page.tsx",
-                            lineNumber: 2277,
+                            lineNumber: 2270,
                             columnNumber: 11
                         }, this)
                     ]

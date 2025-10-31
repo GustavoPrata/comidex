@@ -2265,13 +2265,6 @@ export default function ProductsPage() {
                 </div>
               )}
             </div>
-            
-            {/* Status */}
-            {formData.additional_category_ids.length > 0 && (
-              <div className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                {formData.additional_category_ids.length} de {additionalCategories.length} selecionadas
-              </div>
-            )}
           </div>
           
           <DialogFooter>
