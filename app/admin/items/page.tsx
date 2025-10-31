@@ -1443,13 +1443,15 @@ export default function ProductsPage() {
                             R$ {groupObj.price.toFixed(2).replace('.', ',')}
                           </div>
                         )}
-                        <div className="flex items-center gap-2 bg-white dark:bg-gray-900 px-4 py-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
-                          <ShoppingBag className="h-4 w-4 text-orange-500" />
-                          <span className="font-semibold text-gray-900 dark:text-white">{totalGroupItems}</span>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">
-                            {totalGroupItems === 1 ? 'produto' : 'produtos'}
-                          </span>
-                        </div>
+                        {totalGroupItems > 0 && (
+                          <div className="flex items-center gap-2 bg-white dark:bg-gray-900 px-4 py-2 rounded-full shadow-sm border border-gray-200 dark:border-gray-700">
+                            <ShoppingBag className="h-4 w-4 text-orange-500" />
+                            <span className="font-semibold text-gray-900 dark:text-white">{totalGroupItems}</span>
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                              {totalGroupItems === 1 ? 'produto' : 'produtos'}
+                            </span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
