@@ -5336,7 +5336,7 @@ function ProductsPage() {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                                                 type: "checkbox",
-                                                                className: "w-4 h-4 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600",
+                                                                className: "w-4 h-4 text-orange-500 rounded-full focus:ring-orange-400 border-gray-300 dark:border-gray-600",
                                                                 checked: isChecked,
                                                                 onChange: (e)=>{
                                                                     if (e.target.checked) {
@@ -5394,7 +5394,6 @@ function ProductsPage() {
                                                         children: categoryAdditionals.map((additional, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 children: [
                                                                     additional.name,
-                                                                    additional.price > 0 && ` (+R$ ${additional.price.toFixed(2)})`,
                                                                     idx < categoryAdditionals.length - 1 && ', '
                                                                 ]
                                                             }, additional.id, true, {
@@ -5422,7 +5421,7 @@ function ProductsPage() {
                                                 children: "Nenhuma categoria de adicionais cadastrada"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/items/page.tsx",
-                                                lineNumber: 2270,
+                                                lineNumber: 2269,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -5435,13 +5434,13 @@ function ProductsPage() {
                                                 children: "Criar Categorias"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/items/page.tsx",
-                                                lineNumber: 2273,
+                                                lineNumber: 2272,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/items/page.tsx",
-                                        lineNumber: 2269,
+                                        lineNumber: 2268,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
@@ -5459,7 +5458,7 @@ function ProductsPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/items/page.tsx",
-                                    lineNumber: 2289,
+                                    lineNumber: 2288,
                                     columnNumber: 15
                                 }, this)
                             ]
@@ -5479,7 +5478,7 @@ function ProductsPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/items/page.tsx",
-                                    lineNumber: 2296,
+                                    lineNumber: 2295,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -5491,13 +5490,13 @@ function ProductsPage() {
                                     children: "Confirmar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/items/page.tsx",
-                                    lineNumber: 2305,
+                                    lineNumber: 2304,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/items/page.tsx",
-                            lineNumber: 2295,
+                            lineNumber: 2294,
                             columnNumber: 11
                         }, this)
                     ]

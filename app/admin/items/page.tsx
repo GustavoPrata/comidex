@@ -2225,7 +2225,7 @@ export default function ProductsPage() {
                         <div className="flex items-center gap-3">
                           <input
                             type="checkbox"
-                            className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600"
+                            className="w-4 h-4 text-orange-500 rounded-full focus:ring-orange-400 border-gray-300 dark:border-gray-600"
                             checked={isChecked}
                             onChange={(e) => {
                               if (e.target.checked) {
@@ -2255,7 +2255,6 @@ export default function ProductsPage() {
                             {categoryAdditionals.map((additional, idx) => (
                               <span key={additional.id}>
                                 {additional.name}
-                                {additional.price > 0 && ` (+R$ ${additional.price.toFixed(2)})`}
                                 {idx < categoryAdditionals.length - 1 && ', '}
                               </span>
                             ))}
