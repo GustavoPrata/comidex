@@ -2172,40 +2172,8 @@ export default function ProductsPage() {
           </DialogHeader>
           
           <div className="space-y-3 py-2">
-            {/* Quick Actions */}
-            {additionalCategories.length > 0 && (
-              <div className="flex justify-end gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setFormData({
-                      ...formData,
-                      additional_category_ids: additionalCategories.map(c => c.id)
-                    });
-                  }}
-                  className="text-xs h-7"
-                >
-                  Marcar Todas
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setFormData({
-                      ...formData,
-                      additional_category_ids: []
-                    });
-                  }}
-                  className="text-xs h-7"
-                >
-                  Limpar
-                </Button>
-              </div>
-            )}
-
             {/* Categories List */}
-            <div className="space-y-1 max-h-[350px] overflow-y-auto">
+            <div className="space-y-1 max-h-[400px] overflow-y-auto">
               {additionalCategories.length > 0 ? (
                 <>
                   {additionalCategories.map((category) => {
@@ -2223,24 +2191,39 @@ export default function ProductsPage() {
                         `}
                       >
                         <div className="flex items-center gap-3">
-                          <input
-                            type="checkbox"
-                            className="w-4 h-4 text-orange-500 rounded-full focus:ring-orange-400 border-gray-300 dark:border-gray-600"
-                            checked={isChecked}
-                            onChange={(e) => {
-                              if (e.target.checked) {
-                                setFormData({
-                                  ...formData,
-                                  additional_category_ids: [...formData.additional_category_ids, category.id]
-                                });
-                              } else {
-                                setFormData({
-                                  ...formData,
-                                  additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
-                                });
+                          <div className="relative">
+                            <input
+                              type="checkbox"
+                              className="sr-only"
+                              checked={isChecked}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFormData({
+                                    ...formData,
+                                    additional_category_ids: [...formData.additional_category_ids, category.id]
+                                  });
+                                } else {
+                                  setFormData({
+                                    ...formData,
+                                    additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
+                                  });
+                                }
+                              }}
+                            />
+                            <div className={`
+                              w-5 h-5 rounded-full border-2 transition-all duration-200 flex items-center justify-center
+                              ${isChecked 
+                                ? 'bg-orange-500 border-orange-500' 
+                                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 hover:border-orange-300'
                               }
-                            }}
-                          />
+                            `}>
+                              {isChecked && (
+                                <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="3">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
+                          </div>
                           <div className="flex-1">
                             <p className="text-sm font-medium">{category.name}</p>
                           </div>

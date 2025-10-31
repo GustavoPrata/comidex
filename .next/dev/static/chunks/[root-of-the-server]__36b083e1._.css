@@ -902,8 +902,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-height: 24rem;
 }
 
-.max-h-\[350px\] {
-  max-height: 350px;
+.max-h-\[400px\] {
+  max-height: 400px;
 }
 
 .max-h-\[60vh\] {
@@ -2710,6 +2710,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   cursor: grab;
 }
 
+.hover\:border-orange-300:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(253 186 116 / var(--tw-border-opacity, 1));
+}
+
 .hover\:border-orange-400:hover {
   --tw-border-opacity: 1;
   border-color: rgb(251 146 60 / var(--tw-border-opacity, 1));
@@ -2931,11 +2936,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-}
-
-.focus\:ring-orange-400:focus {
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(251 146 60 / var(--tw-ring-opacity, 1));
 }
 
 .focus\:ring-orange-500:focus {
