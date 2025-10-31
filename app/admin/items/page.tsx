@@ -1837,7 +1837,8 @@ export default function ProductsPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full justify-between text-left font-normal"
+                  size="sm"
+                  className="h-9"
                   onClick={() => {
                     setAdditionalsItem(editingItem || {
                       id: 0,
@@ -1855,13 +1856,12 @@ export default function ProductsPage() {
                     setIsAdditionalsModalOpen(true);
                   }}
                 >
-                  <span className="flex items-center gap-2">
-                    Configurar Adicionais
-                  </span>
+                  <Plus className="h-3.5 w-3.5 mr-1.5" />
+                  Adicionar
                   {formData.additional_category_ids.length > 0 && (
-                    <Badge variant="secondary" className="bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
-                      {formData.additional_category_ids.length} selecionada{formData.additional_category_ids.length > 1 ? 's' : ''}
-                    </Badge>
+                    <span className="ml-2 inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 text-[10px] font-semibold bg-orange-500 text-white rounded-full">
+                      {formData.additional_category_ids.length}
+                    </span>
                   )}
                 </Button>
               </div>

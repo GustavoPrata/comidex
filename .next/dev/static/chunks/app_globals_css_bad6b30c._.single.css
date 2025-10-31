@@ -640,6 +640,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-right: .25rem;
 }
 
+.mr-1\.5 {
+  margin-right: .375rem;
+}
+
 .mr-2 {
   margin-right: .5rem;
 }
@@ -978,6 +982,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .w-px {
   width: 1px;
+}
+
+.min-w-\[20px\] {
+  min-width: 20px;
 }
 
 .min-w-\[8rem\] {
@@ -2104,10 +2112,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .font-medium {
   font-weight: 500;
-}
-
-.font-normal {
-  font-weight: 400;
 }
 
 .font-semibold {
