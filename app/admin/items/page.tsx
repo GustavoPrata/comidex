@@ -441,6 +441,10 @@ export default function ProductsPage() {
   const [priceFormData, setPriceFormData] = useState({
     price: ""
   });
+  
+  // State for additionals modal
+  const [isAdditionalsModalOpen, setIsAdditionalsModalOpen] = useState(false);
+  const [additionalsItem, setAdditionalsItem] = useState<Item | null>(null);
 
   // DnD sensors
   const sensors = useSensors(
@@ -1812,47 +1816,40 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* Additional Categories Selection */}
+              {/* Additional Categories Button */}
               <div className="space-y-2">
-                <Label htmlFor="additional-categories">Categorias de Adicionais</Label>
-                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl space-y-2">
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    Selecione as categorias de adicionais disponíveis para este produto
-                  </p>
-                  <div className="grid grid-cols-1 gap-2">
-                    {additionalCategories.map((category) => (
-                      <label
-                        key={category.id}
-                        className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700/50 p-2 rounded-lg transition-colors"
-                      >
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600"
-                          checked={formData.additional_category_ids.includes(category.id)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setFormData({
-                                ...formData,
-                                additional_category_ids: [...formData.additional_category_ids, category.id]
-                              });
-                            } else {
-                              setFormData({
-                                ...formData,
-                                additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
-                              });
-                            }
-                          }}
-                        />
-                        <span className="text-sm font-medium">{category.name}</span>
-                      </label>
-                    ))}
-                    {additionalCategories.length === 0 && (
-                      <p className="text-sm text-gray-500 dark:text-gray-400 italic text-center py-2">
-                        Nenhuma categoria de adicionais cadastrada
-                      </p>
-                    )}
-                  </div>
-                </div>
+                <Label>Adicionais</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full justify-between text-left font-normal"
+                  onClick={() => {
+                    setAdditionalsItem(editingItem || {
+                      id: 0,
+                      name: formData.name,
+                      description: formData.description,
+                      price: parseFloat(formData.price) || 0,
+                      category_id: parseInt(formData.category_id),
+                      group_id: parseInt(formData.group_id),
+                      active: formData.active,
+                      available: formData.available,
+                      quantity: formData.quantity,
+                      image: formData.image,
+                      sort_order: 0
+                    } as Item);
+                    setIsAdditionalsModalOpen(true);
+                  }}
+                >
+                  <span className="flex items-center gap-2">
+                    <Plus className="h-4 w-4" />
+                    Configurar Adicionais
+                  </span>
+                  {formData.additional_category_ids.length > 0 && (
+                    <Badge variant="secondary" className="bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
+                      {formData.additional_category_ids.length} selecionada{formData.additional_category_ids.length > 1 ? 's' : ''}
+                    </Badge>
+                  )}
+                </Button>
               </div>
 
               {/* Status section with better spacing */}
@@ -2140,6 +2137,121 @@ export default function ProductsPage() {
                   Salvar
                 </>
               )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      
+      {/* Additionals Configuration Modal */}
+      <Dialog open={isAdditionalsModalOpen} onOpenChange={(open) => {
+        if (!open) {
+          setIsAdditionalsModalOpen(false);
+          setAdditionalsItem(null);
+        }
+      }}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>Configurar Adicionais</DialogTitle>
+            <DialogDescription>
+              Selecione as categorias de adicionais disponíveis para "{additionalsItem?.name || formData.name}"
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-3 max-h-[400px] overflow-y-auto">
+              {additionalCategories.length > 0 ? (
+                <>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    Marque as categorias que podem ser adicionadas a este produto:
+                  </p>
+                  {additionalCategories.map((category) => {
+                    const isChecked = formData.additional_category_ids.includes(category.id);
+                    return (
+                      <div
+                        key={category.id}
+                        className={`
+                          relative flex items-center justify-between p-3 rounded-lg border transition-all
+                          ${isChecked 
+                            ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-300 dark:border-orange-700' 
+                            : 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800'
+                          }
+                        `}
+                      >
+                        <label className="flex items-center space-x-3 cursor-pointer flex-1">
+                          <input
+                            type="checkbox"
+                            className="w-5 h-5 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600"
+                            checked={isChecked}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData({
+                                  ...formData,
+                                  additional_category_ids: [...formData.additional_category_ids, category.id]
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
+                                });
+                              }
+                            }}
+                          />
+                          <div className="flex-1">
+                            <p className="font-medium text-sm">{category.name}</p>
+                          </div>
+                        </label>
+                        {isChecked && (
+                          <div className="ml-3">
+                            <Badge className="bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
+                              Ativo
+                            </Badge>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <Plus className="h-12 w-12 text-gray-400 mx-auto mb-3" />
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Nenhuma categoria de adicionais cadastrada
+                  </p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                    Vá em "Adicionais" para criar categorias
+                  </p>
+                </div>
+              )}
+            </div>
+            
+            {formData.additional_category_ids.length > 0 && (
+              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3">
+                <p className="text-sm font-medium text-orange-700 dark:text-orange-400">
+                  {formData.additional_category_ids.length} categoria{formData.additional_category_ids.length > 1 ? 's' : ''} selecionada{formData.additional_category_ids.length > 1 ? 's' : ''}
+                </p>
+              </div>
+            )}
+          </div>
+          
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsAdditionalsModalOpen(false);
+                setAdditionalsItem(null);
+              }}
+            >
+              Cancelar
+            </Button>
+            <Button 
+              className="bg-orange-500 hover:bg-orange-600 text-white"
+              onClick={() => {
+                setIsAdditionalsModalOpen(false);
+                setAdditionalsItem(null);
+              }}
+            >
+              <CheckCircle className="h-4 w-4 mr-2" />
+              Confirmar
             </Button>
           </DialogFooter>
         </DialogContent>
