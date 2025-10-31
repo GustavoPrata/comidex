@@ -2196,6 +2196,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: currentColor;
 }
 
+.text-destructive {
+  color: hsl(var(--destructive));
+}
+
 .text-destructive-foreground {
   color: hsl(var(--destructive-foreground));
 }

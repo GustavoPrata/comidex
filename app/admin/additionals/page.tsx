@@ -646,16 +646,26 @@ export default function AdditionalsPage() {
     try {
       setSaving(true);
       
-      // Check if category has additionals
+      // Get all additionals in this category
       const additionalsInCategory = additionals.filter(a => a.additional_category_id === deleteCategory.id);
       
+      // First delete all additionals in this category
       if (additionalsInCategory.length > 0) {
-        toast.error(`Não é possível excluir categoria com ${additionalsInCategory.length} adicionais. Remova os adicionais primeiro.`);
-        setIsDeleteCategoryModalOpen(false);
-        setSaving(false);
-        return;
+        const { error: deleteAdditionalsError } = await supabase
+          .from('additionals')
+          .delete()
+          .eq('additional_category_id', deleteCategory.id);
+          
+        if (deleteAdditionalsError) {
+          console.error('Erro ao excluir adicionais:', deleteAdditionalsError);
+          throw deleteAdditionalsError;
+        }
+        
+        // Update local state - remove additionals
+        setAdditionals(prev => prev.filter(a => a.additional_category_id !== deleteCategory.id));
       }
       
+      // Then delete the category
       const { error } = await supabase
         .from('additional_categories')
         .delete()
@@ -663,10 +673,15 @@ export default function AdditionalsPage() {
 
       if (error) throw error;
       
-      // Update local state
+      // Update local state - remove category
       setCategories(prev => prev.filter(item => item.id !== deleteCategory.id));
       
-      toast.success("Categoria excluída com sucesso!");
+      if (additionalsInCategory.length > 0) {
+        toast.success(`Categoria "${deleteCategory.name}" e ${additionalsInCategory.length} itens excluídos!`);
+      } else {
+        toast.success("Categoria excluída com sucesso!");
+      }
+      
       setIsDeleteCategoryModalOpen(false);
       setDeleteCategory(null);
     } catch (error) {
@@ -1047,11 +1062,15 @@ export default function AdditionalsPage() {
             <AlertDialogTitle>Excluir Categoria</AlertDialogTitle>
             <AlertDialogDescription>
               Tem certeza que deseja excluir a categoria "{deleteCategory?.name}"?
-              {additionals.filter(a => a.additional_category_id === deleteCategory?.id).length > 0 && (
-                <span className="block mt-2 text-red-600">
-                  Esta categoria possui adicionais. Remova os adicionais primeiro.
-                </span>
-              )}
+              {deleteCategory && (() => {
+                const count = additionals.filter(a => a.additional_category_id === deleteCategory.id).length;
+                return count > 0 ? (
+                  <span className="block mt-2 font-semibold text-destructive">
+                    ⚠️ Todos os {count} {count === 1 ? 'item' : 'itens'} dentro desta categoria também serão excluídos!
+                  </span>
+                ) : null;
+              })()}
+              <span className="block mt-2">Esta ação não pode ser desfeita.</span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -1072,7 +1091,7 @@ export default function AdditionalsPage() {
                   Excluindo...
                 </>
               ) : (
-                'Excluir'
+                'Excluir Tudo'
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
