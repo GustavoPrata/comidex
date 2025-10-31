@@ -34,7 +34,7 @@ export interface Database {
       }
       additional_categories: {
         Row: {
-          id: string
+          id: number
           name: string
           sort_order: number
           active: boolean
@@ -46,11 +46,11 @@ export interface Database {
       }
       additionals: {
         Row: {
-          id: string
+          id: number
           name: string
           price: number
           active: boolean
-          additional_category_id: string | null
+          additional_category_id: number | null
           sort_order: number
           created_at: string
           updated_at: string
@@ -124,12 +124,11 @@ export interface Database {
       restaurant_tables: {
         Row: {
           id: number
-          name: string
-          number: number
-          type: 'table' | 'counter'
+          number: string
           capacity: number
-          attendant: string | null
+          status: 'available' | 'occupied' | 'reserved' | 'cleaning'
           active: boolean
+          location: string | null
           notes: string | null
           created_at: string
           updated_at: string
@@ -137,118 +136,116 @@ export interface Database {
         Insert: Omit<Database['public']['Tables']['restaurant_tables']['Row'], 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Database['public']['Tables']['restaurant_tables']['Insert']>
       }
-      tablet_sessoes: {
+      orders: {
         Row: {
           id: number
-          mesa_id: number
-          tablet_id: number | null
-          status: 'ativa' | 'finalizada' | 'cancelada'
-          tipo_atendimento_id: number | null
-          pessoas_total: number
-          pessoas_adultos: number
-          pessoas_criancas: number
-          inicio_atendimento: string
-          fim_atendimento: string | null
-          tempo_decorrido: number | null
-          valor_total: number
-          valor_pago: number
-          valor_desconto: number
-          taxa_servico: number
-          observacoes: string | null
+          order_number: string
+          table_id: number | null
+          customer_name: string | null
+          customer_phone: string | null
+          status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'delivered' | 'completed' | 'cancelled'
+          payment_status: 'pending' | 'partial' | 'paid' | 'refunded'
+          payment_method: 'cash' | 'card' | 'pix' | 'mixed' | null
+          type: 'dine_in' | 'takeout' | 'delivery'
+          subtotal: number
+          discount: number
+          delivery_fee: number
+          total: number
+          notes: string | null
           created_at: string
           updated_at: string
+          completed_at: string | null
         }
-        Insert: Omit<Database['public']['Tables']['tablet_sessoes']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['tablet_sessoes']['Insert']>
+        Insert: Omit<Database['public']['Tables']['orders']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['orders']['Insert']>
       }
-      tablet_pedidos: {
+      order_items: {
         Row: {
           id: number
-          sessao_id: number
-          numero: string
-          status: 'pendente' | 'preparando' | 'pronto' | 'entregue' | 'cancelado'
-          observacoes: string | null
-          valor_total: number
-          tempo_preparo: number | null
-          prioridade: 'baixa' | 'normal' | 'alta' | 'urgente'
-          created_at: string
-          updated_at: string
-        }
-        Insert: Omit<Database['public']['Tables']['tablet_pedidos']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['tablet_pedidos']['Insert']>
-      }
-      tablet_pedido_itens: {
-        Row: {
-          id: number
-          pedido_id: number
+          order_id: number
           item_id: number
-          quantidade: number
-          preco_unitario: number | null
-          preco_total: number | null
-          observacoes: string | null
-          status: 'pendente' | 'preparando' | 'pronto' | 'entregue' | 'cancelado'
+          quantity: number
+          unit_price: number
+          total_price: number
+          notes: string | null
+          status: 'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled'
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['tablet_pedido_itens']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['tablet_pedido_itens']['Insert']>
+        Insert: Omit<Database['public']['Tables']['order_items']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['order_items']['Insert']>
       }
-      item_additionals: {
+      order_item_additionals: {
         Row: {
           id: number
-          item_id: number
+          order_item_id: number
           additional_id: number
+          quantity: number
+          unit_price: number
+          total_price: number
           created_at: string
-          updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['item_additionals']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['item_additionals']['Insert']>
+        Insert: Omit<Database['public']['Tables']['order_item_additionals']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['order_item_additionals']['Insert']>
       }
-      print_config: {
+      payments: {
         Row: {
           id: number
-          name: string
-          config_type: string
-          printer_id: number
-          template: string | null
-          settings: any | null
-          active: boolean
+          order_id: number
+          amount: number
+          payment_method: 'cash' | 'card' | 'pix'
+          status: 'pending' | 'completed' | 'failed' | 'refunded'
+          reference_number: string | null
+          notes: string | null
+          paid_at: string | null
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['print_config']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['print_config']['Insert']>
+        Insert: Omit<Database['public']['Tables']['payments']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['payments']['Insert']>
       }
     }
   }
 }
 
-// Type aliases for easier use
+// Convenience types
 export type Group = Database['public']['Tables']['groups']['Row']
 export type Category = Database['public']['Tables']['categories']['Row']
 export type AdditionalCategory = Database['public']['Tables']['additional_categories']['Row']
 export type Additional = Database['public']['Tables']['additionals']['Row']
 export type Printer = Database['public']['Tables']['printers']['Row']
 export type Item = Database['public']['Tables']['items']['Row']
-export type PrintQueue = Database['public']['Tables']['print_queue']['Row']
 export type RestaurantTable = Database['public']['Tables']['restaurant_tables']['Row']
-export type Session = Database['public']['Tables']['tablet_sessoes']['Row']
-export type Order = Database['public']['Tables']['tablet_pedidos']['Row']
-export type OrderItem = Database['public']['Tables']['tablet_pedido_itens']['Row']
-export type ItemAdditional = Database['public']['Tables']['item_additionals']['Row']
-export type PrintConfig = Database['public']['Tables']['print_config']['Row']
+export type Order = Database['public']['Tables']['orders']['Row']
+export type OrderItem = Database['public']['Tables']['order_items']['Row']
+export type OrderItemAdditional = Database['public']['Tables']['order_item_additionals']['Row']
+export type Payment = Database['public']['Tables']['payments']['Row']
+export type PrintQueue = Database['public']['Tables']['print_queue']['Row']
 
-// Input types for creating/updating
-export type GroupInput = Database['public']['Tables']['groups']['Insert']
-export type CategoryInput = Database['public']['Tables']['categories']['Insert']
-export type AdditionalCategoryInput = Database['public']['Tables']['additional_categories']['Insert']
-export type AdditionalInput = Database['public']['Tables']['additionals']['Insert']
-export type PrinterInput = Database['public']['Tables']['printers']['Insert']
-export type ItemInput = Database['public']['Tables']['items']['Insert']
-export type PrintQueueInput = Database['public']['Tables']['print_queue']['Insert']
-export type RestaurantTableInput = Database['public']['Tables']['restaurant_tables']['Insert']
-export type SessionInput = Database['public']['Tables']['tablet_sessoes']['Insert']
-export type OrderInput = Database['public']['Tables']['tablet_pedidos']['Insert']
-export type OrderItemInput = Database['public']['Tables']['tablet_pedido_itens']['Insert']
-export type ItemAdditionalInput = Database['public']['Tables']['item_additionals']['Insert']
-export type PrintConfigInput = Database['public']['Tables']['print_config']['Insert']
+// Insert types
+export type GroupInsert = Database['public']['Tables']['groups']['Insert']
+export type CategoryInsert = Database['public']['Tables']['categories']['Insert']
+export type AdditionalCategoryInsert = Database['public']['Tables']['additional_categories']['Insert']
+export type AdditionalInsert = Database['public']['Tables']['additionals']['Insert']
+export type PrinterInsert = Database['public']['Tables']['printers']['Insert']
+export type ItemInsert = Database['public']['Tables']['items']['Insert']
+export type RestaurantTableInsert = Database['public']['Tables']['restaurant_tables']['Insert']
+export type OrderInsert = Database['public']['Tables']['orders']['Insert']
+export type OrderItemInsert = Database['public']['Tables']['order_items']['Insert']
+export type OrderItemAdditionalInsert = Database['public']['Tables']['order_item_additionals']['Insert']
+export type PaymentInsert = Database['public']['Tables']['payments']['Insert']
+export type PrintQueueInsert = Database['public']['Tables']['print_queue']['Insert']
+
+// Update types
+export type GroupUpdate = Database['public']['Tables']['groups']['Update']
+export type CategoryUpdate = Database['public']['Tables']['categories']['Update']
+export type AdditionalCategoryUpdate = Database['public']['Tables']['additional_categories']['Update']
+export type AdditionalUpdate = Database['public']['Tables']['additionals']['Update']
+export type PrinterUpdate = Database['public']['Tables']['printers']['Update']
+export type ItemUpdate = Database['public']['Tables']['items']['Update']
+export type RestaurantTableUpdate = Database['public']['Tables']['restaurant_tables']['Update']
+export type OrderUpdate = Database['public']['Tables']['orders']['Update']
+export type OrderItemUpdate = Database['public']['Tables']['order_items']['Update']
+export type OrderItemAdditionalUpdate = Database['public']['Tables']['order_item_additionals']['Update']
+export type PaymentUpdate = Database['public']['Tables']['payments']['Update']
+export type PrintQueueUpdate = Database['public']['Tables']['print_queue']['Update']

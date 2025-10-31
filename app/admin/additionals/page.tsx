@@ -191,7 +191,7 @@ export default function AdditionalsPage() {
   const [formData, setFormData] = useState({
     name: "",
     price: 0,
-    additional_category_id: "",
+    additional_category_id: null as number | null,
     active: true,
     sort_order: 0
   });
@@ -333,13 +333,13 @@ export default function AdditionalsPage() {
       setFormData({
         name: additional.name,
         price: additional.price || 0,
-        additional_category_id: additional.additional_category_id ? String(additional.additional_category_id) : "",
+        additional_category_id: additional.additional_category_id,
         active: additional.active !== false,
         sort_order: additional.sort_order || 0
       });
     } else {
       setEditingAdditional(null);
-      const firstCategoryId = categories.length > 0 && categories[0]?.id ? String(categories[0].id) : "";
+      const firstCategoryId = categories.length > 0 && categories[0]?.id ? categories[0].id : null;
       setFormData({
         name: "",
         price: 0,
@@ -438,9 +438,8 @@ export default function AdditionalsPage() {
     try {
       setSaving(true);
       
-      // Get the category ID (UUID) or null
-      const categoryId = formData.additional_category_id && formData.additional_category_id !== "none" ? 
-        formData.additional_category_id : null;
+      // Get the category ID (number) or null
+      const categoryId = formData.additional_category_id;
       
       // Calculate sort_order for new items
       let sort_order = formData.sort_order || 0;
@@ -505,7 +504,7 @@ export default function AdditionalsPage() {
       setFormData({
         name: "",
         price: 0,
-        additional_category_id: "",
+        additional_category_id: null,
         active: true,
         sort_order: 0
       });
@@ -917,7 +916,7 @@ export default function AdditionalsPage() {
                       setFormData({
                         name: "",
                         price: 0,
-                        additional_category_id: group.category?.id ? String(group.category.id) : "",
+                        additional_category_id: group.category?.id || null,
                         active: true,
                         sort_order: 0
                       });
@@ -978,10 +977,10 @@ export default function AdditionalsPage() {
               <div className="col-span-2 space-y-2">
                 <Label htmlFor="category">Categoria</Label>
                 <Select
-                  value={formData.additional_category_id || "none"}
+                  value={formData.additional_category_id ? String(formData.additional_category_id) : "none"}
                   onValueChange={(value) => setFormData({ 
                     ...formData, 
-                    additional_category_id: value === "none" ? "" : value 
+                    additional_category_id: value === "none" ? null : Number(value) 
                   })}
                 >
                   <SelectTrigger id="category">
