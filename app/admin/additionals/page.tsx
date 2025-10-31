@@ -822,8 +822,8 @@ export default function AdditionalsPage() {
                     )}
                   </div>
                 </CardHeader>
-                <CardContent className="p-4 space-y-3">
-                  <div className="max-h-[280px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full">
+                <CardContent className="p-4 flex flex-col gap-3">
+                  <div className="h-[280px] overflow-y-auto pr-1 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-thumb]:bg-gray-600 [&::-webkit-scrollbar-thumb]:rounded-full">
                     <DndContext
                       sensors={sensors}
                       collisionDetection={closestCenter}
@@ -834,19 +834,25 @@ export default function AdditionalsPage() {
                         strategy={verticalListSortingStrategy}
                       >
                         <div className="space-y-2">
-                          {group.items.map((additional) => (
-                            <SortableAdditionalItem
-                              key={additional.id}
-                              additional={additional}
-                              onDuplicate={() => duplicateAdditional(additional)}
-                              onEdit={() => openModal(additional)}
-                              onDelete={() => {
-                                setDeleteAdditional(additional);
-                                setIsDeleteModalOpen(true);
-                              }}
-                              onToggleActive={() => toggleActive(additional)}
-                            />
-                          ))}
+                          {group.items.length === 0 ? (
+                            <div className="h-full flex items-center justify-center text-sm text-gray-500">
+                              Nenhum adicional nesta categoria
+                            </div>
+                          ) : (
+                            group.items.map((additional) => (
+                              <SortableAdditionalItem
+                                key={additional.id}
+                                additional={additional}
+                                onDuplicate={() => duplicateAdditional(additional)}
+                                onEdit={() => openModal(additional)}
+                                onDelete={() => {
+                                  setDeleteAdditional(additional);
+                                  setIsDeleteModalOpen(true);
+                                }}
+                                onToggleActive={() => toggleActive(additional)}
+                              />
+                            ))
+                          )}
                         </div>
                       </SortableContext>
                     </DndContext>

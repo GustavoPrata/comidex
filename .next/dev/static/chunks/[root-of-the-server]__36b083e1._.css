@@ -850,6 +850,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   height: 240px;
 }
 
+.h-\[280px\] {
+  height: 280px;
+}
+
 .h-\[400px\] {
   height: 400px;
 }
@@ -884,10 +888,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .max-h-96 {
   max-height: 24rem;
-}
-
-.max-h-\[280px\] {
-  max-height: 280px;
 }
 
 .max-h-\[60vh\] {
