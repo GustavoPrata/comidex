@@ -1465,9 +1465,11 @@ export default function ProductsPage() {
                               <h3 className="text-base font-medium text-gray-700 dark:text-gray-300">
                                 {categoryName}
                               </h3>
-                              <Badge variant="secondary" className="ml-2 scale-90">
-                                {categoryItems.length}
-                              </Badge>
+                              {categoryItems.length > 0 && (
+                                <Badge variant="secondary" className="ml-2 scale-90">
+                                  {categoryItems.length}
+                                </Badge>
+                              )}
                             </div>
                           </div>
 
