@@ -4575,7 +4575,7 @@ function ProductsPage() {
                                                                     lineNumber: 1869,
                                                                     columnNumber: 21
                                                                 }, this),
-                                                                formData.additional_category_ids.length > 0 ? 'Configurar Adicionais' : 'Adicionar Adicionais'
+                                                                formData.additional_category_ids.length > 0 ? 'Configurar' : 'Adicionar'
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/items/page.tsx",

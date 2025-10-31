@@ -1867,7 +1867,7 @@ export default function ProductsPage() {
                     }}
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    {formData.additional_category_ids.length > 0 ? 'Configurar Adicionais' : 'Adicionar Adicionais'}
+                    {formData.additional_category_ids.length > 0 ? 'Configurar' : 'Adicionar'}
                   </Button>
                   
                   {/* Selected Categories Display */}
