@@ -3495,6 +3495,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
     max-width: 425px;
   }
 
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .sm\:flex-row {
     flex-direction: row;
   }
@@ -3589,6 +3593,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 @media (min-width: 1280px) {
   .xl\:grid-cols-10 {
     grid-template-columns: repeat(10, minmax(0, 1fr));
+  }
+
+  .xl\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .xl\:grid-cols-4 {
