@@ -98,77 +98,68 @@ function SortableAdditionalItem({
     <div 
       ref={setNodeRef}
       style={style}
-      className={`group relative flex items-center justify-between p-3 rounded-xl bg-white dark:bg-gray-900/50 hover:bg-gradient-to-r hover:from-orange-50 hover:to-white dark:hover:from-orange-950/20 dark:hover:to-gray-900/50 border border-gray-200 dark:border-gray-800 hover:border-orange-300 dark:hover:border-orange-800 shadow-sm hover:shadow-md transition-all duration-200 ${!additional.active ? 'opacity-50' : ''}`}
+      className={`flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-900 ${!additional.active ? 'opacity-60' : ''}`}
     >
-      <div className="flex items-center gap-3 flex-1">
-        {/* Drag Handle - Mais bonito */}
+      <div className="flex items-center gap-2 flex-1">
+        {/* Drag Handle - Original */}
         <div
           {...attributes}
           {...listeners}
-          className="cursor-move p-2 hover:bg-orange-100 dark:hover:bg-orange-900/30 rounded-lg touch-none group/drag select-none transition-all hover:shadow-sm flex items-center justify-center"
+          className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
           style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
           onMouseDown={(e) => e.preventDefault()}
           title="Arraste para reordenar"
         >
-          <svg className="w-4 h-4 text-gray-400 group-hover/drag:text-orange-500 transition-colors duration-200" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M9 5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM9 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM9 23a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 5a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zM15 23a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+          <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
           </svg>
         </div>
         
-        {/* Content with better styling */}
         <div className="flex-1">
-          <p className="font-semibold text-gray-900 dark:text-gray-100">{additional.name}</p>
-          <div className="flex items-center gap-3 mt-1">
-            {additional.price === 0 ? (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                <span className="mr-1">✓</span> Grátis
-              </span>
-            ) : (
-              <span className="text-lg font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                R$ {additional.price.toFixed(2).replace('.', ',')}
-              </span>
-            )}
+          <p className="font-medium text-sm">{additional.name}</p>
+          <div className="flex items-center gap-2 mt-1">
+            <p className={`text-sm font-medium ${additional.price === 0 ? 'text-green-600 dark:text-green-400' : 'text-gray-900 dark:text-gray-100'}`}>
+              {additional.price === 0 ? 'Grátis' : `R$ ${additional.price.toFixed(2).replace('.', ',')}`}
+            </p>
           </div>
         </div>
       </div>
       
-      <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-        {/* Status button with better style */}
+      <div className="flex items-center gap-2">
+        {/* Status button */}
         <button
           onClick={onToggleActive}
-          className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+          className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
             additional.active 
-              ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-sm' 
-              : 'bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white'
+              ? 'bg-green-600 hover:bg-green-700 text-white' 
+              : 'bg-gray-500 hover:bg-gray-600 text-white'
           }`}
         >
           {additional.active ? 'Ativo' : 'Inativo'}
         </button>
         
-        {/* Action buttons with better style */}
-        <div className="flex items-center gap-0.5 bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-0.5">
-          <button
-            onClick={onDuplicate}
-            className="h-7 w-7 rounded hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center"
-            title="Duplicar"
-          >
-            <Copy className="h-3.5 w-3.5" />
-          </button>
-          <button
-            onClick={onEdit}
-            className="h-7 w-7 rounded hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center"
-            title="Editar"
-          >
-            <Pencil className="h-3.5 w-3.5" />
-          </button>
-          <button
-            onClick={onDelete}
-            className="h-7 w-7 rounded hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 transition-all inline-flex items-center justify-center"
-            title="Excluir"
-          >
-            <Trash2 className="h-3.5 w-3.5" />
-          </button>
-        </div>
+        {/* Action buttons */}
+        <button
+          onClick={onDuplicate}
+          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+          title="Duplicar"
+        >
+          <Copy className="h-4 w-4" />
+        </button>
+        <button
+          onClick={onEdit}
+          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+          title="Editar"
+        >
+          <Pencil className="h-4 w-4" />
+        </button>
+        <button
+          onClick={onDelete}
+          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+          title="Excluir"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );
@@ -796,11 +787,8 @@ export default function AdditionalsPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
-              <Card key={categoryName} className="overflow-hidden h-fit group relative bg-gradient-to-br from-white to-gray-50 dark:from-gray-950 dark:to-gray-900 shadow-lg hover:shadow-2xl transition-all duration-300 border-0">
-                {/* Gradient accent bar */}
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600"></div>
-                
-                <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20 backdrop-blur-sm">
+              <Card key={categoryName} className="overflow-hidden h-fit">
+                <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
@@ -814,17 +802,17 @@ export default function AdditionalsPage() {
                       </div>
                     </div>
                     {group.category && (
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                      <div className="flex items-center gap-1">
                         <button
                           onClick={() => duplicateCategory(group.category!)}
-                          className="h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center shadow-sm"
+                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
                           title="Duplicar"
                         >
                           <Copy className="h-3.5 w-3.5" />
                         </button>
                         <button
                           onClick={() => openCategoryModal(group.category)}
-                          className="h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-orange-100 dark:hover:bg-orange-900/30 hover:text-orange-600 transition-all inline-flex items-center justify-center shadow-sm"
+                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
                           title="Editar"
                         >
                           <Pencil className="h-3.5 w-3.5" />
@@ -834,7 +822,7 @@ export default function AdditionalsPage() {
                             setDeleteCategory(group.category || null);
                             setIsDeleteCategoryModalOpen(true);
                           }}
-                          className="h-8 w-8 rounded-full bg-white/80 dark:bg-gray-800/80 hover:bg-red-100 dark:hover:bg-red-900/30 hover:text-red-600 transition-all inline-flex items-center justify-center shadow-sm"
+                          className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
                           title="Excluir"
                         >
                           <Trash2 className="h-3.5 w-3.5" />
@@ -856,10 +844,8 @@ export default function AdditionalsPage() {
                       >
                         <div className="space-y-2">
                           {group.items.length === 0 ? (
-                            <div className="h-full flex flex-col items-center justify-center py-8 text-gray-400">
-                              <Package className="h-12 w-12 mb-3 opacity-30" />
-                              <p className="text-sm font-medium">Nenhum adicional ainda</p>
-                              <p className="text-xs text-gray-400 mt-1">Clique no botão abaixo para adicionar</p>
+                            <div className="h-full flex items-center justify-center text-sm text-gray-500">
+                              Nenhum adicional nesta categoria
                             </div>
                           ) : (
                             group.items.map((additional) => (
@@ -881,29 +867,25 @@ export default function AdditionalsPage() {
                     </DndContext>
                   </div>
                   
-                  {/* Add new additional button - Mais bonito */}
-                  <div className="pt-2 mt-2 border-t border-gray-100 dark:border-gray-800">
-                    <button
-                      onClick={() => {
-                        setFormData({
-                          name: "",
-                          price: 0,
-                          additional_category_id: group.category?.id ? String(group.category.id) : "",
-                          active: true,
-                          sort_order: 0
-                        });
-                        setEditingAdditional(null);
-                        setIsModalOpen(true);
-                      }}
-                      className="group/btn w-full py-3 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl hover:border-orange-500 hover:bg-gradient-to-r hover:from-orange-50 hover:to-orange-100/50 dark:hover:from-orange-950/20 dark:hover:to-orange-900/10 transition-all duration-300 flex items-center justify-center gap-2 text-gray-500 hover:text-orange-600"
-                      type="button"
-                    >
-                      <div className="p-1 rounded-full bg-orange-100 dark:bg-orange-900/30 group-hover/btn:bg-orange-200 dark:group-hover/btn:bg-orange-800/40 transition-colors">
-                        <Plus className="h-4 w-4 text-orange-600 dark:text-orange-400 group-hover/btn:rotate-90 transition-transform duration-300" />
-                      </div>
-                      <span className="text-sm font-semibold">Adicionar Item</span>
-                    </button>
-                  </div>
+                  {/* Add new additional button */}
+                  <button
+                    onClick={() => {
+                      setFormData({
+                        name: "",
+                        price: 0,
+                        additional_category_id: group.category?.id ? String(group.category.id) : "",
+                        active: true,
+                        sort_order: 0
+                      });
+                      setEditingAdditional(null);
+                      setIsModalOpen(true);
+                    }}
+                    className="w-full py-2.5 border border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-orange-500 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center gap-2 text-gray-500 hover:text-orange-500"
+                    type="button"
+                  >
+                    <Plus className="h-4 w-4" />
+                    <span className="text-sm font-medium">Adicionar Item</span>
+                  </button>
                 </CardContent>
               </Card>
             ))}
