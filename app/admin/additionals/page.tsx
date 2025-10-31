@@ -394,23 +394,55 @@ export default function AdditionalsPage() {
   // Duplicate category
   const duplicateCategory = async (category: AdditionalCategory) => {
     try {
+      // Step 1: Create the new category
       const newCategory = {
         name: `${category.name} (Cópia)`,
         sort_order: (category.sort_order || 0) + 1
       };
 
-      const { data, error } = await supabase
+      const { data: newCategoryData, error: categoryError } = await supabase
         .from('additional_categories')
         .insert(newCategory)
         .select()
         .single();
 
-      if (error) throw error;
+      if (categoryError) throw categoryError;
       
-      // Update local state
-      setCategories(prev => [...prev, data].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)));
+      // Step 2: Get all additionals from the original category
+      const categoryAdditionals = additionals.filter(a => a.additional_category_id === category.id);
       
-      toast.success("Categoria duplicada com sucesso!");
+      // Step 3: Duplicate all additionals for the new category
+      if (categoryAdditionals.length > 0) {
+        const newAdditionals = categoryAdditionals.map((additional, index) => ({
+          name: additional.name,
+          price: additional.price,
+          additional_category_id: newCategoryData.id,
+          active: additional.active,
+          sort_order: index
+        }));
+        
+        const { data: newAdditionalsData, error: additionalsError } = await supabase
+          .from('additionals')
+          .insert(newAdditionals)
+          .select();
+        
+        if (additionalsError) {
+          console.error('Erro ao duplicar adicionais:', additionalsError);
+        } else if (newAdditionalsData) {
+          // Update local state with new additionals
+          setAdditionals(prev => [...prev, ...newAdditionalsData].sort((a, b) => {
+            if (a.additional_category_id === b.additional_category_id) {
+              return (a.sort_order || 0) - (b.sort_order || 0);
+            }
+            return 0;
+          }));
+        }
+      }
+      
+      // Update local state with new category
+      setCategories(prev => [...prev, newCategoryData].sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0)));
+      
+      toast.success(`Categoria "${category.name}" duplicada com ${categoryAdditionals.length} itens!`);
     } catch (error) {
       console.error('Erro ao duplicar categoria:', error);
       toast.error("Erro ao duplicar categoria");
