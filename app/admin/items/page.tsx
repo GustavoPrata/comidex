@@ -129,7 +129,6 @@ function SortableProductRow({
   const [viewImageOpen, setViewImageOpen] = useState(false);
   const [isDraggingImage, setIsDraggingImage] = useState(false);
   const [draggedImage, setDraggedImage] = useState<File | null>(null);
-  const [isHovered, setIsHovered] = useState(false);
 
   const {
     attributes,
@@ -194,8 +193,6 @@ function SortableProductRow({
       ref={setNodeRef}
       style={style}
       className={`flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900 rounded-xl ${!item.active ? 'opacity-60' : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="flex items-center gap-3">
         {/* Drag Handle */}
@@ -258,17 +255,15 @@ function SortableProductRow({
       </div>
 
       <div className="flex items-center gap-2">
-        {/* Additionals Badge - Only show on hover */}
-        {isHovered && item.additional_categories && item.additional_categories.length > 0 && (
-          <div className="flex flex-col gap-1 animate-in fade-in duration-200">
-            <Badge className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center">
-              <Plus className="h-3 w-3 mr-1" />
-              {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
-            </Badge>
-            <div className="text-[9px] text-orange-600 dark:text-orange-400 text-center truncate max-w-[90px]" title={item.additional_categories.join(', ')}>
-              {item.additional_categories.join(', ')}
-            </div>
-          </div>
+        {/* Additionals Badge - Always visible with tooltip */}
+        {item.additional_categories && item.additional_categories.length > 0 && (
+          <Badge 
+            className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center cursor-help"
+            title={item.additional_categories.join(', ')}
+          >
+            <Plus className="h-3 w-3 mr-1" />
+            {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
+          </Badge>
         )}
         
         {/* Quantity & Price - Stacked */}

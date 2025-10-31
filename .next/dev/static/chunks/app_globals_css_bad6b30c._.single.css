@@ -460,6 +460,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   pointer-events: auto;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .collapse {
   visibility: collapse;
 }
@@ -1016,10 +1020,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-width: 72rem;
 }
 
-.max-w-\[90px\] {
-  max-width: 90px;
-}
-
 .max-w-lg {
   max-width: 32rem;
 }
@@ -1156,6 +1156,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .cursor-grab {
   cursor: grab;
+}
+
+.cursor-help {
+  cursor: help;
 }
 
 .cursor-move {
@@ -1337,12 +1341,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .overflow-x-hidden {
   overflow-x: hidden;
-}
-
-.truncate {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 }
 
 .whitespace-nowrap {
@@ -2098,10 +2096,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .text-\[10px\] {
   font-size: 10px;
-}
-
-.text-\[9px\] {
-  font-size: 9px;
 }
 
 .text-base {
