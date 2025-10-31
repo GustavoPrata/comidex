@@ -45,15 +45,33 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
     const body = await request.json()
     
-    const { data, error } = await supabase
+    // Extract additional_category_ids from the body
+    const { additional_category_ids, ...itemData } = body
+    
+    // Create the item
+    const { data: newItem, error } = await supabase
       .from('items')
-      .insert(body)
+      .insert(itemData)
       .select()
       .single()
     
     if (error) throw error
     
-    return NextResponse.json(data, { status: 201 })
+    // Handle additional categories if provided
+    if (newItem && additional_category_ids && additional_category_ids.length > 0) {
+      const associations = additional_category_ids.map((categoryId: number) => ({
+        item_id: newItem.id,
+        additional_category_id: categoryId
+      }))
+      
+      const { error: insertError } = await supabase
+        .from('item_additional_categories')
+        .insert(associations)
+      
+      if (insertError) throw insertError
+    }
+    
+    return NextResponse.json(newItem, { status: 201 })
   } catch (error) {
     console.error('Error creating item:', error)
     return NextResponse.json(
