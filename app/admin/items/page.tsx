@@ -1915,10 +1915,6 @@ export default function ProductsPage() {
                           );
                         })}
                       </div>
-                      
-                      <p className="text-[10px] text-orange-700 dark:text-orange-300 italic">
-                        Os clientes poderão adicionar extras do produto
-                      </p>
                     </div>
                   )}
                 </div>

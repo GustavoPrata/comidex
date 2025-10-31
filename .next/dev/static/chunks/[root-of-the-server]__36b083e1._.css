@@ -2209,10 +2209,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   font-weight: 600;
 }
 
-.italic {
-  font-style: italic;
-}
-
 .leading-none {
   line-height: 1;
 }
