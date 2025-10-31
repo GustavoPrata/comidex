@@ -1,6 +1,5 @@
 {
-  "/admin/additionals/page": "app/admin/additionals/page.js",
-  "/api/prompt-message/route": "app/api/prompt-message/route.js",
-  "/page": "app/page.js",
-  "/prompt/page": "app/prompt/page.js"
+  "/admin/menu-structure/page": "app/admin/menu-structure/page.js",
+  "/api/db/[table]/route": "app/api/db/[table]/route.js",
+  "/page": "app/page.js"
 }
