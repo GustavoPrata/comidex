@@ -492,8 +492,16 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   bottom: 0;
 }
 
+.bottom-full {
+  bottom: 100%;
+}
+
 .left-0 {
   left: 0;
+}
+
+.left-1\/2 {
+  left: 50%;
 }
 
 .left-1\/4 {
@@ -546,6 +554,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .top-\[50\%\] {
   top: 50%;
+}
+
+.top-full {
+  top: 100%;
 }
 
 .z-10 {
@@ -708,6 +720,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   display: none;
 }
 
+.h-0 {
+  height: 0;
+}
+
 .h-1 {
   height: .25rem;
 }
@@ -868,6 +884,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   min-height: 100vh;
 }
 
+.w-0 {
+  width: 0;
+}
+
 .w-1 {
   width: .25rem;
 }
@@ -1020,6 +1040,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-width: 72rem;
 }
 
+.max-w-\[200px\] {
+  max-width: 200px;
+}
+
 .max-w-lg {
   max-width: 32rem;
 }
@@ -1042,6 +1066,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .origin-\[--radix-dropdown-menu-content-transform-origin\] {
   transform-origin: var(--radix-dropdown-menu-content-transform-origin);
+}
+
+.-translate-x-1\/2 {
+  --tw-translate-x: -50%;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .-translate-x-full {
@@ -1423,8 +1452,16 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-right-width: 1px;
 }
 
+.border-r-4 {
+  border-right-width: 4px;
+}
+
 .border-t {
   border-top-width: 1px;
+}
+
+.border-t-4 {
+  border-top-width: 4px;
 }
 
 .border-dashed {
@@ -1498,6 +1535,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .border-l-transparent {
   border-left-color: #0000;
+}
+
+.border-t-gray-900 {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(17 24 39 / var(--tw-border-opacity, 1));
 }
 
 .border-t-transparent {
@@ -2522,6 +2564,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   transition-timing-function: cubic-bezier(.4, 0, .2, 1);
 }
 
+.duration-100 {
+  transition-duration: .1s;
+}
+
 .duration-150 {
   transition-duration: .15s;
 }
@@ -3161,6 +3207,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:border-orange-900:is(.dark *) {
   --tw-border-opacity: 1;
   border-color: rgb(124 45 18 / var(--tw-border-opacity, 1));
+}
+
+.dark\:border-t-gray-950:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-top-color: rgb(3 7 18 / var(--tw-border-opacity, 1));
 }
 
 .dark\:bg-black:is(.dark *) {

@@ -129,6 +129,7 @@ function SortableProductRow({
   const [viewImageOpen, setViewImageOpen] = useState(false);
   const [isDraggingImage, setIsDraggingImage] = useState(false);
   const [draggedImage, setDraggedImage] = useState<File | null>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const {
     attributes,
@@ -255,15 +256,28 @@ function SortableProductRow({
       </div>
 
       <div className="flex items-center gap-2">
-        {/* Additionals Badge - Always visible with tooltip */}
+        {/* Additionals Badge - Always visible with custom tooltip */}
         {item.additional_categories && item.additional_categories.length > 0 && (
-          <Badge 
-            className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center cursor-help"
-            title={item.additional_categories.join(', ')}
-          >
-            <Plus className="h-3 w-3 mr-1" />
-            {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
-          </Badge>
+          <div className="relative">
+            <Badge 
+              className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center cursor-help"
+              onMouseEnter={() => setShowTooltip(true)}
+              onMouseLeave={() => setShowTooltip(false)}
+            >
+              <Plus className="h-3 w-3 mr-1" />
+              {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
+            </Badge>
+            
+            {/* Custom Tooltip */}
+            {showTooltip && (
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-50 animate-in fade-in-0 zoom-in-95 duration-100">
+                <div className="bg-gray-900 dark:bg-gray-950 text-white px-3 py-2 rounded-lg shadow-lg text-xs font-medium max-w-[200px]">
+                  <div className="text-center">{item.additional_categories.join(', ')}</div>
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900 dark:border-t-gray-950"></div>
+                </div>
+              </div>
+            )}
+          </div>
         )}
         
         {/* Quantity & Price - Stacked */}
