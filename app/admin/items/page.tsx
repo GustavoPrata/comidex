@@ -93,7 +93,7 @@ import { ImageUpload } from "@/components/admin/image-upload";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 const supabase = createClient();
-import type { Item, Category, Group, AdditionalCategory } from "@/types/supabase";
+import type { Item, Category, Group, AdditionalCategory, Additional } from "@/types/supabase";
 
 // Extended Item type with additional categories
 type ItemWithAdditionalCategories = Item & {
@@ -423,6 +423,7 @@ export default function ProductsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
   const [additionalCategories, setAdditionalCategories] = useState<AdditionalCategory[]>([]);
+  const [additionals, setAdditionals] = useState<Additional[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -542,6 +543,17 @@ export default function ProductsPage() {
           throw additionalCategoriesError;
         }
         
+        // Load additionals
+        const { data: additionalsData, error: additionalsError } = await supabase
+          .from('additionals')
+          .select('*')
+          .order('sort_order', { ascending: true });
+
+        if (additionalsError) {
+          console.error('Additionals error:', additionalsError);
+          throw additionalsError;
+        }
+        
         // Process items to include additional category names
         const processedItems: ItemWithAdditionalCategories[] = (itemsData || []).map((item: any) => ({
           ...item,
@@ -554,6 +566,7 @@ export default function ProductsPage() {
         setCategories(categoriesData || []);
         setGroups(groupsData || []);
         setAdditionalCategories(additionalCategoriesData || []);
+        setAdditionals(additionalsData || []);
         
         return true;
       } catch (error) {
@@ -583,6 +596,7 @@ export default function ProductsPage() {
     setCategories([]);
     setGroups([]);
     setAdditionalCategories([]);
+    setAdditionals([]);
     setLoading(false);
   };
 
@@ -2196,42 +2210,56 @@ export default function ProductsPage() {
                 <>
                   {additionalCategories.map((category) => {
                     const isChecked = formData.additional_category_ids.includes(category.id);
+                    const categoryAdditionals = additionals.filter(a => a.additional_category_id === category.id);
                     return (
                       <label
                         key={category.id}
                         className={`
-                          flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all
+                          block p-3 rounded-lg border cursor-pointer transition-all
                           ${isChecked 
                             ? 'bg-orange-50 dark:bg-orange-900/10 border-orange-300 dark:border-orange-600' 
                             : 'bg-white dark:bg-gray-800/50 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'
                           }
                         `}
                       >
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600"
-                          checked={isChecked}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setFormData({
-                                ...formData,
-                                additional_category_ids: [...formData.additional_category_ids, category.id]
-                              });
-                            } else {
-                              setFormData({
-                                ...formData,
-                                additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
-                              });
-                            }
-                          }}
-                        />
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">{category.name}</p>
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600"
+                            checked={isChecked}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData({
+                                  ...formData,
+                                  additional_category_ids: [...formData.additional_category_ids, category.id]
+                                });
+                              } else {
+                                setFormData({
+                                  ...formData,
+                                  additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
+                                });
+                              }
+                            }}
+                          />
+                          <div className="flex-1">
+                            <p className="text-sm font-medium">{category.name}</p>
+                          </div>
+                          {isChecked && (
+                            <Badge variant="secondary" className="text-xs">
+                              Selecionado
+                            </Badge>
+                          )}
                         </div>
-                        {isChecked && (
-                          <Badge variant="secondary" className="text-xs">
-                            Selecionado
-                          </Badge>
+                        {categoryAdditionals.length > 0 && (
+                          <div className="mt-2 ml-7 text-xs text-gray-600 dark:text-gray-400">
+                            {categoryAdditionals.map((additional, idx) => (
+                              <span key={additional.id}>
+                                {additional.name}
+                                {additional.price > 0 && ` (+R$ ${additional.price.toFixed(2)})`}
+                                {idx < categoryAdditionals.length - 1 && ', '}
+                              </span>
+                            ))}
+                          </div>
                         )}
                       </label>
                     );
