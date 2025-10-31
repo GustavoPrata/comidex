@@ -2180,6 +2180,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   font-weight: 600;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .leading-none {
   line-height: 1;
 }
@@ -2930,6 +2934,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-ring-color: hsl(var(--ring));
 }
 
+.focus\:ring-orange-400:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(251 146 60 / var(--tw-ring-opacity, 1));
+}
+
 .focus\:ring-offset-2:focus {
   --tw-ring-offset-width: 2px;
 }
@@ -3468,6 +3477,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:hover\:bg-white\/10:hover:is(.dark *) {
   background-color: #ffffff1a;
+}
+
+.dark\:hover\:bg-gray-700\/50:hover:is(.dark *) {
+  background-color: #37415180;
 }
 
 .dark\:hover\:text-gray-200:hover:is(.dark *) {

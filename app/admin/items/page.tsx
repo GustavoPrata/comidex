@@ -92,7 +92,7 @@ import { ImageUpload } from "@/components/admin/image-upload";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 const supabase = createClient();
-import type { Item, Category, Group } from "@/types/supabase";
+import type { Item, Category, Group, AdditionalCategory } from "@/types/supabase";
 
 // Sortable Product Row Component
 function SortableProductRow({ 
@@ -401,6 +401,7 @@ export default function ProductsPage() {
   const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
+  const [additionalCategories, setAdditionalCategories] = useState<AdditionalCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -450,7 +451,8 @@ export default function ProductsPage() {
     group_id: "",
     active: true,
     available: true,
-    image: ""
+    image: "",
+    additional_category_ids: [] as number[]
   });
 
   // Load data with retry logic for reliability
@@ -497,9 +499,21 @@ export default function ProductsPage() {
           throw groupsError;
         }
         
+        // Load additional categories
+        const { data: additionalCategoriesData, error: additionalCategoriesError } = await supabase
+          .from('additional_categories')
+          .select('*')
+          .order('sort_order', { ascending: true });
+
+        if (additionalCategoriesError) {
+          console.error('Additional categories error:', additionalCategoriesError);
+          throw additionalCategoriesError;
+        }
+        
         setItems(itemsData || []);
         setCategories(categoriesData || []);
         setGroups(groupsData || []);
+        setAdditionalCategories(additionalCategoriesData || []);
         
         return true;
       } catch (error) {
@@ -528,6 +542,7 @@ export default function ProductsPage() {
     setItems([]);
     setCategories([]);
     setGroups([]);
+    setAdditionalCategories([]);
     setLoading(false);
   };
 
@@ -645,7 +660,7 @@ export default function ProductsPage() {
     }));
 
   // Open modal for new/edit
-  const openModal = (item?: Item) => {
+  const openModal = async (item?: Item) => {
     // Check if there are no groups or categories when trying to add a new product
     if (!item && (groups.length === 0 || categories.length === 0)) {
       setEditingItem(null);
@@ -655,6 +670,12 @@ export default function ProductsPage() {
     
     if (item) {
       setEditingItem(item);
+      
+      // Load additional categories for this item
+      const { data: itemAdditionalCategories } = await supabase
+        .from('item_additional_categories')
+        .select('additional_category_id')
+        .eq('item_id', item.id);
       
       // Parse quantity to separate value and unit
       let quantityUnit = "";
@@ -685,7 +706,8 @@ export default function ProductsPage() {
         group_id: item.group_id.toString(),
         active: item.active,
         available: item.available,
-        image: item.image || ""
+        image: item.image || "",
+        additional_category_ids: itemAdditionalCategories?.map(ac => ac.additional_category_id) || []
       });
     } else {
       setEditingItem(null);
@@ -699,7 +721,8 @@ export default function ProductsPage() {
         group_id: "",
         active: true,
         available: true,
-        image: ""
+        image: "",
+        additional_category_ids: []
       });
     }
     setIsModalOpen(true);
@@ -799,6 +822,25 @@ export default function ProductsPage() {
 
         if (error) throw error;
         
+        // Update additional categories
+        // First, delete existing associations
+        await supabase
+          .from('item_additional_categories')
+          .delete()
+          .eq('item_id', editingItem.id);
+        
+        // Then, insert new associations
+        if (formData.additional_category_ids && formData.additional_category_ids.length > 0) {
+          const associations = formData.additional_category_ids.map(categoryId => ({
+            item_id: editingItem.id,
+            additional_category_id: categoryId
+          }));
+          
+          await supabase
+            .from('item_additional_categories')
+            .insert(associations);
+        }
+        
         // Atualizar estado local sem recarregar página
         setItems(prevItems => 
           prevItems.map(item => 
@@ -817,6 +859,18 @@ export default function ProductsPage() {
         if (error) {
           console.error('Supabase error details:', error);
           throw error;
+        }
+        
+        // Insert additional categories associations
+        if (newItem && formData.additional_category_ids && formData.additional_category_ids.length > 0) {
+          const associations = formData.additional_category_ids.map(categoryId => ({
+            item_id: newItem.id,
+            additional_category_id: categoryId
+          }));
+          
+          await supabase
+            .from('item_additional_categories')
+            .insert(associations);
         }
         
         // Adicionar ao estado local sem recarregar página
@@ -1717,6 +1771,49 @@ export default function ProductsPage() {
                 </div>
               </div>
 
+              {/* Additional Categories Selection */}
+              <div className="space-y-2">
+                <Label htmlFor="additional-categories">Categorias de Adicionais</Label>
+                <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl space-y-2">
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                    Selecione as categorias de adicionais disponíveis para este produto
+                  </p>
+                  <div className="grid grid-cols-1 gap-2">
+                    {additionalCategories.map((category) => (
+                      <label
+                        key={category.id}
+                        className="flex items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700/50 p-2 rounded-lg transition-colors"
+                      >
+                        <input
+                          type="checkbox"
+                          className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 border-gray-300 dark:border-gray-600"
+                          checked={formData.additional_category_ids.includes(category.id)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setFormData({
+                                ...formData,
+                                additional_category_ids: [...formData.additional_category_ids, category.id]
+                              });
+                            } else {
+                              setFormData({
+                                ...formData,
+                                additional_category_ids: formData.additional_category_ids.filter(id => id !== category.id)
+                              });
+                            }
+                          }}
+                        />
+                        <span className="text-sm font-medium">{category.name}</span>
+                      </label>
+                    ))}
+                    {additionalCategories.length === 0 && (
+                      <p className="text-sm text-gray-500 dark:text-gray-400 italic text-center py-2">
+                        Nenhuma categoria de adicionais cadastrada
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
               {/* Status section with better spacing */}
               <div className="pt-4 space-y-4">
                 <div>
@@ -1788,7 +1885,8 @@ export default function ProductsPage() {
                   quantityValue: '',
                   image: '',
                   active: true,
-                  available: true
+                  available: true,
+                  additional_category_ids: []
                 });
                 setSaving(false);
               }}
