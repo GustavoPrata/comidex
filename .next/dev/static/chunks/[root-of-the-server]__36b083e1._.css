@@ -718,10 +718,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-right: .25rem;
 }
 
-.mr-1\.5 {
-  margin-right: .375rem;
-}
-
 .mr-2 {
   margin-right: .5rem;
 }
@@ -788,6 +784,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .h-1 {
   height: .25rem;
+}
+
+.h-1\.5 {
+  height: .375rem;
 }
 
 .h-10 {
@@ -946,6 +946,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   width: .25rem;
 }
 
+.w-1\.5 {
+  width: .375rem;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -1060,14 +1064,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .w-px {
   width: 1px;
-}
-
-.min-w-\[18px\] {
-  min-width: 18px;
-}
-
-.min-w-\[20px\] {
-  min-width: 20px;
 }
 
 .min-w-\[8rem\] {
@@ -1325,10 +1321,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   gap: .25rem;
 }
 
-.gap-1\.5 {
-  gap: .375rem;
-}
-
 .gap-2 {
   gap: .5rem;
 }
@@ -1531,6 +1523,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .border-gray-800 {
   --tw-border-opacity: 1;
   border-color: rgb(31 41 55 / var(--tw-border-opacity, 1));
+}
+
+.border-orange-100 {
+  --tw-border-opacity: 1;
+  border-color: rgb(255 237 213 / var(--tw-border-opacity, 1));
 }
 
 .border-orange-200 {
@@ -2204,8 +2201,16 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   font-weight: 500;
 }
 
+.font-normal {
+  font-weight: 400;
+}
+
 .font-semibold {
   font-weight: 600;
+}
+
+.italic {
+  font-style: italic;
 }
 
 .leading-none {
@@ -2332,6 +2337,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .text-orange-700 {
   --tw-text-opacity: 1;
   color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+
+.text-orange-900 {
+  --tw-text-opacity: 1;
+  color: rgb(124 45 18 / var(--tw-text-opacity, 1));
 }
 
 .text-popover-foreground {
@@ -3222,6 +3232,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(154 52 18 / var(--tw-border-opacity, 1));
 }
 
+.dark\:border-orange-900:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(124 45 18 / var(--tw-border-opacity, 1));
+}
+
 .dark\:bg-black:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
@@ -3421,6 +3436,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:text-green-500:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(34 197 94 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-orange-200:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(254 215 170 / var(--tw-text-opacity, 1));
 }
 
 .dark\:text-orange-300:is(.dark *) {

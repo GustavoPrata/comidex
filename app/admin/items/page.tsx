@@ -1831,67 +1831,97 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              {/* Additional Categories Button */}
-              <div className="space-y-2">
-                <Label>Adicionais</Label>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="h-9"
-                  onClick={() => {
-                    setAdditionalsItem(editingItem || {
-                      id: 0,
-                      name: formData.name,
-                      description: formData.description,
-                      price: parseFloat(formData.price) || 0,
-                      category_id: parseInt(formData.category_id),
-                      group_id: parseInt(formData.group_id),
-                      active: formData.active,
-                      available: formData.available,
-                      quantity: formData.quantity,
-                      image: formData.image,
-                      sort_order: 0
-                    } as Item);
-                    setIsAdditionalsModalOpen(true);
-                  }}
-                >
-                  <Plus className="h-3.5 w-3.5 mr-1.5" />
-                  Adicionar
+              {/* Additional Categories Section */}
+              <div className="space-y-3">
+                <Label className="flex items-center gap-2">
+                  <span>Adicionais</span>
                   {formData.additional_category_ids.length > 0 && (
-                    <span className="ml-2 inline-flex items-center justify-center h-5 min-w-[20px] px-1.5 text-[10px] font-semibold bg-orange-500 text-white rounded-full">
-                      {formData.additional_category_ids.length}
+                    <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                      ({formData.additional_category_ids.length} {formData.additional_category_ids.length === 1 ? 'categoria' : 'categorias'})
                     </span>
                   )}
-                </Button>
+                </Label>
                 
-                {/* Display active additionals */}
-                {formData.additional_category_ids.length > 0 && (
-                  <div className="mt-2 flex flex-wrap gap-1.5">
-                    {formData.additional_category_ids.map(catId => {
-                      const category = additionalCategories.find(c => c.id === catId);
-                      const categoryAdditionals = additionals.filter(a => a.additional_category_id === catId && a.active);
-                      
-                      if (!category) return null;
-                      
-                      return (
-                        <div 
-                          key={catId}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-orange-100 dark:bg-orange-900/30 rounded-full"
+                <div className="space-y-3">
+                  {/* Configure Button */}
+                  <Button
+                    type="button"
+                    variant={formData.additional_category_ids.length > 0 ? "default" : "outline"}
+                    size="sm"
+                    className={`h-10 w-full ${formData.additional_category_ids.length > 0 ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
+                    onClick={() => {
+                      setAdditionalsItem(editingItem || {
+                        id: 0,
+                        name: formData.name,
+                        description: formData.description,
+                        price: parseFloat(formData.price) || 0,
+                        category_id: parseInt(formData.category_id),
+                        group_id: parseInt(formData.group_id),
+                        active: formData.active,
+                        available: formData.available,
+                        quantity: formData.quantity,
+                        image: formData.image,
+                        sort_order: 0
+                      } as Item);
+                      setIsAdditionalsModalOpen(true);
+                    }}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    {formData.additional_category_ids.length > 0 ? 'Configurar Adicionais' : 'Adicionar Adicionais'}
+                  </Button>
+                  
+                  {/* Selected Categories Display */}
+                  {formData.additional_category_ids.length > 0 && (
+                    <div className="p-3 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900 rounded-lg space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-semibold text-orange-900 dark:text-orange-200">
+                          Categorias Ativas
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, additional_category_ids: [] });
+                          }}
+                          className="text-xs text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-medium"
                         >
-                          <span className="text-xs font-medium text-orange-700 dark:text-orange-300">
-                            {category.name}
-                          </span>
-                          {categoryAdditionals.length > 0 && (
-                            <span className="text-[10px] bg-orange-500 text-white rounded-full px-1.5 py-0.5 min-w-[18px] text-center">
-                              {categoryAdditionals.length}
-                            </span>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
+                          Limpar
+                        </button>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-2">
+                        {formData.additional_category_ids.map(catId => {
+                          const category = additionalCategories.find(c => c.id === catId);
+                          const categoryAdditionals = additionals.filter(a => a.additional_category_id === catId && a.active);
+                          
+                          if (!category) return null;
+                          
+                          return (
+                            <div 
+                              key={catId}
+                              className="flex items-center justify-between p-2 bg-white dark:bg-gray-900 rounded-md border border-orange-100 dark:border-orange-900"
+                            >
+                              <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
+                                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                  {category.name}
+                                </span>
+                              </div>
+                              {categoryAdditionals.length > 0 && (
+                                <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400">
+                                  {categoryAdditionals.length} {categoryAdditionals.length === 1 ? 'item' : 'itens'}
+                                </span>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      
+                      <p className="text-[10px] text-orange-700 dark:text-orange-300 italic">
+                        Os clientes poderão adicionar extras do produto
+                      </p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Status section with better spacing */}
