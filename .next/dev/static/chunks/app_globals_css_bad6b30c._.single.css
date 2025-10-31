@@ -984,6 +984,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   width: 1px;
 }
 
+.min-w-\[18px\] {
+  min-width: 18px;
+}
+
 .min-w-\[20px\] {
   min-width: 20px;
 }
@@ -1241,6 +1245,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .gap-1 {
   gap: .25rem;
+}
+
+.gap-1\.5 {
+  gap: .375rem;
 }
 
 .gap-2 {
@@ -2031,6 +2039,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .pt-0 {
   padding-top: 0;
+}
+
+.pt-2 {
+  padding-top: .5rem;
 }
 
 .pt-3 {
