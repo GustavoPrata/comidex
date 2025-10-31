@@ -470,9 +470,9 @@ export default function AdditionalsPage() {
     try {
       setSaving(true);
       
-      // Parse the category ID to integer or null
+      // Get the category ID (UUID) or null
       const categoryId = formData.additional_category_id && formData.additional_category_id !== "none" ? 
-        parseInt(formData.additional_category_id) : null;
+        formData.additional_category_id : null;
       
       // Calculate sort_order for new items
       let sort_order = formData.sort_order || 0;

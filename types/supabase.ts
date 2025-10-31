@@ -34,7 +34,7 @@ export interface Database {
       }
       additional_categories: {
         Row: {
-          id: number
+          id: string
           name: string
           sort_order: number
           active: boolean
@@ -46,11 +46,11 @@ export interface Database {
       }
       additionals: {
         Row: {
-          id: number
+          id: string
           name: string
           price: number
           active: boolean
-          additional_category_id: number
+          additional_category_id: string | null
           sort_order: number
           created_at: string
           updated_at: string
