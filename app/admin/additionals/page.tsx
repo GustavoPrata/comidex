@@ -784,9 +784,9 @@ export default function AdditionalsPage() {
             <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
             {Object.entries(groupedAdditionals).map(([categoryName, group]) => (
-              <Card key={categoryName} className="overflow-hidden">
+              <Card key={categoryName} className="overflow-hidden break-inside-avoid mb-6">
                 <CardHeader className="pb-3 bg-gray-100 dark:bg-gray-800">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
