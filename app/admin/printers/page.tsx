@@ -257,43 +257,44 @@ export default function PrintersPage() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Header Card with Orange Gradient */}
-      <Card className="rounded-none border-x-0 border-t-0 shadow-sm">
-        <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                  <PrinterIcon className="h-6 w-6 text-orange-600 dark:text-orange-500" />
-                  Impressoras
-                </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                  {printers.length} {printers.length === 1 ? 'impressora cadastrada' : 'impressoras cadastradas'}
-                </p>
+    <div className="min-h-screen relative">
+      {/* Header */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <PrinterIcon className="h-5 w-5 text-white" />
               </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Impressoras</h1>
             </div>
-            <Button 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-              onClick={() => openModal()}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Nova Impressora
-            </Button>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
+              <Button 
+                onClick={() => openModal()}
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Nova Impressora
+              </Button>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent className="p-6">
-          {/* Search */}
-          <div className="relative mb-6">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Buscar impressoras..."
-              className="pl-9"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Configure as impressoras do sistema - {printers.length} {printers.length === 1 ? 'impressora cadastrada' : 'impressoras cadastradas'}
+          </p>
 
           {/* Printers Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -395,8 +396,8 @@ export default function PrintersPage() {
               </p>
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Add/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>

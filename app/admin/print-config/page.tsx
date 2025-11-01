@@ -290,110 +290,85 @@ export default function PrintConfigPage() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Header Card with Orange Gradient */}
-      <Card className="rounded-none border-x-0 border-t-0 shadow-sm">
-        <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-                  <Settings className="h-6 w-6 text-orange-600 dark:text-orange-500" />
-                  Configuração de Impressão
-                </h1>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                  {items.length} {items.length === 1 ? 'item configurado' : 'itens configurados'}
-                </p>
+    <div className="min-h-screen relative">
+      {/* Header */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Settings className="h-5 w-5 text-white" />
               </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configuração de Impressão</h1>
             </div>
-            <Button 
-              onClick={saveConfigs}
-              disabled={saving}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar produto..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
+              <Button 
+                onClick={saveConfigs}
+                disabled={saving}
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              >
+                {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                <Save className="h-4 w-4 mr-2" />
+                Salvar Configurações
+              </Button>
+            </div>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Configure qual impressora cada item deve usar - {items.length} {items.length === 1 ? 'item configurado' : 'itens configurados'}
+          </p>
+
+          {/* Filters Row */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            {/* Group Filter */}
+            <Select value={selectedGroup} onValueChange={setSelectedGroup}>
+              <SelectTrigger className="rounded-full">
+                <SelectValue placeholder="Todos os Grupos" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os Grupos</SelectItem>
+                {groups.map(group => (
+                  <SelectItem key={group.id} value={group.id.toString()}>
+                    {group.name}
+                    {group.type === 'rodizio' && ' (Rodízio)'}
+                    {group.type === 'bebidas' && ' (Bebidas)'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Category Filter */}
+            <Select 
+              value={selectedCategory} 
+              onValueChange={setSelectedCategory}
+              disabled={filteredCategories.length === 0}
             >
-              {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-              <Save className="h-4 w-4 mr-2" />
-              Salvar Configurações
-            </Button>
+              <SelectTrigger className="rounded-full">
+                <SelectValue placeholder="Todas as Categorias" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todas as Categorias</SelectItem>
+                {filteredCategories.map(category => (
+                  <SelectItem key={category.id} value={category.id.toString()}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-        </CardHeader>
-        <CardContent className="p-6">
-
-        {/* Stats Row */}
-        <div className="grid grid-cols-5 gap-4 mb-6">
-          <Card className="border-gray-200 dark:border-gray-800 rounded-xl">
-            <CardContent className="p-4">
-              <h3 className="text-sm font-medium text-red-500 mb-1">Impressoras</h3>
-              <p className="text-xs text-gray-500">Todas as Impressoras</p>
-              <Badge variant="secondary" className="mt-2">Nenhum</Badge>
-            </CardContent>
-          </Card>
-          {PRINTER_TYPES.map(printer => (
-            <Card key={printer.id} className="border-gray-200 dark:border-gray-800 rounded-xl">
-              <CardContent className="p-4">
-                <h3 className="text-sm font-medium mb-1">{printer.label}</h3>
-                <Badge 
-                  variant={selectAllStates[printer.id as keyof typeof selectAllStates] ? "default" : "secondary"}
-                  className="cursor-pointer"
-                  onClick={() => toggleAllForPrinter(printer.id)}
-                >
-                  {selectAllStates[printer.id as keyof typeof selectAllStates] ? 'Selecionado' : 'Nenhum'}
-                </Badge>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Filters Row */}
-        <div className="grid grid-cols-5 gap-4 mb-4">
-          <div className="col-span-2 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Produto..."
-              className="pl-9 rounded-lg"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          
-          {/* Group Filter */}
-          <Select value={selectedGroup} onValueChange={setSelectedGroup}>
-            <SelectTrigger className="rounded-lg">
-              <SelectValue placeholder="Todos os Grupos" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os Grupos</SelectItem>
-              {groups.map(group => (
-                <SelectItem key={group.id} value={group.id.toString()}>
-                  {group.name}
-                  {group.type === 'rodizio' && ' (Rodízio)'}
-                  {group.type === 'bebidas' && ' (Bebidas)'}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          {/* Category Filter */}
-          <Select 
-            value={selectedCategory} 
-            onValueChange={setSelectedCategory}
-            disabled={filteredCategories.length === 0}
-          >
-            <SelectTrigger className="rounded-lg">
-              <SelectValue placeholder="Todas as Categorias" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todas as Categorias</SelectItem>
-              {filteredCategories.map(category => (
-                <SelectItem key={category.id} value={category.id.toString()}>
-                  {category.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-        </div>
 
           {/* Items Table */}
           <div className="mt-6">
@@ -509,8 +484,8 @@ export default function PrintConfigPage() {
               ))}
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
