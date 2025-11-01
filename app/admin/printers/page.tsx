@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { 
   Dialog, 
   DialogContent, 
@@ -264,242 +265,212 @@ export default function PrintersPage() {
     printer.ip_address.includes(searchTerm)
   );
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <div className="p-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-            <div className="flex items-center justify-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+  return (
+    <div className="min-h-screen relative">
+      {/* Header */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <PrinterIcon className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Impressoras</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
+              <Button 
+                onClick={() => openModal()}
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Nova Impressora
+              </Button>
+            </div>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Configure as impressoras do sistema - {printers.length} {printers.length === 1 ? 'impressora cadastrada' : 'impressoras cadastradas'}
+          </p>
+
+          {/* Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-blue-600 dark:text-blue-400 text-xs font-medium">Total</p>
+                  <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{printers.length}</p>
+                </div>
+                <PrinterIcon className="h-6 w-6 text-blue-500 dark:text-blue-400 opacity-75" />
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-800/10 rounded-2xl p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-green-600 dark:text-green-400 text-xs font-medium">Ativas</p>
+                  <p className="text-2xl font-bold text-green-900 dark:text-green-100">
+                    {printers.filter(p => p.active).length}
+                  </p>
+                </div>
+                <CheckCircle className="h-6 w-6 text-green-500 dark:text-green-400 opacity-75" />
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-900/20 dark:to-orange-800/10 rounded-2xl p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-orange-600 dark:text-orange-400 text-xs font-medium">Principais</p>
+                  <p className="text-2xl font-bold text-orange-900 dark:text-orange-100">
+                    {printers.filter(p => p.is_main).length}
+                  </p>
+                </div>
+                <Star className="h-6 w-6 text-orange-500 dark:text-orange-400 opacity-75" />
+              </div>
+            </div>
+            <div className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/10 rounded-2xl p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-red-600 dark:text-red-400 text-xs font-medium">Inativas</p>
+                  <p className="text-2xl font-bold text-red-900 dark:text-red-100">
+                    {printers.filter(p => !p.active).length}
+                  </p>
+                </div>
+                <XCircle className="h-6 w-6 text-red-500 dark:text-red-400 opacity-75" />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    );
-  }
 
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="p-8 space-y-8">
-        {/* Hero Section */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8 pb-6 border-b border-orange-100">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-                Impressoras
-              </h1>
-              <p className="text-gray-600 mt-2">Gerencie as impressoras do sistema</p>
-            </div>
-            <Button 
-              onClick={() => openModal()}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-6 rounded-full h-auto shadow-lg hover:shadow-xl transition-all"
-            >
-              <Plus className="h-5 w-5 mr-2" />
-              Nova Impressora
-            </Button>
+      {/* Content */}
+      <div className="p-4">
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           </div>
-
-          {/* Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-2xl p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-600 text-sm font-medium">Total</p>
-                  <p className="text-3xl font-bold text-blue-900">{printers.length}</p>
-                </div>
-                <PrinterIcon className="h-8 w-8 text-blue-500 opacity-75" />
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100/50 rounded-2xl p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-green-600 text-sm font-medium">Ativas</p>
-                  <p className="text-3xl font-bold text-green-900">
-                    {printers.filter(p => p.active).length}
-                  </p>
-                </div>
-                <CheckCircle className="h-8 w-8 text-green-500 opacity-75" />
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-2xl p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-600 text-sm font-medium">Principais</p>
-                  <p className="text-3xl font-bold text-orange-900">
-                    {printers.filter(p => p.is_main).length}
-                  </p>
-                </div>
-                <Star className="h-8 w-8 text-orange-500 opacity-75" />
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-red-50 to-red-100/50 rounded-2xl p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-red-600 text-sm font-medium">Inativas</p>
-                  <p className="text-3xl font-bold text-red-900">
-                    {printers.filter(p => !p.active).length}
-                  </p>
-                </div>
-                <XCircle className="h-8 w-8 text-red-500 opacity-75" />
-              </div>
-            </div>
-          </div>
-
-          {/* Search and Filter */}
-          <div className="flex gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <Input
-                placeholder="Buscar impressoras..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 py-6 text-lg border-2 border-gray-100 focus:border-orange-300 rounded-full"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Content Section - Printers List */}
-        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-          {/* Section Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-2">
-              <div className="h-1 w-12 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full"></div>
-              <h2 className="text-2xl font-bold text-gray-800">Lista de Impressoras</h2>
-            </div>
-            <p className="text-gray-600 ml-16">
-              {filteredPrinters.length > 0 
-                ? `${filteredPrinters.length} impressora${filteredPrinters.length > 1 ? 's' : ''} cadastrada${filteredPrinters.length > 1 ? 's' : ''}`
-                : 'Nenhuma impressora cadastrada'}
-            </p>
-          </div>
-
-          {/* Printers Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredPrinters.map((printer) => (
-              <div 
-                key={printer.id}
-                className="bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-md hover:shadow-xl transition-all border border-gray-200 overflow-hidden group hover:scale-[1.02]"
+              <Card 
+                key={printer.id} 
+                className={`border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-shadow ${!printer.active ? 'opacity-60' : ''}`}
               >
-                <div className="p-6">
+                <CardContent className="p-6">
+                  {/* Header */}
                   <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3">
-                      <div className={`p-3 rounded-full ${
-                        printer.active 
-                          ? 'bg-gradient-to-br from-green-100 to-green-200' 
-                          : 'bg-gradient-to-br from-gray-100 to-gray-200'
-                      }`}>
-                        <PrinterIcon className={`h-6 w-6 ${
-                          printer.active 
-                            ? 'text-green-600' 
-                            : 'text-gray-400'
-                        }`} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-lg text-gray-900">
-                          {printer.name}
-                        </h3>
-                        <p className="text-sm text-gray-500 capitalize">
-                          {printer.printer_type === 'thermal' ? 'Térmica' :
-                           printer.printer_type === 'laser' ? 'Laser' :
-                           printer.printer_type === 'inkjet' ? 'Jato de Tinta' : 
-                           'Outro'}
-                        </p>
-                      </div>
-                    </div>
-                    {printer.is_main && (
-                      <Badge className="bg-gradient-to-r from-orange-400 to-orange-500 text-white border-0 shadow-md">
-                        <Star className="h-3 w-3 mr-1" />
-                        Principal
-                      </Badge>
-                    )}
-                  </div>
-
-                  <div className="space-y-3 text-sm bg-gray-50 rounded-xl p-4 mb-4">
-                    <div className="flex items-center gap-2">
-                      <Network className="h-4 w-4 text-gray-400" />
-                      <span className="text-gray-600">IP:</span>
-                      <span className="font-mono text-gray-900 bg-white px-2 py-1 rounded">{printer.ip_address}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Wifi className="h-4 w-4 text-gray-400" />
-                      <span className="text-gray-600">Porta:</span>
-                      <span className="font-mono text-gray-900 bg-white px-2 py-1 rounded">{printer.port}</span>
+                    <div>
+                      <h3 className="font-semibold text-lg flex items-center gap-2">
+                        {printer.name}
+                        {printer.is_main && (
+                          <Badge className="bg-orange-500 text-white text-xs">
+                            Principal
+                          </Badge>
+                        )}
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 capitalize">
+                        {printer.printer_type === 'thermal' ? 'Térmica' :
+                         printer.printer_type === 'laser' ? 'Laser' :
+                         printer.printer_type === 'inkjet' ? 'Jato de Tinta' : 
+                         'Outro'}
+                      </p>
                     </div>
                     <div className="flex items-center gap-2">
                       {printer.active ? (
-                        <>
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          <span className="text-green-700 font-medium">Ativa</span>
-                        </>
+                        <Wifi className="h-5 w-5 text-green-500" />
                       ) : (
-                        <>
-                          <XCircle className="h-4 w-4 text-red-500" />
-                          <span className="text-red-700 font-medium">Inativa</span>
-                        </>
+                        <WifiOff className="h-5 w-5 text-gray-400" />
                       )}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-orange-500 transition-colors">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-48">
+                          <DropdownMenuItem onClick={() => testPrinter(printer)}>
+                            <PrinterIcon className="h-4 w-4 mr-2" />
+                            Testar Impressão
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => openModal(printer)}>
+                            <Pencil className="h-4 w-4 mr-2" />
+                            Editar
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            className="text-red-600 dark:text-red-500"
+                            onClick={() => handleDelete(printer)}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Excluir
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <Button
-                      onClick={() => testPrinter(printer)}
-                      className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full shadow-md"
-                      size="sm"
-                    >
-                      <PrinterIcon className="h-4 w-4 mr-1" />
-                      Testar
-                    </Button>
-                    <Button
-                      onClick={() => openModal(printer)}
-                      className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full shadow-md"
-                      size="sm"
-                    >
-                      <Edit className="h-4 w-4 mr-1" />
-                      Editar
-                    </Button>
-                    <Button
-                      onClick={() => handleDelete(printer)}
-                      variant="outline"
-                      className="border-red-200 text-red-600 hover:bg-red-50 rounded-full"
-                      size="sm"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                  {/* Connection Info */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500 dark:text-gray-400">IP:</span>
+                      <span className="font-mono">{printer.ip_address || 'N/A'}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500 dark:text-gray-400">Porta:</span>
+                      <span className="font-mono">{printer.port || 'N/A'}</span>
+                    </div>
                   </div>
-                </div>
-              </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+                    <Badge variant={printer.active ? "default" : "secondary"} className="text-xs">
+                      {printer.active ? "Ativa" : "Inativa"}
+                    </Badge>
+                    <button
+                      onClick={() => toggleActive(printer)}
+                      className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                        printer.active 
+                          ? 'bg-green-600 hover:bg-green-700 text-white' 
+                          : 'bg-gray-500 hover:bg-gray-600 text-white'
+                      }`}
+                    >
+                      {printer.active ? 'Ativa' : 'Inativa'}
+                    </button>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
+        )}
 
-          {filteredPrinters.length === 0 && (
-            <div className="text-center py-16 bg-gradient-to-br from-gray-50 to-white rounded-2xl">
-              <div className="bg-gradient-to-br from-orange-100 to-orange-200 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                <PrinterIcon className="h-12 w-12 text-orange-500" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-800 mb-2">
-                {searchTerm 
-                  ? 'Nenhuma impressora encontrada'
-                  : 'Nenhuma impressora cadastrada'}
-              </h3>
-              <p className="text-gray-500 mb-6">
-                {searchTerm 
-                  ? 'Tente buscar com outros termos'
-                  : 'Adicione a primeira impressora para começar'}
-              </p>
-              {!searchTerm && (
-                <Button
-                  onClick={() => openModal()}
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full shadow-lg"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Adicionar Primeira Impressora
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
+        {filteredPrinters.length === 0 && !loading && (
+          <div className="text-center py-16">
+            <PrinterIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 text-lg">
+              {searchTerm 
+                ? 'Nenhuma impressora encontrada com esses critérios'
+                : 'Nenhuma impressora cadastrada ainda'}
+            </p>
+            {!searchTerm && (
+              <Button
+                onClick={() => openModal()}
+                className="mt-4 bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Adicionar Primeira Impressora
+              </Button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Add/Edit Modal */}
