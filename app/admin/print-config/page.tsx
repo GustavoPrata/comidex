@@ -87,7 +87,15 @@ export default function PrintConfigPage() {
         `)
         .order('name', { ascending: true });
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('Error loading items:', {
+          message: itemsError.message,
+          details: itemsError.details,
+          hint: itemsError.hint,
+          code: itemsError.code
+        });
+        throw new Error(itemsError.message || 'Erro ao carregar items');
+      }
 
       // Load groups
       const { data: groupsData, error: groupsError } = await supabase
@@ -95,7 +103,10 @@ export default function PrintConfigPage() {
         .select('*')
         .order('sort_order', { ascending: true });
 
-      if (groupsError) throw groupsError;
+      if (groupsError) {
+        console.error('Error loading groups:', groupsError.message);
+        throw new Error(groupsError.message || 'Erro ao carregar grupos');
+      }
 
       // Load categories
       const { data: categoriesData, error: categoriesError } = await supabase
@@ -103,7 +114,10 @@ export default function PrintConfigPage() {
         .select('*')
         .order('name', { ascending: true });
 
-      if (categoriesError) throw categoriesError;
+      if (categoriesError) {
+        console.error('Error loading categories:', categoriesError.message);
+        throw new Error(categoriesError.message || 'Erro ao carregar categorias');
+      }
 
       // Load printers
       const { data: printersData, error: printersError } = await supabase
@@ -112,7 +126,10 @@ export default function PrintConfigPage() {
         .eq('active', true)
         .order('name', { ascending: true });
 
-      if (printersError) throw printersError;
+      if (printersError) {
+        console.error('Error loading printers:', printersError.message);
+        throw new Error(printersError.message || 'Erro ao carregar impressoras');
+      }
 
       // Load existing print configs
       const { data: configData, error: configError } = await supabase
@@ -120,7 +137,10 @@ export default function PrintConfigPage() {
         .select('*')
         .eq('config_type', 'item_printer');
 
-      if (configError && configError.code !== 'PGRST116') throw configError;
+      if (configError && configError.code !== 'PGRST116') {
+        console.error('Error loading print config:', configError.message);
+        // Don't throw here - configs might not exist yet
+      }
 
       setItems(itemsData || []);
       setGroups(groupsData || []);
@@ -147,8 +167,15 @@ export default function PrintConfigPage() {
       setConfigs(configMap);
       
     } catch (error) {
-      console.error('Error loading data:', error);
-      toast.error("Erro ao carregar dados");
+      const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+      console.error('Error loading data:', errorMessage);
+      toast.error(`Erro ao carregar dados: ${errorMessage}`);
+      // Set empty arrays to allow interface to render
+      setItems([]);
+      setGroups([]);
+      setCategories([]);
+      setPrinters([]);
+      setConfigs(new Map());
     } finally {
       setLoading(false);
     }

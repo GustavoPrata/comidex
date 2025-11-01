@@ -68,11 +68,13 @@ export default function PrintersPage() {
   // Form state
   const [formData, setFormData] = useState({
     name: "",
-    ip: "",
-    port: 9100,
-    type: "Térmica",
-    is_principal: false,
-    active: true
+    ip_address: "",
+    port: "9100",
+    type: "thermal" as "thermal" | "laser" | "inkjet" | "other",
+    is_main: false,
+    active: true,
+    description: "",
+    sort_order: 0
   });
 
   // Load data with retry logic for reliability
@@ -88,12 +90,21 @@ export default function PrintersPage() {
           .select('*')
           .order('name', { ascending: true });
 
-        if (error) throw error;
-        setPrinters(data || []);
+        if (error) {
+          console.error('Supabase error:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+          });
+          throw new Error(error.message || 'Erro ao buscar impressoras');
+        }
         
+        setPrinters(data || []);
         return true;
       } catch (error) {
-        console.error(`Erro ao carregar dados (tentativa ${retryCount + 1}/${maxRetries}):`, error);
+        const errorMessage = error instanceof Error ? error.message : 'Erro desconhecido';
+        console.error(`Erro ao carregar dados (tentativa ${retryCount + 1}/${maxRetries}):`, errorMessage);
         return false;
       }
     };
@@ -113,8 +124,9 @@ export default function PrintersPage() {
       }
     }
     
-    // All retries failed
-    toast.error("Erro ao carregar impressoras. Por favor, recarregue a página.");
+    // All retries failed - set empty array to allow interface to render
+    setPrinters([]);
+    toast.error("Não foi possível carregar as impressoras. Verifique sua conexão.");
     setLoading(false);
   };
 
@@ -130,7 +142,7 @@ export default function PrintersPage() {
   // Filter printers based on search
   const filteredPrinters = printers.filter(printer =>
     printer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    printer.ip.includes(searchTerm)
+    (printer.ip_address && printer.ip_address.includes(searchTerm))
   );
 
   // Open modal for new/edit
@@ -139,21 +151,25 @@ export default function PrintersPage() {
       setEditingPrinter(printer);
       setFormData({
         name: printer.name,
-        ip: printer.ip,
-        port: printer.port,
-        type: printer.type,
-        is_principal: printer.is_principal,
-        active: printer.active
+        ip_address: printer.ip_address || "",
+        port: printer.port || "9100",
+        type: printer.type || "thermal",
+        is_main: printer.is_main,
+        active: printer.active,
+        description: printer.description || "",
+        sort_order: printer.sort_order
       });
     } else {
       setEditingPrinter(null);
       setFormData({
         name: "",
-        ip: "",
-        port: 9100,
-        type: "Térmica",
-        is_principal: false,
-        active: true
+        ip_address: "",
+        port: "9100",
+        type: "thermal",
+        is_main: false,
+        active: true,
+        description: "",
+        sort_order: 0
       });
     }
     setIsModalOpen(true);
@@ -166,11 +182,13 @@ export default function PrintersPage() {
       
       const printerData = {
         name: formData.name,
-        ip: formData.ip,
+        ip_address: formData.ip_address,
         port: formData.port,
         type: formData.type,
-        is_principal: formData.is_principal,
-        active: formData.active
+        is_main: formData.is_main,
+        active: formData.active,
+        description: formData.description,
+        sort_order: formData.sort_order
       };
 
       if (editingPrinter) {
@@ -248,7 +266,7 @@ export default function PrintersPage() {
 
   // Test printer connection
   const testPrinter = async (printer: Printer) => {
-    toast.info(`Testando conexão com ${printer.name} (${printer.ip}:${printer.port})`);
+    toast.info(`Testando conexão com ${printer.name} (${printer.ip_address}:${printer.port})`);
     // In a real implementation, this would send a test print job
     setTimeout(() => {
       toast.success(`Teste enviado para ${printer.name}`);
@@ -324,7 +342,7 @@ export default function PrintersPage() {
                   <div>
                     <h3 className="font-semibold text-lg flex items-center gap-2">
                       {printer.name}
-                      {printer.is_principal && (
+                      {printer.is_main && (
                         <Badge className="bg-orange-500 text-white text-xs">
                           Principal
                         </Badge>
@@ -374,11 +392,11 @@ export default function PrintersPage() {
                 <div className="space-y-2 mb-4">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-500 dark:text-gray-400">IP:</span>
-                    <span className="font-mono">{printer.ip}</span>
+                    <span className="font-mono">{printer.ip_address || 'N/A'}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-gray-500 dark:text-gray-400">Porta:</span>
-                    <span className="font-mono">{printer.port}</span>
+                    <span className="font-mono">{printer.port || 'N/A'}</span>
                   </div>
                 </div>
 
@@ -437,11 +455,11 @@ export default function PrintersPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="ip">Endereço IP</Label>
+                <Label htmlFor="ip_address">Endereço IP</Label>
                 <Input
-                  id="ip"
-                  value={formData.ip}
-                  onChange={(e) => setFormData({ ...formData, ip: e.target.value })}
+                  id="ip_address"
+                  value={formData.ip_address}
+                  onChange={(e) => setFormData({ ...formData, ip_address: e.target.value })}
                   placeholder="192.168.1.100"
                 />
               </div>
@@ -449,9 +467,8 @@ export default function PrintersPage() {
                 <Label htmlFor="port">Porta</Label>
                 <Input
                   id="port"
-                  type="number"
                   value={formData.port}
-                  onChange={(e) => setFormData({ ...formData, port: parseInt(e.target.value) || 9100 })}
+                  onChange={(e) => setFormData({ ...formData, port: e.target.value })}
                   placeholder="9100"
                 />
               </div>
@@ -461,16 +478,16 @@ export default function PrintersPage() {
               <Label htmlFor="type">Tipo</Label>
               <Select
                 value={formData.type}
-                onValueChange={(value) => setFormData({ ...formData, type: value })}
+                onValueChange={(value) => setFormData({ ...formData, type: value as any })}
               >
                 <SelectTrigger id="type">
                   <SelectValue placeholder="Selecione o tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Térmica">Térmica</SelectItem>
-                  <SelectItem value="Matricial">Matricial</SelectItem>
-                  <SelectItem value="Laser">Laser</SelectItem>
-                  <SelectItem value="Jato de Tinta">Jato de Tinta</SelectItem>
+                  <SelectItem value="thermal">Térmica</SelectItem>
+                  <SelectItem value="laser">Laser</SelectItem>
+                  <SelectItem value="inkjet">Jato de Tinta</SelectItem>
+                  <SelectItem value="other">Outro</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -480,14 +497,14 @@ export default function PrintersPage() {
                 <Label>Tipo de Impressora</Label>
                 <button
                   type="button"
-                  onClick={() => setFormData({ ...formData, is_principal: !formData.is_principal })}
+                  onClick={() => setFormData({ ...formData, is_main: !formData.is_main })}
                   className={`px-4 py-2 text-sm font-medium rounded-full transition-colors w-full ${
-                    formData.is_principal 
+                    formData.is_main 
                       ? 'bg-orange-600 hover:bg-orange-700 text-white' 
                       : 'bg-gray-500 hover:bg-gray-600 text-white'
                   }`}
                 >
-                  {formData.is_principal ? 'Principal' : 'Secundária'}
+                  {formData.is_main ? 'Principal' : 'Secundária'}
                 </button>
               </div>
               <div className="space-y-2">
@@ -513,11 +530,13 @@ export default function PrintersPage() {
               setEditingPrinter(null);
               setFormData({
                 name: '',
-                ip: '',
-                port: 9100,
-                type: 'Térmica',
-                is_principal: false,
-                active: true
+                ip_address: '',
+                port: '9100',
+                type: 'thermal',
+                is_main: false,
+                active: true,
+                description: '',
+                sort_order: 0
               });
               setSaving(false);
             }}>
@@ -526,7 +545,7 @@ export default function PrintersPage() {
             <Button 
               className="bg-orange-500 hover:bg-orange-600 text-white"
               onClick={savePrinter}
-              disabled={saving || !formData.name || !formData.ip}
+              disabled={saving || !formData.name || !formData.ip_address}
             >
               {saving ? (
                 <>
