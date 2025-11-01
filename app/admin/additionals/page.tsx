@@ -842,11 +842,18 @@ export default function AdditionalsPage() {
         // There's an item after, place between current and next
         const currentOrder = additional.sort_order || 0;
         const nextOrder = categoryAdditionals[currentIndex + 1].sort_order || 0;
-        // Use average for placement between items
-        newSortOrder = (currentOrder + nextOrder) / 2;
+        // Use the next integer value after current
+        newSortOrder = currentOrder + 1;
+        
+        // If this would conflict with the next item, shift all subsequent items
+        if (newSortOrder >= nextOrder) {
+          // We'll need to update sort_orders for subsequent items
+          // For now, just use a large number to place at the end
+          newSortOrder = (categoryAdditionals[categoryAdditionals.length - 1].sort_order || 0) + 10;
+        }
       } else {
-        // It's the last item, add 1 to its sort_order
-        newSortOrder = (additional.sort_order || 0) + 1;
+        // It's the last item, add 10 to its sort_order to leave room for future items
+        newSortOrder = (additional.sort_order || 0) + 10;
       }
       
       const newAdditional = {
