@@ -865,33 +865,20 @@ export default function AdditionalsPage() {
 
       if (error) throw error;
       
-      // Update local state - insert at the right position
+      // Update local state - sempre inserir logo após o item original
       setAdditionals(prev => {
         const updated = [...prev];
-        // Find where to insert based on sort_order and category
-        const insertIndex = updated.findIndex((a, idx) => {
-          // If same category and item comes after original
-          if (a.additional_category_id === additional.additional_category_id) {
-            // Find the original item index
-            const origIdx = updated.findIndex(x => x.id === additional.id);
-            // Insert right after the original
-            return idx > origIdx && (a.sort_order || 0) > newSortOrder;
-          }
-          return false;
-        });
+        // Encontra o índice do item original
+        const origIndex = updated.findIndex(a => a.id === additional.id);
         
-        if (insertIndex === -1) {
-          // If no position found, find original and insert after it
-          const origIndex = updated.findIndex(a => a.id === additional.id);
-          if (origIndex !== -1) {
-            updated.splice(origIndex + 1, 0, data);
-          } else {
-            updated.push(data);
-          }
+        if (origIndex !== -1) {
+          // Insere logo após o item original
+          updated.splice(origIndex + 1, 0, data);
         } else {
-          // Insert at the correct position
-          updated.splice(insertIndex, 0, data);
+          // Se não encontrar o original (não deveria acontecer), adiciona no final
+          updated.push(data);
         }
+        
         return updated;
       });
       
