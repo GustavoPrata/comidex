@@ -260,8 +260,8 @@ function SortableProductRow({
         {/* Additionals Badge - Always visible with custom tooltip */}
         {item.additional_categories && item.additional_categories.length > 0 && (
           <>
-            <Badge 
-              className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center cursor-help"
+            <div 
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gradient-to-r from-orange-500 to-orange-600 text-white rounded-full text-xs font-semibold shadow-md hover:shadow-lg hover:from-orange-600 hover:to-orange-700 transition-all cursor-help group"
               onMouseEnter={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
                 setTooltipPosition({ 
@@ -272,9 +272,13 @@ function SortableProductRow({
               }}
               onMouseLeave={() => setShowTooltip(false)}
             >
-              <Plus className="h-3 w-3 mr-1" />
-              {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
-            </Badge>
+              <div className="flex items-center justify-center w-4 h-4 bg-white/20 rounded-full group-hover:bg-white/30 transition-colors">
+                <Plus className="h-2.5 w-2.5 text-white" />
+              </div>
+              <span className="text-[11px] uppercase tracking-wider">
+                {item.additional_categories.length} {item.additional_categories.length === 1 ? 'Extra' : 'Extras'}
+              </span>
+            </div>
             
             {/* Custom Tooltip - Fixed position to avoid cutting */}
             {showTooltip && (
