@@ -883,9 +883,11 @@ export default function AdditionalsPage() {
       });
       
       toast.success("Adicional duplicado com sucesso!");
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao duplicar adicional:', error);
-      toast.error("Erro ao duplicar adicional");
+      console.error('Detalhes do erro:', error?.message || 'Sem mensagem de erro');
+      console.error('Stack:', error?.stack);
+      toast.error(`Erro ao duplicar adicional: ${error?.message || 'Erro desconhecido'}`);
     }
   };
 
