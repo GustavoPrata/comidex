@@ -270,8 +270,8 @@ function SortableProductRow({
             
             {/* Custom Tooltip */}
             {showTooltip && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-50 animate-in fade-in-0 zoom-in-95 duration-100">
-                <div className="bg-gray-900 dark:bg-gray-950 text-white px-3 py-2 rounded-lg shadow-lg text-xs font-medium max-w-[200px]">
+              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-[100] animate-in fade-in-0 zoom-in-95 duration-100 pointer-events-none">
+                <div className="bg-gray-900 dark:bg-gray-950 text-white px-3 py-2 rounded-lg shadow-xl text-xs font-medium whitespace-nowrap">
                   <div className="text-center">{item.additional_categories.join(', ')}</div>
                   <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900 dark:border-t-gray-950"></div>
                 </div>
