@@ -2033,11 +2033,17 @@ export default function ProductsPage() {
                                   {category.name}
                                 </span>
                               </div>
-                              {categoryAdditionals.length > 0 && (
-                                <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400">
-                                  {categoryAdditionals.length} {categoryAdditionals.length === 1 ? 'item' : 'itens'}
-                                </span>
-                              )}
+                              {/* Delete button */}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newIds = formData.additional_category_ids.filter(id => id !== catId);
+                                  setFormData({ ...formData, additional_category_ids: newIds });
+                                }}
+                                className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-red-500 dark:hover:bg-red-500 flex items-center justify-center transition-colors group"
+                              >
+                                <X className="h-3 w-3 text-gray-500 group-hover:text-white" />
+                              </button>
                             </div>
                           );
                         })}
