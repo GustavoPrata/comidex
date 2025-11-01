@@ -130,6 +130,7 @@ function SortableProductRow({
   const [isDraggingImage, setIsDraggingImage] = useState(false);
   const [draggedImage, setDraggedImage] = useState<File | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
   const {
     attributes,
@@ -255,29 +256,43 @@ function SortableProductRow({
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 relative">
         {/* Additionals Badge - Always visible with custom tooltip */}
         {item.additional_categories && item.additional_categories.length > 0 && (
-          <div className="relative">
+          <>
             <Badge 
               className="bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 text-xs px-2 py-0.5 font-medium min-w-[90px] text-center cursor-help"
-              onMouseEnter={() => setShowTooltip(true)}
+              onMouseEnter={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                setTooltipPosition({ 
+                  x: rect.left + rect.width / 2, 
+                  y: rect.bottom + 8 
+                });
+                setShowTooltip(true);
+              }}
               onMouseLeave={() => setShowTooltip(false)}
             >
               <Plus className="h-3 w-3 mr-1" />
               {item.additional_categories.length} {item.additional_categories.length === 1 ? 'adicional' : 'adicionais'}
             </Badge>
             
-            {/* Custom Tooltip */}
+            {/* Custom Tooltip - Fixed position to avoid cutting */}
             {showTooltip && (
-              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 z-[100] animate-in fade-in-0 zoom-in-95 duration-100 pointer-events-none">
-                <div className="bg-gray-900 dark:bg-gray-950 text-white px-3 py-2 rounded-lg shadow-xl text-xs font-medium whitespace-nowrap">
+              <div 
+                className="fixed z-[99999] animate-in fade-in-0 zoom-in-95 duration-100 pointer-events-none"
+                style={{ 
+                  left: `${tooltipPosition.x}px`, 
+                  top: `${tooltipPosition.y}px`,
+                  transform: 'translateX(-50%)'
+                }}
+              >
+                <div className="bg-gray-900 dark:bg-gray-950 text-white px-3 py-2 rounded-lg shadow-2xl text-xs font-medium whitespace-nowrap border border-gray-800">
                   <div className="text-center">{item.additional_categories.join(', ')}</div>
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-900 dark:border-t-gray-950"></div>
+                  <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-b-4 border-transparent border-b-gray-900 dark:border-b-gray-950"></div>
                 </div>
               </div>
             )}
-          </div>
+          </>
         )}
         
         {/* Quantity & Price - Stacked */}
