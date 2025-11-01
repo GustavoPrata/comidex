@@ -256,6 +256,21 @@ export default function PrintersPage() {
   };
 
 
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen relative">
+        <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+          <div className="px-6 py-4">
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen relative">
       {/* Header */}
