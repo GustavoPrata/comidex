@@ -1266,8 +1266,19 @@ export default function ProductsPage() {
         ).filter(Boolean) || []
       };
       
-      // Adicionar ao estado local com dados completos
-      setItems(prevItems => [...prevItems, processedItem]);
+      // Adicionar ao estado local com dados completos na posição correta
+      setItems(prevItems => {
+        // Encontra o índice do item original
+        const originalIndex = prevItems.findIndex(i => i.id === item.id);
+        // Insere o novo item logo após o original
+        if (originalIndex !== -1) {
+          const newItems = [...prevItems];
+          newItems.splice(originalIndex + 1, 0, processedItem);
+          return newItems;
+        }
+        // Se não encontrar, adiciona no final
+        return [...prevItems, processedItem];
+      });
       
       toast.success("Produto duplicado com sucesso!");
     } catch (error) {
