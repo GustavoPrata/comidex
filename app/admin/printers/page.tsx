@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ import {
   MoreVertical,
   Pencil,
   Trash2,
-  Printer,
+  Printer as PrinterIcon,
   Loader2,
   Save,
   Wifi,
@@ -258,32 +258,34 @@ export default function PrintersPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      {/* Header */}
-      <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/20">
-                  <Printer className="h-5 w-5 text-orange-600 dark:text-orange-500" />
-                </div>
-                Impressoras
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Configure as impressoras do sistema
-              </p>
+      {/* Header Card with Orange Gradient */}
+      <Card className="rounded-none border-x-0 border-t-0 shadow-sm">
+        <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                  <PrinterIcon className="h-6 w-6 text-orange-600 dark:text-orange-500" />
+                  Impressoras
+                </h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  {printers.length} {printers.length === 1 ? 'impressora cadastrada' : 'impressoras cadastradas'}
+                </p>
+              </div>
             </div>
             <Button 
               className="bg-orange-500 hover:bg-orange-600 text-white"
               onClick={() => openModal()}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Adicionar Impressora
+              Nova Impressora
             </Button>
           </div>
-
+        </CardHeader>
+        <CardContent className="p-6">
           {/* Search */}
-          <div className="relative">
+          <div className="relative mb-6">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
               placeholder="Buscar impressoras..."
@@ -292,18 +294,15 @@ export default function PrintersPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-        </div>
-      </div>
 
-      {/* Content */}
-      <div className="px-6 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredPrinters.map((printer) => (
-            <Card 
-              key={printer.id} 
-              className={`border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-shadow ${!printer.active ? 'opacity-60' : ''}`}
-            >
-              <CardContent className="p-6">
+          {/* Printers Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredPrinters.map((printer) => (
+              <Card 
+                key={printer.id} 
+                className={`border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-shadow ${!printer.active ? 'opacity-60' : ''}`}
+              >
+                <CardContent className="p-6">
                 {/* Header */}
                 <div className="flex items-start justify-between mb-4">
                   <div>
@@ -333,7 +332,7 @@ export default function PrintersPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-48">
                         <DropdownMenuItem onClick={() => testPrinter(printer)}>
-                          <Printer className="h-4 w-4 mr-2" />
+                          <PrinterIcon className="h-4 w-4 mr-2" />
                           Testar Impressão
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => openModal(printer)}>
@@ -386,17 +385,18 @@ export default function PrintersPage() {
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        {filteredPrinters.length === 0 && (
-          <div className="text-center py-12">
-            <Printer className="h-12 w-12 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
-            <p className="text-gray-500 dark:text-gray-400">
-              {searchTerm ? "Nenhuma impressora encontrada" : "Nenhuma impressora cadastrada"}
-            </p>
           </div>
-        )}
-      </div>
+
+          {filteredPrinters.length === 0 && (
+            <div className="text-center py-12">
+              <PrinterIcon className="h-12 w-12 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400">
+                {searchTerm ? "Nenhuma impressora encontrada" : "Nenhuma impressora cadastrada"}
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       {/* Add/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>

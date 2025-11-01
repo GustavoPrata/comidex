@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -290,20 +290,35 @@ export default function PrintConfigPage() {
 
 
   return (
-    <div className="container mx-auto">
-      {/* Header */}
-      <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-800 p-6 rounded-2xl mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-500 text-white rounded-lg">
-              <Settings className="h-6 w-6" />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      {/* Header Card with Orange Gradient */}
+      <Card className="rounded-none border-x-0 border-t-0 shadow-sm">
+        <CardHeader className="pb-3 bg-gradient-to-r from-orange-500/10 to-orange-600/10 dark:from-orange-500/20 dark:to-orange-600/20">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-10 bg-gradient-to-b from-orange-500 to-orange-600 rounded-full"></div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                  <Settings className="h-6 w-6 text-orange-600 dark:text-orange-500" />
+                  Configuração de Impressão
+                </h1>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  {items.length} {items.length === 1 ? 'item configurado' : 'itens configurados'}
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold">Configuração de Impressão</h1>
-              <p className="text-gray-500">Configure qual impressora cada item deve usar</p>
-            </div>
+            <Button 
+              onClick={saveConfigs}
+              disabled={saving}
+              className="bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+              <Save className="h-4 w-4 mr-2" />
+              Salvar Configurações
+            </Button>
           </div>
-        </div>
+        </CardHeader>
+        <CardContent className="p-6">
 
         {/* Stats Row */}
         <div className="grid grid-cols-5 gap-4 mb-6">
@@ -378,22 +393,10 @@ export default function PrintConfigPage() {
             </SelectContent>
           </Select>
 
-          {/* Save Button */}
-          <Button 
-            onClick={saveConfigs}
-            disabled={saving}
-            className="bg-orange-500 hover:bg-orange-600 text-white rounded-lg"
-          >
-            {saving && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-            <Save className="h-4 w-4 mr-2" />
-            Salvar
-          </Button>
         </div>
-      </div>
 
-      {/* Items Table */}
-      <Card className="border-gray-200 dark:border-gray-800 rounded-2xl">
-        <CardContent className="p-0">
+          {/* Items Table */}
+          <div className="mt-6">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
@@ -488,25 +491,26 @@ export default function PrintConfigPage() {
               </tbody>
             </table>
           </div>
+          </div>
+
+          {/* Footer Summary */}
+          <div className="mt-4 flex justify-between items-center">
+            <div className="text-sm text-gray-500">
+              {filteredItems.length} itens encontrados
+            </div>
+            <div className="flex gap-4">
+              {PRINTER_TYPES.map(printer => (
+                <div key={printer.id} className="text-sm">
+                  <span className="font-medium">{printer.label}:</span>
+                  <Badge variant="outline" className="ml-2">
+                    {countItemsForPrinter(printer.id)} itens
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
-
-      {/* Footer Summary */}
-      <div className="mt-4 flex justify-between items-center">
-        <div className="text-sm text-gray-500">
-          {filteredItems.length} itens encontrados
-        </div>
-        <div className="flex gap-4">
-          {PRINTER_TYPES.map(printer => (
-            <div key={printer.id} className="text-sm">
-              <span className="font-medium">{printer.label}:</span>
-              <Badge variant="outline" className="ml-2">
-                {countItemsForPrinter(printer.id)} itens
-              </Badge>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

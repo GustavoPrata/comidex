@@ -762,6 +762,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-top: 1rem;
 }
 
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
 .block {
   display: block;
 }
@@ -1514,6 +1518,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-width: 2px;
 }
 
+.border-x-0 {
+  border-left-width: 0;
+  border-right-width: 0;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1540,6 +1549,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .border-t {
   border-top-width: 1px;
+}
+
+.border-t-0 {
+  border-top-width: 0;
 }
 
 .border-dashed {
