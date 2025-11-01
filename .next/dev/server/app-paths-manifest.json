@@ -1,6 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/admin/items/page": "app/admin/items/page.js",
-  "/api/prompt-message/route": "app/api/prompt-message/route.js",
   "/prompt/page": "app/prompt/page.js"
 }

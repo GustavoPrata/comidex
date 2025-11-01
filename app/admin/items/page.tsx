@@ -2040,9 +2040,9 @@ export default function ProductsPage() {
                                   const newIds = formData.additional_category_ids.filter(id => id !== catId);
                                   setFormData({ ...formData, additional_category_ids: newIds });
                                 }}
-                                className="w-5 h-5 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-red-500 dark:hover:bg-red-500 flex items-center justify-center transition-colors group"
+                                className="w-5 h-5 rounded-full bg-orange-200 dark:bg-orange-900/30 hover:bg-orange-500 dark:hover:bg-orange-500 flex items-center justify-center transition-colors group"
                               >
-                                <X className="h-3 w-3 text-gray-500 group-hover:text-white" />
+                                <X className="h-3 w-3 text-orange-600 dark:text-orange-400 group-hover:text-white" />
                               </button>
                             </div>
                           );
