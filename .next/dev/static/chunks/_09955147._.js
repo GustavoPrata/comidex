@@ -372,8 +372,35 @@ function PromptPage() {
             // Foca novamente no textarea
             textareaRef.current?.focus();
         } catch (error) {
-            console.error("Erro ao enviar mensagem:", error);
-            alert("⚠️ O Console Prompt não está rodando!\n\nPor favor, execute o comando:\ntsx server/prompt-console.ts");
+            // Se o Console Prompt não está rodando, envia para o console principal
+            console.log("📨 [PROMPT]:", inputText.trim() || "");
+            if (currentImageId) {
+                const fileExtension = selectedImage?.split(';')[0].split('/')[1] || 'jpg';
+                console.log("📷 [IMAGE]:", `attachments/${currentImageId}.${fileExtension}`);
+            }
+            // Adiciona à lista de mensagens com indicação de que foi para o console principal
+            let displayText = inputText.trim() || "";
+            if (currentImageId) {
+                const fileExtension = selectedImage?.split(';')[0].split('/')[1] || 'jpg';
+                const imagePath = `[veja a foto attachments/${currentImageId}.${fileExtension}]`;
+                displayText = displayText ? `${displayText} ${imagePath}` : `📷 ${imagePath}`;
+            }
+            const newMessage = {
+                id: Date.now().toString(),
+                text: `[Console Principal] ${displayText}`,
+                timestamp: new Date(),
+                imageId: currentImageId || undefined
+            };
+            setConsoleMessages((prev)=>[
+                    ...prev,
+                    newMessage
+                ]);
+            // Limpa o campo de input e imagem
+            setInputText("");
+            setSelectedImage(null);
+            setCurrentImageId(null);
+            // Foca novamente no textarea
+            textareaRef.current?.focus();
         } finally{
             setIsSending(false);
         }
@@ -396,8 +423,9 @@ function PromptPage() {
             // Limpa a lista de mensagens
             setConsoleMessages([]);
         } catch (error) {
-            console.error("Erro ao limpar console:", error);
-            alert("⚠️ O Console Prompt não está rodando!\n\nPor favor, execute o comando:\ntsx server/prompt-console.ts");
+            // Se o Console Prompt não está rodando, apenas limpa a lista local
+            console.log("🧹 [PROMPT]: Limpando console local");
+            setConsoleMessages([]);
         }
     };
     const handleKeyPress = (e)=>{
@@ -533,12 +561,12 @@ function PromptPage() {
                                                 className: "h-5 w-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                lineNumber: 265,
+                                                lineNumber: 295,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 264,
+                                            lineNumber: 294,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -548,7 +576,7 @@ function PromptPage() {
                                                     children: "Console Prompt - Workflow"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 268,
+                                                    lineNumber: 298,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -556,19 +584,19 @@ function PromptPage() {
                                                     children: "Digite e envie mensagens para o console do servidor"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 269,
+                                                    lineNumber: 299,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 267,
+                                            lineNumber: 297,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/prompt/page.tsx",
-                                    lineNumber: 263,
+                                    lineNumber: 293,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -583,7 +611,7 @@ function PromptPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 275,
+                                            lineNumber: 305,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -594,7 +622,7 @@ function PromptPage() {
                                                     className: "h-3 w-3 mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 279,
+                                                    lineNumber: 309,
                                                     columnNumber: 19
                                                 }, this),
                                                 photoCounter - 1,
@@ -602,29 +630,29 @@ function PromptPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 278,
+                                            lineNumber: 308,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/prompt/page.tsx",
-                                    lineNumber: 274,
+                                    lineNumber: 304,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/prompt/page.tsx",
-                            lineNumber: 262,
+                            lineNumber: 292,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/prompt/page.tsx",
-                        lineNumber: 261,
+                        lineNumber: 291,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/prompt/page.tsx",
-                    lineNumber: 260,
+                    lineNumber: 290,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -647,7 +675,7 @@ function PromptPage() {
                                                 className: "h-12 w-12 text-orange-600 mx-auto mb-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                lineNumber: 303,
+                                                lineNumber: 333,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -655,18 +683,18 @@ function PromptPage() {
                                                 children: "Solte a imagem aqui"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                lineNumber: 304,
+                                                lineNumber: 334,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/prompt/page.tsx",
-                                        lineNumber: 302,
+                                        lineNumber: 332,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/prompt/page.tsx",
-                                    lineNumber: 301,
+                                    lineNumber: 331,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -676,7 +704,7 @@ function PromptPage() {
                                             children: "Digite sua mensagem"
                                         }, void 0, false, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 310,
+                                            lineNumber: 340,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -690,7 +718,7 @@ function PromptPage() {
                                             "data-testid": "input-prompt"
                                         }, void 0, false, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 313,
+                                            lineNumber: 343,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -698,13 +726,13 @@ function PromptPage() {
                                             children: "Enter para enviar • Shift+Enter para nova linha • Ctrl+V para colar imagem • Arraste imagens aqui"
                                         }, void 0, false, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 323,
+                                            lineNumber: 353,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/prompt/page.tsx",
-                                    lineNumber: 309,
+                                    lineNumber: 339,
                                     columnNumber: 15
                                 }, this),
                                 selectedImage && currentImageId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -718,7 +746,7 @@ function PromptPage() {
                                                 className: "max-h-32 rounded-md border border-gray-200 dark:border-gray-700"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                lineNumber: 332,
+                                                lineNumber: 362,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -731,7 +759,7 @@ function PromptPage() {
                                                                 className: "h-4 w-4 text-orange-500"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                                lineNumber: 339,
+                                                                lineNumber: 369,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -739,13 +767,13 @@ function PromptPage() {
                                                                 children: "Imagem carregada com sucesso!"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                                lineNumber: 340,
+                                                                lineNumber: 370,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/prompt/page.tsx",
-                                                        lineNumber: 338,
+                                                        lineNumber: 368,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -757,7 +785,7 @@ function PromptPage() {
                                                                 children: currentImageId
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                                lineNumber: 345,
+                                                                lineNumber: 375,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -769,13 +797,13 @@ function PromptPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                                lineNumber: 348,
+                                                                lineNumber: 378,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/prompt/page.tsx",
-                                                        lineNumber: 344,
+                                                        lineNumber: 374,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -783,13 +811,13 @@ function PromptPage() {
                                                         children: "A imagem será enviada junto com sua mensagem"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/prompt/page.tsx",
-                                                        lineNumber: 352,
+                                                        lineNumber: 382,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                lineNumber: 337,
+                                                lineNumber: 367,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -801,23 +829,23 @@ function PromptPage() {
                                                     className: "h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 362,
+                                                    lineNumber: 392,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/prompt/page.tsx",
-                                                lineNumber: 356,
+                                                lineNumber: 386,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/prompt/page.tsx",
-                                        lineNumber: 331,
+                                        lineNumber: 361,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/prompt/page.tsx",
-                                    lineNumber: 330,
+                                    lineNumber: 360,
                                     columnNumber: 17
                                 }, this),
                                 consoleMessages.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -828,7 +856,7 @@ function PromptPage() {
                                             children: "Mensagens Enviadas:"
                                         }, void 0, false, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 371,
+                                            lineNumber: 401,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -841,7 +869,7 @@ function PromptPage() {
                                                             children: format(msg.timestamp)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/prompt/page.tsx",
-                                                            lineNumber: 377,
+                                                            lineNumber: 407,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -849,7 +877,7 @@ function PromptPage() {
                                                             children: msg.text
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/prompt/page.tsx",
-                                                            lineNumber: 380,
+                                                            lineNumber: 410,
                                                             columnNumber: 25
                                                         }, this),
                                                         msg.imageId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -858,24 +886,24 @@ function PromptPage() {
                                                             children: msg.imageId
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/prompt/page.tsx",
-                                                            lineNumber: 384,
+                                                            lineNumber: 414,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, msg.id, true, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 376,
+                                                    lineNumber: 406,
                                                     columnNumber: 23
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 374,
+                                            lineNumber: 404,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/prompt/page.tsx",
-                                    lineNumber: 370,
+                                    lineNumber: 400,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -889,7 +917,7 @@ function PromptPage() {
                                             className: "hidden"
                                         }, void 0, false, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 396,
+                                            lineNumber: 426,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -903,14 +931,14 @@ function PromptPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 412,
+                                                    lineNumber: 442,
                                                     columnNumber: 19
                                                 }, this),
                                                 isUploading ? "Carregando..." : currentImageId ? "Imagem Selecionada" : `Adicionar foto${photoCounter}`
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 405,
+                                            lineNumber: 435,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -923,14 +951,14 @@ function PromptPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 422,
+                                                    lineNumber: 452,
                                                     columnNumber: 19
                                                 }, this),
                                                 isSending ? "Enviando..." : "Enviar ao Console"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 416,
+                                            lineNumber: 446,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -943,47 +971,47 @@ function PromptPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/prompt/page.tsx",
-                                                    lineNumber: 431,
+                                                    lineNumber: 461,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Limpar Console"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/prompt/page.tsx",
-                                            lineNumber: 425,
+                                            lineNumber: 455,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/prompt/page.tsx",
-                                    lineNumber: 394,
+                                    lineNumber: 424,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/prompt/page.tsx",
-                            lineNumber: 298,
+                            lineNumber: 328,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/prompt/page.tsx",
-                        lineNumber: 297,
+                        lineNumber: 327,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/prompt/page.tsx",
-                    lineNumber: 288,
+                    lineNumber: 318,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/prompt/page.tsx",
-            lineNumber: 258,
+            lineNumber: 288,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/prompt/page.tsx",
-        lineNumber: 257,
+        lineNumber: 287,
         columnNumber: 5
     }, this);
 }

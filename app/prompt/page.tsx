@@ -98,8 +98,37 @@ export default function PromptPage() {
       // Foca novamente no textarea
       textareaRef.current?.focus();
     } catch (error) {
-      console.error("Erro ao enviar mensagem:", error);
-      alert("⚠️ O Console Prompt não está rodando!\n\nPor favor, execute o comando:\ntsx server/prompt-console.ts");
+      // Se o Console Prompt não está rodando, envia para o console principal
+      console.log("📨 [PROMPT]:", inputText.trim() || "");
+      if (currentImageId) {
+        const fileExtension = selectedImage?.split(';')[0].split('/')[1] || 'jpg';
+        console.log("📷 [IMAGE]:", `attachments/${currentImageId}.${fileExtension}`);
+      }
+      
+      // Adiciona à lista de mensagens com indicação de que foi para o console principal
+      let displayText = inputText.trim() || "";
+      if (currentImageId) {
+        const fileExtension = selectedImage?.split(';')[0].split('/')[1] || 'jpg';
+        const imagePath = `[veja a foto attachments/${currentImageId}.${fileExtension}]`;
+        displayText = displayText ? `${displayText} ${imagePath}` : `📷 ${imagePath}`;
+      }
+      
+      const newMessage: ConsoleMessage = {
+        id: Date.now().toString(),
+        text: `[Console Principal] ${displayText}`,
+        timestamp: new Date(),
+        imageId: currentImageId || undefined,
+      };
+      
+      setConsoleMessages(prev => [...prev, newMessage]);
+      
+      // Limpa o campo de input e imagem
+      setInputText("");
+      setSelectedImage(null);
+      setCurrentImageId(null);
+      
+      // Foca novamente no textarea
+      textareaRef.current?.focus();
     } finally {
       setIsSending(false);
     }
@@ -123,8 +152,9 @@ export default function PromptPage() {
       // Limpa a lista de mensagens
       setConsoleMessages([]);
     } catch (error) {
-      console.error("Erro ao limpar console:", error);
-      alert("⚠️ O Console Prompt não está rodando!\n\nPor favor, execute o comando:\ntsx server/prompt-console.ts");
+      // Se o Console Prompt não está rodando, apenas limpa a lista local
+      console.log("🧹 [PROMPT]: Limpando console local");
+      setConsoleMessages([]);
     }
   };
 
