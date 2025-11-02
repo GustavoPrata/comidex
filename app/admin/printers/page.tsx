@@ -61,6 +61,7 @@ import {
   SignalLow,
   SignalZero
 } from "lucide-react";
+import useSWR, { mutate } from 'swr';
 
 interface Printer {
   id: number;
@@ -188,9 +189,26 @@ const PRINTER_MODELS = {
   ]
 };
 
+// SWR fetcher function
+const fetcher = async () => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('printers')
+    .select('*')
+    .order('sort_order', { ascending: true });
+
+  if (error) throw error;
+  return data || [];
+};
+
 export default function PrintersPage() {
-  const [printers, setPrinters] = useState<Printer[]>([]);
-  const [loading, setLoading] = useState(true);
+  // Use SWR for automatic data fetching and caching
+  const { data: printers = [], error, isLoading } = useSWR('printers', fetcher, {
+    refreshInterval: 5000, // Auto refresh every 5 seconds
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true
+  });
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingPrinter, setEditingPrinter] = useState<Printer | null>(null);
@@ -210,10 +228,6 @@ export default function PrintersPage() {
     sort_order: 0
   });
   const supabase = createClient();
-
-  useEffect(() => {
-    loadPrinters();
-  }, []);
   
   // Verificar status periodicamente após carregar impressoras
   useEffect(() => {
@@ -235,31 +249,8 @@ export default function PrintersPage() {
     }
   }, [printers.length]);
 
-  const loadPrinters = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('printers')
-        .select('*')
-        .order('sort_order', { ascending: true });
-
-      if (error) {
-        console.error('Error loading printers:', error);
-        toast.error("Erro ao carregar impressoras");
-        return;
-      }
-
-      setPrinters(data || []);
-    } catch (error) {
-      console.error('Error:', error);
-      toast.error("Erro ao carregar impressoras");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const checkAllPrintersStatus = async () => {
-    const activePrinters = printers.filter(p => p.active);
+    const activePrinters = printers.filter((p: Printer) => p.active);
     for (const printer of activePrinters) {
       await checkPrinterStatus(printer.id, true);
     }
@@ -285,12 +276,15 @@ export default function PrintersPage() {
         }
       }
 
-      // Atualizar status local
-      setPrinters(prev => prev.map(p => 
-        p.id === printerId 
-          ? { ...p, connection_status: result.status }
-          : p
-      ));
+      // Atualizar status local com mutate otimista
+      mutate('printers', 
+        printers.map((p: Printer) => 
+          p.id === printerId 
+            ? { ...p, connection_status: result.status }
+            : p
+        ),
+        false // não revalidar, apenas atualizar cache local
+      );
     } catch (error) {
       if (!silent) {
         toast.error("Erro ao verificar status da impressora");
@@ -315,8 +309,8 @@ export default function PrintersPage() {
       
       if (result.success) {
         toast.success(result.message);
-        // Recarregar para mostrar último teste
-        await loadPrinters();
+        // Revalidar dados para mostrar último teste
+        mutate('printers');
       } else {
         toast.error(`Falha no teste: ${result.error}`);
         console.error('Detalhes do erro:', result.details);
@@ -408,7 +402,7 @@ export default function PrintersPage() {
         active: true,
         sort_order: 0
       });
-      loadPrinters();
+      mutate('printers');
     } catch (error) {
       console.error('Error saving printer:', error);
       toast.error("Erro ao salvar impressora");
@@ -438,7 +432,7 @@ export default function PrintersPage() {
       toast.success("Impressora excluída com sucesso!");
       setIsDeleteModalOpen(false);
       setDeletePrinter(null);
-      loadPrinters();
+      mutate('printers');
     } catch (error) {
       console.error('Error deleting printer:', error);
       toast.error("Erro ao excluir impressora");
@@ -457,14 +451,14 @@ export default function PrintersPage() {
       if (error) throw error;
       
       toast.success(`Impressora ${!printer.active ? 'ativada' : 'desativada'}`);
-      loadPrinters();
+      mutate('printers');
     } catch (error) {
       console.error('Error toggling active status:', error);
       toast.error("Erro ao alterar status");
     }
   };
 
-  const filteredPrinters = printers.filter(printer =>
+  const filteredPrinters = printers.filter((printer: Printer) =>
     printer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     printer.ip_address.includes(searchTerm) ||
     (printer.printer_model && printer.printer_model.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -551,13 +545,13 @@ export default function PrintersPage() {
 
       {/* Content - melhorado */}
       <div className="p-4">
-        {loading ? (
+        {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-            {filteredPrinters.map((printer) => (
+            {filteredPrinters.map((printer: Printer) => (
               <div
                 key={printer.id} 
                 className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm overflow-hidden transition-all hover:shadow-lg ${!printer.active ? 'opacity-60' : ''}`}
@@ -726,7 +720,7 @@ export default function PrintersPage() {
         )}
 
         {/* Empty State */}
-        {!loading && filteredPrinters.length === 0 && (
+        {!isLoading && filteredPrinters.length === 0 && (
           <div className="text-center py-16 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl m-4">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-orange-100 dark:bg-orange-900/30 mb-4">
               <PrinterIcon className="h-10 w-10 text-orange-500" />
