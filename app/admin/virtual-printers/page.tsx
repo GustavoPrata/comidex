@@ -289,8 +289,13 @@ export default function VirtualPrintersPage() {
   };
 
   const createPrinter = () => {
-    if (!newPrinter.name || !newPrinter.ipAddress) {
-      toast.error('Preencha todos os campos');
+    if (!newPrinter.name.trim()) {
+      toast.error('Digite o nome da impressora');
+      return;
+    }
+    
+    if (!newPrinter.ipAddress.trim()) {
+      toast.error('Digite o endereço IP');
       return;
     }
 
@@ -934,7 +939,18 @@ export default function VirtualPrintersPage() {
       </div>
 
       {/* Create Modal */}
-      <Dialog open={createModalOpen} onOpenChange={setCreateModalOpen}>
+      <Dialog open={createModalOpen} onOpenChange={(open) => {
+        setCreateModalOpen(open);
+        if (!open) {
+          // Reset form when closing
+          setNewPrinter({
+            name: '',
+            model: PRINTER_MODELS[0],
+            ipAddress: generateLocalIP(),
+            port: '9100'
+          });
+        }
+      }}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Nova Impressora Virtual</DialogTitle>
@@ -943,23 +959,24 @@ export default function VirtualPrintersPage() {
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4">
-            <div>
-              <Label>Nome da Impressora *</Label>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="printer-name">Nome da Impressora *</Label>
               <Input
+                id="printer-name"
                 value={newPrinter.name}
-                onChange={(e) => setNewPrinter({...newPrinter, name: e.target.value})}
+                onChange={(e) => setNewPrinter(prev => ({...prev, name: e.target.value}))}
                 placeholder="Ex: Virtual Delivery"
               />
             </div>
             
-            <div>
-              <Label>Modelo</Label>
+            <div className="space-y-2">
+              <Label htmlFor="printer-model">Modelo</Label>
               <Select
                 value={newPrinter.model}
-                onValueChange={(value) => setNewPrinter({...newPrinter, model: value})}
+                onValueChange={(value) => setNewPrinter(prev => ({...prev, model: value}))}
               >
-                <SelectTrigger>
+                <SelectTrigger id="printer-model">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -972,17 +989,19 @@ export default function VirtualPrintersPage() {
               </Select>
             </div>
             
-            <div>
-              <Label>Endereço IP *</Label>
+            <div className="space-y-2">
+              <Label htmlFor="printer-ip">Endereço IP *</Label>
               <div className="flex gap-2">
                 <Input
+                  id="printer-ip"
                   value={newPrinter.ipAddress}
-                  onChange={(e) => setNewPrinter({...newPrinter, ipAddress: e.target.value})}
+                  onChange={(e) => setNewPrinter(prev => ({...prev, ipAddress: e.target.value}))}
                   placeholder="192.168.1.100"
                 />
                 <Button
+                  type="button"
                   variant="outline"
-                  onClick={() => setNewPrinter({...newPrinter, ipAddress: generateLocalIP()})}
+                  onClick={() => setNewPrinter(prev => ({...prev, ipAddress: generateLocalIP()}))}
                   title="Gerar IP aleatório"
                 >
                   <RefreshCw className="h-4 w-4" />
@@ -990,24 +1009,37 @@ export default function VirtualPrintersPage() {
               </div>
             </div>
             
-            <div>
-              <Label>Porta</Label>
+            <div className="space-y-2">
+              <Label htmlFor="printer-port">Porta</Label>
               <Input
+                id="printer-port"
                 value={newPrinter.port}
-                onChange={(e) => setNewPrinter({...newPrinter, port: e.target.value})}
+                onChange={(e) => setNewPrinter(prev => ({...prev, port: e.target.value}))}
                 placeholder="9100"
               />
-              <p className="text-xs text-gray-500 mt-1">Porta padrão: 9100</p>
+              <p className="text-xs text-gray-500">Porta padrão: 9100</p>
             </div>
           </div>
           
           <DialogFooter>
-            <Button variant="outline" onClick={() => setCreateModalOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => {
+                setCreateModalOpen(false);
+                setNewPrinter({
+                  name: '',
+                  model: PRINTER_MODELS[0],
+                  ipAddress: generateLocalIP(),
+                  port: '9100'
+                });
+              }}
+            >
               Cancelar
             </Button>
             <Button 
               className="bg-blue-500 hover:bg-blue-600 text-white"
               onClick={createPrinter}
+              disabled={!newPrinter.name || !newPrinter.ipAddress}
             >
               <Plus className="h-4 w-4 mr-2" />
               Criar
