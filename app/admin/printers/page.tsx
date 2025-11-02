@@ -12,7 +12,8 @@ import {
   DialogContent, 
   DialogHeader, 
   DialogTitle, 
-  DialogFooter 
+  DialogFooter,
+  DialogDescription 
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -54,7 +55,11 @@ import {
   Star,
   MoreVertical,
   Pencil,
-  AlertCircle
+  AlertCircle,
+  TestTube,
+  Activity,
+  Info,
+  Clock
 } from "lucide-react";
 
 interface Printer {
@@ -63,13 +68,46 @@ interface Printer {
   ip_address: string;
   port: string;
   printer_type: 'thermal' | 'laser' | 'inkjet' | 'other';
+  printer_model?: string;
   is_main: boolean;
   active: boolean;
   description?: string;
   sort_order: number;
+  connection_status?: string;
+  last_test_at?: string;
+  test_result?: string;
   created_at?: string;
   updated_at?: string;
 }
+
+// Modelos populares de impressoras térmicas para restaurantes
+const PRINTER_MODELS = {
+  thermal: [
+    { value: "Epson TM-T88VI", label: "Epson TM-T88VI", description: "Mais popular em restaurantes, alta velocidade, USB/Ethernet" },
+    { value: "Epson TM-T88V", label: "Epson TM-T88V", description: "Versão anterior, muito confiável, USB/Ethernet" },
+    { value: "Epson TM-T20X", label: "Epson TM-T20X", description: "Modelo econômico, ideal para pequenos negócios" },
+    { value: "Bematech MP-4200 TH", label: "Bematech MP-4200 TH", description: "Nacional, excelente custo-benefício" },
+    { value: "Bematech MP-5100 TH", label: "Bematech MP-5100 TH", description: "Nacional, alta performance" },
+    { value: "Elgin i9", label: "Elgin i9", description: "Nacional, compacta e eficiente" },
+    { value: "Elgin i8", label: "Elgin i8", description: "Nacional, modelo básico confiável" },
+    { value: "Star TSP143III", label: "Star TSP143III", description: "Japonesa, design compacto, alta qualidade" },
+    { value: "Star TSP654II", label: "Star TSP654II", description: "Japonesa, alta velocidade, Bluetooth/WiFi" },
+    { value: "Citizen CT-S310II", label: "Citizen CT-S310II", description: "Japonesa, robusta, ideal para alto volume" },
+    { value: "Daruma DR800", label: "Daruma DR800", description: "Nacional, guilhotina automática" },
+    { value: "Sweda SI-300S", label: "Sweda SI-300S", description: "Nacional, boa velocidade de impressão" }
+  ],
+  laser: [
+    { value: "HP LaserJet Pro", label: "HP LaserJet Pro", description: "Para relatórios e documentos" },
+    { value: "Brother HL-L2350DW", label: "Brother HL-L2350DW", description: "Compacta, WiFi, duplex" }
+  ],
+  inkjet: [
+    { value: "Epson L3250", label: "Epson L3250", description: "Tanque de tinta, econômica" },
+    { value: "Canon G3110", label: "Canon G3110", description: "Tanque de tinta, WiFi" }
+  ],
+  other: [
+    { value: "Personalizado", label: "Outro Modelo", description: "Modelo não listado" }
+  ]
+};
 
 export default function PrintersPage() {
   const [printers, setPrinters] = useState<Printer[]>([]);
@@ -79,12 +117,15 @@ export default function PrintersPage() {
   const [editingPrinter, setEditingPrinter] = useState<Printer | null>(null);
   const [deletePrinter, setDeletePrinter] = useState<Printer | null>(null);
   const [saving, setSaving] = useState(false);
+  const [testing, setTesting] = useState<number | null>(null);
+  const [checkingStatus, setCheckingStatus] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({
     name: '',
     ip_address: '',
     port: '9100',
     type: 'thermal' as 'thermal' | 'laser' | 'inkjet' | 'other',
+    printer_model: 'Epson TM-T88VI',
     is_main: false,
     active: true,
     description: '',
@@ -94,6 +135,11 @@ export default function PrintersPage() {
 
   useEffect(() => {
     loadPrinters();
+    // Verificar status das impressoras a cada 30 segundos
+    const interval = setInterval(() => {
+      checkAllPrintersStatus();
+    }, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const loadPrinters = async () => {
@@ -119,6 +165,77 @@ export default function PrintersPage() {
     }
   };
 
+  const checkAllPrintersStatus = async () => {
+    const activePrinters = printers.filter(p => p.active);
+    for (const printer of activePrinters) {
+      await checkPrinterStatus(printer.id, true);
+    }
+  };
+
+  const checkPrinterStatus = async (printerId: number, silent = false) => {
+    try {
+      if (!silent) setCheckingStatus(printerId);
+      
+      const response = await fetch('/api/printers/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ printerId })
+      });
+
+      const result = await response.json();
+      
+      if (!silent) {
+        if (result.status === 'online') {
+          toast.success(`${result.message}`);
+        } else {
+          toast.error(`${result.message}`);
+        }
+      }
+
+      // Atualizar status local
+      setPrinters(prev => prev.map(p => 
+        p.id === printerId 
+          ? { ...p, connection_status: result.status }
+          : p
+      ));
+    } catch (error) {
+      if (!silent) {
+        toast.error("Erro ao verificar status da impressora");
+      }
+    } finally {
+      setCheckingStatus(null);
+    }
+  };
+
+  const testPrinter = async (printer: Printer) => {
+    try {
+      setTesting(printer.id);
+      toast(`Enviando teste de impressão para ${printer.name}...`);
+      
+      const response = await fetch('/api/printers/test', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ printerId: printer.id })
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success(result.message);
+        // Recarregar para mostrar último teste
+        await loadPrinters();
+      } else {
+        toast.error(`Falha no teste: ${result.error}`);
+        console.error('Detalhes do erro:', result.details);
+      }
+    } catch (error) {
+      toast.error("Erro ao testar impressora");
+      console.error('Erro:', error);
+    } finally {
+      setTesting(null);
+    }
+  };
+
   const openModal = (printer?: Printer) => {
     if (printer) {
       setEditingPrinter(printer);
@@ -127,6 +244,7 @@ export default function PrintersPage() {
         ip_address: printer.ip_address,
         port: printer.port,
         type: printer.printer_type,
+        printer_model: printer.printer_model || 'Epson TM-T88VI',
         is_main: printer.is_main,
         active: printer.active,
         description: printer.description || '',
@@ -139,6 +257,7 @@ export default function PrintersPage() {
         ip_address: '',
         port: '9100',
         type: 'thermal',
+        printer_model: 'Epson TM-T88VI',
         is_main: false,
         active: true,
         description: '',
@@ -162,10 +281,12 @@ export default function PrintersPage() {
         ip_address: formData.ip_address,
         port: formData.port,
         printer_type: formData.type,
+        printer_model: formData.printer_model,
         is_main: formData.is_main,
         active: formData.active,
         description: formData.description,
-        sort_order: formData.sort_order
+        sort_order: formData.sort_order,
+        connection_status: 'unknown'
       };
 
       if (editingPrinter) {
@@ -192,6 +313,7 @@ export default function PrintersPage() {
         ip_address: '',
         port: '9100',
         type: 'thermal',
+        printer_model: 'Epson TM-T88VI',
         is_main: false,
         active: true,
         description: '',
@@ -253,17 +375,37 @@ export default function PrintersPage() {
     }
   };
 
-  const testPrinter = async (printer: Printer) => {
-    toast(`Testando conexão com ${printer.name} (${printer.ip_address}:${printer.port})`);
-    setTimeout(() => {
-      toast.success(`Teste enviado para ${printer.name}`);
-    }, 1500);
-  };
-
   const filteredPrinters = printers.filter(printer =>
     printer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    printer.ip_address.includes(searchTerm)
+    printer.ip_address.includes(searchTerm) ||
+    (printer.printer_model && printer.printer_model.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  const getConnectionStatusIcon = (status?: string) => {
+    switch (status) {
+      case 'online':
+        return <Wifi className="h-5 w-5 text-green-500" />;
+      case 'offline':
+        return <WifiOff className="h-5 w-5 text-red-500" />;
+      case 'error':
+        return <AlertCircle className="h-5 w-5 text-yellow-500" />;
+      default:
+        return <Activity className="h-5 w-5 text-gray-400" />;
+    }
+  };
+
+  const getConnectionStatusText = (status?: string) => {
+    switch (status) {
+      case 'online':
+        return { text: 'Online', color: 'text-green-600' };
+      case 'offline':
+        return { text: 'Offline', color: 'text-red-600' };
+      case 'error':
+        return { text: 'Erro', color: 'text-yellow-600' };
+      default:
+        return { text: 'Desconhecido', color: 'text-gray-500' };
+    }
+  };
 
   return (
     <div className="min-h-screen relative">
@@ -302,7 +444,7 @@ export default function PrintersPage() {
 
           {/* Subtitle */}
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Gerencie as impressoras do sistema
+            Gerencie impressoras térmicas para comandas e cupons
           </p>
         </div>
       </div>
@@ -332,19 +474,18 @@ export default function PrintersPage() {
                           </Badge>
                         )}
                       </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 capitalize">
-                        {printer.printer_type === 'thermal' ? 'Térmica' :
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 font-medium">
+                        {printer.printer_model || 'Modelo não especificado'}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Tipo: {printer.printer_type === 'thermal' ? 'Térmica' :
                          printer.printer_type === 'laser' ? 'Laser' :
                          printer.printer_type === 'inkjet' ? 'Jato de Tinta' : 
                          'Outro'}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
-                      {printer.active ? (
-                        <Wifi className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <WifiOff className="h-5 w-5 text-gray-400" />
-                      )}
+                      {getConnectionStatusIcon(printer.connection_status)}
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-orange-500 transition-colors">
@@ -352,9 +493,37 @@ export default function PrintersPage() {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem onClick={() => testPrinter(printer)}>
-                            <PrinterIcon className="h-4 w-4 mr-2" />
-                            Testar Impressão
+                          <DropdownMenuItem 
+                            onClick={() => testPrinter(printer)}
+                            disabled={testing === printer.id}
+                          >
+                            {testing === printer.id ? (
+                              <>
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                Testando...
+                              </>
+                            ) : (
+                              <>
+                                <TestTube className="h-4 w-4 mr-2" />
+                                Testar Impressão
+                              </>
+                            )}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => checkPrinterStatus(printer.id)}
+                            disabled={checkingStatus === printer.id}
+                          >
+                            {checkingStatus === printer.id ? (
+                              <>
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                Verificando...
+                              </>
+                            ) : (
+                              <>
+                                <Activity className="h-4 w-4 mr-2" />
+                                Verificar Status
+                              </>
+                            )}
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => openModal(printer)}>
                             <Pencil className="h-4 w-4 mr-2" />
@@ -373,16 +542,41 @@ export default function PrintersPage() {
                   </div>
 
                   {/* Connection Info */}
-                  <div className="space-y-2 mb-4">
+                  <div className="space-y-2 mb-4 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500 dark:text-gray-400">IP:</span>
-                      <span className="font-mono">{printer.ip_address || 'N/A'}</span>
+                      <span className="font-mono">{printer.ip_address}</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500 dark:text-gray-400">Porta:</span>
-                      <span className="font-mono">{printer.port || 'N/A'}</span>
+                      <span className="font-mono">{printer.port}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500 dark:text-gray-400">Status:</span>
+                      <span className={`font-medium ${getConnectionStatusText(printer.connection_status).color}`}>
+                        {getConnectionStatusText(printer.connection_status).text}
+                      </span>
                     </div>
                   </div>
+
+                  {/* Last Test Info */}
+                  {printer.last_test_at && (
+                    <div className="mb-4 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <Clock className="h-4 w-4 text-blue-500 mt-0.5" />
+                        <div className="flex-1 text-xs">
+                          <p className="text-blue-600 dark:text-blue-400 font-medium">
+                            Último teste: {new Date(printer.last_test_at).toLocaleString('pt-BR')}
+                          </p>
+                          {printer.test_result && (
+                            <p className="text-blue-500 dark:text-blue-300 mt-1">
+                              {printer.test_result}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Footer */}
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
@@ -391,7 +585,7 @@ export default function PrintersPage() {
                     </Badge>
                     <button
                       onClick={() => toggleActive(printer)}
-                      className={`w-16 px-3 py-1 text-xs font-medium rounded-full transition-colors ${
+                      className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
                         printer.active 
                           ? 'bg-green-600 hover:bg-green-700 text-white' 
                           : 'bg-gray-500 hover:bg-gray-600 text-white'
@@ -429,22 +623,71 @@ export default function PrintersPage() {
 
       {/* Add/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
               {editingPrinter ? 'Editar Impressora' : 'Nova Impressora'}
             </DialogTitle>
+            <DialogDescription>
+              Configure uma impressora térmica para comandas e cupons
+            </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Nome da Impressora *</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder="Ex: Impressora Cozinha"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="type">Tipo de Impressora</Label>
+                <Select
+                  value={formData.type}
+                  onValueChange={(value) => setFormData({ 
+                    ...formData, 
+                    type: value as any,
+                    printer_model: PRINTER_MODELS[value as keyof typeof PRINTER_MODELS][0].value
+                  })}
+                >
+                  <SelectTrigger id="type">
+                    <SelectValue placeholder="Selecione o tipo" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="thermal">Térmica (Cupom)</SelectItem>
+                    <SelectItem value="laser">Laser</SelectItem>
+                    <SelectItem value="inkjet">Jato de Tinta</SelectItem>
+                    <SelectItem value="other">Outro</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label htmlFor="name">Nome *</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Ex: Impressora Cozinha"
-              />
+              <Label htmlFor="model">Modelo da Impressora</Label>
+              <Select
+                value={formData.printer_model}
+                onValueChange={(value) => setFormData({ ...formData, printer_model: value })}
+              >
+                <SelectTrigger id="model">
+                  <SelectValue placeholder="Selecione o modelo" />
+                </SelectTrigger>
+                <SelectContent className="max-h-[300px]">
+                  {PRINTER_MODELS[formData.type].map(model => (
+                    <SelectItem key={model.value} value={model.value}>
+                      <div className="flex flex-col">
+                        <span className="font-medium">{model.label}</span>
+                        <span className="text-xs text-gray-500">{model.description}</span>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
@@ -456,6 +699,7 @@ export default function PrintersPage() {
                   onChange={(e) => setFormData({ ...formData, ip_address: e.target.value })}
                   placeholder="192.168.1.100"
                 />
+                <p className="text-xs text-gray-500">IP da impressora na rede local</p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="port">Porta</Label>
@@ -465,56 +709,69 @@ export default function PrintersPage() {
                   onChange={(e) => setFormData({ ...formData, port: e.target.value })}
                   placeholder="9100"
                 />
+                <p className="text-xs text-gray-500">Padrão: 9100 para impressoras de rede</p>
               </div>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="type">Tipo</Label>
-              <Select
-                value={formData.type}
-                onValueChange={(value) => setFormData({ ...formData, type: value as any })}
+            <div className="space-y-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+              <div className="flex items-start gap-2">
+                <Info className="h-4 w-4 text-blue-500 mt-0.5" />
+                <div className="text-sm text-blue-600 dark:text-blue-400">
+                  <p className="font-medium mb-1">Configuração de Rede:</p>
+                  <ul className="space-y-1 text-xs">
+                    <li>• A impressora deve estar na mesma rede que este servidor</li>
+                    <li>• Verifique o IP na configuração da impressora (geralmente no menu ou imprimindo teste)</li>
+                    <li>• A porta 9100 é padrão para a maioria das impressoras térmicas de rede</li>
+                    <li>• Para USB, use software como "Virtual Printer Port" para criar porta de rede</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, is_main: !formData.is_main })}
+                className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 ${
+                  formData.is_main 
+                    ? 'bg-orange-100 text-orange-700 border-2 border-orange-300' 
+                    : 'bg-gray-100 text-gray-600 border-2 border-gray-200'
+                }`}
               >
-                <SelectTrigger id="type">
-                  <SelectValue placeholder="Selecione o tipo" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="thermal">Térmica</SelectItem>
-                  <SelectItem value="laser">Laser</SelectItem>
-                  <SelectItem value="inkjet">Jato de Tinta</SelectItem>
-                  <SelectItem value="other">Outro</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-3">
-              <div className="space-y-2">
-                <Label>Tipo de Impressora</Label>
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, is_main: !formData.is_main })}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-colors w-full ${
-                    formData.is_main 
-                      ? 'bg-orange-600 hover:bg-orange-700 text-white' 
-                      : 'bg-gray-500 hover:bg-gray-600 text-white'
-                  }`}
-                >
-                  {formData.is_main ? 'Principal' : 'Secundária'}
-                </button>
-              </div>
-              <div className="space-y-2">
-                <Label>Status</Label>
-                <button
-                  type="button"
-                  onClick={() => setFormData({ ...formData, active: !formData.active })}
-                  className={`px-4 py-2 text-sm font-medium rounded-full transition-colors w-full ${
-                    formData.active 
-                      ? 'bg-green-600 hover:bg-green-700 text-white' 
-                      : 'bg-gray-500 hover:bg-gray-600 text-white'
-                  }`}
-                >
-                  {formData.active ? 'Ativa' : 'Inativa'}
-                </button>
-              </div>
+                {formData.is_main ? (
+                  <>
+                    <Star className="h-4 w-4" />
+                    Impressora Principal
+                  </>
+                ) : (
+                  <>
+                    <Star className="h-4 w-4" />
+                    Impressora Secundária
+                  </>
+                )}
+              </button>
+              
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, active: !formData.active })}
+                className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 ${
+                  formData.active 
+                    ? 'bg-green-100 text-green-700 border-2 border-green-300' 
+                    : 'bg-gray-100 text-gray-600 border-2 border-gray-200'
+                }`}
+              >
+                {formData.active ? (
+                  <>
+                    <CheckCircle className="h-4 w-4" />
+                    Ativa
+                  </>
+                ) : (
+                  <>
+                    <XCircle className="h-4 w-4" />
+                    Inativa
+                  </>
+                )}
+              </button>
             </div>
           </div>
 
@@ -527,6 +784,7 @@ export default function PrintersPage() {
                 ip_address: '',
                 port: '9100',
                 type: 'thermal',
+                printer_model: 'Epson TM-T88VI',
                 is_main: false,
                 active: true,
                 description: '',
