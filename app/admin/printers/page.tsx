@@ -302,7 +302,7 @@ export default function PrintersPage() {
 
           {/* Subtitle */}
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            Gerencie impressoras térmicas, laser e jato de tinta para comandas e relatórios
+            Gerencie as impressoras do sistema
           </p>
 
           {/* Statistics */}
