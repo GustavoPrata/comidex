@@ -10,10 +10,27 @@ Sistema de gestão para restaurante japonês com:
 
 ## Status: ✅ MVP IMPLEMENTADO COM DADOS REAIS
 
+### Última Atualização: 02/11/2024 - 14:00
+- **🖥️ Sistema de Impressoras Virtuais Profissional**
+  - Nova página de Impressoras Virtuais para testes e desenvolvimento
+  - Simulação completa de impressão térmica com geração de PDFs
+  - Sistema de filas de impressão com status e estatísticas
+  - Configurações avançadas por impressora:
+    - Tamanho de papel (térmico 80mm/58mm, A4, carta)
+    - DPI (203, 300, 600)
+    - Corte automático, beep, abertura de gaveta
+    - Margens personalizáveis
+    - Charset e fontes
+  - 3 impressoras virtuais pré-configuradas (Cozinha, Bar, Caixa)
+  - Geração de recibos, pedidos, cupons fiscais e relatórios
+  - Preview de impressão com exportação para PDF
+  - API de impressão virtual em `/api/virtual-print`
+  - Biblioteca jsPDF integrada para geração profissional
+
 ### Última Atualização: 02/11/2024 - 13:25
 - **🖨️ Sistema Completo de Impressoras Térmicas**
   - Página de impressoras redesenhada seguindo padrão admin
-  - 12 modelos de impressoras térmicas reais do mercado brasileiro e japonês
+  - 60+ modelos de impressoras térmicas reais do mercado
   - Sistema de teste de impressão simulado (preparado para integração real)
   - Verificação de status online/offline das impressoras
   - Histórico de últimos testes com timestamp
