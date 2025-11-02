@@ -302,7 +302,7 @@ export default function PrintersPage() {
 
           {/* Subtitle */}
           <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-            Configure as impressoras do sistema - {printers.length} {printers.length === 1 ? 'impressora cadastrada' : 'impressoras cadastradas'}
+            Configure as impressoras do sistema
           </p>
 
           {/* Statistics */}
