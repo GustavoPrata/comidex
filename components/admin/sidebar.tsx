@@ -29,7 +29,8 @@ import {
   BarChart3,
   Sun,
   Moon,
-  BookOpen
+  BookOpen,
+  Monitor
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -70,6 +71,7 @@ const menuItems: MenuItem[] = [
     icon: Printer,
     submenu: [
       { label: 'Impressoras', href: '/admin/printers', icon: Printer },
+      { label: 'Impressoras Virtuais', href: '/admin/virtual-printers', icon: Monitor },
       { label: 'Fila', href: '/admin/print-queue', icon: FileText },
       { label: 'Config', href: '/admin/print-config', icon: Settings }
     ]
