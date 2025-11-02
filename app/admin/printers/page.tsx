@@ -83,29 +83,108 @@ interface Printer {
 // Modelos populares de impressoras térmicas para restaurantes
 const PRINTER_MODELS = {
   thermal: [
-    { value: "Epson TM-T88VI", label: "Epson TM-T88VI", description: "Mais popular em restaurantes, alta velocidade, USB/Ethernet" },
-    { value: "Epson TM-T88V", label: "Epson TM-T88V", description: "Versão anterior, muito confiável, USB/Ethernet" },
-    { value: "Epson TM-T20X", label: "Epson TM-T20X", description: "Modelo econômico, ideal para pequenos negócios" },
-    { value: "Bematech MP-4200 TH", label: "Bematech MP-4200 TH", description: "Nacional, excelente custo-benefício" },
-    { value: "Bematech MP-5100 TH", label: "Bematech MP-5100 TH", description: "Nacional, alta performance" },
-    { value: "Elgin i9", label: "Elgin i9", description: "Nacional, compacta e eficiente" },
-    { value: "Elgin i8", label: "Elgin i8", description: "Nacional, modelo básico confiável" },
-    { value: "Star TSP143III", label: "Star TSP143III", description: "Japonesa, design compacto, alta qualidade" },
-    { value: "Star TSP654II", label: "Star TSP654II", description: "Japonesa, alta velocidade, Bluetooth/WiFi" },
-    { value: "Citizen CT-S310II", label: "Citizen CT-S310II", description: "Japonesa, robusta, ideal para alto volume" },
-    { value: "Daruma DR800", label: "Daruma DR800", description: "Nacional, guilhotina automática" },
-    { value: "Sweda SI-300S", label: "Sweda SI-300S", description: "Nacional, boa velocidade de impressão" }
+    // Epson - Líder mundial
+    "Epson TM-T88VI",
+    "Epson TM-T88V", 
+    "Epson TM-T88IV",
+    "Epson TM-T88III",
+    "Epson TM-T20X",
+    "Epson TM-T20III",
+    "Epson TM-T20II",
+    "Epson TM-T70II",
+    "Epson TM-U220",
+    "Epson TM-U950",
+    
+    // Bematech - Nacional
+    "Bematech MP-4200 TH",
+    "Bematech MP-5100 TH",
+    "Bematech MP-2800 TH",
+    "Bematech MP-100S TH",
+    "Bematech PP-10",
+    
+    // Elgin - Nacional
+    "Elgin i9",
+    "Elgin i8",
+    "Elgin i7",
+    "Elgin VOX",
+    "Elgin Smart",
+    
+    // Star Micronics - Japonesa
+    "Star TSP143III",
+    "Star TSP143IIIU",
+    "Star TSP654II",
+    "Star TSP700II",
+    "Star TSP800II",
+    "Star mC-Print3",
+    "Star mC-Print2",
+    
+    // Citizen - Japonesa
+    "Citizen CT-S310II",
+    "Citizen CT-E351",
+    "Citizen CT-E651",
+    "Citizen CT-S801III",
+    "Citizen CT-S601",
+    
+    // Daruma - Nacional
+    "Daruma DR800",
+    "Daruma DR700",
+    "Daruma DS300",
+    "Daruma DS348",
+    
+    // Sweda - Nacional  
+    "Sweda SI-300S",
+    "Sweda SI-300L",
+    "Sweda SI-250",
+    
+    // Zebra
+    "Zebra ZD220",
+    "Zebra ZD420",
+    "Zebra ZD621",
+    
+    // Tanca
+    "Tanca TMP-500",
+    "Tanca TP-650",
+    "Tanca TP-450",
+    
+    // Diebold Nixdorf
+    "Diebold IM453HU",
+    "Diebold IM433TD",
+    "Diebold IM113ID",
+    
+    // Control ID
+    "Control ID Print iD",
+    "Control ID Print iD Touch",
+    
+    // Jetway
+    "Jetway JP-500",
+    "Jetway JP-800",
+    
+    // POS Tech
+    "POStech POS-90",
+    "POStech POS-80"
   ],
   laser: [
-    { value: "HP LaserJet Pro", label: "HP LaserJet Pro", description: "Para relatórios e documentos" },
-    { value: "Brother HL-L2350DW", label: "Brother HL-L2350DW", description: "Compacta, WiFi, duplex" }
+    "HP LaserJet Pro M404n",
+    "HP LaserJet Pro M15w",
+    "HP LaserJet Pro M203dw",
+    "Brother HL-L2350DW",
+    "Brother HL-L2395DW",
+    "Brother DCP-L2540DW",
+    "Samsung Xpress M2020W",
+    "Canon imageCLASS LBP6030w"
   ],
   inkjet: [
-    { value: "Epson L3250", label: "Epson L3250", description: "Tanque de tinta, econômica" },
-    { value: "Canon G3110", label: "Canon G3110", description: "Tanque de tinta, WiFi" }
+    "Epson L3250",
+    "Epson L3210",
+    "Epson L5290",
+    "Canon G3110",
+    "Canon G3160",
+    "Canon G4110",
+    "HP Smart Tank 517",
+    "HP DeskJet 2774"
   ],
   other: [
-    { value: "Personalizado", label: "Outro Modelo", description: "Modelo não listado" }
+    "Modelo Personalizado"
   ]
 };
 
@@ -652,7 +731,7 @@ export default function PrintersPage() {
                   onValueChange={(value) => setFormData({ 
                     ...formData, 
                     type: value as any,
-                    printer_model: PRINTER_MODELS[value as keyof typeof PRINTER_MODELS][0].value
+                    printer_model: PRINTER_MODELS[value as keyof typeof PRINTER_MODELS][0]
                   })}
                 >
                   <SelectTrigger id="type">
@@ -677,13 +756,10 @@ export default function PrintersPage() {
                 <SelectTrigger id="model">
                   <SelectValue placeholder="Selecione o modelo" />
                 </SelectTrigger>
-                <SelectContent className="max-h-[300px]">
+                <SelectContent className="max-h-[400px] overflow-y-auto">
                   {PRINTER_MODELS[formData.type].map(model => (
-                    <SelectItem key={model.value} value={model.value}>
-                      <div className="flex flex-col">
-                        <span className="font-medium">{model.label}</span>
-                        <span className="text-xs text-gray-500">{model.description}</span>
-                      </div>
+                    <SelectItem key={model} value={model}>
+                      {model}
                     </SelectItem>
                   ))}
                 </SelectContent>

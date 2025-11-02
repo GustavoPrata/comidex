@@ -930,10 +930,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-height: 24rem;
 }
 
-.max-h-\[300px\] {
-  max-height: 300px;
-}
-
 .max-h-\[400px\] {
   max-height: 400px;
 }
