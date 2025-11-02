@@ -207,7 +207,6 @@ export default function PrintersPage() {
     printer_model: 'Epson TM-T88VI',
     is_main: false,
     active: true,
-    description: '',
     sort_order: 0
   });
   const supabase = createClient();
@@ -341,7 +340,6 @@ export default function PrintersPage() {
         printer_model: printer.printer_model || 'Epson TM-T88VI',
         is_main: printer.is_main,
         active: printer.active,
-        description: printer.description || '',
         sort_order: printer.sort_order
       });
     } else {
@@ -354,7 +352,6 @@ export default function PrintersPage() {
         printer_model: 'Epson TM-T88VI',
         is_main: false,
         active: true,
-        description: '',
         sort_order: printers.length
       });
     }
@@ -378,7 +375,6 @@ export default function PrintersPage() {
         printer_model: formData.printer_model,
         is_main: formData.is_main,
         active: formData.active,
-        description: formData.description,
         sort_order: Math.floor(formData.sort_order),
         connection_status: 'unknown'
       };
@@ -410,7 +406,6 @@ export default function PrintersPage() {
         printer_model: 'Epson TM-T88VI',
         is_main: false,
         active: true,
-        description: '',
         sort_order: 0
       });
       loadPrinters();
@@ -664,13 +659,6 @@ export default function PrintersPage() {
                         </Badge>
                       </div>
                     )}
-                    {printer.description && (
-                      <div className="pt-2 border-t border-gray-200 dark:border-gray-600">
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
-                          {printer.description}
-                        </p>
-                      </div>
-                    )}
                   </div>
 
                   {/* Last Test Info */}
@@ -849,16 +837,6 @@ export default function PrintersPage() {
                   placeholder="9100"
                 />
               </div>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="description">Descrição</Label>
-              <Input
-                id="description"
-                value={formData.description}
-                onChange={(e) => setFormData({...formData, description: e.target.value})}
-                placeholder="Observações sobre a impressora"
-              />
             </div>
             
             <div className="flex items-center justify-between">
