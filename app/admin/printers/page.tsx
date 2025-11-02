@@ -510,7 +510,7 @@ export default function PrintersPage() {
   };
 
   return (
-    <div className="min-h-screen relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Header - mantém o original */}
       <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
         <div className="px-6 py-4">
@@ -558,11 +558,11 @@ export default function PrintersPage() {
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredPrinters.map((printer) => (
-              <Card 
+              <div
                 key={printer.id} 
-                className={`overflow-hidden transition-all hover:shadow-xl ${!printer.active ? 'opacity-60' : ''}`}
+                className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm overflow-hidden transition-all hover:shadow-lg ${!printer.active ? 'opacity-60' : ''}`}
               >
-                <CardContent className="p-6">
+                <div className="p-6">
                   {/* Header do Card */}
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex-1">
@@ -618,10 +618,10 @@ export default function PrintersPage() {
                   <div className="mb-4">
                     <button
                       onClick={() => toggleActive(printer)}
-                      className={`w-full py-3 rounded-xl font-medium transition-all ${
+                      className={`w-full py-3 rounded-2xl font-medium transition-all ${
                         printer.active 
-                          ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md hover:shadow-lg'
-                          : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white'
+                          ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+                          : 'bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white'
                       }`}
                     >
                       <div className="flex items-center justify-center gap-2">
@@ -641,7 +641,7 @@ export default function PrintersPage() {
                   </div>
 
                   {/* Info Box */}
-                  <div className="space-y-2 mb-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl">
+                  <div className="space-y-2 mb-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-700/50">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-600 dark:text-gray-400">Tipo:</span>
                       <Badge variant="outline" className="text-xs">
@@ -663,7 +663,7 @@ export default function PrintersPage() {
 
                   {/* Last Test Info */}
                   {printer.last_test_at && (
-                    <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                    <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200/50 dark:border-blue-800/50">
                       <div className="flex items-start gap-2">
                         <Clock className="h-4 w-4 text-blue-500 mt-0.5" />
                         <div className="flex-1 text-xs">
@@ -688,7 +688,7 @@ export default function PrintersPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-xl hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 dark:hover:bg-orange-900/20"
+                      className="rounded-full border-gray-200 dark:border-gray-700 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 dark:hover:bg-orange-900/20 transition-all"
                       onClick={() => testPrinter(printer)}
                       disabled={testing === printer.id || !printer.active}
                     >
@@ -705,7 +705,7 @@ export default function PrintersPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-xl hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 dark:hover:bg-blue-900/20"
+                      className="rounded-full border-gray-200 dark:border-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 dark:hover:bg-blue-900/20 transition-all"
                       onClick={() => checkPrinterStatus(printer.id)}
                       disabled={checkingStatus === printer.id || !printer.active}
                     >
@@ -719,19 +719,19 @@ export default function PrintersPage() {
                       )}
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         )}
 
         {/* Empty State */}
         {!loading && filteredPrinters.length === 0 && (
-          <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
-              <PrinterIcon className="h-10 w-10 text-gray-400" />
+          <div className="text-center py-16 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl m-4">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-orange-100 dark:bg-orange-900/30 mb-4">
+              <PrinterIcon className="h-10 w-10 text-orange-500" />
             </div>
-            <p className="text-gray-500 text-lg mb-4">
+            <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
               {searchTerm 
                 ? 'Nenhuma impressora encontrada com esses critérios'
                 : 'Nenhuma impressora cadastrada'}
