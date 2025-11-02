@@ -6,13 +6,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
+import { Switch } from "@/components/ui/switch";
+import { Slider } from "@/components/ui/slider";
+import { 
+  Dialog, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTitle, 
   DialogFooter,
-  DialogDescription
+  DialogDescription 
 } from "@/components/ui/dialog";
 import {
   AlertDialog,
@@ -72,7 +74,10 @@ import {
   PowerOff,
   Edit,
   MoreVertical,
-  Network
+  Network,
+  Volume2,
+  Scissors,
+  Package
 } from "lucide-react";
 import jsPDF from 'jspdf';
 
@@ -175,6 +180,7 @@ export default function VirtualPrintersPage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [printerToDelete, setPrinterToDelete] = useState<VirtualPrinter | null>(null);
   const [editingPrinter, setEditingPrinter] = useState<VirtualPrinter | null>(null);
+  const [tempConfig, setTempConfig] = useState<PrinterConfig | null>(null);
   const [newPrinter, setNewPrinter] = useState({
     name: '',
     model: PRINTER_MODELS[0],
@@ -297,8 +303,8 @@ export default function VirtualPrintersPage() {
     }
 
     // Verificar se IP já existe
-    if (printers.some(p => p.ipAddress === newPrinter.ipAddress)) {
-      toast.error('Já existe uma impressora com este IP');
+    if (printers.some(p => p.ipAddress === newPrinter.ipAddress && p.port === newPrinter.port)) {
+      toast.error('Já existe uma impressora com este IP e porta');
       return;
     }
 
@@ -571,6 +577,10 @@ export default function VirtualPrintersPage() {
     let y = 10;
     
     lines.forEach(line => {
+      if (y > 280) {
+        pdf.addPage();
+        y = 10;
+      }
       pdf.text(line, 5, y);
       y += 4;
     });
@@ -579,26 +589,33 @@ export default function VirtualPrintersPage() {
     toast.success('PDF gerado com sucesso!');
   };
 
-  const updateConfig = (printerId: string, config: PrinterConfig) => {
-    setPrinters(prev => prev.map(p => 
-      p.id === printerId 
-        ? { ...p, config }
-        : p
-    ));
-    setConfigModalOpen(false);
-    toast.success('Configurações salvas!');
-  };
-
   const updatePrinter = () => {
     if (!editingPrinter) return;
     
+    // Verificar duplicação de IP/porta
+    const duplicate = printers.find(p => 
+      p.id !== editingPrinter.id && 
+      p.ipAddress === editingPrinter.ipAddress && 
+      p.port === editingPrinter.port
+    );
+    
+    if (duplicate) {
+      toast.error('Já existe outra impressora com este IP e porta');
+      return;
+    }
+    
+    // Atualizar impressora com config temporária se houver
+    const updatedPrinter = tempConfig 
+      ? { ...editingPrinter, config: tempConfig }
+      : editingPrinter;
+    
     setPrinters(prev => prev.map(p => 
-      p.id === editingPrinter.id 
-        ? editingPrinter
-        : p
+      p.id === editingPrinter.id ? updatedPrinter : p
     ));
+    
     setConfigModalOpen(false);
     setEditingPrinter(null);
+    setTempConfig(null);
     toast.success('Impressora atualizada!');
   };
 
@@ -627,6 +644,37 @@ export default function VirtualPrintersPage() {
       case 'error': return <AlertCircle className="h-4 w-4" />;
       default: return null;
     }
+  };
+
+  // Abrir modal de configuração
+  const openConfigModal = (printer: VirtualPrinter, editMode: boolean = false) => {
+    if (editMode) {
+      setEditingPrinter(printer);
+      setTempConfig(printer.config);
+    } else {
+      setSelectedPrinter(printer);
+      setTempConfig(printer.config);
+    }
+    setConfigModalOpen(true);
+  };
+
+  // Salvar apenas configurações
+  const saveConfig = () => {
+    if (!tempConfig) return;
+    
+    if (selectedPrinter) {
+      setPrinters(prev => prev.map(p => 
+        p.id === selectedPrinter.id 
+          ? { ...p, config: tempConfig }
+          : p
+      ));
+      toast.success('Configurações salvas!');
+    }
+    
+    setConfigModalOpen(false);
+    setSelectedPrinter(null);
+    setEditingPrinter(null);
+    setTempConfig(null);
   };
 
   return (
@@ -708,10 +756,7 @@ export default function VirtualPrintersPage() {
                           )}
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          onClick={() => {
-                            setEditingPrinter(printer);
-                            setConfigModalOpen(true);
-                          }}
+                          onClick={() => openConfigModal(printer, true)}
                         >
                           <Edit className="h-4 w-4 mr-2" />
                           Editar
@@ -873,11 +918,7 @@ export default function VirtualPrintersPage() {
                     <Button
                       size="sm"
                       variant="outline"
-                      onClick={() => {
-                        setSelectedPrinter(printer);
-                        setEditingPrinter(null);
-                        setConfigModalOpen(true);
-                      }}
+                      onClick={() => openConfigModal(printer, false)}
                       disabled={!printer.powered}
                     >
                       <Settings className="h-4 w-4 mr-1" />
@@ -932,7 +973,7 @@ export default function VirtualPrintersPage() {
           
           <div className="space-y-4">
             <div>
-              <Label>Nome da Impressora</Label>
+              <Label>Nome da Impressora *</Label>
               <Input
                 value={newPrinter.name}
                 onChange={(e) => setNewPrinter({...newPrinter, name: e.target.value})}
@@ -960,7 +1001,7 @@ export default function VirtualPrintersPage() {
             </div>
             
             <div>
-              <Label>Endereço IP</Label>
+              <Label>Endereço IP *</Label>
               <div className="flex gap-2">
                 <Input
                   value={newPrinter.ipAddress}
@@ -970,6 +1011,7 @@ export default function VirtualPrintersPage() {
                 <Button
                   variant="outline"
                   onClick={() => setNewPrinter({...newPrinter, ipAddress: generateLocalIP()})}
+                  title="Gerar IP aleatório"
                 >
                   <RefreshCw className="h-4 w-4" />
                 </Button>
@@ -983,6 +1025,7 @@ export default function VirtualPrintersPage() {
                 onChange={(e) => setNewPrinter({...newPrinter, port: e.target.value})}
                 placeholder="9100"
               />
+              <p className="text-xs text-gray-500 mt-1">Porta padrão: 9100</p>
             </div>
           </div>
           
@@ -1003,41 +1046,45 @@ export default function VirtualPrintersPage() {
 
       {/* Edit/Config Modal */}
       <Dialog open={configModalOpen} onOpenChange={(open) => {
-        setConfigModalOpen(open);
         if (!open) {
+          setConfigModalOpen(false);
           setEditingPrinter(null);
           setSelectedPrinter(null);
+          setTempConfig(null);
         }
       }}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingPrinter ? 'Editar Impressora Virtual' : 'Configurações'} - {editingPrinter?.name || selectedPrinter?.name}
+              {editingPrinter ? 'Editar Impressora Virtual' : 'Configurações de Impressão'}
             </DialogTitle>
             <DialogDescription>
-              {editingPrinter ? 'Edite as informações da impressora virtual' : 'Configure os parâmetros de impressão virtual'}
+              {editingPrinter 
+                ? 'Edite as informações e configurações da impressora'
+                : 'Ajuste os parâmetros de impressão'}
             </DialogDescription>
           </DialogHeader>
           
-          {(editingPrinter || selectedPrinter) && (
+          {(editingPrinter || selectedPrinter) && tempConfig && (
             <Tabs defaultValue={editingPrinter ? "info" : "general"} className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                {editingPrinter && <TabsTrigger value="info">Info</TabsTrigger>}
+              <TabsList className={`grid w-full ${editingPrinter ? 'grid-cols-4' : 'grid-cols-3'}`}>
+                {editingPrinter && <TabsTrigger value="info">Informações</TabsTrigger>}
                 <TabsTrigger value="general">Geral</TabsTrigger>
                 <TabsTrigger value="paper">Papel</TabsTrigger>
                 <TabsTrigger value="advanced">Avançado</TabsTrigger>
               </TabsList>
               
               {editingPrinter && (
-                <TabsContent value="info" className="space-y-4">
+                <TabsContent value="info" className="space-y-4 mt-4">
                   <div>
-                    <Label>Nome</Label>
+                    <Label>Nome da Impressora</Label>
                     <Input
                       value={editingPrinter.name}
                       onChange={(e) => setEditingPrinter({
                         ...editingPrinter,
                         name: e.target.value
                       })}
+                      placeholder="Nome da impressora"
                     />
                   </div>
                   <div>
@@ -1069,6 +1116,7 @@ export default function VirtualPrintersPage() {
                         ...editingPrinter,
                         ipAddress: e.target.value
                       })}
+                      placeholder="192.168.1.100"
                     />
                   </div>
                   <div>
@@ -1079,26 +1127,22 @@ export default function VirtualPrintersPage() {
                         ...editingPrinter,
                         port: e.target.value
                       })}
+                      placeholder="9100"
                     />
                   </div>
                 </TabsContent>
               )}
               
-              <TabsContent value="general" className="space-y-4">
-                {/* Configurações gerais como antes */}
+              <TabsContent value="general" className="space-y-4 mt-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label>Tamanho do Papel</Label>
                     <Select
-                      value={(editingPrinter || selectedPrinter)!.config.paperSize}
-                      onValueChange={(value) => {
-                        const target = editingPrinter || selectedPrinter;
-                        const setter = editingPrinter ? setEditingPrinter : setSelectedPrinter;
-                        setter!({
-                          ...target!,
-                          config: { ...target!.config, paperSize: value as any }
-                        } as any);
-                      }}
+                      value={tempConfig.paperSize}
+                      onValueChange={(value) => setTempConfig({
+                        ...tempConfig,
+                        paperSize: value as any
+                      })}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -1115,15 +1159,11 @@ export default function VirtualPrintersPage() {
                   <div>
                     <Label>DPI (Resolução)</Label>
                     <Select
-                      value={(editingPrinter || selectedPrinter)!.config.dpi.toString()}
-                      onValueChange={(value) => {
-                        const target = editingPrinter || selectedPrinter;
-                        const setter = editingPrinter ? setEditingPrinter : setSelectedPrinter;
-                        setter!({
-                          ...target!,
-                          config: { ...target!.config, dpi: parseInt(value) }
-                        } as any);
-                      }}
+                      value={tempConfig.dpi.toString()}
+                      onValueChange={(value) => setTempConfig({
+                        ...tempConfig,
+                        dpi: parseInt(value)
+                      })}
                     >
                       <SelectTrigger>
                         <SelectValue />
@@ -1136,9 +1176,217 @@ export default function VirtualPrintersPage() {
                     </Select>
                   </div>
                 </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Scissors className="h-4 w-4 text-gray-500" />
+                      <Label htmlFor="cutPaper">Corte Automático</Label>
+                    </div>
+                    <Switch
+                      id="cutPaper"
+                      checked={tempConfig.cutPaper}
+                      onCheckedChange={(checked) => setTempConfig({
+                        ...tempConfig,
+                        cutPaper: checked
+                      })}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Volume2 className="h-4 w-4 text-gray-500" />
+                      <Label htmlFor="beep">Beep ao Imprimir</Label>
+                    </div>
+                    <Switch
+                      id="beep"
+                      checked={tempConfig.beep}
+                      onCheckedChange={(checked) => setTempConfig({
+                        ...tempConfig,
+                        beep: checked
+                      })}
+                    />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Package className="h-4 w-4 text-gray-500" />
+                      <Label htmlFor="drawerKick">Abrir Gaveta</Label>
+                    </div>
+                    <Switch
+                      id="drawerKick"
+                      checked={tempConfig.drawerKick}
+                      onCheckedChange={(checked) => setTempConfig({
+                        ...tempConfig,
+                        drawerKick: checked
+                      })}
+                    />
+                  </div>
+                </div>
               </TabsContent>
               
-              {/* Outras tabs com lógica similar */}
+              <TabsContent value="paper" className="space-y-4 mt-4">
+                <div className="space-y-4">
+                  <div>
+                    <Label>Margem Superior (mm)</Label>
+                    <div className="flex items-center gap-3">
+                      <Slider
+                        value={[tempConfig.topMargin]}
+                        onValueChange={([value]) => setTempConfig({
+                          ...tempConfig,
+                          topMargin: value
+                        })}
+                        min={0}
+                        max={30}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="w-12 text-sm font-medium">{tempConfig.topMargin}mm</span>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label>Margem Inferior (mm)</Label>
+                    <div className="flex items-center gap-3">
+                      <Slider
+                        value={[tempConfig.bottomMargin]}
+                        onValueChange={([value]) => setTempConfig({
+                          ...tempConfig,
+                          bottomMargin: value
+                        })}
+                        min={0}
+                        max={30}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="w-12 text-sm font-medium">{tempConfig.bottomMargin}mm</span>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label>Margem Esquerda (mm)</Label>
+                    <div className="flex items-center gap-3">
+                      <Slider
+                        value={[tempConfig.leftMargin]}
+                        onValueChange={([value]) => setTempConfig({
+                          ...tempConfig,
+                          leftMargin: value
+                        })}
+                        min={0}
+                        max={20}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="w-12 text-sm font-medium">{tempConfig.leftMargin}mm</span>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label>Margem Direita (mm)</Label>
+                    <div className="flex items-center gap-3">
+                      <Slider
+                        value={[tempConfig.rightMargin]}
+                        onValueChange={([value]) => setTempConfig({
+                          ...tempConfig,
+                          rightMargin: value
+                        })}
+                        min={0}
+                        max={20}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="w-12 text-sm font-medium">{tempConfig.rightMargin}mm</span>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="advanced" className="space-y-4 mt-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label>Fonte</Label>
+                    <Select
+                      value={tempConfig.font}
+                      onValueChange={(value) => setTempConfig({
+                        ...tempConfig,
+                        font: value as any
+                      })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="default">Padrão</SelectItem>
+                        <SelectItem value="monospace">Monospace</SelectItem>
+                        <SelectItem value="serif">Serif</SelectItem>
+                        <SelectItem value="sans-serif">Sans-serif</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div>
+                    <Label>Tamanho da Fonte</Label>
+                    <div className="flex items-center gap-3">
+                      <Slider
+                        value={[tempConfig.fontSize]}
+                        onValueChange={([value]) => setTempConfig({
+                          ...tempConfig,
+                          fontSize: value
+                        })}
+                        min={8}
+                        max={24}
+                        step={1}
+                        className="flex-1"
+                      />
+                      <span className="w-12 text-sm font-medium">{tempConfig.fontSize}pt</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <Label>Charset</Label>
+                  <Select
+                    value={tempConfig.charset}
+                    onValueChange={(value) => setTempConfig({
+                      ...tempConfig,
+                      charset: value as any
+                    })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="utf-8">UTF-8</SelectItem>
+                      <SelectItem value="iso-8859-1">ISO-8859-1</SelectItem>
+                      <SelectItem value="windows-1252">Windows-1252</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="logoEnabled">Exibir Logo</Label>
+                  <Switch
+                    id="logoEnabled"
+                    checked={tempConfig.logoEnabled}
+                    onCheckedChange={(checked) => setTempConfig({
+                      ...tempConfig,
+                      logoEnabled: checked
+                    })}
+                  />
+                </div>
+                
+                <div>
+                  <Label>Texto do Rodapé</Label>
+                  <Input
+                    value={tempConfig.footerText}
+                    onChange={(e) => setTempConfig({
+                      ...tempConfig,
+                      footerText: e.target.value
+                    })}
+                    placeholder="Mensagem personalizada no rodapé"
+                  />
+                </div>
+              </TabsContent>
             </Tabs>
           )}
           
@@ -1147,6 +1395,7 @@ export default function VirtualPrintersPage() {
               setConfigModalOpen(false);
               setEditingPrinter(null);
               setSelectedPrinter(null);
+              setTempConfig(null);
             }}>
               Cancelar
             </Button>
@@ -1156,7 +1405,7 @@ export default function VirtualPrintersPage() {
                 if (editingPrinter) {
                   updatePrinter();
                 } else if (selectedPrinter) {
-                  updateConfig(selectedPrinter.id, selectedPrinter.config);
+                  saveConfig();
                 }
               }}
             >
@@ -1178,7 +1427,9 @@ export default function VirtualPrintersPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogCancel onClick={() => setPrinterToDelete(null)}>
+              Cancelar
+            </AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-500 hover:bg-red-600 text-white"
               onClick={confirmDelete}
