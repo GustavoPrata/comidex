@@ -1585,7 +1585,7 @@ function PrintersPage() {
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: "text-sm text-gray-500 dark:text-gray-400 mb-6",
-                            children: "Configure as impressoras do sistema"
+                            children: "Gerencie impressoras térmicas, laser e jato de tinta para comandas e relatórios"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printers/page.tsx",
                             lineNumber: 304,
