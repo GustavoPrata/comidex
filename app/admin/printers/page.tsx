@@ -301,55 +301,9 @@ export default function PrintersPage() {
           </div>
 
           {/* Subtitle */}
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Gerencie as impressoras do sistema
           </p>
-
-          {/* Statistics */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 dark:from-blue-900/20 dark:to-blue-800/10 rounded-2xl p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-600 dark:text-blue-400 text-xs font-medium">Total</p>
-                  <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">{printers.length}</p>
-                </div>
-                <PrinterIcon className="h-6 w-6 text-blue-500 dark:text-blue-400 opacity-75" />
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-green-50 to-green-100/50 dark:from-green-900/20 dark:to-green-800/10 rounded-2xl p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-green-600 dark:text-green-400 text-xs font-medium">Ativas</p>
-                  <p className="text-2xl font-bold text-green-900 dark:text-green-100">
-                    {printers.filter(p => p.active).length}
-                  </p>
-                </div>
-                <CheckCircle className="h-6 w-6 text-green-500 dark:text-green-400 opacity-75" />
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 dark:from-orange-900/20 dark:to-orange-800/10 rounded-2xl p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-orange-600 dark:text-orange-400 text-xs font-medium">Principais</p>
-                  <p className="text-2xl font-bold text-orange-900 dark:text-orange-100">
-                    {printers.filter(p => p.is_main).length}
-                  </p>
-                </div>
-                <Star className="h-6 w-6 text-orange-500 dark:text-orange-400 opacity-75" />
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-red-50 to-red-100/50 dark:from-red-900/20 dark:to-red-800/10 rounded-2xl p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-red-600 dark:text-red-400 text-xs font-medium">Inativas</p>
-                  <p className="text-2xl font-bold text-red-900 dark:text-red-100">
-                    {printers.filter(p => !p.active).length}
-                  </p>
-                </div>
-                <XCircle className="h-6 w-6 text-red-500 dark:text-red-400 opacity-75" />
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
