@@ -1,0 +1,3 @@
+{
+  "/api/printers/status/route": "app/api/printers/status/route.js"
+}

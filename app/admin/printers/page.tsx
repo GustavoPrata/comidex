@@ -67,7 +67,7 @@ interface Printer {
   name: string;
   ip_address: string;
   port: string;
-  printer_type: 'thermal' | 'laser' | 'inkjet' | 'other';
+  type: 'thermal' | 'laser' | 'inkjet' | 'other';
   printer_model?: string;
   is_main: boolean;
   active: boolean;
@@ -243,7 +243,7 @@ export default function PrintersPage() {
         name: printer.name,
         ip_address: printer.ip_address,
         port: printer.port,
-        type: printer.printer_type,
+        type: printer.type,
         printer_model: printer.printer_model || 'Epson TM-T88VI',
         is_main: printer.is_main,
         active: printer.active,
@@ -280,12 +280,12 @@ export default function PrintersPage() {
         name: formData.name,
         ip_address: formData.ip_address,
         port: formData.port,
-        printer_type: formData.type,
+        type: formData.type,
         printer_model: formData.printer_model,
         is_main: formData.is_main,
         active: formData.active,
         description: formData.description,
-        sort_order: formData.sort_order,
+        sort_order: Math.floor(formData.sort_order),
         connection_status: 'unknown'
       };
 
@@ -478,9 +478,9 @@ export default function PrintersPage() {
                         {printer.printer_model || 'Modelo não especificado'}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Tipo: {printer.printer_type === 'thermal' ? 'Térmica' :
-                         printer.printer_type === 'laser' ? 'Laser' :
-                         printer.printer_type === 'inkjet' ? 'Jato de Tinta' : 
+                        Tipo: {printer.type === 'thermal' ? 'Térmica' :
+                         printer.type === 'laser' ? 'Laser' :
+                         printer.type === 'inkjet' ? 'Jato de Tinta' : 
                          'Outro'}
                       </p>
                     </div>
