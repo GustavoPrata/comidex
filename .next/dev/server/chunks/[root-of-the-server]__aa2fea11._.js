@@ -416,6 +416,62 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/supabase/server.ts [app-route] (ecmascript)");
 ;
 ;
+// Simular status realista baseado em diferentes fatores
+function simulateRealisticStatus(printer) {
+    // Impressoras desativadas sempre estão offline
+    if (!printer.active) {
+        return {
+            status: 'offline',
+            message: `Impressora ${printer.name} está desativada`
+        };
+    }
+    // Verificar se IP é válido
+    const isLocalNetwork = printer.ip_address.startsWith('192.168.') || printer.ip_address.startsWith('10.') || printer.ip_address.startsWith('172.');
+    if (!isLocalNetwork) {
+        return {
+            status: 'error',
+            message: `Impressora ${printer.name} - IP inválido ou fora da rede`
+        };
+    }
+    // Simular diferentes condições de rede com aleatoriedade
+    const randomChance = Math.random();
+    // 70% de chance de estar online
+    if (randomChance < 0.7) {
+        const responseTime = Math.floor(Math.random() * 100) + 20; // 20-120ms
+        return {
+            status: 'online',
+            message: `Impressora ${printer.name} está online e pronta`,
+            responseTime
+        };
+    }
+    // 20% de chance de estar offline (desligada, sem papel, etc)
+    if (randomChance < 0.9) {
+        const reasons = [
+            'está offline ou desligada',
+            'sem papel - repor papel térmico',
+            'tampa aberta - verificar impressora',
+            'erro de comunicação - verificar cabo de rede',
+            'sem resposta - reiniciar impressora'
+        ];
+        const reason = reasons[Math.floor(Math.random() * reasons.length)];
+        return {
+            status: 'offline',
+            message: `Impressora ${printer.name} ${reason}`
+        };
+    }
+    // 10% de chance de erro (problema técnico)
+    const errors = [
+        'erro no mecanismo de impressão',
+        'superaquecimento - aguardar esfriar',
+        'erro de firmware - atualização necessária',
+        'problema na guilhotina de corte'
+    ];
+    const error = errors[Math.floor(Math.random() * errors.length)];
+    return {
+        status: 'error',
+        message: `Impressora ${printer.name} - ${error}`
+    };
+}
 async function POST(request) {
     try {
         const { printerId } = await request.json();
@@ -430,25 +486,28 @@ async function POST(request) {
                 status: 404
             });
         }
-        // Em produção, aqui seria feita a verificação real de conectividade
-        // Por enquanto, vamos simular baseado nas configurações
-        const isLocalNetwork = printer.ip_address.startsWith('192.168.') || printer.ip_address.startsWith('10.') || printer.ip_address.startsWith('172.');
-        const isOnline = isLocalNetwork && printer.active;
-        const status = isOnline ? 'online' : 'offline';
-        const message = isOnline ? `Impressora ${printer.name} está online e pronta` : `Impressora ${printer.name} está offline ou inacessível`;
+        // Simular verificação realista
+        const simulation = simulateRealisticStatus(printer);
+        // Simular tempo de resposta de rede
+        if (simulation.responseTime) {
+            await new Promise((resolve)=>setTimeout(resolve, simulation.responseTime));
+        }
         // Atualizar status no banco
         await supabase.from('printers').update({
-            connection_status: status
+            connection_status: simulation.status,
+            updated_at: new Date().toISOString()
         }).eq('id', printerId);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
-            status: status,
-            message: message,
+            status: simulation.status,
+            message: simulation.message,
+            responseTime: simulation.responseTime,
             details: {
                 name: printer.name,
                 model: printer.printer_model,
                 ip: printer.ip_address,
-                port: printer.port
+                port: printer.port,
+                active: printer.active
             }
         });
     } catch (error) {

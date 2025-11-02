@@ -214,12 +214,27 @@ export default function PrintersPage() {
 
   useEffect(() => {
     loadPrinters();
-    // Verificar status das impressoras a cada 30 segundos
-    const interval = setInterval(() => {
-      checkAllPrintersStatus();
-    }, 30000);
-    return () => clearInterval(interval);
   }, []);
+  
+  // Verificar status periodicamente após carregar impressoras
+  useEffect(() => {
+    if (printers.length > 0) {
+      // Verificar status inicial após 2 segundos
+      const timeout = setTimeout(() => {
+        checkAllPrintersStatus();
+      }, 2000);
+      
+      // Depois verificar a cada 60 segundos (mais realista)
+      const interval = setInterval(() => {
+        checkAllPrintersStatus();
+      }, 60000);
+      
+      return () => {
+        clearTimeout(timeout);
+        clearInterval(interval);
+      };
+    }
+  }, [printers.length]);
 
   const loadPrinters = async () => {
     try {
@@ -463,26 +478,26 @@ export default function PrintersPage() {
   const getConnectionStatusIcon = (status?: string) => {
     switch (status) {
       case 'online':
-        return <Wifi className="h-5 w-5 text-green-500" />;
+        return <CheckCircle className="h-5 w-5 text-green-500" />;
       case 'offline':
-        return <WifiOff className="h-5 w-5 text-red-500" />;
+        return <XCircle className="h-5 w-5 text-gray-400" />;
       case 'error':
-        return <AlertCircle className="h-5 w-5 text-yellow-500" />;
+        return <AlertCircle className="h-5 w-5 text-red-500" />;
       default:
-        return <Activity className="h-5 w-5 text-gray-400" />;
+        return <Clock className="h-5 w-5 text-gray-400 animate-pulse" />;
     }
   };
 
   const getConnectionStatusText = (status?: string) => {
     switch (status) {
       case 'online':
-        return { text: 'Online', color: 'text-green-600' };
+        return { text: 'Online', color: 'text-green-600 dark:text-green-400' };
       case 'offline':
-        return { text: 'Offline', color: 'text-red-600' };
+        return { text: 'Offline', color: 'text-gray-600 dark:text-gray-400' };
       case 'error':
-        return { text: 'Erro', color: 'text-yellow-600' };
+        return { text: 'Erro', color: 'text-red-600 dark:text-red-400' };
       default:
-        return { text: 'Desconhecido', color: 'text-gray-500' };
+        return { text: 'Verificando...', color: 'text-gray-500 dark:text-gray-400' };
     }
   };
 
