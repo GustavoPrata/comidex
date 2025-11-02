@@ -32,12 +32,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { toast } from "react-hot-toast";
 import { 
   Plus, 
@@ -59,7 +53,13 @@ import {
   TestTube,
   Activity,
   Info,
-  Clock
+  Clock,
+  Power,
+  PowerOff,
+  Zap,
+  Signal,
+  SignalLow,
+  SignalZero
 } from "lucide-react";
 
 interface Printer {
@@ -478,35 +478,47 @@ export default function PrintersPage() {
   const getConnectionStatusIcon = (status?: string) => {
     switch (status) {
       case 'online':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
+        return <Signal className="h-4 w-4 text-green-500" />;
       case 'offline':
-        return <XCircle className="h-5 w-5 text-gray-400" />;
+        return <SignalZero className="h-4 w-4 text-gray-400" />;
       case 'error':
-        return <AlertCircle className="h-5 w-5 text-red-500" />;
+        return <AlertCircle className="h-4 w-4 text-red-500" />;
       default:
-        return <Clock className="h-5 w-5 text-gray-400 animate-pulse" />;
+        return <SignalLow className="h-4 w-4 text-yellow-500 animate-pulse" />;
+    }
+  };
+
+  const getConnectionStatusColor = (status?: string) => {
+    switch (status) {
+      case 'online':
+        return 'bg-green-500';
+      case 'offline':
+        return 'bg-gray-500';
+      case 'error':
+        return 'bg-red-500';
+      default:
+        return 'bg-yellow-500';
     }
   };
 
   const getConnectionStatusText = (status?: string) => {
     switch (status) {
       case 'online':
-        return { text: 'Online', color: 'text-green-600 dark:text-green-400' };
+        return 'Online';
       case 'offline':
-        return { text: 'Offline', color: 'text-gray-600 dark:text-gray-400' };
+        return 'Offline';
       case 'error':
-        return { text: 'Erro', color: 'text-red-600 dark:text-red-400' };
+        return 'Erro';
       default:
-        return { text: 'Verificando...', color: 'text-gray-500 dark:text-gray-400' };
+        return 'Verificando';
     }
   };
 
   return (
     <div className="min-h-screen relative">
-      {/* Header */}
+      {/* Header - mantém o original */}
       <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
         <div className="px-6 py-4">
-          {/* Top Row: Title and Actions */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-lg bg-orange-500">
@@ -536,131 +548,142 @@ export default function PrintersPage() {
             </div>
           </div>
 
-          {/* Subtitle */}
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Gerencie impressoras térmicas para comandas e cupons
           </p>
         </div>
       </div>
 
-      {/* Content */}
+      {/* Content - melhorado */}
       <div className="p-4">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredPrinters.map((printer) => (
               <Card 
                 key={printer.id} 
-                className={`border-gray-200 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-shadow ${!printer.active ? 'opacity-60' : ''}`}
+                className={`overflow-hidden transition-all hover:shadow-xl ${!printer.active ? 'opacity-60' : ''}`}
               >
                 <CardContent className="p-6">
-                  {/* Header */}
+                  {/* Header do Card */}
                   <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="font-semibold text-lg flex items-center gap-2">
-                        {printer.name}
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">
+                          {printer.name}
+                        </h3>
                         {printer.is_main && (
-                          <Badge className="bg-orange-500 text-white text-xs">
-                            Principal
-                          </Badge>
+                          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                         )}
-                      </h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 font-medium">
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
                         {printer.printer_model || 'Modelo não especificado'}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Tipo: {printer.type === 'thermal' ? 'Térmica' :
-                         printer.type === 'laser' ? 'Laser' :
-                         printer.type === 'inkjet' ? 'Jato de Tinta' : 
-                         'Outro'}
-                      </p>
+                      <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
+                        <Network className="h-3 w-3" />
+                        <span className="font-mono">{printer.ip_address}:{printer.port}</span>
+                      </div>
                     </div>
+                    
+                    {/* Status Badge e Ações */}
                     <div className="flex items-center gap-2">
-                      {getConnectionStatusIcon(printer.connection_status)}
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-orange-500 transition-colors">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-48">
-                          <DropdownMenuItem 
-                            onClick={() => testPrinter(printer)}
-                            disabled={testing === printer.id}
-                          >
-                            {testing === printer.id ? (
-                              <>
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                Testando...
-                              </>
-                            ) : (
-                              <>
-                                <TestTube className="h-4 w-4 mr-2" />
-                                Testar Impressão
-                              </>
-                            )}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            onClick={() => checkPrinterStatus(printer.id)}
-                            disabled={checkingStatus === printer.id}
-                          >
-                            {checkingStatus === printer.id ? (
-                              <>
-                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                Verificando...
-                              </>
-                            ) : (
-                              <>
-                                <Activity className="h-4 w-4 mr-2" />
-                                Verificar Status
-                              </>
-                            )}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => openModal(printer)}>
-                            <Pencil className="h-4 w-4 mr-2" />
-                            Editar
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            className="text-red-600 dark:text-red-500"
-                            onClick={() => handleDelete(printer)}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Excluir
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <Badge 
+                        className={`${getConnectionStatusColor(printer.connection_status)} text-white border-0 flex items-center gap-1`}
+                      >
+                        {getConnectionStatusIcon(printer.connection_status)}
+                        {getConnectionStatusText(printer.connection_status)}
+                      </Badge>
+                      
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-orange-100 dark:hover:bg-orange-900/30"
+                        onClick={() => openModal(printer)}
+                        title="Editar impressora"
+                      >
+                        <Edit className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                      </Button>
+                      
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-red-100 dark:hover:bg-red-900/30"
+                        onClick={() => handleDelete(printer)}
+                        title="Excluir impressora"
+                      >
+                        <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
+                      </Button>
                     </div>
                   </div>
 
-                  {/* Connection Info */}
-                  <div className="space-y-2 mb-4 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">IP:</span>
-                      <span className="font-mono">{printer.ip_address}</span>
+                  {/* Power Button */}
+                  <div className="mb-4">
+                    <button
+                      onClick={() => toggleActive(printer)}
+                      className={`w-full py-3 rounded-xl font-medium transition-all ${
+                        printer.active 
+                          ? 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-md hover:shadow-lg'
+                          : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white'
+                      }`}
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        {printer.active ? (
+                          <>
+                            <Power className="h-4 w-4" />
+                            Impressora Ativa
+                          </>
+                        ) : (
+                          <>
+                            <PowerOff className="h-4 w-4" />
+                            Impressora Inativa
+                          </>
+                        )}
+                      </div>
+                    </button>
+                  </div>
+
+                  {/* Info Box */}
+                  <div className="space-y-2 mb-4 p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-xl">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Tipo:</span>
+                      <Badge variant="outline" className="text-xs">
+                        {printer.type === 'thermal' ? 'Térmica' :
+                         printer.type === 'laser' ? 'Laser' :
+                         printer.type === 'inkjet' ? 'Jato de Tinta' : 
+                         'Outro'}
+                      </Badge>
                     </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Porta:</span>
-                      <span className="font-mono">{printer.port}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-500 dark:text-gray-400">Status:</span>
-                      <span className={`font-medium ${getConnectionStatusText(printer.connection_status).color}`}>
-                        {getConnectionStatusText(printer.connection_status).text}
-                      </span>
-                    </div>
+                    {printer.is_main && (
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">Status:</span>
+                        <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 text-xs">
+                          Principal
+                        </Badge>
+                      </div>
+                    )}
+                    {printer.description && (
+                      <div className="pt-2 border-t border-gray-200 dark:border-gray-600">
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          {printer.description}
+                        </p>
+                      </div>
+                    )}
                   </div>
 
                   {/* Last Test Info */}
                   {printer.last_test_at && (
-                    <div className="mb-4 p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
                       <div className="flex items-start gap-2">
                         <Clock className="h-4 w-4 text-blue-500 mt-0.5" />
                         <div className="flex-1 text-xs">
-                          <p className="text-blue-600 dark:text-blue-400 font-medium">
-                            Último teste: {new Date(printer.last_test_at).toLocaleString('pt-BR')}
+                          <p className="text-blue-700 dark:text-blue-400 font-medium">
+                            Último teste
+                          </p>
+                          <p className="text-blue-600 dark:text-blue-300 mt-0.5">
+                            {new Date(printer.last_test_at).toLocaleString('pt-BR')}
                           </p>
                           {printer.test_result && (
                             <p className="text-blue-500 dark:text-blue-300 mt-1">
@@ -672,21 +695,41 @@ export default function PrintersPage() {
                     </div>
                   )}
 
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
-                    <Badge variant={printer.active ? "default" : "secondary"} className="text-xs">
-                      {printer.active ? "Ativa" : "Inativa"}
-                    </Badge>
-                    <button
-                      onClick={() => toggleActive(printer)}
-                      className={`px-3 py-1 text-xs font-medium rounded-full transition-colors ${
-                        printer.active 
-                          ? 'bg-green-600 hover:bg-green-700 text-white' 
-                          : 'bg-gray-500 hover:bg-gray-600 text-white'
-                      }`}
+                  {/* Action Buttons */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="rounded-xl hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 dark:hover:bg-orange-900/20"
+                      onClick={() => testPrinter(printer)}
+                      disabled={testing === printer.id || !printer.active}
                     >
-                      {printer.active ? 'Ativa' : 'Inativa'}
-                    </button>
+                      {testing === printer.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <TestTube className="h-4 w-4 mr-2" />
+                          Testar
+                        </>
+                      )}
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="rounded-xl hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 dark:hover:bg-blue-900/20"
+                      onClick={() => checkPrinterStatus(printer.id)}
+                      disabled={checkingStatus === printer.id || !printer.active}
+                    >
+                      {checkingStatus === printer.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <>
+                          <Activity className="h-4 w-4 mr-2" />
+                          Status
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
@@ -694,84 +737,89 @@ export default function PrintersPage() {
           </div>
         )}
 
-        {filteredPrinters.length === 0 && !loading && (
+        {/* Empty State */}
+        {!loading && filteredPrinters.length === 0 && (
           <div className="text-center py-16">
-            <PrinterIcon className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 text-lg">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 dark:bg-gray-800 mb-4">
+              <PrinterIcon className="h-10 w-10 text-gray-400" />
+            </div>
+            <p className="text-gray-500 text-lg mb-4">
               {searchTerm 
                 ? 'Nenhuma impressora encontrada com esses critérios'
-                : 'Nenhuma impressora cadastrada ainda'}
+                : 'Nenhuma impressora cadastrada'}
             </p>
             {!searchTerm && (
-              <Button
+              <Button 
                 onClick={() => openModal()}
-                className="mt-4 bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full shadow-lg hover:shadow-xl"
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Adicionar Primeira Impressora
+                Cadastrar Primeira Impressora
               </Button>
             )}
           </div>
         )}
       </div>
 
-      {/* Add/Edit Modal */}
-      <Dialog open={isModalOpen} onOpenChange={(open) => setIsModalOpen(open)}>
-        <DialogContent className="max-w-2xl">
+      {/* Modal de Edição/Criação */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle>
               {editingPrinter ? 'Editar Impressora' : 'Nova Impressora'}
             </DialogTitle>
             <DialogDescription>
-              Configure uma impressora térmica para comandas e cupons
+              {editingPrinter 
+                ? 'Atualize as informações da impressora'
+                : 'Configure uma nova impressora para o sistema'}
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Nome da Impressora *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Ex: Impressora Cozinha"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="type">Tipo de Impressora</Label>
-                <Select
-                  value={formData.type}
-                  onValueChange={(value) => setFormData({ 
-                    ...formData, 
-                    type: value as any,
-                    printer_model: PRINTER_MODELS[value as keyof typeof PRINTER_MODELS][0]
-                  })}
-                >
-                  <SelectTrigger id="type">
-                    <SelectValue placeholder="Selecione o tipo" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="thermal">Térmica (Cupom)</SelectItem>
-                    <SelectItem value="laser">Laser</SelectItem>
-                    <SelectItem value="inkjet">Jato de Tinta</SelectItem>
-                    <SelectItem value="other">Outro</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="name">Nome *</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                placeholder="Ex: Impressora Cozinha"
+              />
             </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="model">Modelo da Impressora</Label>
+            
+            <div className="grid gap-2">
+              <Label htmlFor="type">Tipo *</Label>
+              <Select
+                value={formData.type}
+                onValueChange={(value: 'thermal' | 'laser' | 'inkjet' | 'other') => {
+                  setFormData({
+                    ...formData, 
+                    type: value,
+                    printer_model: PRINTER_MODELS[value][0]
+                  });
+                }}
+              >
+                <SelectTrigger id="type">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="thermal">Térmica</SelectItem>
+                  <SelectItem value="laser">Laser</SelectItem>
+                  <SelectItem value="inkjet">Jato de Tinta</SelectItem>
+                  <SelectItem value="other">Outro</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="grid gap-2">
+              <Label htmlFor="model">Modelo</Label>
               <Select
                 value={formData.printer_model}
-                onValueChange={(value) => setFormData({ ...formData, printer_model: value })}
+                onValueChange={(value) => setFormData({...formData, printer_model: value})}
               >
                 <SelectTrigger id="model">
-                  <SelectValue placeholder="Selecione o modelo" />
+                  <SelectValue />
                 </SelectTrigger>
-                <SelectContent className="max-h-[400px] overflow-y-auto">
+                <SelectContent>
                   {PRINTER_MODELS[formData.type].map(model => (
                     <SelectItem key={model} value={model}>
                       {model}
@@ -780,115 +828,76 @@ export default function PrintersPage() {
                 </SelectContent>
               </Select>
             </div>
-
+            
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="grid gap-2">
                 <Label htmlFor="ip">Endereço IP *</Label>
                 <Input
                   id="ip"
                   value={formData.ip_address}
-                  onChange={(e) => setFormData({ ...formData, ip_address: e.target.value })}
+                  onChange={(e) => setFormData({...formData, ip_address: e.target.value})}
                   placeholder="192.168.1.100"
                 />
-                <p className="text-xs text-gray-500">IP da impressora na rede local</p>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="port">Porta</Label>
+              
+              <div className="grid gap-2">
+                <Label htmlFor="port">Porta *</Label>
                 <Input
                   id="port"
                   value={formData.port}
-                  onChange={(e) => setFormData({ ...formData, port: e.target.value })}
+                  onChange={(e) => setFormData({...formData, port: e.target.value})}
                   placeholder="9100"
                 />
-                <p className="text-xs text-gray-500">Padrão: 9100 para impressoras de rede</p>
               </div>
             </div>
-
-            <div className="space-y-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-              <div className="flex items-start gap-2">
-                <Info className="h-4 w-4 text-blue-500 mt-0.5" />
-                <div className="text-sm text-blue-600 dark:text-blue-400">
-                  <p className="font-medium mb-1">Configuração de Rede:</p>
-                  <ul className="space-y-1 text-xs">
-                    <li>• A impressora deve estar na mesma rede que este servidor</li>
-                    <li>• Verifique o IP na configuração da impressora (geralmente no menu ou imprimindo teste)</li>
-                    <li>• A porta 9100 é padrão para a maioria das impressoras térmicas de rede</li>
-                    <li>• Para USB, use software como "Virtual Printer Port" para criar porta de rede</li>
-                  </ul>
-                </div>
-              </div>
+            
+            <div className="grid gap-2">
+              <Label htmlFor="description">Descrição</Label>
+              <Input
+                id="description"
+                value={formData.description}
+                onChange={(e) => setFormData({...formData, description: e.target.value})}
+                placeholder="Observações sobre a impressora"
+              />
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, is_main: !formData.is_main })}
-                className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 ${
-                  formData.is_main 
-                    ? 'bg-orange-100 text-orange-700 border-2 border-orange-300' 
-                    : 'bg-gray-100 text-gray-600 border-2 border-gray-200'
-                }`}
-              >
-                {formData.is_main ? (
-                  <>
-                    <Star className="h-4 w-4" />
-                    Impressora Principal
-                  </>
-                ) : (
-                  <>
-                    <Star className="h-4 w-4" />
-                    Impressora Secundária
-                  </>
-                )}
-              </button>
+            
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="is_main"
+                  checked={formData.is_main}
+                  onChange={(e) => setFormData({...formData, is_main: e.target.checked})}
+                  className="rounded"
+                />
+                <Label htmlFor="is_main" className="cursor-pointer">
+                  Impressora Principal
+                </Label>
+              </div>
               
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, active: !formData.active })}
-                className={`px-4 py-3 text-sm font-medium rounded-lg transition-colors flex items-center justify-center gap-2 ${
-                  formData.active 
-                    ? 'bg-green-100 text-green-700 border-2 border-green-300' 
-                    : 'bg-gray-100 text-gray-600 border-2 border-gray-200'
-                }`}
-              >
-                {formData.active ? (
-                  <>
-                    <CheckCircle className="h-4 w-4" />
-                    Ativa
-                  </>
-                ) : (
-                  <>
-                    <XCircle className="h-4 w-4" />
-                    Inativa
-                  </>
-                )}
-              </button>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="active"
+                  checked={formData.active}
+                  onChange={(e) => setFormData({...formData, active: e.target.checked})}
+                  className="rounded"
+                />
+                <Label htmlFor="active" className="cursor-pointer">
+                  Ativa
+                </Label>
+              </div>
             </div>
           </div>
-
+          
           <DialogFooter>
-            <Button variant="outline" onClick={() => {
-              setIsModalOpen(false);
-              setEditingPrinter(null);
-              setFormData({
-                name: '',
-                ip_address: '',
-                port: '9100',
-                type: 'thermal',
-                printer_model: 'Epson TM-T88VI',
-                is_main: false,
-                active: true,
-                description: '',
-                sort_order: 0
-              });
-              setSaving(false);
-            }}>
+            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancelar
             </Button>
             <Button 
+              onClick={savePrinter} 
+              disabled={saving}
               className="bg-orange-500 hover:bg-orange-600 text-white"
-              onClick={savePrinter}
-              disabled={saving || !formData.name || !formData.ip_address}
             >
               {saving ? (
                 <>
@@ -906,8 +915,8 @@ export default function PrintersPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Modal */}
-      <AlertDialog open={isDeleteModalOpen} onOpenChange={(open) => setIsDeleteModalOpen(open)}>
+      {/* Modal de Confirmação de Exclusão */}
+      <AlertDialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
@@ -917,28 +926,13 @@ export default function PrintersPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel onClick={() => {
-              setIsDeleteModalOpen(false);
-              setDeletePrinter(null);
-            }}>
-              Cancelar
-            </AlertDialogCancel>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
               disabled={saving}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
-              {saving ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Excluindo...
-                </>
-              ) : (
-                <>
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Excluir
-                </>
-              )}
+              {saving ? 'Excluindo...' : 'Excluir'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
