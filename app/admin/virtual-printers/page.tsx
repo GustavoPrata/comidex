@@ -39,13 +39,6 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { toast } from "react-hot-toast";
 import {
   Printer as PrinterIcon,
@@ -73,7 +66,6 @@ import {
   Power,
   PowerOff,
   Edit,
-  MoreVertical,
   Network,
   Volume2,
   Scissors,
@@ -726,51 +718,31 @@ export default function VirtualPrintersPage() {
                       <span>{printer.ipAddress}:{printer.port}</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
                     <Badge 
                       className={`${getStatusColor(printer.status, printer.powered)} text-white flex items-center gap-1`}
                     >
                       {getStatusIcon(printer.status, printer.powered)}
                       {printer.powered ? printer.status : 'offline'}
                     </Badge>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem
-                          onClick={() => togglePower(printer)}
-                        >
-                          {printer.powered ? (
-                            <>
-                              <PowerOff className="h-4 w-4 mr-2" />
-                              Desligar
-                            </>
-                          ) : (
-                            <>
-                              <Power className="h-4 w-4 mr-2" />
-                              Ligar
-                            </>
-                          )}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          onClick={() => openConfigModal(printer, true)}
-                        >
-                          <Edit className="h-4 w-4 mr-2" />
-                          Editar
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          className="text-red-600 dark:text-red-400"
-                          onClick={() => deletePrinter(printer)}
-                        >
-                          <Trash2 className="h-4 w-4 mr-2" />
-                          Excluir
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                      onClick={() => openConfigModal(printer, true)}
+                      title="Editar impressora"
+                    >
+                      <Edit className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 hover:bg-red-100 dark:hover:bg-red-900/30"
+                      onClick={() => deletePrinter(printer)}
+                      title="Excluir impressora"
+                    >
+                      <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
+                    </Button>
                   </div>
                 </div>
 

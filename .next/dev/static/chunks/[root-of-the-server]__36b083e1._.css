@@ -2854,6 +2854,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(249 115 22 / var(--tw-border-opacity, 1));
 }
 
+.hover\:bg-blue-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-blue-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
@@ -2927,6 +2932,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .hover\:bg-primary\/80:hover {
   background-color: hsl(var(--primary) / .8);
+}
+
+.hover\:bg-red-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-red-200:hover {
@@ -3635,6 +3645,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(156 163 175 / var(--tw-text-opacity, 1));
 }
 
+.dark\:hover\:bg-blue-900\/30:hover:is(.dark *) {
+  background-color: #1e3a8a4d;
+}
+
 .dark\:hover\:bg-gray-200:hover:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
@@ -3678,6 +3692,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:hover\:bg-red-900\/20:hover:is(.dark *) {
   background-color: #7f1d1d33;
+}
+
+.dark\:hover\:bg-red-900\/30:hover:is(.dark *) {
+  background-color: #7f1d1d4d;
 }
 
 .dark\:hover\:bg-white\/10:hover:is(.dark *) {
