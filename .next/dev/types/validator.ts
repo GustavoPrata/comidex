@@ -317,6 +317,24 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/api/printers/status/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/printers/status">> = Specific
+  const handler = {} as typeof import("../../../app/api/printers/status/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/printers/test/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/printers/test">> = Specific
+  const handler = {} as typeof import("../../../app/api/printers/test/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/api/prompt-message/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/prompt-message">> = Specific
