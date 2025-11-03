@@ -61,7 +61,8 @@ import {
   SignalZero,
   Monitor,
   HardDrive,
-  Check
+  Check,
+  RefreshCw
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -225,6 +226,8 @@ export default function PrintersPage() {
   const [discoveredPrinters, setDiscoveredPrinters] = useState<any[]>([]);
   const [addingPrinter, setAddingPrinter] = useState<string | null>(null);
   const [addedPrinters, setAddedPrinters] = useState<string[]>([]);
+  const [localPrinters, setLocalPrinters] = useState<string[]>([]);
+  const [detectingLocalPrinters, setDetectingLocalPrinters] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     ip_address: '',
@@ -576,7 +579,33 @@ export default function PrintersPage() {
     }
   };
 
-  const openModal = (printer?: Printer) => {
+  // Função para detectar impressoras locais
+  const detectLocalPrinters = async () => {
+    try {
+      setDetectingLocalPrinters(true);
+      const response = await fetch('/api/printers/detect-local', {
+        method: 'POST'
+      });
+      
+      const data = await response.json();
+      
+      if (data.success && data.printers && data.printers.length > 0) {
+        setLocalPrinters(data.printers);
+        return data.printers;
+      } else {
+        setLocalPrinters([]);
+        return [];
+      }
+    } catch (error) {
+      console.error('Erro ao detectar impressoras locais:', error);
+      setLocalPrinters([]);
+      return [];
+    } finally {
+      setDetectingLocalPrinters(false);
+    }
+  };
+
+  const openModal = async (printer?: Printer) => {
     if (printer) {
       setEditingPrinter(printer);
       setFormData({
@@ -604,6 +633,9 @@ export default function PrintersPage() {
         sort_order: printers.length
       });
     }
+    
+    // Detectar impressoras locais ao abrir o modal
+    await detectLocalPrinters();
     setIsModalOpen(true);
   };
 
@@ -1069,15 +1101,17 @@ export default function PrintersPage() {
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Nome *</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-                placeholder="Ex: Impressora Cozinha"
-              />
-            </div>
+            {!formData.is_local && (
+              <div className="grid gap-2">
+                <Label htmlFor="name">Nome *</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="Ex: Impressora Cozinha"
+                />
+              </div>
+            )}
             
             <div className="grid gap-2">
               <Label>Tipo de Conexão</Label>
@@ -1089,7 +1123,13 @@ export default function PrintersPage() {
                 <Switch
                   id="is_local"
                   checked={formData.is_local}
-                  onCheckedChange={(checked) => setFormData({...formData, is_local: checked})}
+                  onCheckedChange={async (checked) => {
+                    setFormData({...formData, is_local: checked});
+                    // Detectar impressoras ao mudar para modo local
+                    if (checked && localPrinters.length === 0) {
+                      await detectLocalPrinters();
+                    }
+                  }}
                   className="data-[state=checked]:bg-orange-500"
                 />
                 <div className={`flex items-center space-x-2 ${formData.is_local ? 'text-orange-600 font-medium' : 'text-gray-500'}`}>
@@ -1143,11 +1183,77 @@ export default function PrintersPage() {
             </div>
             
             {formData.is_local ? (
-              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                <p className="text-sm text-blue-700 dark:text-blue-400">
-                  💻 Esta impressora será detectada automaticamente do sistema Windows local. 
-                  Certifique-se de que ela está instalada e configurada no sistema.
-                </p>
+              <div className="space-y-4">
+                <div className="grid gap-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Selecione a Impressora Local</Label>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="outline"
+                      onClick={detectLocalPrinters}
+                      disabled={detectingLocalPrinters}
+                      className="h-7"
+                    >
+                      {detectingLocalPrinters ? (
+                        <>
+                          <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                          Detectando...
+                        </>
+                      ) : (
+                        <>
+                          <RefreshCw className="h-3 w-3 mr-1" />
+                          Atualizar Lista
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  
+                  {detectingLocalPrinters ? (
+                    <div className="flex items-center justify-center p-4 border border-dashed rounded-lg">
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin text-orange-500" />
+                      <span className="text-sm text-gray-500">Detectando impressoras locais...</span>
+                    </div>
+                  ) : localPrinters.length > 0 ? (
+                    <Select
+                      value={formData.name}
+                      onValueChange={(value) => setFormData({...formData, name: value})}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Selecione uma impressora" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {localPrinters.map((printer) => (
+                          <SelectItem key={printer} value={printer}>
+                            <div className="flex items-center space-x-2">
+                              <PrinterIcon className="h-4 w-4 text-gray-500" />
+                              <span>{printer}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                      <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                        ⚠️ Nenhuma impressora local detectada. Certifique-se de que:
+                      </p>
+                      <ul className="text-xs text-yellow-600 dark:text-yellow-500 mt-2 space-y-1 list-disc list-inside">
+                        <li>O sistema está rodando no Windows</li>
+                        <li>Existem impressoras instaladas no sistema</li>
+                        <li>O aplicativo tem permissões para acessá-las</li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+                
+                {formData.name && (
+                  <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                    <p className="text-sm text-green-700 dark:text-green-400">
+                      ✅ Impressora selecionada: <strong>{formData.name}</strong>
+                    </p>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-4">
