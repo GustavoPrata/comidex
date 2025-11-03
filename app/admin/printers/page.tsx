@@ -301,7 +301,7 @@ export default function PrintersPage() {
   const testPrinter = async (printer: Printer) => {
     try {
       setTesting(printer.id);
-      toast(`🖨️ Enviando teste de impressão real para ${printer.name}...`);
+      toast(`🖨️ Enviando teste de impressão para ${printer.name}...`);
       
       const response = await fetch('/api/printers/test', {
         method: 'POST',
@@ -321,6 +321,8 @@ export default function PrintersPage() {
           toast.success(`📡 Impressão enviada via rede TCP/IP para ${result.printer.ip}:${result.printer.port}`);
         } else if (result.method === 'virtual') {
           toast(`🎭 Teste simulado em impressora virtual`);
+        } else if (result.method === 'local') {
+          toast.success(`🖨️ Impressão enviada para impressora local do sistema`);
         }
       } else {
         toast.error(`❌ ${result.error}`);
@@ -339,6 +341,42 @@ export default function PrintersPage() {
       console.error('Erro:', error);
     } finally {
       setTesting(null);
+    }
+  };
+
+  // Nova função para testar impressora local diretamente
+  const testLocalPrinter = async (printerName: string, printerData?: any) => {
+    try {
+      toast(`🖨️ Testando impressora local: ${printerName}...`);
+      
+      const response = await fetch('/api/printers/test-local', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ printerName, printerData })
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success(result.message);
+        
+        if (result.details) {
+          console.log('📊 Detalhes do teste:', result.details);
+        }
+        
+        if (result.thermalInfo) {
+          toast(`💡 Impressora térmica detectada - suporta recursos especiais`, { duration: 4000 });
+        }
+      } else {
+        toast.error(`❌ ${result.error}`);
+        
+        if (result.solution) {
+          toast(`💡 ${result.solution}`, { duration: 6000 });
+        }
+      }
+    } catch (error) {
+      toast.error("❌ Erro ao testar impressora local");
+      console.error('Erro:', error);
     }
   };
   

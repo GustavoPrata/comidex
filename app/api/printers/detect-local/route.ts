@@ -15,29 +15,50 @@ async function detectWindowsPrinters() {
     
     // Parsear saída CSV do WMIC
     const lines = stdout.split('\n').filter(line => line.trim());
-    const headers = lines[1]?.split(',').map(h => h.trim());
     const printers = [];
     
-    for (let i = 2; i < lines.length; i++) {
-      const values = lines[i].split(',').map(v => v.trim());
-      if (values.length > 1 && values[1]) { // Verificar se tem nome
-        const printer: any = {};
-        headers?.forEach((header, index) => {
-          printer[header.toLowerCase()] = values[index] || '';
-        });
+    // WMIC CSV format has headers in the second line (first non-empty after Node line)
+    // Find the header line (contains "Name,PortName,DriverName,Status")
+    let headerIndex = -1;
+    let headers: string[] = [];
+    
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].includes('Name') || lines[i].includes('name')) {
+        headerIndex = i;
+        headers = lines[i].split(',').map(h => h.trim());
+        break;
+      }
+    }
+    
+    if (headerIndex === -1 || headers.length === 0) {
+      console.error('❌ Headers não encontrados na saída WMIC');
+      return [];
+    }
+    
+    // Process data lines (after header)
+    for (let i = headerIndex + 1; i < lines.length; i++) {
+      const line = lines[i];
+      if (!line || line.trim() === '') continue;
+      
+      const values = line.split(',').map(v => v.trim());
+      
+      // WMIC CSV format: Node,Name,PortName,DriverName,Status
+      // Skip the Node column (first value)
+      const nodeValue = values[0];
+      const nameValue = values[1];
+      
+      if (nameValue && nameValue.length > 0) {
+        const printer: any = {
+          name: nameValue,
+          port: values[2] || 'USB',
+          driver: values[3] || 'Unknown',
+          status: values[4] || 'Ready',
+          type: detectPrinterType(nameValue, values[3] || ''),
+          os: 'Windows',
+          detected_via: 'WMIC'
+        };
         
-        // Adicionar informações úteis
-        if (printer.name) {
-          printers.push({
-            name: printer.name,
-            port: printer.portname || 'USB',
-            driver: printer.drivername || 'Unknown',
-            status: printer.status || 'Ready',
-            type: detectPrinterType(printer.name, printer.drivername),
-            os: 'Windows',
-            detected_via: 'WMIC'
-          });
-        }
+        printers.push(printer);
       }
     }
     
@@ -271,6 +292,13 @@ export async function GET() {
   }
 }
 
+// Função para sanitizar nome da impressora (prevenir command injection)
+function sanitizePrinterName(name: string): string {
+  // Remove caracteres perigosos que podem causar command injection
+  // Permite apenas letras, números, espaços, hífen, underscore e ponto
+  return name.replace(/[^a-zA-Z0-9\s\-_\.]/g, '');
+}
+
 // POST /api/printers/detect-local - Detectar e testar impressora específica
 export async function POST(request: Request) {
   try {
@@ -283,8 +311,15 @@ export async function POST(request: Request) {
       }, { status: 400 });
     }
     
+    // Sanitizar nome da impressora para prevenir command injection
+    const safePrinterName = sanitizePrinterName(printerName);
+    
+    if (safePrinterName !== printerName) {
+      console.warn(`⚠️ Nome da impressora sanitizado: "${printerName}" -> "${safePrinterName}"`);
+    }
+    
     const platform = os.platform();
-    console.log(`🖨️ Testando impressora "${printerName}" no ${platform}...`);
+    console.log(`🖨️ Testando impressora "${safePrinterName}" no ${platform}...`);
     
     // Comando para enviar teste de impressão
     let command = '';
@@ -292,13 +327,13 @@ export async function POST(request: Request) {
     switch (platform) {
       case 'win32':
         // No Windows, podemos usar print ou PowerShell
-        command = `powershell -Command "Out-Printer -Name '${printerName}' -InputObject 'TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}'"`;
+        command = `powershell -Command "Out-Printer -Name '${safePrinterName}' -InputObject 'TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}'"`;
         break;
         
       case 'linux':
       case 'darwin':
         // No Linux/Mac, usar lp
-        command = `echo "TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}" | lp -d "${printerName}"`;
+        command = `echo "TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}" | lp -d "${safePrinterName}"`;
         break;
         
       default:
@@ -313,7 +348,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       success: !stderr,
       message: stderr ? `Erro: ${stderr}` : 'Teste enviado com sucesso',
-      printerName,
+      printerName: safePrinterName,
       platform,
       output: stdout || 'Comando executado com sucesso'
     });
