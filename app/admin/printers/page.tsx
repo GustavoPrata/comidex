@@ -743,9 +743,9 @@ export default function PrintersPage() {
             </div>
           </div>
 
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="text-sm text-gray-500 dark:text-gray-400">
             Gerencie impressoras térmicas para comandas e cupons
-          </p>
+          </div>
         </div>
       </div>
 
@@ -774,9 +774,9 @@ export default function PrintersPage() {
                           <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                         )}
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                      <div className="text-sm text-gray-600 dark:text-gray-400">
                         {printer.printer_model || 'Modelo não especificado'}
-                      </p>
+                      </div>
                       <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
                         <Network className="h-3 w-3" />
                         <span className="font-mono">{printer.ip_address}:{printer.port}</span>
@@ -867,16 +867,16 @@ export default function PrintersPage() {
                       <div className="flex items-start gap-2">
                         <Clock className="h-4 w-4 text-blue-500 mt-0.5" />
                         <div className="flex-1 text-xs">
-                          <p className="text-blue-700 dark:text-blue-400 font-medium">
+                          <div className="text-blue-700 dark:text-blue-400 font-medium">
                             Último teste
-                          </p>
-                          <p className="text-blue-600 dark:text-blue-300 mt-0.5">
+                          </div>
+                          <div className="text-blue-600 dark:text-blue-300 mt-0.5">
                             {new Date(printer.last_test_at).toLocaleString('pt-BR')}
-                          </p>
+                          </div>
                           {printer.test_result && (
-                            <p className="text-blue-500 dark:text-blue-300 mt-1">
+                            <div className="text-blue-500 dark:text-blue-300 mt-1">
                               {printer.test_result}
-                            </p>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -1158,7 +1158,7 @@ export default function PrintersPage() {
                     key={index}
                     className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors ${
                       printer.isLocal 
-                        ? 'border-purple-300 dark:border-purple-700 bg-purple-50/50 dark:bg-purple-900/20' 
+                        ? 'border-orange-300 dark:border-orange-700 bg-orange-50/50 dark:bg-orange-900/20' 
                         : 'border-green-300 dark:border-green-700'
                     }`}
                     onClick={() => addDiscoveredPrinter(printer)}
@@ -1171,7 +1171,7 @@ export default function PrintersPage() {
                           </h4>
                           {printer.isLocal ? (
                             <>
-                              <Badge variant="secondary" className="text-xs bg-purple-500 text-white">
+                              <Badge variant="secondary" className="text-xs bg-orange-500 text-white">
                                 <HardDrive className="h-3 w-3 mr-1" />
                                 Local
                               </Badge>
@@ -1196,13 +1196,13 @@ export default function PrintersPage() {
                             </span>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
                           {printer.model || printer.driver || 'Modelo não identificado'}
-                        </p>
-                        <p className="text-xs text-gray-500 font-mono mt-1">
+                        </div>
+                        <div className="text-xs text-gray-500 font-mono mt-1">
                           {printer.isLocal ? (
                             <>
-                              <span className="text-purple-600">Sistema: {printer.os || 'Local'}</span>
+                              <span className="text-orange-600">Sistema: {printer.os || 'Local'}</span>
                               {printer.port && printer.port !== '0' && (
                                 <span className="ml-2">| Porta: {printer.port}</span>
                               )}
@@ -1210,11 +1210,11 @@ export default function PrintersPage() {
                           ) : (
                             `${printer.ip}:${printer.port}`
                           )}
-                        </p>
+                        </div>
                         {printer.rawData?.detected_via && (
-                          <p className="text-xs text-gray-400 mt-1">
+                          <div className="text-xs text-gray-400 mt-1">
                             Detectado via: {printer.rawData.detected_via}
-                          </p>
+                          </div>
                         )}
                       </div>
                       <Button
@@ -1236,14 +1236,14 @@ export default function PrintersPage() {
                 ) : (
                   <PrinterIcon className="h-8 w-8 mx-auto mb-2 text-gray-400" />
                 )}
-                <p>
+                <div>
                   {discovering 
                     ? "Procurando impressoras..." 
                     : "Nenhuma impressora encontrada"}
-                </p>
-                <p className="text-xs mt-2">
+                </div>
+                <div className="text-xs mt-2">
                   Certifique-se de que as impressoras estão instaladas no Windows
-                </p>
+                </div>
               </div>
             )}
           </div>

@@ -326,9 +326,9 @@ function detectPrinterType(name, driver) {
     if (nameLower.includes('thermal') || driverLower.includes('thermal') || nameLower.includes('pos') || driverLower.includes('pos') || nameLower.includes('receipt') || driverLower.includes('receipt') || nameLower.includes('epson tm') || nameLower.includes('bematech') || nameLower.includes('elgin') || nameLower.includes('daruma') || nameLower.includes('tanca') || nameLower.includes('sweda')) {
         return 'thermal';
     }
-    // Verificar se é PDF/Virtual
+    // Verificar se é PDF/Driver de arquivo (não são impressoras reais)
     if (nameLower.includes('pdf') || nameLower.includes('xps') || nameLower.includes('onenote') || nameLower.includes('fax') || nameLower.includes('virtual') || nameLower.includes('print to file')) {
-        return 'virtual';
+        return 'other'; // Marcar como 'other' em vez de 'virtual'
     }
     // Verificar se é laser
     if (nameLower.includes('laser') || nameLower.includes('laserjet') || driverLower.includes('laser')) {
