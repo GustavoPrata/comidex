@@ -229,7 +229,7 @@ export default function PrintersPage() {
   });
   const supabase = createClient();
   
-  // Verificar status periodicamente após carregar impressoras
+  // Verificar status inicial apenas uma vez quando carregar as impressoras
   useEffect(() => {
     if (printers.length > 0) {
       // Verificar status inicial após 2 segundos
@@ -237,14 +237,11 @@ export default function PrintersPage() {
         checkAllPrintersStatus();
       }, 2000);
       
-      // Depois verificar a cada 60 segundos (mais realista)
-      const interval = setInterval(() => {
-        checkAllPrintersStatus();
-      }, 60000);
+      // Não verificar automaticamente depois - apenas quando usuário clicar em "Status"
+      // Isso evita mudanças aleatórias de status
       
       return () => {
         clearTimeout(timeout);
-        clearInterval(interval);
       };
     }
   }, [printers.length]);

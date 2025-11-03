@@ -27,46 +27,21 @@ function simulateRealisticStatus(printer: any): {
     };
   }
 
-  // Simular diferentes condições de rede com aleatoriedade
-  const randomChance = Math.random();
+  // Status fixo para consistência - impressoras ativas sempre estão online
+  // a menos que sejam manualmente definidas como offline/error
+  let determinedStatus: 'online' | 'offline' | 'error' = 'online';
+  let message = '';
+  const responseTime = 50; // Tempo fixo de resposta
   
-  // 70% de chance de estar online
-  if (randomChance < 0.7) {
-    const responseTime = Math.floor(Math.random() * 100) + 20; // 20-120ms
-    return {
-      status: 'online',
-      message: `Impressora ${printer.name} está online e pronta`,
-      responseTime
-    };
-  }
+  // Para impressoras ativas com IP válido, sempre considerar online
+  // Isso evita o bug de status mudando aleatoriamente
+  determinedStatus = 'online';
+  message = `Impressora ${printer.name} está online e pronta`;
   
-  // 20% de chance de estar offline (desligada, sem papel, etc)
-  if (randomChance < 0.9) {
-    const reasons = [
-      'está offline ou desligada',
-      'sem papel - repor papel térmico',
-      'tampa aberta - verificar impressora',
-      'erro de comunicação - verificar cabo de rede',
-      'sem resposta - reiniciar impressora'
-    ];
-    const reason = reasons[Math.floor(Math.random() * reasons.length)];
-    return {
-      status: 'offline',
-      message: `Impressora ${printer.name} ${reason}`
-    };
-  }
-  
-  // 10% de chance de erro (problema técnico)
-  const errors = [
-    'erro no mecanismo de impressão',
-    'superaquecimento - aguardar esfriar',
-    'erro de firmware - atualização necessária',
-    'problema na guilhotina de corte'
-  ];
-  const error = errors[Math.floor(Math.random() * errors.length)];
   return {
-    status: 'error',
-    message: `Impressora ${printer.name} - ${error}`
+    status: determinedStatus,
+    message,
+    responseTime
   };
 }
 
