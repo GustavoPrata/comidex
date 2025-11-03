@@ -41,8 +41,6 @@ import {
   Save,
   Loader2,
   Search,
-  Wifi,
-  WifiOff,
   Network,
   CheckCircle,
   XCircle,
@@ -60,7 +58,6 @@ import {
   Signal,
   SignalLow,
   SignalZero,
-  Globe,
   Monitor,
   HardDrive
 } from "lucide-react";
@@ -1126,26 +1123,15 @@ export default function PrintersPage() {
         <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              {discoveredPrinters.some((p: any) => p.isLocal) ? (
-                <>
-                  <Monitor className="h-5 w-5 text-green-500" />
-                  Impressoras Locais Detectadas
-                </>
-              ) : (
-                <>
-                  <Globe className="h-5 w-5 text-blue-500" />
-                  Impressoras Descobertas na Rede
-                </>
-              )}
+              <Monitor className="h-5 w-5 text-orange-500" />
+              Impressoras Locais Detectadas
             </DialogTitle>
             <DialogDescription>
               {discovering ? (
                 <div className="flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   <span>
-                    {discoveredPrinters.some((p: any) => p.isLocal)
-                      ? 'Detectando impressoras instaladas no sistema...'
-                      : 'Procurando impressoras na rede local...'}
+                    Detectando impressoras instaladas no sistema...
                   </span>
                 </div>
               ) : (
@@ -1154,7 +1140,7 @@ export default function PrintersPage() {
                     <span>
                       Encontradas {discoveredPrinters.length} impressoras
                       {discoveredPrinters.some((p: any) => p.isLocal) && (
-                        <span className="text-green-600 font-semibold ml-1">
+                        <span className="text-orange-600 font-semibold ml-1">
                           (instaladas no {discoveredPrinters[0]?.os || 'sistema'})
                         </span>
                       )}
@@ -1265,7 +1251,7 @@ export default function PrintersPage() {
                     : "Nenhuma impressora encontrada"}
                 </p>
                 <p className="text-xs mt-2">
-                  Certifique-se de que as impressoras estão ligadas e conectadas à rede
+                  Certifique-se de que as impressoras estão instaladas no Windows
                 </p>
               </div>
             )}
