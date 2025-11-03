@@ -59,7 +59,8 @@ import {
   SignalLow,
   SignalZero,
   Monitor,
-  HardDrive
+  HardDrive,
+  Check
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -220,6 +221,8 @@ export default function PrintersPage() {
   const [showDiscoverModal, setShowDiscoverModal] = useState(false);
   const [discovering, setDiscovering] = useState(false);
   const [discoveredPrinters, setDiscoveredPrinters] = useState<any[]>([]);
+  const [addingPrinter, setAddingPrinter] = useState<string | null>(null);
+  const [addedPrinters, setAddedPrinters] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     ip_address: '',
@@ -499,7 +502,7 @@ export default function PrintersPage() {
   
   const addDiscoveredPrinter = async (discoveredPrinter: any) => {
     try {
-      setSaving(true);
+      setAddingPrinter(discoveredPrinter.name);
       
       // Preparar dados da impressora
       const printerData = {
@@ -530,22 +533,24 @@ export default function PrintersPage() {
 
       toast.success(`✅ Impressora "${discoveredPrinter.name}" adicionada com sucesso!`);
       
+      // Marcar impressora como adicionada
+      setAddedPrinters(prev => [...prev, discoveredPrinter.name]);
+      
       // Atualizar lista de impressoras
       mutate('printers');
       
-      // Remover da lista de impressoras descobertas
-      setDiscoveredPrinters(prev => prev.filter((p: any) => p.name !== discoveredPrinter.name));
-      
-      // Se não houver mais impressoras descobertas, fechar o modal
+      // Se não houver mais impressoras descobertas, fechar o modal após delay
       if (discoveredPrinters.length <= 1) {
-        setShowDiscoverModal(false);
+        setTimeout(() => {
+          setShowDiscoverModal(false);
+        }, 1500);
       }
       
     } catch (error) {
       console.error('Erro ao adicionar impressora:', error);
       toast.error('Erro ao adicionar impressora');
     } finally {
-      setSaving(false);
+      setAddingPrinter(null);
     }
   };
 
@@ -1249,20 +1254,27 @@ export default function PrintersPage() {
                           </div>
                         )}
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border-orange-500 text-orange-500 hover:bg-orange-50"
-                        onClick={() => addDiscoveredPrinter(printer)}
-                        disabled={saving}
-                      >
-                        {saving ? (
-                          <Loader2 className="h-4 w-4 mr-1 animate-spin" />
-                        ) : (
-                          <Plus className="h-4 w-4 mr-1" />
-                        )}
-                        Adicionar
-                      </Button>
+                      {addedPrinters.includes(printer.name) ? (
+                        <div className="flex items-center text-green-600">
+                          <Check className="h-4 w-4 mr-1" />
+                          Adicionada
+                        </div>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border-orange-500 text-orange-500 hover:bg-orange-50"
+                          onClick={() => addDiscoveredPrinter(printer)}
+                          disabled={addingPrinter === printer.name}
+                        >
+                          {addingPrinter === printer.name ? (
+                            <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                          ) : (
+                            <Plus className="h-4 w-4 mr-1" />
+                          )}
+                          {addingPrinter === printer.name ? 'Adicionando...' : 'Adicionar'}
+                        </Button>
+                      )}
                     </div>
                   </div>
                 ))}
