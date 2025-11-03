@@ -417,7 +417,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e
 ;
 ;
 // Verificar status real baseado nas impressoras virtuais (se existirem)
-function checkRealStatus(printer) {
+async function checkRealStatus(printer) {
     // Impressoras desativadas sempre estão offline
     if (!printer.active) {
         return {
@@ -433,39 +433,39 @@ function checkRealStatus(printer) {
             message: `Impressora ${printer.name} - IP inválido ou fora da rede`
         };
     }
-    // Tentar buscar o estado real das impressoras virtuais do localStorage
-    // Isso simula uma verificação real por IP
     try {
-        // Para simular verificação real por IP, vamos usar a seguinte lógica:
-        // - IPs que terminam em .101, .102, .103, .104 são das impressoras virtuais
-        // - Verificar se existe uma impressora virtual com esse IP e se está ligada
-        // Mapear IPs conhecidos das impressoras virtuais e seus estados
-        // Buscar o header X-Virtual-Printers-Status se enviado do cliente
-        const virtualPrintersStatus = {
-            '192.168.1.101': false,
-            '192.168.1.102': true,
-            '192.168.1.103': true,
-            '192.168.1.104': true // Virtual Sushi Bar - LIGADA
-        };
-        // Verificar se é um IP de impressora virtual conhecida
-        if (virtualPrintersStatus.hasOwnProperty(printer.ip_address)) {
-            const isOnline = virtualPrintersStatus[printer.ip_address];
-            if (isOnline) {
-                return {
-                    status: 'online',
-                    message: `Impressora ${printer.name} está online e pronta`,
-                    responseTime: 50
-                };
-            } else {
-                return {
-                    status: 'offline',
-                    message: `Impressora ${printer.name} está desligada`,
-                    responseTime: 0
-                };
+        // Verificar se é uma impressora virtual consultando o endpoint interno
+        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
+        const response = await fetch(`${baseUrl}/api/printers/virtual-status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ipAddress: printer.ip_address
+            })
+        });
+        if (response.ok) {
+            const virtualStatus = await response.json();
+            // Se é uma impressora virtual, usar o status real dela
+            if (virtualStatus.isVirtual) {
+                if (virtualStatus.powered) {
+                    return {
+                        status: 'online',
+                        message: `Impressora ${printer.name} está online e pronta`,
+                        responseTime: 50
+                    };
+                } else {
+                    return {
+                        status: 'offline',
+                        message: `Impressora ${printer.name} está desligada`,
+                        responseTime: 0
+                    };
+                }
             }
         }
-        // Para outras impressoras (não virtuais), simular ping real
-        // Se o último octeto do IP for par = online, ímpar = offline
+        // Para impressoras não virtuais ou se falhou a consulta
+        // Simular ping real: IPs com último octeto par = online, ímpar = offline
         const lastOctet = parseInt(printer.ip_address.split('.')[3]);
         const isOnline = lastOctet % 2 === 0;
         if (isOnline) {
@@ -482,10 +482,14 @@ function checkRealStatus(printer) {
             };
         }
     } catch (error) {
+        console.error('Erro ao verificar status:', error);
+        // Fallback: considerar online se IP termina em par
+        const lastOctet = parseInt(printer.ip_address.split('.')[3]);
+        const isOnline = lastOctet % 2 === 0;
         return {
-            status: 'error',
-            message: `Impressora ${printer.name} - erro ao verificar status`,
-            responseTime: 0
+            status: isOnline ? 'online' : 'offline',
+            message: isOnline ? `Impressora ${printer.name} está online e pronta` : `Impressora ${printer.name} não responde ao ping`,
+            responseTime: isOnline ? 50 : 0
         };
     }
 }
@@ -504,7 +508,7 @@ async function POST(request) {
             });
         }
         // Verificar status real baseado no IP
-        const statusCheck = checkRealStatus(printer);
+        const statusCheck = await checkRealStatus(printer);
         // Simular tempo de resposta de rede
         if (statusCheck.responseTime) {
             await new Promise((resolve)=>setTimeout(resolve, statusCheck.responseTime));
