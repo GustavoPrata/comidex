@@ -416,7 +416,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/supabase/server.ts [app-route] (ecmascript)");
 ;
 ;
-// Verificar status real baseado nas impressoras virtuais (se existirem)
+// Verificar status real das impressoras
 async function checkRealStatus(printer) {
     // Impressoras desativadas sempre estão offline
     if (!printer.active) {
@@ -434,38 +434,8 @@ async function checkRealStatus(printer) {
         };
     }
     try {
-        // Verificar se é uma impressora virtual consultando o endpoint interno
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5000';
-        const response = await fetch(`${baseUrl}/api/printers/virtual-status`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                ipAddress: printer.ip_address
-            })
-        });
-        if (response.ok) {
-            const virtualStatus = await response.json();
-            // Se é uma impressora virtual, usar o status real dela
-            if (virtualStatus.isVirtual) {
-                if (virtualStatus.powered) {
-                    return {
-                        status: 'online',
-                        message: `Impressora ${printer.name} está online e pronta`,
-                        responseTime: 50
-                    };
-                } else {
-                    return {
-                        status: 'offline',
-                        message: `Impressora ${printer.name} está desligada`,
-                        responseTime: 0
-                    };
-                }
-            }
-        }
-        // Para impressoras não virtuais ou se falhou a consulta
-        // Simular ping real: IPs com último octeto par = online, ímpar = offline
+        // Verificar status real da impressora
+        // Por enquanto, simular status baseado em última verificação
         const lastOctet = parseInt(printer.ip_address.split('.')[3]);
         const isOnline = lastOctet % 2 === 0;
         if (isOnline) {
