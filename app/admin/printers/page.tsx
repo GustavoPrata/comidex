@@ -59,7 +59,9 @@ import {
   Zap,
   Signal,
   SignalLow,
-  SignalZero
+  SignalZero,
+  ScanSearch,
+  Globe
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -217,6 +219,9 @@ export default function PrintersPage() {
   const [testing, setTesting] = useState<number | null>(null);
   const [checkingStatus, setCheckingStatus] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showDiscoverModal, setShowDiscoverModal] = useState(false);
+  const [discovering, setDiscovering] = useState(false);
+  const [discoveredPrinters, setDiscoveredPrinters] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     name: '',
     ip_address: '',
@@ -294,7 +299,7 @@ export default function PrintersPage() {
   const testPrinter = async (printer: Printer) => {
     try {
       setTesting(printer.id);
-      toast(`Enviando teste de impressão para ${printer.name}...`);
+      toast(`🖨️ Enviando teste de impressão real para ${printer.name}...`);
       
       const response = await fetch('/api/printers/test', {
         method: 'POST',
@@ -305,19 +310,83 @@ export default function PrintersPage() {
       const result = await response.json();
       
       if (result.success) {
-        toast.success(result.message);
+        toast.success(`✅ ${result.message}`);
         // Revalidar dados para mostrar último teste
         mutate('printers');
+        
+        // Se foi teste real, mostrar detalhes
+        if (result.method === 'network') {
+          toast.success(`📡 Impressão enviada via rede TCP/IP para ${result.printer.ip}:${result.printer.port}`);
+        } else if (result.method === 'virtual') {
+          toast(`🎭 Teste simulado em impressora virtual`);
+        }
       } else {
-        toast.error(`Falha no teste: ${result.error}`);
-        console.error('Detalhes do erro:', result.details);
+        toast.error(`❌ ${result.error}`);
+        
+        // Mostrar dicas se disponíveis
+        if (result.details?.hints) {
+          result.details.hints.forEach((hint: string, index: number) => {
+            setTimeout(() => {
+              toast(`💡 ${hint}`, { duration: 5000 });
+            }, (index + 1) * 1000);
+          });
+        }
       }
     } catch (error) {
-      toast.error("Erro ao testar impressora");
+      toast.error("❌ Erro ao testar impressora");
       console.error('Erro:', error);
     } finally {
       setTesting(null);
     }
+  };
+  
+  const handleDiscoverPrinters = async () => {
+    try {
+      setDiscovering(true);
+      setShowDiscoverModal(true);
+      setDiscoveredPrinters([]);
+      
+      toast('🔍 Procurando impressoras na rede...');
+      
+      const response = await fetch('/api/printers/discover');
+      const result = await response.json();
+      
+      if (result.success) {
+        setDiscoveredPrinters(result.printers);
+        
+        if (result.discovered > 0) {
+          toast.success(`✅ Encontradas ${result.discovered} impressoras reais na rede!`);
+        } else {
+          toast(`ℹ️ Nenhuma impressora física encontrada. Mostrando impressoras virtuais disponíveis.`);
+        }
+      } else {
+        toast.error('❌ Erro ao procurar impressoras');
+      }
+    } catch (error) {
+      toast.error('❌ Erro na descoberta de impressoras');
+      console.error('Erro:', error);
+    } finally {
+      setDiscovering(false);
+    }
+  };
+  
+  const addDiscoveredPrinter = async (discoveredPrinter: any) => {
+    // Preencher formulário com dados da impressora descoberta
+    setFormData({
+      name: discoveredPrinter.name,
+      ip_address: discoveredPrinter.ip,
+      port: String(discoveredPrinter.port),
+      type: 'thermal',
+      printer_model: discoveredPrinter.model,
+      is_main: false,
+      active: true,
+      sort_order: printers.length
+    });
+    
+    // Fechar modal de descoberta e abrir modal de adição
+    setShowDiscoverModal(false);
+    setEditingPrinter(null);
+    setIsModalOpen(true);
   };
 
   const openModal = (printer?: Printer) => {
@@ -524,6 +593,18 @@ export default function PrintersPage() {
                   <Search className="h-4 w-4 text-white" />
                 </button>
               </div>
+              <Button 
+                onClick={handleDiscoverPrinters}
+                className="bg-blue-500 hover:bg-blue-600 text-white rounded-full"
+                disabled={discovering}
+              >
+                {discovering ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <ScanSearch className="h-4 w-4 mr-2" />
+                )}
+                Descobrir
+              </Button>
               <Button 
                 onClick={() => openModal()}
                 className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
@@ -906,6 +987,116 @@ export default function PrintersPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+      
+      {/* Modal de Descoberta de Impressoras */}
+      <Dialog open={showDiscoverModal} onOpenChange={setShowDiscoverModal}>
+        <DialogContent className="max-w-3xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Globe className="h-5 w-5 text-blue-500" />
+              Impressoras Descobertas na Rede
+            </DialogTitle>
+            <DialogDescription>
+              {discovering ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Procurando impressoras na rede local...</span>
+                </div>
+              ) : (
+                `Encontradas ${discoveredPrinters.length} impressoras disponíveis`
+              )}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="max-h-96 overflow-y-auto">
+            {discoveredPrinters.length > 0 ? (
+              <div className="space-y-2">
+                {discoveredPrinters.map((printer: any, index: number) => (
+                  <div
+                    key={index}
+                    className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors ${
+                      printer.isVirtual ? 'border-blue-300 dark:border-blue-700' : 'border-green-300 dark:border-green-700'
+                    }`}
+                    onClick={() => addDiscoveredPrinter(printer)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-semibold text-gray-900 dark:text-gray-100">
+                            {printer.name}
+                          </h4>
+                          {printer.isVirtual ? (
+                            <Badge variant="secondary" className="text-xs">
+                              Virtual
+                            </Badge>
+                          ) : (
+                            <Badge variant="default" className="text-xs bg-green-500">
+                              Física
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                          {printer.model}
+                        </p>
+                        <p className="text-xs text-gray-500 font-mono">
+                          {printer.ip}:{printer.port}
+                        </p>
+                      </div>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-orange-500 text-orange-500 hover:bg-orange-50"
+                      >
+                        <Plus className="h-4 w-4 mr-1" />
+                        Adicionar
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                {discovering ? (
+                  <Loader2 className="h-8 w-8 animate-spin mx-auto mb-2" />
+                ) : (
+                  <PrinterIcon className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+                )}
+                <p>
+                  {discovering 
+                    ? "Procurando impressoras..." 
+                    : "Nenhuma impressora encontrada"}
+                </p>
+                <p className="text-xs mt-2">
+                  Certifique-se de que as impressoras estão ligadas e conectadas à rede
+                </p>
+              </div>
+            )}
+          </div>
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowDiscoverModal(false)}>
+              Fechar
+            </Button>
+            <Button 
+              onClick={handleDiscoverPrinters}
+              disabled={discovering}
+              className="bg-blue-500 hover:bg-blue-600 text-white"
+            >
+              {discovering ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Procurando...
+                </>
+              ) : (
+                <>
+                  <ScanSearch className="h-4 w-4 mr-2" />
+                  Buscar Novamente
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
