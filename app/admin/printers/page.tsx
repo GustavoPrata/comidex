@@ -340,33 +340,65 @@ export default function PrintersPage() {
     }
   };
   
-  const handleDiscoverPrinters = async () => {
+  const handleDiscoverPrinters = async (quickScan = false, scanType = 'all') => {
     try {
       setDiscovering(true);
       setShowDiscoverModal(true);
       setDiscoveredPrinters([]);
       
-      toast('🔍 Procurando impressoras na rede...');
+      const scanMode = quickScan ? 'rápida' : 'completa';
+      toast(`🔍 Iniciando busca ${scanMode} de impressoras...`);
       
-      const response = await fetch('/api/printers/discover');
+      const url = `/api/printers/discover?quick=${quickScan}&type=${scanType}`;
+      const response = await fetch(url);
       const result = await response.json();
       
       if (result.success) {
         setDiscoveredPrinters(result.printers);
         
         if (result.discovered > 0) {
-          toast.success(`✅ Encontradas ${result.discovered} impressoras reais na rede!`);
+          toast.success(`✅ Encontradas ${result.discovered} impressoras! (${result.network} de rede, ${result.local} local)`);
+          
+          // Mostrar subnets escaneadas
+          if (result.subnets?.length > 0) {
+            console.log(`📡 Subnets escaneadas: ${result.subnets.join(', ')}`);
+          }
         } else {
-          toast(`ℹ️ Nenhuma impressora física encontrada. Mostrando impressoras virtuais disponíveis.`);
+          toast(`⚠️ Nenhuma impressora física encontrada. Tente:\n- Verificar se as impressoras estão ligadas\n- Usar busca completa\n- Adicionar IP manualmente`);
         }
       } else {
-        toast.error('❌ Erro ao procurar impressoras');
+        toast.error(`❌ Erro ao procurar impressoras: ${result.error}`);
       }
     } catch (error) {
       toast.error('❌ Erro na descoberta de impressoras');
       console.error('Erro:', error);
     } finally {
       setDiscovering(false);
+    }
+  };
+  
+  // Função para escanear IP específico
+  const handleScanSpecificIP = async (ip: string) => {
+    try {
+      toast(`🔍 Verificando ${ip}...`);
+      
+      const response = await fetch('/api/printers/discover', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success && result.found) {
+        // Adicionar às impressoras descobertas
+        setDiscoveredPrinters([...discoveredPrinters, ...result.printers]);
+        toast.success(`✅ Impressora encontrada em ${ip}!`);
+      } else {
+        toast(`⚠️ Nenhuma impressora encontrada em ${ip}`);
+      }
+    } catch (error) {
+      toast.error('❌ Erro ao verificar IP');
     }
   };
   
@@ -594,7 +626,7 @@ export default function PrintersPage() {
                 </button>
               </div>
               <Button 
-                onClick={handleDiscoverPrinters}
+                onClick={() => handleDiscoverPrinters(false, 'all')}
                 className="bg-blue-500 hover:bg-blue-600 text-white rounded-full"
                 disabled={discovering}
               >
@@ -1078,7 +1110,7 @@ export default function PrintersPage() {
               Fechar
             </Button>
             <Button 
-              onClick={handleDiscoverPrinters}
+              onClick={() => handleDiscoverPrinters(false, 'all')}
               disabled={discovering}
               className="bg-blue-500 hover:bg-blue-600 text-white"
             >
