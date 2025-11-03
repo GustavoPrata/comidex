@@ -1122,8 +1122,7 @@ export default function PrintersPage() {
       <Dialog open={showDiscoverModal} onOpenChange={setShowDiscoverModal}>
         <DialogContent className="max-w-3xl">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              <Monitor className="h-5 w-5 text-orange-500" />
+            <DialogTitle>
               Impressoras Locais Detectadas
             </DialogTitle>
             <DialogDescription>
