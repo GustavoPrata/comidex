@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
-// Verificar status real baseado nas impressoras virtuais (se existirem)
+// Verificar status real das impressoras
 async function checkRealStatus(printer: any): Promise<{
   status: 'online' | 'offline' | 'error';
   message: string;
