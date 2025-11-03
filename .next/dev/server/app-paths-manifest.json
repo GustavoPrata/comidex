@@ -2,5 +2,6 @@
   "/admin/printers/page": "app/admin/printers/page.js",
   "/admin/virtual-printers/page": "app/admin/virtual-printers/page.js",
   "/api/printers/status/route": "app/api/printers/status/route.js",
+  "/api/prompt-message/route": "app/api/prompt-message/route.js",
   "/prompt/page": "app/prompt/page.js"
 }
