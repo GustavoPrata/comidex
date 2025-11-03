@@ -966,7 +966,7 @@ function VirtualPrintersPage() {
             {
                 id: '1',
                 name: 'Virtual Cozinha',
-                model: 'Epson TM-T88VI',
+                model: 'Bematech MP-4200 TH',
                 ipAddress: '192.168.1.101',
                 port: '9100',
                 status: 'online',
@@ -1006,7 +1006,7 @@ function VirtualPrintersPage() {
             {
                 id: '3',
                 name: 'Virtual Caixa',
-                model: 'Elgin i9',
+                model: 'Bematech MP-4200 TH',
                 ipAddress: '192.168.1.103',
                 port: '9100',
                 status: 'online',
@@ -1027,7 +1027,7 @@ function VirtualPrintersPage() {
             {
                 id: '4',
                 name: 'Virtual Sushi Bar',
-                model: 'Star TSP143III',
+                model: 'Bematech MP-4200 TH',
                 ipAddress: '192.168.1.104',
                 port: '9100',
                 status: 'online',
