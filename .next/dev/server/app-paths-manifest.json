@@ -1,5 +1,6 @@
 {
   "/admin/printers/page": "app/admin/printers/page.js",
+  "/api/printers/detect-local/route": "app/api/printers/detect-local/route.js",
   "/api/printers/status/route": "app/api/printers/status/route.js",
   "/api/printers/virtual-status/route": "app/api/printers/virtual-status/route.js",
   "/page": "app/page.js",

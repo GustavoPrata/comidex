@@ -60,7 +60,6 @@ import {
   Signal,
   SignalLow,
   SignalZero,
-  ScanSearch,
   Globe,
   Monitor,
   HardDrive
@@ -380,42 +379,7 @@ export default function PrintersPage() {
     }
   };
   
-  const handleDiscoverPrinters = async (quickScan = false, scanType = 'all') => {
-    try {
-      setDiscovering(true);
-      setShowDiscoverModal(true);
-      setDiscoveredPrinters([]);
-      
-      const scanMode = quickScan ? 'rápida' : 'completa';
-      toast(`🔍 Iniciando busca ${scanMode} de impressoras...`);
-      
-      const url = `/api/printers/discover?quick=${quickScan}&type=${scanType}`;
-      const response = await fetch(url);
-      const result = await response.json();
-      
-      if (result.success) {
-        setDiscoveredPrinters(result.printers);
-        
-        if (result.discovered > 0) {
-          toast.success(`✅ Encontradas ${result.discovered} impressoras! (${result.network} de rede, ${result.local} local)`);
-          
-          // Mostrar subnets escaneadas
-          if (result.subnets?.length > 0) {
-            console.log(`📡 Subnets escaneadas: ${result.subnets.join(', ')}`);
-          }
-        } else {
-          toast(`⚠️ Nenhuma impressora física encontrada. Tente:\n- Verificar se as impressoras estão ligadas\n- Usar busca completa\n- Adicionar IP manualmente`);
-        }
-      } else {
-        toast.error(`❌ Erro ao procurar impressoras: ${result.error}`);
-      }
-    } catch (error) {
-      toast.error('❌ Erro na descoberta de impressoras');
-      console.error('Erro:', error);
-    } finally {
-      setDiscovering(false);
-    }
-  };
+  // Função de busca de rede removida - agora só usa detecção local
 
   // Nova função para detectar impressoras locais usando WMIC/CUPS
   const handleDetectLocalPrinters = async () => {
@@ -714,7 +678,7 @@ export default function PrintersPage() {
   const getConnectionStatusColor = (status?: string) => {
     switch (status) {
       case 'online':
-        return 'bg-green-500';
+        return 'bg-orange-500';
       case 'offline':
         return 'bg-gray-500';
       case 'error':
@@ -763,29 +727,16 @@ export default function PrintersPage() {
               </div>
               <Button 
                 onClick={handleDetectLocalPrinters}
-                className="bg-green-500 hover:bg-green-600 text-white rounded-full"
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
                 disabled={discovering}
-                title="Detectar impressoras instaladas no Windows usando WMIC"
+                title="Detectar impressoras instaladas no Windows"
               >
                 {discovering ? (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 ) : (
                   <Monitor className="h-4 w-4 mr-2" />
                 )}
-                Detectar Locais
-              </Button>
-              <Button 
-                onClick={() => handleDiscoverPrinters(false, 'all')}
-                className="bg-blue-500 hover:bg-blue-600 text-white rounded-full"
-                disabled={discovering}
-                title="Buscar impressoras na rede"
-              >
-                {discovering ? (
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                ) : (
-                  <ScanSearch className="h-4 w-4 mr-2" />
-                )}
-                Buscar Rede
+                Detectar Impressoras Locais
               </Button>
               <Button 
                 onClick={() => openModal()}
@@ -1254,8 +1205,8 @@ export default function PrintersPage() {
                               Virtual
                             </Badge>
                           ) : (
-                            <Badge variant="default" className="text-xs bg-green-500">
-                              Rede
+                            <Badge variant="default" className="text-xs bg-orange-500">
+                              Local
                             </Badge>
                           )}
                           {printer.status && (
@@ -1325,19 +1276,19 @@ export default function PrintersPage() {
               Fechar
             </Button>
             <Button 
-              onClick={() => handleDiscoverPrinters(false, 'all')}
+              onClick={handleDetectLocalPrinters}
               disabled={discovering}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
+              className="bg-orange-500 hover:bg-orange-600 text-white"
             >
               {discovering ? (
                 <>
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Procurando...
+                  Detectando...
                 </>
               ) : (
                 <>
-                  <ScanSearch className="h-4 w-4 mr-2" />
-                  Buscar Novamente
+                  <Monitor className="h-4 w-4 mr-2" />
+                  Detectar Novamente
                 </>
               )}
             </Button>

@@ -81,38 +81,149 @@ const execAsync = (0, __TURBOPACK__imported__module__$5b$externals$5d2f$util__$5
 async function detectWindowsPrinters() {
     try {
         console.log('🖨️ Detectando impressoras Windows com WMIC...');
-        // Comando WMIC para obter informações detalhadas das impressoras
-        const { stdout } = await execAsync('wmic printer get name,portname,drivername,status /format:csv');
-        // Parsear saída CSV do WMIC
-        const lines = stdout.split('\n').filter((line)=>line.trim());
-        const headers = lines[1]?.split(',').map((h)=>h.trim());
-        const printers = [];
-        for(let i = 2; i < lines.length; i++){
-            const values = lines[i].split(',').map((v)=>v.trim());
-            if (values.length > 1 && values[1]) {
-                const printer = {};
-                headers?.forEach((header, index)=>{
-                    printer[header.toLowerCase()] = values[index] || '';
-                });
-                // Adicionar informações úteis
-                if (printer.name) {
-                    printers.push({
-                        name: printer.name,
-                        port: printer.portname || 'USB',
-                        driver: printer.drivername || 'Unknown',
-                        status: printer.status || 'Ready',
-                        type: detectPrinterType(printer.name, printer.drivername),
-                        os: 'Windows',
-                        detected_via: 'WMIC'
-                    });
+        // Primeiro, tentar formato lista mais simples (mais confiável)
+        try {
+            const { stdout: listOutput } = await execAsync('wmic printer get name /format:value');
+            console.log('📄 Saída WMIC (formato value):', listOutput);
+            // Parser para formato value (Name=PrinterName)
+            const printers = [];
+            const lines = listOutput.split('\n');
+            for (const line of lines){
+                const trimmedLine = line.trim();
+                if (trimmedLine.startsWith('Name=')) {
+                    const printerName = trimmedLine.substring(5).trim();
+                    if (printerName && printerName.length > 0) {
+                        // Obter detalhes adicionais para esta impressora
+                        let printerInfo = {
+                            name: printerName,
+                            port: 'Local',
+                            driver: 'Windows Driver',
+                            status: 'Ready',
+                            type: detectPrinterType(printerName, ''),
+                            os: 'Windows',
+                            detected_via: 'WMIC'
+                        };
+                        // Tentar obter mais informações sobre a impressora
+                        try {
+                            const { stdout: detailOutput } = await execAsync(`wmic printer where name="${printerName.replace(/"/g, '\\"')}" get portname,drivername,printerstatus /format:list`);
+                            const detailLines = detailOutput.split('\n');
+                            for (const detailLine of detailLines){
+                                const trimmed = detailLine.trim();
+                                if (trimmed.startsWith('PortName=')) {
+                                    printerInfo.port = trimmed.substring(9).trim() || 'Local';
+                                } else if (trimmed.startsWith('DriverName=')) {
+                                    printerInfo.driver = trimmed.substring(11).trim() || 'Windows Driver';
+                                    printerInfo.type = detectPrinterType(printerName, printerInfo.driver);
+                                } else if (trimmed.startsWith('PrinterStatus=')) {
+                                    const statusCode = trimmed.substring(14).trim();
+                                    printerInfo.status = statusCode === '3' ? 'Ready' : statusCode === '1' ? 'Paused' : statusCode === '2' ? 'Error' : 'Unknown';
+                                }
+                            }
+                        } catch (detailError) {
+                            console.log(`⚠️ Não foi possível obter detalhes para ${printerName}`);
+                        }
+                        printers.push(printerInfo);
+                        console.log(`✅ Impressora detectada: ${printerName}`);
+                    }
                 }
             }
+            if (printers.length > 0) {
+                console.log(`✅ Total: ${printers.length} impressoras encontradas no Windows`);
+                return printers;
+            }
+        } catch (valueError) {
+            console.log('⚠️ Formato value falhou, tentando formato CSV...');
         }
-        console.log(`✅ ${printers.length} impressoras encontradas no Windows`);
+        // Fallback: tentar formato CSV original
+        const { stdout } = await execAsync('wmic printer get name,portname,drivername,status /format:csv');
+        console.log('📄 Saída WMIC (formato CSV):', stdout.substring(0, 500));
+        // Parsear saída CSV do WMIC
+        const lines = stdout.split(/\r?\n/).filter((line)=>line.trim());
+        const printers = [];
+        // Debug: mostrar primeiras linhas
+        console.log('Primeiras 5 linhas do CSV:');
+        lines.slice(0, 5).forEach((line, i)=>{
+            console.log(`  Linha ${i}: "${line}"`);
+        });
+        // WMIC CSV geralmente tem formato: Node,DriverName,Name,PortName,Status
+        // A primeira linha com vírgulas é o header
+        let headerIndex = -1;
+        let headers = [];
+        for(let i = 0; i < lines.length; i++){
+            if (lines[i].includes(',')) {
+                headerIndex = i;
+                headers = lines[i].split(',').map((h)=>h.trim());
+                console.log(`Headers encontrados na linha ${i}: ${headers.join(', ')}`);
+                break;
+            }
+        }
+        if (headerIndex === -1) {
+            console.error('❌ Headers não encontrados na saída WMIC');
+            return [];
+        }
+        // Encontrar índice da coluna Name
+        const nameIndex = headers.findIndex((h)=>h.toLowerCase() === 'name');
+        const portIndex = headers.findIndex((h)=>h.toLowerCase() === 'portname');
+        const driverIndex = headers.findIndex((h)=>h.toLowerCase() === 'drivername');
+        const statusIndex = headers.findIndex((h)=>h.toLowerCase() === 'status');
+        console.log(`Índices: Name=${nameIndex}, Port=${portIndex}, Driver=${driverIndex}, Status=${statusIndex}`);
+        if (nameIndex === -1) {
+            console.error('❌ Coluna "Name" não encontrada nos headers');
+            return [];
+        }
+        // Process data lines (after header)
+        for(let i = headerIndex + 1; i < lines.length; i++){
+            const line = lines[i];
+            if (!line || line.trim() === '') continue;
+            const values = line.split(',').map((v)=>v.trim());
+            const printerName = values[nameIndex];
+            if (printerName && printerName.length > 0) {
+                const printer = {
+                    name: printerName,
+                    port: portIndex >= 0 ? values[portIndex] || 'Local' : 'Local',
+                    driver: driverIndex >= 0 ? values[driverIndex] || 'Windows Driver' : 'Windows Driver',
+                    status: statusIndex >= 0 ? values[statusIndex] || 'Ready' : 'Ready',
+                    type: detectPrinterType(printerName, driverIndex >= 0 ? values[driverIndex] : ''),
+                    os: 'Windows',
+                    detected_via: 'WMIC'
+                };
+                printers.push(printer);
+                console.log(`✅ Impressora detectada: ${printerName}`);
+            }
+        }
+        console.log(`✅ Total: ${printers.length} impressoras encontradas no Windows`);
         return printers;
     } catch (error) {
         console.error('❌ Erro ao detectar impressoras Windows:', error.message);
-        throw error;
+        // Última tentativa: usar PowerShell
+        try {
+            console.log('🔄 Tentando com PowerShell...');
+            const { stdout } = await execAsync('powershell -Command "Get-Printer | Select-Object Name, PortName, DriverName | ConvertTo-Json"');
+            const printerData = JSON.parse(stdout);
+            const printers = [];
+            // Garantir que sempre seja um array
+            const printerArray = Array.isArray(printerData) ? printerData : [
+                printerData
+            ];
+            for (const p of printerArray){
+                if (p.Name) {
+                    printers.push({
+                        name: p.Name,
+                        port: p.PortName || 'Local',
+                        driver: p.DriverName || 'Windows Driver',
+                        status: 'Ready',
+                        type: detectPrinterType(p.Name, p.DriverName || ''),
+                        os: 'Windows',
+                        detected_via: 'PowerShell'
+                    });
+                    console.log(`✅ Impressora detectada via PowerShell: ${p.Name}`);
+                }
+            }
+            return printers;
+        } catch (psError) {
+            console.error('❌ PowerShell também falhou:', psError);
+            throw error;
+        }
     }
 }
 // Função para detectar impressoras no Linux
@@ -297,6 +408,12 @@ async function GET() {
         });
     }
 }
+// Função para sanitizar nome da impressora (prevenir command injection)
+function sanitizePrinterName(name) {
+    // Remove caracteres perigosos que podem causar command injection
+    // Permite apenas letras, números, espaços, hífen, underscore e ponto
+    return name.replace(/[^a-zA-Z0-9\s\-_\.]/g, '');
+}
 async function POST(request) {
     try {
         const { printerName } = await request.json();
@@ -308,19 +425,24 @@ async function POST(request) {
                 status: 400
             });
         }
+        // Sanitizar nome da impressora para prevenir command injection
+        const safePrinterName = sanitizePrinterName(printerName);
+        if (safePrinterName !== printerName) {
+            console.warn(`⚠️ Nome da impressora sanitizado: "${printerName}" -> "${safePrinterName}"`);
+        }
         const platform = __TURBOPACK__imported__module__$5b$externals$5d2f$os__$5b$external$5d$__$28$os$2c$__cjs$29$__["default"].platform();
-        console.log(`🖨️ Testando impressora "${printerName}" no ${platform}...`);
+        console.log(`🖨️ Testando impressora "${safePrinterName}" no ${platform}...`);
         // Comando para enviar teste de impressão
         let command = '';
         switch(platform){
             case 'win32':
                 // No Windows, podemos usar print ou PowerShell
-                command = `powershell -Command "Out-Printer -Name '${printerName}' -InputObject 'TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}'"`;
+                command = `powershell -Command "Out-Printer -Name '${safePrinterName}' -InputObject 'TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}'"`;
                 break;
             case 'linux':
             case 'darwin':
                 // No Linux/Mac, usar lp
-                command = `echo "TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}" | lp -d "${printerName}"`;
+                command = `echo "TESTE COMIDEX - ${new Date().toLocaleString('pt-BR')}" | lp -d "${safePrinterName}"`;
                 break;
             default:
                 return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -334,7 +456,7 @@ async function POST(request) {
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: !stderr,
             message: stderr ? `Erro: ${stderr}` : 'Teste enviado com sucesso',
-            printerName,
+            printerName: safePrinterName,
             platform,
             output: stdout || 'Comando executado com sucesso'
         });
