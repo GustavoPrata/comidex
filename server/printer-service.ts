@@ -2,10 +2,13 @@
 import net from 'net';
 import { exec } from 'child_process';
 import { promisify } from 'util';
+import fs from 'fs/promises';
+import path from 'path';
+import os from 'os';
 
 const execAsync = promisify(exec);
 
-// Comandos ESC/POS básicos
+// Comandos ESC/POS básicos (compatível com maioria das impressoras térmicas)
 const ESC_POS = {
   // Inicialização
   INIT: Buffer.from([0x1b, 0x40]), // ESC @ - Initialize printer
@@ -41,20 +44,65 @@ const ESC_POS = {
 
 export class ThermalPrinterService {
   // Detectar impressoras no sistema
-  async detectPrinters(): Promise<string[]> {
-    const printers: string[] = [];
+  async detectPrinters(): Promise<any[]> {
+    const printers: any[] = [];
+    const platform = os.platform();
     
     try {
-      // No Linux, verificar impressoras USB
-      const { stdout } = await execAsync('ls /dev/usb/lp* 2>/dev/null || true');
-      if (stdout) {
-        printers.push(...stdout.trim().split('\n').filter(Boolean));
-      }
-      
-      // Verificar portas seriais
-      const { stdout: serial } = await execAsync('ls /dev/ttyUSB* /dev/ttyS* 2>/dev/null || true');
-      if (serial) {
-        printers.push(...serial.trim().split('\n').filter(Boolean));
+      if (platform === 'win32') {
+        // Windows - usar WMIC para detectar impressoras
+        try {
+          const { stdout } = await execAsync('wmic printer get name,driverName,portName,shared,status /format:csv');
+          const lines = stdout.trim().split('\n').slice(2); // Skip headers
+          
+          for (const line of lines) {
+            const parts = line.split(',');
+            if (parts.length >= 5) {
+              const [node, driverName, name, portName, shared, status] = parts;
+              if (name && name.trim()) {
+                printers.push({
+                  name: name.trim(),
+                  driver: driverName?.trim(),
+                  port: portName?.trim(),
+                  status: status?.trim(),
+                  shared: shared?.trim() === 'TRUE'
+                });
+              }
+            }
+          }
+        } catch (error) {
+          console.error('Erro ao detectar impressoras Windows:', error);
+        }
+      } else {
+        // Linux - verificar impressoras USB e seriais
+        try {
+          const { stdout } = await execAsync('ls /dev/usb/lp* 2>/dev/null || true');
+          if (stdout) {
+            const devices = stdout.trim().split('\n').filter(Boolean);
+            devices.forEach(dev => {
+              printers.push({
+                name: path.basename(dev),
+                port: dev,
+                type: 'usb'
+              });
+            });
+          }
+        } catch {}
+        
+        // Verificar portas seriais
+        try {
+          const { stdout: serial } = await execAsync('ls /dev/ttyUSB* /dev/ttyS* 2>/dev/null || true');
+          if (serial) {
+            const devices = serial.trim().split('\n').filter(Boolean);
+            devices.forEach(dev => {
+              printers.push({
+                name: path.basename(dev),
+                port: dev,
+                type: 'serial'
+              });
+            });
+          }
+        } catch {}
       }
     } catch (error) {
       console.error('Erro ao detectar impressoras:', error);
@@ -241,6 +289,112 @@ export class ThermalPrinterService {
         resolve(false);
       });
     });
+  }
+  
+  // Enviar comandos ESC/POS para impressora local Windows
+  async printToLocalWindows(printerName: string, data: Buffer): Promise<boolean> {
+    try {
+      const platform = os.platform();
+      
+      if (platform !== 'win32') {
+        console.error('Este método só funciona no Windows');
+        return false;
+      }
+      
+      // Sanitizar nome da impressora
+      const safePrinterName = printerName.replace(/[^a-zA-Z0-9\s\-_\.]/g, '');
+      
+      // Criar arquivo temporário com dados binários ESC/POS
+      const tempDir = os.tmpdir();
+      const fileName = `comidex-escpos-${Date.now()}.prn`;
+      const filePath = path.join(tempDir, fileName);
+      
+      // Escrever dados ESC/POS no arquivo
+      await fs.writeFile(filePath, data);
+      
+      // Tentar enviar para impressora usando copy raw data
+      try {
+        // Método 1: Usar copy /b para enviar dados binários direto para porta
+        // Isso funciona se a impressora estiver em porta COM ou LPT
+        const ports = ['COM1', 'COM2', 'COM3', 'COM4', 'LPT1', 'LPT2', 'USB001', 'USB002'];
+        
+        for (const port of ports) {
+          try {
+            const command = `copy /b "${filePath}" ${port}:`;
+            await execAsync(command, { timeout: 3000 });
+            console.log(`✅ Dados enviados para ${port}`);
+            
+            // Limpar arquivo temporário
+            setTimeout(() => fs.unlink(filePath).catch(() => {}), 1000);
+            return true;
+          } catch {}
+        }
+        
+        // Método 2: Usar PowerShell com raw data
+        const psCommand = `powershell -Command "$data = [System.IO.File]::ReadAllBytes('${filePath}'); $printer = New-Object -ComObject WScript.Network; $printer.SetDefaultPrinter('${safePrinterName}'); [System.IO.File]::WriteAllBytes('\\\\localhost\\${safePrinterName}', $data)"`;
+        await execAsync(psCommand, { timeout: 5000 });
+        
+        // Limpar arquivo temporário
+        setTimeout(() => fs.unlink(filePath).catch(() => {}), 1000);
+        return true;
+        
+      } catch (error) {
+        console.error('Erro ao enviar para impressora local:', error);
+        
+        // Tentar método alternativo: print /D com dados raw
+        try {
+          const command = `print /D:"${safePrinterName}" "${filePath}"`;
+          await execAsync(command, { timeout: 5000 });
+          
+          // Limpar arquivo temporário
+          setTimeout(() => fs.unlink(filePath).catch(() => {}), 1000);
+          return true;
+        } catch {}
+      }
+      
+      // Limpar arquivo temporário em caso de falha
+      try {
+        await fs.unlink(filePath);
+      } catch {}
+      
+      return false;
+      
+    } catch (error) {
+      console.error('Erro ao imprimir localmente:', error);
+      return false;
+    }
+  }
+  
+  // Método unificado para enviar impressão
+  async print(printer: any, data: Buffer): Promise<boolean> {
+    console.log('🖨️ Iniciando impressão para:', printer.name);
+    
+    // Se for impressora de rede (tem IP válido e não é LOCAL)
+    if (printer.ip_address && printer.ip_address !== 'LOCAL' && printer.ip_address !== 'localhost') {
+      console.log(`🌐 Tentando impressão via rede: ${printer.ip_address}:${printer.port || 9100}`);
+      const success = await this.printToNetwork(
+        printer.ip_address,
+        parseInt(printer.port) || 9100,
+        data
+      );
+      if (success) {
+        console.log('✅ Impressão via rede bem-sucedida');
+        return true;
+      }
+    }
+    
+    // Se for impressora local Windows
+    if (os.platform() === 'win32' && printer.ip_address === 'LOCAL') {
+      console.log(`💻 Tentando impressão local Windows: ${printer.name}`);
+      const success = await this.printToLocalWindows(printer.name, data);
+      if (success) {
+        console.log('✅ Impressão local bem-sucedida');
+        return true;
+      }
+    }
+    
+    console.log('❌ Falha ao imprimir');
+    return false;
   }
 }
 

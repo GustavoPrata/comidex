@@ -42,28 +42,57 @@ export async function POST(request: Request) {
     // Criar comando de teste ESC/POS
     const testData = printerService.createTestPrint();
     
-    // Tentar imprimir via rede (porta padrão 9100 para impressoras térmicas)
-    const port = printer.port || 9100;
+    // Usar método unificado de impressão
     let printSuccess = false;
     let printMethod = '';
     
-    // Primeiro tentar via rede TCP/IP
-    if (printer.ip_address) {
-      console.log(`🌐 Tentando imprimir via rede em ${printer.ip_address}:${port}`);
+    // Verificar se é impressora local ou de rede
+    if (printer.ip_address === 'LOCAL') {
+      console.log(`💻 Testando impressora local: ${printer.name}`);
+      printMethod = 'local';
+    } else if (printer.ip_address) {
+      console.log(`🌐 Testando impressora de rede: ${printer.ip_address}:${printer.port || 9100}`);
+      printMethod = 'network';
       
-      // Verificar conectividade primeiro
-      const isReachable = await printerService.testPrinterConnection(printer.ip_address, port);
+      // Verificar conectividade primeiro para impressoras de rede
+      const isReachable = await printerService.testPrinterConnection(
+        printer.ip_address, 
+        parseInt(printer.port) || 9100
+      );
       
-      if (isReachable) {
-        printSuccess = await printerService.printToNetwork(printer.ip_address, port, testData);
-        if (printSuccess) {
-          printMethod = 'network';
-          console.log('✅ Impressão via rede bem-sucedida');
-        }
-      } else {
+      if (!isReachable) {
         console.log('⚠️ Impressora não alcançável via rede');
+        
+        // Atualizar status de erro no banco
+        await supabase
+          .from('printers')
+          .update({ 
+            connection_status: 'offline',
+            test_result: 'Impressora não alcançável na rede'
+          })
+          .eq('id', printerId);
+          
+        return NextResponse.json({
+          success: false,
+          error: `Não foi possível conectar com a impressora ${printer.name}`,
+          message: `Verifique se a impressora está ligada e conectada à rede no endereço ${printer.ip_address}:${printer.port || 9100}`,
+          details: {
+            ip: printer.ip_address,
+            port: printer.port || 9100,
+            hints: [
+              '1. Verifique se a impressora está ligada',
+              '2. Confirme o endereço IP no display da impressora',
+              '3. Teste o ping para o IP da impressora',
+              '4. Verifique se a porta 9100 está aberta',
+              '5. Desative temporariamente o firewall para teste'
+            ]
+          }
+        }, { status: 503 });
       }
     }
+    
+    // Tentar imprimir usando método unificado
+    printSuccess = await printerService.print(printer, testData);
     
     
     const timestamp = new Date().toLocaleString('pt-BR');
@@ -91,7 +120,7 @@ export async function POST(request: Request) {
           name: printer.name,
           model: printer.printer_model,
           ip: printer.ip_address,
-          port: port
+          port: printer.port || 9100
         },
         details: {
           printMethod,
@@ -101,7 +130,7 @@ export async function POST(request: Request) {
             `====================================`,
             `Impressora: ${printer.name}`,
             `Modelo: ${printer.printer_model || 'N/A'}`,
-            `IP: ${printer.ip_address}:${port}`,
+            `IP: ${printer.ip_address}:${printer.port || 9100}`,
             `Data/Hora: ${timestamp}`,
             `------------------------------------`,
             `Status: IMPRESSORA FÍSICA DETECTADA`,
@@ -135,7 +164,7 @@ export async function POST(request: Request) {
         message: `Verifique se a impressora está ligada e conectada à rede`,
         details: {
           ip: printer.ip_address,
-          port: port,
+          port: printer.port || 9100,
           hints: [
             '1. Certifique-se que a impressora está ligada',
             '2. Verifique o cabo de rede ou conexão WiFi',

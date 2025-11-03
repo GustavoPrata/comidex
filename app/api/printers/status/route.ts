@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { printerService } from "@/server/printer-service";
 
-// Verificar status real das impressoras
 async function checkRealStatus(printer: any): Promise<{
-  status: 'online' | 'offline' | 'error';
+  status: 'online' | 'offline' | 'error' | 'unknown';
   message: string;
   responseTime?: number;
+  type?: string;
 }> {
   // Impressoras desativadas sempre estão offline
   if (!printer.active) {
@@ -15,49 +16,57 @@ async function checkRealStatus(printer: any): Promise<{
     };
   }
 
-  // Verificar se IP é válido
-  const isLocalNetwork = printer.ip_address.startsWith('192.168.') || 
-                        printer.ip_address.startsWith('10.') || 
-                        printer.ip_address.startsWith('172.');
-  
-  if (!isLocalNetwork) {
+  // Impressora local Windows
+  if (printer.ip_address === 'LOCAL') {
     return {
-      status: 'error',
-      message: `Impressora ${printer.name} - IP inválido ou fora da rede`
+      status: 'online',
+      message: `Impressora local Windows: ${printer.name}`,
+      type: 'local',
+      responseTime: 10
     };
   }
 
+  // Impressora localhost (desenvolvimento)
+  if (printer.ip_address === '127.0.0.1' || printer.ip_address === 'localhost') {
+    return {
+      status: 'online',
+      message: `Impressora localhost (desenvolvimento)`,
+      type: 'localhost',
+      responseTime: 5
+    };
+  }
+
+  // Impressora de rede - testar conexão real
   try {
-    // Verificar status real da impressora
-    // Por enquanto, simular status baseado em última verificação
-    const lastOctet = parseInt(printer.ip_address.split('.')[3]);
-    const isOnline = lastOctet % 2 === 0;
+    const startTime = Date.now();
+    const port = parseInt(printer.port) || 9100;
+    
+    // Usar o serviço de impressora para testar conexão
+    const isOnline = await printerService.testPrinterConnection(printer.ip_address, port);
+    const responseTime = Date.now() - startTime;
     
     if (isOnline) {
       return {
         status: 'online',
-        message: `Impressora ${printer.name} está online e pronta`,
-        responseTime: Math.floor(Math.random() * 50) + 20
+        message: `✅ Conectado em ${printer.ip_address}:${port}`,
+        type: 'network',
+        responseTime
       };
     } else {
       return {
         status: 'offline',
-        message: `Impressora ${printer.name} não responde ao ping`,
+        message: `❌ Sem resposta de ${printer.ip_address}:${port}`,
+        type: 'network',
         responseTime: 0
       };
     }
   } catch (error) {
     console.error('Erro ao verificar status:', error);
-    // Fallback: considerar online se IP termina em par
-    const lastOctet = parseInt(printer.ip_address.split('.')[3]);
-    const isOnline = lastOctet % 2 === 0;
-    
     return {
-      status: isOnline ? 'online' : 'offline',
-      message: isOnline 
-        ? `Impressora ${printer.name} está online e pronta`
-        : `Impressora ${printer.name} não responde ao ping`,
-      responseTime: isOnline ? 50 : 0
+      status: 'error',
+      message: `Erro ao verificar ${printer.name}: ${error}`,
+      type: 'network',
+      responseTime: 0
     };
   }
 }
@@ -81,14 +90,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verificar status real baseado no IP
+    // Verificar status real
     const statusCheck = await checkRealStatus(printer);
     
-    // Simular tempo de resposta de rede
-    if (statusCheck.responseTime) {
-      await new Promise(resolve => setTimeout(resolve, statusCheck.responseTime));
-    }
-
     // Atualizar status no banco
     await supabase
       .from('printers')
@@ -103,6 +107,7 @@ export async function POST(request: Request) {
       status: statusCheck.status,
       message: statusCheck.message,
       responseTime: statusCheck.responseTime,
+      type: statusCheck.type,
       details: {
         name: printer.name,
         model: printer.printer_model,
