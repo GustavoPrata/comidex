@@ -300,7 +300,9 @@ export default function PrintersPage() {
   const testPrinter = async (printer: Printer) => {
     try {
       setTesting(printer.id);
-      toast(`🖨️ Enviando teste de impressão para ${printer.name}...`);
+      
+      // Mostrar toast de progresso
+      const loadingToast = toast.loading(`🖨️ Conectando com ${printer.name}...`);
       
       const response = await fetch('/api/printers/test', {
         method: 'POST',
@@ -310,18 +312,34 @@ export default function PrintersPage() {
 
       const result = await response.json();
       
+      // Remover toast de loading
+      toast.dismiss(loadingToast);
+      
       if (result.success) {
+        // Mostrar sucesso com detalhes
         toast.success(`✅ ${result.message}`);
+        
         // Revalidar dados para mostrar último teste
         mutate('printers');
         
-        // Se foi teste real, mostrar detalhes
+        // Mostrar detalhes do método de impressão
         if (result.method === 'network') {
-          toast.success(`📡 Impressão enviada via rede TCP/IP para ${result.printer.ip}:${result.printer.port}`);
+          toast.success(`📡 Enviado via TCP/IP para ${result.printer.ip}:${result.printer.port}`);
         } else if (result.method === 'local') {
-          toast.success(`🖨️ Impressão enviada para impressora local do sistema`);
+          toast.success(`💻 Enviado para impressora local Windows`);
+        }
+        
+        // Para impressoras térmicas, avisar sobre o cupom
+        if (printer.type === 'thermal') {
+          setTimeout(() => {
+            toast('📄 Verifique se o cupom de teste foi impresso corretamente', {
+              icon: '🖨️',
+              duration: 5000
+            });
+          }, 1000);
         }
       } else {
+        // Mostrar erro detalhado
         toast.error(`❌ ${result.error}`);
         
         // Mostrar dicas se disponíveis
