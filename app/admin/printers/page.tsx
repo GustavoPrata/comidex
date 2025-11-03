@@ -315,8 +315,6 @@ export default function PrintersPage() {
         // Se foi teste real, mostrar detalhes
         if (result.method === 'network') {
           toast.success(`📡 Impressão enviada via rede TCP/IP para ${result.printer.ip}:${result.printer.port}`);
-        } else if (result.method === 'virtual') {
-          toast(`🎭 Teste simulado em impressora virtual`);
         } else if (result.method === 'local') {
           toast.success(`🖨️ Impressão enviada para impressora local do sistema`);
         }
@@ -1161,8 +1159,6 @@ export default function PrintersPage() {
                     className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors ${
                       printer.isLocal 
                         ? 'border-purple-300 dark:border-purple-700 bg-purple-50/50 dark:bg-purple-900/20' 
-                        : printer.isVirtual 
-                        ? 'border-blue-300 dark:border-blue-700' 
                         : 'border-green-300 dark:border-green-700'
                     }`}
                     onClick={() => addDiscoveredPrinter(printer)}
@@ -1185,10 +1181,6 @@ export default function PrintersPage() {
                                 </Badge>
                               )}
                             </>
-                          ) : printer.isVirtual ? (
-                            <Badge variant="secondary" className="text-xs">
-                              Virtual
-                            </Badge>
                           ) : (
                             <Badge variant="default" className="text-xs bg-orange-500">
                               Local

@@ -209,15 +209,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
-// Validate ../../../app/admin/virtual-printers/page.tsx
-{
-  type __IsExpected<Specific extends AppPageConfig<"/admin/virtual-printers">> = Specific
-  const handler = {} as typeof import("../../../app/admin/virtual-printers/page.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
 // Validate ../../../app/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/">> = Specific
@@ -380,15 +371,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
-// Validate ../../../app/api/printers/virtual-status/route.ts
-{
-  type __IsExpected<Specific extends RouteHandlerConfig<"/api/printers/virtual-status">> = Specific
-  const handler = {} as typeof import("../../../app/api/printers/virtual-status/route.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
 // Validate ../../../app/api/prompt-message/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/prompt-message">> = Specific
@@ -465,24 +447,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/upload">> = Specific
   const handler = {} as typeof import("../../../app/api/upload/route.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
-// Validate ../../../app/api/virtual-print/route.ts
-{
-  type __IsExpected<Specific extends RouteHandlerConfig<"/api/virtual-print">> = Specific
-  const handler = {} as typeof import("../../../app/api/virtual-print/route.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
-// Validate ../../../app/api/virtual-printers/status/route.ts
-{
-  type __IsExpected<Specific extends RouteHandlerConfig<"/api/virtual-printers/status">> = Specific
-  const handler = {} as typeof import("../../../app/api/virtual-printers/status/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

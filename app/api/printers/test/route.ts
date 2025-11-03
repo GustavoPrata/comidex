@@ -65,27 +65,6 @@ export async function POST(request: Request) {
       }
     }
     
-    // Se falhou via rede e é uma impressora virtual, simular sucesso
-    if (!printSuccess && printer.ip_address?.startsWith('192.168.1.10')) {
-      // É uma impressora virtual, simular sucesso
-      printSuccess = true;
-      printMethod = 'virtual';
-      console.log('🎭 Simulando impressão em impressora virtual');
-      
-      // Criar registro na fila de impressão virtual
-      await supabase
-        .from('print_queue')
-        .insert({
-          printer_id: printer.id,
-          content: JSON.stringify({
-            type: 'test',
-            timestamp: new Date().toISOString(),
-            data: 'Teste de impressão térmica'
-          }),
-          status: 'completed',
-          printed_at: new Date().toISOString()
-        });
-    }
     
     const timestamp = new Date().toLocaleString('pt-BR');
     
@@ -125,8 +104,8 @@ export async function POST(request: Request) {
             `IP: ${printer.ip_address}:${port}`,
             `Data/Hora: ${timestamp}`,
             `------------------------------------`,
-            `Status: ${printMethod === 'network' ? 'IMPRESSORA FÍSICA DETECTADA' : 'IMPRESSORA VIRTUAL'}`,
-            `Método: ${printMethod === 'network' ? 'Rede TCP/IP' : 'Simulação Virtual'}`,
+            `Status: IMPRESSORA FÍSICA DETECTADA`,
+            `Método: ${printMethod === 'network' ? 'Rede TCP/IP' : 'Local'}`,
             `====================================`,
             ``,
             `✅ TESTE BEM-SUCEDIDO`,
