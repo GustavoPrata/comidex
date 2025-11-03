@@ -1,6 +1,7 @@
 // API para descobrir impressoras na rede local e conectadas via USB/Serial
 import { NextResponse } from "next/server";
 import * as os from 'os';
+import * as net from 'net';
 
 // Portas comuns para impressoras térmicas e de rede
 const THERMAL_PRINTER_PORTS = [
@@ -16,47 +17,116 @@ const THERMAL_PRINTER_PORTS = [
   8000,  // Algumas Daruma
 ];
 
+// Subnets comuns em redes domésticas e empresariais
+const COMMON_SUBNETS = [
+  '192.168.0.',
+  '192.168.1.',
+  '192.168.86.',  // Subnet específica do usuário
+  '192.168.100.',
+  '192.168.2.',
+  '192.168.10.',
+  '192.168.11.',
+  '10.0.0.',
+  '10.0.1.',
+  '172.16.0.',
+  '172.31.121.' // Subnet do Replit
+];
+
 // Verificar se um IP responde em uma porta específica
-async function checkPort(ip: string, port: number, timeout: number = 200): Promise<boolean> {
+async function checkPort(ip: string, port: number, timeout: number = 300): Promise<boolean> {
   return new Promise((resolve) => {
-    const net = require('net');
     const socket = new net.Socket();
+    let resolved = false;
     
     const timeoutHandle = setTimeout(() => {
-      socket.destroy();
-      resolve(false);
+      if (!resolved) {
+        resolved = true;
+        socket.destroy();
+        resolve(false);
+      }
     }, timeout);
     
-    socket.connect(port, ip, () => {
-      clearTimeout(timeoutHandle);
-      socket.destroy();
-      resolve(true);
+    socket.setTimeout(timeout);
+    
+    socket.on('connect', () => {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeoutHandle);
+        socket.destroy();
+        resolve(true);
+      }
     });
     
     socket.on('error', () => {
-      clearTimeout(timeoutHandle);
-      socket.destroy();
-      resolve(false);
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeoutHandle);
+        socket.destroy();
+        resolve(false);
+      }
     });
+    
+    socket.on('timeout', () => {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeoutHandle);
+        socket.destroy();
+        resolve(false);
+      }
+    });
+    
+    try {
+      socket.connect(port, ip);
+    } catch (error) {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeoutHandle);
+        resolve(false);
+      }
+    }
   });
 }
 
 // Obter informações da impressora via ESC/POS
 async function getPrinterInfo(ip: string, port: number): Promise<any> {
   return new Promise((resolve) => {
-    const net = require('net');
     const socket = new net.Socket();
-    const timeout = setTimeout(() => {
-      socket.destroy();
-      resolve(null);
-    }, 1000);
+    let resolved = false;
     
-    socket.connect(port, ip, () => {
-      // Enviar comando de status ESC/POS
-      const statusCommand = Buffer.from([0x1D, 0x49, 0x01]); // GS I n - Get printer information
-      socket.write(statusCommand);
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        resolved = true;
+        socket.destroy();
+        resolve({ model: 'Impressora Térmica de Rede' });
+      }
+    }, 1500);
+    
+    socket.setTimeout(1500);
+    
+    socket.on('connect', () => {
+      // Enviar comandos ESC/POS para identificação
+      const commands = [
+        Buffer.from([0x1D, 0x49, 0x01]), // GS I 1 - Printer ID
+        Buffer.from([0x1D, 0x49, 0x02]), // GS I 2 - Printer type
+        Buffer.from([0x1D, 0x49, 0x03]), // GS I 3 - ROM version
+      ];
       
-      socket.on('data', (data: Buffer) => {
+      commands.forEach(cmd => socket.write(cmd));
+      
+      // Aguardar resposta
+      setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          clearTimeout(timeout);
+          socket.destroy();
+          resolve({ model: 'Impressora Térmica ESC/POS' });
+        }
+      }, 500);
+    });
+    
+    socket.on('data', (data: Buffer) => {
+      if (!resolved) {
+        resolved = true;
         clearTimeout(timeout);
         socket.destroy();
         
@@ -64,30 +134,58 @@ async function getPrinterInfo(ip: string, port: number): Promise<any> {
         const response = data.toString('utf8');
         let model = 'Impressora Térmica';
         
-        if (response.includes('EPSON')) model = 'Epson TM Series';
-        else if (response.includes('BEMATECH')) model = 'Bematech MP Series';
-        else if (response.includes('ELGIN')) model = 'Elgin I Series';
-        else if (response.includes('DARUMA')) model = 'Daruma DR Series';
-        else if (response.includes('STAR')) model = 'Star TSP Series';
-        else if (response.includes('CITIZEN')) model = 'Citizen CT Series';
-        else if (response.includes('SWEDA')) model = 'Sweda SI Series';
-        else if (response.includes('DIEBOLD')) model = 'Diebold IM Series';
+        if (response.includes('EPSON') || response.includes('TM-')) {
+          model = 'Epson TM Series';
+        } else if (response.includes('BEMATECH') || response.includes('MP-')) {
+          model = 'Bematech MP Series';
+        } else if (response.includes('ELGIN') || response.includes('I9')) {
+          model = 'Elgin I Series';
+        } else if (response.includes('DARUMA') || response.includes('DR')) {
+          model = 'Daruma DR Series';
+        } else if (response.includes('STAR') || response.includes('TSP')) {
+          model = 'Star TSP Series';
+        } else if (response.includes('CITIZEN')) {
+          model = 'Citizen CT Series';
+        } else if (response.includes('SWEDA')) {
+          model = 'Sweda SI Series';
+        } else if (response.includes('DIEBOLD')) {
+          model = 'Diebold IM Series';
+        } else if (response.includes('TANCA')) {
+          model = 'Tanca TP Series';
+        } else if (response.includes('JETWAY')) {
+          model = 'Jetway JP Series';
+        }
         
         resolve({ model, rawResponse: response });
-      });
-      
-      setTimeout(() => {
-        // Se não receber resposta, fechar
-        clearTimeout(timeout);
-        socket.destroy();
-        resolve({ model: 'Impressora de Rede (ESC/POS)' });
-      }, 500);
+      }
     });
     
     socket.on('error', () => {
-      clearTimeout(timeout);
-      resolve({ model: 'Impressora de Rede' });
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        resolve({ model: 'Impressora de Rede' });
+      }
     });
+    
+    socket.on('timeout', () => {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        socket.destroy();
+        resolve({ model: 'Impressora de Rede' });
+      }
+    });
+    
+    try {
+      socket.connect(port, ip);
+    } catch (error) {
+      if (!resolved) {
+        resolved = true;
+        clearTimeout(timeout);
+        resolve({ model: 'Impressora de Rede' });
+      }
+    }
   });
 }
 
@@ -96,6 +194,7 @@ function getLocalSubnets(): string[] {
   const interfaces = os.networkInterfaces();
   const subnets = new Set<string>();
   
+  // Adicionar subnets do sistema
   for (const [name, addresses] of Object.entries(interfaces)) {
     if (!addresses) continue;
     
@@ -111,12 +210,8 @@ function getLocalSubnets(): string[] {
     }
   }
   
-  // Adicionar subnets comuns caso não encontre nenhuma
-  if (subnets.size === 0) {
-    subnets.add('192.168.1.');
-    subnets.add('192.168.0.');
-    subnets.add('10.0.0.');
-  }
+  // Sempre incluir subnets comuns
+  COMMON_SUBNETS.forEach(subnet => subnets.add(subnet));
   
   return Array.from(subnets);
 }
@@ -129,45 +224,67 @@ async function scanSubnet(subnet: string, quickScan: boolean = false): Promise<a
   console.log(`🔍 Escaneando subnet ${subnet}0/24...`);
   
   // Range de IPs para escanear
-  const startIP = quickScan ? 1 : 1;
-  const endIP = quickScan ? 50 : 254; // Quick scan: apenas primeiros 50 IPs
+  let ipsToScan: number[] = [];
   
-  for (let i = startIP; i <= endIP; i++) {
+  if (quickScan) {
+    // Quick scan: IPs comuns para impressoras
+    ipsToScan = [1, 2, 10, 20, 30, 50, 100, 101, 102, 103, 110, 150, 190, 191, 192, 200, 250, 254];
+  } else {
+    // Full scan: todos os IPs
+    for (let i = 1; i <= 254; i++) {
+      ipsToScan.push(i);
+    }
+  }
+  
+  for (const i of ipsToScan) {
     const ip = `${subnet}${i}`;
     
     promises.push(
       (async () => {
-        // Testar portas mais comuns primeiro
-        for (const port of THERMAL_PRINTER_PORTS) {
-          try {
-            const isOpen = await checkPort(ip, port, quickScan ? 100 : 200);
+        // Testar apenas porta 9100 primeiro (mais comum)
+        const isOpen9100 = await checkPort(ip, 9100, quickScan ? 150 : 250);
+        if (isOpen9100) {
+          console.log(`✅ Impressora encontrada em ${ip}:9100`);
+          
+          // Tentar obter informações da impressora
+          const info = await getPrinterInfo(ip, 9100);
+          
+          foundPrinters.push({
+            ip,
+            port: 9100,
+            name: `Impressora ${ip}`,
+            model: info?.model || 'Impressora Térmica',
+            type: 'network',
+            status: 'online',
+            protocol: 'RAW',
+            discovered: true
+          });
+        } else if (!quickScan) {
+          // Se não for quick scan, testar outras portas
+          for (const port of [515, 631, 3910]) {
+            const isOpen = await checkPort(ip, port, 150);
             if (isOpen) {
               console.log(`✅ Impressora encontrada em ${ip}:${port}`);
-              
-              // Tentar obter informações da impressora
-              const info = await getPrinterInfo(ip, port);
               
               foundPrinters.push({
                 ip,
                 port,
                 name: `Impressora ${ip}`,
-                model: info?.model || `Impressora de Rede (Porta ${port})`,
-                type: port === 9100 ? 'network' : 'network',
+                model: `Impressora de Rede (Porta ${port})`,
+                type: 'network',
                 status: 'online',
-                protocol: port === 9100 ? 'RAW' : port === 515 ? 'LPR' : port === 631 ? 'IPP' : 'RAW'
+                protocol: port === 515 ? 'LPR' : port === 631 ? 'IPP' : 'RAW',
+                discovered: true
               });
-              
-              break; // Encontrou em uma porta, não precisa testar outras
+              break;
             }
-          } catch (error) {
-            // Ignorar erros de conexão
           }
         }
       })()
     );
     
-    // Limitar concorrência para não sobrecarregar a rede
-    if (promises.length >= 20) {
+    // Limitar concorrência para não sobrecarregar
+    if (promises.length >= 30) {
       await Promise.all(promises);
       promises.length = 0;
     }
@@ -179,57 +296,89 @@ async function scanSubnet(subnet: string, quickScan: boolean = false): Promise<a
   return foundPrinters;
 }
 
-// Descobrir impressoras USB/Serial locais (simulado para web)
-function getLocalPrinters(): any[] {
-  // Em um ambiente web, não temos acesso direto a portas USB/Serial
-  // Mas podemos listar portas comuns onde impressoras locais podem estar
-  const localPrinters: any[] = [];
+// Verificar IP específico
+async function checkSpecificIP(ip: string, ports?: number[]): Promise<any[]> {
+  const portsToCheck = ports || THERMAL_PRINTER_PORTS;
+  const foundPrinters: any[] = [];
   
-  // Verificar portas COM virtuais comuns (Windows)
-  const commonPorts = [
-    { path: 'COM1', name: 'Porta Serial COM1' },
-    { path: 'COM2', name: 'Porta Serial COM2' },
-    { path: 'COM3', name: 'Porta Serial COM3' },
-    { path: 'COM4', name: 'Porta Serial COM4' },
-    { path: 'COM5', name: 'USB Serial COM5' },
-    { path: 'COM6', name: 'USB Serial COM6' },
-    { path: '/dev/ttyUSB0', name: 'USB Serial Linux' },
-    { path: '/dev/ttyUSB1', name: 'USB Serial Linux' },
-    { path: '/dev/usb/lp0', name: 'USB Printer Linux' },
-    { path: '/dev/usb/lp1', name: 'USB Printer Linux' },
-  ];
+  console.log(`🔍 Verificando IP específico: ${ip}`);
   
-  // Nota: Em produção, você precisaria usar uma biblioteca específica
-  // para detectar portas seriais reais, como 'serialport'
+  for (const port of portsToCheck) {
+    const isOpen = await checkPort(ip, port, 500);
+    if (isOpen) {
+      console.log(`✅ Impressora encontrada em ${ip}:${port}`);
+      
+      const info = await getPrinterInfo(ip, port);
+      
+      foundPrinters.push({
+        ip,
+        port,
+        name: `Impressora ${ip}:${port}`,
+        model: info?.model || 'Impressora de Rede',
+        type: 'network',
+        status: 'online',
+        protocol: port === 9100 ? 'RAW' : port === 515 ? 'LPR' : port === 631 ? 'IPP' : 'RAW',
+        discovered: true
+      });
+    }
+  }
   
-  return localPrinters;
+  if (foundPrinters.length === 0) {
+    console.log(`❌ Nenhuma impressora encontrada em ${ip}`);
+  }
+  
+  return foundPrinters;
 }
 
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
     const quickScan = url.searchParams.get('quick') === 'true';
-    const scanType = url.searchParams.get('type') || 'all'; // all, network, local
+    const scanType = url.searchParams.get('type') || 'all';
+    const targetSubnet = url.searchParams.get('subnet'); // Permitir especificar subnet
+    const targetIP = url.searchParams.get('ip'); // Permitir especificar IP
     
     console.log(`🔍 Iniciando descoberta de impressoras (${quickScan ? 'rápida' : 'completa'})...`);
     
     const allFoundPrinters: any[] = [];
     
-    // Descobrir impressoras de rede
-    if (scanType === 'all' || scanType === 'network') {
-      const subnets = getLocalSubnets();
-      console.log(`📡 Subnets detectadas: ${subnets.join(', ')}`);
-      
-      for (const subnet of subnets) {
-        const printers = await scanSubnet(subnet, quickScan);
-        allFoundPrinters.push(...printers);
+    // Se um IP específico foi fornecido, verificar apenas ele
+    if (targetIP) {
+      const printers = await checkSpecificIP(targetIP);
+      allFoundPrinters.push(...printers);
+    } else {
+      // Descobrir impressoras de rede
+      if (scanType === 'all' || scanType === 'network') {
+        let subnetsToScan: string[] = [];
+        
+        if (targetSubnet) {
+          // Usar subnet específica fornecida
+          subnetsToScan = [targetSubnet];
+        } else {
+          // Usar todas as subnets conhecidas
+          subnetsToScan = getLocalSubnets();
+        }
+        
+        console.log(`📡 Subnets a escanear: ${subnetsToScan.join(', ')}`);
+        
+        // Priorizar subnets comuns
+        const prioritySubnets = ['192.168.86.', '192.168.1.', '192.168.0.'];
+        
+        for (const subnet of prioritySubnets) {
+          if (subnetsToScan.includes(subnet)) {
+            const printers = await scanSubnet(subnet, quickScan);
+            allFoundPrinters.push(...printers);
+          }
+        }
+        
+        // Escanear outras subnets
+        for (const subnet of subnetsToScan) {
+          if (!prioritySubnets.includes(subnet)) {
+            const printers = await scanSubnet(subnet, quickScan);
+            allFoundPrinters.push(...printers);
+          }
+        }
       }
-    }
-    
-    // Descobrir impressoras locais (USB/Serial)
-    if (scanType === 'all' || scanType === 'local') {
-      const localPrinters = getLocalPrinters();
-      allFoundPrinters.push(...localPrinters);
     }
     
     // Remover duplicatas por IP
@@ -248,7 +397,7 @@ export async function GET(request: Request) {
       network: uniquePrinters.filter(p => p.type === 'network').length,
       local: uniquePrinters.filter(p => p.type === 'local').length,
       printers: uniquePrinters,
-      subnets: scanType !== 'local' ? getLocalSubnets() : [],
+      subnets: targetSubnet ? [targetSubnet] : getLocalSubnets(),
       scanType,
       quickScan
     });
@@ -278,32 +427,17 @@ export async function POST(request: Request) {
       );
     }
     
-    const portsToScan = ports || THERMAL_PRINTER_PORTS;
-    const foundPrinters: any[] = [];
+    console.log(`🔍 Verificando IP específico: ${ip}`);
     
-    console.log(`🔍 Escaneando IP específico: ${ip}`);
-    
-    for (const port of portsToScan) {
-      const isOpen = await checkPort(ip, port, 500);
-      if (isOpen) {
-        const info = await getPrinterInfo(ip, port);
-        
-        foundPrinters.push({
-          ip,
-          port,
-          name: `Impressora ${ip}:${port}`,
-          model: info?.model || `Impressora de Rede`,
-          type: 'network',
-          status: 'online',
-          protocol: port === 9100 ? 'RAW' : port === 515 ? 'LPR' : port === 631 ? 'IPP' : 'RAW'
-        });
-      }
-    }
+    const foundPrinters = await checkSpecificIP(ip, ports);
     
     return NextResponse.json({
       success: true,
       found: foundPrinters.length > 0,
-      printers: foundPrinters
+      printers: foundPrinters,
+      message: foundPrinters.length > 0 
+        ? `✅ ${foundPrinters.length} impressora(s) encontrada(s) em ${ip}`
+        : `❌ Nenhuma impressora encontrada em ${ip}. Verifique se está ligada e na mesma rede.`
     });
     
   } catch (error: any) {

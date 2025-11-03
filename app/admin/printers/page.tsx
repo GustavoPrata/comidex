@@ -378,14 +378,14 @@ export default function PrintersPage() {
   };
   
   // Função para escanear IP específico
-  const handleScanSpecificIP = async (ip: string) => {
+  const handleScanSpecificIP = async (ip: string, port: number = 9100) => {
     try {
-      toast(`🔍 Verificando ${ip}...`);
+      toast(`🔍 Verificando ${ip}:${port}...`);
       
       const response = await fetch('/api/printers/discover', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ip })
+        body: JSON.stringify({ ip, ports: [port] })
       });
       
       const result = await response.json();
@@ -393,12 +393,51 @@ export default function PrintersPage() {
       if (result.success && result.found) {
         // Adicionar às impressoras descobertas
         setDiscoveredPrinters([...discoveredPrinters, ...result.printers]);
-        toast.success(`✅ Impressora encontrada em ${ip}!`);
+        toast.success(`✅ ${result.message || `Impressora encontrada em ${ip}:${port}!`}`);
       } else {
-        toast(`⚠️ Nenhuma impressora encontrada em ${ip}`);
+        toast(`⚠️ ${result.message || `Nenhuma impressora em ${ip}:${port}`}`);
+        
+        // Se tiver sugestão de porta alternativa
+        if (result.alternativePort) {
+          toast(`💡 Tente a porta ${result.alternativePort}`);
+        }
       }
     } catch (error) {
       toast.error('❌ Erro ao verificar IP');
+    }
+  };
+  
+  // Função para testar conexão direta
+  const testDirectConnection = async (ip: string, port: number = 9100) => {
+    try {
+      toast(`🖨️ Testando conexão direta com ${ip}:${port}...`);
+      
+      const response = await fetch('/api/printers/test-ip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ip, port })
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success(`✅ Conexão estabelecida! ${result.message}`);
+        if (result.details) {
+          console.log('📊 Detalhes da conexão:', result.details);
+        }
+      } else {
+        toast.error(`❌ ${result.error}`);
+        if (result.solution) {
+          toast(`💡 ${result.solution}`);
+        }
+        if (result.alternativePort) {
+          toast(`💡 Tente a porta ${result.alternativePort}`);
+        }
+        console.error('Detalhes do erro:', result);
+      }
+    } catch (error) {
+      toast.error('❌ Erro ao testar conexão');
+      console.error(error);
     }
   };
   
