@@ -841,6 +841,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$volume$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Volume2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/volume-2.js [app-ssr] (ecmascript) <export default as Volume2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scissors$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Scissors$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/scissors.js [app-ssr] (ecmascript) <export default as Scissors>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as Package>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rotate$2d$ccw$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__RotateCcw$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/rotate-ccw.js [app-ssr] (ecmascript) <export default as RotateCcw>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$jspdf$2f$dist$2f$jspdf$2e$es$2e$min$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/jspdf/dist/jspdf.es.min.js [app-ssr] (ecmascript)");
 'use client';
 ;
@@ -1014,6 +1015,26 @@ function VirtualPrintersPage() {
                 config: {
                     ...DEFAULT_CONFIG,
                     drawerKick: true
+                },
+                stats: {
+                    totalJobs: 0,
+                    successfulJobs: 0,
+                    failedJobs: 0,
+                    paperUsed: 0,
+                    uptime: 0
+                }
+            },
+            {
+                id: '4',
+                name: 'Virtual Sushi Bar',
+                model: 'Star TSP143III',
+                ipAddress: '192.168.1.104',
+                port: '9100',
+                status: 'online',
+                powered: true,
+                queue: [],
+                config: {
+                    ...DEFAULT_CONFIG
                 },
                 stats: {
                     totalJobs: 0,
@@ -1327,7 +1348,7 @@ function VirtualPrintersPage() {
             className: "h-4 w-4"
         }, void 0, false, {
             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-            lineNumber: 636,
+            lineNumber: 655,
             columnNumber: 26
         }, this);
         switch(status){
@@ -1336,7 +1357,7 @@ function VirtualPrintersPage() {
                     className: "h-4 w-4"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 638,
+                    lineNumber: 657,
                     columnNumber: 29
                 }, this);
             case 'printing':
@@ -1344,7 +1365,7 @@ function VirtualPrintersPage() {
                     className: "h-4 w-4 animate-spin"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 639,
+                    lineNumber: 658,
                     columnNumber: 31
                 }, this);
             case 'offline':
@@ -1352,7 +1373,7 @@ function VirtualPrintersPage() {
                     className: "h-4 w-4"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 640,
+                    lineNumber: 659,
                     columnNumber: 30
                 }, this);
             case 'error':
@@ -1360,7 +1381,7 @@ function VirtualPrintersPage() {
                     className: "h-4 w-4"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 641,
+                    lineNumber: 660,
                     columnNumber: 28
                 }, this);
             default:
@@ -1413,12 +1434,12 @@ function VirtualPrintersPage() {
                                                 className: "h-5 w-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                lineNumber: 685,
+                                                lineNumber: 704,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 684,
+                                            lineNumber: 703,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -1426,7 +1447,7 @@ function VirtualPrintersPage() {
                                             children: "Impressoras Virtuais"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 687,
+                                            lineNumber: 706,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1435,37 +1456,69 @@ function VirtualPrintersPage() {
                                             children: "Simulador"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 690,
+                                            lineNumber: 709,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 683,
+                                    lineNumber: 702,
                                     columnNumber: 13
                                 }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                    onClick: ()=>setCreateModalOpen(true),
-                                    className: "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full",
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "flex gap-2",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
-                                            className: "h-4 w-4 mr-2"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                            onClick: ()=>{
+                                                if (confirm('Isso irá resetar todas as impressoras virtuais para o padrão (incluindo Sushi Bar). Continuar?')) {
+                                                    localStorage.removeItem('virtualPrinters');
+                                                    initializeDefaultPrinters();
+                                                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].success('Impressoras virtuais resetadas com sucesso!');
+                                                }
+                                            },
+                                            variant: "outline",
+                                            className: "rounded-full",
+                                            title: "Resetar impressoras virtuais para o padrão",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rotate$2d$ccw$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__RotateCcw$3e$__["RotateCcw"], {
+                                                className: "h-4 w-4"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/virtual-printers/page.tsx",
+                                                lineNumber: 726,
+                                                columnNumber: 17
+                                            }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 698,
+                                            lineNumber: 714,
                                             columnNumber: 15
                                         }, this),
-                                        "Nova Impressora Virtual"
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                            onClick: ()=>setCreateModalOpen(true),
+                                            className: "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                                    className: "h-4 w-4 mr-2"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/virtual-printers/page.tsx",
+                                                    lineNumber: 732,
+                                                    columnNumber: 17
+                                                }, this),
+                                                "Nova Impressora Virtual"
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/admin/virtual-printers/page.tsx",
+                                            lineNumber: 728,
+                                            columnNumber: 15
+                                        }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 694,
+                                    lineNumber: 713,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 682,
+                            lineNumber: 701,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1473,18 +1526,18 @@ function VirtualPrintersPage() {
                             children: "Simule impressões térmicas profissionais para testes e desenvolvimento"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 702,
+                            lineNumber: 737,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 681,
+                    lineNumber: 700,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                lineNumber: 680,
+                lineNumber: 699,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1507,7 +1560,7 @@ function VirtualPrintersPage() {
                                                             children: printer.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 717,
+                                                            lineNumber: 752,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1515,7 +1568,7 @@ function VirtualPrintersPage() {
                                                             children: printer.model
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 718,
+                                                            lineNumber: 753,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1525,7 +1578,7 @@ function VirtualPrintersPage() {
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 722,
+                                                                    lineNumber: 757,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1536,19 +1589,19 @@ function VirtualPrintersPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 723,
+                                                                    lineNumber: 758,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 721,
+                                                            lineNumber: 756,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 716,
+                                                    lineNumber: 751,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1562,7 +1615,7 @@ function VirtualPrintersPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 727,
+                                                            lineNumber: 762,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1575,12 +1628,12 @@ function VirtualPrintersPage() {
                                                                 className: "h-4 w-4 text-blue-600 dark:text-blue-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 740,
+                                                                lineNumber: 775,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 733,
+                                                            lineNumber: 768,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1593,24 +1646,24 @@ function VirtualPrintersPage() {
                                                                 className: "h-4 w-4 text-red-600 dark:text-red-400"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 749,
+                                                                lineNumber: 784,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 742,
+                                                            lineNumber: 777,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 726,
+                                                    lineNumber: 761,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 715,
+                                            lineNumber: 750,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1626,7 +1679,7 @@ function VirtualPrintersPage() {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 767,
+                                                                lineNumber: 802,
                                                                 columnNumber: 27
                                                             }, this),
                                                             "Ligada"
@@ -1637,7 +1690,7 @@ function VirtualPrintersPage() {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 772,
+                                                                lineNumber: 807,
                                                                 columnNumber: 27
                                                             }, this),
                                                             "Desligada"
@@ -1645,17 +1698,17 @@ function VirtualPrintersPage() {
                                                     }, void 0, true)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 764,
+                                                    lineNumber: 799,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                lineNumber: 756,
+                                                lineNumber: 791,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 755,
+                                            lineNumber: 790,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1669,7 +1722,7 @@ function VirtualPrintersPage() {
                                                             children: "Total Jobs:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 783,
+                                                            lineNumber: 818,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1677,13 +1730,13 @@ function VirtualPrintersPage() {
                                                             children: printer.stats.totalJobs
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 784,
+                                                            lineNumber: 819,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 782,
+                                                    lineNumber: 817,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1694,7 +1747,7 @@ function VirtualPrintersPage() {
                                                             children: "Sucesso:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 787,
+                                                            lineNumber: 822,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1702,13 +1755,13 @@ function VirtualPrintersPage() {
                                                             children: printer.stats.successfulJobs
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 788,
+                                                            lineNumber: 823,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 786,
+                                                    lineNumber: 821,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1719,7 +1772,7 @@ function VirtualPrintersPage() {
                                                             children: "Papel usado:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 793,
+                                                            lineNumber: 828,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1730,13 +1783,13 @@ function VirtualPrintersPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 794,
+                                                            lineNumber: 829,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 792,
+                                                    lineNumber: 827,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1747,7 +1800,7 @@ function VirtualPrintersPage() {
                                                             children: "Uptime:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 797,
+                                                            lineNumber: 832,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1758,19 +1811,19 @@ function VirtualPrintersPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 798,
+                                                            lineNumber: 833,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 796,
+                                                    lineNumber: 831,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 781,
+                                            lineNumber: 816,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1783,7 +1836,7 @@ function VirtualPrintersPage() {
                                                             children: "Papel:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 805,
+                                                            lineNumber: 840,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1791,13 +1844,13 @@ function VirtualPrintersPage() {
                                                             children: printer.config.paperSize
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 806,
+                                                            lineNumber: 841,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 804,
+                                                    lineNumber: 839,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1807,7 +1860,7 @@ function VirtualPrintersPage() {
                                                             children: "DPI:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 809,
+                                                            lineNumber: 844,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1815,13 +1868,13 @@ function VirtualPrintersPage() {
                                                             children: printer.config.dpi
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 810,
+                                                            lineNumber: 845,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 808,
+                                                    lineNumber: 843,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1831,7 +1884,7 @@ function VirtualPrintersPage() {
                                                             children: "Corte:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 813,
+                                                            lineNumber: 848,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1839,13 +1892,13 @@ function VirtualPrintersPage() {
                                                             children: printer.config.cutPaper ? '✓' : '✗'
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 814,
+                                                            lineNumber: 849,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 812,
+                                                    lineNumber: 847,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1855,7 +1908,7 @@ function VirtualPrintersPage() {
                                                             children: "Gaveta:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 819,
+                                                            lineNumber: 854,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1863,19 +1916,19 @@ function VirtualPrintersPage() {
                                                             children: printer.config.drawerKick ? '✓' : '✗'
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 820,
+                                                            lineNumber: 855,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 818,
+                                                    lineNumber: 853,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 803,
+                                            lineNumber: 838,
                                             columnNumber: 17
                                         }, this),
                                         printer.queue.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1889,7 +1942,7 @@ function VirtualPrintersPage() {
                                                             children: "Fila de Impressão:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 830,
+                                                            lineNumber: 865,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1902,20 +1955,20 @@ function VirtualPrintersPage() {
                                                                     className: "h-3 w-3 mr-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 837,
+                                                                    lineNumber: 872,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 "Limpar"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 831,
+                                                            lineNumber: 866,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 829,
+                                                    lineNumber: 864,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1927,7 +1980,7 @@ function VirtualPrintersPage() {
                                                                     children: job.type
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 847,
+                                                                    lineNumber: 882,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1936,24 +1989,24 @@ function VirtualPrintersPage() {
                                                                     children: job.status
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 848,
+                                                                    lineNumber: 883,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, job.id, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 843,
+                                                            lineNumber: 878,
                                                             columnNumber: 25
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 841,
+                                                    lineNumber: 876,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 828,
+                                            lineNumber: 863,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1971,7 +2024,7 @@ function VirtualPrintersPage() {
                                                                 className: "h-4 w-4 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 867,
+                                                                lineNumber: 902,
                                                                 columnNumber: 25
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
                                                                 children: [
@@ -1979,7 +2032,7 @@ function VirtualPrintersPage() {
                                                                         className: "h-4 w-4 mr-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                        lineNumber: 870,
+                                                                        lineNumber: 905,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     "Teste"
@@ -1987,7 +2040,7 @@ function VirtualPrintersPage() {
                                                             }, void 0, true)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 860,
+                                                            lineNumber: 895,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2000,20 +2053,20 @@ function VirtualPrintersPage() {
                                                                     className: "h-4 w-4 mr-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 881,
+                                                                    lineNumber: 916,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "Pedido"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 875,
+                                                            lineNumber: 910,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 859,
+                                                    lineNumber: 894,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2029,14 +2082,14 @@ function VirtualPrintersPage() {
                                                                     className: "h-4 w-4 mr-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 892,
+                                                                    lineNumber: 927,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "Cupom"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 886,
+                                                            lineNumber: 921,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2049,20 +2102,20 @@ function VirtualPrintersPage() {
                                                                     className: "h-4 w-4 mr-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 901,
+                                                                    lineNumber: 936,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 "Config"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 895,
+                                                            lineNumber: 930,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 885,
+                                                    lineNumber: 920,
                                                     columnNumber: 19
                                                 }, this),
                                                 printer.queue.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2075,36 +2128,36 @@ function VirtualPrintersPage() {
                                                             className: "h-4 w-4 mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 914,
+                                                            lineNumber: 949,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Ver Última Impressão"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 906,
+                                                    lineNumber: 941,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 858,
+                                            lineNumber: 893,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 713,
+                                    lineNumber: 748,
                                     columnNumber: 15
                                 }, this)
                             }, printer.id, false, {
                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                lineNumber: 712,
+                                lineNumber: 747,
                                 columnNumber: 13
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                        lineNumber: 710,
+                        lineNumber: 745,
                         columnNumber: 9
                     }, this),
                     printers.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2114,7 +2167,7 @@ function VirtualPrintersPage() {
                                 className: "h-16 w-16 text-gray-300 mx-auto mb-4"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                lineNumber: 926,
+                                lineNumber: 961,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2122,7 +2175,7 @@ function VirtualPrintersPage() {
                                 children: "Nenhuma impressora virtual criada"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                lineNumber: 927,
+                                lineNumber: 962,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2133,26 +2186,26 @@ function VirtualPrintersPage() {
                                         className: "h-4 w-4 mr-2"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                        lineNumber: 934,
+                                        lineNumber: 969,
                                         columnNumber: 15
                                     }, this),
                                     "Criar Primeira Impressora Virtual"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                lineNumber: 930,
+                                lineNumber: 965,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                        lineNumber: 925,
+                        lineNumber: 960,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                lineNumber: 709,
+                lineNumber: 744,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -2177,20 +2230,20 @@ function VirtualPrintersPage() {
                                     children: "Nova Impressora Virtual"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 956,
+                                    lineNumber: 991,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Crie uma nova impressora virtual para testes"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 957,
+                                    lineNumber: 992,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 955,
+                            lineNumber: 990,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2204,7 +2257,7 @@ function VirtualPrintersPage() {
                                             children: "Nome da Impressora *"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 964,
+                                            lineNumber: 999,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2217,13 +2270,13 @@ function VirtualPrintersPage() {
                                             placeholder: "Ex: Virtual Delivery"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 965,
+                                            lineNumber: 1000,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 963,
+                                    lineNumber: 998,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2234,7 +2287,7 @@ function VirtualPrintersPage() {
                                             children: "Modelo"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 974,
+                                            lineNumber: 1009,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -2248,12 +2301,12 @@ function VirtualPrintersPage() {
                                                     id: "printer-model",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 980,
+                                                        lineNumber: 1015,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 979,
+                                                    lineNumber: 1014,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2262,24 +2315,24 @@ function VirtualPrintersPage() {
                                                             children: model
                                                         }, model, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 984,
+                                                            lineNumber: 1019,
                                                             columnNumber: 21
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 982,
+                                                    lineNumber: 1017,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 975,
+                                            lineNumber: 1010,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 973,
+                                    lineNumber: 1008,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2290,7 +2343,7 @@ function VirtualPrintersPage() {
                                             children: "Endereço IP *"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 993,
+                                            lineNumber: 1028,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2306,7 +2359,7 @@ function VirtualPrintersPage() {
                                                     placeholder: "192.168.1.100"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 995,
+                                                    lineNumber: 1030,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2321,24 +2374,24 @@ function VirtualPrintersPage() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1007,
+                                                        lineNumber: 1042,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1001,
+                                                    lineNumber: 1036,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 994,
+                                            lineNumber: 1029,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 992,
+                                    lineNumber: 1027,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2349,7 +2402,7 @@ function VirtualPrintersPage() {
                                             children: "Porta"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1013,
+                                            lineNumber: 1048,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2362,7 +2415,7 @@ function VirtualPrintersPage() {
                                             placeholder: "9100"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1014,
+                                            lineNumber: 1049,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2370,19 +2423,19 @@ function VirtualPrintersPage() {
                                             children: "Porta padrão: 9100"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1020,
+                                            lineNumber: 1055,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1012,
+                                    lineNumber: 1047,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 962,
+                            lineNumber: 997,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -2401,7 +2454,7 @@ function VirtualPrintersPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1025,
+                                    lineNumber: 1060,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -2413,31 +2466,31 @@ function VirtualPrintersPage() {
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1044,
+                                            lineNumber: 1079,
                                             columnNumber: 15
                                         }, this),
                                         "Criar"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1039,
+                                    lineNumber: 1074,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1024,
+                            lineNumber: 1059,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 954,
+                    lineNumber: 989,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                lineNumber: 942,
+                lineNumber: 977,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -2459,20 +2512,20 @@ function VirtualPrintersPage() {
                                     children: editingPrinter ? 'Editar Impressora Virtual' : 'Configurações de Impressão'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1062,
+                                    lineNumber: 1097,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: editingPrinter ? 'Edite as informações e configurações da impressora' : 'Ajuste os parâmetros de impressão'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1065,
+                                    lineNumber: 1100,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1061,
+                            lineNumber: 1096,
                             columnNumber: 11
                         }, this),
                         (editingPrinter || selectedPrinter) && tempConfig && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Tabs"], {
@@ -2487,7 +2540,7 @@ function VirtualPrintersPage() {
                                             children: "Informações"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1075,
+                                            lineNumber: 1110,
                                             columnNumber: 36
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -2495,7 +2548,7 @@ function VirtualPrintersPage() {
                                             children: "Geral"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1076,
+                                            lineNumber: 1111,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -2503,7 +2556,7 @@ function VirtualPrintersPage() {
                                             children: "Papel"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1077,
+                                            lineNumber: 1112,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -2511,13 +2564,13 @@ function VirtualPrintersPage() {
                                             children: "Avançado"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1078,
+                                            lineNumber: 1113,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1074,
+                                    lineNumber: 1109,
                                     columnNumber: 15
                                 }, this),
                                 editingPrinter && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -2530,7 +2583,7 @@ function VirtualPrintersPage() {
                                                     children: "Nome da Impressora"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1084,
+                                                    lineNumber: 1119,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2542,13 +2595,13 @@ function VirtualPrintersPage() {
                                                     placeholder: "Nome da impressora"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1085,
+                                                    lineNumber: 1120,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1083,
+                                            lineNumber: 1118,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2557,7 +2610,7 @@ function VirtualPrintersPage() {
                                                     children: "Modelo"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1095,
+                                                    lineNumber: 1130,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -2570,12 +2623,12 @@ function VirtualPrintersPage() {
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1104,
+                                                                lineNumber: 1139,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1103,
+                                                            lineNumber: 1138,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2584,24 +2637,24 @@ function VirtualPrintersPage() {
                                                                     children: model
                                                                 }, model, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1108,
+                                                                    lineNumber: 1143,
                                                                     columnNumber: 27
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1106,
+                                                            lineNumber: 1141,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1096,
+                                                    lineNumber: 1131,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1094,
+                                            lineNumber: 1129,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2610,7 +2663,7 @@ function VirtualPrintersPage() {
                                                     children: "Endereço IP"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1116,
+                                                    lineNumber: 1151,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2622,13 +2675,13 @@ function VirtualPrintersPage() {
                                                     placeholder: "192.168.1.100"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1117,
+                                                    lineNumber: 1152,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1115,
+                                            lineNumber: 1150,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2637,7 +2690,7 @@ function VirtualPrintersPage() {
                                                     children: "Porta"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1127,
+                                                    lineNumber: 1162,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -2649,19 +2702,19 @@ function VirtualPrintersPage() {
                                                     placeholder: "9100"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1128,
+                                                    lineNumber: 1163,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1126,
+                                            lineNumber: 1161,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1082,
+                                    lineNumber: 1117,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -2677,7 +2730,7 @@ function VirtualPrintersPage() {
                                                             children: "Tamanho do Papel"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1143,
+                                                            lineNumber: 1178,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -2690,12 +2743,12 @@ function VirtualPrintersPage() {
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                        lineNumber: 1152,
+                                                                        lineNumber: 1187,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1151,
+                                                                    lineNumber: 1186,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2705,7 +2758,7 @@ function VirtualPrintersPage() {
                                                                             children: "Térmica 80mm"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1155,
+                                                                            lineNumber: 1190,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2713,7 +2766,7 @@ function VirtualPrintersPage() {
                                                                             children: "Térmica 58mm"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1156,
+                                                                            lineNumber: 1191,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2721,7 +2774,7 @@ function VirtualPrintersPage() {
                                                                             children: "A4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1157,
+                                                                            lineNumber: 1192,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2729,25 +2782,25 @@ function VirtualPrintersPage() {
                                                                             children: "Carta"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1158,
+                                                                            lineNumber: 1193,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1154,
+                                                                    lineNumber: 1189,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1144,
+                                                            lineNumber: 1179,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1142,
+                                                    lineNumber: 1177,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2756,7 +2809,7 @@ function VirtualPrintersPage() {
                                                             children: "DPI (Resolução)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1164,
+                                                            lineNumber: 1199,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -2769,12 +2822,12 @@ function VirtualPrintersPage() {
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                        lineNumber: 1173,
+                                                                        lineNumber: 1208,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1172,
+                                                                    lineNumber: 1207,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2784,7 +2837,7 @@ function VirtualPrintersPage() {
                                                                             children: "203 DPI (Padrão)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1176,
+                                                                            lineNumber: 1211,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2792,7 +2845,7 @@ function VirtualPrintersPage() {
                                                                             children: "300 DPI (Alta)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1177,
+                                                                            lineNumber: 1212,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2800,31 +2853,31 @@ function VirtualPrintersPage() {
                                                                             children: "600 DPI (Muito Alta)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1178,
+                                                                            lineNumber: 1213,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1175,
+                                                                    lineNumber: 1210,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1165,
+                                                            lineNumber: 1200,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1163,
+                                                    lineNumber: 1198,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1141,
+                                            lineNumber: 1176,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2840,7 +2893,7 @@ function VirtualPrintersPage() {
                                                                     className: "h-4 w-4 text-gray-500"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1187,
+                                                                    lineNumber: 1222,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
@@ -2848,13 +2901,13 @@ function VirtualPrintersPage() {
                                                                     children: "Corte Automático"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1188,
+                                                                    lineNumber: 1223,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1186,
+                                                            lineNumber: 1221,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2866,13 +2919,13 @@ function VirtualPrintersPage() {
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1190,
+                                                            lineNumber: 1225,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1185,
+                                                    lineNumber: 1220,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2885,7 +2938,7 @@ function VirtualPrintersPage() {
                                                                     className: "h-4 w-4 text-gray-500"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1202,
+                                                                    lineNumber: 1237,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
@@ -2893,13 +2946,13 @@ function VirtualPrintersPage() {
                                                                     children: "Beep ao Imprimir"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1203,
+                                                                    lineNumber: 1238,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1201,
+                                                            lineNumber: 1236,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2911,13 +2964,13 @@ function VirtualPrintersPage() {
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1205,
+                                                            lineNumber: 1240,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1200,
+                                                    lineNumber: 1235,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2930,7 +2983,7 @@ function VirtualPrintersPage() {
                                                                     className: "h-4 w-4 text-gray-500"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1217,
+                                                                    lineNumber: 1252,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
@@ -2938,13 +2991,13 @@ function VirtualPrintersPage() {
                                                                     children: "Abrir Gaveta"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1218,
+                                                                    lineNumber: 1253,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1216,
+                                                            lineNumber: 1251,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2956,25 +3009,25 @@ function VirtualPrintersPage() {
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1220,
+                                                            lineNumber: 1255,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1215,
+                                                    lineNumber: 1250,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1184,
+                                            lineNumber: 1219,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1140,
+                                    lineNumber: 1175,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -2989,7 +3042,7 @@ function VirtualPrintersPage() {
                                                         children: "Margem Superior (mm)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1235,
+                                                        lineNumber: 1270,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3009,7 +3062,7 @@ function VirtualPrintersPage() {
                                                                 className: "flex-1"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1237,
+                                                                lineNumber: 1272,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3020,19 +3073,19 @@ function VirtualPrintersPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1248,
+                                                                lineNumber: 1283,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1236,
+                                                        lineNumber: 1271,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                lineNumber: 1234,
+                                                lineNumber: 1269,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3041,7 +3094,7 @@ function VirtualPrintersPage() {
                                                         children: "Margem Inferior (mm)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1253,
+                                                        lineNumber: 1288,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3061,7 +3114,7 @@ function VirtualPrintersPage() {
                                                                 className: "flex-1"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1255,
+                                                                lineNumber: 1290,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3072,19 +3125,19 @@ function VirtualPrintersPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1266,
+                                                                lineNumber: 1301,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1254,
+                                                        lineNumber: 1289,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                lineNumber: 1252,
+                                                lineNumber: 1287,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3093,7 +3146,7 @@ function VirtualPrintersPage() {
                                                         children: "Margem Esquerda (mm)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1271,
+                                                        lineNumber: 1306,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3113,7 +3166,7 @@ function VirtualPrintersPage() {
                                                                 className: "flex-1"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1273,
+                                                                lineNumber: 1308,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3124,19 +3177,19 @@ function VirtualPrintersPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1284,
+                                                                lineNumber: 1319,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1272,
+                                                        lineNumber: 1307,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                lineNumber: 1270,
+                                                lineNumber: 1305,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3145,7 +3198,7 @@ function VirtualPrintersPage() {
                                                         children: "Margem Direita (mm)"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1289,
+                                                        lineNumber: 1324,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3165,7 +3218,7 @@ function VirtualPrintersPage() {
                                                                 className: "flex-1"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1291,
+                                                                lineNumber: 1326,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3176,30 +3229,30 @@ function VirtualPrintersPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1302,
+                                                                lineNumber: 1337,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                        lineNumber: 1290,
+                                                        lineNumber: 1325,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                lineNumber: 1288,
+                                                lineNumber: 1323,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                        lineNumber: 1233,
+                                        lineNumber: 1268,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1232,
+                                    lineNumber: 1267,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -3215,7 +3268,7 @@ function VirtualPrintersPage() {
                                                             children: "Fonte"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1311,
+                                                            lineNumber: 1346,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -3228,12 +3281,12 @@ function VirtualPrintersPage() {
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                        lineNumber: 1320,
+                                                                        lineNumber: 1355,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1319,
+                                                                    lineNumber: 1354,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3243,7 +3296,7 @@ function VirtualPrintersPage() {
                                                                             children: "Padrão"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1323,
+                                                                            lineNumber: 1358,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3251,7 +3304,7 @@ function VirtualPrintersPage() {
                                                                             children: "Monospace"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1324,
+                                                                            lineNumber: 1359,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3259,7 +3312,7 @@ function VirtualPrintersPage() {
                                                                             children: "Serif"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1325,
+                                                                            lineNumber: 1360,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3267,25 +3320,25 @@ function VirtualPrintersPage() {
                                                                             children: "Sans-serif"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                            lineNumber: 1326,
+                                                                            lineNumber: 1361,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1322,
+                                                                    lineNumber: 1357,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1312,
+                                                            lineNumber: 1347,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1310,
+                                                    lineNumber: 1345,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3294,7 +3347,7 @@ function VirtualPrintersPage() {
                                                             children: "Tamanho da Fonte"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1332,
+                                                            lineNumber: 1367,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3314,7 +3367,7 @@ function VirtualPrintersPage() {
                                                                     className: "flex-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1334,
+                                                                    lineNumber: 1369,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3325,25 +3378,25 @@ function VirtualPrintersPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1345,
+                                                                    lineNumber: 1380,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1333,
+                                                            lineNumber: 1368,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1331,
+                                                    lineNumber: 1366,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1309,
+                                            lineNumber: 1344,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3352,7 +3405,7 @@ function VirtualPrintersPage() {
                                                     children: "Charset"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1351,
+                                                    lineNumber: 1386,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -3365,12 +3418,12 @@ function VirtualPrintersPage() {
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                lineNumber: 1360,
+                                                                lineNumber: 1395,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1359,
+                                                            lineNumber: 1394,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3380,7 +3433,7 @@ function VirtualPrintersPage() {
                                                                     children: "UTF-8"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1363,
+                                                                    lineNumber: 1398,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3388,7 +3441,7 @@ function VirtualPrintersPage() {
                                                                     children: "ISO-8859-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1364,
+                                                                    lineNumber: 1399,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3396,25 +3449,25 @@ function VirtualPrintersPage() {
                                                                     children: "Windows-1252"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                                    lineNumber: 1365,
+                                                                    lineNumber: 1400,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                            lineNumber: 1362,
+                                                            lineNumber: 1397,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1352,
+                                                    lineNumber: 1387,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1350,
+                                            lineNumber: 1385,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3425,7 +3478,7 @@ function VirtualPrintersPage() {
                                                     children: "Exibir Logo"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1371,
+                                                    lineNumber: 1406,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3437,13 +3490,13 @@ function VirtualPrintersPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1372,
+                                                    lineNumber: 1407,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1370,
+                                            lineNumber: 1405,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3452,7 +3505,7 @@ function VirtualPrintersPage() {
                                                     children: "Texto do Rodapé"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1383,
+                                                    lineNumber: 1418,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -3464,25 +3517,25 @@ function VirtualPrintersPage() {
                                                     placeholder: "Mensagem personalizada no rodapé"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                                    lineNumber: 1384,
+                                                    lineNumber: 1419,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1382,
+                                            lineNumber: 1417,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1308,
+                                    lineNumber: 1343,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1073,
+                            lineNumber: 1108,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -3498,7 +3551,7 @@ function VirtualPrintersPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1398,
+                                    lineNumber: 1433,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3515,31 +3568,31 @@ function VirtualPrintersPage() {
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1416,
+                                            lineNumber: 1451,
                                             columnNumber: 15
                                         }, this),
                                         "Salvar"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1406,
+                                    lineNumber: 1441,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1397,
+                            lineNumber: 1432,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 1060,
+                    lineNumber: 1095,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                lineNumber: 1052,
+                lineNumber: 1087,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -3553,7 +3606,7 @@ function VirtualPrintersPage() {
                                     children: "Excluir Impressora Virtual"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1427,
+                                    lineNumber: 1462,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -3564,13 +3617,13 @@ function VirtualPrintersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1428,
+                                    lineNumber: 1463,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1426,
+                            lineNumber: 1461,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -3580,7 +3633,7 @@ function VirtualPrintersPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1434,
+                                    lineNumber: 1469,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -3589,24 +3642,24 @@ function VirtualPrintersPage() {
                                     children: "Excluir"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1437,
+                                    lineNumber: 1472,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1433,
+                            lineNumber: 1468,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 1425,
+                    lineNumber: 1460,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                lineNumber: 1424,
+                lineNumber: 1459,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -3621,20 +3674,20 @@ function VirtualPrintersPage() {
                                     children: "Preview da Impressão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1451,
+                                    lineNumber: 1486,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Visualização do documento como seria impresso"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1452,
+                                    lineNumber: 1487,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1450,
+                            lineNumber: 1485,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3646,7 +3699,7 @@ function VirtualPrintersPage() {
                             children: previewContent
                         }, void 0, false, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1457,
+                            lineNumber: 1492,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -3662,14 +3715,14 @@ function VirtualPrintersPage() {
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1472,
+                                            lineNumber: 1507,
                                             columnNumber: 15
                                         }, this),
                                         "Copiar"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1465,
+                                    lineNumber: 1500,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -3680,37 +3733,37 @@ function VirtualPrintersPage() {
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                            lineNumber: 1479,
+                                            lineNumber: 1514,
                                             columnNumber: 15
                                         }, this),
                                         "Baixar PDF"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                                    lineNumber: 1475,
+                                    lineNumber: 1510,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                            lineNumber: 1464,
+                            lineNumber: 1499,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                    lineNumber: 1449,
+                    lineNumber: 1484,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/virtual-printers/page.tsx",
-                lineNumber: 1448,
+                lineNumber: 1483,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/virtual-printers/page.tsx",
-        lineNumber: 678,
+        lineNumber: 697,
         columnNumber: 5
     }, this);
 }

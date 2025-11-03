@@ -69,7 +69,8 @@ import {
   Network,
   Volume2,
   Scissors,
-  Package
+  Package,
+  RotateCcw
 } from "lucide-react";
 import jsPDF from 'jspdf';
 
@@ -276,6 +277,24 @@ export default function VirtualPrintersPage() {
         powered: true,
         queue: [],
         config: { ...DEFAULT_CONFIG, drawerKick: true },
+        stats: {
+          totalJobs: 0,
+          successfulJobs: 0,
+          failedJobs: 0,
+          paperUsed: 0,
+          uptime: 0
+        }
+      },
+      {
+        id: '4',
+        name: 'Virtual Sushi Bar',
+        model: 'Star TSP143III',
+        ipAddress: '192.168.1.104',
+        port: '9100',
+        status: 'online',
+        powered: true,
+        queue: [],
+        config: { ...DEFAULT_CONFIG },
         stats: {
           totalJobs: 0,
           successfulJobs: 0,
@@ -691,13 +710,29 @@ export default function VirtualPrintersPage() {
                 Simulador
               </Badge>
             </div>
-            <Button
-              onClick={() => setCreateModalOpen(true)}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Nova Impressora Virtual
-            </Button>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => {
+                  if (confirm('Isso irá resetar todas as impressoras virtuais para o padrão (incluindo Sushi Bar). Continuar?')) {
+                    localStorage.removeItem('virtualPrinters');
+                    initializeDefaultPrinters();
+                    toast.success('Impressoras virtuais resetadas com sucesso!');
+                  }
+                }}
+                variant="outline"
+                className="rounded-full"
+                title="Resetar impressoras virtuais para o padrão"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+              <Button
+                onClick={() => setCreateModalOpen(true)}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Nova Impressora Virtual
+              </Button>
+            </div>
           </div>
           <p className="text-sm text-gray-500 dark:text-gray-400">
             Simule impressões térmicas profissionais para testes e desenvolvimento
