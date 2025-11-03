@@ -317,6 +317,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/api/printers/detect-local/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/printers/detect-local">> = Specific
+  const handler = {} as typeof import("../../../app/api/printers/detect-local/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/api/printers/discover/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/printers/discover">> = Specific

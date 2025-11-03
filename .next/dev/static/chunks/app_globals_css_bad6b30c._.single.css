@@ -688,6 +688,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-top: 1.5rem;
 }
 
+.ml-1 {
+  margin-left: .25rem;
+}
+
 .block {
   display: block;
 }
@@ -2934,6 +2938,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .hover\:bg-green-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(240 253 244 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-green-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-green-700:hover {

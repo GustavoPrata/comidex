@@ -61,7 +61,9 @@ import {
   SignalLow,
   SignalZero,
   ScanSearch,
-  Globe
+  Globe,
+  Monitor,
+  HardDrive
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -376,6 +378,63 @@ export default function PrintersPage() {
       setDiscovering(false);
     }
   };
+
+  // Nova função para detectar impressoras locais usando WMIC/CUPS
+  const handleDetectLocalPrinters = async () => {
+    try {
+      setDiscovering(true);
+      setShowDiscoverModal(true);
+      setDiscoveredPrinters([]);
+      
+      toast(`🖨️ Detectando impressoras locais do sistema...`);
+      
+      const response = await fetch('/api/printers/detect-local');
+      const result = await response.json();
+      
+      if (result.success) {
+        if (result.printers && result.printers.length > 0) {
+          // Converter impressoras locais para formato esperado
+          const formattedPrinters = result.printers.map((p: any) => ({
+            name: p.name,
+            ip: p.port === 'Network' ? 'Local Network' : 'Local',
+            port: p.port === 'Network' ? 9100 : 0,
+            type: p.type || 'unknown',
+            model: p.driver || p.name,
+            status: p.status || 'Ready',
+            isLocal: true,
+            os: result.platform,
+            rawData: p
+          }));
+          
+          setDiscoveredPrinters(formattedPrinters);
+          toast.success(`✅ ${result.count} impressora(s) local(is) detectada(s) no ${result.platform}!`);
+          
+          // Mostrar informações adicionais
+          if (result.message) {
+            toast(result.message);
+          }
+        } else {
+          toast.error(`⚠️ Nenhuma impressora local encontrada no sistema`);
+        }
+      } else {
+        toast.error(`❌ Erro: ${result.error || 'Falha ao detectar impressoras locais'}`);
+        
+        // Dar dicas baseadas no sistema
+        if (result.platform === 'win32') {
+          toast(`💡 No Windows, verifique se o serviço de spooler está ativo`);
+        } else if (result.platform === 'linux') {
+          toast(`💡 No Linux, instale o CUPS: sudo apt-get install cups`);
+        } else if (result.platform === 'darwin') {
+          toast(`💡 No macOS, verifique as Preferências do Sistema > Impressoras`);
+        }
+      }
+    } catch (error) {
+      toast.error('❌ Erro ao detectar impressoras locais');
+      console.error('Erro:', error);
+    } finally {
+      setDiscovering(false);
+    }
+  };
   
   // Função para escanear IP específico
   const handleScanSpecificIP = async (ip: string, port: number = 9100) => {
@@ -665,16 +724,30 @@ export default function PrintersPage() {
                 </button>
               </div>
               <Button 
+                onClick={handleDetectLocalPrinters}
+                className="bg-green-500 hover:bg-green-600 text-white rounded-full"
+                disabled={discovering}
+                title="Detectar impressoras instaladas no Windows usando WMIC"
+              >
+                {discovering ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : (
+                  <Monitor className="h-4 w-4 mr-2" />
+                )}
+                Detectar Locais
+              </Button>
+              <Button 
                 onClick={() => handleDiscoverPrinters(false, 'all')}
                 className="bg-blue-500 hover:bg-blue-600 text-white rounded-full"
                 disabled={discovering}
+                title="Buscar impressoras na rede"
               >
                 {discovering ? (
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                 ) : (
                   <ScanSearch className="h-4 w-4 mr-2" />
                 )}
-                Descobrir
+                Buscar Rede
               </Button>
               <Button 
                 onClick={() => openModal()}
@@ -1064,17 +1137,43 @@ export default function PrintersPage() {
         <DialogContent className="max-w-3xl">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Globe className="h-5 w-5 text-blue-500" />
-              Impressoras Descobertas na Rede
+              {discoveredPrinters.some((p: any) => p.isLocal) ? (
+                <>
+                  <Monitor className="h-5 w-5 text-green-500" />
+                  Impressoras Locais Detectadas
+                </>
+              ) : (
+                <>
+                  <Globe className="h-5 w-5 text-blue-500" />
+                  Impressoras Descobertas na Rede
+                </>
+              )}
             </DialogTitle>
             <DialogDescription>
               {discovering ? (
                 <div className="flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>Procurando impressoras na rede local...</span>
+                  <span>
+                    {discoveredPrinters.some((p: any) => p.isLocal)
+                      ? 'Detectando impressoras instaladas no sistema...'
+                      : 'Procurando impressoras na rede local...'}
+                  </span>
                 </div>
               ) : (
-                `Encontradas ${discoveredPrinters.length} impressoras disponíveis`
+                <>
+                  {discoveredPrinters.length > 0 ? (
+                    <span>
+                      Encontradas {discoveredPrinters.length} impressoras
+                      {discoveredPrinters.some((p: any) => p.isLocal) && (
+                        <span className="text-green-600 font-semibold ml-1">
+                          (instaladas no {discoveredPrinters[0]?.os || 'sistema'})
+                        </span>
+                      )}
+                    </span>
+                  ) : (
+                    'Nenhuma impressora encontrada'
+                  )}
+                </>
               )}
             </DialogDescription>
           </DialogHeader>
@@ -1086,32 +1185,71 @@ export default function PrintersPage() {
                   <div
                     key={index}
                     className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors ${
-                      printer.isVirtual ? 'border-blue-300 dark:border-blue-700' : 'border-green-300 dark:border-green-700'
+                      printer.isLocal 
+                        ? 'border-purple-300 dark:border-purple-700 bg-purple-50/50 dark:bg-purple-900/20' 
+                        : printer.isVirtual 
+                        ? 'border-blue-300 dark:border-blue-700' 
+                        : 'border-green-300 dark:border-green-700'
                     }`}
                     onClick={() => addDiscoveredPrinter(printer)}
                   >
                     <div className="flex items-center justify-between">
-                      <div>
-                        <div className="flex items-center gap-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
                           <h4 className="font-semibold text-gray-900 dark:text-gray-100">
                             {printer.name}
                           </h4>
-                          {printer.isVirtual ? (
+                          {printer.isLocal ? (
+                            <>
+                              <Badge variant="secondary" className="text-xs bg-purple-500 text-white">
+                                <HardDrive className="h-3 w-3 mr-1" />
+                                Local
+                              </Badge>
+                              {printer.type === 'thermal' && (
+                                <Badge variant="secondary" className="text-xs bg-orange-500 text-white">
+                                  Térmica
+                                </Badge>
+                              )}
+                            </>
+                          ) : printer.isVirtual ? (
                             <Badge variant="secondary" className="text-xs">
                               Virtual
                             </Badge>
                           ) : (
                             <Badge variant="default" className="text-xs bg-green-500">
-                              Física
+                              Rede
                             </Badge>
+                          )}
+                          {printer.status && (
+                            <span className={`text-xs px-2 py-1 rounded-full ${
+                              printer.status === 'Ready' 
+                                ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                            }`}>
+                              {printer.status}
+                            </span>
                           )}
                         </div>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {printer.model}
+                          {printer.model || printer.driver || 'Modelo não identificado'}
                         </p>
-                        <p className="text-xs text-gray-500 font-mono">
-                          {printer.ip}:{printer.port}
+                        <p className="text-xs text-gray-500 font-mono mt-1">
+                          {printer.isLocal ? (
+                            <>
+                              <span className="text-purple-600">Sistema: {printer.os || 'Local'}</span>
+                              {printer.port && printer.port !== '0' && (
+                                <span className="ml-2">| Porta: {printer.port}</span>
+                              )}
+                            </>
+                          ) : (
+                            `${printer.ip}:${printer.port}`
+                          )}
                         </p>
+                        {printer.rawData?.detected_via && (
+                          <p className="text-xs text-gray-400 mt-1">
+                            Detectado via: {printer.rawData.detected_via}
+                          </p>
+                        )}
                       </div>
                       <Button
                         variant="outline"
