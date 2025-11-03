@@ -607,6 +607,20 @@ export default function PrintersPage() {
     setIsModalOpen(true);
   };
 
+  // Função para validar IP
+  const isValidIP = (ip: string) => {
+    const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$/;
+    if (!ipRegex.test(ip)) return false;
+    const parts = ip.split('.');
+    return parts.every(part => parseInt(part) >= 0 && parseInt(part) <= 255);
+  };
+
+  // Função para validar porta
+  const isValidPort = (port: string) => {
+    const portNum = parseInt(port);
+    return !isNaN(portNum) && portNum > 0 && portNum <= 65535;
+  };
+
   const savePrinter = async () => {
     // Validação diferente para impressoras locais e de rede
     if (!formData.name) {
@@ -614,9 +628,21 @@ export default function PrintersPage() {
       return;
     }
     
-    if (!formData.is_local && !formData.ip_address) {
-      toast.error("Endereço IP é obrigatório para impressoras de rede");
-      return;
+    if (!formData.is_local) {
+      if (!formData.ip_address) {
+        toast.error("Endereço IP é obrigatório para impressoras de rede");
+        return;
+      }
+      
+      if (!isValidIP(formData.ip_address)) {
+        toast.error("Endereço IP inválido. Use o formato: 192.168.1.100");
+        return;
+      }
+      
+      if (!isValidPort(formData.port)) {
+        toast.error("Porta inválida. Use valores entre 1 e 65535");
+        return;
+      }
     }
 
     try {
@@ -1054,16 +1080,21 @@ export default function PrintersPage() {
             </div>
             
             <div className="grid gap-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="is_local">Tipo de Conexão</Label>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-500">Rede</span>
-                  <Switch
-                    id="is_local"
-                    checked={formData.is_local}
-                    onCheckedChange={(checked) => setFormData({...formData, is_local: checked})}
-                  />
-                  <span className="text-sm text-gray-500">Local</span>
+              <Label>Tipo de Conexão</Label>
+              <div className="flex items-center justify-center space-x-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                <div className={`flex items-center space-x-2 ${!formData.is_local ? 'text-orange-600 font-medium' : 'text-gray-500'}`}>
+                  <Network className="h-4 w-4" />
+                  <span className="text-sm">Rede</span>
+                </div>
+                <Switch
+                  id="is_local"
+                  checked={formData.is_local}
+                  onCheckedChange={(checked) => setFormData({...formData, is_local: checked})}
+                  className="data-[state=checked]:bg-orange-500"
+                />
+                <div className={`flex items-center space-x-2 ${formData.is_local ? 'text-orange-600 font-medium' : 'text-gray-500'}`}>
+                  <Monitor className="h-4 w-4" />
+                  <span className="text-sm">Local</span>
                 </div>
               </div>
             </div>

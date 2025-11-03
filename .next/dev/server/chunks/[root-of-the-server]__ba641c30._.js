@@ -768,8 +768,17 @@ class ThermalPrinterService {
     // Método unificado para enviar impressão
     async print(printer, data) {
         console.log('🖨️ Iniciando impressão para:', printer.name);
-        // Se for impressora de rede (tem IP válido e não é LOCAL)
-        if (printer.ip_address && printer.ip_address !== 'LOCAL' && printer.ip_address !== 'localhost') {
+        // Se for impressora local
+        if (printer.is_local) {
+            if (__TURBOPACK__imported__module__$5b$externals$5d2f$os__$5b$external$5d$__$28$os$2c$__cjs$29$__["default"].platform() === 'win32') //TURBOPACK unreachable
+            ;
+            else {
+                console.log('⚠️ Impressão local só funciona no Windows');
+                return false;
+            }
+        }
+        // Se for impressora de rede
+        if (printer.ip_address && printer.ip_address !== 'LOCAL') {
             console.log(`🌐 Tentando impressão via rede: ${printer.ip_address}:${printer.port || 9100}`);
             const success = await this.printToNetwork(printer.ip_address, parseInt(printer.port) || 9100, data);
             if (success) {
@@ -777,9 +786,6 @@ class ThermalPrinterService {
                 return true;
             }
         }
-        // Se for impressora local Windows
-        if (__TURBOPACK__imported__module__$5b$externals$5d2f$os__$5b$external$5d$__$28$os$2c$__cjs$29$__["default"].platform() === 'win32' && printer.ip_address === 'LOCAL') //TURBOPACK unreachable
-        ;
         console.log('❌ Falha ao imprimir');
         return false;
     }
