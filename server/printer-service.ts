@@ -369,8 +369,23 @@ export class ThermalPrinterService {
   async print(printer: any, data: Buffer): Promise<boolean> {
     console.log('🖨️ Iniciando impressão para:', printer.name);
     
-    // Se for impressora de rede (tem IP válido e não é LOCAL)
-    if (printer.ip_address && printer.ip_address !== 'LOCAL' && printer.ip_address !== 'localhost') {
+    // Se for impressora local
+    if (printer.is_local) {
+      if (os.platform() === 'win32') {
+        console.log(`💻 Tentando impressão local Windows: ${printer.name}`);
+        const success = await this.printToLocalWindows(printer.name, data);
+        if (success) {
+          console.log('✅ Impressão local bem-sucedida');
+          return true;
+        }
+      } else {
+        console.log('⚠️ Impressão local só funciona no Windows');
+        return false;
+      }
+    }
+    
+    // Se for impressora de rede
+    if (printer.ip_address && printer.ip_address !== 'LOCAL') {
       console.log(`🌐 Tentando impressão via rede: ${printer.ip_address}:${printer.port || 9100}`);
       const success = await this.printToNetwork(
         printer.ip_address,
@@ -379,16 +394,6 @@ export class ThermalPrinterService {
       );
       if (success) {
         console.log('✅ Impressão via rede bem-sucedida');
-        return true;
-      }
-    }
-    
-    // Se for impressora local Windows
-    if (os.platform() === 'win32' && printer.ip_address === 'LOCAL') {
-      console.log(`💻 Tentando impressão local Windows: ${printer.name}`);
-      const success = await this.printToLocalWindows(printer.name, data);
-      if (success) {
-        console.log('✅ Impressão local bem-sucedida');
         return true;
       }
     }

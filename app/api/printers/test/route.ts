@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     let printMethod = '';
     
     // Verificar se é impressora local ou de rede
-    if (printer.ip_address === 'LOCAL') {
+    if (printer.is_local) {
       console.log(`💻 Testando impressora local: ${printer.name}`);
       printMethod = 'local';
     } else if (printer.ip_address) {

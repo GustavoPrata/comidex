@@ -2,10 +2,10 @@
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
   "static/chunks/node_modules_@supabase_node-fetch_browser_ebbd8575.js",
-  "static/chunks/_98080d5c._.js",
+  "static/chunks/_63d5095f._.js",
   "static/chunks/node_modules_@supabase_storage-js_dist_module_434fd12f._.js",
   "static/chunks/node_modules_@supabase_auth-js_dist_module_e6c70351._.js",
-  "static/chunks/node_modules_d0b0c87a._.js"
+  "static/chunks/node_modules_87547165._.js"
 ],
     source: "dynamic"
 });

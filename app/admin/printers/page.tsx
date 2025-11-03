@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
 import { 
   Dialog, 
   DialogContent, 
@@ -72,6 +73,7 @@ interface Printer {
   type: 'thermal' | 'laser' | 'inkjet' | 'other';
   printer_model?: string;
   is_main: boolean;
+  is_local: boolean;
   active: boolean;
   description?: string;
   sort_order: number;
@@ -230,6 +232,7 @@ export default function PrintersPage() {
     type: 'thermal' as 'thermal' | 'laser' | 'inkjet' | 'other',
     printer_model: 'Epson TM-T88VI',
     is_main: false,
+    is_local: false,
     active: true,
     sort_order: 0
   });
@@ -526,10 +529,11 @@ export default function PrintersPage() {
       const printerData = {
         name: discoveredPrinter.name,
         ip_address: discoveredPrinter.isLocal ? 'LOCAL' : (discoveredPrinter.ip || 'localhost'),
-        port: discoveredPrinter.isLocal ? '0' : String(discoveredPrinter.port || '9100'),
+        port: discoveredPrinter.isLocal ? 'LOCAL' : String(discoveredPrinter.port || '9100'),
         type: discoveredPrinter.type === 'thermal' ? 'thermal' : 'other',
         printer_model: discoveredPrinter.model || discoveredPrinter.driver || 'Detectado automaticamente',
         is_main: false,
+        is_local: discoveredPrinter.isLocal === true,
         active: true,
         sort_order: Math.floor(printers.length),
         connection_status: 'unknown'
@@ -577,11 +581,12 @@ export default function PrintersPage() {
       setEditingPrinter(printer);
       setFormData({
         name: printer.name,
-        ip_address: printer.ip_address,
-        port: printer.port,
+        ip_address: printer.ip_address || '',
+        port: printer.port || '9100',
         type: printer.type,
         printer_model: printer.printer_model || 'Epson TM-T88VI',
         is_main: printer.is_main,
+        is_local: printer.is_local || false,
         active: printer.active,
         sort_order: printer.sort_order
       });
@@ -594,6 +599,7 @@ export default function PrintersPage() {
         type: 'thermal',
         printer_model: 'Epson TM-T88VI',
         is_main: false,
+        is_local: false,
         active: true,
         sort_order: printers.length
       });
@@ -602,8 +608,14 @@ export default function PrintersPage() {
   };
 
   const savePrinter = async () => {
-    if (!formData.name || !formData.ip_address) {
-      toast.error("Preencha todos os campos obrigatórios");
+    // Validação diferente para impressoras locais e de rede
+    if (!formData.name) {
+      toast.error("Nome da impressora é obrigatório");
+      return;
+    }
+    
+    if (!formData.is_local && !formData.ip_address) {
+      toast.error("Endereço IP é obrigatório para impressoras de rede");
       return;
     }
 
@@ -612,11 +624,12 @@ export default function PrintersPage() {
       
       const printerData = {
         name: formData.name,
-        ip_address: formData.ip_address,
-        port: formData.port,
+        ip_address: formData.is_local ? 'LOCAL' : formData.ip_address,
+        port: formData.is_local ? 'LOCAL' : formData.port,
         type: formData.type,
         printer_model: formData.printer_model,
         is_main: formData.is_main,
+        is_local: formData.is_local,
         active: formData.active,
         sort_order: Math.floor(formData.sort_order),
         connection_status: 'unknown'
@@ -648,6 +661,7 @@ export default function PrintersPage() {
         type: 'thermal',
         printer_model: 'Epson TM-T88VI',
         is_main: false,
+        is_local: false,
         active: true,
         sort_order: 0
       });
@@ -834,8 +848,17 @@ export default function PrintersPage() {
                         {printer.printer_model || 'Modelo não especificado'}
                       </div>
                       <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
-                        <Network className="h-3 w-3" />
-                        <span className="font-mono">{printer.ip_address}:{printer.port}</span>
+                        {printer.is_local ? (
+                          <>
+                            <Monitor className="h-3 w-3" />
+                            <span className="font-mono">Impressora Local Windows</span>
+                          </>
+                        ) : (
+                          <>
+                            <Network className="h-3 w-3" />
+                            <span className="font-mono">{printer.ip_address}:{printer.port}</span>
+                          </>
+                        )}
                       </div>
                     </div>
                     
@@ -1031,7 +1054,22 @@ export default function PrintersPage() {
             </div>
             
             <div className="grid gap-2">
-              <Label htmlFor="type">Tipo *</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="is_local">Tipo de Conexão</Label>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-500">Rede</span>
+                  <Switch
+                    id="is_local"
+                    checked={formData.is_local}
+                    onCheckedChange={(checked) => setFormData({...formData, is_local: checked})}
+                  />
+                  <span className="text-sm text-gray-500">Local</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid gap-2">
+              <Label htmlFor="type">Tipo de Impressora *</Label>
               <Select
                 value={formData.type}
                 onValueChange={(value: 'thermal' | 'laser' | 'inkjet' | 'other') => {
@@ -1073,27 +1111,36 @@ export default function PrintersPage() {
               </Select>
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="ip">Endereço IP *</Label>
-                <Input
-                  id="ip"
-                  value={formData.ip_address}
-                  onChange={(e) => setFormData({...formData, ip_address: e.target.value})}
-                  placeholder="192.168.1.100"
-                />
+            {formData.is_local ? (
+              <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                <p className="text-sm text-blue-700 dark:text-blue-400">
+                  💻 Esta impressora será detectada automaticamente do sistema Windows local. 
+                  Certifique-se de que ela está instalada e configurada no sistema.
+                </p>
               </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="port">Porta *</Label>
-                <Input
-                  id="port"
-                  value={formData.port}
-                  onChange={(e) => setFormData({...formData, port: e.target.value})}
-                  placeholder="9100"
-                />
+            ) : (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="ip">Endereço IP *</Label>
+                  <Input
+                    id="ip"
+                    value={formData.ip_address}
+                    onChange={(e) => setFormData({...formData, ip_address: e.target.value})}
+                    placeholder="192.168.1.100"
+                  />
+                </div>
+                
+                <div className="grid gap-2">
+                  <Label htmlFor="port">Porta *</Label>
+                  <Input
+                    id="port"
+                    value={formData.port}
+                    onChange={(e) => setFormData({...formData, port: e.target.value})}
+                    placeholder="9100"
+                  />
+                </div>
               </div>
-            </div>
+            )}
             
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">

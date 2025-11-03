@@ -66,6 +66,7 @@ export interface Database {
           port: string
           type: 'thermal' | 'laser' | 'inkjet' | 'other'
           is_main: boolean
+          is_local: boolean
           active: boolean
           description: string | null
           sort_order: number
