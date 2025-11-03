@@ -498,22 +498,55 @@ export default function PrintersPage() {
   };
   
   const addDiscoveredPrinter = async (discoveredPrinter: any) => {
-    // Preencher formulário com dados da impressora descoberta
-    setFormData({
-      name: discoveredPrinter.name,
-      ip_address: discoveredPrinter.ip,
-      port: String(discoveredPrinter.port),
-      type: 'thermal',
-      printer_model: discoveredPrinter.model,
-      is_main: false,
-      active: true,
-      sort_order: printers.length
-    });
-    
-    // Fechar modal de descoberta e abrir modal de adição
-    setShowDiscoverModal(false);
-    setEditingPrinter(null);
-    setIsModalOpen(true);
+    try {
+      setSaving(true);
+      
+      // Preparar dados da impressora
+      const printerData = {
+        name: discoveredPrinter.name,
+        ip_address: discoveredPrinter.isLocal ? 'LOCAL' : (discoveredPrinter.ip || 'localhost'),
+        port: discoveredPrinter.isLocal ? '0' : String(discoveredPrinter.port || '9100'),
+        type: discoveredPrinter.type === 'thermal' ? 'thermal' : 'other',
+        printer_model: discoveredPrinter.model || discoveredPrinter.driver || 'Detectado automaticamente',
+        is_main: false,
+        active: true,
+        sort_order: Math.floor(printers.length),
+        connection_status: 'unknown'
+      };
+
+      console.log('Adicionando impressora:', printerData);
+
+      // Adicionar ao banco de dados
+      const { data, error } = await supabase
+        .from('printers')
+        .insert([printerData])
+        .select();
+
+      if (error) {
+        console.error('Erro ao adicionar impressora:', error);
+        toast.error(`Erro ao adicionar impressora: ${error.message}`);
+        return;
+      }
+
+      toast.success(`✅ Impressora "${discoveredPrinter.name}" adicionada com sucesso!`);
+      
+      // Atualizar lista de impressoras
+      mutate('printers');
+      
+      // Remover da lista de impressoras descobertas
+      setDiscoveredPrinters(prev => prev.filter((p: any) => p.name !== discoveredPrinter.name));
+      
+      // Se não houver mais impressoras descobertas, fechar o modal
+      if (discoveredPrinters.length <= 1) {
+        setShowDiscoverModal(false);
+      }
+      
+    } catch (error) {
+      console.error('Erro ao adicionar impressora:', error);
+      toast.error('Erro ao adicionar impressora');
+    } finally {
+      setSaving(false);
+    }
   };
 
   const openModal = (printer?: Printer) => {
@@ -1156,12 +1189,11 @@ export default function PrintersPage() {
                 {discoveredPrinters.map((printer: any, index: number) => (
                   <div
                     key={index}
-                    className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer transition-colors ${
+                    className={`p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors ${
                       printer.isLocal 
                         ? 'border-orange-300 dark:border-orange-700 bg-orange-50/50 dark:bg-orange-900/20' 
                         : 'border-green-300 dark:border-green-700'
                     }`}
-                    onClick={() => addDiscoveredPrinter(printer)}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
@@ -1221,8 +1253,14 @@ export default function PrintersPage() {
                         variant="outline"
                         size="sm"
                         className="border-orange-500 text-orange-500 hover:bg-orange-50"
+                        onClick={() => addDiscoveredPrinter(printer)}
+                        disabled={saving}
                       >
-                        <Plus className="h-4 w-4 mr-1" />
+                        {saving ? (
+                          <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                        ) : (
+                          <Plus className="h-4 w-4 mr-1" />
+                        )}
                         Adicionar
                       </Button>
                     </div>
