@@ -790,20 +790,20 @@ export default function PrintersPage() {
   const getConnectionStatusIcon = (status?: string) => {
     switch (status) {
       case 'online':
-        return <Wifi className="h-4 w-4" />;
+        return <Wifi className="h-3 w-3" />;
       case 'offline':
-        return <WifiOff className="h-4 w-4" />;
+        return <WifiOff className="h-3 w-3" />;
       case 'error':
-        return <AlertCircle className="h-4 w-4" />;
+        return <AlertCircle className="h-3 w-3" />;
       default:
-        return <Loader2 className="h-4 w-4 animate-spin" />;
+        return <Loader2 className="h-3 w-3 animate-spin" />;
     }
   };
 
   const getConnectionStatusColor = (status?: string) => {
     switch (status) {
       case 'online':
-        return 'from-green-500 to-green-600';
+        return 'from-green-600 to-green-700';
       case 'offline':
         return 'from-red-500 to-red-600';
       case 'error':
@@ -937,52 +937,32 @@ export default function PrintersPage() {
                     
                     {/* Status Badge e Ações */}
                     <div className="flex items-center gap-2">
-                      {/* Status Badge Responsivo */}
-                      <div className="relative group">
+                      {/* Status Badge Compacto */}
+                      <div className="relative">
                         <div className={`
-                          flex items-center space-x-1.5 md:space-x-2 
-                          px-2.5 md:px-4 py-1.5 md:py-2 
+                          flex items-center space-x-1 
+                          px-2 py-1 
                           bg-gradient-to-r ${getConnectionStatusColor(printer.connection_status)} 
                           text-white rounded-full 
-                          shadow-md hover:shadow-xl
-                          transform transition-all duration-300 hover:scale-105
-                          backdrop-blur-sm bg-opacity-95
+                          shadow-sm
                         `}>
                           {/* Indicador de pulso para online */}
                           {printer.connection_status === 'online' && (
-                            <div className="absolute -top-1 -right-1 md:-top-2 md:-right-2">
-                              <span className="relative flex h-2.5 w-2.5 md:h-3 md:w-3">
+                            <div className="absolute -top-1 -right-1">
+                              <span className="relative flex h-2 w-2">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 md:h-3 md:w-3 bg-green-400 border border-white"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400 border border-white"></span>
                               </span>
                             </div>
                           )}
                           
-                          {/* Ícone com animação condicional */}
-                          <div className={printer.connection_status === 'online' ? 'animate-pulse' : ''}>
-                            {getConnectionStatusIcon(printer.connection_status)}
-                          </div>
+                          {/* Ícone */}
+                          {getConnectionStatusIcon(printer.connection_status)}
                           
-                          {/* Texto adaptativo */}
-                          <span className="hidden md:block text-xs md:text-sm font-bold uppercase tracking-wide">
-                            {getConnectionStatusText(printer.connection_status)}
-                          </span>
-                          <span className="block md:hidden text-xs font-bold">
+                          {/* Texto */}
+                          <span className="text-xs font-semibold">
                             {getConnectionStatusShortText(printer.connection_status)}
                           </span>
-                        </div>
-                        
-                        {/* Tooltip hover no desktop */}
-                        <div className="hidden group-hover:block absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 z-50">
-                          <div className="px-2 py-1 text-xs text-white bg-gray-900 rounded shadow-lg whitespace-nowrap">
-                            {printer.connection_status === 'online' ? '🟢 Impressora Online' : 
-                             printer.connection_status === 'offline' ? '🔴 Impressora Offline' :
-                             printer.connection_status === 'error' ? '⚠️ Erro de Conexão' :
-                             '🔄 Verificando Status...'}
-                          </div>
-                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1">
-                            <div className="border-4 border-transparent border-t-gray-900"></div>
-                          </div>
                         </div>
                       </div>
                       
