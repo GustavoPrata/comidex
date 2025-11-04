@@ -876,6 +876,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-height: var(--radix-dropdown-menu-content-available-height);
 }
 
+.max-h-\[600px\] {
+  max-height: 600px;
+}
+
 .min-h-\[120px\] {
   min-height: 120px;
 }
@@ -1382,6 +1386,12 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(.125rem * var(--tw-space-y-reverse));
 }
 
 .overflow-auto {
@@ -2542,6 +2552,21 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(133 77 14 / var(--tw-text-opacity, 1));
 }
 
+.text-blue-800 {
+  --tw-text-opacity: 1;
+  color: rgb(30 64 175 / var(--tw-text-opacity, 1));
+}
+
+.text-green-800 {
+  --tw-text-opacity: 1;
+  color: rgb(22 101 52 / var(--tw-text-opacity, 1));
+}
+
+.text-purple-800 {
+  --tw-text-opacity: 1;
+  color: rgb(107 33 168 / var(--tw-text-opacity, 1));
+}
+
 .underline-offset-4 {
   text-underline-offset: 4px;
 }
@@ -3143,6 +3168,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(185 28 28 / var(--tw-text-opacity, 1));
 }
 
+.hover\:text-red-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
 }
@@ -3651,6 +3681,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #713f124d;
 }
 
+.dark\:bg-purple-900\/30:is(.dark *) {
+  background-color: #581c874d;
+}
+
 .dark\:from-gray-700:is(.dark *) {
   --tw-gradient-from: #374151 var(--tw-gradient-from-position);
   --tw-gradient-to: #37415100 var(--tw-gradient-to-position);
@@ -3794,6 +3828,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:text-yellow-500:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-purple-400:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(192 132 252 / var(--tw-text-opacity, 1));
 }
 
 .dark\:placeholder\:text-gray-400:is(.dark *)::-moz-placeholder {
@@ -4029,6 +4068,14 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 }
 
 @media (min-width: 1280px) {
+  .xl\:col-span-1 {
+    grid-column: span 1 / span 1;
+  }
+
+  .xl\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+
   .xl\:grid-cols-10 {
     grid-template-columns: repeat(10, minmax(0, 1fr));
   }
