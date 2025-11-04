@@ -1,5 +1,6 @@
 {
   "/admin/print-config/page": "app/admin/print-config/page.js",
+  "/api/print-templates/route": "app/api/print-templates/route.js",
   "/api/printer-profiles/route": "app/api/printer-profiles/route.js",
   "/page": "app/page.js",
   "/prompt/page": "app/prompt/page.js"
