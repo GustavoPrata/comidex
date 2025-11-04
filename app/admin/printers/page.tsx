@@ -864,8 +864,9 @@ export default function PrintersPage() {
                 </button>
               </div>
               <Button 
+                variant="outline"
                 onClick={handleDetectLocalPrinters}
-                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+                className="rounded-full"
                 disabled={discovering}
                 title="Detectar impressoras instaladas no Windows"
               >
