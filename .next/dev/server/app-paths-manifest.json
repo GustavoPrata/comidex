@@ -1,5 +1,6 @@
 {
-  "/admin/additionals/page": "app/admin/additionals/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/printers/page": "app/admin/printers/page.js",
   "/page": "app/page.js",
   "/prompt/page": "app/prompt/page.js"
 }

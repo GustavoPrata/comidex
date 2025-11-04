@@ -1335,26 +1335,29 @@ export default function PrintersPage() {
           </div>
           
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="px-4 py-1 rounded-full text-xs font-medium transition-all bg-red-500 hover:bg-red-600 text-white"
+            >
               Cancelar
-            </Button>
-            <Button 
+            </button>
+            <button
               onClick={savePrinter} 
               disabled={saving}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="px-4 py-1 rounded-full text-xs font-medium transition-all bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-3 w-3 mr-1 animate-spin inline" />
                   Salvando...
                 </>
               ) : (
                 <>
-                  <Save className="h-4 w-4 mr-2" />
+                  <Save className="h-3 w-3 mr-1 inline" />
                   Salvar
                 </>
               )}
-            </Button>
+            </button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
