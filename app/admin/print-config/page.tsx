@@ -458,42 +458,37 @@ export default function PrintConfigPage() {
 
                   {/* Actions */}
                   <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1 rounded-full text-xs"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        openProfileModal(profile);
-                      }}
-                    >
-                      <Edit className="h-3 w-3 mr-1" />
-                      Editar
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1 rounded-full text-xs"
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         duplicateProfile(profile);
                       }}
+                      className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                      title="Duplicar"
                     >
-                      <Copy className="h-3 w-3 mr-1" />
-                      Duplicar
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="rounded-full text-xs hover:text-red-500"
+                      <Copy className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openProfileModal(profile);
+                      }}
+                      className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                      title="Editar"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setDeleteTarget({ type: 'profile', item: profile });
                         setIsDeleteModalOpen(true);
                       }}
+                      className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                      title="Excluir"
                     >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -657,26 +652,23 @@ export default function PrintConfigPage() {
                             </div>
 
                             <div className="flex gap-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="flex-1 rounded-full text-xs"
+                              <button
                                 onClick={() => openTemplateModal(template)}
+                                className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                                title="Editar"
                               >
-                                <Edit className="h-3 w-3 mr-1" />
-                                Editar
-                              </Button>
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                className="rounded-full text-xs hover:text-red-500"
+                                <Edit className="h-4 w-4" />
+                              </button>
+                              <button
                                 onClick={() => {
                                   setDeleteTarget({ type: 'template', item: template });
                                   setIsDeleteModalOpen(true);
                                 }}
+                                className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                                title="Excluir"
                               >
-                                <Trash2 className="h-3 w-3" />
-                              </Button>
+                                <Trash2 className="h-4 w-4" />
+                              </button>
                             </div>
                           </div>
                         ))}
