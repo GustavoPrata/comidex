@@ -6,10 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
-import { Slider } from "@/components/ui/slider";
 import { 
   Dialog, 
   DialogContent, 
@@ -35,12 +33,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { toast } from "react-hot-toast";
 import { 
   Settings, 
@@ -52,23 +44,18 @@ import {
   Trash2,
   FileText,
   Copy,
-  ChevronRight,
-  Maximize2,
-  Type,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  Scissors,
-  QrCode,
-  Barcode,
-  CreditCard,
-  Check,
-  X,
-  MoreVertical,
   Search,
   Power,
   PowerOff,
-  Info
+  Scissors,
+  QrCode,
+  Barcode,
+  Check,
+  X,
+  ChevronRight,
+  Info,
+  Cpu,
+  Maximize2
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -161,7 +148,7 @@ export default function PrintConfigPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{ type: 'profile' | 'template', item: any } | null>(null);
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState('profiles');
+  const [activeView, setActiveView] = useState<'list' | 'detail'>('list');
 
   // Fetch profiles and templates
   const { data: profiles, error: profilesError } = useSWR('/api/printer-profiles', async (url) => {
@@ -337,6 +324,7 @@ export default function PrintConfigPage() {
       if (deleteTarget.type === 'profile') {
         mutate('/api/printer-profiles');
         setSelectedProfile(null);
+        setActiveView('list');
       } else {
         mutate(`/api/print-templates?profile_id=${selectedProfile?.id}`);
       }
@@ -380,300 +368,299 @@ export default function PrintConfigPage() {
     }
   };
 
+  const handleProfileClick = (profile: PrinterProfile) => {
+    setSelectedProfile(profile);
+    setActiveView('detail');
+  };
+
   return (
-    <div className="container mx-auto p-6 max-w-7xl">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
-            <Settings className="h-8 w-8 text-orange-500" />
-            Configuração de Impressoras
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
+    <div className="min-h-screen">
+      {/* Header no padrão do app */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Settings className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configuração de Impressoras</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar perfis..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
+              <Button 
+                onClick={() => openProfileModal()}
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Perfil
+              </Button>
+            </div>
+          </div>
+
+          <div className="text-sm text-gray-500 dark:text-gray-400">
             Gerencie perfis de impressoras e templates de impressão
-          </p>
+          </div>
         </div>
-        <Button 
-          onClick={() => openProfileModal()} 
-          className="bg-orange-500 hover:bg-orange-600 text-white"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Novo Perfil
-        </Button>
       </div>
 
-      {/* Search Bar */}
-      <Card className="mb-6">
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <Input
-              placeholder="Buscar perfis..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Main Content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Profiles List */}
-        <div className="lg:col-span-1">
-          <Card className="h-full">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-semibold flex items-center gap-2">
-                  <PrinterIcon className="h-5 w-5 text-orange-500" />
-                  Perfis de Impressora
-                </h2>
-                <Badge variant="secondary">
-                  {filteredProfiles?.length || 0} perfis
-                </Badge>
-              </div>
-              
-              <div className="space-y-2 max-h-[600px] overflow-y-auto">
-                {filteredProfiles?.map((profile: PrinterProfile) => (
-                  <div
-                    key={profile.id}
-                    className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                      selectedProfile?.id === profile.id
-                        ? 'bg-orange-50 border-orange-300 dark:bg-orange-900/20'
-                        : 'bg-white hover:bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700'
-                    }`}
-                    onClick={() => setSelectedProfile(profile)}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-medium text-sm">{profile.name}</h3>
-                          {profile.active ? (
-                            <Badge className="text-xs bg-green-100 text-green-700">
-                              Ativo
-                            </Badge>
-                          ) : (
-                            <Badge className="text-xs bg-gray-100 text-gray-600">
-                              Inativo
-                            </Badge>
-                          )}
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {profile.manufacturer} - {profile.model}
-                        </p>
-                        <div className="flex gap-2 mt-2">
-                          <Badge variant="outline" className="text-xs">
-                            {profile.paper_width}mm
-                          </Badge>
-                          <Badge variant="outline" className="text-xs">
-                            {profile.dpi} DPI
-                          </Badge>
-                        </div>
+      {/* Content */}
+      <div className="p-4">
+        {activeView === 'list' ? (
+          // Lista de Perfis
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {filteredProfiles?.map((profile: PrinterProfile) => (
+              <div
+                key={profile.id}
+                className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm overflow-hidden transition-all hover:shadow-lg cursor-pointer"
+                onClick={() => handleProfileClick(profile)}
+              >
+                <div className="p-6">
+                  {/* Header do Card */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Cpu className="h-5 w-5 text-orange-500" />
+                        <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">
+                          {profile.name}
+                        </h3>
                       </div>
-                      
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={(e) => {
-                            e.stopPropagation();
-                            openProfileModal(profile);
-                          }}>
-                            <Edit className="h-4 w-4 mr-2" />
-                            Editar
-                          </DropdownMenuItem>
-                          <DropdownMenuItem onClick={(e) => {
-                            e.stopPropagation();
-                            duplicateProfile(profile);
-                          }}>
-                            <Copy className="h-4 w-4 mr-2" />
-                            Duplicar
-                          </DropdownMenuItem>
-                          <DropdownMenuItem 
-                            className="text-red-600"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setDeleteTarget({ type: 'profile', item: profile });
-                              setIsDeleteModalOpen(true);
-                            }}
-                          >
-                            <Trash2 className="h-4 w-4 mr-2" />
-                            Excluir
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
+                        {profile.manufacturer}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {profile.model}
+                      </div>
+                    </div>
+                    
+                    {/* Status Badge */}
+                    {profile.active ? (
+                      <Badge className="bg-green-100 text-green-700">
+                        <Check className="h-3 w-3 mr-1" />
+                        Ativo
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-gray-100 text-gray-600">
+                        <X className="h-3 w-3 mr-1" />
+                        Inativo
+                      </Badge>
+                    )}
+                  </div>
+
+                  {/* Specs */}
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-500">Largura:</span>
+                      <Badge variant="outline" className="text-xs">{profile.paper_width}mm</Badge>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-500">Resolução:</span>
+                      <Badge variant="outline" className="text-xs">{profile.dpi} DPI</Badge>
+                    </div>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-500">Charset:</span>
+                      <Badge variant="outline" className="text-xs">{profile.charset}</Badge>
                     </div>
                   </div>
-                ))}
+
+                  {/* Features */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {profile.supports_cut && (
+                      <Badge variant="secondary" className="text-xs">
+                        <Scissors className="h-3 w-3 mr-1" />
+                        Corte
+                      </Badge>
+                    )}
+                    {profile.supports_drawer && (
+                      <Badge variant="secondary" className="text-xs">
+                        <CreditCard className="h-3 w-3 mr-1" />
+                        Gaveta
+                      </Badge>
+                    )}
+                    <Badge variant="secondary" className="text-xs">
+                      {profile.connection_type === 'network' ? 'Rede' :
+                       profile.connection_type === 'usb' ? 'USB' :
+                       profile.connection_type === 'serial' ? 'Serial' : 'Bluetooth'}
+                    </Badge>
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 rounded-full text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openProfileModal(profile);
+                      }}
+                    >
+                      <Edit className="h-3 w-3 mr-1" />
+                      Editar
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1 rounded-full text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        duplicateProfile(profile);
+                      }}
+                    >
+                      <Copy className="h-3 w-3 mr-1" />
+                      Duplicar
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="rounded-full text-xs hover:text-red-500"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteTarget({ type: 'profile', item: profile });
+                        setIsDeleteModalOpen(true);
+                      }}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </div>
+            ))}
+          </div>
+        ) : (
+          // Detalhe do Perfil
+          <div className="max-w-6xl mx-auto">
+            <div className="mb-4">
+              <Button
+                variant="ghost"
+                className="rounded-full"
+                onClick={() => {
+                  setActiveView('list');
+                  setSelectedProfile(null);
+                }}
+              >
+                ← Voltar para lista
+              </Button>
+            </div>
 
-        {/* Profile Details & Templates */}
-        <div className="lg:col-span-2">
-          {selectedProfile ? (
-            <Card>
-              <CardContent className="p-6">
-                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-4">
-                    <TabsTrigger value="profiles" className="flex items-center gap-2">
-                      <Info className="h-4 w-4" />
-                      Detalhes do Perfil
-                    </TabsTrigger>
-                    <TabsTrigger value="templates" className="flex items-center gap-2">
-                      <FileText className="h-4 w-4" />
-                      Templates
-                    </TabsTrigger>
-                  </TabsList>
-
-                  <TabsContent value="profiles" className="mt-4">
-                    <div className="space-y-6">
-                      {/* Profile Header */}
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="text-xl font-semibold">{selectedProfile.name}</h3>
-                          <p className="text-gray-500">{selectedProfile.manufacturer} - {selectedProfile.model}</p>
+            {selectedProfile && (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Profile Info */}
+                <div className="lg:col-span-1">
+                  <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-3 mb-6">
+                        <div className="p-3 rounded-2xl bg-orange-100 dark:bg-orange-900/30">
+                          <Cpu className="h-6 w-6 text-orange-500" />
                         </div>
+                        <div>
+                          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                            {selectedProfile.name}
+                          </h2>
+                          <p className="text-sm text-gray-500">
+                            {selectedProfile.manufacturer} - {selectedProfile.model}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
+                          <h3 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                            Especificações
+                          </h3>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Largura:</span>
+                              <span className="font-medium">{selectedProfile.paper_width}mm</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">DPI:</span>
+                              <span className="font-medium">{selectedProfile.dpi}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Charset:</span>
+                              <span className="font-medium">{selectedProfile.charset}</span>
+                            </div>
+                            <div className="flex justify-between text-sm">
+                              <span className="text-gray-500">Conexão:</span>
+                              <span className="font-medium">
+                                {selectedProfile.connection_type === 'network' ? 'Rede' :
+                                 selectedProfile.connection_type === 'usb' ? 'USB' :
+                                 selectedProfile.connection_type === 'serial' ? 'Serial' : 'Bluetooth'}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
+                          <h3 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                            Recursos
+                          </h3>
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-500">Corte Automático</span>
+                              {selectedProfile.supports_cut ? (
+                                <Badge className="bg-green-100 text-green-700">
+                                  <Check className="h-3 w-3 mr-1" />
+                                  Sim
+                                </Badge>
+                              ) : (
+                                <Badge className="bg-gray-100 text-gray-600">
+                                  <X className="h-3 w-3 mr-1" />
+                                  Não
+                                </Badge>
+                              )}
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-gray-500">Gaveta</span>
+                              {selectedProfile.supports_drawer ? (
+                                <Badge className="bg-green-100 text-green-700">
+                                  <Check className="h-3 w-3 mr-1" />
+                                  Sim
+                                </Badge>
+                              ) : (
+                                <Badge className="bg-gray-100 text-gray-600">
+                                  <X className="h-3 w-3 mr-1" />
+                                  Não
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
                         <Button
-                          variant="outline"
-                          size="sm"
+                          className="w-full rounded-full bg-orange-500 hover:bg-orange-600 text-white"
                           onClick={() => openProfileModal(selectedProfile)}
                         >
                           <Edit className="h-4 w-4 mr-2" />
                           Editar Perfil
                         </Button>
                       </div>
+                    </CardContent>
+                  </Card>
+                </div>
 
-                      {/* Profile Details Grid */}
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="space-y-4">
-                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
-                              Configurações do Papel
-                            </h4>
-                            <div className="space-y-2">
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-500">Largura:</span>
-                                <Badge variant="outline">{selectedProfile.paper_width}mm</Badge>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-500">DPI:</span>
-                                <Badge variant="outline">{selectedProfile.dpi}</Badge>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-500">Margens:</span>
-                                <span className="text-sm">
-                                  {selectedProfile.margin_top}/{selectedProfile.margin_right}/{selectedProfile.margin_bottom}/{selectedProfile.margin_left}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
-                              Configurações de Fonte
-                            </h4>
-                            <div className="space-y-2">
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-500">Charset:</span>
-                                <Badge variant="outline">{selectedProfile.charset}</Badge>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-500">Tabela de Código:</span>
-                                <Badge variant="outline">{selectedProfile.code_table}</Badge>
-                              </div>
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-500">Espaçamento:</span>
-                                <span className="text-sm">{selectedProfile.line_spacing}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="space-y-4">
-                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
-                              Recursos de Hardware
-                            </h4>
-                            <div className="space-y-2">
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-500">Corte Automático:</span>
-                                {selectedProfile.supports_cut ? (
-                                  <Badge className="bg-green-100 text-green-700">
-                                    <Check className="h-3 w-3 mr-1" />
-                                    Suportado
-                                  </Badge>
-                                ) : (
-                                  <Badge className="bg-gray-100 text-gray-600">
-                                    <X className="h-3 w-3 mr-1" />
-                                    Não Suportado
-                                  </Badge>
-                                )}
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-500">Gaveta de Dinheiro:</span>
-                                {selectedProfile.supports_drawer ? (
-                                  <Badge className="bg-green-100 text-green-700">
-                                    <Check className="h-3 w-3 mr-1" />
-                                    Suportado
-                                  </Badge>
-                                ) : (
-                                  <Badge className="bg-gray-100 text-gray-600">
-                                    <X className="h-3 w-3 mr-1" />
-                                    Não Suportado
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
-                              Informações Gerais
-                            </h4>
-                            <div className="space-y-2">
-                              <div className="flex justify-between">
-                                <span className="text-sm text-gray-500">Conexão:</span>
-                                <Badge variant="outline">
-                                  {selectedProfile.connection_type === 'network' ? 'Rede' :
-                                   selectedProfile.connection_type === 'usb' ? 'USB' :
-                                   selectedProfile.connection_type === 'serial' ? 'Serial' :
-                                   'Bluetooth'}
-                                </Badge>
-                              </div>
-                              <div className="flex justify-between items-center">
-                                <span className="text-sm text-gray-500">Status:</span>
-                                {selectedProfile.active ? (
-                                  <Badge className="bg-green-100 text-green-700">
-                                    <Power className="h-3 w-3 mr-1" />
-                                    Ativo
-                                  </Badge>
-                                ) : (
-                                  <Badge className="bg-gray-100 text-gray-600">
-                                    <PowerOff className="h-3 w-3 mr-1" />
-                                    Inativo
-                                  </Badge>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="templates" className="mt-4">
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center">
-                        <h3 className="text-lg font-semibold">Templates de Impressão</h3>
+                {/* Templates */}
+                <div className="lg:col-span-2">
+                  <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
+                          Templates de Impressão
+                        </h2>
                         <Button
                           size="sm"
+                          className="rounded-full bg-orange-500 hover:bg-orange-600 text-white"
                           onClick={() => openTemplateModal()}
-                          className="bg-orange-500 hover:bg-orange-600 text-white"
                         >
                           <Plus className="h-4 w-4 mr-2" />
                           Novo Template
@@ -682,102 +669,122 @@ export default function PrintConfigPage() {
 
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {templates?.map((template: PrintTemplate) => (
-                          <Card key={template.id} className="hover:shadow-md transition-shadow">
-                            <CardContent className="p-4">
-                              <div className="flex justify-between items-start">
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <FileText className="h-4 w-4 text-orange-500" />
-                                    <h4 className="font-medium">{template.name}</h4>
-                                    {template.active ? (
-                                      <Badge className="text-xs bg-green-100 text-green-700">
-                                        Ativo
-                                      </Badge>
-                                    ) : (
-                                      <Badge className="text-xs bg-gray-100 text-gray-600">
-                                        Inativo
-                                      </Badge>
-                                    )}
-                                  </div>
-                                  <p className="text-sm text-gray-500 mb-2">{template.description}</p>
-                                  
-                                  <div className="flex flex-wrap gap-2">
-                                    <Badge variant="outline" className="text-xs">
-                                      {TEMPLATE_TYPES.find(t => t.value === template.template_type)?.label}
-                                    </Badge>
-                                    {template.show_qrcode && (
-                                      <Badge variant="outline" className="text-xs">
-                                        <QrCode className="h-3 w-3 mr-1" />
-                                        QR Code
-                                      </Badge>
-                                    )}
-                                    {template.show_barcode && (
-                                      <Badge variant="outline" className="text-xs">
-                                        <Barcode className="h-3 w-3 mr-1" />
-                                        Código de Barras
-                                      </Badge>
-                                    )}
-                                    {template.cut_paper && (
-                                      <Badge variant="outline" className="text-xs">
-                                        <Scissors className="h-3 w-3 mr-1" />
-                                        Corte
-                                      </Badge>
-                                    )}
-                                  </div>
-                                </div>
-
-                                <DropdownMenu>
-                                  <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
-                                      <MoreVertical className="h-4 w-4" />
-                                    </Button>
-                                  </DropdownMenuTrigger>
-                                  <DropdownMenuContent align="end">
-                                    <DropdownMenuItem onClick={() => openTemplateModal(template)}>
-                                      <Edit className="h-4 w-4 mr-2" />
-                                      Editar
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem 
-                                      className="text-red-600"
-                                      onClick={() => {
-                                        setDeleteTarget({ type: 'template', item: template });
-                                        setIsDeleteModalOpen(true);
-                                      }}
-                                    >
-                                      <Trash2 className="h-4 w-4 mr-2" />
-                                      Excluir
-                                    </DropdownMenuItem>
-                                  </DropdownMenuContent>
-                                </DropdownMenu>
+                          <div
+                            key={template.id}
+                            className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-700/50 hover:shadow-md transition-shadow"
+                          >
+                            <div className="flex items-start justify-between mb-3">
+                              <div className="flex items-center gap-2">
+                                <FileText className="h-4 w-4 text-orange-500" />
+                                <h3 className="font-medium">{template.name}</h3>
                               </div>
-                            </CardContent>
-                          </Card>
+                              {template.active ? (
+                                <Badge className="bg-green-100 text-green-700 text-xs">
+                                  Ativo
+                                </Badge>
+                              ) : (
+                                <Badge className="bg-gray-100 text-gray-600 text-xs">
+                                  Inativo
+                                </Badge>
+                              )}
+                            </div>
+                            
+                            <p className="text-sm text-gray-500 mb-3">{template.description}</p>
+                            
+                            <div className="flex flex-wrap gap-1.5 mb-3">
+                              <Badge variant="outline" className="text-xs">
+                                {TEMPLATE_TYPES.find(t => t.value === template.template_type)?.label}
+                              </Badge>
+                              {template.show_qrcode && (
+                                <Badge variant="outline" className="text-xs">
+                                  <QrCode className="h-3 w-3 mr-1" />
+                                  QR
+                                </Badge>
+                              )}
+                              {template.show_barcode && (
+                                <Badge variant="outline" className="text-xs">
+                                  <Barcode className="h-3 w-3 mr-1" />
+                                  Código
+                                </Badge>
+                              )}
+                              {template.cut_paper && (
+                                <Badge variant="outline" className="text-xs">
+                                  <Scissors className="h-3 w-3 mr-1" />
+                                  Corte
+                                </Badge>
+                              )}
+                            </div>
+
+                            <div className="flex gap-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="flex-1 rounded-full text-xs"
+                                onClick={() => openTemplateModal(template)}
+                              >
+                                <Edit className="h-3 w-3 mr-1" />
+                                Editar
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="rounded-full text-xs hover:text-red-500"
+                                onClick={() => {
+                                  setDeleteTarget({ type: 'template', item: template });
+                                  setIsDeleteModalOpen(true);
+                                }}
+                              >
+                                <Trash2 className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          </div>
                         ))}
                       </div>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
-          ) : (
-            <Card>
-              <CardContent className="p-12 text-center">
-                <PrinterIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
-                  Selecione um Perfil
-                </h3>
-                <p className="text-gray-500">
-                  Escolha um perfil de impressora na lista ao lado para ver os detalhes e configurar templates
-                </p>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+
+                      {(!templates || templates.length === 0) && (
+                        <div className="text-center py-12">
+                          <FileText className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+                          <p className="text-gray-500">Nenhum template configurado</p>
+                          <p className="text-sm text-gray-400 mt-1">
+                            Crie templates para diferentes tipos de impressão
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Empty State */}
+        {!profiles || (filteredProfiles?.length === 0 && activeView === 'list') && (
+          <div className="text-center py-16 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-orange-100 dark:bg-orange-900/30 mb-4">
+              <Settings className="h-10 w-10 text-orange-500" />
+            </div>
+            <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
+              {searchTerm 
+                ? 'Nenhum perfil encontrado'
+                : 'Nenhum perfil cadastrado'}
+            </p>
+            {!searchTerm && (
+              <Button 
+                onClick={() => openProfileModal()}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-full shadow-lg hover:shadow-xl"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Criar Primeiro Perfil
+              </Button>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Profile Modal */}
       <Dialog open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
               {selectedProfile?.id ? 'Editar Perfil' : 'Novo Perfil'}
@@ -788,7 +795,7 @@ export default function PrintConfigPage() {
           </DialogHeader>
 
           {selectedProfile && (
-            <div className="space-y-6 mt-4">
+            <div className="space-y-4 mt-4">
               {/* Basic Info */}
               <div className="grid grid-cols-3 gap-4">
                 <div>
@@ -829,15 +836,15 @@ export default function PrintConfigPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="network">Rede (Ethernet/WiFi)</SelectItem>
+                      <SelectItem value="network">Rede</SelectItem>
                       <SelectItem value="usb">USB</SelectItem>
-                      <SelectItem value="serial">Serial (COM)</SelectItem>
+                      <SelectItem value="serial">Serial</SelectItem>
                       <SelectItem value="bluetooth">Bluetooth</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label>Largura do Papel (mm)</Label>
+                  <Label>Largura (mm)</Label>
                   <Select
                     value={selectedProfile.paper_width.toString()}
                     onValueChange={(value) => setSelectedProfile({ ...selectedProfile, paper_width: parseInt(value) })}
@@ -872,40 +879,30 @@ export default function PrintConfigPage() {
                 </div>
               </div>
 
-              {/* Charset & Code */}
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>Charset</Label>
-                  <Select
-                    value={selectedProfile.charset}
-                    onValueChange={(value) => setSelectedProfile({ ...selectedProfile, charset: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {CHARSETS.map(charset => (
-                        <SelectItem key={charset} value={charset}>{charset}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label>Tabela de Código</Label>
-                  <Input
-                    value={selectedProfile.code_table}
-                    onChange={(e) => setSelectedProfile({ ...selectedProfile, code_table: e.target.value })}
-                    placeholder="Ex: PC437"
-                  />
-                </div>
+              {/* Charset */}
+              <div>
+                <Label>Charset</Label>
+                <Select
+                  value={selectedProfile.charset}
+                  onValueChange={(value) => setSelectedProfile({ ...selectedProfile, charset: value })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {CHARSETS.map(charset => (
+                      <SelectItem key={charset} value={charset}>{charset}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Hardware Features */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                   <div>
-                    <Label>Suporte a Corte Automático</Label>
-                    <p className="text-xs text-gray-500">Impressora possui guilhotina</p>
+                    <Label className="text-sm">Corte Automático</Label>
+                    <p className="text-xs text-gray-500 mt-0.5">Impressora possui guilhotina</p>
                   </div>
                   <Switch
                     checked={selectedProfile.supports_cut}
@@ -913,21 +910,10 @@ export default function PrintConfigPage() {
                   />
                 </div>
 
-                {selectedProfile.supports_cut && (
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                   <div>
-                    <Label>Comando de Corte</Label>
-                    <Input
-                      value={selectedProfile.cut_command}
-                      onChange={(e) => setSelectedProfile({ ...selectedProfile, cut_command: e.target.value })}
-                      placeholder="Ex: GS V 0"
-                    />
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>Suporte a Gaveta de Dinheiro</Label>
-                    <p className="text-xs text-gray-500">Pode abrir gaveta registradora</p>
+                    <Label className="text-sm">Gaveta de Dinheiro</Label>
+                    <p className="text-xs text-gray-500 mt-0.5">Pode abrir gaveta registradora</p>
                   </div>
                   <Switch
                     checked={selectedProfile.supports_drawer}
@@ -935,35 +921,16 @@ export default function PrintConfigPage() {
                   />
                 </div>
 
-                {selectedProfile.supports_drawer && (
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                   <div>
-                    <Label>Pino da Gaveta</Label>
-                    <Select
-                      value={selectedProfile.drawer_pin}
-                      onValueChange={(value) => setSelectedProfile({ ...selectedProfile, drawer_pin: value })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="2">Pino 2</SelectItem>
-                        <SelectItem value="5">Pino 5</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label className="text-sm">Perfil Ativo</Label>
+                    <p className="text-xs text-gray-500 mt-0.5">Disponível para uso</p>
                   </div>
-                )}
-              </div>
-
-              {/* Status */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>Perfil Ativo</Label>
-                  <p className="text-xs text-gray-500">Disponível para uso nas impressoras</p>
+                  <Switch
+                    checked={selectedProfile.active}
+                    onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, active: checked })}
+                  />
                 </div>
-                <Switch
-                  checked={selectedProfile.active}
-                  onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, active: checked })}
-                />
               </div>
             </div>
           )}
@@ -995,7 +962,7 @@ export default function PrintConfigPage() {
 
       {/* Template Modal */}
       <Dialog open={isTemplateModalOpen} onOpenChange={setIsTemplateModalOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {selectedTemplate?.id ? 'Editar Template' : 'Novo Template'}
@@ -1006,7 +973,7 @@ export default function PrintConfigPage() {
           </DialogHeader>
 
           {selectedTemplate && (
-            <div className="space-y-6 mt-4">
+            <div className="space-y-4 mt-4">
               {/* Basic Info */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -1042,16 +1009,16 @@ export default function PrintConfigPage() {
                 <Input
                   value={selectedTemplate.description}
                   onChange={(e) => setSelectedTemplate({ ...selectedTemplate, description: e.target.value })}
-                  placeholder="Ex: Template padrão para cupom fiscal com logo e QR Code"
+                  placeholder="Ex: Template padrão para cupom fiscal"
                 />
               </div>
 
-              {/* Header Settings */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
+              {/* Features */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                   <div>
-                    <Label>Cabeçalho</Label>
-                    <p className="text-xs text-gray-500">Nome do estabelecimento e informações</p>
+                    <Label className="text-sm">Cabeçalho</Label>
+                    <p className="text-xs text-gray-500 mt-0.5">Nome do estabelecimento</p>
                   </div>
                   <Switch
                     checked={selectedTemplate.header_enabled}
@@ -1059,57 +1026,10 @@ export default function PrintConfigPage() {
                   />
                 </div>
 
-                {selectedTemplate.header_enabled && (
-                  <div className="grid grid-cols-3 gap-4 pl-6">
-                    <div>
-                      <Label>Alinhamento</Label>
-                      <Select
-                        value={selectedTemplate.header_align}
-                        onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, header_align: value })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="left">Esquerda</SelectItem>
-                          <SelectItem value="center">Centro</SelectItem>
-                          <SelectItem value="right">Direita</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <Label>Tamanho da Fonte</Label>
-                      <Select
-                        value={selectedTemplate.header_size.toString()}
-                        onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, header_size: parseInt(value) })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="1">Normal</SelectItem>
-                          <SelectItem value="2">Grande</SelectItem>
-                          <SelectItem value="3">Extra Grande</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Switch
-                        checked={selectedTemplate.header_bold}
-                        onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, header_bold: checked })}
-                      />
-                      <Label>Negrito</Label>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Footer Settings */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
                   <div>
-                    <Label>Rodapé</Label>
-                    <p className="text-xs text-gray-500">Mensagem de agradecimento</p>
+                    <Label className="text-sm">Rodapé</Label>
+                    <p className="text-xs text-gray-500 mt-0.5">Mensagem de agradecimento</p>
                   </div>
                   <Switch
                     checked={selectedTemplate.footer_enabled}
@@ -1118,73 +1038,41 @@ export default function PrintConfigPage() {
                 </div>
 
                 {selectedTemplate.footer_enabled && (
-                  <>
-                    <Input
-                      value={selectedTemplate.footer_text}
-                      onChange={(e) => setSelectedTemplate({ ...selectedTemplate, footer_text: e.target.value })}
-                      placeholder="Ex: Obrigado pela preferência!"
-                      className="ml-6"
-                    />
-                    <div className="ml-6">
-                      <Label>Alinhamento do Rodapé</Label>
-                      <Select
-                        value={selectedTemplate.footer_align}
-                        onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, footer_align: value })}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="left">Esquerda</SelectItem>
-                          <SelectItem value="center">Centro</SelectItem>
-                          <SelectItem value="right">Direita</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </>
+                  <Input
+                    value={selectedTemplate.footer_text}
+                    onChange={(e) => setSelectedTemplate({ ...selectedTemplate, footer_text: e.target.value })}
+                    placeholder="Ex: Obrigado pela preferência!"
+                  />
                 )}
-              </div>
 
-              {/* Special Features */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={selectedTemplate.show_qrcode}
-                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_qrcode: checked })}
-                  />
-                  <Label>QR Code</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={selectedTemplate.show_barcode}
-                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_barcode: checked })}
-                  />
-                  <Label>Código de Barras</Label>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={selectedTemplate.show_logo}
-                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_logo: checked })}
-                  />
-                  <Label>Logo</Label>
-                </div>
-              </div>
-
-              {/* Cut Settings */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <Label>Corte de Papel</Label>
-                    <p className="text-xs text-gray-500">Cortar papel após impressão</p>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                    <Label className="text-sm">QR Code</Label>
+                    <Switch
+                      checked={selectedTemplate.show_qrcode}
+                      onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_qrcode: checked })}
+                    />
                   </div>
-                  <Switch
-                    checked={selectedTemplate.cut_paper}
-                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, cut_paper: checked })}
-                  />
+
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                    <Label className="text-sm">Código Barras</Label>
+                    <Switch
+                      checked={selectedTemplate.show_barcode}
+                      onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_barcode: checked })}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                    <Label className="text-sm">Corte</Label>
+                    <Switch
+                      checked={selectedTemplate.cut_paper}
+                      onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, cut_paper: checked })}
+                    />
+                  </div>
                 </div>
 
                 {selectedTemplate.cut_paper && (
-                  <div className="ml-6">
+                  <div>
                     <Label>Tipo de Corte</Label>
                     <Select
                       value={selectedTemplate.cut_type}
@@ -1203,18 +1091,17 @@ export default function PrintConfigPage() {
                     </Select>
                   </div>
                 )}
-              </div>
 
-              {/* Status */}
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>Template Ativo</Label>
-                  <p className="text-xs text-gray-500">Disponível para uso</p>
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
+                  <div>
+                    <Label className="text-sm">Template Ativo</Label>
+                    <p className="text-xs text-gray-500 mt-0.5">Disponível para uso</p>
+                  </div>
+                  <Switch
+                    checked={selectedTemplate.active}
+                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, active: checked })}
+                  />
                 </div>
-                <Switch
-                  checked={selectedTemplate.active}
-                  onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, active: checked })}
-                />
               </div>
             </div>
           )}
