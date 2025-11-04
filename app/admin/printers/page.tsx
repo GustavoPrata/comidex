@@ -980,22 +980,22 @@ export default function PrintersPage() {
                   <div className="mb-4">
                     <button
                       onClick={() => toggleActive(printer)}
-                      className={`w-full py-3 rounded-2xl font-medium transition-all ${
+                      className={`w-full py-1.5 rounded-full text-xs font-medium transition-all ${
                         printer.active 
-                          ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                          : 'bg-gradient-to-r from-gray-400 to-gray-500 hover:from-gray-500 hover:to-gray-600 text-white'
+                          ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-sm'
+                          : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white'
                       }`}
                     >
-                      <div className="flex items-center justify-center gap-2">
+                      <div className="flex items-center justify-center gap-1.5">
                         {printer.active ? (
                           <>
-                            <Power className="h-4 w-4" />
-                            Impressora Ativa
+                            <Power className="h-3 w-3" />
+                            <span>Ativa</span>
                           </>
                         ) : (
                           <>
-                            <PowerOff className="h-4 w-4" />
-                            Impressora Inativa
+                            <PowerOff className="h-3 w-3" />
+                            <span>Inativa</span>
                           </>
                         )}
                       </div>
