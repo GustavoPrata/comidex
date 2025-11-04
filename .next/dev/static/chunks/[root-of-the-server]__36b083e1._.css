@@ -3506,6 +3506,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: hsl(var(--input));
 }
 
+.data-\[state\=unchecked\]\:bg-orange-200[data-state="unchecked"] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 215 170 / var(--tw-bg-opacity, 1));
+}
+
 .data-\[state\=active\]\:text-foreground[data-state="active"] {
   color: hsl(var(--foreground));
 }
@@ -3987,6 +3992,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:data-\[state\=checked\]\:bg-orange-900\/20[data-state="checked"]:is(.dark *) {
   background-color: #7c2d1233;
+}
+
+.dark\:data-\[state\=unchecked\]\:bg-orange-900\/50[data-state="unchecked"]:is(.dark *) {
+  background-color: #7c2d1280;
 }
 
 @media (min-width: 640px) {

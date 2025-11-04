@@ -1183,8 +1183,8 @@ export default function PrintersPage() {
             
             <div className="grid gap-2">
               <Label>Tipo de Conexão</Label>
-              <div className="flex items-center justify-center space-x-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                <div className={`flex items-center space-x-2 ${!formData.is_local ? 'text-orange-600 font-medium' : 'text-gray-500'}`}>
+              <div className="flex items-center justify-center space-x-4 p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                <div className={`flex items-center space-x-2 ${!formData.is_local ? 'text-orange-600 dark:text-orange-500 font-medium' : 'text-gray-500 dark:text-gray-400'}`}>
                   <Network className="h-4 w-4" />
                   <span className="text-sm">Rede</span>
                 </div>
@@ -1198,9 +1198,9 @@ export default function PrintersPage() {
                       await detectLocalPrinters();
                     }
                   }}
-                  className="data-[state=checked]:bg-orange-500"
+                  className="data-[state=checked]:bg-orange-500 data-[state=unchecked]:bg-orange-200 dark:data-[state=unchecked]:bg-orange-900/50"
                 />
-                <div className={`flex items-center space-x-2 ${formData.is_local ? 'text-orange-600 font-medium' : 'text-gray-500'}`}>
+                <div className={`flex items-center space-x-2 ${formData.is_local ? 'text-orange-600 dark:text-orange-500 font-medium' : 'text-gray-500 dark:text-gray-400'}`}>
                   <Monitor className="h-4 w-4" />
                   <span className="text-sm">Local</span>
                 </div>
