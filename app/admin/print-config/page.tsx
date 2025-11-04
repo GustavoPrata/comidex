@@ -178,7 +178,7 @@ export default function PrintConfigPage() {
       name: '',
       manufacturer: '',
       model: '',
-      connection_type: 'network',
+      connection_type: 'auto',
       paper_width: 80,
       dpi: 203,
       charset: 'CP850',
@@ -476,11 +476,6 @@ export default function PrintConfigPage() {
                         Corte
                       </Badge>
                     )}
-                    <Badge variant="secondary" className="text-xs">
-                      {profile.connection_type === 'network' ? 'Rede' :
-                       profile.connection_type === 'usb' ? 'USB' :
-                       profile.connection_type === 'serial' ? 'Serial' : 'Bluetooth'}
-                    </Badge>
                   </div>
 
                   {/* Actions */}
@@ -579,14 +574,6 @@ export default function PrintConfigPage() {
                             <div className="flex justify-between text-sm">
                               <span className="text-gray-500">Charset:</span>
                               <span className="font-medium">{selectedProfile.charset}</span>
-                            </div>
-                            <div className="flex justify-between text-sm">
-                              <span className="text-gray-500">Conexão:</span>
-                              <span className="font-medium">
-                                {selectedProfile.connection_type === 'network' ? 'Rede' :
-                                 selectedProfile.connection_type === 'usb' ? 'USB' :
-                                 selectedProfile.connection_type === 'serial' ? 'Serial' : 'Bluetooth'}
-                              </span>
                             </div>
                           </div>
                         </div>
@@ -800,27 +787,10 @@ export default function PrintConfigPage() {
                 </div>
               </div>
 
-              {/* Connection & Paper */}
-              <div className="grid grid-cols-3 gap-4">
+              {/* Paper Settings */}
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Tipo de Conexão</Label>
-                  <Select
-                    value={selectedProfile.connection_type}
-                    onValueChange={(value) => setSelectedProfile({ ...selectedProfile, connection_type: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="network">Rede</SelectItem>
-                      <SelectItem value="usb">USB</SelectItem>
-                      <SelectItem value="serial">Serial</SelectItem>
-                      <SelectItem value="bluetooth">Bluetooth</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Label>Largura (mm)</Label>
+                  <Label>Largura do Papel (mm)</Label>
                   <Select
                     value={selectedProfile.paper_width.toString()}
                     onValueChange={(value) => setSelectedProfile({ ...selectedProfile, paper_width: parseInt(value) })}
@@ -837,7 +807,7 @@ export default function PrintConfigPage() {
                   </Select>
                 </div>
                 <div>
-                  <Label>DPI</Label>
+                  <Label>Resolução (DPI)</Label>
                   <Select
                     value={selectedProfile.dpi.toString()}
                     onValueChange={(value) => setSelectedProfile({ ...selectedProfile, dpi: parseInt(value) })}

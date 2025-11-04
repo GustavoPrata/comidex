@@ -907,7 +907,7 @@ function PrintConfigPage() {
             name: '',
             manufacturer: '',
             model: '',
-            connection_type: 'network',
+            connection_type: 'auto',
             paper_width: 80,
             dpi: 203,
             charset: 'CP850',
@@ -1409,36 +1409,25 @@ function PrintConfigPage() {
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "flex flex-wrap gap-1.5",
-                                            children: [
-                                                profile.supports_cut && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                    variant: "secondary",
-                                                    className: "text-xs",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scissors$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Scissors$3e$__["Scissors"], {
-                                                            className: "h-3 w-3 mr-1"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 475,
-                                                            columnNumber: 25
-                                                        }, this),
-                                                        "Corte"
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 474,
-                                                    columnNumber: 23
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
-                                                    variant: "secondary",
-                                                    className: "text-xs",
-                                                    children: profile.connection_type === 'network' ? 'Rede' : profile.connection_type === 'usb' ? 'USB' : profile.connection_type === 'serial' ? 'Serial' : 'Bluetooth'
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 479,
-                                                    columnNumber: 21
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
+                                            children: profile.supports_cut && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                variant: "secondary",
+                                                className: "text-xs",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$scissors$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Scissors$3e$__["Scissors"], {
+                                                        className: "h-3 w-3 mr-1"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/print-config/page.tsx",
+                                                        lineNumber: 475,
+                                                        columnNumber: 25
+                                                    }, this),
+                                                    "Corte"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/print-config/page.tsx",
+                                                lineNumber: 474,
+                                                columnNumber: 23
+                                            }, this)
+                                        }, void 0, false, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
                                             lineNumber: 472,
                                             columnNumber: 19
@@ -1459,14 +1448,14 @@ function PrintConfigPage() {
                                                             className: "h-3 w-3 mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 497,
+                                                            lineNumber: 492,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Editar"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 488,
+                                                    lineNumber: 483,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1482,14 +1471,14 @@ function PrintConfigPage() {
                                                             className: "h-3 w-3 mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 509,
+                                                            lineNumber: 504,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Duplicar"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 500,
+                                                    lineNumber: 495,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1508,18 +1497,18 @@ function PrintConfigPage() {
                                                         className: "h-3 w-3"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                        lineNumber: 522,
+                                                        lineNumber: 517,
                                                         columnNumber: 23
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 512,
+                                                    lineNumber: 507,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 487,
+                                            lineNumber: 482,
                                             columnNumber: 19
                                         }, this)
                                     ]
@@ -1553,12 +1542,12 @@ function PrintConfigPage() {
                                     children: "← Voltar para lista"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 533,
+                                    lineNumber: 528,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                lineNumber: 532,
+                                lineNumber: 527,
                                 columnNumber: 13
                             }, this),
                             selectedProfile && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1580,12 +1569,12 @@ function PrintConfigPage() {
                                                                     className: "h-6 w-6 text-orange-500"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 553,
+                                                                    lineNumber: 548,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 552,
+                                                                lineNumber: 547,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1595,7 +1584,7 @@ function PrintConfigPage() {
                                                                         children: selectedProfile.name
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 556,
+                                                                        lineNumber: 551,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1607,19 +1596,19 @@ function PrintConfigPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 559,
+                                                                        lineNumber: 554,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 555,
+                                                                lineNumber: 550,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                        lineNumber: 551,
+                                                        lineNumber: 546,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1633,7 +1622,7 @@ function PrintConfigPage() {
                                                                         children: "Especificações"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 567,
+                                                                        lineNumber: 562,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1647,7 +1636,7 @@ function PrintConfigPage() {
                                                                                         children: "Largura:"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 572,
+                                                                                        lineNumber: 567,
                                                                                         columnNumber: 31
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1658,13 +1647,13 @@ function PrintConfigPage() {
                                                                                         ]
                                                                                     }, void 0, true, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 573,
+                                                                                        lineNumber: 568,
                                                                                         columnNumber: 31
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 571,
+                                                                                lineNumber: 566,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1675,7 +1664,7 @@ function PrintConfigPage() {
                                                                                         children: "DPI:"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 576,
+                                                                                        lineNumber: 571,
                                                                                         columnNumber: 31
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1683,13 +1672,13 @@ function PrintConfigPage() {
                                                                                         children: selectedProfile.dpi
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 577,
+                                                                                        lineNumber: 572,
                                                                                         columnNumber: 31
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 575,
+                                                                                lineNumber: 570,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1700,7 +1689,7 @@ function PrintConfigPage() {
                                                                                         children: "Charset:"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 580,
+                                                                                        lineNumber: 575,
                                                                                         columnNumber: 31
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1708,50 +1697,25 @@ function PrintConfigPage() {
                                                                                         children: selectedProfile.charset
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 581,
+                                                                                        lineNumber: 576,
                                                                                         columnNumber: 31
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 579,
-                                                                                columnNumber: 29
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "flex justify-between text-sm",
-                                                                                children: [
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                        className: "text-gray-500",
-                                                                                        children: "Conexão:"
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 584,
-                                                                                        columnNumber: 31
-                                                                                    }, this),
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                        className: "font-medium",
-                                                                                        children: selectedProfile.connection_type === 'network' ? 'Rede' : selectedProfile.connection_type === 'usb' ? 'USB' : selectedProfile.connection_type === 'serial' ? 'Serial' : 'Bluetooth'
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 585,
-                                                                                        columnNumber: 31
-                                                                                    }, this)
-                                                                                ]
-                                                                            }, void 0, true, {
-                                                                                fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 583,
+                                                                                lineNumber: 574,
                                                                                 columnNumber: 29
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 570,
+                                                                        lineNumber: 565,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 566,
+                                                                lineNumber: 561,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1762,7 +1726,7 @@ function PrintConfigPage() {
                                                                         children: "Recursos"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 595,
+                                                                        lineNumber: 582,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1775,7 +1739,7 @@ function PrintConfigPage() {
                                                                                     children: "Corte Automático"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                    lineNumber: 600,
+                                                                                    lineNumber: 587,
                                                                                     columnNumber: 31
                                                                                 }, this),
                                                                                 selectedProfile.supports_cut ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1785,14 +1749,14 @@ function PrintConfigPage() {
                                                                                             className: "h-3 w-3 mr-1"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                            lineNumber: 603,
+                                                                                            lineNumber: 590,
                                                                                             columnNumber: 35
                                                                                         }, this),
                                                                                         "Sim"
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                    lineNumber: 602,
+                                                                                    lineNumber: 589,
                                                                                     columnNumber: 33
                                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                                                     className: "bg-gray-100 text-gray-600",
@@ -1801,31 +1765,31 @@ function PrintConfigPage() {
                                                                                             className: "h-3 w-3 mr-1"
                                                                                         }, void 0, false, {
                                                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                            lineNumber: 608,
+                                                                                            lineNumber: 595,
                                                                                             columnNumber: 35
                                                                                         }, this),
                                                                                         "Não"
                                                                                     ]
                                                                                 }, void 0, true, {
                                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                    lineNumber: 607,
+                                                                                    lineNumber: 594,
                                                                                     columnNumber: 33
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                            lineNumber: 599,
+                                                                            lineNumber: 586,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 598,
+                                                                        lineNumber: 585,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 594,
+                                                                lineNumber: 581,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1836,36 +1800,36 @@ function PrintConfigPage() {
                                                                         className: "h-4 w-4 mr-2"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 620,
+                                                                        lineNumber: 607,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     "Editar Perfil"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 616,
+                                                                lineNumber: 603,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                        lineNumber: 565,
+                                                        lineNumber: 560,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                lineNumber: 550,
+                                                lineNumber: 545,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 549,
+                                            lineNumber: 544,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                        lineNumber: 548,
+                                        lineNumber: 543,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1883,7 +1847,7 @@ function PrintConfigPage() {
                                                                 children: "Templates de Impressão"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 633,
+                                                                lineNumber: 620,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1895,20 +1859,20 @@ function PrintConfigPage() {
                                                                         className: "h-4 w-4 mr-2"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 641,
+                                                                        lineNumber: 628,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     "Novo Template"
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 636,
+                                                                lineNumber: 623,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                        lineNumber: 632,
+                                                        lineNumber: 619,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1926,7 +1890,7 @@ function PrintConfigPage() {
                                                                                         className: "h-4 w-4 text-orange-500"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 654,
+                                                                                        lineNumber: 641,
                                                                                         columnNumber: 33
                                                                                     }, this),
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -1934,13 +1898,13 @@ function PrintConfigPage() {
                                                                                         children: template.name
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 655,
+                                                                                        lineNumber: 642,
                                                                                         columnNumber: 33
                                                                                     }, this)
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 653,
+                                                                                lineNumber: 640,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             template.active ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1948,20 +1912,20 @@ function PrintConfigPage() {
                                                                                 children: "Ativo"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 658,
+                                                                                lineNumber: 645,
                                                                                 columnNumber: 33
                                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
                                                                                 className: "bg-gray-100 text-gray-600 text-xs",
                                                                                 children: "Inativo"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 662,
+                                                                                lineNumber: 649,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 652,
+                                                                        lineNumber: 639,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1969,7 +1933,7 @@ function PrintConfigPage() {
                                                                         children: template.description
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 668,
+                                                                        lineNumber: 655,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1981,7 +1945,7 @@ function PrintConfigPage() {
                                                                                 children: TEMPLATE_TYPES.find((t)=>t.value === template.template_type)?.label
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 671,
+                                                                                lineNumber: 658,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             template.show_qrcode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1992,14 +1956,14 @@ function PrintConfigPage() {
                                                                                         className: "h-3 w-3 mr-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 676,
+                                                                                        lineNumber: 663,
                                                                                         columnNumber: 35
                                                                                     }, this),
                                                                                     "QR"
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 675,
+                                                                                lineNumber: 662,
                                                                                 columnNumber: 33
                                                                             }, this),
                                                                             template.show_barcode && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2010,14 +1974,14 @@ function PrintConfigPage() {
                                                                                         className: "h-3 w-3 mr-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 682,
+                                                                                        lineNumber: 669,
                                                                                         columnNumber: 35
                                                                                     }, this),
                                                                                     "Código"
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 681,
+                                                                                lineNumber: 668,
                                                                                 columnNumber: 33
                                                                             }, this),
                                                                             template.cut_paper && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2028,20 +1992,20 @@ function PrintConfigPage() {
                                                                                         className: "h-3 w-3 mr-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 688,
+                                                                                        lineNumber: 675,
                                                                                         columnNumber: 35
                                                                                     }, this),
                                                                                     "Corte"
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 687,
+                                                                                lineNumber: 674,
                                                                                 columnNumber: 33
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 670,
+                                                                        lineNumber: 657,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2057,14 +2021,14 @@ function PrintConfigPage() {
                                                                                         className: "h-3 w-3 mr-1"
                                                                                     }, void 0, false, {
                                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                        lineNumber: 701,
+                                                                                        lineNumber: 688,
                                                                                         columnNumber: 33
                                                                                     }, this),
                                                                                     "Editar"
                                                                                 ]
                                                                             }, void 0, true, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 695,
+                                                                                lineNumber: 682,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2082,29 +2046,29 @@ function PrintConfigPage() {
                                                                                     className: "h-3 w-3"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                    lineNumber: 713,
+                                                                                    lineNumber: 700,
                                                                                     columnNumber: 33
                                                                                 }, this)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                                lineNumber: 704,
+                                                                                lineNumber: 691,
                                                                                 columnNumber: 31
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                        lineNumber: 694,
+                                                                        lineNumber: 681,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, template.id, true, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 648,
+                                                                lineNumber: 635,
                                                                 columnNumber: 27
                                                             }, this))
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                        lineNumber: 646,
+                                                        lineNumber: 633,
                                                         columnNumber: 23
                                                     }, this),
                                                     (!templates || templates.length === 0) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2114,7 +2078,7 @@ function PrintConfigPage() {
                                                                 className: "h-12 w-12 text-gray-300 mx-auto mb-3"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 722,
+                                                                lineNumber: 709,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2122,7 +2086,7 @@ function PrintConfigPage() {
                                                                 children: "Nenhum template configurado"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 723,
+                                                                lineNumber: 710,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2130,41 +2094,41 @@ function PrintConfigPage() {
                                                                 children: "Crie templates para diferentes tipos de impressão"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 724,
+                                                                lineNumber: 711,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                        lineNumber: 721,
+                                                        lineNumber: 708,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                lineNumber: 631,
+                                                lineNumber: 618,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 630,
+                                            lineNumber: 617,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                        lineNumber: 629,
+                                        lineNumber: 616,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                lineNumber: 546,
+                                lineNumber: 541,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/print-config/page.tsx",
-                        lineNumber: 531,
+                        lineNumber: 526,
                         columnNumber: 11
                     }, this),
                     !profiles || filteredProfiles?.length === 0 && activeView === 'list' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2176,12 +2140,12 @@ function PrintConfigPage() {
                                     className: "h-10 w-10 text-orange-500"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 741,
+                                    lineNumber: 728,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                lineNumber: 740,
+                                lineNumber: 727,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2189,7 +2153,7 @@ function PrintConfigPage() {
                                 children: searchTerm ? 'Nenhum perfil encontrado' : 'Nenhum perfil cadastrado'
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                lineNumber: 743,
+                                lineNumber: 730,
                                 columnNumber: 13
                             }, this),
                             !searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2200,20 +2164,20 @@ function PrintConfigPage() {
                                         className: "h-4 w-4 mr-2"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                        lineNumber: 753,
+                                        lineNumber: 740,
                                         columnNumber: 17
                                     }, this),
                                     "Criar Primeiro Perfil"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                lineNumber: 749,
+                                lineNumber: 736,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/print-config/page.tsx",
-                        lineNumber: 739,
+                        lineNumber: 726,
                         columnNumber: 11
                     }, this)
                 ]
@@ -2234,20 +2198,20 @@ function PrintConfigPage() {
                                     children: selectedProfile?.id ? 'Editar Perfil' : 'Novo Perfil'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 765,
+                                    lineNumber: 752,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Configure as especificações técnicas do modelo de impressora"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 768,
+                                    lineNumber: 755,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 764,
+                            lineNumber: 751,
                             columnNumber: 11
                         }, this),
                         selectedProfile && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2262,7 +2226,7 @@ function PrintConfigPage() {
                                                     children: "Nome do Perfil"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 778,
+                                                    lineNumber: 765,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2274,13 +2238,13 @@ function PrintConfigPage() {
                                                     placeholder: "Ex: Epson TM-T88V"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 779,
+                                                    lineNumber: 766,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 777,
+                                            lineNumber: 764,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2289,7 +2253,7 @@ function PrintConfigPage() {
                                                     children: "Fabricante"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 786,
+                                                    lineNumber: 773,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2301,13 +2265,13 @@ function PrintConfigPage() {
                                                     placeholder: "Ex: Epson"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 787,
+                                                    lineNumber: 774,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 785,
+                                            lineNumber: 772,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2316,7 +2280,7 @@ function PrintConfigPage() {
                                                     children: "Modelo"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 794,
+                                                    lineNumber: 781,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2328,110 +2292,31 @@ function PrintConfigPage() {
                                                     placeholder: "Ex: TM-T88V"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 795,
+                                                    lineNumber: 782,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 793,
+                                            lineNumber: 780,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 776,
+                                    lineNumber: 763,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "grid grid-cols-3 gap-4",
+                                    className: "grid grid-cols-2 gap-4",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                    children: "Tipo de Conexão"
+                                                    children: "Largura do Papel (mm)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 806,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
-                                                    value: selectedProfile.connection_type,
-                                                    onValueChange: (value)=>setSelectedProfile({
-                                                            ...selectedProfile,
-                                                            connection_type: value
-                                                        }),
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
-                                                                fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 812,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 811,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                    value: "network",
-                                                                    children: "Rede"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 815,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                    value: "usb",
-                                                                    children: "USB"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 816,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                    value: "serial",
-                                                                    children: "Serial"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 817,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                    value: "bluetooth",
-                                                                    children: "Bluetooth"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 818,
-                                                                    columnNumber: 23
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 814,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 807,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 805,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                    children: "Largura (mm)"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 823,
+                                                    lineNumber: 793,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2444,12 +2329,12 @@ function PrintConfigPage() {
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 829,
+                                                                lineNumber: 799,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 828,
+                                                            lineNumber: 798,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2459,7 +2344,7 @@ function PrintConfigPage() {
                                                                     children: "58mm"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 832,
+                                                                    lineNumber: 802,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2467,7 +2352,7 @@ function PrintConfigPage() {
                                                                     children: "80mm"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 833,
+                                                                    lineNumber: 803,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2475,7 +2360,7 @@ function PrintConfigPage() {
                                                                     children: "112mm"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 834,
+                                                                    lineNumber: 804,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2483,34 +2368,34 @@ function PrintConfigPage() {
                                                                     children: "A4 (210mm)"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 835,
+                                                                    lineNumber: 805,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 831,
+                                                            lineNumber: 801,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 824,
+                                                    lineNumber: 794,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 822,
+                                            lineNumber: 792,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                    children: "DPI"
+                                                    children: "Resolução (DPI)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 840,
+                                                    lineNumber: 810,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2523,12 +2408,12 @@ function PrintConfigPage() {
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 846,
+                                                                lineNumber: 816,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 845,
+                                                            lineNumber: 815,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2538,7 +2423,7 @@ function PrintConfigPage() {
                                                                     children: "180 DPI"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 849,
+                                                                    lineNumber: 819,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2546,7 +2431,7 @@ function PrintConfigPage() {
                                                                     children: "203 DPI"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 850,
+                                                                    lineNumber: 820,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2554,7 +2439,7 @@ function PrintConfigPage() {
                                                                     children: "300 DPI"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 851,
+                                                                    lineNumber: 821,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2562,31 +2447,31 @@ function PrintConfigPage() {
                                                                     children: "600 DPI"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 852,
+                                                                    lineNumber: 822,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 848,
+                                                            lineNumber: 818,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 841,
+                                                    lineNumber: 811,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 839,
+                                            lineNumber: 809,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 804,
+                                    lineNumber: 791,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2595,7 +2480,7 @@ function PrintConfigPage() {
                                             children: "Charset"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 860,
+                                            lineNumber: 830,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2608,12 +2493,12 @@ function PrintConfigPage() {
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                         fileName: "[project]/app/admin/print-config/page.tsx",
-                                                        lineNumber: 866,
+                                                        lineNumber: 836,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 865,
+                                                    lineNumber: 835,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2622,24 +2507,24 @@ function PrintConfigPage() {
                                                             children: charset
                                                         }, charset, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 870,
+                                                            lineNumber: 840,
                                                             columnNumber: 23
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 868,
+                                                    lineNumber: 838,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 861,
+                                            lineNumber: 831,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 859,
+                                    lineNumber: 829,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2655,7 +2540,7 @@ function PrintConfigPage() {
                                                             children: "Corte Automático"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 880,
+                                                            lineNumber: 850,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2663,13 +2548,13 @@ function PrintConfigPage() {
                                                             children: "Impressora possui guilhotina"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 881,
+                                                            lineNumber: 851,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 879,
+                                                    lineNumber: 849,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2680,13 +2565,13 @@ function PrintConfigPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 883,
+                                                    lineNumber: 853,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 878,
+                                            lineNumber: 848,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2699,7 +2584,7 @@ function PrintConfigPage() {
                                                             children: "Perfil Ativo"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 891,
+                                                            lineNumber: 861,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2707,13 +2592,13 @@ function PrintConfigPage() {
                                                             children: "Disponível para uso"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 892,
+                                                            lineNumber: 862,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 890,
+                                                    lineNumber: 860,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2724,25 +2609,25 @@ function PrintConfigPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 894,
+                                                    lineNumber: 864,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 889,
+                                            lineNumber: 859,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 877,
+                                    lineNumber: 847,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 774,
+                            lineNumber: 761,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -2753,7 +2638,7 @@ function PrintConfigPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 904,
+                                    lineNumber: 874,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2766,7 +2651,7 @@ function PrintConfigPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                lineNumber: 914,
+                                                lineNumber: 884,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -2777,7 +2662,7 @@ function PrintConfigPage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                lineNumber: 919,
+                                                lineNumber: 889,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvar"
@@ -2785,24 +2670,24 @@ function PrintConfigPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 907,
+                                    lineNumber: 877,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 903,
+                            lineNumber: 873,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/print-config/page.tsx",
-                    lineNumber: 763,
+                    lineNumber: 750,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/print-config/page.tsx",
-                lineNumber: 762,
+                lineNumber: 749,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -2817,20 +2702,20 @@ function PrintConfigPage() {
                                     children: selectedTemplate?.id ? 'Editar Template' : 'Novo Template'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 932,
+                                    lineNumber: 902,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Configure o layout e formatação do documento"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 935,
+                                    lineNumber: 905,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 931,
+                            lineNumber: 901,
                             columnNumber: 11
                         }, this),
                         selectedTemplate && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2845,7 +2730,7 @@ function PrintConfigPage() {
                                                     children: "Nome do Template"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 945,
+                                                    lineNumber: 915,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2857,13 +2742,13 @@ function PrintConfigPage() {
                                                     placeholder: "Ex: Cupom Fiscal Padrão"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 946,
+                                                    lineNumber: 916,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 944,
+                                            lineNumber: 914,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2872,7 +2757,7 @@ function PrintConfigPage() {
                                                     children: "Tipo de Documento"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 953,
+                                                    lineNumber: 923,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2885,12 +2770,12 @@ function PrintConfigPage() {
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 959,
+                                                                lineNumber: 929,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 958,
+                                                            lineNumber: 928,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2899,30 +2784,30 @@ function PrintConfigPage() {
                                                                     children: type.label
                                                                 }, type.value, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 963,
+                                                                    lineNumber: 933,
                                                                     columnNumber: 25
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 961,
+                                                            lineNumber: 931,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 954,
+                                                    lineNumber: 924,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 952,
+                                            lineNumber: 922,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 943,
+                                    lineNumber: 913,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2931,7 +2816,7 @@ function PrintConfigPage() {
                                             children: "Descrição"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 973,
+                                            lineNumber: 943,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2943,13 +2828,13 @@ function PrintConfigPage() {
                                             placeholder: "Ex: Template padrão para cupom fiscal"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 974,
+                                            lineNumber: 944,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 972,
+                                    lineNumber: 942,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2965,7 +2850,7 @@ function PrintConfigPage() {
                                                             children: "Cabeçalho"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 985,
+                                                            lineNumber: 955,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2973,13 +2858,13 @@ function PrintConfigPage() {
                                                             children: "Nome do estabelecimento"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 986,
+                                                            lineNumber: 956,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 984,
+                                                    lineNumber: 954,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2990,13 +2875,13 @@ function PrintConfigPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 988,
+                                                    lineNumber: 958,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 983,
+                                            lineNumber: 953,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3009,7 +2894,7 @@ function PrintConfigPage() {
                                                             children: "Rodapé"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 996,
+                                                            lineNumber: 966,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3017,13 +2902,13 @@ function PrintConfigPage() {
                                                             children: "Mensagem de agradecimento"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 997,
+                                                            lineNumber: 967,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 995,
+                                                    lineNumber: 965,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3034,13 +2919,13 @@ function PrintConfigPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 999,
+                                                    lineNumber: 969,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 994,
+                                            lineNumber: 964,
                                             columnNumber: 17
                                         }, this),
                                         selectedTemplate.footer_enabled && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -3052,7 +2937,7 @@ function PrintConfigPage() {
                                             placeholder: "Ex: Obrigado pela preferência!"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 1006,
+                                            lineNumber: 976,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3066,7 +2951,7 @@ function PrintConfigPage() {
                                                             children: "QR Code"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1015,
+                                                            lineNumber: 985,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3077,13 +2962,13 @@ function PrintConfigPage() {
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1016,
+                                                            lineNumber: 986,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 1014,
+                                                    lineNumber: 984,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3094,7 +2979,7 @@ function PrintConfigPage() {
                                                             children: "Código Barras"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1023,
+                                                            lineNumber: 993,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3105,13 +2990,13 @@ function PrintConfigPage() {
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1024,
+                                                            lineNumber: 994,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 1022,
+                                                    lineNumber: 992,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3122,7 +3007,7 @@ function PrintConfigPage() {
                                                             children: "Corte"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1031,
+                                                            lineNumber: 1001,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3133,19 +3018,19 @@ function PrintConfigPage() {
                                                                 })
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1032,
+                                                            lineNumber: 1002,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 1030,
+                                                    lineNumber: 1000,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 1013,
+                                            lineNumber: 983,
                                             columnNumber: 17
                                         }, this),
                                         selectedTemplate.cut_paper && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3154,7 +3039,7 @@ function PrintConfigPage() {
                                                     children: "Tipo de Corte"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 1041,
+                                                    lineNumber: 1011,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -3167,12 +3052,12 @@ function PrintConfigPage() {
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                lineNumber: 1047,
+                                                                lineNumber: 1017,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1046,
+                                                            lineNumber: 1016,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3181,24 +3066,24 @@ function PrintConfigPage() {
                                                                     children: type.label
                                                                 }, type.value, false, {
                                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                                    lineNumber: 1051,
+                                                                    lineNumber: 1021,
                                                                     columnNumber: 27
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1049,
+                                                            lineNumber: 1019,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 1042,
+                                                    lineNumber: 1012,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 1040,
+                                            lineNumber: 1010,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3211,7 +3096,7 @@ function PrintConfigPage() {
                                                             children: "Template Ativo"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1062,
+                                                            lineNumber: 1032,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3219,13 +3104,13 @@ function PrintConfigPage() {
                                                             children: "Disponível para uso"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                                            lineNumber: 1063,
+                                                            lineNumber: 1033,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 1061,
+                                                    lineNumber: 1031,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -3236,25 +3121,25 @@ function PrintConfigPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                                    lineNumber: 1065,
+                                                    lineNumber: 1035,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/print-config/page.tsx",
-                                            lineNumber: 1060,
+                                            lineNumber: 1030,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 982,
+                                    lineNumber: 952,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 941,
+                            lineNumber: 911,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -3265,7 +3150,7 @@ function PrintConfigPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 1075,
+                                    lineNumber: 1045,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3278,7 +3163,7 @@ function PrintConfigPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                lineNumber: 1085,
+                                                lineNumber: 1055,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -3289,7 +3174,7 @@ function PrintConfigPage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/print-config/page.tsx",
-                                                lineNumber: 1090,
+                                                lineNumber: 1060,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvar"
@@ -3297,24 +3182,24 @@ function PrintConfigPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 1078,
+                                    lineNumber: 1048,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 1074,
+                            lineNumber: 1044,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/print-config/page.tsx",
-                    lineNumber: 930,
+                    lineNumber: 900,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/print-config/page.tsx",
-                lineNumber: 929,
+                lineNumber: 899,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -3328,7 +3213,7 @@ function PrintConfigPage() {
                                     children: "Confirmar Exclusão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 1103,
+                                    lineNumber: 1073,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -3339,13 +3224,13 @@ function PrintConfigPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 1104,
+                                    lineNumber: 1074,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 1102,
+                            lineNumber: 1072,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -3354,7 +3239,7 @@ function PrintConfigPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 1110,
+                                    lineNumber: 1080,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -3363,24 +3248,24 @@ function PrintConfigPage() {
                                     children: "Excluir"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/print-config/page.tsx",
-                                    lineNumber: 1111,
+                                    lineNumber: 1081,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/print-config/page.tsx",
-                            lineNumber: 1109,
+                            lineNumber: 1079,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/print-config/page.tsx",
-                    lineNumber: 1101,
+                    lineNumber: 1071,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/print-config/page.tsx",
-                lineNumber: 1100,
+                lineNumber: 1070,
                 columnNumber: 7
             }, this)
         ]
