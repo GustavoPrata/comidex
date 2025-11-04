@@ -55,8 +55,7 @@ import {
   ChevronRight,
   Info,
   Cpu,
-  Maximize2,
-  CreditCard
+  Maximize2
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -72,8 +71,6 @@ interface PrinterProfile {
   code_table: string;
   supports_cut: boolean;
   cut_command: string;
-  supports_drawer: boolean;
-  drawer_pin: string;
   default_font_size: number;
   default_font_type: string;
   line_spacing: number;
@@ -188,8 +185,6 @@ export default function PrintConfigPage() {
       code_table: 'PC437',
       supports_cut: true,
       cut_command: 'GS V 0',
-      supports_drawer: false,
-      drawer_pin: '2',
       default_font_size: 1,
       default_font_type: 'A',
       line_spacing: 30,
@@ -481,12 +476,6 @@ export default function PrintConfigPage() {
                         Corte
                       </Badge>
                     )}
-                    {profile.supports_drawer && (
-                      <Badge variant="secondary" className="text-xs">
-                        <CreditCard className="h-3 w-3 mr-1" />
-                        Gaveta
-                      </Badge>
-                    )}
                     <Badge variant="secondary" className="text-xs">
                       {profile.connection_type === 'network' ? 'Rede' :
                        profile.connection_type === 'usb' ? 'USB' :
@@ -610,20 +599,6 @@ export default function PrintConfigPage() {
                             <div className="flex items-center justify-between">
                               <span className="text-sm text-gray-500">Corte Automático</span>
                               {selectedProfile.supports_cut ? (
-                                <Badge className="bg-green-100 text-green-700">
-                                  <Check className="h-3 w-3 mr-1" />
-                                  Sim
-                                </Badge>
-                              ) : (
-                                <Badge className="bg-gray-100 text-gray-600">
-                                  <X className="h-3 w-3 mr-1" />
-                                  Não
-                                </Badge>
-                              )}
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-500">Gaveta</span>
-                              {selectedProfile.supports_drawer ? (
                                 <Badge className="bg-green-100 text-green-700">
                                   <Check className="h-3 w-3 mr-1" />
                                   Sim
@@ -908,17 +883,6 @@ export default function PrintConfigPage() {
                   <Switch
                     checked={selectedProfile.supports_cut}
                     onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, supports_cut: checked })}
-                  />
-                </div>
-
-                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
-                  <div>
-                    <Label className="text-sm">Gaveta de Dinheiro</Label>
-                    <p className="text-xs text-gray-500 mt-0.5">Pode abrir gaveta registradora</p>
-                  </div>
-                  <Switch
-                    checked={selectedProfile.supports_drawer}
-                    onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, supports_drawer: checked })}
                   />
                 </div>
 
