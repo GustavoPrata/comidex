@@ -437,19 +437,6 @@ export default function PrintConfigPage() {
                         {profile.model}
                       </div>
                     </div>
-                    
-                    {/* Status Badge */}
-                    {profile.active ? (
-                      <Badge className="bg-green-100 text-green-700">
-                        <Check className="h-3 w-3 mr-1" />
-                        Ativo
-                      </Badge>
-                    ) : (
-                      <Badge className="bg-gray-100 text-gray-600">
-                        <X className="h-3 w-3 mr-1" />
-                        Inativo
-                      </Badge>
-                    )}
                   </div>
 
                   {/* Specs */}
@@ -847,16 +834,6 @@ export default function PrintConfigPage() {
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl">
-                  <div>
-                    <Label className="text-sm">Perfil Ativo</Label>
-                    <p className="text-xs text-gray-500 mt-0.5">Disponível para uso</p>
-                  </div>
-                  <Switch
-                    checked={selectedProfile.active}
-                    onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, active: checked })}
-                  />
-                </div>
               </div>
             </div>
           )}
