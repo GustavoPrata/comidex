@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from "@/lib/supabase/client";
-import { Printer } from "@/types/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -74,8 +73,9 @@ interface Printer {
   name: string;
   ip_address: string;
   port: string;
-  type: 'thermal' | 'laser' | 'inkjet' | 'other';
+  type?: 'thermal' | 'laser' | 'inkjet' | 'other';
   printer_model?: string;
+  profile_id?: number;
   is_main: boolean;
   is_local: boolean;
   active: boolean;

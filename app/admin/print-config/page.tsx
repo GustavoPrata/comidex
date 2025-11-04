@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
@@ -25,6 +25,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "react-hot-toast";
 import { 
   Settings, 
@@ -47,7 +63,12 @@ import {
   Barcode,
   CreditCard,
   Check,
-  X
+  X,
+  MoreVertical,
+  Search,
+  Power,
+  PowerOff,
+  Info
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -125,1329 +146,1125 @@ const CHARSETS = [
   'CP866', 'CP1252', 'UTF-8', 'ISO-8859-1'
 ];
 
-const FONT_TYPES = ['FONT_A', 'FONT_B', 'FONT_C', 'FONT_D', 'FONT_E'];
-
-const CUT_COMMANDS = ['FULL', 'PARTIAL', 'NONE'];
-
-const BARCODE_TYPES = [
-  'CODE128', 'CODE39', 'EAN13', 'EAN8', 
-  'ITF', 'CODABAR', 'PDF417', 'QRCODE'
+const CUT_TYPES = [
+  { value: 'full', label: 'Corte Total' },
+  { value: 'partial', label: 'Corte Parcial' },
+  { value: 'both', label: 'Ambos' },
 ];
 
-const fetcher = async (url: string) => {
-  const supabase = createClient();
-  if (url === 'profiles') {
-    const { data, error } = await supabase
-      .from('printer_profiles')
-      .select('*')
-      .order('manufacturer', { ascending: true })
-      .order('model', { ascending: true });
-    if (error) throw error;
-    return data || [];
-  }
-  if (url === 'templates') {
-    const { data, error } = await supabase
-      .from('print_templates')
-      .select('*')
-      .order('template_type', { ascending: true })
-      .order('name', { ascending: true });
-    if (error) throw error;
-    return data || [];
-  }
-  return [];
-};
-
 export default function PrintConfigPage() {
-  const { data: profiles = [], error: profilesError, isLoading: profilesLoading } = useSWR('profiles', fetcher);
-  const { data: templates = [], error: templatesError, isLoading: templatesLoading } = useSWR('templates', fetcher);
-  
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedProfile, setSelectedProfile] = useState<PrinterProfile | null>(null);
   const [selectedTemplate, setSelectedTemplate] = useState<PrintTemplate | null>(null);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
-  const [editingProfile, setEditingProfile] = useState<PrinterProfile | null>(null);
-  const [editingTemplate, setEditingTemplate] = useState<PrintTemplate | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{ type: 'profile' | 'template', item: any } | null>(null);
   const [saving, setSaving] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  
-  const [profileForm, setProfileForm] = useState({
-    name: '',
-    manufacturer: '',
-    model: '',
-    connection_type: 'ESC/POS',
-    paper_width: 80,
-    dpi: 203,
-    charset: 'CP850',
-    code_table: 'PC850',
-    supports_cut: true,
-    cut_command: 'FULL',
-    supports_drawer: true,
-    drawer_pin: 'PIN_2',
-    default_font_size: 1,
-    default_font_type: 'FONT_A',
-    line_spacing: 30,
-    margin_left: 0,
-    margin_right: 0,
-    margin_top: 0,
-    margin_bottom: 0,
-    custom_commands: {},
-    active: true
+  const [activeTab, setActiveTab] = useState('profiles');
+
+  // Fetch profiles and templates
+  const { data: profiles, error: profilesError } = useSWR('/api/printer-profiles', async (url) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Failed to fetch profiles');
+    return res.json();
   });
 
-  const [templateForm, setTemplateForm] = useState({
-    profile_id: 0,
-    template_type: 'receipt',
-    name: '',
-    description: '',
-    header_enabled: true,
-    header_align: 'center',
-    header_bold: true,
-    header_size: 2,
-    body_font_size: 1,
-    body_line_spacing: 30,
-    body_align: 'left',
-    footer_enabled: true,
-    footer_align: 'center',
-    footer_text: '',
-    items_columns: ['quantity', 'description', 'price', 'total'],
-    items_column_widths: { quantity: 5, description: 25, price: 10, total: 10 },
-    show_logo: false,
-    logo_path: '',
-    show_qrcode: false,
-    show_barcode: false,
-    barcode_type: 'CODE128',
-    barcode_height: 50,
-    barcode_width: 2,
-    cut_paper: true,
-    cut_type: 'FULL',
-    feed_lines_before: 0,
-    feed_lines_after: 3,
-    open_drawer: false,
-    custom_header: '',
-    custom_footer: '',
-    active: true
-  });
-
-  const supabase = createClient();
-
-  const openProfileModal = (profile?: PrinterProfile) => {
-    if (profile) {
-      setEditingProfile(profile);
-      setProfileForm({
-        name: profile.name,
-        manufacturer: profile.manufacturer,
-        model: profile.model,
-        connection_type: profile.connection_type,
-        paper_width: profile.paper_width,
-        dpi: profile.dpi,
-        charset: profile.charset,
-        code_table: profile.code_table,
-        supports_cut: profile.supports_cut,
-        cut_command: profile.cut_command,
-        supports_drawer: profile.supports_drawer,
-        drawer_pin: profile.drawer_pin,
-        default_font_size: profile.default_font_size,
-        default_font_type: profile.default_font_type,
-        line_spacing: profile.line_spacing,
-        margin_left: profile.margin_left,
-        margin_right: profile.margin_right,
-        margin_top: profile.margin_top,
-        margin_bottom: profile.margin_bottom,
-        custom_commands: profile.custom_commands || {},
-        active: profile.active
-      });
-    } else {
-      setEditingProfile(null);
-      setProfileForm({
-        name: '',
-        manufacturer: '',
-        model: '',
-        connection_type: 'ESC/POS',
-        paper_width: 80,
-        dpi: 203,
-        charset: 'CP850',
-        code_table: 'PC850',
-        supports_cut: true,
-        cut_command: 'FULL',
-        supports_drawer: true,
-        drawer_pin: 'PIN_2',
-        default_font_size: 1,
-        default_font_type: 'FONT_A',
-        line_spacing: 30,
-        margin_left: 0,
-        margin_right: 0,
-        margin_top: 0,
-        margin_bottom: 0,
-        custom_commands: {},
-        active: true
-      });
+  const { data: templates, error: templatesError } = useSWR(
+    selectedProfile ? `/api/print-templates?profile_id=${selectedProfile.id}` : null,
+    async (url) => {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch templates');
+      return res.json();
     }
-    setIsProfileModalOpen(true);
-  };
+  );
 
-  const openTemplateModal = (template?: PrintTemplate, profileId?: number) => {
-    if (template) {
-      setEditingTemplate(template);
-      setTemplateForm({
-        profile_id: template.profile_id,
-        template_type: template.template_type,
-        name: template.name,
-        description: template.description || '',
-        header_enabled: template.header_enabled,
-        header_align: template.header_align,
-        header_bold: template.header_bold,
-        header_size: template.header_size,
-        body_font_size: template.body_font_size,
-        body_line_spacing: template.body_line_spacing,
-        body_align: template.body_align,
-        footer_enabled: template.footer_enabled,
-        footer_align: template.footer_align,
-        footer_text: template.footer_text || '',
-        items_columns: template.items_columns,
-        items_column_widths: template.items_column_widths,
-        show_logo: template.show_logo,
-        logo_path: template.logo_path || '',
-        show_qrcode: template.show_qrcode,
-        show_barcode: template.show_barcode,
-        barcode_type: template.barcode_type,
-        barcode_height: template.barcode_height,
-        barcode_width: template.barcode_width,
-        cut_paper: template.cut_paper,
-        cut_type: template.cut_type,
-        feed_lines_before: template.feed_lines_before,
-        feed_lines_after: template.feed_lines_after,
-        open_drawer: template.open_drawer,
-        custom_header: template.custom_header || '',
-        custom_footer: template.custom_footer || '',
-        active: template.active
-      });
-    } else {
-      setEditingTemplate(null);
-      setTemplateForm({
-        profile_id: profileId || (selectedProfile?.id || 0),
-        template_type: 'receipt',
-        name: '',
-        description: '',
-        header_enabled: true,
-        header_align: 'center',
-        header_bold: true,
-        header_size: 2,
-        body_font_size: 1,
-        body_line_spacing: 30,
-        body_align: 'left',
-        footer_enabled: true,
-        footer_align: 'center',
-        footer_text: '',
-        items_columns: ['quantity', 'description', 'price', 'total'],
-        items_column_widths: { quantity: 5, description: 25, price: 10, total: 10 },
-        show_logo: false,
-        logo_path: '',
-        show_qrcode: false,
-        show_barcode: false,
-        barcode_type: 'CODE128',
-        barcode_height: 50,
-        barcode_width: 2,
-        cut_paper: true,
-        cut_type: 'FULL',
-        feed_lines_before: 0,
-        feed_lines_after: 3,
-        open_drawer: false,
-        custom_header: '',
-        custom_footer: '',
-        active: true
-      });
-    }
-    setIsTemplateModalOpen(true);
-  };
-
-  const saveProfile = async () => {
-    if (!profileForm.name || !profileForm.model) {
-      toast.error("Nome e modelo são obrigatórios");
-      return;
-    }
-
-    setSaving(true);
-    try {
-      if (editingProfile) {
-        const { error } = await supabase
-          .from('printer_profiles')
-          .update(profileForm)
-          .eq('id', editingProfile.id);
-        
-        if (error) throw error;
-        toast.success("Perfil atualizado com sucesso!");
-      } else {
-        const { error } = await supabase
-          .from('printer_profiles')
-          .insert([profileForm]);
-        
-        if (error) throw error;
-        toast.success("Perfil criado com sucesso!");
-      }
-      
-      setIsProfileModalOpen(false);
-      mutate('profiles');
-    } catch (error: any) {
-      console.error('Error saving profile:', error);
-      toast.error(error.message || "Erro ao salvar perfil");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const saveTemplate = async () => {
-    if (!templateForm.name || !templateForm.profile_id) {
-      toast.error("Nome e perfil são obrigatórios");
-      return;
-    }
-
-    setSaving(true);
-    try {
-      if (editingTemplate) {
-        const { error } = await supabase
-          .from('print_templates')
-          .update(templateForm)
-          .eq('id', editingTemplate.id);
-        
-        if (error) throw error;
-        toast.success("Template atualizado com sucesso!");
-      } else {
-        const { error } = await supabase
-          .from('print_templates')
-          .insert([templateForm]);
-        
-        if (error) throw error;
-        toast.success("Template criado com sucesso!");
-      }
-      
-      setIsTemplateModalOpen(false);
-      mutate('templates');
-    } catch (error: any) {
-      console.error('Error saving template:', error);
-      toast.error(error.message || "Erro ao salvar template");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const deleteProfile = async (profile: PrinterProfile) => {
-    if (!confirm(`Tem certeza que deseja excluir o perfil "${profile.name}"?\nTodos os templates associados também serão excluídos.`)) {
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('printer_profiles')
-        .delete()
-        .eq('id', profile.id);
-      
-      if (error) throw error;
-      toast.success("Perfil excluído com sucesso!");
-      mutate('profiles');
-    } catch (error: any) {
-      console.error('Error deleting profile:', error);
-      toast.error(error.message || "Erro ao excluir perfil");
-    }
-  };
-
-  const deleteTemplate = async (template: PrintTemplate) => {
-    if (!confirm(`Tem certeza que deseja excluir o template "${template.name}"?`)) {
-      return;
-    }
-
-    try {
-      const { error } = await supabase
-        .from('print_templates')
-        .delete()
-        .eq('id', template.id);
-      
-      if (error) throw error;
-      toast.success("Template excluído com sucesso!");
-      mutate('templates');
-    } catch (error: any) {
-      console.error('Error deleting template:', error);
-      toast.error(error.message || "Erro ao excluir template");
-    }
-  };
-
-  const duplicateProfile = async (profile: PrinterProfile) => {
-    const newProfile = {
-      ...profile,
-      name: `${profile.name} (Cópia)`,
-      id: undefined
-    };
-    
-    try {
-      const { error } = await supabase
-        .from('printer_profiles')
-        .insert([newProfile]);
-      
-      if (error) throw error;
-      toast.success("Perfil duplicado com sucesso!");
-      mutate('profiles');
-    } catch (error: any) {
-      console.error('Error duplicating profile:', error);
-      toast.error(error.message || "Erro ao duplicar perfil");
-    }
-  };
-
-  const filteredProfiles = profiles.filter((profile: PrinterProfile) =>
+  // Filter profiles based on search
+  const filteredProfiles = profiles?.filter((profile: PrinterProfile) =>
     profile.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     profile.manufacturer.toLowerCase().includes(searchTerm.toLowerCase()) ||
     profile.model.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const profileTemplates = selectedProfile 
-    ? templates.filter((t: PrintTemplate) => t.profile_id === selectedProfile.id)
-    : [];
+  // Open profile modal for create/edit
+  const openProfileModal = (profile?: PrinterProfile) => {
+    setSelectedProfile(profile || {
+      id: 0,
+      name: '',
+      manufacturer: '',
+      model: '',
+      connection_type: 'network',
+      paper_width: 80,
+      dpi: 203,
+      charset: 'CP850',
+      code_table: 'PC437',
+      supports_cut: true,
+      cut_command: 'GS V 0',
+      supports_drawer: false,
+      drawer_pin: '2',
+      default_font_size: 1,
+      default_font_type: 'A',
+      line_spacing: 30,
+      margin_left: 0,
+      margin_right: 0,
+      margin_top: 0,
+      margin_bottom: 0,
+      custom_commands: {},
+      active: true
+    });
+    setIsProfileModalOpen(true);
+  };
+
+  // Open template modal for create/edit
+  const openTemplateModal = (template?: PrintTemplate) => {
+    if (!selectedProfile) {
+      toast.error('Selecione um perfil primeiro');
+      return;
+    }
+    
+    setSelectedTemplate(template || {
+      id: 0,
+      profile_id: selectedProfile.id,
+      template_type: 'receipt',
+      name: '',
+      description: '',
+      header_enabled: true,
+      header_align: 'center',
+      header_bold: true,
+      header_size: 2,
+      body_font_size: 1,
+      body_line_spacing: 30,
+      body_align: 'left',
+      footer_enabled: true,
+      footer_align: 'center',
+      footer_text: 'Obrigado pela preferência!',
+      items_columns: ['nome', 'qtd', 'valor'],
+      items_column_widths: { nome: 50, qtd: 20, valor: 30 },
+      show_logo: false,
+      logo_path: '',
+      show_qrcode: false,
+      show_barcode: false,
+      barcode_type: 'CODE128',
+      barcode_height: 50,
+      barcode_width: 2,
+      cut_paper: true,
+      cut_type: 'partial',
+      feed_lines_before: 0,
+      feed_lines_after: 3,
+      open_drawer: false,
+      custom_header: '',
+      custom_footer: '',
+      active: true
+    });
+    setIsTemplateModalOpen(true);
+  };
+
+  // Save profile
+  const saveProfile = async () => {
+    if (!selectedProfile) return;
+    
+    setSaving(true);
+    try {
+      const method = selectedProfile.id ? 'PUT' : 'POST';
+      const url = selectedProfile.id 
+        ? `/api/printer-profiles/${selectedProfile.id}`
+        : '/api/printer-profiles';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(selectedProfile)
+      });
+
+      if (!res.ok) throw new Error('Failed to save profile');
+      
+      toast.success(`Perfil ${selectedProfile.id ? 'atualizado' : 'criado'} com sucesso`);
+      setIsProfileModalOpen(false);
+      mutate('/api/printer-profiles');
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      toast.error('Erro ao salvar perfil');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Save template
+  const saveTemplate = async () => {
+    if (!selectedTemplate) return;
+    
+    setSaving(true);
+    try {
+      const method = selectedTemplate.id ? 'PUT' : 'POST';
+      const url = selectedTemplate.id 
+        ? `/api/print-templates/${selectedTemplate.id}`
+        : '/api/print-templates';
+
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(selectedTemplate)
+      });
+
+      if (!res.ok) throw new Error('Failed to save template');
+      
+      toast.success(`Template ${selectedTemplate.id ? 'atualizado' : 'criado'} com sucesso`);
+      setIsTemplateModalOpen(false);
+      mutate(`/api/print-templates?profile_id=${selectedProfile?.id}`);
+    } catch (error) {
+      console.error('Error saving template:', error);
+      toast.error('Erro ao salvar template');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Delete profile or template
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    
+    setSaving(true);
+    try {
+      const url = deleteTarget.type === 'profile'
+        ? `/api/printer-profiles/${deleteTarget.item.id}`
+        : `/api/print-templates/${deleteTarget.item.id}`;
+
+      const res = await fetch(url, { method: 'DELETE' });
+      if (!res.ok) throw new Error(`Failed to delete ${deleteTarget.type}`);
+      
+      toast.success(`${deleteTarget.type === 'profile' ? 'Perfil' : 'Template'} excluído com sucesso`);
+      
+      if (deleteTarget.type === 'profile') {
+        mutate('/api/printer-profiles');
+        setSelectedProfile(null);
+      } else {
+        mutate(`/api/print-templates?profile_id=${selectedProfile?.id}`);
+      }
+      
+      setIsDeleteModalOpen(false);
+      setDeleteTarget(null);
+    } catch (error) {
+      console.error('Error deleting:', error);
+      toast.error(`Erro ao excluir ${deleteTarget.type === 'profile' ? 'perfil' : 'template'}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // Duplicate profile
+  const duplicateProfile = async (profile: PrinterProfile) => {
+    setSaving(true);
+    try {
+      const newProfile = {
+        ...profile,
+        id: 0,
+        name: `${profile.name} (Cópia)`,
+        active: true
+      };
+
+      const res = await fetch('/api/printer-profiles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProfile)
+      });
+
+      if (!res.ok) throw new Error('Failed to duplicate profile');
+      
+      toast.success('Perfil duplicado com sucesso');
+      mutate('/api/printer-profiles');
+    } catch (error) {
+      console.error('Error duplicating profile:', error);
+      toast.error('Erro ao duplicar perfil');
+    } finally {
+      setSaving(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen">
+    <div className="container mx-auto p-6 max-w-7xl">
       {/* Header */}
-      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-orange-500">
-                <Settings className="h-5 w-5 text-white" />
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
+            <Settings className="h-8 w-8 text-orange-500" />
+            Configuração de Impressoras
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-1">
+            Gerencie perfis de impressoras e templates de impressão
+          </p>
+        </div>
+        <Button 
+          onClick={() => openProfileModal()} 
+          className="bg-orange-500 hover:bg-orange-600 text-white"
+        >
+          <Plus className="h-4 w-4 mr-2" />
+          Novo Perfil
+        </Button>
+      </div>
+
+      {/* Search Bar */}
+      <Card className="mb-6">
+        <CardContent className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Input
+              placeholder="Buscar perfis..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Main Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Profiles List */}
+        <div className="lg:col-span-1">
+          <Card className="h-full">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-semibold flex items-center gap-2">
+                  <PrinterIcon className="h-5 w-5 text-orange-500" />
+                  Perfis de Impressora
+                </h2>
+                <Badge variant="secondary">
+                  {filteredProfiles?.length || 0} perfis
+                </Badge>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                Configuração de Impressoras
-              </h1>
-            </div>
-            <div className="flex items-center gap-3">
-              <Input
-                placeholder="Pesquisar perfis..."
-                className="w-64 rounded-full"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Button 
-                onClick={() => openProfileModal()}
-                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
-              >
-                <Plus className="h-4 w-4 mr-2" />
-                Novo Perfil
-              </Button>
-            </div>
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400">
-            Configure perfis de impressoras e templates de impressão
-          </div>
+              
+              <div className="space-y-2 max-h-[600px] overflow-y-auto">
+                {filteredProfiles?.map((profile: PrinterProfile) => (
+                  <div
+                    key={profile.id}
+                    className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                      selectedProfile?.id === profile.id
+                        ? 'bg-orange-50 border-orange-300 dark:bg-orange-900/20'
+                        : 'bg-white hover:bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700'
+                    }`}
+                    onClick={() => setSelectedProfile(profile)}
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-medium text-sm">{profile.name}</h3>
+                          {profile.active ? (
+                            <Badge className="text-xs bg-green-100 text-green-700">
+                              Ativo
+                            </Badge>
+                          ) : (
+                            <Badge className="text-xs bg-gray-100 text-gray-600">
+                              Inativo
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {profile.manufacturer} - {profile.model}
+                        </p>
+                        <div className="flex gap-2 mt-2">
+                          <Badge variant="outline" className="text-xs">
+                            {profile.paper_width}mm
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {profile.dpi} DPI
+                          </Badge>
+                        </div>
+                      </div>
+                      
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                            <MoreVertical className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={(e) => {
+                            e.stopPropagation();
+                            openProfileModal(profile);
+                          }}>
+                            <Edit className="h-4 w-4 mr-2" />
+                            Editar
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={(e) => {
+                            e.stopPropagation();
+                            duplicateProfile(profile);
+                          }}>
+                            <Copy className="h-4 w-4 mr-2" />
+                            Duplicar
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            className="text-red-600"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setDeleteTarget({ type: 'profile', item: profile });
+                              setIsDeleteModalOpen(true);
+                            }}
+                          >
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Excluir
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Profile Details & Templates */}
+        <div className="lg:col-span-2">
+          {selectedProfile ? (
+            <Card>
+              <CardContent className="p-6">
+                <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                  <TabsList className="grid w-full grid-cols-2 mb-4">
+                    <TabsTrigger value="profiles" className="flex items-center gap-2">
+                      <Info className="h-4 w-4" />
+                      Detalhes do Perfil
+                    </TabsTrigger>
+                    <TabsTrigger value="templates" className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      Templates
+                    </TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="profiles" className="mt-4">
+                    <div className="space-y-6">
+                      {/* Profile Header */}
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-xl font-semibold">{selectedProfile.name}</h3>
+                          <p className="text-gray-500">{selectedProfile.manufacturer} - {selectedProfile.model}</p>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => openProfileModal(selectedProfile)}
+                        >
+                          <Edit className="h-4 w-4 mr-2" />
+                          Editar Perfil
+                        </Button>
+                      </div>
+
+                      {/* Profile Details Grid */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-4">
+                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                              Configurações do Papel
+                            </h4>
+                            <div className="space-y-2">
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-500">Largura:</span>
+                                <Badge variant="outline">{selectedProfile.paper_width}mm</Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-500">DPI:</span>
+                                <Badge variant="outline">{selectedProfile.dpi}</Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-500">Margens:</span>
+                                <span className="text-sm">
+                                  {selectedProfile.margin_top}/{selectedProfile.margin_right}/{selectedProfile.margin_bottom}/{selectedProfile.margin_left}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                              Configurações de Fonte
+                            </h4>
+                            <div className="space-y-2">
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-500">Charset:</span>
+                                <Badge variant="outline">{selectedProfile.charset}</Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-500">Tabela de Código:</span>
+                                <Badge variant="outline">{selectedProfile.code_table}</Badge>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-500">Espaçamento:</span>
+                                <span className="text-sm">{selectedProfile.line_spacing}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                              Recursos de Hardware
+                            </h4>
+                            <div className="space-y-2">
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm text-gray-500">Corte Automático:</span>
+                                {selectedProfile.supports_cut ? (
+                                  <Badge className="bg-green-100 text-green-700">
+                                    <Check className="h-3 w-3 mr-1" />
+                                    Suportado
+                                  </Badge>
+                                ) : (
+                                  <Badge className="bg-gray-100 text-gray-600">
+                                    <X className="h-3 w-3 mr-1" />
+                                    Não Suportado
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm text-gray-500">Gaveta de Dinheiro:</span>
+                                {selectedProfile.supports_drawer ? (
+                                  <Badge className="bg-green-100 text-green-700">
+                                    <Check className="h-3 w-3 mr-1" />
+                                    Suportado
+                                  </Badge>
+                                ) : (
+                                  <Badge className="bg-gray-100 text-gray-600">
+                                    <X className="h-3 w-3 mr-1" />
+                                    Não Suportado
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <h4 className="text-sm font-medium mb-3 text-gray-700 dark:text-gray-300">
+                              Informações Gerais
+                            </h4>
+                            <div className="space-y-2">
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-500">Conexão:</span>
+                                <Badge variant="outline">
+                                  {selectedProfile.connection_type === 'network' ? 'Rede' :
+                                   selectedProfile.connection_type === 'usb' ? 'USB' :
+                                   selectedProfile.connection_type === 'serial' ? 'Serial' :
+                                   'Bluetooth'}
+                                </Badge>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <span className="text-sm text-gray-500">Status:</span>
+                                {selectedProfile.active ? (
+                                  <Badge className="bg-green-100 text-green-700">
+                                    <Power className="h-3 w-3 mr-1" />
+                                    Ativo
+                                  </Badge>
+                                ) : (
+                                  <Badge className="bg-gray-100 text-gray-600">
+                                    <PowerOff className="h-3 w-3 mr-1" />
+                                    Inativo
+                                  </Badge>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="templates" className="mt-4">
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-semibold">Templates de Impressão</h3>
+                        <Button
+                          size="sm"
+                          onClick={() => openTemplateModal()}
+                          className="bg-orange-500 hover:bg-orange-600 text-white"
+                        >
+                          <Plus className="h-4 w-4 mr-2" />
+                          Novo Template
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {templates?.map((template: PrintTemplate) => (
+                          <Card key={template.id} className="hover:shadow-md transition-shadow">
+                            <CardContent className="p-4">
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <FileText className="h-4 w-4 text-orange-500" />
+                                    <h4 className="font-medium">{template.name}</h4>
+                                    {template.active ? (
+                                      <Badge className="text-xs bg-green-100 text-green-700">
+                                        Ativo
+                                      </Badge>
+                                    ) : (
+                                      <Badge className="text-xs bg-gray-100 text-gray-600">
+                                        Inativo
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-sm text-gray-500 mb-2">{template.description}</p>
+                                  
+                                  <div className="flex flex-wrap gap-2">
+                                    <Badge variant="outline" className="text-xs">
+                                      {TEMPLATE_TYPES.find(t => t.value === template.template_type)?.label}
+                                    </Badge>
+                                    {template.show_qrcode && (
+                                      <Badge variant="outline" className="text-xs">
+                                        <QrCode className="h-3 w-3 mr-1" />
+                                        QR Code
+                                      </Badge>
+                                    )}
+                                    {template.show_barcode && (
+                                      <Badge variant="outline" className="text-xs">
+                                        <Barcode className="h-3 w-3 mr-1" />
+                                        Código de Barras
+                                      </Badge>
+                                    )}
+                                    {template.cut_paper && (
+                                      <Badge variant="outline" className="text-xs">
+                                        <Scissors className="h-3 w-3 mr-1" />
+                                        Corte
+                                      </Badge>
+                                    )}
+                                  </div>
+                                </div>
+
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                                      <MoreVertical className="h-4 w-4" />
+                                    </Button>
+                                  </DropdownMenuTrigger>
+                                  <DropdownMenuContent align="end">
+                                    <DropdownMenuItem onClick={() => openTemplateModal(template)}>
+                                      <Edit className="h-4 w-4 mr-2" />
+                                      Editar
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem 
+                                      className="text-red-600"
+                                      onClick={() => {
+                                        setDeleteTarget({ type: 'template', item: template });
+                                        setIsDeleteModalOpen(true);
+                                      }}
+                                    >
+                                      <Trash2 className="h-4 w-4 mr-2" />
+                                      Excluir
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <PrinterIcon className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                  Selecione um Perfil
+                </h3>
+                <p className="text-gray-500">
+                  Escolha um perfil de impressora na lista ao lado para ver os detalhes e configurar templates
+                </p>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
 
-      {/* Content */}
-      <div className="p-4">
-        {profilesLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-            {/* Lista de Perfis */}
-            <div className="xl:col-span-1">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Perfis de Impressora</CardTitle>
-                  <CardDescription>
-                    {filteredProfiles.length} perfis cadastrados
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2 max-h-[600px] overflow-y-auto">
-                  {filteredProfiles.map((profile: PrinterProfile) => (
-                    <div
-                      key={profile.id}
-                      className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                        selectedProfile?.id === profile.id
-                          ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/20'
-                          : 'border-gray-200 dark:border-gray-700 hover:border-orange-300'
-                      }`}
-                      onClick={() => setSelectedProfile(profile)}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="font-medium text-sm">
-                            {profile.name}
-                          </div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                            {profile.manufacturer} - {profile.model}
-                          </div>
-                          <div className="flex items-center gap-2 mt-2">
-                            <Badge variant="outline" className="text-xs">
-                              {profile.paper_width}mm
-                            </Badge>
-                            <Badge variant="outline" className="text-xs">
-                              {profile.dpi} DPI
-                            </Badge>
-                            {profile.supports_cut && (
-                              <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 text-xs">
-                                <Scissors className="h-3 w-3 mr-1" />
-                                Corte
-                              </Badge>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openProfileModal(profile);
-                            }}
-                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                          >
-                            <Edit className="h-3 w-3" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              duplicateProfile(profile);
-                            }}
-                            className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                          >
-                            <Copy className="h-3 w-3" />
-                          </button>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteProfile(profile);
-                            }}
-                            className="h-7 w-7 rounded-full hover:text-red-500 transition-colors inline-flex items-center justify-center"
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Detalhes do Perfil Selecionado */}
-            <div className="xl:col-span-2">
-              {selectedProfile ? (
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle>{selectedProfile.name}</CardTitle>
-                        <CardDescription>
-                          {selectedProfile.manufacturer} - {selectedProfile.model}
-                        </CardDescription>
-                      </div>
-                      <Button
-                        onClick={() => openTemplateModal(undefined, selectedProfile.id)}
-                        className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
-                      >
-                        <Plus className="h-4 w-4 mr-2" />
-                        Novo Template
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <Tabs defaultValue="specs">
-                      <TabsList className="grid w-full grid-cols-2">
-                        <TabsTrigger value="specs">Especificações</TabsTrigger>
-                        <TabsTrigger value="templates">Templates ({profileTemplates.length})</TabsTrigger>
-                      </TabsList>
-                      
-                      <TabsContent value="specs" className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="space-y-3">
-                            <div>
-                              <Label className="text-xs text-gray-500">Largura do Papel</Label>
-                              <div className="font-medium">{selectedProfile.paper_width}mm</div>
-                            </div>
-                            <div>
-                              <Label className="text-xs text-gray-500">Resolução (DPI)</Label>
-                              <div className="font-medium">{selectedProfile.dpi}</div>
-                            </div>
-                            <div>
-                              <Label className="text-xs text-gray-500">Charset</Label>
-                              <div className="font-medium">{selectedProfile.charset}</div>
-                            </div>
-                            <div>
-                              <Label className="text-xs text-gray-500">Tabela de Código</Label>
-                              <div className="font-medium">{selectedProfile.code_table}</div>
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-3">
-                            <div>
-                              <Label className="text-xs text-gray-500">Suporte a Corte</Label>
-                              <div className="flex items-center gap-2">
-                                {selectedProfile.supports_cut ? (
-                                  <Check className="h-4 w-4 text-green-500" />
-                                ) : (
-                                  <X className="h-4 w-4 text-red-500" />
-                                )}
-                                <span className="font-medium">
-                                  {selectedProfile.supports_cut ? selectedProfile.cut_command : 'Não suportado'}
-                                </span>
-                              </div>
-                            </div>
-                            <div>
-                              <Label className="text-xs text-gray-500">Gaveta de Dinheiro</Label>
-                              <div className="flex items-center gap-2">
-                                {selectedProfile.supports_drawer ? (
-                                  <Check className="h-4 w-4 text-green-500" />
-                                ) : (
-                                  <X className="h-4 w-4 text-red-500" />
-                                )}
-                                <span className="font-medium">
-                                  {selectedProfile.supports_drawer ? selectedProfile.drawer_pin : 'Não suportado'}
-                                </span>
-                              </div>
-                            </div>
-                            <div>
-                              <Label className="text-xs text-gray-500">Fonte Padrão</Label>
-                              <div className="font-medium">
-                                {selectedProfile.default_font_type} - Tamanho {selectedProfile.default_font_size}
-                              </div>
-                            </div>
-                            <div>
-                              <Label className="text-xs text-gray-500">Espaçamento de Linha</Label>
-                              <div className="font-medium">{selectedProfile.line_spacing} pontos</div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="pt-4 border-t">
-                          <Label className="text-xs text-gray-500">Margens</Label>
-                          <div className="grid grid-cols-4 gap-2 mt-2">
-                            <div className="text-center">
-                              <div className="text-xs text-gray-500">Superior</div>
-                              <div className="font-medium">{selectedProfile.margin_top}mm</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-xs text-gray-500">Direita</div>
-                              <div className="font-medium">{selectedProfile.margin_right}mm</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-xs text-gray-500">Inferior</div>
-                              <div className="font-medium">{selectedProfile.margin_bottom}mm</div>
-                            </div>
-                            <div className="text-center">
-                              <div className="text-xs text-gray-500">Esquerda</div>
-                              <div className="font-medium">{selectedProfile.margin_left}mm</div>
-                            </div>
-                          </div>
-                        </div>
-                      </TabsContent>
-                      
-                      <TabsContent value="templates" className="space-y-2">
-                        {profileTemplates.length === 0 ? (
-                          <div className="text-center py-8 text-gray-500">
-                            Nenhum template configurado para este perfil
-                          </div>
-                        ) : (
-                          profileTemplates.map((template: PrintTemplate) => {
-                            const templateType = TEMPLATE_TYPES.find(t => t.value === template.template_type);
-                            const Icon = templateType?.icon || FileText;
-                            
-                            return (
-                              <div
-                                key={template.id}
-                                className="p-3 rounded-lg border border-gray-200 dark:border-gray-700"
-                              >
-                                <div className="flex items-start justify-between">
-                                  <div className="flex items-start gap-3">
-                                    <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/30">
-                                      <Icon className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                                    </div>
-                                    <div className="flex-1">
-                                      <div className="font-medium">{template.name}</div>
-                                      <div className="text-sm text-gray-500 dark:text-gray-400">
-                                        {templateType?.label}
-                                      </div>
-                                      {template.description && (
-                                        <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                          {template.description}
-                                        </div>
-                                      )}
-                                      <div className="flex items-center gap-2 mt-2">
-                                        {template.cut_paper && (
-                                          <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 text-xs">
-                                            <Scissors className="h-3 w-3 mr-1" />
-                                            Corte
-                                          </Badge>
-                                        )}
-                                        {template.open_drawer && (
-                                          <Badge className="bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400 text-xs">
-                                            <CreditCard className="h-3 w-3 mr-1" />
-                                            Gaveta
-                                          </Badge>
-                                        )}
-                                        {template.show_qrcode && (
-                                          <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 text-xs">
-                                            <QrCode className="h-3 w-3 mr-1" />
-                                            QR
-                                          </Badge>
-                                        )}
-                                        {template.show_barcode && (
-                                          <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 text-xs">
-                                            <Barcode className="h-3 w-3 mr-1" />
-                                            Código
-                                          </Badge>
-                                        )}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="flex gap-1">
-                                    <button
-                                      onClick={() => openTemplateModal(template)}
-                                      className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                                    >
-                                      <Edit className="h-3 w-3" />
-                                    </button>
-                                    <button
-                                      onClick={() => deleteTemplate(template)}
-                                      className="h-7 w-7 rounded-full hover:text-red-500 transition-colors inline-flex items-center justify-center"
-                                    >
-                                      <Trash2 className="h-3 w-3" />
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })
-                        )}
-                      </TabsContent>
-                    </Tabs>
-                  </CardContent>
-                </Card>
-              ) : (
-                <div className="flex items-center justify-center h-96 text-gray-500">
-                  <div className="text-center">
-                    <PrinterIcon className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                    <p>Selecione um perfil para ver os detalhes</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Modal de Perfil */}
+      {/* Profile Modal */}
       <Dialog open={isProfileModalOpen} onOpenChange={setIsProfileModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingProfile ? 'Editar Perfil' : 'Novo Perfil'}
+              {selectedProfile?.id ? 'Editar Perfil' : 'Novo Perfil'}
             </DialogTitle>
             <DialogDescription>
               Configure as especificações técnicas do modelo de impressora
             </DialogDescription>
           </DialogHeader>
-          
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="profile-name">Nome do Perfil *</Label>
-                <Input
-                  id="profile-name"
-                  value={profileForm.name}
-                  onChange={(e) => setProfileForm({...profileForm, name: e.target.value})}
-                  placeholder="Ex: Epson TM-T88VI"
-                />
-              </div>
-              <div>
-                <Label htmlFor="manufacturer">Fabricante</Label>
-                <Input
-                  id="manufacturer"
-                  value={profileForm.manufacturer}
-                  onChange={(e) => setProfileForm({...profileForm, manufacturer: e.target.value})}
-                  placeholder="Ex: Epson"
-                />
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="model">Modelo *</Label>
-                <Input
-                  id="model"
-                  value={profileForm.model}
-                  onChange={(e) => setProfileForm({...profileForm, model: e.target.value})}
-                  placeholder="Ex: TM-T88VI"
-                />
-              </div>
-              <div>
-                <Label htmlFor="paper-width">Largura do Papel (mm)</Label>
-                <Select
-                  value={profileForm.paper_width.toString()}
-                  onValueChange={(value) => setProfileForm({...profileForm, paper_width: parseInt(value)})}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="58">58mm</SelectItem>
-                    <SelectItem value="80">80mm</SelectItem>
-                    <SelectItem value="112">112mm</SelectItem>
-                    <SelectItem value="210">210mm (A4)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="dpi">Resolução (DPI)</Label>
-                <Select
-                  value={profileForm.dpi.toString()}
-                  onValueChange={(value) => setProfileForm({...profileForm, dpi: parseInt(value)})}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="180">180 DPI</SelectItem>
-                    <SelectItem value="203">203 DPI</SelectItem>
-                    <SelectItem value="300">300 DPI</SelectItem>
-                    <SelectItem value="600">600 DPI</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="charset">Charset</Label>
-                <Select
-                  value={profileForm.charset}
-                  onValueChange={(value) => setProfileForm({...profileForm, charset: value})}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CHARSETS.map((charset) => (
-                      <SelectItem key={charset} value={charset}>
-                        {charset}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            <div className="space-y-4 border-t pt-4">
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Suporte a Corte de Papel</Label>
-                  <p className="text-xs text-gray-500">Impressora suporta corte automático</p>
-                </div>
-                <Switch
-                  checked={profileForm.supports_cut}
-                  onCheckedChange={(checked) => setProfileForm({...profileForm, supports_cut: checked})}
-                />
-              </div>
-              
-              {profileForm.supports_cut && (
+
+          {selectedProfile && (
+            <div className="space-y-6 mt-4">
+              {/* Basic Info */}
+              <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <Label htmlFor="cut-command">Comando de Corte</Label>
+                  <Label>Nome do Perfil</Label>
+                  <Input
+                    value={selectedProfile.name}
+                    onChange={(e) => setSelectedProfile({ ...selectedProfile, name: e.target.value })}
+                    placeholder="Ex: Epson TM-T88V"
+                  />
+                </div>
+                <div>
+                  <Label>Fabricante</Label>
+                  <Input
+                    value={selectedProfile.manufacturer}
+                    onChange={(e) => setSelectedProfile({ ...selectedProfile, manufacturer: e.target.value })}
+                    placeholder="Ex: Epson"
+                  />
+                </div>
+                <div>
+                  <Label>Modelo</Label>
+                  <Input
+                    value={selectedProfile.model}
+                    onChange={(e) => setSelectedProfile({ ...selectedProfile, model: e.target.value })}
+                    placeholder="Ex: TM-T88V"
+                  />
+                </div>
+              </div>
+
+              {/* Connection & Paper */}
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label>Tipo de Conexão</Label>
                   <Select
-                    value={profileForm.cut_command}
-                    onValueChange={(value) => setProfileForm({...profileForm, cut_command: value})}
+                    value={selectedProfile.connection_type}
+                    onValueChange={(value) => setSelectedProfile({ ...selectedProfile, connection_type: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {CUT_COMMANDS.map((cmd) => (
-                        <SelectItem key={cmd} value={cmd}>
-                          {cmd}
-                        </SelectItem>
-                      ))}
+                      <SelectItem value="network">Rede (Ethernet/WiFi)</SelectItem>
+                      <SelectItem value="usb">USB</SelectItem>
+                      <SelectItem value="serial">Serial (COM)</SelectItem>
+                      <SelectItem value="bluetooth">Bluetooth</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              )}
-              
-              <div className="flex items-center justify-between">
-                <div className="space-y-0.5">
-                  <Label>Gaveta de Dinheiro</Label>
-                  <p className="text-xs text-gray-500">Suporte para abrir gaveta registradora</p>
+                <div>
+                  <Label>Largura do Papel (mm)</Label>
+                  <Select
+                    value={selectedProfile.paper_width.toString()}
+                    onValueChange={(value) => setSelectedProfile({ ...selectedProfile, paper_width: parseInt(value) })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="58">58mm</SelectItem>
+                      <SelectItem value="80">80mm</SelectItem>
+                      <SelectItem value="112">112mm</SelectItem>
+                      <SelectItem value="210">A4 (210mm)</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-                <Switch
-                  checked={profileForm.supports_drawer}
-                  onCheckedChange={(checked) => setProfileForm({...profileForm, supports_drawer: checked})}
-                />
+                <div>
+                  <Label>DPI</Label>
+                  <Select
+                    value={selectedProfile.dpi.toString()}
+                    onValueChange={(value) => setSelectedProfile({ ...selectedProfile, dpi: parseInt(value) })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="180">180 DPI</SelectItem>
+                      <SelectItem value="203">203 DPI</SelectItem>
+                      <SelectItem value="300">300 DPI</SelectItem>
+                      <SelectItem value="600">600 DPI</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-            </div>
-            
-            <div className="space-y-4 border-t pt-4">
+
+              {/* Charset & Code */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="font-type">Tipo de Fonte Padrão</Label>
+                  <Label>Charset</Label>
                   <Select
-                    value={profileForm.default_font_type}
-                    onValueChange={(value) => setProfileForm({...profileForm, default_font_type: value})}
+                    value={selectedProfile.charset}
+                    onValueChange={(value) => setSelectedProfile({ ...selectedProfile, charset: value })}
                   >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {FONT_TYPES.map((font) => (
-                        <SelectItem key={font} value={font}>
-                          {font}
-                        </SelectItem>
+                      {CHARSETS.map(charset => (
+                        <SelectItem key={charset} value={charset}>{charset}</SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
                 <div>
-                  <Label htmlFor="font-size">Tamanho de Fonte Padrão</Label>
-                  <div className="flex items-center gap-2">
-                    <Slider
-                      value={[profileForm.default_font_size]}
-                      onValueChange={(value) => setProfileForm({...profileForm, default_font_size: value[0]})}
-                      max={4}
-                      min={1}
-                      step={1}
-                      className="flex-1"
-                    />
-                    <span className="w-8 text-center">{profileForm.default_font_size}</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <Label htmlFor="line-spacing">Espaçamento de Linha (pontos)</Label>
-                <div className="flex items-center gap-2">
-                  <Slider
-                    value={[profileForm.line_spacing]}
-                    onValueChange={(value) => setProfileForm({...profileForm, line_spacing: value[0]})}
-                    max={100}
-                    min={0}
-                    step={5}
-                    className="flex-1"
-                  />
-                  <span className="w-12 text-center">{profileForm.line_spacing}</span>
-                </div>
-              </div>
-            </div>
-            
-            <div className="space-y-2 border-t pt-4">
-              <Label>Margens (mm)</Label>
-              <div className="grid grid-cols-4 gap-2">
-                <div>
-                  <Label className="text-xs">Superior</Label>
+                  <Label>Tabela de Código</Label>
                   <Input
-                    type="number"
-                    value={profileForm.margin_top}
-                    onChange={(e) => setProfileForm({...profileForm, margin_top: parseInt(e.target.value) || 0})}
-                    min={0}
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Direita</Label>
-                  <Input
-                    type="number"
-                    value={profileForm.margin_right}
-                    onChange={(e) => setProfileForm({...profileForm, margin_right: parseInt(e.target.value) || 0})}
-                    min={0}
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Inferior</Label>
-                  <Input
-                    type="number"
-                    value={profileForm.margin_bottom}
-                    onChange={(e) => setProfileForm({...profileForm, margin_bottom: parseInt(e.target.value) || 0})}
-                    min={0}
-                  />
-                </div>
-                <div>
-                  <Label className="text-xs">Esquerda</Label>
-                  <Input
-                    type="number"
-                    value={profileForm.margin_left}
-                    onChange={(e) => setProfileForm({...profileForm, margin_left: parseInt(e.target.value) || 0})}
-                    min={0}
+                    value={selectedProfile.code_table}
+                    onChange={(e) => setSelectedProfile({ ...selectedProfile, code_table: e.target.value })}
+                    placeholder="Ex: PC437"
                   />
                 </div>
               </div>
-            </div>
-          </div>
-          
-          <DialogFooter className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setIsProfileModalOpen(false)}
-              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-red-500 hover:bg-red-600 text-white"
-            >
-              Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={saveProfile}
-              disabled={saving}
-              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {saving ? 'Salvando...' : 'Salvar'}
-            </button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
 
-      {/* Modal de Template */}
-      <Dialog open={isTemplateModalOpen} onOpenChange={setIsTemplateModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {editingTemplate ? 'Editar Template' : 'Novo Template'}
-            </DialogTitle>
-            <DialogDescription>
-              Configure o template de impressão para diferentes tipos de documentos
-            </DialogDescription>
-          </DialogHeader>
-          
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="template-profile">Perfil de Impressora *</Label>
-                <Select
-                  value={templateForm.profile_id.toString()}
-                  onValueChange={(value) => setTemplateForm({...templateForm, profile_id: parseInt(value)})}
-                  disabled={!!editingTemplate}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {profiles.map((profile: PrinterProfile) => (
-                      <SelectItem key={profile.id} value={profile.id.toString()}>
-                        {profile.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="template-type">Tipo de Template *</Label>
-                <Select
-                  value={templateForm.template_type}
-                  onValueChange={(value) => setTemplateForm({...templateForm, template_type: value})}
-                  disabled={!!editingTemplate}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {TEMPLATE_TYPES.map((type) => (
-                      <SelectItem key={type.value} value={type.value}>
-                        {type.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="template-name">Nome do Template *</Label>
-                <Input
-                  id="template-name"
-                  value={templateForm.name}
-                  onChange={(e) => setTemplateForm({...templateForm, name: e.target.value})}
-                  placeholder="Ex: Cupom Fiscal Padrão"
-                />
-              </div>
-              <div>
-                <Label htmlFor="template-desc">Descrição</Label>
-                <Input
-                  id="template-desc"
-                  value={templateForm.description}
-                  onChange={(e) => setTemplateForm({...templateForm, description: e.target.value})}
-                  placeholder="Breve descrição do template"
-                />
-              </div>
-            </div>
-            
-            <Tabs defaultValue="header">
-              <TabsList>
-                <TabsTrigger value="header">Cabeçalho</TabsTrigger>
-                <TabsTrigger value="body">Corpo</TabsTrigger>
-                <TabsTrigger value="footer">Rodapé</TabsTrigger>
-                <TabsTrigger value="extras">Extras</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="header" className="space-y-4">
+              {/* Hardware Features */}
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <Label>Habilitar Cabeçalho</Label>
-                  <Switch
-                    checked={templateForm.header_enabled}
-                    onCheckedChange={(checked) => setTemplateForm({...templateForm, header_enabled: checked})}
-                  />
-                </div>
-                
-                {templateForm.header_enabled && (
-                  <>
-                    <div>
-                      <Label>Alinhamento do Cabeçalho</Label>
-                      <div className="flex gap-2 mt-2">
-                        <button
-                          type="button"
-                          onClick={() => setTemplateForm({...templateForm, header_align: 'left'})}
-                          className={`p-2 rounded ${templateForm.header_align === 'left' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                        >
-                          <AlignLeft className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setTemplateForm({...templateForm, header_align: 'center'})}
-                          className={`p-2 rounded ${templateForm.header_align === 'center' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                        >
-                          <AlignCenter className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setTemplateForm({...templateForm, header_align: 'right'})}
-                          className={`p-2 rounded ${templateForm.header_align === 'right' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                        >
-                          <AlignRight className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <Label>Cabeçalho em Negrito</Label>
-                      <Switch
-                        checked={templateForm.header_bold}
-                        onCheckedChange={(checked) => setTemplateForm({...templateForm, header_bold: checked})}
-                      />
-                    </div>
-                    
-                    <div>
-                      <Label>Tamanho da Fonte do Cabeçalho</Label>
-                      <div className="flex items-center gap-2">
-                        <Slider
-                          value={[templateForm.header_size]}
-                          onValueChange={(value) => setTemplateForm({...templateForm, header_size: value[0]})}
-                          max={4}
-                          min={1}
-                          step={1}
-                          className="flex-1"
-                        />
-                        <span className="w-8 text-center">{templateForm.header_size}x</span>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="body" className="space-y-4">
-                <div>
-                  <Label>Tamanho da Fonte do Corpo</Label>
-                  <div className="flex items-center gap-2">
-                    <Slider
-                      value={[templateForm.body_font_size]}
-                      onValueChange={(value) => setTemplateForm({...templateForm, body_font_size: value[0]})}
-                      max={4}
-                      min={1}
-                      step={1}
-                      className="flex-1"
-                    />
-                    <span className="w-8 text-center">{templateForm.body_font_size}x</span>
-                  </div>
-                </div>
-                
-                <div>
-                  <Label>Espaçamento de Linha</Label>
-                  <div className="flex items-center gap-2">
-                    <Slider
-                      value={[templateForm.body_line_spacing]}
-                      onValueChange={(value) => setTemplateForm({...templateForm, body_line_spacing: value[0]})}
-                      max={100}
-                      min={0}
-                      step={5}
-                      className="flex-1"
-                    />
-                    <span className="w-12 text-center">{templateForm.body_line_spacing}</span>
-                  </div>
-                </div>
-                
-                <div>
-                  <Label>Alinhamento do Corpo</Label>
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      type="button"
-                      onClick={() => setTemplateForm({...templateForm, body_align: 'left'})}
-                      className={`p-2 rounded ${templateForm.body_align === 'left' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                    >
-                      <AlignLeft className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setTemplateForm({...templateForm, body_align: 'center'})}
-                      className={`p-2 rounded ${templateForm.body_align === 'center' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                    >
-                      <AlignCenter className="h-4 w-4" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setTemplateForm({...templateForm, body_align: 'right'})}
-                      className={`p-2 rounded ${templateForm.body_align === 'right' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                    >
-                      <AlignRight className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="footer" className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <Label>Habilitar Rodapé</Label>
-                  <Switch
-                    checked={templateForm.footer_enabled}
-                    onCheckedChange={(checked) => setTemplateForm({...templateForm, footer_enabled: checked})}
-                  />
-                </div>
-                
-                {templateForm.footer_enabled && (
-                  <>
-                    <div>
-                      <Label>Alinhamento do Rodapé</Label>
-                      <div className="flex gap-2 mt-2">
-                        <button
-                          type="button"
-                          onClick={() => setTemplateForm({...templateForm, footer_align: 'left'})}
-                          className={`p-2 rounded ${templateForm.footer_align === 'left' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                        >
-                          <AlignLeft className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setTemplateForm({...templateForm, footer_align: 'center'})}
-                          className={`p-2 rounded ${templateForm.footer_align === 'center' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                        >
-                          <AlignCenter className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setTemplateForm({...templateForm, footer_align: 'right'})}
-                          className={`p-2 rounded ${templateForm.footer_align === 'right' ? 'bg-orange-500 text-white' : 'bg-gray-100 dark:bg-gray-800'}`}
-                        >
-                          <AlignRight className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Label>Texto do Rodapé</Label>
-                      <Input
-                        value={templateForm.footer_text}
-                        onChange={(e) => setTemplateForm({...templateForm, footer_text: e.target.value})}
-                        placeholder="Ex: Obrigado pela preferência!"
-                      />
-                    </div>
-                  </>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="extras" className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-center justify-between">
-                    <Label>Cortar Papel</Label>
-                    <Switch
-                      checked={templateForm.cut_paper}
-                      onCheckedChange={(checked) => setTemplateForm({...templateForm, cut_paper: checked})}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <Label>Abrir Gaveta</Label>
-                    <Switch
-                      checked={templateForm.open_drawer}
-                      onCheckedChange={(checked) => setTemplateForm({...templateForm, open_drawer: checked})}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <Label>Mostrar QR Code</Label>
-                    <Switch
-                      checked={templateForm.show_qrcode}
-                      onCheckedChange={(checked) => setTemplateForm({...templateForm, show_qrcode: checked})}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <Label>Mostrar Código de Barras</Label>
-                    <Switch
-                      checked={templateForm.show_barcode}
-                      onCheckedChange={(checked) => setTemplateForm({...templateForm, show_barcode: checked})}
-                    />
-                  </div>
-                </div>
-                
-                {templateForm.show_barcode && (
                   <div>
-                    <Label>Tipo de Código de Barras</Label>
+                    <Label>Suporte a Corte Automático</Label>
+                    <p className="text-xs text-gray-500">Impressora possui guilhotina</p>
+                  </div>
+                  <Switch
+                    checked={selectedProfile.supports_cut}
+                    onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, supports_cut: checked })}
+                  />
+                </div>
+
+                {selectedProfile.supports_cut && (
+                  <div>
+                    <Label>Comando de Corte</Label>
+                    <Input
+                      value={selectedProfile.cut_command}
+                      onChange={(e) => setSelectedProfile({ ...selectedProfile, cut_command: e.target.value })}
+                      placeholder="Ex: GS V 0"
+                    />
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Suporte a Gaveta de Dinheiro</Label>
+                    <p className="text-xs text-gray-500">Pode abrir gaveta registradora</p>
+                  </div>
+                  <Switch
+                    checked={selectedProfile.supports_drawer}
+                    onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, supports_drawer: checked })}
+                  />
+                </div>
+
+                {selectedProfile.supports_drawer && (
+                  <div>
+                    <Label>Pino da Gaveta</Label>
                     <Select
-                      value={templateForm.barcode_type}
-                      onValueChange={(value) => setTemplateForm({...templateForm, barcode_type: value})}
+                      value={selectedProfile.drawer_pin}
+                      onValueChange={(value) => setSelectedProfile({ ...selectedProfile, drawer_pin: value })}
                     >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {BARCODE_TYPES.map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {type}
+                        <SelectItem value="2">Pino 2</SelectItem>
+                        <SelectItem value="5">Pino 5</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </div>
+
+              {/* Status */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Perfil Ativo</Label>
+                  <p className="text-xs text-gray-500">Disponível para uso nas impressoras</p>
+                </div>
+                <Switch
+                  checked={selectedProfile.active}
+                  onCheckedChange={(checked) => setSelectedProfile({ ...selectedProfile, active: checked })}
+                />
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsProfileModalOpen(false)}>
+              Cancelar
+            </Button>
+            <Button 
+              onClick={saveProfile} 
+              disabled={saving}
+              className="bg-orange-500 hover:bg-orange-600 text-white"
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Salvando...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Salvar
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Template Modal */}
+      <Dialog open={isTemplateModalOpen} onOpenChange={setIsTemplateModalOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedTemplate?.id ? 'Editar Template' : 'Novo Template'}
+            </DialogTitle>
+            <DialogDescription>
+              Configure o layout e formatação do documento
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedTemplate && (
+            <div className="space-y-6 mt-4">
+              {/* Basic Info */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label>Nome do Template</Label>
+                  <Input
+                    value={selectedTemplate.name}
+                    onChange={(e) => setSelectedTemplate({ ...selectedTemplate, name: e.target.value })}
+                    placeholder="Ex: Cupom Fiscal Padrão"
+                  />
+                </div>
+                <div>
+                  <Label>Tipo de Documento</Label>
+                  <Select
+                    value={selectedTemplate.template_type}
+                    onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, template_type: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TEMPLATE_TYPES.map(type => (
+                        <SelectItem key={type.value} value={type.value}>
+                          {type.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div>
+                <Label>Descrição</Label>
+                <Input
+                  value={selectedTemplate.description}
+                  onChange={(e) => setSelectedTemplate({ ...selectedTemplate, description: e.target.value })}
+                  placeholder="Ex: Template padrão para cupom fiscal com logo e QR Code"
+                />
+              </div>
+
+              {/* Header Settings */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Cabeçalho</Label>
+                    <p className="text-xs text-gray-500">Nome do estabelecimento e informações</p>
+                  </div>
+                  <Switch
+                    checked={selectedTemplate.header_enabled}
+                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, header_enabled: checked })}
+                  />
+                </div>
+
+                {selectedTemplate.header_enabled && (
+                  <div className="grid grid-cols-3 gap-4 pl-6">
+                    <div>
+                      <Label>Alinhamento</Label>
+                      <Select
+                        value={selectedTemplate.header_align}
+                        onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, header_align: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="left">Esquerda</SelectItem>
+                          <SelectItem value="center">Centro</SelectItem>
+                          <SelectItem value="right">Direita</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <Label>Tamanho da Fonte</Label>
+                      <Select
+                        value={selectedTemplate.header_size.toString()}
+                        onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, header_size: parseInt(value) })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="1">Normal</SelectItem>
+                          <SelectItem value="2">Grande</SelectItem>
+                          <SelectItem value="3">Extra Grande</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={selectedTemplate.header_bold}
+                        onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, header_bold: checked })}
+                      />
+                      <Label>Negrito</Label>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer Settings */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Rodapé</Label>
+                    <p className="text-xs text-gray-500">Mensagem de agradecimento</p>
+                  </div>
+                  <Switch
+                    checked={selectedTemplate.footer_enabled}
+                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, footer_enabled: checked })}
+                  />
+                </div>
+
+                {selectedTemplate.footer_enabled && (
+                  <>
+                    <Input
+                      value={selectedTemplate.footer_text}
+                      onChange={(e) => setSelectedTemplate({ ...selectedTemplate, footer_text: e.target.value })}
+                      placeholder="Ex: Obrigado pela preferência!"
+                      className="ml-6"
+                    />
+                    <div className="ml-6">
+                      <Label>Alinhamento do Rodapé</Label>
+                      <Select
+                        value={selectedTemplate.footer_align}
+                        onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, footer_align: value })}
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="left">Esquerda</SelectItem>
+                          <SelectItem value="center">Centro</SelectItem>
+                          <SelectItem value="right">Direita</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Special Features */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={selectedTemplate.show_qrcode}
+                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_qrcode: checked })}
+                  />
+                  <Label>QR Code</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={selectedTemplate.show_barcode}
+                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_barcode: checked })}
+                  />
+                  <Label>Código de Barras</Label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={selectedTemplate.show_logo}
+                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, show_logo: checked })}
+                  />
+                  <Label>Logo</Label>
+                </div>
+              </div>
+
+              {/* Cut Settings */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <Label>Corte de Papel</Label>
+                    <p className="text-xs text-gray-500">Cortar papel após impressão</p>
+                  </div>
+                  <Switch
+                    checked={selectedTemplate.cut_paper}
+                    onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, cut_paper: checked })}
+                  />
+                </div>
+
+                {selectedTemplate.cut_paper && (
+                  <div className="ml-6">
+                    <Label>Tipo de Corte</Label>
+                    <Select
+                      value={selectedTemplate.cut_type}
+                      onValueChange={(value) => setSelectedTemplate({ ...selectedTemplate, cut_type: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CUT_TYPES.map(type => (
+                          <SelectItem key={type.value} value={type.value}>
+                            {type.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
                   </div>
                 )}
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>Linhas de Avanço Antes</Label>
-                    <Input
-                      type="number"
-                      value={templateForm.feed_lines_before}
-                      onChange={(e) => setTemplateForm({...templateForm, feed_lines_before: parseInt(e.target.value) || 0})}
-                      min={0}
-                      max={10}
-                    />
-                  </div>
-                  <div>
-                    <Label>Linhas de Avanço Depois</Label>
-                    <Input
-                      type="number"
-                      value={templateForm.feed_lines_after}
-                      onChange={(e) => setTemplateForm({...templateForm, feed_lines_after: parseInt(e.target.value) || 0})}
-                      min={0}
-                      max={10}
-                    />
-                  </div>
+              </div>
+
+              {/* Status */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Template Ativo</Label>
+                  <p className="text-xs text-gray-500">Disponível para uso</p>
                 </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-          
-          <DialogFooter className="flex justify-end gap-2">
-            <button
-              type="button"
-              onClick={() => setIsTemplateModalOpen(false)}
-              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-red-500 hover:bg-red-600 text-white"
-            >
+                <Switch
+                  checked={selectedTemplate.active}
+                  onCheckedChange={(checked) => setSelectedTemplate({ ...selectedTemplate, active: checked })}
+                />
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsTemplateModalOpen(false)}>
               Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={saveTemplate}
+            </Button>
+            <Button 
+              onClick={saveTemplate} 
               disabled={saving}
-              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-orange-500 hover:bg-orange-600 text-white"
             >
-              {saving ? 'Salvando...' : 'Salvar'}
-            </button>
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Salvando...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Salvar
+                </>
+              )}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir este {deleteTarget?.type === 'profile' ? 'perfil' : 'template'}? 
+              Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
