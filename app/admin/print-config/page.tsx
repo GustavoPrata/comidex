@@ -468,15 +468,6 @@ export default function PrintConfigPage() {
                     </div>
                   </div>
 
-                  {/* Features */}
-                  <div className="flex flex-wrap gap-1.5">
-                    {profile.supports_cut && (
-                      <Badge variant="secondary" className="text-xs">
-                        <Scissors className="h-3 w-3 mr-1" />
-                        Corte
-                      </Badge>
-                    )}
-                  </div>
 
                   {/* Actions */}
                   <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
