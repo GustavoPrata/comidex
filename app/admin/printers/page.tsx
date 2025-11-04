@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from "@/lib/supabase/client";
+import { Printer } from "@/types/supabase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -207,6 +208,19 @@ const fetcher = async () => {
   return data || [];
 };
 
+// SWR fetcher for printer profiles
+const profilesFetcher = async () => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('printer_profiles')
+    .select('*')
+    .eq('active', true)
+    .order('name', { ascending: true });
+
+  if (error) throw error;
+  return data || [];
+};
+
 export default function PrintersPage() {
   // Use SWR for automatic data fetching and caching
   const { data: printers = [], error, isLoading } = useSWR('printers', fetcher, {
@@ -214,6 +228,9 @@ export default function PrintersPage() {
     revalidateOnFocus: true,
     revalidateOnReconnect: true
   });
+  
+  // Fetch printer profiles
+  const { data: profiles = [], error: profilesError, isLoading: profilesLoading } = useSWR('printer_profiles', profilesFetcher);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -234,8 +251,7 @@ export default function PrintersPage() {
     name: '',
     ip_address: '',
     port: '9100',
-    type: 'thermal' as 'thermal' | 'laser' | 'inkjet' | 'other',
-    printer_model: 'Epson TM-T88VI',
+    profile_id: null as number | null,
     is_local: false,
     active: true,
     sort_order: 0
@@ -336,15 +352,13 @@ export default function PrintersPage() {
           toast.success(`💻 Enviado para impressora local Windows`);
         }
         
-        // Para impressoras térmicas, avisar sobre o cupom
-        if (printer.type === 'thermal') {
-          setTimeout(() => {
-            toast('📄 Verifique se o cupom de teste foi impresso corretamente', {
-              icon: '🖨️',
-              duration: 5000
-            });
-          }, 1000);
-        }
+        // Avisar sobre o cupom de teste
+        setTimeout(() => {
+          toast('📄 Verifique se o cupom de teste foi impresso corretamente', {
+            icon: '🖨️',
+            duration: 5000
+          });
+        }, 1000);
       } else {
         // Mostrar erro detalhado
         toast.error(`❌ ${result.error}`);
@@ -612,8 +626,7 @@ export default function PrintersPage() {
         name: printer.name,
         ip_address: printer.ip_address || '',
         port: printer.port || '9100',
-        type: printer.type,
-        printer_model: printer.printer_model || 'Epson TM-T88VI',
+        profile_id: printer.profile_id || null,
         is_local: printer.is_local || false,
         active: printer.active,
         sort_order: printer.sort_order
@@ -624,8 +637,7 @@ export default function PrintersPage() {
         name: '',
         ip_address: '',
         port: '9100',
-        type: 'thermal',
-        printer_model: 'Epson TM-T88VI',
+        profile_id: null,
         is_local: false,
         active: true,
         sort_order: printers.length
@@ -685,8 +697,7 @@ export default function PrintersPage() {
         name: formData.name,
         ip_address: formData.is_local ? 'LOCAL' : formData.ip_address,
         port: formData.is_local ? 'LOCAL' : formData.port,
-        type: formData.type,
-        printer_model: formData.printer_model,
+        profile_id: formData.profile_id,
         is_main: shouldBeMain || false,
         is_local: formData.is_local,
         active: formData.active,
@@ -720,8 +731,7 @@ export default function PrintersPage() {
         name: '',
         ip_address: '',
         port: '9100',
-        type: 'thermal',
-        printer_model: 'Epson TM-T88VI',
+        profile_id: null,
         is_local: false,
         active: true,
         sort_order: 0
@@ -1056,12 +1066,9 @@ export default function PrintersPage() {
                   {/* Info Box */}
                   <div className="space-y-2 mb-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-700/50">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Tipo:</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Modelo:</span>
                       <Badge variant="outline" className="text-xs">
-                        {printer.type === 'thermal' ? 'Térmica' :
-                         printer.type === 'laser' ? 'Laser' :
-                         printer.type === 'inkjet' ? 'Jato de Tinta' : 
-                         'Outro'}
+                        {printer.printer_model || 'Não especificado'}
                       </Badge>
                     </div>
                   </div>
@@ -1206,46 +1213,30 @@ export default function PrintersPage() {
             </div>
             
             <div className="grid gap-2">
-              <Label htmlFor="type">Tipo de Impressora *</Label>
+              <Label htmlFor="profile">Perfil de Impressora *</Label>
               <Select
-                value={formData.type}
-                onValueChange={(value: 'thermal' | 'laser' | 'inkjet' | 'other') => {
-                  setFormData({
-                    ...formData, 
-                    type: value,
-                    printer_model: PRINTER_MODELS[value][0]
-                  });
-                }}
+                value={formData.profile_id?.toString() || ''}
+                onValueChange={(value) => setFormData({...formData, profile_id: parseInt(value)})}
               >
-                <SelectTrigger id="type">
-                  <SelectValue />
+                <SelectTrigger id="profile">
+                  <SelectValue placeholder="Selecione um perfil de impressora" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="thermal">Térmica</SelectItem>
-                  <SelectItem value="laser">Laser</SelectItem>
-                  <SelectItem value="inkjet">Jato de Tinta</SelectItem>
-                  <SelectItem value="other">Outro</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="grid gap-2">
-              <Label htmlFor="model">Modelo</Label>
-              <Select
-                value={formData.printer_model}
-                onValueChange={(value) => setFormData({...formData, printer_model: value})}
-              >
-                <SelectTrigger id="model">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {PRINTER_MODELS[formData.type].map(model => (
-                    <SelectItem key={model} value={model}>
-                      {model}
+                  {profiles.map((profile: any) => (
+                    <SelectItem key={profile.id} value={profile.id.toString()}>
+                      <div className="flex flex-col">
+                        <span>{profile.name}</span>
+                        <span className="text-xs text-gray-500">
+                          {profile.manufacturer} - {profile.model} ({profile.paper_width}mm)
+                        </span>
+                      </div>
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-gray-500">
+                Configure novos perfis em <a href="/admin/print-config" className="text-orange-500 hover:underline">Configuração de Impressoras</a>
+              </p>
             </div>
             
             {formData.is_local ? (
@@ -1471,9 +1462,9 @@ export default function PrintersPage() {
                                 <HardDrive className="h-3 w-3 mr-1" />
                                 Local
                               </Badge>
-                              {printer.type === 'thermal' && (
+                              {printer.printer_model && (
                                 <Badge variant="secondary" className="text-xs bg-orange-500 text-white">
-                                  Térmica
+                                  {printer.printer_model}
                                 </Badge>
                               )}
                             </>

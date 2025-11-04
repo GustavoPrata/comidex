@@ -65,6 +65,8 @@ export interface Database {
           ip_address: string | null
           port: string
           type: 'thermal' | 'laser' | 'inkjet' | 'other'
+          printer_model: string | null
+          profile_id: number | null
           is_main: boolean
           is_local: boolean
           active: boolean
