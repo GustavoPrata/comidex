@@ -55,7 +55,8 @@ import {
   ChevronRight,
   Info,
   Cpu,
-  Maximize2
+  Maximize2,
+  CreditCard
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
