@@ -1169,17 +1169,15 @@ export default function PrintersPage() {
           </DialogHeader>
           
           <div className="grid gap-4 py-4">
-            {!formData.is_local && (
-              <div className="grid gap-2">
-                <Label htmlFor="name">Nome *</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  placeholder="Ex: Impressora Cozinha"
-                />
-              </div>
-            )}
+            <div className="grid gap-2">
+              <Label htmlFor="name">Nome *</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                placeholder="Ex: Impressora Cozinha"
+              />
+            </div>
             
             <div className="grid gap-2">
               <Label>Tipo de Conexão</Label>
