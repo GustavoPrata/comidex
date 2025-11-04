@@ -236,7 +236,6 @@ export default function PrintersPage() {
     port: '9100',
     type: 'thermal' as 'thermal' | 'laser' | 'inkjet' | 'other',
     printer_model: 'Epson TM-T88VI',
-    is_main: false,
     is_local: false,
     active: true,
     sort_order: 0
@@ -537,7 +536,6 @@ export default function PrintersPage() {
         port: discoveredPrinter.isLocal ? 'LOCAL' : String(discoveredPrinter.port || '9100'),
         type: discoveredPrinter.type === 'thermal' ? 'thermal' : 'other',
         printer_model: discoveredPrinter.model || discoveredPrinter.driver || 'Detectado automaticamente',
-        is_main: false,
         is_local: discoveredPrinter.isLocal === true,
         active: true,
         sort_order: Math.floor(printers.length),
@@ -616,7 +614,6 @@ export default function PrintersPage() {
         port: printer.port || '9100',
         type: printer.type,
         printer_model: printer.printer_model || 'Epson TM-T88VI',
-        is_main: printer.is_main,
         is_local: printer.is_local || false,
         active: printer.active,
         sort_order: printer.sort_order
@@ -629,7 +626,6 @@ export default function PrintersPage() {
         port: '9100',
         type: 'thermal',
         printer_model: 'Epson TM-T88VI',
-        is_main: false,
         is_local: false,
         active: true,
         sort_order: printers.length
@@ -688,7 +684,6 @@ export default function PrintersPage() {
         port: formData.is_local ? 'LOCAL' : formData.port,
         type: formData.type,
         printer_model: formData.printer_model,
-        is_main: formData.is_main,
         is_local: formData.is_local,
         active: formData.active,
         sort_order: Math.floor(formData.sort_order),
@@ -720,7 +715,6 @@ export default function PrintersPage() {
         port: '9100',
         type: 'thermal',
         printer_model: 'Epson TM-T88VI',
-        is_main: false,
         is_local: false,
         active: true,
         sort_order: 0
@@ -914,9 +908,6 @@ export default function PrintersPage() {
                         <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">
                           {printer.name}
                         </h3>
-                        {printer.is_main && (
-                          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                        )}
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400">
                         {printer.printer_model || 'Modelo não especificado'}
@@ -955,25 +946,21 @@ export default function PrintersPage() {
                         </span>
                       </div>
                       
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-orange-100 dark:hover:bg-orange-900/30"
+                      <button
                         onClick={() => openModal(printer)}
-                        title="Editar impressora"
+                        className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                        title="Editar"
                       >
-                        <Edit className="h-4 w-4 text-orange-600 dark:text-orange-400" />
-                      </Button>
+                        <Edit className="h-4 w-4" />
+                      </button>
                       
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-red-100 dark:hover:bg-red-900/30"
+                      <button
                         onClick={() => handleDelete(printer)}
-                        title="Excluir impressora"
+                        className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                        title="Excluir"
                       >
-                        <Trash2 className="h-4 w-4 text-red-600 dark:text-red-400" />
-                      </Button>
+                        <Trash2 className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
 
@@ -1014,14 +1001,6 @@ export default function PrintersPage() {
                          'Outro'}
                       </Badge>
                     </div>
-                    {printer.is_main && (
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600 dark:text-gray-400">Status:</span>
-                        <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 text-xs">
-                          Principal
-                        </Badge>
-                      </div>
-                    )}
                   </div>
 
                   {/* Last Test Info */}
@@ -1305,58 +1284,46 @@ export default function PrintersPage() {
               </div>
             )}
             
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="is_main"
-                  checked={formData.is_main}
-                  onChange={(e) => setFormData({...formData, is_main: e.target.checked})}
-                  className="rounded"
-                />
-                <Label htmlFor="is_main" className="cursor-pointer">
-                  Impressora Principal
-                </Label>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="active"
-                  checked={formData.active}
-                  onChange={(e) => setFormData({...formData, active: e.target.checked})}
-                  className="rounded"
-                />
-                <Label htmlFor="active" className="cursor-pointer">
-                  Ativa
-                </Label>
-              </div>
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={() => setFormData({...formData, active: !formData.active})}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                  formData.active 
+                    ? 'bg-green-600 hover:bg-green-700 text-white' 
+                    : 'bg-red-500 hover:bg-red-600 text-white'
+                }`}
+              >
+                {formData.active ? (
+                  <>
+                    <Power className="h-4 w-4 mr-1.5 inline" />
+                    Impressora Ativa
+                  </>
+                ) : (
+                  <>
+                    <PowerOff className="h-4 w-4 mr-1.5 inline" />
+                    Impressora Inativa
+                  </>
+                )}
+              </button>
             </div>
           </div>
           
-          <DialogFooter>
+          <DialogFooter className="flex justify-end gap-2">
             <button
+              type="button"
               onClick={() => setIsModalOpen(false)}
-              className="px-4 py-1 rounded-full text-xs font-medium transition-all bg-red-500 hover:bg-red-600 text-white"
+              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-red-500 hover:bg-red-600 text-white"
             >
               Cancelar
             </button>
             <button
+              type="button"
               onClick={savePrinter} 
               disabled={saving}
-              className="px-4 py-1 rounded-full text-xs font-medium transition-all bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {saving ? (
-                <>
-                  <Loader2 className="h-3 w-3 mr-1 animate-spin inline" />
-                  Salvando...
-                </>
-              ) : (
-                <>
-                  <Save className="h-3 w-3 mr-1 inline" />
-                  Salvar
-                </>
-              )}
+              {saving ? 'Salvando...' : 'Salvar'}
             </button>
           </DialogFooter>
         </DialogContent>
