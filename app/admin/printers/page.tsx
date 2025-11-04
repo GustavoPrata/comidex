@@ -678,12 +678,16 @@ export default function PrintersPage() {
     try {
       setSaving(true);
       
+      // Se não tem nenhuma impressora ou nenhuma é principal, esta será a principal
+      const shouldBeMain = !editingPrinter && (printers.length === 0 || !printers.some((p: Printer) => p.is_main));
+      
       const printerData = {
         name: formData.name,
         ip_address: formData.is_local ? 'LOCAL' : formData.ip_address,
         port: formData.is_local ? 'LOCAL' : formData.port,
         type: formData.type,
         printer_model: formData.printer_model,
+        is_main: shouldBeMain || false,
         is_local: formData.is_local,
         active: formData.active,
         sort_order: Math.floor(formData.sort_order),
@@ -705,6 +709,9 @@ export default function PrintersPage() {
 
         if (error) throw error;
         toast.success("Impressora criada com sucesso!");
+        if (shouldBeMain) {
+          toast("Esta impressora foi definida como principal", { icon: '⭐' });
+        }
       }
 
       setIsModalOpen(false);
@@ -739,6 +746,19 @@ export default function PrintersPage() {
     try {
       setSaving(true);
       
+      // Se está deletando a principal, transfere para outra
+      if (deletePrinter.is_main && printers.length > 1) {
+        const nextMainPrinter = printers.find((p: Printer) => p.id !== deletePrinter.id);
+        if (nextMainPrinter) {
+          const { error: updateError } = await supabase
+            .from('printers')
+            .update({ is_main: true })
+            .eq('id', nextMainPrinter.id);
+            
+          if (updateError) throw updateError;
+        }
+      }
+      
       const { error } = await supabase
         .from('printers')
         .delete()
@@ -772,6 +792,37 @@ export default function PrintersPage() {
     } catch (error) {
       console.error('Error toggling active status:', error);
       toast.error("Erro ao alterar status");
+    }
+  };
+
+  const setAsMain = async (printer: Printer) => {
+    if (printer.is_main) {
+      toast("Esta impressora já é a principal", { icon: '⭐' });
+      return;
+    }
+
+    try {
+      // Primeiro remove o status principal de todas as outras
+      const { error: resetError } = await supabase
+        .from('printers')
+        .update({ is_main: false })
+        .neq('id', printer.id);
+
+      if (resetError) throw resetError;
+
+      // Depois define esta como principal
+      const { error: setError } = await supabase
+        .from('printers')
+        .update({ is_main: true })
+        .eq('id', printer.id);
+
+      if (setError) throw setError;
+      
+      toast.success(`${printer.name} definida como impressora principal`);
+      mutate('printers');
+    } catch (error) {
+      console.error('Error setting main printer:', error);
+      toast.error("Erro ao definir impressora principal");
     }
   };
 
@@ -964,11 +1015,11 @@ export default function PrintersPage() {
                     </div>
                   </div>
 
-                  {/* Power Button */}
-                  <div className="mb-4">
+                  {/* Power Button & Main Printer Button */}
+                  <div className="mb-4 flex gap-2">
                     <button
                       onClick={() => toggleActive(printer)}
-                      className={`w-full py-1.5 rounded-full text-xs font-medium transition-all ${
+                      className={`flex-1 py-1.5 rounded-full text-xs font-medium transition-all ${
                         printer.active 
                           ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-sm'
                           : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white'
@@ -987,6 +1038,18 @@ export default function PrintersPage() {
                           </>
                         )}
                       </div>
+                    </button>
+                    
+                    <button
+                      onClick={() => setAsMain(printer)}
+                      className={`px-3 py-1.5 rounded-full transition-all ${
+                        printer.is_main 
+                          ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-sm'
+                          : 'bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 dark:from-gray-700 dark:to-gray-800 dark:hover:from-gray-600 dark:hover:to-gray-700 dark:text-gray-300'
+                      }`}
+                      title={printer.is_main ? "Impressora principal" : "Definir como principal"}
+                    >
+                      <Star className={`h-3.5 w-3.5 ${printer.is_main ? 'fill-white' : ''}`} />
                     </button>
                   </div>
 

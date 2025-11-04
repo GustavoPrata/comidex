@@ -987,6 +987,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/loader-circle.js [app-client] (ecmascript) <export default as Loader2>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-client] (ecmascript) <export default as Search>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$network$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Network$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/network.js [app-client] (ecmascript) <export default as Network>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/star.js [app-client] (ecmascript) <export default as Star>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$test$2d$tube$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__TestTube$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/test-tube.js [app-client] (ecmascript) <export default as TestTube>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$activity$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Activity$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/activity.js [app-client] (ecmascript) <export default as Activity>");
@@ -1567,12 +1568,15 @@ function PrintersPage() {
         }
         try {
             setSaving(true);
+            // Se não tem nenhuma impressora ou nenhuma é principal, esta será a principal
+            const shouldBeMain = !editingPrinter && (printers.length === 0 || !printers.some((p)=>p.is_main));
             const printerData = {
                 name: formData.name,
                 ip_address: formData.is_local ? 'LOCAL' : formData.ip_address,
                 port: formData.is_local ? 'LOCAL' : formData.port,
                 type: formData.type,
                 printer_model: formData.printer_model,
+                is_main: shouldBeMain || false,
                 is_local: formData.is_local,
                 active: formData.active,
                 sort_order: Math.floor(formData.sort_order),
@@ -1588,6 +1592,11 @@ function PrintersPage() {
                 ]);
                 if (error) throw error;
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Impressora criada com sucesso!");
+                if (shouldBeMain) {
+                    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"])("Esta impressora foi definida como principal", {
+                        icon: '⭐'
+                    });
+                }
             }
             setIsModalOpen(false);
             setEditingPrinter(null);
@@ -1617,6 +1626,16 @@ function PrintersPage() {
         if (!deletePrinter) return;
         try {
             setSaving(true);
+            // Se está deletando a principal, transfere para outra
+            if (deletePrinter.is_main && printers.length > 1) {
+                const nextMainPrinter = printers.find((p)=>p.id !== deletePrinter.id);
+                if (nextMainPrinter) {
+                    const { error: updateError } = await supabase.from('printers').update({
+                        is_main: true
+                    }).eq('id', nextMainPrinter.id);
+                    if (updateError) throw updateError;
+                }
+            }
             const { error } = await supabase.from('printers').delete().eq('id', deletePrinter.id);
             if (error) throw error;
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success("Impressora excluída com sucesso!");
@@ -1643,6 +1662,31 @@ function PrintersPage() {
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Erro ao alterar status");
         }
     };
+    const setAsMain = async (printer)=>{
+        if (printer.is_main) {
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"])("Esta impressora já é a principal", {
+                icon: '⭐'
+            });
+            return;
+        }
+        try {
+            // Primeiro remove o status principal de todas as outras
+            const { error: resetError } = await supabase.from('printers').update({
+                is_main: false
+            }).neq('id', printer.id);
+            if (resetError) throw resetError;
+            // Depois define esta como principal
+            const { error: setError } = await supabase.from('printers').update({
+                is_main: true
+            }).eq('id', printer.id);
+            if (setError) throw setError;
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].success(`${printer.name} definida como impressora principal`);
+            (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swr$2f$dist$2f$_internal$2f$config$2d$context$2d$client$2d$BoS53ST9$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__j__as__mutate$3e$__["mutate"])('printers');
+        } catch (error) {
+            console.error('Error setting main printer:', error);
+            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error("Erro ao definir impressora principal");
+        }
+    };
     const filteredPrinters = printers.filter((printer)=>printer.name.toLowerCase().includes(searchTerm.toLowerCase()) || printer.ip_address.includes(searchTerm) || printer.printer_model && printer.printer_model.toLowerCase().includes(searchTerm.toLowerCase()));
     const getConnectionStatusIcon = (status)=>{
         switch(status){
@@ -1651,7 +1695,7 @@ function PrintersPage() {
                     className: "h-3 w-3"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 787,
+                    lineNumber: 838,
                     columnNumber: 16
                 }, this);
             case 'offline':
@@ -1659,7 +1703,7 @@ function PrintersPage() {
                     className: "h-3 w-3"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 789,
+                    lineNumber: 840,
                     columnNumber: 16
                 }, this);
             case 'error':
@@ -1667,7 +1711,7 @@ function PrintersPage() {
                     className: "h-3 w-3"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 791,
+                    lineNumber: 842,
                     columnNumber: 16
                 }, this);
             default:
@@ -1675,7 +1719,7 @@ function PrintersPage() {
                     className: "h-3 w-3 animate-spin"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 793,
+                    lineNumber: 844,
                     columnNumber: 16
                 }, this);
         }
@@ -1736,12 +1780,12 @@ function PrintersPage() {
                                                 className: "h-5 w-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 844,
+                                                lineNumber: 895,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 843,
+                                            lineNumber: 894,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -1749,13 +1793,13 @@ function PrintersPage() {
                                             children: "Impressoras"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 846,
+                                            lineNumber: 897,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 842,
+                                    lineNumber: 893,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1771,7 +1815,7 @@ function PrintersPage() {
                                                     onChange: (e)=>setSearchTerm(e.target.value)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 850,
+                                                    lineNumber: 901,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1780,18 +1824,18 @@ function PrintersPage() {
                                                         className: "h-4 w-4 text-white"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 857,
+                                                        lineNumber: 908,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 856,
+                                                    lineNumber: 907,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 849,
+                                            lineNumber: 900,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1805,20 +1849,20 @@ function PrintersPage() {
                                                     className: "h-4 w-4 mr-2 animate-spin"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 868,
+                                                    lineNumber: 919,
                                                     columnNumber: 19
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$monitor$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Monitor$3e$__["Monitor"], {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 870,
+                                                    lineNumber: 921,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Detectar Impressoras Locais"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 860,
+                                            lineNumber: 911,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1829,26 +1873,26 @@ function PrintersPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 878,
+                                                    lineNumber: 929,
                                                     columnNumber: 17
                                                 }, this),
                                                 "Nova Impressora"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 874,
+                                            lineNumber: 925,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 848,
+                                    lineNumber: 899,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 841,
+                            lineNumber: 892,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1856,18 +1900,18 @@ function PrintersPage() {
                             children: "Gerencie impressoras térmicas para comandas e cupons"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 884,
+                            lineNumber: 935,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 840,
+                    lineNumber: 891,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printers/page.tsx",
-                lineNumber: 839,
+                lineNumber: 890,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1879,12 +1923,12 @@ function PrintersPage() {
                             className: "h-8 w-8 animate-spin text-orange-500"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 894,
+                            lineNumber: 945,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printers/page.tsx",
-                        lineNumber: 893,
+                        lineNumber: 944,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4",
@@ -1906,12 +1950,12 @@ function PrintersPage() {
                                                                 children: printer.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 908,
+                                                                lineNumber: 959,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 907,
+                                                            lineNumber: 958,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1919,7 +1963,7 @@ function PrintersPage() {
                                                             children: printer.printer_model || 'Modelo não especificado'
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 912,
+                                                            lineNumber: 963,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1930,7 +1974,7 @@ function PrintersPage() {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 918,
+                                                                        lineNumber: 969,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1938,7 +1982,7 @@ function PrintersPage() {
                                                                         children: "Impressora Local Windows"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 919,
+                                                                        lineNumber: 970,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
@@ -1948,7 +1992,7 @@ function PrintersPage() {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 923,
+                                                                        lineNumber: 974,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1960,20 +2004,20 @@ function PrintersPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 924,
+                                                                        lineNumber: 975,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 915,
+                                                            lineNumber: 966,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 906,
+                                                    lineNumber: 957,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1994,13 +2038,13 @@ function PrintersPage() {
                                                                     children: getConnectionStatusShortText(printer.connection_status)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 944,
+                                                                    lineNumber: 995,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 933,
+                                                            lineNumber: 984,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2011,12 +2055,12 @@ function PrintersPage() {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 954,
+                                                                lineNumber: 1005,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 949,
+                                                            lineNumber: 1000,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2027,81 +2071,99 @@ function PrintersPage() {
                                                                 className: "h-4 w-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 962,
+                                                                lineNumber: 1013,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 957,
+                                                            lineNumber: 1008,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 931,
+                                                    lineNumber: 982,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 905,
+                                            lineNumber: 956,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "mb-4",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                onClick: ()=>toggleActive(printer),
-                                                className: `w-full py-1.5 rounded-full text-xs font-medium transition-all ${printer.active ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-sm' : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white'}`,
-                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center justify-center gap-1.5",
-                                                    children: printer.active ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$power$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Power$3e$__["Power"], {
-                                                                className: "h-3 w-3"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 980,
-                                                                columnNumber: 29
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                children: "Ativa"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 981,
-                                                                columnNumber: 29
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$power$2d$off$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PowerOff$3e$__["PowerOff"], {
-                                                                className: "h-3 w-3"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 985,
-                                                                columnNumber: 29
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                children: "Inativa"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 986,
-                                                                columnNumber: 29
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true)
+                                            className: "mb-4 flex gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    onClick: ()=>toggleActive(printer),
+                                                    className: `flex-1 py-1.5 rounded-full text-xs font-medium transition-all ${printer.active ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-sm' : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white'}`,
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex items-center justify-center gap-1.5",
+                                                        children: printer.active ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$power$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Power$3e$__["Power"], {
+                                                                    className: "h-3 w-3"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/printers/page.tsx",
+                                                                    lineNumber: 1031,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    children: "Ativa"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/printers/page.tsx",
+                                                                    lineNumber: 1032,
+                                                                    columnNumber: 29
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$power$2d$off$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__PowerOff$3e$__["PowerOff"], {
+                                                                    className: "h-3 w-3"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/printers/page.tsx",
+                                                                    lineNumber: 1036,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    children: "Inativa"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/printers/page.tsx",
+                                                                    lineNumber: 1037,
+                                                                    columnNumber: 29
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/printers/page.tsx",
+                                                        lineNumber: 1028,
+                                                        columnNumber: 23
+                                                    }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 977,
-                                                    columnNumber: 23
+                                                    lineNumber: 1020,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                    onClick: ()=>setAsMain(printer),
+                                                    className: `px-3 py-1.5 rounded-full transition-all ${printer.is_main ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-sm' : 'bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 dark:from-gray-700 dark:to-gray-800 dark:hover:from-gray-600 dark:hover:to-gray-700 dark:text-gray-300'}`,
+                                                    title: printer.is_main ? "Impressora principal" : "Definir como principal",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {
+                                                        className: `h-3.5 w-3.5 ${printer.is_main ? 'fill-white' : ''}`
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/printers/page.tsx",
+                                                        lineNumber: 1052,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/printers/page.tsx",
+                                                    lineNumber: 1043,
+                                                    columnNumber: 21
                                                 }, this)
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 969,
-                                                columnNumber: 21
-                                            }, this)
-                                        }, void 0, false, {
+                                            ]
+                                        }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 968,
+                                            lineNumber: 1019,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2114,7 +2176,7 @@ function PrintersPage() {
                                                         children: "Tipo:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 996,
+                                                        lineNumber: 1059,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2123,18 +2185,18 @@ function PrintersPage() {
                                                         children: printer.type === 'thermal' ? 'Térmica' : printer.type === 'laser' ? 'Laser' : printer.type === 'inkjet' ? 'Jato de Tinta' : 'Outro'
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 997,
+                                                        lineNumber: 1060,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 995,
+                                                lineNumber: 1058,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 994,
+                                            lineNumber: 1057,
                                             columnNumber: 19
                                         }, this),
                                         printer.last_test_at && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2146,7 +2208,7 @@ function PrintersPage() {
                                                         className: "h-4 w-4 text-blue-500 mt-0.5"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 1010,
+                                                        lineNumber: 1073,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2157,7 +2219,7 @@ function PrintersPage() {
                                                                 children: "Último teste"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 1012,
+                                                                lineNumber: 1075,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2165,7 +2227,7 @@ function PrintersPage() {
                                                                 children: new Date(printer.last_test_at).toLocaleString('pt-BR')
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 1015,
+                                                                lineNumber: 1078,
                                                                 columnNumber: 27
                                                             }, this),
                                                             printer.test_result && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2173,24 +2235,24 @@ function PrintersPage() {
                                                                 children: printer.test_result
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 1019,
+                                                                lineNumber: 1082,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 1011,
+                                                        lineNumber: 1074,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 1009,
+                                                lineNumber: 1072,
                                                 columnNumber: 23
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1008,
+                                            lineNumber: 1071,
                                             columnNumber: 21
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2206,7 +2268,7 @@ function PrintersPage() {
                                                         className: "h-4 w-4 animate-spin"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 1038,
+                                                        lineNumber: 1101,
                                                         columnNumber: 25
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                                         children: [
@@ -2214,7 +2276,7 @@ function PrintersPage() {
                                                                 className: "h-4 w-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 1041,
+                                                                lineNumber: 1104,
                                                                 columnNumber: 27
                                                             }, this),
                                                             "Testar"
@@ -2222,7 +2284,7 @@ function PrintersPage() {
                                                     }, void 0, true)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1030,
+                                                    lineNumber: 1093,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2235,7 +2297,7 @@ function PrintersPage() {
                                                         className: "h-4 w-4 animate-spin"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 1055,
+                                                        lineNumber: 1118,
                                                         columnNumber: 25
                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                                         children: [
@@ -2243,7 +2305,7 @@ function PrintersPage() {
                                                                 className: "h-4 w-4 mr-2"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 1058,
+                                                                lineNumber: 1121,
                                                                 columnNumber: 27
                                                             }, this),
                                                             "Status"
@@ -2251,29 +2313,29 @@ function PrintersPage() {
                                                     }, void 0, true)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1047,
+                                                    lineNumber: 1110,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1029,
+                                            lineNumber: 1092,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 903,
+                                    lineNumber: 954,
                                     columnNumber: 17
                                 }, this)
                             }, printer.id, false, {
                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                lineNumber: 899,
+                                lineNumber: 950,
                                 columnNumber: 15
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printers/page.tsx",
-                        lineNumber: 897,
+                        lineNumber: 948,
                         columnNumber: 11
                     }, this),
                     !isLoading && filteredPrinters.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2285,12 +2347,12 @@ function PrintersPage() {
                                     className: "h-10 w-10 text-orange-500"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1074,
+                                    lineNumber: 1137,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                lineNumber: 1073,
+                                lineNumber: 1136,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2298,7 +2360,7 @@ function PrintersPage() {
                                 children: searchTerm ? 'Nenhuma impressora encontrada com esses critérios' : 'Nenhuma impressora cadastrada'
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                lineNumber: 1076,
+                                lineNumber: 1139,
                                 columnNumber: 13
                             }, this),
                             !searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2309,26 +2371,26 @@ function PrintersPage() {
                                         className: "h-4 w-4 mr-2"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1086,
+                                        lineNumber: 1149,
                                         columnNumber: 17
                                     }, this),
                                     "Cadastrar Primeira Impressora"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                lineNumber: 1082,
+                                lineNumber: 1145,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/printers/page.tsx",
-                        lineNumber: 1072,
+                        lineNumber: 1135,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/printers/page.tsx",
-                lineNumber: 891,
+                lineNumber: 942,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -2343,20 +2405,20 @@ function PrintersPage() {
                                     children: editingPrinter ? 'Editar Impressora' : 'Nova Impressora'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1098,
+                                    lineNumber: 1161,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: editingPrinter ? 'Atualize as informações da impressora' : 'Configure uma nova impressora para o sistema'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1101,
+                                    lineNumber: 1164,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1097,
+                            lineNumber: 1160,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2370,7 +2432,7 @@ function PrintersPage() {
                                             children: "Nome *"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1111,
+                                            lineNumber: 1174,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2383,13 +2445,13 @@ function PrintersPage() {
                                             placeholder: "Ex: Impressora Cozinha"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1112,
+                                            lineNumber: 1175,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1110,
+                                    lineNumber: 1173,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2399,7 +2461,7 @@ function PrintersPage() {
                                             children: "Tipo de Conexão"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1122,
+                                            lineNumber: 1185,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2412,7 +2474,7 @@ function PrintersPage() {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1125,
+                                                            lineNumber: 1188,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2420,13 +2482,13 @@ function PrintersPage() {
                                                             children: "Rede"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1126,
+                                                            lineNumber: 1189,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1124,
+                                                    lineNumber: 1187,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2445,7 +2507,7 @@ function PrintersPage() {
                                                     className: "data-[state=checked]:bg-orange-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1128,
+                                                    lineNumber: 1191,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2455,7 +2517,7 @@ function PrintersPage() {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1141,
+                                                            lineNumber: 1204,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2463,25 +2525,25 @@ function PrintersPage() {
                                                             children: "Local"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1142,
+                                                            lineNumber: 1205,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1140,
+                                                    lineNumber: 1203,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1123,
+                                            lineNumber: 1186,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1121,
+                                    lineNumber: 1184,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2492,7 +2554,7 @@ function PrintersPage() {
                                             children: "Tipo de Impressora *"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1148,
+                                            lineNumber: 1211,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2509,12 +2571,12 @@ function PrintersPage() {
                                                     id: "type",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 1160,
+                                                        lineNumber: 1223,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1159,
+                                                    lineNumber: 1222,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2524,7 +2586,7 @@ function PrintersPage() {
                                                             children: "Térmica"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1163,
+                                                            lineNumber: 1226,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2532,7 +2594,7 @@ function PrintersPage() {
                                                             children: "Laser"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1164,
+                                                            lineNumber: 1227,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2540,7 +2602,7 @@ function PrintersPage() {
                                                             children: "Jato de Tinta"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1165,
+                                                            lineNumber: 1228,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2548,25 +2610,25 @@ function PrintersPage() {
                                                             children: "Outro"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1166,
+                                                            lineNumber: 1229,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1162,
+                                                    lineNumber: 1225,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1149,
+                                            lineNumber: 1212,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1147,
+                                    lineNumber: 1210,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2577,7 +2639,7 @@ function PrintersPage() {
                                             children: "Modelo"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1172,
+                                            lineNumber: 1235,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2591,12 +2653,12 @@ function PrintersPage() {
                                                     id: "model",
                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 1178,
+                                                        lineNumber: 1241,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1177,
+                                                    lineNumber: 1240,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2605,24 +2667,24 @@ function PrintersPage() {
                                                             children: model
                                                         }, model, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1182,
+                                                            lineNumber: 1245,
                                                             columnNumber: 21
                                                         }, this))
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1180,
+                                                    lineNumber: 1243,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1173,
+                                            lineNumber: 1236,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1171,
+                                    lineNumber: 1234,
                                     columnNumber: 13
                                 }, this),
                                 formData.is_local ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2638,7 +2700,7 @@ function PrintersPage() {
                                                             children: "Selecione a Impressora Local"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1194,
+                                                            lineNumber: 1257,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2654,7 +2716,7 @@ function PrintersPage() {
                                                                         className: "h-3 w-3 mr-1 animate-spin"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 1205,
+                                                                        lineNumber: 1268,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     "Detectando..."
@@ -2665,7 +2727,7 @@ function PrintersPage() {
                                                                         className: "h-3 w-3 mr-1"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 1210,
+                                                                        lineNumber: 1273,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     "Atualizar Lista"
@@ -2673,13 +2735,13 @@ function PrintersPage() {
                                                             }, void 0, true)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1195,
+                                                            lineNumber: 1258,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1193,
+                                                    lineNumber: 1256,
                                                     columnNumber: 19
                                                 }, this),
                                                 detectingLocalPrinters ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2689,7 +2751,7 @@ function PrintersPage() {
                                                             className: "h-4 w-4 mr-2 animate-spin text-orange-500"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1219,
+                                                            lineNumber: 1282,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2697,13 +2759,13 @@ function PrintersPage() {
                                                             children: "Detectando impressoras locais..."
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1220,
+                                                            lineNumber: 1283,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1218,
+                                                    lineNumber: 1281,
                                                     columnNumber: 21
                                                 }, this) : localPrinters.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
                                                     value: formData.name,
@@ -2718,12 +2780,12 @@ function PrintersPage() {
                                                                 placeholder: "Selecione uma impressora"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                lineNumber: 1228,
+                                                                lineNumber: 1291,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1227,
+                                                            lineNumber: 1290,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2736,36 +2798,36 @@ function PrintersPage() {
                                                                                 className: "h-4 w-4 text-gray-500"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                                lineNumber: 1234,
+                                                                                lineNumber: 1297,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                                 children: printer
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                                                lineNumber: 1235,
+                                                                                lineNumber: 1298,
                                                                                 columnNumber: 31
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 1233,
+                                                                        lineNumber: 1296,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 }, printer, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 1232,
+                                                                    lineNumber: 1295,
                                                                     columnNumber: 27
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1230,
+                                                            lineNumber: 1293,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1223,
+                                                    lineNumber: 1286,
                                                     columnNumber: 21
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800",
@@ -2775,7 +2837,7 @@ function PrintersPage() {
                                                             children: "⚠️ Nenhuma impressora local detectada. Certifique-se de que:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1243,
+                                                            lineNumber: 1306,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -2785,39 +2847,39 @@ function PrintersPage() {
                                                                     children: "O sistema está rodando no Windows"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 1247,
+                                                                    lineNumber: 1310,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                     children: "Existem impressoras instaladas no sistema"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 1248,
+                                                                    lineNumber: 1311,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
                                                                     children: "O aplicativo tem permissões para acessá-las"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 1249,
+                                                                    lineNumber: 1312,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1246,
+                                                            lineNumber: 1309,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1242,
+                                                    lineNumber: 1305,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1192,
+                                            lineNumber: 1255,
                                             columnNumber: 17
                                         }, this),
                                         formData.name && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2830,24 +2892,24 @@ function PrintersPage() {
                                                         children: formData.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                        lineNumber: 1258,
+                                                        lineNumber: 1321,
                                                         columnNumber: 49
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 1257,
+                                                lineNumber: 1320,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1256,
+                                            lineNumber: 1319,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1191,
+                                    lineNumber: 1254,
                                     columnNumber: 15
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "grid grid-cols-2 gap-4",
@@ -2860,7 +2922,7 @@ function PrintersPage() {
                                                     children: "Endereço IP *"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1266,
+                                                    lineNumber: 1329,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2873,13 +2935,13 @@ function PrintersPage() {
                                                     placeholder: "192.168.1.100"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1267,
+                                                    lineNumber: 1330,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1265,
+                                            lineNumber: 1328,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2890,7 +2952,7 @@ function PrintersPage() {
                                                     children: "Porta *"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1276,
+                                                    lineNumber: 1339,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2903,19 +2965,19 @@ function PrintersPage() {
                                                     placeholder: "9100"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1277,
+                                                    lineNumber: 1340,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1275,
+                                            lineNumber: 1338,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1264,
+                                    lineNumber: 1327,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2933,7 +2995,7 @@ function PrintersPage() {
                                                     className: "h-4 w-4 mr-1.5 inline"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1299,
+                                                    lineNumber: 1362,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Impressora Ativa"
@@ -2944,7 +3006,7 @@ function PrintersPage() {
                                                     className: "h-4 w-4 mr-1.5 inline"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1304,
+                                                    lineNumber: 1367,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Impressora Inativa"
@@ -2952,18 +3014,18 @@ function PrintersPage() {
                                         }, void 0, true)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1288,
+                                        lineNumber: 1351,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1287,
+                                    lineNumber: 1350,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1108,
+                            lineNumber: 1171,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -2976,7 +3038,7 @@ function PrintersPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1313,
+                                    lineNumber: 1376,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2987,24 +3049,24 @@ function PrintersPage() {
                                     children: saving ? 'Salvando...' : 'Salvar'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1320,
+                                    lineNumber: 1383,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1312,
+                            lineNumber: 1375,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 1096,
+                    lineNumber: 1159,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printers/page.tsx",
-                lineNumber: 1095,
+                lineNumber: 1158,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -3018,7 +3080,7 @@ function PrintersPage() {
                                     children: "Confirmar Exclusão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1336,
+                                    lineNumber: 1399,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -3029,13 +3091,13 @@ function PrintersPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1337,
+                                    lineNumber: 1400,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1335,
+                            lineNumber: 1398,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -3044,7 +3106,7 @@ function PrintersPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1343,
+                                    lineNumber: 1406,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -3054,24 +3116,24 @@ function PrintersPage() {
                                     children: saving ? 'Excluindo...' : 'Excluir'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1344,
+                                    lineNumber: 1407,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1342,
+                            lineNumber: 1405,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 1334,
+                    lineNumber: 1397,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printers/page.tsx",
-                lineNumber: 1333,
+                lineNumber: 1396,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -3086,7 +3148,7 @@ function PrintersPage() {
                                     children: "Impressoras Locais Detectadas"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1359,
+                                    lineNumber: 1422,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogDescription"], {
@@ -3097,20 +3159,20 @@ function PrintersPage() {
                                                 className: "h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 1365,
+                                                lineNumber: 1428,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                 children: "Detectando impressoras instaladas no sistema..."
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 1366,
+                                                lineNumber: 1429,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1364,
+                                        lineNumber: 1427,
                                         columnNumber: 17
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                         children: discoveredPrinters.length > 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3127,25 +3189,25 @@ function PrintersPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1376,
+                                                    lineNumber: 1439,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1373,
+                                            lineNumber: 1436,
                                             columnNumber: 21
                                         }, this) : 'Nenhuma impressora encontrada'
                                     }, void 0, false)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1362,
+                                    lineNumber: 1425,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1358,
+                            lineNumber: 1421,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3168,7 +3230,7 @@ function PrintersPage() {
                                                                     children: printer.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 1404,
+                                                                    lineNumber: 1467,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 printer.isLocal ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -3181,14 +3243,14 @@ function PrintersPage() {
                                                                                     className: "h-3 w-3 mr-1"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                                    lineNumber: 1410,
+                                                                                    lineNumber: 1473,
                                                                                     columnNumber: 33
                                                                                 }, this),
                                                                                 "Local"
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                                            lineNumber: 1409,
+                                                                            lineNumber: 1472,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         printer.type === 'thermal' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -3197,7 +3259,7 @@ function PrintersPage() {
                                                                             children: "Térmica"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                                            lineNumber: 1414,
+                                                                            lineNumber: 1477,
                                                                             columnNumber: 33
                                                                         }, this)
                                                                     ]
@@ -3207,7 +3269,7 @@ function PrintersPage() {
                                                                     children: "Local"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 1420,
+                                                                    lineNumber: 1483,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 printer.status && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3215,13 +3277,13 @@ function PrintersPage() {
                                                                     children: printer.status
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                                    lineNumber: 1425,
+                                                                    lineNumber: 1488,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1403,
+                                                            lineNumber: 1466,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3229,7 +3291,7 @@ function PrintersPage() {
                                                             children: printer.model || printer.driver || 'Modelo não identificado'
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1434,
+                                                            lineNumber: 1497,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3244,7 +3306,7 @@ function PrintersPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 1440,
+                                                                        lineNumber: 1503,
                                                                         columnNumber: 31
                                                                     }, this),
                                                                     printer.port && printer.port !== '0' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3255,14 +3317,14 @@ function PrintersPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                                                        lineNumber: 1442,
+                                                                        lineNumber: 1505,
                                                                         columnNumber: 33
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true) : `${printer.ip}:${printer.port}`
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1437,
+                                                            lineNumber: 1500,
                                                             columnNumber: 25
                                                         }, this),
                                                         printer.rawData?.detected_via && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3273,13 +3335,13 @@ function PrintersPage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1450,
+                                                            lineNumber: 1513,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1402,
+                                                    lineNumber: 1465,
                                                     columnNumber: 23
                                                 }, this),
                                                 addedPrinters.includes(printer.name) ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3289,14 +3351,14 @@ function PrintersPage() {
                                                             className: "h-4 w-4 mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1457,
+                                                            lineNumber: 1520,
                                                             columnNumber: 27
                                                         }, this),
                                                         "Adicionada"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1456,
+                                                    lineNumber: 1519,
                                                     columnNumber: 25
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                                     variant: "outline",
@@ -3309,36 +3371,36 @@ function PrintersPage() {
                                                             className: "h-4 w-4 mr-1 animate-spin"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1469,
+                                                            lineNumber: 1532,
                                                             columnNumber: 29
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
                                                             className: "h-4 w-4 mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                                            lineNumber: 1471,
+                                                            lineNumber: 1534,
                                                             columnNumber: 29
                                                         }, this),
                                                         addingPrinter === printer.name ? 'Adicionando...' : 'Adicionar'
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                                    lineNumber: 1461,
+                                                    lineNumber: 1524,
                                                     columnNumber: 25
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printers/page.tsx",
-                                            lineNumber: 1401,
+                                            lineNumber: 1464,
                                             columnNumber: 21
                                         }, this)
                                     }, index, false, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1393,
+                                        lineNumber: 1456,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                lineNumber: 1391,
+                                lineNumber: 1454,
                                 columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "text-center py-8 text-gray-500",
@@ -3347,20 +3409,20 @@ function PrintersPage() {
                                         className: "h-8 w-8 animate-spin mx-auto mb-2"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1483,
+                                        lineNumber: 1546,
                                         columnNumber: 19
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$printer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Printer$3e$__["Printer"], {
                                         className: "h-8 w-8 mx-auto mb-2 text-gray-400"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1485,
+                                        lineNumber: 1548,
                                         columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         children: discovering ? "Procurando impressoras..." : "Nenhuma impressora encontrada"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1487,
+                                        lineNumber: 1550,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3368,18 +3430,18 @@ function PrintersPage() {
                                         children: "Certifique-se de que as impressoras estão instaladas no Windows"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printers/page.tsx",
-                                        lineNumber: 1492,
+                                        lineNumber: 1555,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                lineNumber: 1481,
+                                lineNumber: 1544,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1389,
+                            lineNumber: 1452,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -3390,7 +3452,7 @@ function PrintersPage() {
                                     children: "Fechar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1500,
+                                    lineNumber: 1563,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -3403,7 +3465,7 @@ function PrintersPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 1510,
+                                                lineNumber: 1573,
                                                 columnNumber: 19
                                             }, this),
                                             "Detectando..."
@@ -3414,7 +3476,7 @@ function PrintersPage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printers/page.tsx",
-                                                lineNumber: 1515,
+                                                lineNumber: 1578,
                                                 columnNumber: 19
                                             }, this),
                                             "Detectar Novamente"
@@ -3422,30 +3484,30 @@ function PrintersPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printers/page.tsx",
-                                    lineNumber: 1503,
+                                    lineNumber: 1566,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printers/page.tsx",
-                            lineNumber: 1499,
+                            lineNumber: 1562,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printers/page.tsx",
-                    lineNumber: 1357,
+                    lineNumber: 1420,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printers/page.tsx",
-                lineNumber: 1356,
+                lineNumber: 1419,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/printers/page.tsx",
-        lineNumber: 837,
+        lineNumber: 888,
         columnNumber: 5
     }, this);
 }
