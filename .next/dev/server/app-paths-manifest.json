@@ -1,6 +1,5 @@
 {
   "/admin/printers/page": "app/admin/printers/page.js",
-  "/api/printers/status/route": "app/api/printers/status/route.js",
   "/page": "app/page.js",
   "/prompt/page": "app/prompt/page.js"
 }

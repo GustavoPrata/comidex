@@ -938,32 +938,20 @@ export default function PrintersPage() {
                     {/* Status Badge e Ações */}
                     <div className="flex items-center gap-2">
                       {/* Status Badge Compacto */}
-                      <div className="relative">
-                        <div className={`
-                          flex items-center space-x-1 
-                          px-2 py-1 
-                          bg-gradient-to-r ${getConnectionStatusColor(printer.connection_status)} 
-                          text-white rounded-full 
-                          shadow-sm
-                        `}>
-                          {/* Indicador de pulso para online */}
-                          {printer.connection_status === 'online' && (
-                            <div className="absolute -top-1 -right-1">
-                              <span className="relative flex h-2 w-2">
-                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-300 opacity-75"></span>
-                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400 border border-white"></span>
-                              </span>
-                            </div>
-                          )}
-                          
-                          {/* Ícone */}
-                          {getConnectionStatusIcon(printer.connection_status)}
-                          
-                          {/* Texto */}
-                          <span className="text-xs font-semibold">
-                            {getConnectionStatusShortText(printer.connection_status)}
-                          </span>
-                        </div>
+                      <div className={`
+                        flex items-center space-x-1 
+                        px-2 py-1 
+                        bg-gradient-to-r ${getConnectionStatusColor(printer.connection_status)} 
+                        text-white rounded-full 
+                        shadow-sm
+                      `}>
+                        {/* Ícone */}
+                        {getConnectionStatusIcon(printer.connection_status)}
+                        
+                        {/* Texto */}
+                        <span className="text-xs font-semibold">
+                          {getConnectionStatusShortText(printer.connection_status)}
+                        </span>
                       </div>
                       
                       <Button
