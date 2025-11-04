@@ -299,6 +299,42 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/api/print-templates/[id]/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/print-templates/[id]">> = Specific
+  const handler = {} as typeof import("../../../app/api/print-templates/[id]/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/print-templates/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/print-templates">> = Specific
+  const handler = {} as typeof import("../../../app/api/print-templates/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/printer-profiles/[id]/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/printer-profiles/[id]">> = Specific
+  const handler = {} as typeof import("../../../app/api/printer-profiles/[id]/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/printer-profiles/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/printer-profiles">> = Specific
+  const handler = {} as typeof import("../../../app/api/printer-profiles/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/api/printer-queue/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/printer-queue">> = Specific
