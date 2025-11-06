@@ -834,6 +834,7 @@ export default function PrintConfigPage() {
             <Button 
               variant="outline" 
               onClick={() => setIsProfileModalOpen(false)}
+              type="button"
             >
               Cancelar
             </Button>
@@ -841,6 +842,7 @@ export default function PrintConfigPage() {
               onClick={saveProfile} 
               disabled={saving}
               className="bg-orange-500 hover:bg-orange-600 text-white"
+              type="button"
             >
               {saving ? (
                 <>
@@ -848,7 +850,10 @@ export default function PrintConfigPage() {
                   Salvando...
                 </>
               ) : (
-                'Salvar'
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Salvar
+                </>
               )}
             </Button>
           </DialogFooter>
@@ -1005,6 +1010,7 @@ export default function PrintConfigPage() {
             <Button 
               variant="outline" 
               onClick={() => setIsTemplateModalOpen(false)}
+              type="button"
             >
               Cancelar
             </Button>
@@ -1012,6 +1018,7 @@ export default function PrintConfigPage() {
               onClick={saveTemplate} 
               disabled={saving}
               className="bg-orange-500 hover:bg-orange-600 text-white"
+              type="button"
             >
               {saving ? (
                 <>
@@ -1019,7 +1026,10 @@ export default function PrintConfigPage() {
                   Salvando...
                 </>
               ) : (
-                'Salvar'
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Salvar
+                </>
               )}
             </Button>
           </DialogFooter>
