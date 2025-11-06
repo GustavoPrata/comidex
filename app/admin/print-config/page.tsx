@@ -418,7 +418,7 @@ export default function PrintConfigPage() {
             {filteredProfiles?.map((profile: PrinterProfile) => (
               <div
                 key={profile.id}
-                className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-2 border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm overflow-hidden transition-all hover:shadow-xl hover:border-orange-500 hover:scale-105 cursor-pointer group"
+                className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-2 border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm overflow-hidden transition-all hover:shadow-xl hover:border-orange-500 cursor-pointer group"
                 onClick={() => handleProfileClick(profile)}
               >
                 <div className="p-6">
