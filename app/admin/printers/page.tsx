@@ -1061,44 +1061,76 @@ export default function PrintersPage() {
                     </button>
                   </div>
 
-                  {/* Last Test Info */}
-                  {printer.last_test_at && (
-                    <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200/50 dark:border-blue-800/50">
-                      <div className="flex items-start gap-2">
-                        <Clock className="h-4 w-4 text-blue-500 mt-0.5" />
-                        <div className="flex-1 text-xs">
-                          <div className="text-blue-700 dark:text-blue-400 font-medium">
-                            Último teste
+                  {/* Test Info Section */}
+                  <div className="flex-1 space-y-3">
+                    {printer.last_test_at ? (
+                      <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl p-4 border border-gray-200/50 dark:border-gray-700/50">
+                        <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">
+                              <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
+                            </div>
+                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                              Testada com sucesso
+                            </span>
                           </div>
-                          <div className="text-blue-600 dark:text-blue-300 mt-0.5">
-                            {new Date(printer.last_test_at).toLocaleString('pt-BR')}
+                          <Clock className="h-4 w-4 text-gray-400" />
+                        </div>
+                        <div className="pl-8">
+                          <div className="text-xs text-gray-600 dark:text-gray-400">
+                            {new Date(printer.last_test_at).toLocaleDateString('pt-BR', { 
+                              day: '2-digit',
+                              month: '2-digit',
+                              year: 'numeric'
+                            })} às {new Date(printer.last_test_at).toLocaleTimeString('pt-BR', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
                           </div>
                           {printer.test_result && (
-                            <div className="text-blue-500 dark:text-blue-300 mt-1">
-                              {printer.test_result}
+                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 italic">
+                              "{printer.test_result}"
                             </div>
                           )}
                         </div>
                       </div>
-                    </div>
-                  )}
+                    ) : (
+                      <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl p-4 border border-gray-200/50 dark:border-gray-700/50">
+                        <div className="flex items-center gap-2">
+                          <div className="p-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
+                            <Info className="h-4 w-4 text-gray-400" />
+                          </div>
+                          <span className="text-sm text-gray-500 dark:text-gray-400">
+                            Nunca testada
+                          </span>
+                        </div>
+                      </div>
+                    )}
 
-                  {/* Action Buttons */}
-                  <div className="flex justify-center">
+                    {/* Professional Action Button */}
                     <Button
-                      variant="outline"
-                      size="sm"
-                      className="rounded-full border-gray-200 dark:border-gray-700 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 dark:hover:bg-orange-900/20 transition-all w-full"
+                      className={`
+                        w-full h-12 rounded-2xl font-medium text-sm
+                        bg-gradient-to-r from-orange-500 to-orange-600
+                        hover:from-orange-600 hover:to-orange-700
+                        text-white shadow-lg hover:shadow-xl
+                        transition-all duration-200 transform hover:scale-[1.02]
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        disabled:hover:scale-100 disabled:hover:shadow-lg
+                      `}
                       onClick={() => testPrinter(printer)}
                       disabled={testing === printer.id || !printer.active}
                     >
                       {testing === printer.id ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <div className="flex items-center justify-center gap-2">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Testando...</span>
+                        </div>
                       ) : (
-                        <>
-                          <TestTube className="h-4 w-4 mr-2" />
-                          Testar Impressão
-                        </>
+                        <div className="flex items-center justify-center gap-2">
+                          <PrinterIcon className="h-4 w-4" />
+                          <span>Imprimir Teste</span>
+                        </div>
                       )}
                     </Button>
                   </div>
