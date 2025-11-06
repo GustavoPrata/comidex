@@ -55,7 +55,8 @@ import {
   ChevronRight,
   Info,
   Cpu,
-  Maximize2
+  Maximize2,
+  ExternalLink
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -417,7 +418,7 @@ export default function PrintConfigPage() {
             {filteredProfiles?.map((profile: PrinterProfile) => (
               <div
                 key={profile.id}
-                className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm overflow-hidden transition-all hover:shadow-lg cursor-pointer"
+                className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-2 border-gray-200 dark:border-gray-700/60 rounded-3xl shadow-sm overflow-hidden transition-all hover:shadow-xl hover:border-orange-500 hover:scale-105 cursor-pointer group"
                 onClick={() => handleProfileClick(profile)}
               >
                 <div className="p-6">
@@ -429,6 +430,7 @@ export default function PrintConfigPage() {
                         <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100">
                           {profile.name}
                         </h3>
+                        <ChevronRight className="h-4 w-4 text-gray-400 group-hover:text-orange-500 transition-colors ml-auto" />
                       </div>
                       <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">
                         {profile.manufacturer}
@@ -455,9 +457,17 @@ export default function PrintConfigPage() {
                     </div>
                   </div>
 
+                  {/* Click indicator */}
+                  <div className="flex items-center justify-center gap-2 mb-4 p-2 bg-orange-50 dark:bg-orange-900/20 rounded-xl group-hover:bg-orange-100 dark:group-hover:bg-orange-900/30 transition-colors">
+                    <FileText className="h-4 w-4 text-orange-600 dark:text-orange-400" />
+                    <span className="text-xs font-medium text-orange-600 dark:text-orange-400">
+                      Clique para gerenciar templates
+                    </span>
+                    <ExternalLink className="h-3 w-3 text-orange-600 dark:text-orange-400" />
+                  </div>
 
                   {/* Actions */}
-                  <div className="flex justify-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-center gap-2 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();

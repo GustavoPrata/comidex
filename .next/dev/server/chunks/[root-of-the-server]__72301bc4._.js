@@ -422,7 +422,7 @@ async function PUT(request, { params }) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const body = await request.json();
-        const id = params.id;
+        const { id } = await params;
         // Validate required fields
         if (!body.name || !body.model) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -459,7 +459,7 @@ async function PUT(request, { params }) {
 async function DELETE(request, { params }) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
-        const id = params.id;
+        const { id } = await params;
         // First delete all associated templates
         await supabase.from('print_templates').delete().eq('profile_id', id);
         // Then delete the profile
