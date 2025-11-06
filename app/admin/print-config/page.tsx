@@ -830,7 +830,7 @@ export default function PrintConfigPage() {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="justify-center">
             <Button 
               variant="outline" 
               onClick={() => setIsProfileModalOpen(false)}
@@ -1006,7 +1006,7 @@ export default function PrintConfigPage() {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="justify-center">
             <Button 
               variant="outline" 
               onClick={() => setIsTemplateModalOpen(false)}

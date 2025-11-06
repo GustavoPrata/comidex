@@ -3,12 +3,12 @@ import { createClient } from '@/lib/supabase/server';
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
     const body = await request.json();
-    const id = params.id;
+    const { id } = await params;
 
     // Validate required fields
     if (!body.name || !body.profile_id) {
@@ -48,11 +48,11 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient();
-    const id = params.id;
+    const { id } = await params;
 
     const { error } = await supabase
       .from('print_templates')
