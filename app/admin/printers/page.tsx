@@ -1020,69 +1020,80 @@ export default function PrintersPage() {
                     </div>
                   </div>
 
-                  {/* Power Button & Main Printer Button */}
-                  <div className="mb-4 flex gap-2">
-                    <button
-                      onClick={() => toggleActive(printer)}
-                      className={`flex-1 py-1.5 rounded-full text-xs font-medium transition-all ${
-                        printer.active 
-                          ? 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-sm'
-                          : 'bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white'
-                      }`}
-                    >
-                      <div className="flex items-center justify-center gap-1.5">
+                  {/* Action Buttons Section */}
+                  <div className="space-y-2 mt-4">
+                    {/* Control Buttons Row */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={() => toggleActive(printer)}
+                        className={`
+                          h-10 rounded-xl font-medium text-sm
+                          transition-all duration-200 transform hover:scale-[1.02]
+                          flex items-center justify-center gap-1.5
+                          border-2 ${
+                            printer.active 
+                              ? 'bg-green-500/10 border-green-500 text-green-600 hover:bg-green-500/20 dark:bg-green-500/20 dark:hover:bg-green-500/30' 
+                              : 'bg-red-500/10 border-red-500 text-red-600 hover:bg-red-500/20 dark:bg-red-500/20 dark:hover:bg-red-500/30'
+                          }
+                        `}
+                      >
                         {printer.active ? (
                           <>
-                            <Power className="h-3 w-3" />
+                            <Power className="h-4 w-4" />
                             <span>Ativa</span>
                           </>
                         ) : (
                           <>
-                            <PowerOff className="h-3 w-3" />
+                            <PowerOff className="h-4 w-4" />
                             <span>Inativa</span>
                           </>
                         )}
-                      </div>
-                    </button>
-                    
-                    <button
-                      onClick={() => setAsMain(printer)}
-                      className={`px-3 py-1.5 rounded-full transition-all ${
-                        printer.is_main 
-                          ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-white shadow-sm'
-                          : 'bg-gradient-to-r from-gray-200 to-gray-300 hover:from-gray-300 hover:to-gray-400 text-gray-700 dark:from-gray-700 dark:to-gray-800 dark:hover:from-gray-600 dark:hover:to-gray-700 dark:text-gray-300'
-                      }`}
-                      title={printer.is_main ? "Impressora principal" : "Definir como principal"}
-                    >
-                      <Star className={`h-3.5 w-3.5 ${printer.is_main ? 'fill-white' : ''}`} />
-                    </button>
-                  </div>
+                      </button>
+                      
+                      <button
+                        onClick={() => setAsMain(printer)}
+                        className={`
+                          h-10 rounded-xl font-medium text-sm
+                          transition-all duration-200 transform hover:scale-[1.02]
+                          flex items-center justify-center gap-1.5
+                          border-2 ${
+                            printer.is_main 
+                              ? 'bg-yellow-500/10 border-yellow-500 text-yellow-600 hover:bg-yellow-500/20 dark:bg-yellow-500/20 dark:hover:bg-yellow-500/30'
+                              : 'bg-gray-100 border-gray-300 text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700'
+                          }
+                        `}
+                        title={printer.is_main ? "Impressora principal" : "Definir como principal"}
+                      >
+                        <Star className={`h-4 w-4 ${printer.is_main ? 'fill-current' : ''}`} />
+                        <span>{printer.is_main ? 'Principal' : 'Definir'}</span>
+                      </button>
+                    </div>
 
-                  {/* Test Button Section */}
-                  <div className="mt-4">
+                    {/* Test Button */}
                     <button
                       className={`
-                        w-full h-12 rounded-2xl font-medium text-sm
+                        w-full h-11 rounded-xl font-semibold text-sm
                         bg-gradient-to-r from-orange-500 to-orange-600
                         hover:from-orange-600 hover:to-orange-700
-                        text-white shadow-lg hover:shadow-xl
+                        text-white shadow-md hover:shadow-lg
                         transition-all duration-200 transform hover:scale-[1.02]
                         disabled:opacity-50 disabled:cursor-not-allowed
-                        disabled:hover:scale-100 disabled:hover:shadow-lg
+                        disabled:hover:scale-100 disabled:hover:shadow-md
+                        flex items-center justify-center gap-2
                       `}
                       onClick={() => testPrinter(printer)}
                       disabled={testing === printer.id || !printer.active}
                     >
                       {testing === printer.id ? (
-                        <div className="flex items-center justify-center gap-2">
+                        <>
                           <Loader2 className="h-4 w-4 animate-spin" />
-                          <span>Testando...</span>
-                        </div>
+                          <span>Testando Impressão...</span>
+                        </>
                       ) : (
-                        <div className="flex items-center justify-center gap-2">
+                        <>
                           <PrinterIcon className="h-4 w-4" />
-                          <span>Imprimir Teste</span>
-                        </div>
+                          <span>Testar Impressora</span>
+                        </>
                       )}
                     </button>
                   </div>
