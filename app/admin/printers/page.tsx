@@ -989,7 +989,7 @@ export default function PrintersPage() {
                     </div>
                     
                     {/* Status Badge e Ações */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-center gap-2">
                       {/* Status Badge Compacto */}
                       <div className={`
                         flex items-center space-x-1 
