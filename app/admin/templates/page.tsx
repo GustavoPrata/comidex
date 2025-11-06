@@ -785,6 +785,63 @@ export default function TemplatesPage() {
                   💡 <strong>Dica:</strong> Clique em qualquer variável para copiá-la e colar no template
                 </div>
               </Card>
+
+              {/* Inline Formatting Helper */}
+              <Card className="p-4 bg-blue-50 dark:bg-blue-900/10 border-blue-200 dark:border-blue-800">
+                <h4 className="text-sm font-semibold mb-3 text-blue-700 dark:text-blue-400">
+                  Formatação Inline (Clique para Copiar)
+                </h4>
+                <div className="space-y-2 text-xs">
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText('[[big]]texto maior[[/big]]');
+                        toast.success('Tag copiada!');
+                      }}
+                      className="p-2 bg-white dark:bg-gray-800 rounded hover:bg-blue-100 dark:hover:bg-blue-900/20 text-left"
+                    >
+                      <code className="text-blue-600">[[big]]texto[[/big]]</code>
+                      <div className="text-gray-500 text-[10px]">Texto maior</div>
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText('[[small]]texto menor[[/small]]');
+                        toast.success('Tag copiada!');
+                      }}
+                      className="p-2 bg-white dark:bg-gray-800 rounded hover:bg-blue-100 dark:hover:bg-blue-900/20 text-left"
+                    >
+                      <code className="text-blue-600">[[small]]texto[[/small]]</code>
+                      <div className="text-gray-500 text-[10px]">Texto menor</div>
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText('[[bold]]negrito[[/bold]]');
+                        toast.success('Tag copiada!');
+                      }}
+                      className="p-2 bg-white dark:bg-gray-800 rounded hover:bg-blue-100 dark:hover:bg-blue-900/20 text-left"
+                    >
+                      <code className="text-blue-600">[[bold]]texto[[/bold]]</code>
+                      <div className="text-gray-500 text-[10px]">Negrito</div>
+                    </button>
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText('[[size:16]]tamanho 16px[[/size]]');
+                        toast.success('Tag copiada!');
+                      }}
+                      className="p-2 bg-white dark:bg-gray-800 rounded hover:bg-blue-100 dark:hover:bg-blue-900/20 text-left"
+                    >
+                      <code className="text-blue-600">[[size:16]]texto[[/size]]</code>
+                      <div className="text-gray-500 text-[10px]">Tamanho específico</div>
+                    </button>
+                  </div>
+                  
+                  <div className="mt-2 p-2 bg-blue-100 dark:bg-blue-900/20 rounded">
+                    <p className="text-blue-700 dark:text-blue-400 text-[11px]">
+                      <strong>Exemplo:</strong> [[big]]TOTAL:[[/big]] [[bold]]R$ 50,00[[/bold]]
+                    </p>
+                  </div>
+                </div>
+              </Card>
             </div>
 
             {/* Preview Column */}
@@ -845,22 +902,98 @@ export default function TemplatesPage() {
                               'serif': 'Georgia, serif'
                             };
                             
-                            return (
-                              <pre 
-                                key={section.id}
-                                className="whitespace-pre-wrap break-all mb-1"
-                                style={{
-                                  fontFamily: fontFamilyMap[section.fontFamily || 'mono'],
-                                  fontSize: `${section.fontSize || 11}px`,
-                                  textAlign: section.align || 'left',
-                                  fontWeight: section.bold ? 'bold' : 'normal',
-                                  letterSpacing: '0.5px',
-                                  lineHeight: '1.3'
-                                }}
-                              >
-                                {content}
-                              </pre>
-                            );
+                            // Check for inline formatting
+                            const hasInlineFormat = /\[\[(size:\d+|bold|big|small)\]\]/.test(content);
+                            
+                            if (hasInlineFormat) {
+                              // Parse and render with inline formatting
+                              const renderFormattedContent = (text: string) => {
+                                const parts = [];
+                                let lastIndex = 0;
+                                const regex = /\[\[(size:\d+|bold|big|small)\]\](.*?)\[\[\/(?:size|bold|big|small)\]\]/g;
+                                let match;
+                                
+                                while ((match = regex.exec(text)) !== null) {
+                                  // Add text before match
+                                  if (match.index > lastIndex) {
+                                    parts.push(
+                                      <span key={`text-${lastIndex}`}>
+                                        {text.substring(lastIndex, match.index)}
+                                      </span>
+                                    );
+                                  }
+                                  
+                                  const [, tag, innerText] = match;
+                                  const style: any = {
+                                    fontFamily: fontFamilyMap[section.fontFamily || 'mono'],
+                                  };
+                                  
+                                  if (tag.startsWith('size:')) {
+                                    style.fontSize = `${parseInt(tag.replace('size:', ''))}px`;
+                                  } else if (tag === 'bold') {
+                                    style.fontWeight = 'bold';
+                                  } else if (tag === 'big') {
+                                    style.fontSize = `${(section.fontSize || 11) + 4}px`;
+                                  } else if (tag === 'small') {
+                                    style.fontSize = `${(section.fontSize || 11) - 2}px`;
+                                  }
+                                  
+                                  parts.push(
+                                    <span key={`format-${match.index}`} style={style}>
+                                      {innerText}
+                                    </span>
+                                  );
+                                  
+                                  lastIndex = match.index + match[0].length;
+                                }
+                                
+                                // Add remaining text
+                                if (lastIndex < text.length) {
+                                  parts.push(
+                                    <span key={`text-${lastIndex}-end`}>
+                                      {text.substring(lastIndex)}
+                                    </span>
+                                  );
+                                }
+                                
+                                return parts;
+                              };
+                              
+                              return (
+                                <div
+                                  key={section.id}
+                                  className="whitespace-pre-wrap break-all mb-1"
+                                  style={{
+                                    fontFamily: fontFamilyMap[section.fontFamily || 'mono'],
+                                    fontSize: `${section.fontSize || 11}px`,
+                                    textAlign: section.align || 'left',
+                                    fontWeight: section.bold ? 'bold' : 'normal',
+                                    letterSpacing: '0.5px',
+                                    lineHeight: '1.3'
+                                  }}
+                                >
+                                  {renderFormattedContent(content)}
+                                </div>
+                              );
+                            } else {
+                              // Render without inline formatting
+                              return (
+                                <pre 
+                                  key={section.id}
+                                  className="whitespace-pre-wrap break-all mb-1"
+                                  style={{
+                                    fontFamily: fontFamilyMap[section.fontFamily || 'mono'],
+                                    fontSize: `${section.fontSize || 11}px`,
+                                    textAlign: section.align || 'left',
+                                    fontWeight: section.bold ? 'bold' : 'normal',
+                                    letterSpacing: '0.5px',
+                                    lineHeight: '1.3'
+                                  }}
+                                >
+                                  {content}
+                                </pre>
+                              );
+                            }
                           })}
                         </div>
                       </div>
