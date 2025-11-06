@@ -16,6 +16,7 @@ import {
   SelectValue 
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "react-hot-toast";
 import { 
   FileText, 
@@ -174,17 +175,25 @@ Hora: {{time}}
   }
 };
 
+interface TemplateSection {
+  id: string;
+  name: string;
+  content: string;
+  type: 'text' | 'items';
+}
+
 export default function TemplatesPage() {
   const supabase = createClient();
   const [selectedType, setSelectedType] = useState('receipt');
   const [saving, setSaving] = useState(false);
   const [templates, setTemplates] = useState<any>({});
   const [editingSection, setEditingSection] = useState<string | null>(null);
-  const [sectionContent, setSectionContent] = useState<any>({
-    header: '',
-    items: '',
-    footer: ''
-  });
+  const [editingSectionName, setEditingSectionName] = useState<string | null>(null);
+  const [sections, setSections] = useState<TemplateSection[]>([
+    { id: '1', name: 'Cabeçalho', content: '', type: 'text' },
+    { id: '2', name: 'Itens', content: '', type: 'items' },
+    { id: '3', name: 'Rodapé', content: '', type: 'text' }
+  ]);
 
   // Load templates from database
   const { data: dbTemplates, isLoading } = useSWR('templates', async () => {
@@ -225,15 +234,81 @@ export default function TemplatesPage() {
       });
       
       setTemplates(mergedTemplates);
-      setSectionContent(mergedTemplates[selectedType] || defaultTemplates[selectedType]);
+      
+      // Convert to sections format
+      const template = mergedTemplates[selectedType] || defaultTemplates[selectedType];
+      setSections([
+        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text' },
+        { id: '2', name: 'Itens', content: template.items || '', type: 'items' },
+        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text' }
+      ]);
     }
   }, [dbTemplates, isLoading, selectedType]);
 
   // Handle template type change
   const handleTypeChange = (type: string) => {
     setSelectedType(type);
-    setSectionContent(templates[type] || defaultTemplates[type]);
+    const template = templates[type] || defaultTemplates[type];
+    setSections([
+      { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text' },
+      { id: '2', name: 'Itens', content: template.items || '', type: 'items' },
+      { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text' }
+    ]);
     setEditingSection(null);
+  };
+  
+  // Add new section
+  const addSection = (type: 'text' | 'items' = 'text') => {
+    const newSection: TemplateSection = {
+      id: Date.now().toString(),
+      name: type === 'items' ? 'Nova Área de Itens' : 'Nova Seção',
+      content: type === 'items' ? '{{#each items}}\n{{quantity}}x {{name}}\n{{/each}}' : '',
+      type
+    };
+    setSections([...sections, newSection]);
+  };
+
+  // Duplicate section
+  const duplicateSection = (section: TemplateSection) => {
+    const newSection: TemplateSection = {
+      ...section,
+      id: Date.now().toString(),
+      name: `${section.name} (Cópia)`
+    };
+    const index = sections.findIndex(s => s.id === section.id);
+    const newSections = [...sections];
+    newSections.splice(index + 1, 0, newSection);
+    setSections(newSections);
+  };
+
+  // Delete section
+  const deleteSection = (sectionId: string) => {
+    if (sections.length > 1) {
+      setSections(sections.filter(s => s.id !== sectionId));
+    } else {
+      toast.error('Deve ter pelo menos uma seção');
+    }
+  };
+
+  // Update section content
+  const updateSection = (sectionId: string, content: string) => {
+    setSections(sections.map(s => 
+      s.id === sectionId ? { ...s, content } : s
+    ));
+  };
+
+  // Update section name
+  const updateSectionName = (sectionId: string, name: string) => {
+    setSections(sections.map(s => 
+      s.id === sectionId ? { ...s, name } : s
+    ));
+    setEditingSectionName(null);
+  };
+
+  // Copy variable to clipboard
+  const copyVariable = (value: string) => {
+    navigator.clipboard.writeText(value);
+    toast.success(`${value} copiado!`);
   };
 
   // Save template
@@ -241,16 +316,20 @@ export default function TemplatesPage() {
     setSaving(true);
     try {
       const currentTemplate = templates[selectedType];
+      
+      // Extract header, items, footer from sections
+      const headerSection = sections.find(s => s.name.toLowerCase().includes('cabeça'));
+      const itemsSection = sections.find(s => s.type === 'items');
+      const footerSection = sections.find(s => s.name.toLowerCase().includes('rodap'));
+      
       const templateData = {
         name: `Template ${templateTypes.find(t => t.id === selectedType)?.label}`,
         type: selectedType,
-        header_content: sectionContent.header,
-        items_content: sectionContent.items,
-        footer_content: sectionContent.footer,
+        header_content: headerSection?.content || sections[0]?.content || '',
+        items_content: itemsSection?.content || '',
+        footer_content: footerSection?.content || sections[sections.length - 1]?.content || '',
         content: JSON.stringify({
-          header: sectionContent.header,
-          items: sectionContent.items,
-          footer: sectionContent.footer
+          sections: sections
         }),
         active: true
       };
@@ -285,18 +364,14 @@ export default function TemplatesPage() {
   // Reset to default
   const resetToDefault = () => {
     if (confirm('Restaurar template padrão? Isso apagará suas alterações.')) {
-      setSectionContent(defaultTemplates[selectedType]);
+      const template = defaultTemplates[selectedType];
+      setSections([
+        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text' },
+        { id: '2', name: 'Itens', content: template.items || '', type: 'items' },
+        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text' }
+      ]);
       toast.success('Template restaurado ao padrão');
     }
-  };
-
-  // Insert variable at cursor
-  const insertVariable = (variable: string, section: string) => {
-    const currentContent = sectionContent[section] || '';
-    setSectionContent({
-      ...sectionContent,
-      [section]: currentContent + variable
-    });
   };
 
   // Preview render
@@ -439,89 +514,117 @@ export default function TemplatesPage() {
           <div className="grid grid-cols-3 gap-6">
             {/* Editor Column */}
             <div className="col-span-2 space-y-4">
-              {/* Header Section */}
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Cabeçalho</h3>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setSectionContent({ ...sectionContent, header: '' })}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-                <Textarea
-                  value={sectionContent.header || ''}
-                  onChange={(e) => setSectionContent({ ...sectionContent, header: e.target.value })}
-                  className="font-mono text-xs h-32 resize-none"
-                  placeholder="Digite o conteúdo do cabeçalho..."
-                />
-              </Card>
+              {/* Add Section Button */}
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => addSection('text')}
+                  className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+                  size="sm"
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                  Nova Seção
+                </Button>
+                <Button
+                  onClick={() => addSection('items')}
+                  variant="outline"
+                  className="rounded-full"
+                  size="sm"
+                >
+                  <Plus className="h-4 w-4 mr-1" />
+                  Nova Área de Itens
+                </Button>
+              </div>
 
-              {/* Items Section */}
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Área de Itens</h3>
-                  <p className="text-xs text-gray-500">Customize o formato dos itens</p>
-                </div>
-                <Textarea
-                  value={sectionContent.items || ''}
-                  onChange={(e) => setSectionContent({ ...sectionContent, items: e.target.value })}
-                  className="font-mono text-xs h-32 resize-none"
-                  placeholder="{{#each items}}
-{{quantity}}x {{name}}
-            R$ {{price}}
-{{/each}}"
-                />
-              </Card>
-
-              {/* Footer Section */}
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="font-semibold">Rodapé</h3>
-                  <div className="flex gap-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => setSectionContent({ ...sectionContent, footer: '' })}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+              {/* Dynamic Sections */}
+              {sections.map((section, index) => (
+                <Card key={section.id} className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      {editingSectionName === section.id ? (
+                        <Input
+                          value={section.name}
+                          onChange={(e) => updateSectionName(section.id, e.target.value)}
+                          onBlur={() => setEditingSectionName(null)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              setEditingSectionName(null);
+                            }
+                          }}
+                          className="h-8 w-48"
+                          autoFocus
+                        />
+                      ) : (
+                        <h3 
+                          className="font-semibold cursor-pointer hover:text-orange-500"
+                          onClick={() => setEditingSectionName(section.id)}
+                        >
+                          {section.name}
+                        </h3>
+                      )}
+                      {section.type === 'items' && (
+                        <Badge variant="secondary" className="text-xs">
+                          Área de Itens
+                        </Badge>
+                      )}
+                    </div>
+                    <div className="flex gap-1">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => duplicateSection(section)}
+                        title="Duplicar seção"
+                      >
+                        <Copy className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => deleteSection(section.id)}
+                        title="Excluir seção"
+                      >
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <Textarea
-                  value={sectionContent.footer || ''}
-                  onChange={(e) => setSectionContent({ ...sectionContent, footer: e.target.value })}
-                  className="font-mono text-xs h-32 resize-none"
-                  placeholder="Digite o conteúdo do rodapé..."
-                />
-              </Card>
+                  <Textarea
+                    value={section.content}
+                    onChange={(e) => updateSection(section.id, e.target.value)}
+                    className="font-mono text-xs h-32 resize-none"
+                    placeholder={section.type === 'items' 
+                      ? "{{#each items}}\n{{quantity}}x {{name}}\n            R$ {{price}}\n{{/each}}"
+                      : "Digite o conteúdo da seção..."
+                    }
+                  />
+                </Card>
+              ))}
 
               {/* Variables Helper */}
               <Card className="p-4 bg-orange-50 dark:bg-orange-900/10 border-orange-200 dark:border-orange-800">
                 <h4 className="text-sm font-semibold mb-3 text-orange-700 dark:text-orange-400">
-                  Variáveis Disponíveis
+                  Variáveis Disponíveis (Clique para Copiar)
                 </h4>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-2 gap-2">
                   {availableVariables.map(variable => {
                     const Icon = variable.icon;
                     return (
                       <button
                         key={variable.id}
-                        onClick={() => {
-                          navigator.clipboard.writeText(variable.value);
-                          toast.success(`${variable.value} copiado!`);
-                        }}
-                        className="flex items-center gap-2 p-2 text-xs bg-white dark:bg-gray-800 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                        onClick={() => copyVariable(variable.value)}
+                        className="flex items-center justify-between gap-2 p-2 text-xs bg-white dark:bg-gray-800 rounded hover:bg-orange-100 dark:hover:bg-orange-900/20 border border-transparent hover:border-orange-300 transition-all group"
                       >
-                        <Icon className="h-3 w-3 text-orange-500" />
-                        <span className="truncate">{variable.label}</span>
+                        <div className="flex items-center gap-2 flex-1">
+                          <Icon className="h-3 w-3 text-orange-500 flex-shrink-0" />
+                          <span className="truncate text-left">{variable.label}</span>
+                        </div>
+                        <code className="text-[10px] text-gray-500 group-hover:text-orange-600 font-mono">
+                          {variable.value.length > 15 ? variable.value.slice(0, 15) + '...' : variable.value}
+                        </code>
                       </button>
                     );
                   })}
+                </div>
+                <div className="mt-3 p-2 bg-yellow-100 dark:bg-yellow-900/20 rounded text-xs text-yellow-700 dark:text-yellow-400">
+                  💡 <strong>Dica:</strong> Clique em qualquer variável para copiá-la e colar no template
                 </div>
               </Card>
             </div>
@@ -580,9 +683,7 @@ export default function TemplatesPage() {
                             letterSpacing: '0.5px'
                           }}
                         >
-{renderPreview(sectionContent.header || '')}
-{sectionContent.items && renderPreview(sectionContent.items)}
-{sectionContent.footer && renderPreview(sectionContent.footer)}
+{sections.map(section => renderPreview(section.content)).filter(Boolean).join('\n')}
                         </pre>
                       </div>
                       
