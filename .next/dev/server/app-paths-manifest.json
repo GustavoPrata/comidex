@@ -2,6 +2,7 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/admin/print-config/page": "app/admin/print-config/page.js",
   "/admin/printers/page": "app/admin/printers/page.js",
+  "/api/print-templates/route": "app/api/print-templates/route.js",
   "/api/printer-profiles/[id]/route": "app/api/printer-profiles/[id]/route.js",
   "/api/printer-profiles/route": "app/api/printer-profiles/route.js",
   "/api/printers/status/route": "app/api/printers/status/route.js",
