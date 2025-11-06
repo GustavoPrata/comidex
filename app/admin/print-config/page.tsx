@@ -259,11 +259,16 @@ export default function PrintConfigPage() {
         <div className="px-6 py-4">
           {/* Top Row: Title and Actions */}
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <div className="p-2 rounded-lg bg-orange-500">
-                <PrinterIcon className="h-5 w-5 text-white" />
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="p-2 rounded-lg bg-orange-500">
+                  <PrinterIcon className="h-5 w-5 text-white" />
+                </div>
+                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configuração de Impressoras</h1>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configuração de Impressoras</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400 ml-10">
+                Gerencie os perfis de configuração das impressoras térmicas ESC/POS
+              </p>
             </div>
             <div className="flex items-center gap-3">
               <div className="relative">
