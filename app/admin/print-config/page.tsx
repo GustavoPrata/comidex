@@ -831,7 +831,10 @@ export default function PrintConfigPage() {
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsProfileModalOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => setIsProfileModalOpen(false)}
+            >
               Cancelar
             </Button>
             <Button 
@@ -845,10 +848,7 @@ export default function PrintConfigPage() {
                   Salvando...
                 </>
               ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Salvar
-                </>
+                'Salvar'
               )}
             </Button>
           </DialogFooter>
@@ -1002,7 +1002,10 @@ export default function PrintConfigPage() {
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsTemplateModalOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => setIsTemplateModalOpen(false)}
+            >
               Cancelar
             </Button>
             <Button 
@@ -1016,10 +1019,7 @@ export default function PrintConfigPage() {
                   Salvando...
                 </>
               ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Salvar
-                </>
+                'Salvar'
               )}
             </Button>
           </DialogFooter>
