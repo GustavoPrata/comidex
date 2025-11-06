@@ -457,7 +457,7 @@ export default function PrintConfigPage() {
 
 
                   {/* Actions */}
-                  <div className="flex gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <div className="flex justify-center gap-2 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -651,7 +651,7 @@ export default function PrintConfigPage() {
                               )}
                             </div>
 
-                            <div className="flex gap-2">
+                            <div className="flex justify-center gap-2">
                               <button
                                 onClick={() => openTemplateModal(template)}
                                 className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
