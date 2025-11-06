@@ -830,18 +830,19 @@ export default function PrintConfigPage() {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="gap-3">
             <Button 
               variant="outline" 
               onClick={() => setIsProfileModalOpen(false)}
               type="button"
+              className="px-6 py-2 text-base"
             >
               Cancelar
             </Button>
             <Button 
               onClick={saveProfile} 
               disabled={saving}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 text-base"
               type="button"
             >
               {saving ? (
@@ -1006,18 +1007,19 @@ export default function PrintConfigPage() {
             </div>
           )}
 
-          <DialogFooter>
+          <DialogFooter className="gap-3">
             <Button 
               variant="outline" 
               onClick={() => setIsTemplateModalOpen(false)}
               type="button"
+              className="px-6 py-2 text-base"
             >
               Cancelar
             </Button>
             <Button 
               onClick={saveTemplate} 
               disabled={saving}
-              className="bg-orange-500 hover:bg-orange-600 text-white"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 text-base"
               type="button"
             >
               {saving ? (
