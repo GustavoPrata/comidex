@@ -1361,22 +1361,32 @@ export default function PrintersPage() {
             </div>
           </div>
           
-          <DialogFooter className="flex justify-end gap-2">
-            <button
-              type="button"
+          <DialogFooter>
+            <Button 
+              variant="outline"
               onClick={() => setIsModalOpen(false)}
-              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-red-500 hover:bg-red-600 text-white"
+              type="button"
             >
               Cancelar
-            </button>
-            <button
-              type="button"
-              onClick={savePrinter} 
+            </Button>
+            <Button 
+              onClick={savePrinter}
               disabled={saving}
-              className="w-20 px-3 py-0.5 rounded-full text-xs font-medium transition-all text-center bg-green-600 hover:bg-green-700 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-orange-500 hover:bg-orange-600 text-white"
+              type="button"
             >
-              {saving ? 'Salvando...' : 'Salvar'}
-            </button>
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Salvando...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Salvar
+                </>
+              )}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
