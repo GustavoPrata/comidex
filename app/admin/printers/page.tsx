@@ -988,41 +988,41 @@ export default function PrintersPage() {
                       </div>
                     </div>
                     
-                    {/* Status Badge e Ações */}
-                    <div className="flex items-center justify-center gap-2">
-                      {/* Status Badge Compacto */}
-                      <div className={`
-                        flex items-center space-x-1 
-                        px-2 py-1 
-                        bg-gradient-to-r ${getConnectionStatusColor(printer.connection_status)} 
-                        text-white rounded-full 
-                        shadow-sm
-                      `}>
-                        {/* Ícone */}
-                        {getConnectionStatusIcon(printer.connection_status)}
-                        
-                        {/* Texto */}
-                        <span className="text-xs font-semibold">
-                          {getConnectionStatusShortText(printer.connection_status)}
-                        </span>
-                      </div>
+                    {/* Status Badge */}
+                    <div className={`
+                      flex items-center space-x-1 
+                      px-2 py-1 
+                      bg-gradient-to-r ${getConnectionStatusColor(printer.connection_status)} 
+                      text-white rounded-full 
+                      shadow-sm
+                    `}>
+                      {/* Ícone */}
+                      {getConnectionStatusIcon(printer.connection_status)}
                       
-                      <button
-                        onClick={() => openModal(printer)}
-                        className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                        title="Editar"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </button>
-                      
-                      <button
-                        onClick={() => handleDelete(printer)}
-                        className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
-                        title="Excluir"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      {/* Texto */}
+                      <span className="text-xs font-semibold">
+                        {getConnectionStatusShortText(printer.connection_status)}
+                      </span>
                     </div>
+                  </div>
+
+                  {/* Botões de Ação Centralizados */}
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <button
+                      onClick={() => openModal(printer)}
+                      className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                      title="Editar"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    
+                    <button
+                      onClick={() => handleDelete(printer)}
+                      className="h-7 w-7 rounded-full hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                      title="Excluir"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </div>
 
                   {/* Power Button & Main Printer Button */}
