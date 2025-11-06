@@ -62,15 +62,6 @@ export async function POST(request: Request) {
       
       if (!isReachable) {
         console.log('⚠️ Impressora não alcançável via rede');
-        
-        // Atualizar status de erro no banco
-        await supabase
-          .from('printers')
-          .update({ 
-            connection_status: 'offline',
-            test_result: 'Impressora não alcançável na rede'
-          })
-          .eq('id', printerId);
           
         return NextResponse.json({
           success: false,
@@ -98,16 +89,6 @@ export async function POST(request: Request) {
     const timestamp = new Date().toLocaleString('pt-BR');
     
     if (printSuccess) {
-      // Atualizar timestamp do último teste bem-sucedido
-      await supabase
-        .from('printers')
-        .update({ 
-          last_test_at: new Date().toISOString(),
-          connection_status: 'online',
-          test_result: 'Teste realizado com sucesso'
-        })
-        .eq('id', printerId);
-      
       console.log('✅ Teste de impressão concluído com sucesso');
       
       return NextResponse.json({
@@ -148,15 +129,6 @@ export async function POST(request: Request) {
       });
     } else {
       console.log('❌ Falha ao enviar teste de impressão');
-      
-      // Atualizar status de erro no banco
-      await supabase
-        .from('printers')
-        .update({ 
-          connection_status: 'offline',
-          test_result: 'Falha na comunicação com a impressora'
-        })
-        .eq('id', printerId);
       
       return NextResponse.json({
         success: false,

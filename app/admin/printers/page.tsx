@@ -340,9 +340,6 @@ export default function PrintersPage() {
         // Mostrar sucesso com detalhes
         toast.success(`✅ ${result.message}`);
         
-        // Revalidar dados para mostrar último teste
-        mutate('printers');
-        
         // Mostrar detalhes do método de impressão
         if (result.method === 'network') {
           toast.success(`📡 Enviado via TCP/IP para ${result.printer.ip}:${result.printer.port}`);
@@ -1063,49 +1060,13 @@ export default function PrintersPage() {
 
                   {/* Test Info Section */}
                   <div className="flex-1 space-y-3">
-                    {printer.last_test_at ? (
-                      <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl p-4 border border-gray-200/50 dark:border-gray-700/50">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-lg">
-                              <Check className="h-4 w-4 text-green-600 dark:text-green-400" />
-                            </div>
-                            <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-                              Testada com sucesso
-                            </span>
-                          </div>
-                          <Clock className="h-4 w-4 text-gray-400" />
-                        </div>
-                        <div className="pl-8">
-                          <div className="text-xs text-gray-600 dark:text-gray-400">
-                            {new Date(printer.last_test_at).toLocaleDateString('pt-BR', { 
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric'
-                            })} às {new Date(printer.last_test_at).toLocaleTimeString('pt-BR', {
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
-                          </div>
-                          {printer.test_result && (
-                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 italic">
-                              "{printer.test_result}"
-                            </div>
-                          )}
-                        </div>
+                    <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl p-4 border border-gray-200/50 dark:border-gray-700/50">
+                      <div className="flex items-center justify-center">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          Clique para testar a impressora
+                        </span>
                       </div>
-                    ) : (
-                      <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl p-4 border border-gray-200/50 dark:border-gray-700/50">
-                        <div className="flex items-center gap-2">
-                          <div className="p-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                            <Info className="h-4 w-4 text-gray-400" />
-                          </div>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">
-                            Nunca testada
-                          </span>
-                        </div>
-                      </div>
-                    )}
+                    </div>
 
                     {/* Professional Action Button */}
                     <Button

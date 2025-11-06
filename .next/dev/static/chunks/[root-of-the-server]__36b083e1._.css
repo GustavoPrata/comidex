@@ -2433,10 +2433,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   text-transform: uppercase;
 }
 
-.italic {
-  font-style: italic;
-}
-
 .leading-none {
   line-height: 1;
 }
