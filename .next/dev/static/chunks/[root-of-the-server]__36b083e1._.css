@@ -2983,11 +2983,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   cursor: grab;
 }
 
-.hover\:border-blue-300:hover {
-  --tw-border-opacity: 1;
-  border-color: rgb(147 197 253 / var(--tw-border-opacity, 1));
-}
-
 .hover\:border-orange-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(253 186 116 / var(--tw-border-opacity, 1));
@@ -3174,11 +3169,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .hover\:to-yellow-700:hover {
   --tw-gradient-to: #a16207 var(--tw-gradient-to-position);
-}
-
-.hover\:text-blue-600:hover {
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-destructive:hover {
@@ -3886,10 +3876,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:placeholder\:text-gray-400:is(.dark *)::placeholder {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity, 1));
-}
-
-.dark\:hover\:bg-blue-900\/20:hover:is(.dark *) {
-  background-color: #1e3a8a33;
 }
 
 .dark\:hover\:bg-gray-200:hover:is(.dark *) {

@@ -238,7 +238,6 @@ export default function PrintersPage() {
   const [deletePrinter, setDeletePrinter] = useState<Printer | null>(null);
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState<number | null>(null);
-  const [checkingStatus, setCheckingStatus] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showDiscoverModal, setShowDiscoverModal] = useState(false);
   const [discovering, setDiscovering] = useState(false);
@@ -258,7 +257,7 @@ export default function PrintersPage() {
   });
   const supabase = createClient();
   
-  // Verificar status inicial apenas uma vez quando carregar as impressoras
+  // Verificar status automaticamente ao carregar as impressoras
   useEffect(() => {
     if (printers.length > 0) {
       // Verificar status inicial após 2 segundos
@@ -266,11 +265,14 @@ export default function PrintersPage() {
         checkAllPrintersStatus();
       }, 2000);
       
-      // Não verificar automaticamente depois - apenas quando usuário clicar em "Status"
-      // Isso evita mudanças aleatórias de status
+      // Verificar status periodicamente a cada 30 segundos
+      const interval = setInterval(() => {
+        checkAllPrintersStatus();
+      }, 30000);
       
       return () => {
         clearTimeout(timeout);
+        clearInterval(interval);
       };
     }
   }, [printers.length]);
@@ -284,8 +286,6 @@ export default function PrintersPage() {
 
   const checkPrinterStatus = async (printerId: number, silent = false) => {
     try {
-      if (!silent) setCheckingStatus(printerId);
-      
       const response = await fetch('/api/printers/status', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -315,8 +315,6 @@ export default function PrintersPage() {
       if (!silent) {
         toast.error("Erro ao verificar status da impressora");
       }
-    } finally {
-      setCheckingStatus(null);
     }
   };
 
@@ -1096,11 +1094,11 @@ export default function PrintersPage() {
                   )}
 
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="flex justify-center">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-full border-gray-200 dark:border-gray-700 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 dark:hover:bg-orange-900/20 transition-all"
+                      className="rounded-full border-gray-200 dark:border-gray-700 hover:bg-orange-50 hover:border-orange-300 hover:text-orange-600 dark:hover:bg-orange-900/20 transition-all w-full"
                       onClick={() => testPrinter(printer)}
                       disabled={testing === printer.id || !printer.active}
                     >
@@ -1109,24 +1107,7 @@ export default function PrintersPage() {
                       ) : (
                         <>
                           <TestTube className="h-4 w-4 mr-2" />
-                          Testar
-                        </>
-                      )}
-                    </Button>
-                    
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="rounded-full border-gray-200 dark:border-gray-700 hover:bg-blue-50 hover:border-blue-300 hover:text-blue-600 dark:hover:bg-blue-900/20 transition-all"
-                      onClick={() => checkPrinterStatus(printer.id)}
-                      disabled={checkingStatus === printer.id || !printer.active}
-                    >
-                      {checkingStatus === printer.id ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <>
-                          <Activity className="h-4 w-4 mr-2" />
-                          Status
+                          Testar Impressão
                         </>
                       )}
                     </Button>
