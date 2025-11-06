@@ -1582,7 +1582,7 @@ function PrintersPage() {
                 ip_address: formData.is_local ? 'LOCAL' : formData.ip_address,
                 port: formData.is_local ? 'LOCAL' : formData.port,
                 profile_id: formData.profile_id,
-                is_main: shouldBeMain || false,
+                is_main: editingPrinter ? editingPrinter.is_main : shouldBeMain || false,
                 is_local: formData.is_local,
                 active: formData.active,
                 sort_order: Math.floor(formData.sort_order),
