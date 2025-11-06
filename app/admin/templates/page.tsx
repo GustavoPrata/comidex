@@ -130,9 +130,9 @@ const elementLibrary = [
   {
     category: 'Texto',
     elements: [
-      { id: 'text', type: 'text', icon: Type, label: 'Texto', defaultContent: 'Texto aqui' },
-      { id: 'title', type: 'text', icon: Type, label: 'Título', defaultContent: 'TÍTULO', style: { fontSize: 20, fontWeight: 'bold' } },
-      { id: 'subtitle', type: 'text', icon: Type, label: 'Subtítulo', defaultContent: 'Subtítulo', style: { fontSize: 16 } }
+      { id: 'text', type: 'text', icon: Type, label: 'Texto', defaultContent: 'Texto aqui', style: { fontSize: '12px' } },
+      { id: 'title', type: 'text', icon: Type, label: 'Título', defaultContent: 'TÍTULO', style: { fontSize: '16px', fontWeight: 'bold', textAlign: 'center' } },
+      { id: 'subtitle', type: 'text', icon: Type, label: 'Subtítulo', defaultContent: 'Subtítulo', style: { fontSize: '14px', textAlign: 'center' } }
     ]
   },
   {
@@ -149,8 +149,8 @@ const elementLibrary = [
   {
     category: 'Elementos',
     elements: [
-      { id: 'line', type: 'line', icon: Minus, label: 'Linha', defaultContent: '─────────────────' },
-      { id: 'double_line', type: 'line', icon: Divide, label: 'Linha Dupla', defaultContent: '═════════════════' },
+      { id: 'line', type: 'line', icon: Minus, label: 'Linha', defaultContent: '--------------------------------', style: { fontSize: '12px', letterSpacing: '-1px' } },
+      { id: 'double_line', type: 'line', icon: Divide, label: 'Linha Dupla', defaultContent: '================================', style: { fontSize: '12px', letterSpacing: '-1px' } },
       { id: 'qrcode', type: 'qrcode', icon: QrCode, label: 'QR Code', defaultContent: '{{qrcode}}' },
       { id: 'barcode', type: 'barcode', icon: BarChart, label: 'Código de Barras', defaultContent: '{{barcode}}' },
       { id: 'logo', type: 'image', icon: Image, label: 'Logo', defaultContent: '{{logo}}' },
@@ -237,9 +237,9 @@ export default function TemplatesPage() {
     margin: 0
   });
 
-  // Canvas dimensions
-  const [canvasWidth, setCanvasWidth] = useState(384); // 48mm for 80mm printer at 8 dots/mm
-  const [canvasHeight, setCanvasHeight] = useState(600); // Variable height
+  // Canvas dimensions - 80mm thermal printer
+  const [canvasWidth, setCanvasWidth] = useState(302); // 80mm width at screen resolution
+  const [canvasHeight, setCanvasHeight] = useState(800); // Variable height for continuous paper
 
   // Fetch templates from database
   const { data: templates, isLoading } = useSWR('templates', async () => {
@@ -345,16 +345,27 @@ export default function TemplatesPage() {
       <div
         id="template-canvas"
         ref={setNodeRef}
-        className="relative bg-white dark:bg-gray-900 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg overflow-hidden"
+        className="relative overflow-hidden"
         style={{ 
           width: canvasWidth, 
           height: canvasHeight,
-          minHeight: 400
+          minHeight: 400,
+          background: 'linear-gradient(to bottom, #fdfdf8, #f9f9f4)',
+          boxShadow: 'inset 0 0 10px rgba(0,0,0,0.03)'
         }}
       >
-        {/* Grid background */}
+        {/* Thermal paper texture */}
         <div 
-          className="absolute inset-0 opacity-5"
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: 'url("data:image/svg+xml,%3Csvg width="2" height="2" xmlns="http://www.w3.org/2000/svg"%3E%3Crect width="2" height="2" fill="%23000" /%3E%3C/svg%3E")',
+            backgroundSize: '2px 2px'
+          }}
+        />
+        
+        {/* Grid helper lines - very subtle */}
+        <div 
+          className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: 'url("data:image/svg+xml,%3Csvg width="20" height="20" xmlns="http://www.w3.org/2000/svg"%3E%3Cdefs%3E%3Cpattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"%3E%3Cpath d="M 20 0 L 0 0 0 20" fill="none" stroke="gray" stroke-width="0.5"/%3E%3C/pattern%3E%3C/defs%3E%3Crect width="100%25" height="100%25" fill="url(%23grid)" /%3E%3C/svg%3E")'
           }}
@@ -384,12 +395,12 @@ export default function TemplatesPage() {
         {canvasElements.length === 0 && !activeElementId && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <Layout className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-500 dark:text-gray-400">
-                Arraste elementos para o canvas
+              <PrinterIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-400 text-sm">
+                Arraste elementos para criar
               </p>
-              <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-                Ou clique em um elemento para adicionar
+              <p className="text-xs text-gray-300 mt-1">
+                seu template de impressão
               </p>
             </div>
           </div>
@@ -418,9 +429,12 @@ export default function TemplatesPage() {
     const style = {
       position: 'absolute' as const,
       left: element.position?.x || 10,
-      top: element.position?.y || (index * 40 + 10),
+      top: element.position?.y || (index * 30 + 10),
       transform: CSS.Translate.toString(transform),
       opacity: isDragging ? 0.5 : 1,
+      fontFamily: 'monospace',
+      fontSize: '12px',
+      color: '#000',
       ...element.style
     };
 
@@ -432,8 +446,8 @@ export default function TemplatesPage() {
         style={style}
         onClick={onSelect}
         className={`
-          group relative p-2 rounded cursor-move
-          ${isSelected ? 'ring-2 ring-orange-500 bg-orange-50 dark:bg-orange-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}
+          group relative p-1 rounded cursor-move
+          ${isSelected ? 'ring-1 ring-orange-500 bg-orange-50/50' : 'hover:bg-gray-100/50'}
           transition-all duration-200
         `}
         {...listeners}
@@ -780,7 +794,7 @@ export default function TemplatesPage() {
               <div className="p-8">
                 {/* Template Settings */}
                 <div className="mb-6 bg-white dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-800">
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="template-name">Nome do Template</Label>
                       <Input
@@ -812,26 +826,41 @@ export default function TemplatesPage() {
                         </SelectContent>
                       </Select>
                     </div>
-                    <div>
-                      <Label>Largura do Canvas</Label>
-                      <div className="flex items-center gap-2 mt-1">
-                        <Slider
-                          value={[canvasWidth]}
-                          onValueChange={([value]) => setCanvasWidth(value)}
-                          min={200}
-                          max={600}
-                          step={10}
-                          className="flex-1"
-                        />
-                        <span className="text-sm text-gray-500 w-12">{canvasWidth}px</span>
-                      </div>
+                  </div>
+                  <div className="mt-4 flex items-center gap-4 text-sm text-gray-500">
+                    <div className="flex items-center gap-2">
+                      <PrinterIcon className="h-4 w-4" />
+                      <span>Papel Térmico: 80mm</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Maximize2 className="h-4 w-4" />
+                      <span>Altura: {canvasHeight}px (contínuo)</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Canvas */}
+                {/* Canvas Container with Thermal Paper Look */}
                 <div className="flex justify-center">
-                  <CanvasDropArea />
+                  <div className="relative">
+                    {/* Paper Shadow */}
+                    <div className="absolute -inset-4 bg-black/5 dark:bg-black/20 rounded-lg blur-xl" />
+                    
+                    {/* Paper Roll Effect */}
+                    <div className="relative bg-white rounded-lg shadow-2xl p-8">
+                      {/* Perforation marks at top */}
+                      <div className="absolute top-0 left-0 right-0 h-4 flex items-center justify-center">
+                        <div className="w-full border-t-2 border-dashed border-gray-300 dark:border-gray-600" />
+                      </div>
+                      
+                      {/* Canvas */}
+                      <CanvasDropArea />
+                      
+                      {/* Perforation marks at bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 h-4 flex items-center justify-center">
+                        <div className="w-full border-b-2 border-dashed border-gray-300 dark:border-gray-600" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
