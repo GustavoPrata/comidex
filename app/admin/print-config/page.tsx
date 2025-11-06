@@ -74,7 +74,6 @@ interface PrinterProfile {
   margin_top: number;
   margin_bottom: number;
   custom_commands: any;
-  active: boolean;
 }
 
 const CONNECTION_TYPES = [
@@ -153,8 +152,7 @@ export default function PrintConfigPage() {
       margin_right: 0,
       margin_top: 0,
       margin_bottom: 0,
-      custom_commands: {},
-      active: true
+      custom_commands: {}
     });
     setShowEditDialog(true);
   };
@@ -170,8 +168,7 @@ export default function PrintConfigPage() {
       const newProfile = {
         ...profile,
         id: undefined,
-        name: `${profile.name} (Cópia)`,
-        active: false
+        name: `${profile.name} (Cópia)`
       };
 
       const response = await fetch('/api/printer-profiles', {
@@ -630,18 +627,6 @@ export default function PrintConfigPage() {
                       </div>
                     )}
                   </div>
-                </div>
-
-                {/* Active Status */}
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    checked={editingProfile.active}
-                    onCheckedChange={(checked) => setEditingProfile({
-                      ...editingProfile,
-                      active: checked
-                    })}
-                  />
-                  <Label>Perfil Ativo</Label>
                 </div>
               </div>
             )}
