@@ -2243,6 +2243,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   padding: 1px;
 }
 
+.px-1 {
+  padding-left: .25rem;
+  padding-right: .25rem;
+}
+
 .px-1\.5 {
   padding-left: .375rem;
   padding-right: .375rem;
@@ -2481,10 +2486,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .uppercase {
   text-transform: uppercase;
-}
-
-.leading-\[1\.3\] {
-  line-height: 1.3;
 }
 
 .leading-none {

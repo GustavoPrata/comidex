@@ -38,16 +38,18 @@ import {
   Clock,
   User,
   DollarSign,
-  Printer as PrinterIcon
+  Printer as PrinterIcon,
+  ChevronUp,
+  ChevronDown,
+  Settings2
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
 // Template types
 const templateTypes = [
   { id: 'receipt', label: 'Cupom Fiscal', icon: Receipt },
-  { id: 'kitchen', label: 'Pedido Cozinha', icon: Package },
-  { id: 'bill', label: 'Conta Cliente', icon: CreditCard },
-  { id: 'order', label: 'Comanda Mesa', icon: FileText }
+  { id: 'kitchen', label: 'Pedido Produto', icon: Package },
+  { id: 'bill', label: 'Conta Cliente', icon: CreditCard }
 ];
 
 // Template sections
@@ -180,6 +182,10 @@ interface TemplateSection {
   name: string;
   content: string;
   type: 'text' | 'items';
+  fontSize?: number;
+  fontFamily?: string;
+  align?: 'left' | 'center' | 'right';
+  bold?: boolean;
 }
 
 export default function TemplatesPage() {
@@ -190,9 +196,9 @@ export default function TemplatesPage() {
   const [editingSection, setEditingSection] = useState<string | null>(null);
   const [editingSectionName, setEditingSectionName] = useState<string | null>(null);
   const [sections, setSections] = useState<TemplateSection[]>([
-    { id: '1', name: 'Cabeçalho', content: '', type: 'text' },
-    { id: '2', name: 'Itens', content: '', type: 'items' },
-    { id: '3', name: 'Rodapé', content: '', type: 'text' }
+    { id: '1', name: 'Cabeçalho', content: '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+    { id: '2', name: 'Itens', content: '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+    { id: '3', name: 'Rodapé', content: '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
   ]);
 
   // Load templates from database
@@ -238,9 +244,9 @@ export default function TemplatesPage() {
       // Convert to sections format
       const template = mergedTemplates[selectedType] || defaultTemplates[selectedType];
       setSections([
-        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text' },
-        { id: '2', name: 'Itens', content: template.items || '', type: 'items' },
-        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text' }
+        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+        { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
       ]);
     }
   }, [dbTemplates, isLoading, selectedType]);
@@ -250,9 +256,9 @@ export default function TemplatesPage() {
     setSelectedType(type);
     const template = templates[type] || defaultTemplates[type];
     setSections([
-      { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text' },
-      { id: '2', name: 'Itens', content: template.items || '', type: 'items' },
-      { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text' }
+      { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+      { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+      { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
     ]);
     setEditingSection(null);
   };
@@ -263,7 +269,11 @@ export default function TemplatesPage() {
       id: Date.now().toString(),
       name: type === 'items' ? 'Nova Área de Itens' : 'Nova Seção',
       content: type === 'items' ? '{{#each items}}\n{{quantity}}x {{name}}\n{{/each}}' : '',
-      type
+      type,
+      fontSize: 11,
+      fontFamily: 'mono',
+      align: type === 'items' ? 'left' : 'center',
+      bold: false
     };
     setSections([...sections, newSection]);
   };
@@ -309,6 +319,31 @@ export default function TemplatesPage() {
   const copyVariable = (value: string) => {
     navigator.clipboard.writeText(value);
     toast.success(`${value} copiado!`);
+  };
+
+  // Move section up
+  const moveSectionUp = (index: number) => {
+    if (index > 0) {
+      const newSections = [...sections];
+      [newSections[index - 1], newSections[index]] = [newSections[index], newSections[index - 1]];
+      setSections(newSections);
+    }
+  };
+
+  // Move section down
+  const moveSectionDown = (index: number) => {
+    if (index < sections.length - 1) {
+      const newSections = [...sections];
+      [newSections[index], newSections[index + 1]] = [newSections[index + 1], newSections[index]];
+      setSections(newSections);
+    }
+  };
+
+  // Update section config
+  const updateSectionConfig = (sectionId: string, config: Partial<TemplateSection>) => {
+    setSections(sections.map(s => 
+      s.id === sectionId ? { ...s, ...config } : s
+    ));
   };
 
   // Save template
@@ -399,16 +434,16 @@ export default function TemplatesPage() {
     if (confirm('Restaurar template padrão? Isso apagará suas alterações.')) {
       const template = defaultTemplates[selectedType];
       setSections([
-        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text' },
-        { id: '2', name: 'Itens', content: template.items || '', type: 'items' },
-        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text' }
+        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+        { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
       ]);
       toast.success('Template restaurado ao padrão');
     }
   };
 
   // Preview render
-  const renderPreview = (content: string) => {
+  const renderPreview = (content: string, section?: TemplateSection) => {
     // Sample items data
     const sampleItems = [
       { quantity: '2', name: 'Sushi Especial', price: '45,00', observation: '' },
@@ -604,6 +639,24 @@ export default function TemplatesPage() {
                       <Button
                         size="sm"
                         variant="ghost"
+                        onClick={() => moveSectionUp(index)}
+                        disabled={index === 0}
+                        title="Mover para cima"
+                      >
+                        <ChevronUp className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => moveSectionDown(index)}
+                        disabled={index === sections.length - 1}
+                        title="Mover para baixo"
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
                         onClick={() => duplicateSection(section)}
                         title="Duplicar seção"
                       >
@@ -619,6 +672,78 @@ export default function TemplatesPage() {
                       </Button>
                     </div>
                   </div>
+
+                  {/* Font and Style Controls */}
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    <Select
+                      value={section.fontSize?.toString() || '11'}
+                      onValueChange={(value) => updateSectionConfig(section.id, { fontSize: parseInt(value) })}
+                    >
+                      <SelectTrigger className="w-24 h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="8">8px</SelectItem>
+                        <SelectItem value="9">9px</SelectItem>
+                        <SelectItem value="10">10px</SelectItem>
+                        <SelectItem value="11">11px</SelectItem>
+                        <SelectItem value="12">12px</SelectItem>
+                        <SelectItem value="14">14px</SelectItem>
+                        <SelectItem value="16">16px</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <Select
+                      value={section.fontFamily || 'mono'}
+                      onValueChange={(value) => updateSectionConfig(section.id, { fontFamily: value })}
+                    >
+                      <SelectTrigger className="w-32 h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mono">Mono</SelectItem>
+                        <SelectItem value="sans">Sans</SelectItem>
+                        <SelectItem value="serif">Serif</SelectItem>
+                      </SelectContent>
+                    </Select>
+
+                    <div className="flex gap-1 border rounded px-1">
+                      <Button
+                        size="sm"
+                        variant={section.align === 'left' ? 'default' : 'ghost'}
+                        onClick={() => updateSectionConfig(section.id, { align: 'left' })}
+                        className="h-8 w-8 p-0"
+                      >
+                        <AlignLeft className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={section.align === 'center' ? 'default' : 'ghost'}
+                        onClick={() => updateSectionConfig(section.id, { align: 'center' })}
+                        className="h-8 w-8 p-0"
+                      >
+                        <AlignCenter className="h-3 w-3" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={section.align === 'right' ? 'default' : 'ghost'}
+                        onClick={() => updateSectionConfig(section.id, { align: 'right' })}
+                        className="h-8 w-8 p-0"
+                      >
+                        <AlignRight className="h-3 w-3" />
+                      </Button>
+                    </div>
+
+                    <Button
+                      size="sm"
+                      variant={section.bold ? 'default' : 'outline'}
+                      onClick={() => updateSectionConfig(section.id, { bold: !section.bold })}
+                      className="h-8 w-8 p-0"
+                    >
+                      <Bold className="h-3 w-3" />
+                    </Button>
+                  </div>
+
                   <Textarea
                     value={section.content}
                     onChange={(e) => updateSection(section.id, e.target.value)}
@@ -709,15 +834,35 @@ export default function TemplatesPage() {
                         />
                         
                         {/* Receipt Content */}
-                        <pre 
-                          className="relative font-mono text-[11px] leading-[1.3] text-gray-900 whitespace-pre-wrap break-all"
-                          style={{
-                            fontFamily: '"Courier New", Courier, monospace',
-                            letterSpacing: '0.5px'
-                          }}
-                        >
-{sections.map(section => renderPreview(section.content)).filter(Boolean).join('\n')}
-                        </pre>
+                        <div className="relative text-gray-900">
+                          {sections.map(section => {
+                            const content = renderPreview(section.content, section);
+                            if (!content) return null;
+                            
+                            const fontFamilyMap: Record<string, string> = {
+                              'mono': '"Courier New", Courier, monospace',
+                              'sans': 'Arial, sans-serif',
+                              'serif': 'Georgia, serif'
+                            };
+                            
+                            return (
+                              <pre 
+                                key={section.id}
+                                className="whitespace-pre-wrap break-all mb-1"
+                                style={{
+                                  fontFamily: fontFamilyMap[section.fontFamily || 'mono'],
+                                  fontSize: `${section.fontSize || 11}px`,
+                                  textAlign: section.align || 'left',
+                                  fontWeight: section.bold ? 'bold' : 'normal',
+                                  letterSpacing: '0.5px',
+                                  lineHeight: '1.3'
+                                }}
+                              >
+                                {content}
+                              </pre>
+                            );
+                          })}
+                        </div>
                       </div>
                       
                       {/* Paper Tear Edge */}
