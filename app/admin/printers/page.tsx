@@ -1061,16 +1061,6 @@ export default function PrintersPage() {
                     </button>
                   </div>
 
-                  {/* Info Box */}
-                  <div className="space-y-2 mb-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-200 dark:border-gray-700/50">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Modelo:</span>
-                      <Badge variant="outline" className="text-xs">
-                        {printer.printer_model || 'Não especificado'}
-                      </Badge>
-                    </div>
-                  </div>
-
                   {/* Last Test Info */}
                   {printer.last_test_at && (
                     <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-200/50 dark:border-blue-800/50">
