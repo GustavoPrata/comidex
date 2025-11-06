@@ -253,43 +253,41 @@ export default function PrintConfigPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-8 text-white shadow-2xl">
-          <div className="flex items-center gap-4 mb-4">
-            <PrinterIcon className="h-10 w-10" />
-            <div>
-              <h1 className="text-4xl font-bold">Configuração de Impressoras</h1>
-              <p className="text-orange-100 mt-2">
-                Gerencie perfis de impressoras térmicas ESC/POS
-              </p>
+    <div className="min-h-screen relative">
+      {/* Header */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <PrinterIcon className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configuração de Impressoras</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              </div>
+              <Button 
+                onClick={handleCreateProfile}
+                className="bg-orange-500 hover:bg-orange-600 rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Perfil
+              </Button>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Search and Actions Bar */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              type="text"
-              placeholder="Buscar perfis..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-          
-          <Button 
-            onClick={handleCreateProfile}
-            className="bg-orange-500 hover:bg-orange-600"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Novo Perfil
-          </Button>
-        </div>
-
+      <div className="px-4">
         {/* Profiles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {filteredProfiles?.map((profile: PrinterProfile) => (
@@ -674,28 +672,29 @@ export default function PrintConfigPage() {
           </DialogContent>
         </Dialog>
 
-        {/* Delete Confirmation Dialog */}
-        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
-              <AlertDialogDescription>
-                Tem certeza que deseja excluir o perfil "{profileToDelete?.name}"?
-                Esta ação não pode ser desfeita.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancelar</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={handleDeleteProfile}
-                className="bg-red-500 hover:bg-red-600"
-              >
-                Excluir
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir o perfil "{profileToDelete?.name}"?
+              Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteProfile}
+              className="bg-red-500 hover:bg-red-600"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

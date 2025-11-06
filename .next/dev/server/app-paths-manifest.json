@@ -1,5 +1,6 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/admin/items/page": "app/admin/items/page.js",
   "/admin/print-config/page": "app/admin/print-config/page.js",
   "/api/printer-profiles/route": "app/api/printer-profiles/route.js",
   "/prompt/page": "app/prompt/page.js"
