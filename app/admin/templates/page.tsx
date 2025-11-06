@@ -315,7 +315,14 @@ export default function TemplatesPage() {
   const saveTemplate = async () => {
     setSaving(true);
     try {
-      const currentTemplate = templates[selectedType];
+      // Look for existing template in database for this type
+      const { data: existingTemplates, error: fetchError } = await supabase
+        .from('print_templates')
+        .select('id')
+        .eq('type', selectedType)
+        .limit(1);
+
+      if (fetchError) throw fetchError;
       
       // Extract header, items, footer from sections
       const headerSection = sections.find(s => s.name.toLowerCase().includes('cabeça'));
@@ -334,21 +341,47 @@ export default function TemplatesPage() {
         active: true
       };
 
-      if (currentTemplate?.id) {
+      if (existingTemplates && existingTemplates.length > 0) {
         // Update existing
         const { error } = await supabase
           .from('print_templates')
           .update(templateData)
-          .eq('id', currentTemplate.id);
+          .eq('id', existingTemplates[0].id);
 
         if (error) throw error;
+        
+        // Update local state
+        setTemplates({
+          ...templates,
+          [selectedType]: {
+            id: existingTemplates[0].id,
+            header: templateData.header_content,
+            items: templateData.items_content,
+            footer: templateData.footer_content
+          }
+        });
       } else {
         // Create new
-        const { error } = await supabase
+        const { data: newTemplate, error } = await supabase
           .from('print_templates')
-          .insert([templateData]);
+          .insert([templateData])
+          .select()
+          .single();
 
         if (error) throw error;
+        
+        // Update local state with new ID
+        if (newTemplate) {
+          setTemplates({
+            ...templates,
+            [selectedType]: {
+              id: newTemplate.id,
+              header: templateData.header_content,
+              items: templateData.items_content,
+              footer: templateData.footer_content
+            }
+          });
+        }
       }
 
       toast.success('Template salvo com sucesso!');
@@ -411,7 +444,7 @@ export default function TemplatesPage() {
         
         // Handle {{#if observation}}
         const ifPattern = /{{#if observation}}([\s\S]*?){{\/if}}/g;
-        itemStr = itemStr.replace(ifPattern, (ifMatch, ifContent) => {
+        itemStr = itemStr.replace(ifPattern, (ifMatch: string, ifContent: string) => {
           return item.observation ? ifContent.replace('{{observation}}', item.observation) : '';
         });
         
