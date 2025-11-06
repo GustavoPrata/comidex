@@ -253,16 +253,19 @@ export default function PrintConfigPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950 p-8">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-yellow-50 to-red-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-            Configuração de Impressoras
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Gerencie os perfis de configuração das impressoras térmicas
-          </p>
+        <div className="mb-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-3xl p-8 text-white shadow-2xl">
+          <div className="flex items-center gap-4 mb-4">
+            <PrinterIcon className="h-10 w-10" />
+            <div>
+              <h1 className="text-4xl font-bold">Configuração de Impressoras</h1>
+              <p className="text-orange-100 mt-2">
+                Gerencie perfis de impressoras térmicas ESC/POS
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Search and Actions Bar */}

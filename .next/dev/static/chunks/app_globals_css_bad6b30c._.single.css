@@ -1984,6 +1984,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-stops: var(--tw-gradient-from), #f97316 var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
+.via-yellow-50 {
+  --tw-gradient-to: #fefce800 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #fefce8 var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
 .to-gray-100 {
   --tw-gradient-to: #f3f4f6 var(--tw-gradient-to-position);
 }
@@ -2030,6 +2035,14 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .to-orange-600\/10 {
   --tw-gradient-to: #ea580c1a var(--tw-gradient-to-position);
+}
+
+.to-red-50 {
+  --tw-gradient-to: #fef2f2 var(--tw-gradient-to-position);
+}
+
+.to-red-500 {
+  --tw-gradient-to: #ef4444 var(--tw-gradient-to-position);
 }
 
 .to-red-600 {
@@ -2459,6 +2472,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .text-muted-foreground {
   color: hsl(var(--muted-foreground));
+}
+
+.text-orange-100 {
+  --tw-text-opacity: 1;
+  color: rgb(255 237 213 / var(--tw-text-opacity, 1));
 }
 
 .text-orange-400 {
@@ -3675,6 +3693,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.dark\:via-gray-800:is(.dark *) {
+  --tw-gradient-to: #1f293700 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), #1f2937 var(--tw-gradient-via-position), var(--tw-gradient-to);
+}
+
 .dark\:via-orange-600:is(.dark *) {
   --tw-gradient-to: #ea580c00 var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), #ea580c var(--tw-gradient-via-position), var(--tw-gradient-to);
@@ -3684,8 +3707,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-to: #1f2937 var(--tw-gradient-to-position);
 }
 
-.dark\:to-gray-950:is(.dark *) {
-  --tw-gradient-to: #030712 var(--tw-gradient-to-position);
+.dark\:to-gray-900:is(.dark *) {
+  --tw-gradient-to: #111827 var(--tw-gradient-to-position);
 }
 
 .dark\:to-orange-600\/10:is(.dark *) {
