@@ -942,10 +942,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-height: 60vh;
 }
 
-.max-h-\[80vh\] {
-  max-height: 80vh;
-}
-
 .max-h-\[90vh\] {
   max-height: 90vh;
 }
@@ -1128,6 +1124,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .max-w-6xl {
   max-width: 72rem;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
 }
 
 .max-w-lg {
@@ -3211,6 +3211,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(194 65 12 / var(--tw-text-opacity, 1));
 }
 
+.hover\:text-red-500:hover {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity, 1));
+}
+
 .hover\:text-red-600:hover {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity, 1));
@@ -3380,11 +3385,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .group:hover .group-hover\:bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
-}
-
-.group:hover .group-hover\:bg-orange-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
 }
 
 .group:hover .group-hover\:bg-white\/30 {
@@ -3735,6 +3735,12 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.dark\:from-gray-900:is(.dark *) {
+  --tw-gradient-from: #111827 var(--tw-gradient-from-position);
+  --tw-gradient-to: #11182700 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .dark\:from-orange-500\/15:is(.dark *) {
   --tw-gradient-from: #f9731626 var(--tw-gradient-from-position);
   --tw-gradient-to: #f9731600 var(--tw-gradient-to-position);
@@ -3754,6 +3760,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:to-gray-800:is(.dark *) {
   --tw-gradient-to: #1f2937 var(--tw-gradient-to-position);
+}
+
+.dark\:to-gray-950:is(.dark *) {
+  --tw-gradient-to: #030712 var(--tw-gradient-to-position);
 }
 
 .dark\:to-orange-600\/10:is(.dark *) {
@@ -3975,10 +3985,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #37415199;
 }
 
-.group:hover .dark\:group-hover\:bg-orange-900\/30:is(.dark *) {
-  background-color: #7c2d124d;
-}
-
 .group:hover .dark\:group-hover\:text-gray-200:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(229 231 235 / var(--tw-text-opacity, 1));
@@ -4077,10 +4083,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 }
 
 @media (min-width: 1024px) {
-  .lg\:col-span-1 {
-    grid-column: span 1 / span 1;
-  }
-
   .lg\:col-span-2 {
     grid-column: span 2 / span 2;
   }
