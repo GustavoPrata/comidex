@@ -848,11 +848,6 @@ async function POST(request) {
             const isReachable = await __TURBOPACK__imported__module__$5b$project$5d2f$server$2f$printer$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["printerService"].testPrinterConnection(printer.ip_address, parseInt(printer.port) || 9100);
             if (!isReachable) {
                 console.log('⚠️ Impressora não alcançável via rede');
-                // Atualizar status de erro no banco
-                await supabase.from('printers').update({
-                    connection_status: 'offline',
-                    test_result: 'Impressora não alcançável na rede'
-                }).eq('id', printerId);
                 return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                     success: false,
                     error: `Não foi possível conectar com a impressora ${printer.name}`,
@@ -877,12 +872,6 @@ async function POST(request) {
         printSuccess = await __TURBOPACK__imported__module__$5b$project$5d2f$server$2f$printer$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["printerService"].print(printer, testData);
         const timestamp = new Date().toLocaleString('pt-BR');
         if (printSuccess) {
-            // Atualizar timestamp do último teste bem-sucedido
-            await supabase.from('printers').update({
-                last_test_at: new Date().toISOString(),
-                connection_status: 'online',
-                test_result: 'Teste realizado com sucesso'
-            }).eq('id', printerId);
             console.log('✅ Teste de impressão concluído com sucesso');
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: true,
@@ -922,11 +911,6 @@ async function POST(request) {
             });
         } else {
             console.log('❌ Falha ao enviar teste de impressão');
-            // Atualizar status de erro no banco
-            await supabase.from('printers').update({
-                connection_status: 'offline',
-                test_result: 'Falha na comunicação com a impressora'
-            }).eq('id', printerId);
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: false,
                 error: `Não foi possível comunicar com a impressora ${printer.name}`,

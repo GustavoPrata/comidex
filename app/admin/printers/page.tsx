@@ -1058,18 +1058,9 @@ export default function PrintersPage() {
                     </button>
                   </div>
 
-                  {/* Test Info Section */}
-                  <div className="flex-1 space-y-3">
-                    <div className="bg-gradient-to-br from-gray-50 to-gray-100/50 dark:from-gray-800/50 dark:to-gray-900/50 rounded-2xl p-4 border border-gray-200/50 dark:border-gray-700/50">
-                      <div className="flex items-center justify-center">
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                          Clique para testar a impressora
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Professional Action Button */}
-                    <Button
+                  {/* Test Button Section */}
+                  <div className="mt-4">
+                    <button
                       className={`
                         w-full h-12 rounded-2xl font-medium text-sm
                         bg-gradient-to-r from-orange-500 to-orange-600
@@ -1093,7 +1084,7 @@ export default function PrintersPage() {
                           <span>Imprimir Teste</span>
                         </div>
                       )}
-                    </Button>
+                    </button>
                   </div>
                 </div>
               </div>
