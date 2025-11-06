@@ -189,7 +189,6 @@ export default function TemplatesPage() {
   const [templates, setTemplates] = useState<any>({});
   const [editingSection, setEditingSection] = useState<string | null>(null);
   const [editingSectionName, setEditingSectionName] = useState<string | null>(null);
-  const [previewContent, setPreviewContent] = useState<string[]>([]);
   const [sections, setSections] = useState<TemplateSection[]>([
     { id: '1', name: 'Cabeçalho', content: '', type: 'text' },
     { id: '2', name: 'Itens', content: '', type: 'items' },
@@ -310,13 +309,6 @@ export default function TemplatesPage() {
   const copyVariable = (value: string) => {
     navigator.clipboard.writeText(value);
     toast.success(`${value} copiado!`);
-  };
-
-  // Update preview manually
-  const updatePreview = () => {
-    const newPreview = sections.map(section => renderPreview(section.content)).filter(Boolean);
-    setPreviewContent(newPreview);
-    toast.success('Preview atualizado!');
   };
 
   // Save template
@@ -675,19 +667,10 @@ export default function TemplatesPage() {
               <div className="sticky top-4">
                 <Card className="overflow-hidden bg-gray-900">
                   <div className="p-4 border-b border-gray-800 bg-gray-800">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold flex items-center gap-2 text-gray-100">
-                        <PrinterIcon className="h-4 w-4 text-orange-500" />
-                        Preview - Impressora Térmica 80mm
-                      </h3>
-                      <Button
-                        size="sm"
-                        onClick={updatePreview}
-                        className="bg-orange-500 hover:bg-orange-600 text-white"
-                      >
-                        Atualizar Preview
-                      </Button>
-                    </div>
+                    <h3 className="font-semibold flex items-center gap-2 text-gray-100">
+                      <PrinterIcon className="h-4 w-4 text-orange-500" />
+                      Preview - Impressora Térmica 80mm
+                    </h3>
                   </div>
                   <div 
                     className="p-6 overflow-auto bg-gradient-to-br from-gray-900 to-gray-950"
@@ -733,7 +716,7 @@ export default function TemplatesPage() {
                             letterSpacing: '0.5px'
                           }}
                         >
-{previewContent.length > 0 ? previewContent.join('\n') : 'Clique em "Atualizar Preview" para visualizar o template'}
+{sections.map(section => renderPreview(section.content)).filter(Boolean).join('\n')}
                         </pre>
                       </div>
                       
