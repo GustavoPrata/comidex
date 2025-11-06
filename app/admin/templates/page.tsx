@@ -66,11 +66,16 @@ const availableVariables = [
   { id: 'customer_name', label: 'Cliente', icon: User, value: '{{customer_name}}' },
   { id: 'date', label: 'Data', icon: Calendar, value: '{{date}}' },
   { id: 'time', label: 'Hora', icon: Clock, value: '{{time}}' },
-  { id: 'items_list', label: 'Lista de Itens', icon: Package, value: '{{items}}' },
+  { id: 'each_items', label: 'Loop de Itens', icon: Package, value: '{{#each items}}...{{/each}}' },
+  { id: 'item_qty', label: 'Qtd do Item', icon: Hash, value: '{{quantity}}' },
+  { id: 'item_name', label: 'Nome do Item', icon: Package, value: '{{name}}' },
+  { id: 'item_price', label: 'Preço do Item', icon: DollarSign, value: '{{price}}' },
+  { id: 'item_obs', label: 'Observação Item', icon: Type, value: '{{observation}}' },
   { id: 'subtotal', label: 'Subtotal', icon: DollarSign, value: '{{subtotal}}' },
   { id: 'discount', label: 'Desconto', icon: DollarSign, value: '{{discount}}' },
+  { id: 'service_fee', label: 'Taxa Serviço', icon: DollarSign, value: '{{service_fee}}' },
   { id: 'total', label: 'Total', icon: DollarSign, value: '{{total}}' },
-  { id: 'payment_method', label: 'Forma de Pagamento', icon: CreditCard, value: '{{payment_method}}' }
+  { id: 'payment_method', label: 'Forma Pagamento', icon: CreditCard, value: '{{payment_method}}' }
 ];
 
 // Default templates
@@ -80,21 +85,29 @@ const defaultTemplates: any = {
 {{company_address}}
 Tel: {{company_phone}}
 --------------------------------
-CUPOM FISCAL
+       CUPOM FISCAL
 --------------------------------
 Data: {{date}}  Hora: {{time}}
 Pedido: #{{order_number}}
+Mesa: {{table_number}}
 --------------------------------`,
-    items: `{{items}}`,
+    items: `QTD  DESCRIÇÃO         VALOR
+--------------------------------
+{{#each items}}
+{{quantity}}x   {{name}}
+                    R$ {{price}}
+{{/each}}`,
     footer: `--------------------------------
-Subtotal: {{subtotal}}
-Desconto: {{discount}}
-TOTAL: {{total}}
+Subtotal:         R$ {{subtotal}}
+Desconto:         R$ {{discount}}
+--------------------------------
+TOTAL:            R$ {{total}}
 --------------------------------
 Pagamento: {{payment_method}}
 --------------------------------
-Obrigado pela preferência!
-Volte sempre!`
+    Obrigado pela preferência!
+        Volte sempre!
+--------------------------------`
   },
   kitchen: {
     header: `================================
@@ -104,38 +117,60 @@ Mesa: {{table_number}}
 Pedido: #{{order_number}}
 Hora: {{time}}
 ================================`,
-    items: `{{items}}`,
+    items: `{{#each items}}
+{{quantity}}x {{name}}
+   {{#if observation}}
+   OBS: {{observation}}
+   {{/if}}
+--------------------------------
+{{/each}}`,
     footer: `================================
-Observações do pedido
+Atendente: {{customer_name}}
 ================================`
   },
   bill: {
     header: `{{company_name}}
 --------------------------------
-CONTA
+           CONTA
 --------------------------------
 Mesa: {{table_number}}
 Cliente: {{customer_name}}
 Data: {{date}}  Hora: {{time}}
 --------------------------------`,
-    items: `{{items}}`,
-    footer: `--------------------------------
-TOTAL A PAGAR: {{total}}
+    items: `ITEM                     VALOR
 --------------------------------
-Obrigado!`
+{{#each items}}
+{{quantity}}x {{name}}
+                    R$ {{price}}
+{{/each}}`,
+    footer: `--------------------------------
+SUBTOTAL:         R$ {{subtotal}}
+TAXA SERVIÇO:     R$ {{service_fee}}
+--------------------------------
+TOTAL A PAGAR:    R$ {{total}}
+--------------------------------
+        Obrigado!`
   },
   order: {
     header: `================================
-         COMANDA
+         COMANDA MESA
 ================================
 Mesa: {{table_number}}
 Atendente: {{customer_name}}
 Pedido: #{{order_number}}
 --------------------------------`,
-    items: `{{items}}`,
+    items: `{{#each items}}
+[ ] {{quantity}}x {{name}}
+    {{#if observation}}
+    OBS: {{observation}}
+    {{/if}}
+{{/each}}`,
     footer: `--------------------------------
 Hora: {{time}}
-================================`
+================================
+    Assinatura do Cliente:
+    
+    _____________________`
   }
 };
 
@@ -266,26 +301,55 @@ export default function TemplatesPage() {
 
   // Preview render
   const renderPreview = (content: string) => {
+    // Sample items data
+    const sampleItems = [
+      { quantity: '2', name: 'Sushi Especial', price: '45,00', observation: '' },
+      { quantity: '1', name: 'Temaki Salmão', price: '18,00', observation: 'Sem wasabi' },
+      { quantity: '3', name: 'Hot Roll', price: '32,00', observation: '' },
+      { quantity: '1', name: 'Coca-Cola 350ml', price: '8,00', observation: '' }
+    ];
+
     // Replace variables with sample data
     const sampleData: any = {
-      company_name: 'RESTAURANTE JAPONÊS',
-      company_address: 'Rua das Flores, 123',
+      company_name: 'RESTAURANTE JAPONÊS SAKURA',
+      company_address: 'Rua das Flores, 123 - Centro',
       company_phone: '(11) 1234-5678',
       order_number: '00123',
       table_number: '05',
       customer_name: 'João Silva',
       date: new Date().toLocaleDateString('pt-BR'),
       time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-      items: `1x Sushi Especial     R$ 45,00
-2x Temaki Salmão      R$ 36,00
-1x Coca-Cola          R$ 8,00`,
-      subtotal: 'R$ 89,00',
-      discount: 'R$ 0,00',
-      total: 'R$ 89,00',
+      subtotal: '103,00',
+      service_fee: '10,30',
+      discount: '0,00',
+      total: '113,30',
       payment_method: 'Cartão Crédito'
     };
 
     let preview = content;
+    
+    // Handle {{#each items}} loops
+    const eachPattern = /{{#each items}}([\s\S]*?){{\/each}}/g;
+    preview = preview.replace(eachPattern, (match, itemTemplate) => {
+      return sampleItems.map(item => {
+        let itemStr = itemTemplate;
+        
+        // Handle {{#if observation}}
+        const ifPattern = /{{#if observation}}([\s\S]*?){{\/if}}/g;
+        itemStr = itemStr.replace(ifPattern, (ifMatch, ifContent) => {
+          return item.observation ? ifContent.replace('{{observation}}', item.observation) : '';
+        });
+        
+        // Replace item variables
+        Object.keys(item).forEach(key => {
+          itemStr = itemStr.replace(new RegExp(`{{${key}}}`, 'g'), (item as any)[key]);
+        });
+        
+        return itemStr;
+      }).join('');
+    });
+    
+    // Replace remaining variables
     Object.keys(sampleData).forEach(key => {
       preview = preview.replace(new RegExp(`{{${key}}}`, 'g'), sampleData[key]);
     });
@@ -401,13 +465,16 @@ export default function TemplatesPage() {
               <Card className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold">Área de Itens</h3>
-                  <p className="text-xs text-gray-500">Use {`{{items}}`} para listar produtos</p>
+                  <p className="text-xs text-gray-500">Customize o formato dos itens</p>
                 </div>
                 <Textarea
                   value={sectionContent.items || ''}
                   onChange={(e) => setSectionContent({ ...sectionContent, items: e.target.value })}
-                  className="font-mono text-xs h-20 resize-none"
-                  placeholder="{{items}}"
+                  className="font-mono text-xs h-32 resize-none"
+                  placeholder="{{#each items}}
+{{quantity}}x {{name}}
+            R$ {{price}}
+{{/each}}"
                 />
               </Card>
 
@@ -461,46 +528,76 @@ export default function TemplatesPage() {
 
             {/* Preview Column */}
             <div className="space-y-4">
-              <Card className="sticky top-4">
-                <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                  <h3 className="font-semibold flex items-center gap-2">
-                    <PrinterIcon className="h-4 w-4" />
-                    Preview (80mm)
-                  </h3>
-                </div>
-                <div 
-                  className="p-4 overflow-auto"
-                  style={{
-                    maxHeight: '600px',
-                    background: 'linear-gradient(to bottom, #fdfdf8, #f9f9f4)'
-                  }}
-                >
+              <div className="sticky top-4">
+                <Card className="overflow-hidden bg-gray-900">
+                  <div className="p-4 border-b border-gray-800 bg-gray-800">
+                    <h3 className="font-semibold flex items-center gap-2 text-gray-100">
+                      <PrinterIcon className="h-4 w-4 text-orange-500" />
+                      Preview - Impressora Térmica 80mm
+                    </h3>
+                  </div>
                   <div 
-                    className="font-mono text-[10px] leading-tight whitespace-pre-wrap break-all"
+                    className="p-6 overflow-auto bg-gradient-to-br from-gray-900 to-gray-950"
                     style={{
-                      width: '280px',
-                      padding: '10px',
-                      background: 'white',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-                      color: '#000'
+                      maxHeight: '700px'
                     }}
                   >
-                    {renderPreview(sectionContent.header || '')}
-                    {sectionContent.items && (
-                      <>
-                        {'\n'}
-                        {renderPreview(sectionContent.items)}
-                      </>
-                    )}
-                    {sectionContent.footer && (
-                      <>
-                        {'\n'}
-                        {renderPreview(sectionContent.footer)}
-                      </>
-                    )}
+                    {/* Thermal Printer Frame */}
+                    <div className="relative mx-auto" style={{ width: '320px' }}>
+                      {/* Paper Roll Top */}
+                      <div className="h-8 bg-gradient-to-b from-gray-300 to-gray-100 rounded-t-lg relative">
+                        <div className="absolute inset-x-0 top-2 flex justify-center gap-1">
+                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                          <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                        </div>
+                      </div>
+                      
+                      {/* Paper with Receipt */}
+                      <div 
+                        className="relative"
+                        style={{
+                          background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 50%, #f5f5f0 100%)',
+                          boxShadow: '0 4px 12px rgba(0,0,0,0.15), inset 0 1px 3px rgba(0,0,0,0.05)',
+                          padding: '16px',
+                          minHeight: '400px'
+                        }}
+                      >
+                        {/* Paper texture overlay */}
+                        <div 
+                          className="absolute inset-0 opacity-[0.03]"
+                          style={{
+                            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect fill='%23000000' x='0' y='0' width='1' height='1' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E")`,
+                            backgroundSize: '2px 2px'
+                          }}
+                        />
+                        
+                        {/* Receipt Content */}
+                        <pre 
+                          className="relative font-mono text-[11px] leading-[1.3] text-gray-900 whitespace-pre-wrap break-all"
+                          style={{
+                            fontFamily: '"Courier New", Courier, monospace',
+                            letterSpacing: '0.5px'
+                          }}
+                        >
+{renderPreview(sectionContent.header || '')}
+{sectionContent.items && renderPreview(sectionContent.items)}
+{sectionContent.footer && renderPreview(sectionContent.footer)}
+                        </pre>
+                      </div>
+                      
+                      {/* Paper Tear Edge */}
+                      <div 
+                        className="h-4 relative"
+                        style={{
+                          background: 'linear-gradient(to bottom, #f5f5f0, #e8e8e8)',
+                          clipPath: 'polygon(0% 0%, 5% 100%, 10% 0%, 15% 100%, 20% 0%, 25% 100%, 30% 0%, 35% 100%, 40% 0%, 45% 100%, 50% 0%, 55% 100%, 60% 0%, 65% 100%, 70% 0%, 75% 100%, 80% 0%, 85% 100%, 90% 0%, 95% 100%, 100% 0%)'
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </div>
             </div>
           </div>
         )}
