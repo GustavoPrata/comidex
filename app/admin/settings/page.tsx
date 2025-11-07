@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "react-hot-toast";
@@ -183,9 +182,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+      <div className="border-b border-gray-200 dark:border-gray-800">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -239,7 +238,7 @@ export default function SettingsPage() {
 
             {/* General Tab */}
             <TabsContent value="general" className="space-y-6">
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <Building2 className="h-5 w-5 text-orange-500" />
                   Informações Básicas
@@ -356,9 +355,9 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
-              </Card>
+              </div>
 
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-orange-500" />
                   Endereço
@@ -410,12 +409,12 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
-              </Card>
+              </div>
             </TabsContent>
 
             {/* Hours Tab */}
             <TabsContent value="hours" className="space-y-6">
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-orange-500" />
                   Horário de Funcionamento
@@ -444,9 +443,9 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
-              </Card>
+              </div>
 
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6">Modalidades de Atendimento</h2>
                 
                 <div className="space-y-4">
@@ -486,12 +485,12 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
-              </Card>
+              </div>
             </TabsContent>
 
             {/* Delivery Tab */}
             <TabsContent value="delivery" className="space-y-6">
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6">Configurações de Entrega</h2>
                 
                 <div className="space-y-6">
@@ -537,12 +536,12 @@ export default function SettingsPage() {
                     </div>
                   )}
                 </div>
-              </Card>
+              </div>
             </TabsContent>
 
             {/* Payment Tab */}
             <TabsContent value="payment" className="space-y-6">
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <CreditCard className="h-5 w-5 text-orange-500" />
                   Formas de Pagamento
@@ -610,9 +609,9 @@ export default function SettingsPage() {
                     </div>
                   )}
                 </div>
-              </Card>
+              </div>
 
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <DollarSign className="h-5 w-5 text-orange-500" />
                   Taxas e Serviços
@@ -633,12 +632,12 @@ export default function SettingsPage() {
                     Percentual cobrado como taxa de serviço (opcional)
                   </p>
                 </div>
-              </Card>
+              </div>
             </TabsContent>
 
             {/* Social Tab */}
             <TabsContent value="social" className="space-y-6">
-              <Card className="p-6">
+              <div className="p-6 border rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <Globe className="h-5 w-5 text-orange-500" />
                   Redes Sociais e Internet
@@ -692,7 +691,7 @@ export default function SettingsPage() {
                     </p>
                   </div>
                 </div>
-              </Card>
+              </div>
             </TabsContent>
           </Tabs>
         )}
