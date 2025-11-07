@@ -200,6 +200,13 @@ export default function TemplatesPage() {
     { id: '2', name: 'Itens', content: '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
     { id: '3', name: 'Rodapé', content: '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
   ]);
+  
+  // Restaurant data state
+  const [restaurantInfo, setRestaurantInfo] = useState({
+    name: 'xxxxxx',
+    address: 'xxxxxx',
+    phone: 'xxxxxx'
+  });
 
   // Load templates from database
   const { data: dbTemplates, isLoading } = useSWR('templates', async () => {
@@ -227,6 +234,26 @@ export default function TemplatesPage() {
   });
 
   // Initialize templates with defaults if not in database
+  // Fetch restaurant data
+  useEffect(() => {
+    const fetchRestaurantData = async () => {
+      try {
+        const response = await fetch('/api/restaurant');
+        if (response.ok) {
+          const data = await response.json();
+          setRestaurantInfo({
+            name: data.name || 'xxxxxx',
+            address: data.full_address || 'xxxxxx',
+            phone: data.phone || 'xxxxxx'
+          });
+        }
+      } catch (error) {
+        console.error('Failed to fetch restaurant data:', error);
+      }
+    };
+    fetchRestaurantData();
+  }, []);
+
   useEffect(() => {
     if (!isLoading && dbTemplates) {
       const mergedTemplates: any = {};
@@ -454,9 +481,9 @@ export default function TemplatesPage() {
 
     // Replace variables with sample data
     const sampleData: any = {
-      company_name: 'RESTAURANTE JAPONÊS SAKURA',
-      company_address: 'Rua das Flores, 123 - Centro',
-      company_phone: '(11) 1234-5678',
+      company_name: restaurantInfo.name,
+      company_address: restaurantInfo.address,
+      company_phone: restaurantInfo.phone,
       order_number: '00123',
       table_number: '05',
       customer_name: 'João Silva',

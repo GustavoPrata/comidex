@@ -85,6 +85,19 @@ export async function POST(request: Request) {
     // Tentar imprimir usando método unificado
     printSuccess = await printerService.print(printer, testData);
     
+    // Fetch restaurant data for test print
+    let restaurantName = 'xxxxxx';
+    let restaurantPhone = 'xxxxxx';
+    try {
+      const response = await fetch('http://localhost:5000/api/restaurant');
+      if (response.ok) {
+        const data = await response.json();
+        restaurantName = data.name || 'xxxxxx';
+        restaurantPhone = data.phone || 'xxxxxx';
+      }
+    } catch (error) {
+      console.log('Could not fetch restaurant data for test print');
+    }
     
     const timestamp = new Date().toLocaleString('pt-BR');
     
@@ -106,6 +119,9 @@ export async function POST(request: Request) {
         details: {
           printMethod,
           testContent: [
+            `====================================`,
+            `${restaurantName.toUpperCase()}`,
+            `Tel: ${restaurantPhone}`,
             `====================================`,
             `     TESTE DE IMPRESSÃO REAL`,
             `====================================`,
