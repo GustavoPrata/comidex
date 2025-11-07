@@ -222,12 +222,15 @@ export default function TemplatesPage() {
     // Convert array to object by type
     const templatesObj: any = {};
     data?.forEach((template: any) => {
-      templatesObj[template.type] = {
-        id: template.id,
-        header: template.header_content || defaultTemplates[template.type]?.header || '',
-        items: template.items_content || defaultTemplates[template.type]?.items || '',
-        footer: template.footer_content || defaultTemplates[template.type]?.footer || ''
-      };
+      const templateType = template.template_type;
+      if (templateType) {
+        templatesObj[templateType] = {
+          id: template.id,
+          header: template.custom_header || defaultTemplates[templateType]?.header || '',
+          items: template.items_content || defaultTemplates[templateType]?.items || '',
+          footer: template.custom_footer || defaultTemplates[templateType]?.footer || ''
+        };
+      }
     });
     
     return templatesObj;
@@ -381,7 +384,7 @@ export default function TemplatesPage() {
       const { data: existingTemplates, error: fetchError } = await supabase
         .from('print_templates')
         .select('id')
-        .eq('type', selectedType)
+        .eq('template_type', selectedType)
         .limit(1);
 
       if (fetchError) throw fetchError;
@@ -393,13 +396,16 @@ export default function TemplatesPage() {
       
       const templateData = {
         name: `Template ${templateTypes.find(t => t.id === selectedType)?.label}`,
-        type: selectedType,
-        header_content: headerSection?.content || sections[0]?.content || '',
+        template_type: selectedType,
+        custom_header: headerSection?.content || sections[0]?.content || '',
         items_content: itemsSection?.content || '',
-        footer_content: footerSection?.content || sections[sections.length - 1]?.content || '',
-        content: JSON.stringify({
-          sections: sections
-        }),
+        custom_footer: footerSection?.content || sections[sections.length - 1]?.content || '',
+        sections: sections,
+        description: `Template para ${templateTypes.find(t => t.id === selectedType)?.label}`,
+        header_enabled: true,
+        footer_enabled: true,
+        show_logo: false,
+        cut_paper: true,
         active: true
       };
 
@@ -417,9 +423,9 @@ export default function TemplatesPage() {
           ...templates,
           [selectedType]: {
             id: existingTemplates[0].id,
-            header: templateData.header_content,
+            header: templateData.custom_header,
             items: templateData.items_content,
-            footer: templateData.footer_content
+            footer: templateData.custom_footer
           }
         });
       } else {
@@ -438,9 +444,9 @@ export default function TemplatesPage() {
             ...templates,
             [selectedType]: {
               id: newTemplate.id,
-              header: templateData.header_content,
+              header: templateData.custom_header,
               items: templateData.items_content,
-              footer: templateData.footer_content
+              footer: templateData.custom_footer
             }
           });
         }
