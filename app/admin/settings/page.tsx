@@ -36,6 +36,8 @@ interface RestaurantSettings {
   whatsapp?: string;
   email?: string;
   address: string;
+  number?: string;
+  complement?: string;
   city?: string;
   state?: string;
   zip_code?: string;
@@ -71,6 +73,7 @@ export default function SettingsPage() {
   const supabase = createClient();
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
+  const [searchingCep, setSearchingCep] = useState(false);
   const [settings, setSettings] = useState<RestaurantSettings>({
     name: '',
     phone: '',
@@ -102,6 +105,57 @@ export default function SettingsPage() {
   // Handle input changes
   const handleChange = (field: keyof RestaurantSettings, value: any) => {
     setSettings(prev => ({ ...prev, [field]: value }));
+    
+    // Automatically search CEP when it's complete
+    if (field === 'zip_code') {
+      const cleanCep = value.replace(/\D/g, '');
+      if (cleanCep.length === 8) {
+        searchCepAutomatic(cleanCep);
+      }
+    }
+  };
+
+  // Format CEP input
+  const formatCep = (value: string) => {
+    // Remove non-numeric characters
+    const numbers = value.replace(/\D/g, '');
+    
+    // Apply format mask (00000-000)
+    if (numbers.length <= 5) {
+      return numbers;
+    } else if (numbers.length <= 8) {
+      return `${numbers.slice(0, 5)}-${numbers.slice(5, 8)}`;
+    }
+    return `${numbers.slice(0, 5)}-${numbers.slice(5, 8)}`;
+  };
+
+  // Search address by CEP automatically
+  const searchCepAutomatic = async (cep: string) => {
+    if (!cep || cep.length !== 8) return;
+
+    setSearchingCep(true);
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+      
+      if (data.erro) {
+        // Silently fail for automatic searches
+        return;
+      }
+
+      // Update address fields with the fetched data
+      setSettings(prev => ({
+        ...prev,
+        address: `${data.logradouro}, ${data.bairro}`,
+        city: data.localidade,
+        state: data.uf
+      }));
+    } catch (error) {
+      // Silently fail for automatic searches
+      console.error('Error searching CEP:', error);
+    } finally {
+      setSearchingCep(false);
+    }
   };
 
   // Handle logo upload
@@ -362,51 +416,89 @@ export default function SettingsPage() {
                   Endereço
                 </h2>
                 
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="col-span-2">
+                <div className="space-y-4">
+                  {/* CEP com busca automática */}
+                  <div>
+                    <Label htmlFor="zip_code">
+                      CEP * 
+                      {searchingCep && (
+                        <span className="ml-2 text-xs text-orange-500">
+                          <Loader2 className="h-3 w-3 inline animate-spin mr-1" />
+                          Buscando...
+                        </span>
+                      )}
+                    </Label>
+                    <Input
+                      id="zip_code"
+                      value={settings.zip_code || ''}
+                      onChange={(e) => handleChange('zip_code', formatCep(e.target.value))}
+                      placeholder="00000-000"
+                      className="mt-2"
+                      maxLength={9}
+                    />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Digite o CEP para buscar o endereço automaticamente
+                    </p>
+                  </div>
+
+                  {/* Número e Complemento */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="number">Número *</Label>
+                      <Input
+                        id="number"
+                        value={settings.number || ''}
+                        onChange={(e) => handleChange('number', e.target.value)}
+                        placeholder="123"
+                        className="mt-2"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="complement">Complemento</Label>
+                      <Input
+                        id="complement"
+                        value={settings.complement || ''}
+                        onChange={(e) => handleChange('complement', e.target.value)}
+                        placeholder="Apto 101"
+                        className="mt-2"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Endereço (editável como fallback) */}
+                  <div>
                     <Label htmlFor="address">Endereço *</Label>
                     <Input
                       id="address"
                       value={settings.address || ''}
                       onChange={(e) => handleChange('address', e.target.value)}
-                      placeholder="Rua das Flores, 123"
+                      placeholder="Rua, Bairro"
                       className="mt-2"
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Preenchido automaticamente ou digite manualmente
+                    </p>
                   </div>
 
-                  <div>
-                    <Label htmlFor="city">Cidade</Label>
-                    <Input
-                      id="city"
-                      value={settings.city || ''}
-                      onChange={(e) => handleChange('city', e.target.value)}
-                      placeholder="São Paulo"
-                      className="mt-2"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="state">Estado</Label>
-                    <Input
-                      id="state"
-                      value={settings.state || ''}
-                      onChange={(e) => handleChange('state', e.target.value)}
-                      placeholder="SP"
-                      className="mt-2"
-                      maxLength={2}
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="zip_code">CEP</Label>
-                    <Input
-                      id="zip_code"
-                      value={settings.zip_code || ''}
-                      onChange={(e) => handleChange('zip_code', e.target.value)}
-                      placeholder="00000-000"
-                      className="mt-2"
-                    />
-                  </div>
+                  {/* Endereço Completo formatado */}
+                  {settings.address && settings.number && (
+                    <div className="p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-900">
+                      <p className="text-sm font-medium text-orange-900 dark:text-orange-100 mb-1">
+                        Endereço Completo:
+                      </p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">
+                        {settings.address}, {settings.number}
+                        {settings.complement && ` - ${settings.complement}`}
+                        {settings.city && settings.state && (
+                          <span className="block mt-1">
+                            {settings.city}, {settings.state}
+                            {settings.zip_code && ` - CEP: ${settings.zip_code}`}
+                          </span>
+                        )}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </TabsContent>

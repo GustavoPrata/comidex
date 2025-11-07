@@ -3814,6 +3814,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(34 197 94 / var(--tw-text-opacity, 1));
 }
 
+.dark\:text-orange-100:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(255 237 213 / var(--tw-text-opacity, 1));
+}
+
 .dark\:text-orange-200:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(254 215 170 / var(--tw-text-opacity, 1));
