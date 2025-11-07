@@ -86,7 +86,7 @@ const menuItems: MenuItem[] = [
     ]
   },
   {
-    label: 'Configuração',
+    label: 'Restaurante',
     icon: Settings,
     href: '/admin/settings'
   }
