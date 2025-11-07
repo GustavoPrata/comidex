@@ -688,12 +688,12 @@ function SettingsPage() {
                                             className: "h-5 w-5 text-white"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 246,
+                                            lineNumber: 260,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                        lineNumber: 245,
+                                        lineNumber: 259,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -703,7 +703,7 @@ function SettingsPage() {
                                                 children: "Configurações do Restaurante"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                                lineNumber: 249,
+                                                lineNumber: 263,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -711,19 +711,19 @@ function SettingsPage() {
                                                 children: "Gerencie as informações e configurações do seu estabelecimento"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                                lineNumber: 252,
+                                                lineNumber: 266,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                        lineNumber: 248,
+                                        lineNumber: 262,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                lineNumber: 244,
+                                lineNumber: 258,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -736,7 +736,7 @@ function SettingsPage() {
                                             className: "h-4 w-4 mr-2 animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 264,
+                                            lineNumber: 278,
                                             columnNumber: 19
                                         }, this),
                                         "Salvando..."
@@ -747,7 +747,7 @@ function SettingsPage() {
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 269,
+                                            lineNumber: 283,
                                             columnNumber: 19
                                         }, this),
                                         "Salvar Configurações"
@@ -755,23 +755,23 @@ function SettingsPage() {
                                 }, void 0, true)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                lineNumber: 257,
+                                lineNumber: 271,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/settings/page.tsx",
-                        lineNumber: 243,
+                        lineNumber: 257,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/settings/page.tsx",
-                    lineNumber: 242,
+                    lineNumber: 256,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/settings/page.tsx",
-                lineNumber: 241,
+                lineNumber: 255,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -782,12 +782,12 @@ function SettingsPage() {
                         className: "h-8 w-8 animate-spin text-orange-500"
                     }, void 0, false, {
                         fileName: "[project]/app/admin/settings/page.tsx",
-                        lineNumber: 281,
+                        lineNumber: 295,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/settings/page.tsx",
-                    lineNumber: 280,
+                    lineNumber: 294,
                     columnNumber: 11
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tabs"], {
                     defaultValue: "general",
@@ -801,7 +801,7 @@ function SettingsPage() {
                                     children: "Geral"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 286,
+                                    lineNumber: 300,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -809,7 +809,7 @@ function SettingsPage() {
                                     children: "Horários"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 287,
+                                    lineNumber: 301,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -817,7 +817,7 @@ function SettingsPage() {
                                     children: "Pagamento"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 288,
+                                    lineNumber: 302,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsTrigger"], {
@@ -825,13 +825,13 @@ function SettingsPage() {
                                     children: "Social"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 289,
+                                    lineNumber: 303,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/settings/page.tsx",
-                            lineNumber: 285,
+                            lineNumber: 299,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -848,14 +848,14 @@ function SettingsPage() {
                                                     className: "h-5 w-5 text-orange-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 296,
+                                                    lineNumber: 310,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Informações Básicas"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 295,
+                                            lineNumber: 309,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -868,7 +868,7 @@ function SettingsPage() {
                                                             children: "Logo do Restaurante"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 303,
+                                                            lineNumber: 317,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -880,7 +880,7 @@ function SettingsPage() {
                                                                     className: "h-24 w-24 object-contain rounded-lg border border-gray-200"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 306,
+                                                                    lineNumber: 320,
                                                                     columnNumber: 25
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                     className: "h-24 w-24 rounded-lg border-2 border-dashed border-gray-300 flex items-center justify-center",
@@ -888,12 +888,12 @@ function SettingsPage() {
                                                                         className: "h-8 w-8 text-gray-400"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                                        lineNumber: 313,
+                                                                        lineNumber: 327,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 312,
+                                                                    lineNumber: 326,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -907,7 +907,7 @@ function SettingsPage() {
                                                                             id: "logo-upload"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                                            lineNumber: 317,
+                                                                            lineNumber: 331,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -919,20 +919,20 @@ function SettingsPage() {
                                                                                     className: "h-4 w-4 mr-2 animate-spin"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                                    lineNumber: 331,
+                                                                                    lineNumber: 345,
                                                                                     columnNumber: 29
                                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$upload$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Upload$3e$__["Upload"], {
                                                                                     className: "h-4 w-4 mr-2"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                                    lineNumber: 333,
+                                                                                    lineNumber: 347,
                                                                                     columnNumber: 29
                                                                                 }, this),
                                                                                 "Enviar Logo"
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                                            lineNumber: 325,
+                                                                            lineNumber: 339,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -940,25 +940,25 @@ function SettingsPage() {
                                                                             children: "JPG, PNG ou GIF. Máximo 5MB."
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                                            lineNumber: 337,
+                                                                            lineNumber: 351,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 316,
+                                                                    lineNumber: 330,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 304,
+                                                            lineNumber: 318,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 302,
+                                                    lineNumber: 316,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -968,7 +968,7 @@ function SettingsPage() {
                                                             children: "Nome do Restaurante *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 345,
+                                                            lineNumber: 359,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -979,13 +979,13 @@ function SettingsPage() {
                                                             className: "mt-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 346,
+                                                            lineNumber: 360,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 344,
+                                                    lineNumber: 358,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -995,7 +995,7 @@ function SettingsPage() {
                                                             children: "Razão Social"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 356,
+                                                            lineNumber: 370,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1006,13 +1006,13 @@ function SettingsPage() {
                                                             className: "mt-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 357,
+                                                            lineNumber: 371,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 355,
+                                                    lineNumber: 369,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1022,7 +1022,7 @@ function SettingsPage() {
                                                             children: "CNPJ"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 367,
+                                                            lineNumber: 381,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1033,13 +1033,13 @@ function SettingsPage() {
                                                             className: "mt-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 368,
+                                                            lineNumber: 382,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 366,
+                                                    lineNumber: 380,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1049,7 +1049,7 @@ function SettingsPage() {
                                                             children: "Telefone *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 378,
+                                                            lineNumber: 392,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1060,13 +1060,13 @@ function SettingsPage() {
                                                             className: "mt-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 379,
+                                                            lineNumber: 393,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 377,
+                                                    lineNumber: 391,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1076,7 +1076,7 @@ function SettingsPage() {
                                                             children: "WhatsApp"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 389,
+                                                            lineNumber: 403,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1087,13 +1087,13 @@ function SettingsPage() {
                                                             className: "mt-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 390,
+                                                            lineNumber: 404,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 388,
+                                                    lineNumber: 402,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1103,7 +1103,7 @@ function SettingsPage() {
                                                             children: "E-mail"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 400,
+                                                            lineNumber: 414,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1115,25 +1115,25 @@ function SettingsPage() {
                                                             className: "mt-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 401,
+                                                            lineNumber: 415,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 399,
+                                                    lineNumber: 413,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 300,
+                                            lineNumber: 314,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 294,
+                                    lineNumber: 308,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1146,14 +1146,14 @@ function SettingsPage() {
                                                     className: "h-5 w-5 text-orange-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 415,
+                                                    lineNumber: 429,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Endereço"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 414,
+                                            lineNumber: 428,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1172,20 +1172,20 @@ function SettingsPage() {
                                                                             className: "h-3 w-3 inline animate-spin mr-1"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                                            lineNumber: 426,
+                                                                            lineNumber: 440,
                                                                             columnNumber: 27
                                                                         }, this),
                                                                         "Buscando..."
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 425,
+                                                                    lineNumber: 439,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 422,
+                                                            lineNumber: 436,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1197,7 +1197,7 @@ function SettingsPage() {
                                                             maxLength: 9
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 431,
+                                                            lineNumber: 445,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1205,13 +1205,13 @@ function SettingsPage() {
                                                             children: "Digite o CEP para buscar o endereço automaticamente"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 439,
+                                                            lineNumber: 453,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 421,
+                                                    lineNumber: 435,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1224,7 +1224,7 @@ function SettingsPage() {
                                                                     children: "Número *"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 447,
+                                                                    lineNumber: 461,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1235,13 +1235,13 @@ function SettingsPage() {
                                                                     className: "mt-2"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 448,
+                                                                    lineNumber: 462,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 446,
+                                                            lineNumber: 460,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1251,7 +1251,7 @@ function SettingsPage() {
                                                                     children: "Complemento"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 458,
+                                                                    lineNumber: 472,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1262,19 +1262,19 @@ function SettingsPage() {
                                                                     className: "mt-2"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 459,
+                                                                    lineNumber: 473,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 457,
+                                                            lineNumber: 471,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 445,
+                                                    lineNumber: 459,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1284,7 +1284,7 @@ function SettingsPage() {
                                                             children: "Endereço *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 471,
+                                                            lineNumber: 485,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1295,7 +1295,7 @@ function SettingsPage() {
                                                             className: "mt-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 472,
+                                                            lineNumber: 486,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1303,13 +1303,13 @@ function SettingsPage() {
                                                             children: "Preenchido automaticamente ou digite manualmente"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 479,
+                                                            lineNumber: 493,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 470,
+                                                    lineNumber: 484,
                                                     columnNumber: 19
                                                 }, this),
                                                 settings.address && settings.number && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1320,7 +1320,7 @@ function SettingsPage() {
                                                             children: "Endereço Completo:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 487,
+                                                            lineNumber: 501,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1340,288 +1340,472 @@ function SettingsPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 494,
+                                                                    lineNumber: 508,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 490,
+                                                            lineNumber: 504,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 486,
+                                                    lineNumber: 500,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 419,
+                                            lineNumber: 433,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 413,
+                                    lineNumber: 427,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/settings/page.tsx",
-                            lineNumber: 293,
+                            lineNumber: 307,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsContent"], {
                             value: "hours",
                             className: "space-y-6",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-6 bg-white dark:bg-gray-900 rounded-lg",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                            className: "text-lg font-semibold mb-6 flex items-center gap-2",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
-                                                    className: "h-5 w-5 text-orange-500"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 510,
-                                                    columnNumber: 19
-                                                }, this),
-                                                "Horário de Funcionamento"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 509,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-2 gap-6",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                            htmlFor: "opening_time",
-                                                            children: "Horário de Abertura"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 516,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                            id: "opening_time",
-                                                            type: "time",
-                                                            value: settings.opening_time || '',
-                                                            onChange: (e)=>handleChange('opening_time', e.target.value),
-                                                            className: "mt-2"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 517,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 515,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                            htmlFor: "closing_time",
-                                                            children: "Horário de Fechamento"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 527,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                                            id: "closing_time",
-                                                            type: "time",
-                                                            value: settings.closing_time || '',
-                                                            onChange: (e)=>handleChange('closing_time', e.target.value),
-                                                            className: "mt-2"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 528,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 526,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 514,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 508,
-                                    columnNumber: 15
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "p-6 bg-white dark:bg-gray-900 rounded-lg",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                            className: "text-lg font-semibold mb-6",
-                                            children: "Modalidades de Atendimento"
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 540,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-4",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center justify-between",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                    htmlFor: "table_service",
-                                                                    children: "Atendimento em Mesa"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 545,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-sm text-gray-500",
-                                                                    children: "Garçons atendem os clientes nas mesas"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 546,
-                                                                    columnNumber: 23
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 544,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
-                                                            id: "table_service",
-                                                            checked: settings.table_service || false,
-                                                            onCheckedChange: (checked)=>handleChange('table_service', checked)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 548,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 543,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center justify-between",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                    htmlFor: "self_service",
-                                                                    children: "Self-Service"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 557,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-sm text-gray-500",
-                                                                    children: "Cliente se serve no buffet"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 558,
-                                                                    columnNumber: 23
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 556,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
-                                                            id: "self_service",
-                                                            checked: settings.self_service || false,
-                                                            onCheckedChange: (checked)=>handleChange('self_service', checked)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 560,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 555,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center justify-between",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                                    htmlFor: "takeaway",
-                                                                    children: "Retirada no Local"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 569,
-                                                                    columnNumber: 23
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-sm text-gray-500",
-                                                                    children: "Cliente retira pedido no balcão"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 570,
-                                                                    columnNumber: 23
-                                                                }, this)
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 568,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
-                                                            id: "takeaway",
-                                                            checked: settings.takeaway || false,
-                                                            onCheckedChange: (checked)=>handleChange('takeaway', checked)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 572,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 567,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 542,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 539,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, void 0, true, {
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "p-6 bg-white dark:bg-gray-900 rounded-lg",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                        className: "text-lg font-semibold mb-6 flex items-center gap-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
+                                                className: "h-5 w-5 text-orange-500"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 524,
+                                                columnNumber: 19
+                                            }, this),
+                                            "Horário de Funcionamento"
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                        lineNumber: 523,
+                                        columnNumber: 17
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4 p-3 rounded-lg border",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
+                                                        checked: settings.monday_enabled || false,
+                                                        onCheckedChange: (checked)=>handleChange('monday_enabled', checked)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 531,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1 grid grid-cols-3 gap-4 items-center",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                className: "font-medium",
+                                                                children: "Segunda-feira"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 536,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.monday_open || '',
+                                                                onChange: (e)=>handleChange('monday_open', e.target.value),
+                                                                disabled: !settings.monday_enabled,
+                                                                placeholder: "Abertura"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 537,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.monday_close || '',
+                                                                onChange: (e)=>handleChange('monday_close', e.target.value),
+                                                                disabled: !settings.monday_enabled,
+                                                                placeholder: "Fechamento"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 544,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 535,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 530,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4 p-3 rounded-lg border",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
+                                                        checked: settings.tuesday_enabled || false,
+                                                        onCheckedChange: (checked)=>handleChange('tuesday_enabled', checked)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 556,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1 grid grid-cols-3 gap-4 items-center",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                className: "font-medium",
+                                                                children: "Terça-feira"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 561,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.tuesday_open || '',
+                                                                onChange: (e)=>handleChange('tuesday_open', e.target.value),
+                                                                disabled: !settings.tuesday_enabled,
+                                                                placeholder: "Abertura"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 562,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.tuesday_close || '',
+                                                                onChange: (e)=>handleChange('tuesday_close', e.target.value),
+                                                                disabled: !settings.tuesday_enabled,
+                                                                placeholder: "Fechamento"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 569,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 560,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 555,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4 p-3 rounded-lg border",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
+                                                        checked: settings.wednesday_enabled || false,
+                                                        onCheckedChange: (checked)=>handleChange('wednesday_enabled', checked)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 581,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1 grid grid-cols-3 gap-4 items-center",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                className: "font-medium",
+                                                                children: "Quarta-feira"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 586,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.wednesday_open || '',
+                                                                onChange: (e)=>handleChange('wednesday_open', e.target.value),
+                                                                disabled: !settings.wednesday_enabled,
+                                                                placeholder: "Abertura"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 587,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.wednesday_close || '',
+                                                                onChange: (e)=>handleChange('wednesday_close', e.target.value),
+                                                                disabled: !settings.wednesday_enabled,
+                                                                placeholder: "Fechamento"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 594,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 585,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 580,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4 p-3 rounded-lg border",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
+                                                        checked: settings.thursday_enabled || false,
+                                                        onCheckedChange: (checked)=>handleChange('thursday_enabled', checked)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 606,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1 grid grid-cols-3 gap-4 items-center",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                className: "font-medium",
+                                                                children: "Quinta-feira"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 611,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.thursday_open || '',
+                                                                onChange: (e)=>handleChange('thursday_open', e.target.value),
+                                                                disabled: !settings.thursday_enabled,
+                                                                placeholder: "Abertura"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 612,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.thursday_close || '',
+                                                                onChange: (e)=>handleChange('thursday_close', e.target.value),
+                                                                disabled: !settings.thursday_enabled,
+                                                                placeholder: "Fechamento"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 619,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 610,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 605,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4 p-3 rounded-lg border",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
+                                                        checked: settings.friday_enabled || false,
+                                                        onCheckedChange: (checked)=>handleChange('friday_enabled', checked)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 631,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1 grid grid-cols-3 gap-4 items-center",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                className: "font-medium",
+                                                                children: "Sexta-feira"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 636,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.friday_open || '',
+                                                                onChange: (e)=>handleChange('friday_open', e.target.value),
+                                                                disabled: !settings.friday_enabled,
+                                                                placeholder: "Abertura"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 637,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.friday_close || '',
+                                                                onChange: (e)=>handleChange('friday_close', e.target.value),
+                                                                disabled: !settings.friday_enabled,
+                                                                placeholder: "Fechamento"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 644,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 635,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 630,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4 p-3 rounded-lg border",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
+                                                        checked: settings.saturday_enabled || false,
+                                                        onCheckedChange: (checked)=>handleChange('saturday_enabled', checked)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 656,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1 grid grid-cols-3 gap-4 items-center",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                className: "font-medium",
+                                                                children: "Sábado"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 661,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.saturday_open || '',
+                                                                onChange: (e)=>handleChange('saturday_open', e.target.value),
+                                                                disabled: !settings.saturday_enabled,
+                                                                placeholder: "Abertura"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 662,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.saturday_close || '',
+                                                                onChange: (e)=>handleChange('saturday_close', e.target.value),
+                                                                disabled: !settings.saturday_enabled,
+                                                                placeholder: "Fechamento"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 669,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 660,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 655,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4 p-3 rounded-lg border",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
+                                                        checked: settings.sunday_enabled || false,
+                                                        onCheckedChange: (checked)=>handleChange('sunday_enabled', checked)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 681,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex-1 grid grid-cols-3 gap-4 items-center",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                                className: "font-medium",
+                                                                children: "Domingo"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 686,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.sunday_open || '',
+                                                                onChange: (e)=>handleChange('sunday_open', e.target.value),
+                                                                disabled: !settings.sunday_enabled,
+                                                                placeholder: "Abertura"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 687,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
+                                                                type: "time",
+                                                                value: settings.sunday_close || '',
+                                                                onChange: (e)=>handleChange('sunday_close', e.target.value),
+                                                                disabled: !settings.sunday_enabled,
+                                                                placeholder: "Fechamento"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                                lineNumber: 694,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                                        lineNumber: 685,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/settings/page.tsx",
+                                                lineNumber: 680,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/settings/page.tsx",
+                                        lineNumber: 528,
+                                        columnNumber: 17
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/admin/settings/page.tsx",
+                                lineNumber: 522,
+                                columnNumber: 15
+                            }, this)
+                        }, void 0, false, {
                             fileName: "[project]/app/admin/settings/page.tsx",
-                            lineNumber: 507,
+                            lineNumber: 521,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1638,14 +1822,14 @@ function SettingsPage() {
                                                     className: "h-5 w-5 text-orange-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 587,
+                                                    lineNumber: 712,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Formas de Pagamento"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 586,
+                                            lineNumber: 711,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1661,7 +1845,7 @@ function SettingsPage() {
                                                                     children: "Dinheiro"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 594,
+                                                                    lineNumber: 719,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1669,13 +1853,13 @@ function SettingsPage() {
                                                                     children: "Aceitar pagamento em dinheiro"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 595,
+                                                                    lineNumber: 720,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 593,
+                                                            lineNumber: 718,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -1684,13 +1868,13 @@ function SettingsPage() {
                                                             onCheckedChange: (checked)=>handleChange('accepts_cash', checked)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 597,
+                                                            lineNumber: 722,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 592,
+                                                    lineNumber: 717,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1703,7 +1887,7 @@ function SettingsPage() {
                                                                     children: "Cartão de Crédito"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 606,
+                                                                    lineNumber: 731,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1711,13 +1895,13 @@ function SettingsPage() {
                                                                     children: "Aceitar cartões de crédito"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 607,
+                                                                    lineNumber: 732,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 605,
+                                                            lineNumber: 730,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -1726,13 +1910,13 @@ function SettingsPage() {
                                                             onCheckedChange: (checked)=>handleChange('accepts_credit', checked)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 609,
+                                                            lineNumber: 734,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 604,
+                                                    lineNumber: 729,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1745,7 +1929,7 @@ function SettingsPage() {
                                                                     children: "Cartão de Débito"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 618,
+                                                                    lineNumber: 743,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1753,13 +1937,13 @@ function SettingsPage() {
                                                                     children: "Aceitar cartões de débito"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 619,
+                                                                    lineNumber: 744,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 617,
+                                                            lineNumber: 742,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -1768,13 +1952,13 @@ function SettingsPage() {
                                                             onCheckedChange: (checked)=>handleChange('accepts_debit', checked)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 621,
+                                                            lineNumber: 746,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 616,
+                                                    lineNumber: 741,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1787,7 +1971,7 @@ function SettingsPage() {
                                                                     children: "PIX"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 630,
+                                                                    lineNumber: 755,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1795,13 +1979,13 @@ function SettingsPage() {
                                                                     children: "Aceitar pagamento via PIX"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                                    lineNumber: 631,
+                                                                    lineNumber: 756,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 629,
+                                                            lineNumber: 754,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -1810,25 +1994,25 @@ function SettingsPage() {
                                                             onCheckedChange: (checked)=>handleChange('accepts_pix', checked)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                                            lineNumber: 633,
+                                                            lineNumber: 758,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 628,
+                                                    lineNumber: 753,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 591,
+                                            lineNumber: 716,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 585,
+                                    lineNumber: 710,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1841,14 +2025,14 @@ function SettingsPage() {
                                                     className: "h-5 w-5 text-orange-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 644,
+                                                    lineNumber: 769,
                                                     columnNumber: 19
                                                 }, this),
                                                 "Taxas e Serviços"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 643,
+                                            lineNumber: 768,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1858,7 +2042,7 @@ function SettingsPage() {
                                                     children: "Taxa de Serviço (%)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 649,
+                                                    lineNumber: 774,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1871,7 +2055,7 @@ function SettingsPage() {
                                                     className: "mt-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 650,
+                                                    lineNumber: 775,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1879,25 +2063,25 @@ function SettingsPage() {
                                                     children: "Percentual cobrado como taxa de serviço (opcional)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                                    lineNumber: 659,
+                                                    lineNumber: 784,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/settings/page.tsx",
-                                            lineNumber: 648,
+                                            lineNumber: 773,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/settings/page.tsx",
-                                    lineNumber: 642,
+                                    lineNumber: 767,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/settings/page.tsx",
-                            lineNumber: 584,
+                            lineNumber: 709,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tabs$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TabsContent"], {
@@ -1913,14 +2097,14 @@ function SettingsPage() {
                                                 className: "h-5 w-5 text-orange-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                                lineNumber: 670,
+                                                lineNumber: 795,
                                                 columnNumber: 19
                                             }, this),
                                             "Redes Sociais e Internet"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                        lineNumber: 669,
+                                        lineNumber: 794,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1933,7 +2117,7 @@ function SettingsPage() {
                                                         children: "Instagram"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 676,
+                                                        lineNumber: 801,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1944,13 +2128,13 @@ function SettingsPage() {
                                                         className: "mt-2"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 677,
+                                                        lineNumber: 802,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                                lineNumber: 675,
+                                                lineNumber: 800,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1960,7 +2144,7 @@ function SettingsPage() {
                                                         children: "Facebook"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 687,
+                                                        lineNumber: 812,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1971,13 +2155,13 @@ function SettingsPage() {
                                                         className: "mt-2"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 688,
+                                                        lineNumber: 813,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                                lineNumber: 686,
+                                                lineNumber: 811,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1988,7 +2172,7 @@ function SettingsPage() {
                                                         children: "Website"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 698,
+                                                        lineNumber: 823,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -1999,13 +2183,13 @@ function SettingsPage() {
                                                         className: "mt-2"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 699,
+                                                        lineNumber: 824,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                                lineNumber: 697,
+                                                lineNumber: 822,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2016,7 +2200,7 @@ function SettingsPage() {
                                                         children: "Senha do Wi-Fi"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 709,
+                                                        lineNumber: 834,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2027,7 +2211,7 @@ function SettingsPage() {
                                                         className: "mt-2"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 710,
+                                                        lineNumber: 835,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2035,47 +2219,47 @@ function SettingsPage() {
                                                         children: "Será exibida no cupom ou cardápio para clientes"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                                        lineNumber: 717,
+                                                        lineNumber: 842,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                                lineNumber: 708,
+                                                lineNumber: 833,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/settings/page.tsx",
-                                        lineNumber: 674,
+                                        lineNumber: 799,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/settings/page.tsx",
-                                lineNumber: 668,
+                                lineNumber: 793,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/settings/page.tsx",
-                            lineNumber: 667,
+                            lineNumber: 792,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/settings/page.tsx",
-                    lineNumber: 284,
+                    lineNumber: 298,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/settings/page.tsx",
-                lineNumber: 278,
+                lineNumber: 292,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/settings/page.tsx",
-        lineNumber: 239,
+        lineNumber: 253,
         columnNumber: 5
     }, this);
 }

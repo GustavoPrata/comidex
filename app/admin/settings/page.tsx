@@ -43,11 +43,28 @@ interface RestaurantSettings {
   zip_code?: string;
   logo_url?: string;
   
-  opening_time?: string;
-  closing_time?: string;
-  delivery_enabled?: boolean;
-  delivery_fee?: number;
-  minimum_order?: number;
+  // Horários por dia da semana
+  monday_enabled?: boolean;
+  monday_open?: string;
+  monday_close?: string;
+  tuesday_enabled?: boolean;
+  tuesday_open?: string;
+  tuesday_close?: string;
+  wednesday_enabled?: boolean;
+  wednesday_open?: string;
+  wednesday_close?: string;
+  thursday_enabled?: boolean;
+  thursday_open?: string;
+  thursday_close?: string;
+  friday_enabled?: boolean;
+  friday_open?: string;
+  friday_close?: string;
+  saturday_enabled?: boolean;
+  saturday_open?: string;
+  saturday_close?: string;
+  sunday_enabled?: boolean;
+  sunday_open?: string;
+  sunday_close?: string;
   
   accepts_cash?: boolean;
   accepts_credit?: boolean;
@@ -61,9 +78,6 @@ interface RestaurantSettings {
   
   service_tax_percentage?: number;
   wifi_password?: string;
-  table_service?: boolean;
-  self_service?: boolean;
-  takeaway?: boolean;
   
   primary_color?: string;
   secondary_color?: string;
@@ -511,69 +525,180 @@ export default function SettingsPage() {
                   Horário de Funcionamento
                 </h2>
                 
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <Label htmlFor="opening_time">Horário de Abertura</Label>
-                    <Input
-                      id="opening_time"
-                      type="time"
-                      value={settings.opening_time || ''}
-                      onChange={(e) => handleChange('opening_time', e.target.value)}
-                      className="mt-2"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="closing_time">Horário de Fechamento</Label>
-                    <Input
-                      id="closing_time"
-                      type="time"
-                      value={settings.closing_time || ''}
-                      onChange={(e) => handleChange('closing_time', e.target.value)}
-                      className="mt-2"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
-                <h2 className="text-lg font-semibold mb-6">Modalidades de Atendimento</h2>
-                
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="table_service">Atendimento em Mesa</Label>
-                      <p className="text-sm text-gray-500">Garçons atendem os clientes nas mesas</p>
-                    </div>
+                  {/* Segunda-feira */}
+                  <div className="flex items-center gap-4 p-3 rounded-lg border">
                     <Switch
-                      id="table_service"
-                      checked={settings.table_service || false}
-                      onCheckedChange={(checked) => handleChange('table_service', checked)}
+                      checked={settings.monday_enabled || false}
+                      onCheckedChange={(checked) => handleChange('monday_enabled', checked)}
                     />
+                    <div className="flex-1 grid grid-cols-3 gap-4 items-center">
+                      <Label className="font-medium">Segunda-feira</Label>
+                      <Input
+                        type="time"
+                        value={settings.monday_open || ''}
+                        onChange={(e) => handleChange('monday_open', e.target.value)}
+                        disabled={!settings.monday_enabled}
+                        placeholder="Abertura"
+                      />
+                      <Input
+                        type="time"
+                        value={settings.monday_close || ''}
+                        onChange={(e) => handleChange('monday_close', e.target.value)}
+                        disabled={!settings.monday_enabled}
+                        placeholder="Fechamento"
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="self_service">Self-Service</Label>
-                      <p className="text-sm text-gray-500">Cliente se serve no buffet</p>
-                    </div>
+                  {/* Terça-feira */}
+                  <div className="flex items-center gap-4 p-3 rounded-lg border">
                     <Switch
-                      id="self_service"
-                      checked={settings.self_service || false}
-                      onCheckedChange={(checked) => handleChange('self_service', checked)}
+                      checked={settings.tuesday_enabled || false}
+                      onCheckedChange={(checked) => handleChange('tuesday_enabled', checked)}
                     />
+                    <div className="flex-1 grid grid-cols-3 gap-4 items-center">
+                      <Label className="font-medium">Terça-feira</Label>
+                      <Input
+                        type="time"
+                        value={settings.tuesday_open || ''}
+                        onChange={(e) => handleChange('tuesday_open', e.target.value)}
+                        disabled={!settings.tuesday_enabled}
+                        placeholder="Abertura"
+                      />
+                      <Input
+                        type="time"
+                        value={settings.tuesday_close || ''}
+                        onChange={(e) => handleChange('tuesday_close', e.target.value)}
+                        disabled={!settings.tuesday_enabled}
+                        placeholder="Fechamento"
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="takeaway">Retirada no Local</Label>
-                      <p className="text-sm text-gray-500">Cliente retira pedido no balcão</p>
-                    </div>
+                  {/* Quarta-feira */}
+                  <div className="flex items-center gap-4 p-3 rounded-lg border">
                     <Switch
-                      id="takeaway"
-                      checked={settings.takeaway || false}
-                      onCheckedChange={(checked) => handleChange('takeaway', checked)}
+                      checked={settings.wednesday_enabled || false}
+                      onCheckedChange={(checked) => handleChange('wednesday_enabled', checked)}
                     />
+                    <div className="flex-1 grid grid-cols-3 gap-4 items-center">
+                      <Label className="font-medium">Quarta-feira</Label>
+                      <Input
+                        type="time"
+                        value={settings.wednesday_open || ''}
+                        onChange={(e) => handleChange('wednesday_open', e.target.value)}
+                        disabled={!settings.wednesday_enabled}
+                        placeholder="Abertura"
+                      />
+                      <Input
+                        type="time"
+                        value={settings.wednesday_close || ''}
+                        onChange={(e) => handleChange('wednesday_close', e.target.value)}
+                        disabled={!settings.wednesday_enabled}
+                        placeholder="Fechamento"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Quinta-feira */}
+                  <div className="flex items-center gap-4 p-3 rounded-lg border">
+                    <Switch
+                      checked={settings.thursday_enabled || false}
+                      onCheckedChange={(checked) => handleChange('thursday_enabled', checked)}
+                    />
+                    <div className="flex-1 grid grid-cols-3 gap-4 items-center">
+                      <Label className="font-medium">Quinta-feira</Label>
+                      <Input
+                        type="time"
+                        value={settings.thursday_open || ''}
+                        onChange={(e) => handleChange('thursday_open', e.target.value)}
+                        disabled={!settings.thursday_enabled}
+                        placeholder="Abertura"
+                      />
+                      <Input
+                        type="time"
+                        value={settings.thursday_close || ''}
+                        onChange={(e) => handleChange('thursday_close', e.target.value)}
+                        disabled={!settings.thursday_enabled}
+                        placeholder="Fechamento"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Sexta-feira */}
+                  <div className="flex items-center gap-4 p-3 rounded-lg border">
+                    <Switch
+                      checked={settings.friday_enabled || false}
+                      onCheckedChange={(checked) => handleChange('friday_enabled', checked)}
+                    />
+                    <div className="flex-1 grid grid-cols-3 gap-4 items-center">
+                      <Label className="font-medium">Sexta-feira</Label>
+                      <Input
+                        type="time"
+                        value={settings.friday_open || ''}
+                        onChange={(e) => handleChange('friday_open', e.target.value)}
+                        disabled={!settings.friday_enabled}
+                        placeholder="Abertura"
+                      />
+                      <Input
+                        type="time"
+                        value={settings.friday_close || ''}
+                        onChange={(e) => handleChange('friday_close', e.target.value)}
+                        disabled={!settings.friday_enabled}
+                        placeholder="Fechamento"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Sábado */}
+                  <div className="flex items-center gap-4 p-3 rounded-lg border">
+                    <Switch
+                      checked={settings.saturday_enabled || false}
+                      onCheckedChange={(checked) => handleChange('saturday_enabled', checked)}
+                    />
+                    <div className="flex-1 grid grid-cols-3 gap-4 items-center">
+                      <Label className="font-medium">Sábado</Label>
+                      <Input
+                        type="time"
+                        value={settings.saturday_open || ''}
+                        onChange={(e) => handleChange('saturday_open', e.target.value)}
+                        disabled={!settings.saturday_enabled}
+                        placeholder="Abertura"
+                      />
+                      <Input
+                        type="time"
+                        value={settings.saturday_close || ''}
+                        onChange={(e) => handleChange('saturday_close', e.target.value)}
+                        disabled={!settings.saturday_enabled}
+                        placeholder="Fechamento"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Domingo */}
+                  <div className="flex items-center gap-4 p-3 rounded-lg border">
+                    <Switch
+                      checked={settings.sunday_enabled || false}
+                      onCheckedChange={(checked) => handleChange('sunday_enabled', checked)}
+                    />
+                    <div className="flex-1 grid grid-cols-3 gap-4 items-center">
+                      <Label className="font-medium">Domingo</Label>
+                      <Input
+                        type="time"
+                        value={settings.sunday_open || ''}
+                        onChange={(e) => handleChange('sunday_open', e.target.value)}
+                        disabled={!settings.sunday_enabled}
+                        placeholder="Abertura"
+                      />
+                      <Input
+                        type="time"
+                        value={settings.sunday_close || ''}
+                        onChange={(e) => handleChange('sunday_close', e.target.value)}
+                        disabled={!settings.sunday_enabled}
+                        placeholder="Fechamento"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
