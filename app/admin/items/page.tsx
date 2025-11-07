@@ -451,6 +451,7 @@ export default function ProductsPage() {
   const [items, setItems] = useState<ItemWithAdditionalCategories[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [groups, setGroups] = useState<Group[]>([]);
+  const [printers, setPrinters] = useState<any[]>([]); // Estado para impressoras
   const [additionalCategories, setAdditionalCategories] = useState<AdditionalCategory[]>([]);
   const [additionals, setAdditionals] = useState<Additional[]>([]);
   const [loading, setLoading] = useState(true);
@@ -504,6 +505,7 @@ export default function ProductsPage() {
     price: "",
     category_id: "",
     group_id: "",
+    printer_id: "", // Campo para impressora
     active: true,
     available: true,
     image: "",
@@ -559,6 +561,21 @@ export default function ProductsPage() {
         if (groupsError) {
           console.error('Groups error:', groupsError);
           throw groupsError;
+        }
+
+        // Load printers
+        const { data: printersData, error: printersError } = await supabase
+          .from('printers')
+          .select('*')
+          .eq('active', true)
+          .order('sort_order', { ascending: true });
+
+        if (printersError) {
+          console.error('Printers error:', printersError);
+          // Don't throw error, just continue without printers
+          setPrinters([]);
+        } else {
+          setPrinters(printersData || []);
         }
         
         // Load additional categories
@@ -787,6 +804,7 @@ export default function ProductsPage() {
         price: item.price && item.price > 0 ? item.price.toString() : "",
         category_id: item.category_id.toString(),
         group_id: item.group_id.toString(),
+        printer_id: item.printer_id ? item.printer_id.toString() : "",
         active: item.active,
         available: item.available,
         image: item.image || "",
@@ -802,6 +820,7 @@ export default function ProductsPage() {
         price: "",
         category_id: "",
         group_id: "",
+        printer_id: "",
         active: true,
         available: true,
         image: "",
@@ -889,6 +908,7 @@ export default function ProductsPage() {
         price: isRodizio ? 0 : (formData.price ? parseFloat(formData.price) : 0),
         category_id: formData.category_id,  // Keep as string UUID
         group_id: formData.group_id,        // Keep as string UUID
+        printer_id: formData.printer_id ? parseInt(formData.printer_id) : null, // Adicionar impressora
         active: formData.active,
         available: formData.available,
         image: imageUrl || null
@@ -1682,6 +1702,7 @@ export default function ProductsPage() {
                                               price: "",
                                               category_id: categoryObj.id.toString(),
                                               group_id: groupObj.id.toString(),
+                                              printer_id: "",
                                               active: true,
                                               available: true,
                                               image: "",
@@ -1700,6 +1721,7 @@ export default function ProductsPage() {
                                               price: "",
                                               category_id: firstItem.category_id.toString(),
                                               group_id: firstItem.group_id.toString(),
+                                              printer_id: "",
                                               active: true,
                                               available: true,
                                               image: "",
@@ -1919,6 +1941,27 @@ export default function ProductsPage() {
                 </Select>
               </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="printer">Impressora</Label>
+                <Select
+                  value={formData.printer_id}
+                  onValueChange={(value) => setFormData({ ...formData, printer_id: value })}
+                >
+                  <SelectTrigger id="printer" data-testid="select-printer">
+                    <SelectValue placeholder="Selecione uma impressora (opcional)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Nenhuma</SelectItem>
+                    {printers.map((printer) => (
+                      <SelectItem key={printer.id} value={printer.id.toString()}>
+                        {printer.name} {printer.is_main && <span className="text-orange-600">(Principal)</span>}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-gray-500">Configure em qual impressora este produto será impresso</p>
+              </div>
+
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="price">Preço (R$)</Label>
@@ -2131,6 +2174,7 @@ export default function ProductsPage() {
                   price: '',
                   group_id: '',
                   category_id: '',
+                  printer_id: '',
                   quantity: '',
                   quantityValue: '',
                   image: '',

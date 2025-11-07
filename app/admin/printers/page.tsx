@@ -1401,6 +1401,10 @@ export default function PrintersPage() {
             <AlertDialogDescription>
               Tem certeza que deseja excluir a impressora "{deletePrinter?.name}"?
               Esta ação não pode ser desfeita.
+              <br /><br />
+              <span className="text-yellow-600 dark:text-yellow-400 font-medium">
+                ⚠️ Atenção: Todos os produtos configurados com esta impressora ficarão sem impressora associada.
+              </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

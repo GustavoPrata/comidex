@@ -31,7 +31,8 @@ import {
   Moon,
   BookOpen,
   Monitor,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Link2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -74,7 +75,8 @@ const menuItems: MenuItem[] = [
       { label: 'Impressoras', href: '/admin/printers', icon: Printer },
       { label: 'Templates', href: '/admin/templates', icon: FileText },
       { label: 'Fila', href: '/admin/print-queue', icon: FileText },
-      { label: 'Perfils', href: '/admin/print-config', icon: SlidersHorizontal }
+      { label: 'Perfils', href: '/admin/print-config', icon: SlidersHorizontal },
+      { label: 'Produtos x Impressoras', href: '/admin/product-printers', icon: Link2 }
     ]
   },
   {

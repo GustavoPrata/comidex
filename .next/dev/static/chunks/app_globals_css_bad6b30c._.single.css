@@ -565,6 +565,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   top: .5rem;
 }
 
+.top-2\.5 {
+  top: .625rem;
+}
+
 .top-4 {
   top: 1rem;
 }
@@ -1411,6 +1415,17 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-space-y-reverse: 0;
   margin-top: calc(2rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(2rem * var(--tw-space-y-reverse));
+}
+
+.divide-y > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-y-reverse: 0;
+  border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+  border-bottom-width: calc(1px * var(--tw-divide-y-reverse));
+}
+
+.divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-divide-opacity, 1));
 }
 
 .overflow-auto {
@@ -3541,6 +3556,15 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
+.dark\:divide-gray-700:is(.dark *) > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-divide-opacity, 1));
+}
+
+.dark\:border-blue-700\/60:is(.dark *) {
+  border-color: #1d4ed899;
+}
+
 .dark\:border-blue-800:is(.dark *) {
   --tw-border-opacity: 1;
   border-color: rgb(30 64 175 / var(--tw-border-opacity, 1));
@@ -3579,6 +3603,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(21 128 61 / var(--tw-border-opacity, 1));
 }
 
+.dark\:border-green-700\/60:is(.dark *) {
+  border-color: #15803d99;
+}
+
 .dark\:border-green-800:is(.dark *) {
   --tw-border-opacity: 1;
   border-color: rgb(22 101 52 / var(--tw-border-opacity, 1));
@@ -3602,6 +3630,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:border-orange-900:is(.dark *) {
   --tw-border-opacity: 1;
   border-color: rgb(124 45 18 / var(--tw-border-opacity, 1));
+}
+
+.dark\:border-red-700\/60:is(.dark *) {
+  border-color: #b91c1c99;
 }
 
 .dark\:border-red-800:is(.dark *) {
@@ -3961,6 +3993,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:hover\:bg-gray-700:hover:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:hover\:bg-gray-700\/50:hover:is(.dark *) {
+  background-color: #37415180;
 }
 
 .dark\:hover\:bg-gray-800:hover:is(.dark *) {
