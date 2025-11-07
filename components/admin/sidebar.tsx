@@ -84,6 +84,11 @@ const menuItems: MenuItem[] = [
       { label: 'Pedidos', href: '/admin/orders', icon: ShoppingCart },
       { label: 'Sessões', href: '/admin/tablet-sessions', icon: Tablet }
     ]
+  },
+  {
+    label: 'Configuração',
+    icon: Settings,
+    href: '/admin/settings'
   }
 ];
 

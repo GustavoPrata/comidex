@@ -251,6 +251,11 @@ const menuItems = [
                 icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tablet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tablet$3e$__["Tablet"]
             }
         ]
+    },
+    {
+        label: 'Configuração',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"],
+        href: '/admin/settings'
     }
 ];
 // Theme Toggle Component
@@ -271,12 +276,12 @@ function ThemeToggle() {
                 className: "h-4 w-4"
             }, void 0, false, {
                 fileName: "[project]/components/admin/sidebar.tsx",
-                lineNumber: 108,
+                lineNumber: 113,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/components/admin/sidebar.tsx",
-            lineNumber: 102,
+            lineNumber: 107,
             columnNumber: 7
         }, this);
     }
@@ -290,18 +295,18 @@ function ThemeToggle() {
             className: "h-4 w-4 text-yellow-400"
         }, void 0, false, {
             fileName: "[project]/components/admin/sidebar.tsx",
-            lineNumber: 122,
+            lineNumber: 127,
             columnNumber: 9
         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Moon$3e$__["Moon"], {
             className: "h-4 w-4 text-gray-400"
         }, void 0, false, {
             fileName: "[project]/components/admin/sidebar.tsx",
-            lineNumber: 124,
+            lineNumber: 129,
             columnNumber: 9
         }, this)
     }, void 0, false, {
         fileName: "[project]/components/admin/sidebar.tsx",
-        lineNumber: 114,
+        lineNumber: 119,
         columnNumber: 5
     }, this);
 }
@@ -359,12 +364,12 @@ function AdminSidebar() {
                                     className: "h-6 w-6 text-white"
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/sidebar.tsx",
-                                    lineNumber: 184,
+                                    lineNumber: 189,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                lineNumber: 183,
+                                lineNumber: 188,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -374,7 +379,7 @@ function AdminSidebar() {
                                         children: "ComideX"
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                        lineNumber: 187,
+                                        lineNumber: 192,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -382,24 +387,24 @@ function AdminSidebar() {
                                         children: "Sistema Japonês"
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                        lineNumber: 188,
+                                        lineNumber: 193,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                lineNumber: 186,
+                                lineNumber: 191,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/components/admin/sidebar.tsx",
-                        lineNumber: 182,
+                        lineNumber: 187,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/admin/sidebar.tsx",
-                    lineNumber: 181,
+                    lineNumber: 186,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -435,12 +440,12 @@ function AdminSidebar() {
                                                             className: "h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/components/admin/sidebar.tsx",
-                                                            lineNumber: 225,
+                                                            lineNumber: 230,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                                        lineNumber: 219,
+                                                        lineNumber: 224,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -448,13 +453,13 @@ function AdminSidebar() {
                                                         children: item.label
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                                        lineNumber: 227,
+                                                        lineNumber: 232,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                                lineNumber: 218,
+                                                lineNumber: 223,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -465,33 +470,33 @@ function AdminSidebar() {
                                                         children: item.badge
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                                        lineNumber: 237,
+                                                        lineNumber: 242,
                                                         columnNumber: 23
                                                     }, this),
                                                     item.submenu && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                                         className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("h-4 w-4 text-gray-600 dark:text-gray-400 transition-transform duration-200", isExpanded && "rotate-90")
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                                        lineNumber: 249,
+                                                        lineNumber: 254,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                                lineNumber: 235,
+                                                lineNumber: 240,
                                                 columnNumber: 19
                                             }, this),
                                             isActiveParent && !item.submenu && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "absolute left-0 top-0 h-full w-1 bg-orange-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                                lineNumber: 260,
+                                                lineNumber: 265,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                        lineNumber: 203,
+                                        lineNumber: 208,
                                         columnNumber: 17
                                     }, this),
                                     item.submenu && isExpanded && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -512,12 +517,12 @@ function AdminSidebar() {
                                                                     className: "h-3.5 w-3.5"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/components/admin/sidebar.tsx",
-                                                                    lineNumber: 288,
+                                                                    lineNumber: 293,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                                                lineNumber: 282,
+                                                                lineNumber: 287,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -525,13 +530,13 @@ function AdminSidebar() {
                                                                 children: subItem.label
                                                             }, void 0, false, {
                                                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                                                lineNumber: 290,
+                                                                lineNumber: 295,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                                        lineNumber: 281,
+                                                        lineNumber: 286,
                                                         columnNumber: 27
                                                     }, this),
                                                     subItem.badge && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -539,36 +544,36 @@ function AdminSidebar() {
                                                         children: subItem.badge
                                                     }, void 0, false, {
                                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                                        lineNumber: 300,
+                                                        lineNumber: 305,
                                                         columnNumber: 29
                                                     }, this)
                                                 ]
                                             }, subItem.label, true, {
                                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                                lineNumber: 272,
+                                                lineNumber: 277,
                                                 columnNumber: 25
                                             }, this);
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/components/admin/sidebar.tsx",
-                                        lineNumber: 266,
+                                        lineNumber: 271,
                                         columnNumber: 19
                                     }, this)
                                 ]
                             }, item.label, true, {
                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                lineNumber: 202,
+                                lineNumber: 207,
                                 columnNumber: 15
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/components/admin/sidebar.tsx",
-                        lineNumber: 195,
+                        lineNumber: 200,
                         columnNumber: 9
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/components/admin/sidebar.tsx",
-                    lineNumber: 194,
+                    lineNumber: 199,
                     columnNumber: 7
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -587,12 +592,12 @@ function AdminSidebar() {
                                                 className: "h-4 w-4 text-gray-600 dark:text-gray-400"
                                             }, void 0, false, {
                                                 fileName: "[project]/components/admin/sidebar.tsx",
-                                                lineNumber: 324,
+                                                lineNumber: 329,
                                                 columnNumber: 15
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/components/admin/sidebar.tsx",
-                                            lineNumber: 323,
+                                            lineNumber: 328,
                                             columnNumber: 13
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -600,13 +605,13 @@ function AdminSidebar() {
                                             children: "Notificações"
                                         }, void 0, false, {
                                             fileName: "[project]/components/admin/sidebar.tsx",
-                                            lineNumber: 326,
+                                            lineNumber: 331,
                                             columnNumber: 13
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/components/admin/sidebar.tsx",
-                                    lineNumber: 322,
+                                    lineNumber: 327,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -614,13 +619,13 @@ function AdminSidebar() {
                                     children: "3"
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/sidebar.tsx",
-                                    lineNumber: 328,
+                                    lineNumber: 333,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/admin/sidebar.tsx",
-                            lineNumber: 318,
+                            lineNumber: 323,
                             columnNumber: 9
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -631,30 +636,30 @@ function AdminSidebar() {
                                     children: "Tema"
                                 }, void 0, false, {
                                     fileName: "[project]/components/admin/sidebar.tsx",
-                                    lineNumber: 335,
+                                    lineNumber: 340,
                                     columnNumber: 11
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(ThemeToggle, {}, void 0, false, {
                                     fileName: "[project]/components/admin/sidebar.tsx",
-                                    lineNumber: 336,
+                                    lineNumber: 341,
                                     columnNumber: 11
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/components/admin/sidebar.tsx",
-                            lineNumber: 334,
+                            lineNumber: 339,
                             columnNumber: 9
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/components/admin/sidebar.tsx",
-                    lineNumber: 316,
+                    lineNumber: 321,
                     columnNumber: 7
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/components/admin/sidebar.tsx",
-            lineNumber: 178,
+            lineNumber: 183,
             columnNumber: 5
         }, this);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -668,30 +673,30 @@ function AdminSidebar() {
                     className: "h-5 w-5"
                 }, void 0, false, {
                     fileName: "[project]/components/admin/sidebar.tsx",
-                    lineNumber: 351,
+                    lineNumber: 356,
                     columnNumber: 25
                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"], {
                     className: "h-5 w-5"
                 }, void 0, false, {
                     fileName: "[project]/components/admin/sidebar.tsx",
-                    lineNumber: 351,
+                    lineNumber: 356,
                     columnNumber: 53
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/admin/sidebar.tsx",
-                lineNumber: 345,
+                lineNumber: 350,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
                 className: "hidden lg:block w-72 h-screen fixed left-0 top-0",
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SidebarContent, {}, void 0, false, {
                     fileName: "[project]/components/admin/sidebar.tsx",
-                    lineNumber: 356,
+                    lineNumber: 361,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/components/admin/sidebar.tsx",
-                lineNumber: 355,
+                lineNumber: 360,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -702,25 +707,25 @@ function AdminSidebar() {
                         onClick: ()=>setIsMobileOpen(false)
                     }, void 0, false, {
                         fileName: "[project]/components/admin/sidebar.tsx",
-                        lineNumber: 367,
+                        lineNumber: 372,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("aside", {
                         className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["cn"])("absolute left-0 top-0 h-full w-72 transition-transform duration-300", isMobileOpen ? "translate-x-0" : "-translate-x-full"),
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(SidebarContent, {}, void 0, false, {
                             fileName: "[project]/components/admin/sidebar.tsx",
-                            lineNumber: 379,
+                            lineNumber: 384,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/components/admin/sidebar.tsx",
-                        lineNumber: 373,
+                        lineNumber: 378,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/components/admin/sidebar.tsx",
-                lineNumber: 360,
+                lineNumber: 365,
                 columnNumber: 7
             }, this)
         ]
