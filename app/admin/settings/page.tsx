@@ -402,7 +402,7 @@ export default function SettingsPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="name">Nome do Restaurante *</Label>
+                    <Label htmlFor="name">Nome do Restaurante</Label>
                     <Input
                       id="name"
                       value={settings.name || ''}
@@ -435,7 +435,7 @@ export default function SettingsPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="phone">Telefone *</Label>
+                    <Label htmlFor="phone">Telefone</Label>
                     <Input
                       id="phone"
                       value={settings.phone || ''}
@@ -480,7 +480,7 @@ export default function SettingsPage() {
                   {/* CEP com busca automática */}
                   <div>
                     <Label htmlFor="zip_code">
-                      CEP * 
+                      CEP 
                       {searchingCep && (
                         <span className="ml-2 text-xs text-orange-500">
                           <Loader2 className="h-3 w-3 inline animate-spin mr-1" />
@@ -504,7 +504,7 @@ export default function SettingsPage() {
                   {/* Número e Complemento */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="number">Número *</Label>
+                      <Label htmlFor="number">Número</Label>
                       <Input
                         id="number"
                         value={settings.number || ''}
@@ -528,7 +528,7 @@ export default function SettingsPage() {
 
                   {/* Endereço (editável como fallback) */}
                   <div>
-                    <Label htmlFor="address">Endereço *</Label>
+                    <Label htmlFor="address">Endereço</Label>
                     <Input
                       id="address"
                       value={settings.address || ''}
