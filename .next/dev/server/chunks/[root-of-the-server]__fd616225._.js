@@ -870,6 +870,19 @@ async function POST(request) {
         }
         // Tentar imprimir usando método unificado
         printSuccess = await __TURBOPACK__imported__module__$5b$project$5d2f$server$2f$printer$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["printerService"].print(printer, testData);
+        // Fetch restaurant data for test print
+        let restaurantName = 'xxxxxx';
+        let restaurantPhone = 'xxxxxx';
+        try {
+            const response = await fetch('http://localhost:5000/api/restaurant');
+            if (response.ok) {
+                const data = await response.json();
+                restaurantName = data.name || 'xxxxxx';
+                restaurantPhone = data.phone || 'xxxxxx';
+            }
+        } catch (error) {
+            console.log('Could not fetch restaurant data for test print');
+        }
         const timestamp = new Date().toLocaleString('pt-BR');
         if (printSuccess) {
             console.log('✅ Teste de impressão concluído com sucesso');
@@ -888,6 +901,9 @@ async function POST(request) {
                 details: {
                     printMethod,
                     testContent: [
+                        `====================================`,
+                        `${restaurantName.toUpperCase()}`,
+                        `Tel: ${restaurantPhone}`,
                         `====================================`,
                         `     TESTE DE IMPRESSÃO REAL`,
                         `====================================`,

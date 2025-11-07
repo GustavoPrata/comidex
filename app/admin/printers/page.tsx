@@ -88,6 +88,23 @@ interface Printer {
   updated_at?: string;
 }
 
+interface TestResult {
+  success: boolean;
+  message: string;
+  error?: string;
+  method?: string;
+  printer?: {
+    name: string;
+    ip?: string;
+    port?: string;
+  };
+  details?: {
+    hints?: string[];
+    info?: string;
+  };
+  timestamp: Date;
+}
+
 // Modelos populares de impressoras térmicas para restaurantes
 const PRINTER_MODELS = {
   thermal: [
@@ -246,6 +263,8 @@ export default function PrintersPage() {
   const [addedPrinters, setAddedPrinters] = useState<string[]>([]);
   const [localPrinters, setLocalPrinters] = useState<string[]>([]);
   const [detectingLocalPrinters, setDetectingLocalPrinters] = useState(false);
+  const [testResult, setTestResult] = useState<TestResult | null>(null);
+  const [showTestResultModal, setShowTestResultModal] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     ip_address: '',
@@ -336,6 +355,25 @@ export default function PrintersPage() {
       // Remover toast de loading
       toast.dismiss(loadingToast);
       
+      // Criar resultado do teste
+      const testResultData: TestResult = {
+        success: result.success || false,
+        message: result.message || 'Teste concluído',
+        error: result.error,
+        method: result.method,
+        printer: {
+          name: printer.name,
+          ip: printer.ip_address,
+          port: printer.port
+        },
+        details: result.details,
+        timestamp: new Date()
+      };
+      
+      // Salvar resultado e mostrar modal
+      setTestResult(testResultData);
+      setShowTestResultModal(true);
+      
       if (result.success) {
         // Mostrar sucesso com detalhes
         toast.success(`✅ ${result.message}`);
@@ -346,28 +384,26 @@ export default function PrintersPage() {
         } else if (result.method === 'local') {
           toast.success(`💻 Enviado para impressora local Windows`);
         }
-        
-        // Avisar sobre o cupom de teste
-        setTimeout(() => {
-          toast('📄 Verifique se o cupom de teste foi impresso corretamente', {
-            icon: '🖨️',
-            duration: 5000
-          });
-        }, 1000);
       } else {
         // Mostrar erro detalhado
         toast.error(`❌ ${result.error}`);
-        
-        // Mostrar dicas se disponíveis
-        if (result.details?.hints) {
-          result.details.hints.forEach((hint: string, index: number) => {
-            setTimeout(() => {
-              toast(`💡 ${hint}`, { duration: 5000 });
-            }, (index + 1) * 1000);
-          });
-        }
       }
     } catch (error) {
+      // Criar resultado de erro
+      const testResultData: TestResult = {
+        success: false,
+        message: 'Erro ao testar impressora',
+        error: 'Erro de conexão com o servidor',
+        printer: {
+          name: printer.name,
+          ip: printer.ip_address,
+          port: printer.port
+        },
+        timestamp: new Date()
+      };
+      
+      setTestResult(testResultData);
+      setShowTestResultModal(true);
       toast.error("❌ Erro ao testar impressora");
       console.error('Erro:', error);
     } finally {
@@ -1544,6 +1580,142 @@ export default function PrintersPage() {
                   Detectar Novamente
                 </>
               )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Modal de Resultado do Teste */}
+      <Dialog open={showTestResultModal} onOpenChange={setShowTestResultModal}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <TestTube className="h-5 w-5" />
+              Resultado do Teste de Impressão
+            </DialogTitle>
+          </DialogHeader>
+          
+          {testResult && (
+            <div className="space-y-4">
+              {/* Status do teste */}
+              <div className={`p-4 rounded-lg ${
+                testResult.success 
+                  ? 'bg-green-50 border border-green-200 dark:bg-green-900/20 dark:border-green-800' 
+                  : 'bg-red-50 border border-red-200 dark:bg-red-900/20 dark:border-red-800'
+              }`}>
+                <div className="flex items-start gap-3">
+                  {testResult.success ? (
+                    <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0 mt-0.5" />
+                  ) : (
+                    <XCircle className="h-6 w-6 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                  )}
+                  <div className="flex-1">
+                    <p className={`font-semibold ${
+                      testResult.success 
+                        ? 'text-green-900 dark:text-green-100' 
+                        : 'text-red-900 dark:text-red-100'
+                    }`}>
+                      {testResult.success ? 'Teste Realizado com Sucesso!' : 'Falha no Teste'}
+                    </p>
+                    <p className={`mt-1 text-sm ${
+                      testResult.success 
+                        ? 'text-green-700 dark:text-green-300' 
+                        : 'text-red-700 dark:text-red-300'
+                    }`}>
+                      {testResult.message}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Detalhes da impressora */}
+              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg space-y-2">
+                <div className="flex items-center gap-2 text-sm">
+                  <PrinterIcon className="h-4 w-4 text-gray-500" />
+                  <span className="font-medium text-gray-700 dark:text-gray-300">Impressora:</span>
+                  <span className="text-gray-900 dark:text-gray-100">{testResult.printer?.name}</span>
+                </div>
+                
+                {testResult.printer?.ip && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Network className="h-4 w-4 text-gray-500" />
+                    <span className="font-medium text-gray-700 dark:text-gray-300">IP:</span>
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {testResult.printer.ip}:{testResult.printer.port}
+                    </span>
+                  </div>
+                )}
+                
+                {testResult.method && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <Zap className="h-4 w-4 text-gray-500" />
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Método:</span>
+                    <span className="text-gray-900 dark:text-gray-100">
+                      {testResult.method === 'network' ? 'Rede TCP/IP' : 'Impressora Local Windows'}
+                    </span>
+                  </div>
+                )}
+                
+                <div className="flex items-center gap-2 text-sm">
+                  <Clock className="h-4 w-4 text-gray-500" />
+                  <span className="font-medium text-gray-700 dark:text-gray-300">Hora do Teste:</span>
+                  <span className="text-gray-900 dark:text-gray-100">
+                    {new Date(testResult.timestamp).toLocaleTimeString('pt-BR')}
+                  </span>
+                </div>
+              </div>
+
+              {/* Mensagem de erro detalhada */}
+              {testResult.error && (
+                <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg">
+                  <p className="text-sm font-medium text-red-900 dark:text-red-100 mb-1">
+                    Detalhes do Erro:
+                  </p>
+                  <p className="text-sm text-red-700 dark:text-red-300">
+                    {testResult.error}
+                  </p>
+                </div>
+              )}
+
+              {/* Dicas de solução */}
+              {testResult.details?.hints && testResult.details.hints.length > 0 && (
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+                  <p className="text-sm font-medium text-yellow-900 dark:text-yellow-100 mb-2">
+                    💡 Dicas de Solução:
+                  </p>
+                  <ul className="space-y-1">
+                    {testResult.details.hints.map((hint, index) => (
+                      <li key={index} className="text-sm text-yellow-700 dark:text-yellow-300 flex items-start gap-2">
+                        <span className="text-yellow-600 mt-0.5">•</span>
+                        <span>{hint}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Instruções para sucesso */}
+              {testResult.success && (
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-1">
+                    📄 Próximos Passos:
+                  </p>
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    Verifique se o cupom de teste foi impresso corretamente na impressora.
+                    O cupom deve conter informações do restaurante e um código QR de teste.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowTestResultModal(false)}
+              className="w-full"
+            >
+              Fechar
             </Button>
           </DialogFooter>
         </DialogContent>
