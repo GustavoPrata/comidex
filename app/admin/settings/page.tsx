@@ -262,23 +262,35 @@ export default function SettingsPage() {
   const saveSettings = async () => {
     setSaving(true);
     try {
+      // Prepare the settings object, removing any undefined or null logo_url
+      const settingsToSave = {
+        ...settings,
+        logo_url: settings.logo_url || null
+      };
+
       if (settings.id) {
         // Update existing
         const { error } = await supabase
           .from('restaurant_settings')
-          .update(settings)
+          .update(settingsToSave)
           .eq('id', settings.id);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Supabase update error:', error);
+          throw error;
+        }
       } else {
         // Create new
         const { data, error } = await supabase
           .from('restaurant_settings')
-          .insert([settings])
+          .insert([settingsToSave])
           .select()
           .single();
 
-        if (error) throw error;
+        if (error) {
+          console.error('Supabase insert error:', error);
+          throw error;
+        }
         
         if (data) {
           setSettings(data);
@@ -287,9 +299,10 @@ export default function SettingsPage() {
 
       toast.success('Configurações salvas com sucesso!');
       mutate('restaurant_settings');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error saving settings:', error);
-      toast.error('Erro ao salvar configurações');
+      const errorMessage = error?.message || error?.details || 'Erro ao salvar configurações';
+      toast.error(errorMessage);
     } finally {
       setSaving(false);
     }

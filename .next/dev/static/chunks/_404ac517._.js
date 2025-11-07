@@ -1027,6 +1027,12 @@ function TemplatesPage() {
             bold: false
         }
     ]);
+    // Restaurant data state
+    const [restaurantInfo, setRestaurantInfo] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
+        name: 'xxxxxx',
+        address: 'xxxxxx',
+        phone: 'xxxxxx'
+    });
     // Load templates from database
     const { data: dbTemplates, isLoading } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swr$2f$dist$2f$index$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"])('templates', {
         "TemplatesPage.useSWR": async ()=>{
@@ -1051,6 +1057,29 @@ function TemplatesPage() {
         }
     }["TemplatesPage.useSWR"]);
     // Initialize templates with defaults if not in database
+    // Fetch restaurant data
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "TemplatesPage.useEffect": ()=>{
+            const fetchRestaurantData = {
+                "TemplatesPage.useEffect.fetchRestaurantData": async ()=>{
+                    try {
+                        const response = await fetch('/api/restaurant');
+                        if (response.ok) {
+                            const data = await response.json();
+                            setRestaurantInfo({
+                                name: data.name || 'xxxxxx',
+                                address: data.full_address || 'xxxxxx',
+                                phone: data.phone || 'xxxxxx'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Failed to fetch restaurant data:', error);
+                    }
+                }
+            }["TemplatesPage.useEffect.fetchRestaurantData"];
+            fetchRestaurantData();
+        }
+    }["TemplatesPage.useEffect"], []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "TemplatesPage.useEffect": ()=>{
             if (!isLoading && dbTemplates) {
@@ -1370,9 +1399,9 @@ function TemplatesPage() {
         ];
         // Replace variables with sample data
         const sampleData = {
-            company_name: 'RESTAURANTE JAPONÊS SAKURA',
-            company_address: 'Rua das Flores, 123 - Centro',
-            company_phone: '(11) 1234-5678',
+            company_name: restaurantInfo.name,
+            company_address: restaurantInfo.address,
+            company_phone: restaurantInfo.phone,
             order_number: '00123',
             table_number: '05',
             customer_name: 'João Silva',
@@ -1430,12 +1459,12 @@ function TemplatesPage() {
                                             className: "h-5 w-5 text-white"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                            lineNumber: 511,
+                                            lineNumber: 538,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 510,
+                                        lineNumber: 537,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1445,7 +1474,7 @@ function TemplatesPage() {
                                                 children: "Templates de Impressão"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 514,
+                                                lineNumber: 541,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1453,19 +1482,19 @@ function TemplatesPage() {
                                                 children: "Configure os modelos de impressão do sistema"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 517,
+                                                lineNumber: 544,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 513,
+                                        lineNumber: 540,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                lineNumber: 509,
+                                lineNumber: 536,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1478,7 +1507,7 @@ function TemplatesPage() {
                                         children: "Restaurar Padrão"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 523,
+                                        lineNumber: 550,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1491,7 +1520,7 @@ function TemplatesPage() {
                                                     className: "h-4 w-4 mr-2 animate-spin"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                    lineNumber: 537,
+                                                    lineNumber: 564,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Salvando..."
@@ -1502,7 +1531,7 @@ function TemplatesPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                    lineNumber: 542,
+                                                    lineNumber: 569,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Salvar Template"
@@ -1510,29 +1539,29 @@ function TemplatesPage() {
                                         }, void 0, true)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 530,
+                                        lineNumber: 557,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                lineNumber: 522,
+                                lineNumber: 549,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/templates/page.tsx",
-                        lineNumber: 508,
+                        lineNumber: 535,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/templates/page.tsx",
-                    lineNumber: 507,
+                    lineNumber: 534,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/templates/page.tsx",
-                lineNumber: 506,
+                lineNumber: 533,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1555,7 +1584,7 @@ function TemplatesPage() {
                                             className: "h-5 w-5"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                            lineNumber: 569,
+                                            lineNumber: 596,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1563,24 +1592,24 @@ function TemplatesPage() {
                                             children: type.label
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                            lineNumber: 570,
+                                            lineNumber: 597,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, type.id, true, {
                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                    lineNumber: 559,
+                                    lineNumber: 586,
                                     columnNumber: 17
                                 }, this);
                             })
                         }, void 0, false, {
                             fileName: "[project]/app/admin/templates/page.tsx",
-                            lineNumber: 555,
+                            lineNumber: 582,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/templates/page.tsx",
-                        lineNumber: 554,
+                        lineNumber: 581,
                         columnNumber: 9
                     }, this),
                     isLoading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1589,12 +1618,12 @@ function TemplatesPage() {
                             className: "h-8 w-8 animate-spin text-orange-500"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/templates/page.tsx",
-                            lineNumber: 579,
+                            lineNumber: 606,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/templates/page.tsx",
-                        lineNumber: 578,
+                        lineNumber: 605,
                         columnNumber: 11
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: "grid grid-cols-3 gap-6",
@@ -1614,14 +1643,14 @@ function TemplatesPage() {
                                                         className: "h-4 w-4 mr-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                        lineNumber: 592,
+                                                        lineNumber: 619,
                                                         columnNumber: 19
                                                     }, this),
                                                     "Nova Seção"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 587,
+                                                lineNumber: 614,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1634,20 +1663,20 @@ function TemplatesPage() {
                                                         className: "h-4 w-4 mr-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                        lineNumber: 601,
+                                                        lineNumber: 628,
                                                         columnNumber: 19
                                                     }, this),
                                                     "Nova Área de Itens"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 595,
+                                                lineNumber: 622,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 586,
+                                        lineNumber: 613,
                                         columnNumber: 15
                                     }, this),
                                     sections.map((section, index)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1672,7 +1701,7 @@ function TemplatesPage() {
                                                                     autoFocus: true
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 612,
+                                                                    lineNumber: 639,
                                                                     columnNumber: 25
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
                                                                     className: "font-semibold cursor-pointer hover:text-orange-500",
@@ -1680,7 +1709,7 @@ function TemplatesPage() {
                                                                     children: section.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 625,
+                                                                    lineNumber: 652,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 section.type === 'items' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1689,13 +1718,13 @@ function TemplatesPage() {
                                                                     children: "Área de Itens"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 633,
+                                                                    lineNumber: 660,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 610,
+                                                            lineNumber: 637,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1711,12 +1740,12 @@ function TemplatesPage() {
                                                                         className: "h-4 w-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 646,
+                                                                        lineNumber: 673,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 639,
+                                                                    lineNumber: 666,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1729,12 +1758,12 @@ function TemplatesPage() {
                                                                         className: "h-4 w-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 655,
+                                                                        lineNumber: 682,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 648,
+                                                                    lineNumber: 675,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1746,12 +1775,12 @@ function TemplatesPage() {
                                                                         className: "h-4 w-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 663,
+                                                                        lineNumber: 690,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 657,
+                                                                    lineNumber: 684,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1763,24 +1792,24 @@ function TemplatesPage() {
                                                                         className: "h-4 w-4 text-red-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 671,
+                                                                        lineNumber: 698,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 665,
+                                                                    lineNumber: 692,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 638,
+                                                            lineNumber: 665,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                    lineNumber: 609,
+                                                    lineNumber: 636,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1796,12 +1825,12 @@ function TemplatesPage() {
                                                                     className: "w-24 h-8",
                                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 683,
+                                                                        lineNumber: 710,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 682,
+                                                                    lineNumber: 709,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1811,7 +1840,7 @@ function TemplatesPage() {
                                                                             children: "8px"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 686,
+                                                                            lineNumber: 713,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1819,7 +1848,7 @@ function TemplatesPage() {
                                                                             children: "9px"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 687,
+                                                                            lineNumber: 714,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1827,7 +1856,7 @@ function TemplatesPage() {
                                                                             children: "10px"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 688,
+                                                                            lineNumber: 715,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1835,7 +1864,7 @@ function TemplatesPage() {
                                                                             children: "11px"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 689,
+                                                                            lineNumber: 716,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1843,7 +1872,7 @@ function TemplatesPage() {
                                                                             children: "12px"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 690,
+                                                                            lineNumber: 717,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1851,7 +1880,7 @@ function TemplatesPage() {
                                                                             children: "14px"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 691,
+                                                                            lineNumber: 718,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1859,19 +1888,19 @@ function TemplatesPage() {
                                                                             children: "16px"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 692,
+                                                                            lineNumber: 719,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 685,
+                                                                    lineNumber: 712,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 678,
+                                                            lineNumber: 705,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -1884,12 +1913,12 @@ function TemplatesPage() {
                                                                     className: "w-32 h-8",
                                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 701,
+                                                                        lineNumber: 728,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 700,
+                                                                    lineNumber: 727,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1899,7 +1928,7 @@ function TemplatesPage() {
                                                                             children: "Mono"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 704,
+                                                                            lineNumber: 731,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1907,7 +1936,7 @@ function TemplatesPage() {
                                                                             children: "Sans"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 705,
+                                                                            lineNumber: 732,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1915,19 +1944,19 @@ function TemplatesPage() {
                                                                             children: "Serif"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                            lineNumber: 706,
+                                                                            lineNumber: 733,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 703,
+                                                                    lineNumber: 730,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 696,
+                                                            lineNumber: 723,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1944,12 +1973,12 @@ function TemplatesPage() {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 717,
+                                                                        lineNumber: 744,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 711,
+                                                                    lineNumber: 738,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1963,12 +1992,12 @@ function TemplatesPage() {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 725,
+                                                                        lineNumber: 752,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 719,
+                                                                    lineNumber: 746,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1982,18 +2011,18 @@ function TemplatesPage() {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 733,
+                                                                        lineNumber: 760,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 727,
+                                                                    lineNumber: 754,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 710,
+                                                            lineNumber: 737,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2007,18 +2036,18 @@ function TemplatesPage() {
                                                                 className: "h-3 w-3"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 743,
+                                                                lineNumber: 770,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 737,
+                                                            lineNumber: 764,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                    lineNumber: 677,
+                                                    lineNumber: 704,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -2028,13 +2057,13 @@ function TemplatesPage() {
                                                     placeholder: section.type === 'items' ? "{{#each items}}\n{{quantity}}x {{name}}\n            R$ {{price}}\n{{/each}}" : "Digite o conteúdo da seção..."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                    lineNumber: 747,
+                                                    lineNumber: 774,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, section.id, true, {
                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                            lineNumber: 608,
+                                            lineNumber: 635,
                                             columnNumber: 17
                                         }, this)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2045,7 +2074,7 @@ function TemplatesPage() {
                                                 children: "Variáveis Disponíveis (Clique para Copiar)"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 761,
+                                                lineNumber: 788,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2063,7 +2092,7 @@ function TemplatesPage() {
                                                                         className: "h-3 w-3 text-orange-500 flex-shrink-0"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 774,
+                                                                        lineNumber: 801,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2071,13 +2100,13 @@ function TemplatesPage() {
                                                                         children: variable.label
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 775,
+                                                                        lineNumber: 802,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 773,
+                                                                lineNumber: 800,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("code", {
@@ -2085,19 +2114,19 @@ function TemplatesPage() {
                                                                 children: variable.value.length > 15 ? variable.value.slice(0, 15) + '...' : variable.value
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 777,
+                                                                lineNumber: 804,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, variable.id, true, {
                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                        lineNumber: 768,
+                                                        lineNumber: 795,
                                                         columnNumber: 23
                                                     }, this);
                                                 })
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 764,
+                                                lineNumber: 791,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2108,20 +2137,20 @@ function TemplatesPage() {
                                                         children: "Dica:"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                        lineNumber: 785,
+                                                        lineNumber: 812,
                                                         columnNumber: 22
                                                     }, this),
                                                     " Clique em qualquer variável para copiá-la e colar no template"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 784,
+                                                lineNumber: 811,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 760,
+                                        lineNumber: 787,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2132,7 +2161,7 @@ function TemplatesPage() {
                                                 children: "Formatação Inline (Clique para Copiar)"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 791,
+                                                lineNumber: 818,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2153,7 +2182,7 @@ function TemplatesPage() {
                                                                         children: "[[big]]texto[[/big]]"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 803,
+                                                                        lineNumber: 830,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2161,13 +2190,13 @@ function TemplatesPage() {
                                                                         children: "Texto maior"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 804,
+                                                                        lineNumber: 831,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 796,
+                                                                lineNumber: 823,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2182,7 +2211,7 @@ function TemplatesPage() {
                                                                         children: "[[small]]texto[[/small]]"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 813,
+                                                                        lineNumber: 840,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2190,13 +2219,13 @@ function TemplatesPage() {
                                                                         children: "Texto menor"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 814,
+                                                                        lineNumber: 841,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 806,
+                                                                lineNumber: 833,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2211,7 +2240,7 @@ function TemplatesPage() {
                                                                         children: "[[bold]]texto[[/bold]]"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 823,
+                                                                        lineNumber: 850,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2219,13 +2248,13 @@ function TemplatesPage() {
                                                                         children: "Negrito"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 824,
+                                                                        lineNumber: 851,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 816,
+                                                                lineNumber: 843,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2240,7 +2269,7 @@ function TemplatesPage() {
                                                                         children: "[[size:16]]texto[[/size]]"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 833,
+                                                                        lineNumber: 860,
                                                                         columnNumber: 23
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2248,19 +2277,19 @@ function TemplatesPage() {
                                                                         children: "Tamanho específico"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 834,
+                                                                        lineNumber: 861,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 826,
+                                                                lineNumber: 853,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                        lineNumber: 795,
+                                                        lineNumber: 822,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2272,37 +2301,37 @@ function TemplatesPage() {
                                                                     children: "Exemplo:"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 840,
+                                                                    lineNumber: 867,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 " [[big]]TOTAL:[[/big]] [[bold]]R$ 50,00[[/bold]]"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 839,
+                                                            lineNumber: 866,
                                                             columnNumber: 21
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                        lineNumber: 838,
+                                                        lineNumber: 865,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 794,
+                                                lineNumber: 821,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 790,
+                                        lineNumber: 817,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                lineNumber: 584,
+                                lineNumber: 611,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2321,19 +2350,19 @@ function TemplatesPage() {
                                                             className: "h-4 w-4 text-orange-500"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 853,
+                                                            lineNumber: 880,
                                                             columnNumber: 23
                                                         }, this),
                                                         "Preview - Impressora Térmica 80mm"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                    lineNumber: 852,
+                                                    lineNumber: 879,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 851,
+                                                lineNumber: 878,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2356,32 +2385,32 @@ function TemplatesPage() {
                                                                         className: "w-2 h-2 bg-gray-400 rounded-full"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 868,
+                                                                        lineNumber: 895,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                         className: "w-2 h-2 bg-gray-400 rounded-full"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 869,
+                                                                        lineNumber: 896,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                         className: "w-2 h-2 bg-gray-400 rounded-full"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                        lineNumber: 870,
+                                                                        lineNumber: 897,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                lineNumber: 867,
+                                                                lineNumber: 894,
                                                                 columnNumber: 25
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 866,
+                                                            lineNumber: 893,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2401,7 +2430,7 @@ function TemplatesPage() {
                                                                     }
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 885,
+                                                                    lineNumber: 912,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2430,7 +2459,7 @@ function TemplatesPage() {
                                                                                             children: text.substring(lastIndex, match.index)
                                                                                         }, `text-${lastIndex}`, false, {
                                                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                                                            lineNumber: 920,
+                                                                                            lineNumber: 947,
                                                                                             columnNumber: 39
                                                                                         }, this));
                                                                                     }
@@ -2452,7 +2481,7 @@ function TemplatesPage() {
                                                                                         children: innerText
                                                                                     }, `format-${match.index}`, false, {
                                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                                        lineNumber: 942,
+                                                                                        lineNumber: 969,
                                                                                         columnNumber: 37
                                                                                     }, this));
                                                                                     lastIndex = match.index + match[0].length;
@@ -2463,7 +2492,7 @@ function TemplatesPage() {
                                                                                         children: text.substring(lastIndex)
                                                                                     }, `text-${lastIndex}-end`, false, {
                                                                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                                                                        lineNumber: 953,
+                                                                                        lineNumber: 980,
                                                                                         columnNumber: 37
                                                                                     }, this));
                                                                                 }
@@ -2482,7 +2511,7 @@ function TemplatesPage() {
                                                                                 children: renderFormattedContent(content)
                                                                             }, section.id, false, {
                                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                                lineNumber: 963,
+                                                                                lineNumber: 990,
                                                                                 columnNumber: 33
                                                                             }, this);
                                                                         } else {
@@ -2500,20 +2529,20 @@ function TemplatesPage() {
                                                                                 children: content
                                                                             }, section.id, false, {
                                                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                                                lineNumber: 981,
+                                                                                lineNumber: 1008,
                                                                                 columnNumber: 33
                                                                             }, this);
                                                                         }
                                                                     })
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                                    lineNumber: 894,
+                                                                    lineNumber: 921,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 875,
+                                                            lineNumber: 902,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2524,56 +2553,56 @@ function TemplatesPage() {
                                                             }
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/templates/page.tsx",
-                                                            lineNumber: 1002,
+                                                            lineNumber: 1029,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                                    lineNumber: 864,
+                                                    lineNumber: 891,
                                                     columnNumber: 21
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                                lineNumber: 857,
+                                                lineNumber: 884,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/templates/page.tsx",
-                                        lineNumber: 850,
+                                        lineNumber: 877,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/templates/page.tsx",
-                                    lineNumber: 849,
+                                    lineNumber: 876,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/templates/page.tsx",
-                                lineNumber: 848,
+                                lineNumber: 875,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/templates/page.tsx",
-                        lineNumber: 582,
+                        lineNumber: 609,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/templates/page.tsx",
-                lineNumber: 552,
+                lineNumber: 579,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/templates/page.tsx",
-        lineNumber: 504,
+        lineNumber: 531,
         columnNumber: 5
     }, this);
 }
-_s(TemplatesPage, "fcfahmlmKqcnJ+4IK5HddncZQJU=", false, function() {
+_s(TemplatesPage, "vAqZa5nUn+MQiMMf5Z/j+ZilqXI=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$swr$2f$dist$2f$index$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"]
     ];
