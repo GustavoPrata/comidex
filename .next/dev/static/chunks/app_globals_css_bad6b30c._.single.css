@@ -2290,10 +2290,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   padding-left: 2.5rem;
 }
 
-.pl-12 {
-  padding-left: 3rem;
-}
-
 .pl-16 {
   padding-left: 4rem;
 }
@@ -2320,10 +2316,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .pt-0 {
   padding-top: 0;
-}
-
-.pt-2 {
-  padding-top: .5rem;
 }
 
 .pt-3 {

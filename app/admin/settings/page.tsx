@@ -182,9 +182,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       {/* Header */}
-      <div className="border-b border-gray-200 dark:border-gray-800">
+      <div className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -228,17 +228,16 @@ export default function SettingsPage() {
           </div>
         ) : (
           <Tabs defaultValue="general" className="space-y-6">
-            <TabsList className="grid grid-cols-5 w-full max-w-3xl">
+            <TabsList className="grid grid-cols-4 w-full max-w-2xl">
               <TabsTrigger value="general">Geral</TabsTrigger>
               <TabsTrigger value="hours">Horários</TabsTrigger>
-              <TabsTrigger value="delivery">Entrega</TabsTrigger>
               <TabsTrigger value="payment">Pagamento</TabsTrigger>
               <TabsTrigger value="social">Social</TabsTrigger>
             </TabsList>
 
             {/* General Tab */}
             <TabsContent value="general" className="space-y-6">
-              <div className="p-6 border rounded-lg">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <Building2 className="h-5 w-5 text-orange-500" />
                   Informações Básicas
@@ -357,7 +356,7 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="p-6 border rounded-lg">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <MapPin className="h-5 w-5 text-orange-500" />
                   Endereço
@@ -414,7 +413,7 @@ export default function SettingsPage() {
 
             {/* Hours Tab */}
             <TabsContent value="hours" className="space-y-6">
-              <div className="p-6 border rounded-lg">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <Clock className="h-5 w-5 text-orange-500" />
                   Horário de Funcionamento
@@ -445,7 +444,7 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="p-6 border rounded-lg">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6">Modalidades de Atendimento</h2>
                 
                 <div className="space-y-4">
@@ -488,60 +487,10 @@ export default function SettingsPage() {
               </div>
             </TabsContent>
 
-            {/* Delivery Tab */}
-            <TabsContent value="delivery" className="space-y-6">
-              <div className="p-6 border rounded-lg">
-                <h2 className="text-lg font-semibold mb-6">Configurações de Entrega</h2>
-                
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label htmlFor="delivery_enabled">Delivery Ativo</Label>
-                      <p className="text-sm text-gray-500">Aceitar pedidos para entrega</p>
-                    </div>
-                    <Switch
-                      id="delivery_enabled"
-                      checked={settings.delivery_enabled || false}
-                      onCheckedChange={(checked) => handleChange('delivery_enabled', checked)}
-                    />
-                  </div>
-
-                  {settings.delivery_enabled && (
-                    <div className="grid grid-cols-2 gap-6 pt-4 border-t">
-                      <div>
-                        <Label htmlFor="delivery_fee">Taxa de Entrega (R$)</Label>
-                        <Input
-                          id="delivery_fee"
-                          type="number"
-                          step="0.01"
-                          value={settings.delivery_fee || ''}
-                          onChange={(e) => handleChange('delivery_fee', parseFloat(e.target.value))}
-                          placeholder="5.00"
-                          className="mt-2"
-                        />
-                      </div>
-
-                      <div>
-                        <Label htmlFor="minimum_order">Pedido Mínimo (R$)</Label>
-                        <Input
-                          id="minimum_order"
-                          type="number"
-                          step="0.01"
-                          value={settings.minimum_order || ''}
-                          onChange={(e) => handleChange('minimum_order', parseFloat(e.target.value))}
-                          placeholder="30.00"
-                          className="mt-2"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </TabsContent>
 
             {/* Payment Tab */}
             <TabsContent value="payment" className="space-y-6">
-              <div className="p-6 border rounded-lg">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <CreditCard className="h-5 w-5 text-orange-500" />
                   Formas de Pagamento
@@ -595,23 +544,10 @@ export default function SettingsPage() {
                       onCheckedChange={(checked) => handleChange('accepts_pix', checked)}
                     />
                   </div>
-
-                  {settings.accepts_pix && (
-                    <div className="pl-12 pt-2">
-                      <Label htmlFor="pix_key">Chave PIX</Label>
-                      <Input
-                        id="pix_key"
-                        value={settings.pix_key || ''}
-                        onChange={(e) => handleChange('pix_key', e.target.value)}
-                        placeholder="email@exemplo.com ou CPF/CNPJ"
-                        className="mt-2"
-                      />
-                    </div>
-                  )}
                 </div>
               </div>
 
-              <div className="p-6 border rounded-lg">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <DollarSign className="h-5 w-5 text-orange-500" />
                   Taxas e Serviços
@@ -637,7 +573,7 @@ export default function SettingsPage() {
 
             {/* Social Tab */}
             <TabsContent value="social" className="space-y-6">
-              <div className="p-6 border rounded-lg">
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
                   <Globe className="h-5 w-5 text-orange-500" />
                   Redes Sociais e Internet
