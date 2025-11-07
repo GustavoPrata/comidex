@@ -73,10 +73,10 @@ interface RestaurantSettings {
   pix_key?: string;
   
   instagram?: string;
-  facebook?: string;
   website?: string;
   
   service_tax_percentage?: number;
+  wifi_network?: string;
   wifi_password?: string;
   
   primary_color?: string;
@@ -792,11 +792,46 @@ export default function SettingsPage() {
             <TabsContent value="social" className="space-y-6">
               <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
                 <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
-                  <Globe className="h-5 w-5 text-orange-500" />
-                  Redes Sociais e Internet
+                  <Wifi className="h-5 w-5 text-orange-500" />
+                  Wi-Fi para Clientes
                 </h2>
                 
                 <div className="grid grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="wifi_network">Nome da Rede Wi-Fi</Label>
+                    <Input
+                      id="wifi_network"
+                      value={settings.wifi_network || ''}
+                      onChange={(e) => handleChange('wifi_network', e.target.value)}
+                      placeholder="Nome da rede"
+                      className="mt-2"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="wifi_password">Senha do Wi-Fi</Label>
+                    <Input
+                      id="wifi_password"
+                      value={settings.wifi_password || ''}
+                      onChange={(e) => handleChange('wifi_password', e.target.value)}
+                      placeholder="Senha da rede"
+                      className="mt-2"
+                    />
+                  </div>
+                </div>
+                
+                <p className="text-xs text-gray-500 mt-4">
+                  Informações do Wi-Fi serão exibidas no cupom ou cardápio para clientes
+                </p>
+              </div>
+
+              <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
+                <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                  <Globe className="h-5 w-5 text-orange-500" />
+                  Presença Online
+                </h2>
+                
+                <div className="space-y-4">
                   <div>
                     <Label htmlFor="instagram">Instagram</Label>
                     <Input
@@ -809,17 +844,6 @@ export default function SettingsPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="facebook">Facebook</Label>
-                    <Input
-                      id="facebook"
-                      value={settings.facebook || ''}
-                      onChange={(e) => handleChange('facebook', e.target.value)}
-                      placeholder="facebook.com/restaurante"
-                      className="mt-2"
-                    />
-                  </div>
-
-                  <div className="col-span-2">
                     <Label htmlFor="website">Website</Label>
                     <Input
                       id="website"
@@ -828,20 +852,6 @@ export default function SettingsPage() {
                       placeholder="www.restaurante.com.br"
                       className="mt-2"
                     />
-                  </div>
-
-                  <div className="col-span-2">
-                    <Label htmlFor="wifi_password">Senha do Wi-Fi</Label>
-                    <Input
-                      id="wifi_password"
-                      value={settings.wifi_password || ''}
-                      onChange={(e) => handleChange('wifi_password', e.target.value)}
-                      placeholder="Senha para clientes"
-                      className="mt-2"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Será exibida no cupom ou cardápio para clientes
-                    </p>
                   </div>
                 </div>
               </div>
