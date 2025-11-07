@@ -228,7 +228,8 @@ export default function TemplatesPage() {
           id: template.id,
           header: template.custom_header || defaultTemplates[templateType]?.header || '',
           items: template.items_content || defaultTemplates[templateType]?.items || '',
-          footer: template.custom_footer || defaultTemplates[templateType]?.footer || ''
+          footer: template.custom_footer || defaultTemplates[templateType]?.footer || '',
+          sections: template.sections || null // Store sections config
         };
       }
     });
@@ -273,11 +274,17 @@ export default function TemplatesPage() {
       
       // Convert to sections format
       const template = mergedTemplates[selectedType] || defaultTemplates[selectedType];
-      setSections([
-        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
-        { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
-        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
-      ]);
+      
+      // Use saved sections if available, otherwise use defaults
+      if (template.sections && Array.isArray(template.sections)) {
+        setSections(template.sections);
+      } else {
+        setSections([
+          { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+          { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+          { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
+        ]);
+      }
     }
   }, [dbTemplates, isLoading, selectedType]);
 
@@ -285,11 +292,17 @@ export default function TemplatesPage() {
   const handleTypeChange = (type: string) => {
     setSelectedType(type);
     const template = templates[type] || defaultTemplates[type];
-    setSections([
-      { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
-      { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
-      { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
-    ]);
+    
+    // Use saved sections if available, otherwise use defaults
+    if (template.sections && Array.isArray(template.sections)) {
+      setSections(template.sections);
+    } else {
+      setSections([
+        { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+        { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+        { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
+      ]);
+    }
     setEditingSection(null);
   };
   
@@ -425,7 +438,8 @@ export default function TemplatesPage() {
             id: existingTemplates[0].id,
             header: templateData.custom_header,
             items: templateData.items_content,
-            footer: templateData.custom_footer
+            footer: templateData.custom_footer,
+            sections: sections // Save sections config
           }
         });
       } else {
@@ -446,7 +460,8 @@ export default function TemplatesPage() {
               id: newTemplate.id,
               header: templateData.custom_header,
               items: templateData.items_content,
-              footer: templateData.custom_footer
+              footer: templateData.custom_footer,
+              sections: sections // Save sections config
             }
           });
         }
