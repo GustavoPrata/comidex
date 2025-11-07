@@ -92,6 +92,28 @@ export default function SettingsPage() {
     name: '',
     phone: '',
     address: '',
+    // Horários padrão 18:00 às 23:00
+    monday_enabled: true,
+    monday_open: '18:00',
+    monday_close: '23:00',
+    tuesday_enabled: true,
+    tuesday_open: '18:00',
+    tuesday_close: '23:00',
+    wednesday_enabled: true,
+    wednesday_open: '18:00',
+    wednesday_close: '23:00',
+    thursday_enabled: true,
+    thursday_open: '18:00',
+    thursday_close: '23:00',
+    friday_enabled: true,
+    friday_open: '18:00',
+    friday_close: '23:00',
+    saturday_enabled: true,
+    saturday_open: '18:00',
+    saturday_close: '23:00',
+    sunday_enabled: true,
+    sunday_open: '18:00',
+    sunday_close: '23:00',
   });
 
   // Load settings from database
@@ -112,7 +134,31 @@ export default function SettingsPage() {
   // Initialize settings when data is loaded
   useEffect(() => {
     if (dbSettings) {
-      setSettings(dbSettings);
+      setSettings({
+        ...dbSettings,
+        // Manter horários padrão se não existirem no banco
+        monday_enabled: dbSettings.monday_enabled ?? true,
+        monday_open: dbSettings.monday_open || '18:00',
+        monday_close: dbSettings.monday_close || '23:00',
+        tuesday_enabled: dbSettings.tuesday_enabled ?? true,
+        tuesday_open: dbSettings.tuesday_open || '18:00',
+        tuesday_close: dbSettings.tuesday_close || '23:00',
+        wednesday_enabled: dbSettings.wednesday_enabled ?? true,
+        wednesday_open: dbSettings.wednesday_open || '18:00',
+        wednesday_close: dbSettings.wednesday_close || '23:00',
+        thursday_enabled: dbSettings.thursday_enabled ?? true,
+        thursday_open: dbSettings.thursday_open || '18:00',
+        thursday_close: dbSettings.thursday_close || '23:00',
+        friday_enabled: dbSettings.friday_enabled ?? true,
+        friday_open: dbSettings.friday_open || '18:00',
+        friday_close: dbSettings.friday_close || '23:00',
+        saturday_enabled: dbSettings.saturday_enabled ?? true,
+        saturday_open: dbSettings.saturday_open || '18:00',
+        saturday_close: dbSettings.saturday_close || '23:00',
+        sunday_enabled: dbSettings.sunday_enabled ?? true,
+        sunday_open: dbSettings.sunday_open || '18:00',
+        sunday_close: dbSettings.sunday_close || '23:00',
+      });
     }
   }, [dbSettings]);
 
