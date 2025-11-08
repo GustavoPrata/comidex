@@ -365,18 +365,13 @@ export default function ProductPrintersPage() {
       <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between mb-6">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className="p-2 rounded-lg bg-orange-500">
-                  <Link2 className="h-5 w-5 text-white" />
-                </div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                  Associação Produto-Impressora
-                </h1>
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Link2 className="h-5 w-5 text-white" />
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 ml-10">
-                Configure em qual impressora cada produto será impresso
-              </p>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Associação Produto-Impressora
+              </h1>
             </div>
             <Button
               onClick={loadData}
@@ -389,8 +384,17 @@ export default function ProductPrintersPage() {
             </Button>
           </div>
 
-          {/* Statistics Cards */}
-          <div className="grid grid-cols-4 gap-4 mb-6">
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Configure em qual impressora cada produto será impresso
+          </p>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="p-4">
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-4 gap-4 mb-6">
             <Card className="border-gray-200 dark:border-gray-700/60">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
@@ -735,7 +739,6 @@ export default function ProductPrintersPage() {
               )}
             </div>
           </div>
-        </div>
       </div>
     </div>
   );
