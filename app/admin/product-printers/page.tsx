@@ -460,7 +460,10 @@ export default function ProductPrintersPage() {
               />
             </div>
             
-            <Select value={selectedGroup} onValueChange={setSelectedGroup}>
+            <Select value={selectedGroup} onValueChange={(value) => {
+              setSelectedGroup(value);
+              setSelectedCategory('all'); // Reset categoria quando mudar o grupo
+            }}>
               <SelectTrigger>
                 <SelectValue placeholder="Todos os grupos" />
               </SelectTrigger>
@@ -477,10 +480,10 @@ export default function ProductPrintersPage() {
             <Select 
               value={selectedCategory} 
               onValueChange={setSelectedCategory}
-              disabled={selectedGroup === 'all' && categories.length > 20}
+              disabled={selectedGroup === 'all'}
             >
               <SelectTrigger>
-                <SelectValue placeholder="Todas as categorias" />
+                <SelectValue placeholder={selectedGroup === 'all' ? "Selecione um grupo primeiro" : "Todas as categorias"} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">Todas as categorias</SelectItem>
