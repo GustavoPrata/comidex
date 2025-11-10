@@ -12,7 +12,7 @@ import {
   Layers,
   Image,
   Plus,
-  TableProperties,
+  Square,
   ShoppingCart,
   Tablet,
   Code,
@@ -82,7 +82,7 @@ const menuItems: MenuItem[] = [
     label: 'Operações',
     icon: Receipt,
     submenu: [
-      { label: 'Mesas', href: '/admin/tables', icon: TableProperties },
+      { label: 'Mesas', href: '/admin/tables', icon: Square },
       { label: 'Pedidos', href: '/admin/orders', icon: ShoppingCart },
       { label: 'Sessões', href: '/admin/tablet-sessions', icon: Tablet }
     ]

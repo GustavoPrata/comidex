@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
-  TableProperties,
+  Square,
   Plus,
   Users,
   Loader2,
@@ -307,7 +307,7 @@ export default function TablesPage() {
             <div>
               <h1 className="text-2xl font-bold flex items-center gap-2">
                 <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/20">
-                  <TableProperties className="h-5 w-5 text-orange-600 dark:text-orange-500" />
+                  <Square className="h-5 w-5 text-orange-600 dark:text-orange-500" />
                 </div>
                 Mesas e Balcões
               </h1>
@@ -368,7 +368,7 @@ export default function TablesPage() {
         {/* Tables Section */}
         <div>
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <TableProperties className="h-5 w-5 text-orange-500" />
+            <Square className="h-5 w-5 text-orange-500" />
             Mesas ({tablesByType.mesa.length})
           </h2>
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
