@@ -1883,6 +1883,101 @@ export default function ProductsPage() {
                   isProduct={true}
                 />
               </div>
+
+              {/* Additional Categories Section */}
+              <div className="space-y-3">
+                <Label className="flex items-center gap-2">
+                  <span>Adicionais</span>
+                  {formData.additional_category_ids.length > 0 && (
+                    <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                      ({formData.additional_category_ids.length} {formData.additional_category_ids.length === 1 ? 'categoria' : 'categorias'})
+                    </span>
+                  )}
+                </Label>
+                
+                <div className="space-y-3">
+                  {/* Configure Button */}
+                  <Button
+                    type="button"
+                    variant={formData.additional_category_ids.length > 0 ? "default" : "outline"}
+                    size="sm"
+                    className={`h-10 w-full ${formData.additional_category_ids.length > 0 ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
+                    onClick={() => {
+                      setAdditionalsItem(editingItem || {
+                        id: 0,
+                        name: formData.name,
+                        description: formData.description,
+                        price: parseFloat(formData.price) || 0,
+                        category_id: parseInt(formData.category_id),
+                        group_id: parseInt(formData.group_id),
+                        active: formData.active,
+                        available: formData.available,
+                        quantity: formData.quantity,
+                        image: formData.image,
+                        sort_order: 0
+                      } as Item);
+                      setIsAdditionalsModalOpen(true);
+                    }}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    {formData.additional_category_ids.length > 0 ? 'Configurar' : 'Adicionar'}
+                  </Button>
+                  
+                  {/* Selected Categories Display */}
+                  {formData.additional_category_ids.length > 0 && (
+                    <div className="p-3 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900 rounded-lg space-y-2">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-semibold text-orange-900 dark:text-orange-200">
+                          Categorias Ativas
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData({ ...formData, additional_category_ids: [] });
+                          }}
+                          className="text-xs text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-medium"
+                        >
+                          Limpar
+                        </button>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-2">
+                        {formData.additional_category_ids.map(catId => {
+                          const category = additionalCategories.find(c => c.id === catId);
+                          const categoryAdditionals = additionals.filter(a => a.additional_category_id === catId && a.active);
+                          
+                          if (!category) return null;
+                          
+                          return (
+                            <div 
+                              key={catId}
+                              className="flex items-center justify-between p-2 bg-white dark:bg-gray-900 rounded-md border border-orange-100 dark:border-orange-900"
+                            >
+                              <div className="flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
+                                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
+                                  {category.name}
+                                </span>
+                              </div>
+                              {/* Delete button */}
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newIds = formData.additional_category_ids.filter(id => id !== catId);
+                                  setFormData({ ...formData, additional_category_ids: newIds });
+                                }}
+                                className="w-5 h-5 rounded-full bg-orange-200 dark:bg-orange-900/30 hover:bg-orange-500 dark:hover:bg-orange-500 flex items-center justify-center transition-colors group"
+                              >
+                                <X className="h-3 w-3 text-orange-600 dark:text-orange-400 group-hover:text-white" />
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* Right column - Category, pricing and status */}
@@ -2009,101 +2104,6 @@ export default function ProductsPage() {
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
-              </div>
-
-              {/* Additional Categories Section */}
-              <div className="space-y-3">
-                <Label className="flex items-center gap-2">
-                  <span>Adicionais</span>
-                  {formData.additional_category_ids.length > 0 && (
-                    <span className="text-xs font-normal text-gray-500 dark:text-gray-400">
-                      ({formData.additional_category_ids.length} {formData.additional_category_ids.length === 1 ? 'categoria' : 'categorias'})
-                    </span>
-                  )}
-                </Label>
-                
-                <div className="space-y-3">
-                  {/* Configure Button */}
-                  <Button
-                    type="button"
-                    variant={formData.additional_category_ids.length > 0 ? "default" : "outline"}
-                    size="sm"
-                    className={`h-10 w-full ${formData.additional_category_ids.length > 0 ? 'bg-orange-500 hover:bg-orange-600 text-white' : ''}`}
-                    onClick={() => {
-                      setAdditionalsItem(editingItem || {
-                        id: 0,
-                        name: formData.name,
-                        description: formData.description,
-                        price: parseFloat(formData.price) || 0,
-                        category_id: parseInt(formData.category_id),
-                        group_id: parseInt(formData.group_id),
-                        active: formData.active,
-                        available: formData.available,
-                        quantity: formData.quantity,
-                        image: formData.image,
-                        sort_order: 0
-                      } as Item);
-                      setIsAdditionalsModalOpen(true);
-                    }}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    {formData.additional_category_ids.length > 0 ? 'Configurar' : 'Adicionar'}
-                  </Button>
-                  
-                  {/* Selected Categories Display */}
-                  {formData.additional_category_ids.length > 0 && (
-                    <div className="p-3 bg-orange-50 dark:bg-orange-950/20 border border-orange-200 dark:border-orange-900 rounded-lg space-y-2">
-                      <div className="flex items-center justify-between">
-                        <p className="text-xs font-semibold text-orange-900 dark:text-orange-200">
-                          Categorias Ativas
-                        </p>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setFormData({ ...formData, additional_category_ids: [] });
-                          }}
-                          className="text-xs text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 font-medium"
-                        >
-                          Limpar
-                        </button>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-2">
-                        {formData.additional_category_ids.map(catId => {
-                          const category = additionalCategories.find(c => c.id === catId);
-                          const categoryAdditionals = additionals.filter(a => a.additional_category_id === catId && a.active);
-                          
-                          if (!category) return null;
-                          
-                          return (
-                            <div 
-                              key={catId}
-                              className="flex items-center justify-between p-2 bg-white dark:bg-gray-900 rounded-md border border-orange-100 dark:border-orange-900"
-                            >
-                              <div className="flex items-center gap-2">
-                                <div className="w-1.5 h-1.5 bg-orange-500 rounded-full"></div>
-                                <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                  {category.name}
-                                </span>
-                              </div>
-                              {/* Delete button */}
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  const newIds = formData.additional_category_ids.filter(id => id !== catId);
-                                  setFormData({ ...formData, additional_category_ids: newIds });
-                                }}
-                                className="w-5 h-5 rounded-full bg-orange-200 dark:bg-orange-900/30 hover:bg-orange-500 dark:hover:bg-orange-500 flex items-center justify-center transition-colors group"
-                              >
-                                <X className="h-3 w-3 text-orange-600 dark:text-orange-400 group-hover:text-white" />
-                              </button>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
                 </div>
               </div>
 
