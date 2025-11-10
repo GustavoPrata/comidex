@@ -203,12 +203,18 @@ export default function ProductPrintersPage() {
     try {
       setSaving(true);
       
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('items')
         .update({ printer_id: printerId })
-        .eq('id', itemId);
+        .eq('id', itemId)
+        .select()
+        .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error.message || error);
+        toast.error(error.message || 'Erro ao atualizar impressora');
+        return;
+      }
       
       // Update local state
       setItems(prev => 
@@ -220,9 +226,9 @@ export default function ProductPrintersPage() {
       );
       
       toast.success('Impressora atualizada!');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating printer:', error);
-      toast.error('Erro ao atualizar impressora');
+      toast.error(error?.message || 'Erro ao atualizar impressora');
     } finally {
       setSaving(false);
     }
@@ -250,7 +256,11 @@ export default function ProductPrintersPage() {
         .update({ printer_id: printerId })
         .in('id', selectedItems);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error.message || error);
+        toast.error(error.message || 'Erro ao atualizar produtos');
+        return;
+      }
       
       // Update local state
       setItems(prev => 
@@ -264,9 +274,9 @@ export default function ProductPrintersPage() {
       toast.success(`${selectedItems.length} produtos atualizados!`);
       setSelectedItems([]);
       setBulkPrinter('');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error bulk updating:', error);
-      toast.error('Erro ao atualizar produtos');
+      toast.error(error?.message || 'Erro ao atualizar produtos');
     } finally {
       setSaving(false);
     }
@@ -287,7 +297,11 @@ export default function ProductPrintersPage() {
         .update({ printer_id: null })
         .in('id', selectedItems);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error.message || error);
+        toast.error(error.message || 'Erro ao remover impressora');
+        return;
+      }
       
       // Update local state
       setItems(prev => 
@@ -300,9 +314,9 @@ export default function ProductPrintersPage() {
       
       toast.success(`Impressora removida de ${selectedItems.length} produtos!`);
       setSelectedItems([]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error removing printer:', error);
-      toast.error('Erro ao remover impressora');
+      toast.error(error?.message || 'Erro ao remover impressora');
     } finally {
       setSaving(false);
     }
