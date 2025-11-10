@@ -660,7 +660,6 @@ export default function ProductPrintersPage() {
                         </td>
                         <td className="p-3">
                           <div className="flex items-center gap-2">
-                            <ShoppingBag className="h-4 w-4 text-gray-400" />
                             <span className="font-medium text-gray-900 dark:text-gray-100">
                               {item.name}
                             </span>
