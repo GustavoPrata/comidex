@@ -129,6 +129,7 @@ export interface Database {
           id: number
           number: string
           capacity: number
+          type: 'table' | 'counter'
           status: 'available' | 'occupied' | 'reserved' | 'cleaning'
           active: boolean
           location: string | null

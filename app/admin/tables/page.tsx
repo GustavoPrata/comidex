@@ -172,7 +172,7 @@ export default function TablesPage() {
       const tableData = {
         name: formData.type === 'table' ? `Mesa ${formData.number}` : `Balcão ${formData.number}`,
         number: parseInt(formData.number),
-        capacity: formData.capacity,
+        capacity: formData.type === 'counter' ? 1 : formData.capacity,
         type: formData.type,
         active: formData.active
       };
@@ -224,7 +224,7 @@ export default function TablesPage() {
         newTables.push({
           name: batchFormData.type === 'table' ? `Mesa ${i}` : `Balcão ${i}`,
           number: i,
-          capacity: batchFormData.capacity,
+          capacity: batchFormData.type === 'counter' ? 1 : batchFormData.capacity,
           type: batchFormData.type,
           active: true
         });
@@ -442,7 +442,7 @@ export default function TablesPage() {
                     {table.number}
                   </div>
                   <Badge variant="outline" className="text-xs mb-2">
-                    {table.capacity} lugar
+                    1 lugar
                   </Badge>
                   <div className="flex items-center justify-center gap-1">
                     <button
@@ -510,20 +510,34 @@ export default function TablesPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="capacity">Capacidade</Label>
+                <Label htmlFor="capacity">
+                  Capacidade {formData.type === 'counter' && '(1 lugar fixo)'}
+                </Label>
                 <Input
                   id="capacity"
                   type="number"
-                  value={formData.capacity}
-                  onChange={(e) => setFormData({ ...formData, capacity: parseInt(e.target.value) || 1 })}
+                  value={formData.type === 'counter' ? 1 : formData.capacity}
+                  onChange={(e) => {
+                    if (formData.type !== 'counter') {
+                      setFormData({ ...formData, capacity: parseInt(e.target.value) || 1 })
+                    }
+                  }}
                   placeholder="4"
+                  disabled={formData.type === 'counter'}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="type">Tipo</Label>
                 <Select
                   value={formData.type}
-                  onValueChange={(value: "table" | "counter") => setFormData({ ...formData, type: value })}
+                  onValueChange={(value: "table" | "counter") => {
+                    // Se mudar para balcão, força capacidade para 1
+                    if (value === 'counter') {
+                      setFormData({ ...formData, type: value, capacity: 1 })
+                    } else {
+                      setFormData({ ...formData, type: value })
+                    }
+                  }}
                 >
                   <SelectTrigger id="type">
                     <SelectValue placeholder="Selecione" />
@@ -617,20 +631,34 @@ export default function TablesPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="batch-capacity">Capacidade</Label>
+                <Label htmlFor="batch-capacity">
+                  Capacidade {batchFormData.type === 'counter' && '(1 lugar fixo)'}
+                </Label>
                 <Input
                   id="batch-capacity"
                   type="number"
-                  value={batchFormData.capacity}
-                  onChange={(e) => setBatchFormData({ ...batchFormData, capacity: parseInt(e.target.value) || 1 })}
+                  value={batchFormData.type === 'counter' ? 1 : batchFormData.capacity}
+                  onChange={(e) => {
+                    if (batchFormData.type !== 'counter') {
+                      setBatchFormData({ ...batchFormData, capacity: parseInt(e.target.value) || 1 })
+                    }
+                  }}
                   placeholder="4"
+                  disabled={batchFormData.type === 'counter'}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="batch-type">Tipo</Label>
                 <Select
                   value={batchFormData.type}
-                  onValueChange={(value: "table" | "counter") => setBatchFormData({ ...batchFormData, type: value })}
+                  onValueChange={(value: "table" | "counter") => {
+                    // Se mudar para balcão, força capacidade para 1
+                    if (value === 'counter') {
+                      setBatchFormData({ ...batchFormData, type: value, capacity: 1 })
+                    } else {
+                      setBatchFormData({ ...batchFormData, type: value })
+                    }
+                  }}
                 >
                   <SelectTrigger id="batch-type">
                     <SelectValue placeholder="Selecione" />
