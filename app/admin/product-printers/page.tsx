@@ -664,9 +664,10 @@ export default function ProductPrintersPage() {
                     return (
                       <tr 
                         key={item.id} 
-                        className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                        className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors cursor-pointer"
+                        onClick={() => toggleItemSelection(item.id)}
                       >
-                        <td className="p-3">
+                        <td className="p-3" onClick={(e) => e.stopPropagation()}>
                           <Checkbox
                             checked={selectedItems.includes(item.id)}
                             onCheckedChange={() => toggleItemSelection(item.id)}
@@ -716,7 +717,7 @@ export default function ProductPrintersPage() {
                             </div>
                           )}
                         </td>
-                        <td className="p-3">
+                        <td className="p-3" onClick={(e) => e.stopPropagation()}>
                           <Select 
                             value={item.printer_id?.toString() || 'none'}
                             onValueChange={(value) => {
