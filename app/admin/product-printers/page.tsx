@@ -385,7 +385,7 @@ export default function ProductPrintersPage() {
                   <Link2 className="h-5 w-5 text-white" />
                 </div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                  Associação Produto-Impressora
+                  Impressora Relação com Produtos
                 </h1>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 ml-10">

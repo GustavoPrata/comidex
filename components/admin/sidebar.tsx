@@ -76,7 +76,7 @@ const menuItems: MenuItem[] = [
       { label: 'Templates', href: '/admin/templates', icon: FileText },
       { label: 'Fila', href: '/admin/print-queue', icon: FileText },
       { label: 'Perfils', href: '/admin/print-config', icon: SlidersHorizontal },
-      { label: 'Produtos x Impressoras', href: '/admin/product-printers', icon: Link2 }
+      { label: 'IRP', href: '/admin/product-printers', icon: Link2 }
     ]
   },
   {
