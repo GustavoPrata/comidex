@@ -2599,7 +2599,7 @@ function ProductsPage() {
         price: "",
         category_id: "",
         group_id: "",
-        printer_id: "",
+        printer_id: "none",
         active: true,
         available: true,
         image: "",
@@ -2854,7 +2854,7 @@ function ProductsPage() {
                 price: item.price && item.price > 0 ? item.price.toString() : "",
                 category_id: item.category_id.toString(),
                 group_id: item.group_id.toString(),
-                printer_id: item.printer_id ? item.printer_id.toString() : "",
+                printer_id: item.printer_id ? item.printer_id.toString() : "none",
                 active: item.active,
                 available: item.available,
                 image: item.image || "",
@@ -2870,7 +2870,7 @@ function ProductsPage() {
                 price: "",
                 category_id: "",
                 group_id: "",
-                printer_id: "",
+                printer_id: "none",
                 active: true,
                 available: true,
                 image: "",
@@ -2947,7 +2947,7 @@ function ProductsPage() {
                 price: isRodizio ? 0 : formData.price ? parseFloat(formData.price) : 0,
                 category_id: formData.category_id,
                 group_id: formData.group_id,
-                printer_id: formData.printer_id ? parseInt(formData.printer_id) : null,
+                printer_id: formData.printer_id && formData.printer_id !== "none" ? parseInt(formData.printer_id) : null,
                 active: formData.active,
                 available: formData.available,
                 image: imageUrl || null
@@ -3947,7 +3947,7 @@ function ProductsPage() {
                                                                                                     price: "",
                                                                                                     category_id: categoryObj.id.toString(),
                                                                                                     group_id: groupObj.id.toString(),
-                                                                                                    printer_id: "",
+                                                                                                    printer_id: "none",
                                                                                                     active: true,
                                                                                                     available: true,
                                                                                                     image: "",
@@ -3966,7 +3966,7 @@ function ProductsPage() {
                                                                                                     price: "",
                                                                                                     category_id: firstItem.category_id.toString(),
                                                                                                     group_id: firstItem.group_id.toString(),
-                                                                                                    printer_id: "",
+                                                                                                    printer_id: "none",
                                                                                                     active: true,
                                                                                                     available: true,
                                                                                                     image: "",
@@ -4534,7 +4534,7 @@ function ProductsPage() {
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                    value: "",
+                                                                    value: "none",
                                                                     children: "Nenhuma"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/items/page.tsx",
@@ -5869,7 +5869,7 @@ function ProductsPage() {
         columnNumber: 5
     }, this);
 }
-_s1(ProductsPage, "pkIwHoS3AMSWc7ys8aaQ6o45Un0=", false, function() {
+_s1(ProductsPage, "XUjlgJ2Slkrp7gJJD8lWqedLbj4=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit$2f$core$2f$dist$2f$core$2e$esm$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useSensors"]
     ];

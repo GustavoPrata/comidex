@@ -1,4 +1,4 @@
 {
-  "/admin/product-printers/page": "app/admin/product-printers/page.js",
-  "/prompt/page": "app/prompt/page.js"
+  "/admin/items/page": "app/admin/items/page.js",
+  "/page": "app/page.js"
 }

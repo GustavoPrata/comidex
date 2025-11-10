@@ -505,7 +505,7 @@ export default function ProductsPage() {
     price: "",
     category_id: "",
     group_id: "",
-    printer_id: "", // Campo para impressora
+    printer_id: "none", // Campo para impressora
     active: true,
     available: true,
     image: "",
@@ -804,7 +804,7 @@ export default function ProductsPage() {
         price: item.price && item.price > 0 ? item.price.toString() : "",
         category_id: item.category_id.toString(),
         group_id: item.group_id.toString(),
-        printer_id: item.printer_id ? item.printer_id.toString() : "",
+        printer_id: item.printer_id ? item.printer_id.toString() : "none",
         active: item.active,
         available: item.available,
         image: item.image || "",
@@ -820,7 +820,7 @@ export default function ProductsPage() {
         price: "",
         category_id: "",
         group_id: "",
-        printer_id: "",
+        printer_id: "none",
         active: true,
         available: true,
         image: "",
@@ -908,7 +908,7 @@ export default function ProductsPage() {
         price: isRodizio ? 0 : (formData.price ? parseFloat(formData.price) : 0),
         category_id: formData.category_id,  // Keep as string UUID
         group_id: formData.group_id,        // Keep as string UUID
-        printer_id: formData.printer_id ? parseInt(formData.printer_id) : null, // Adicionar impressora
+        printer_id: formData.printer_id && formData.printer_id !== "none" ? parseInt(formData.printer_id) : null, // Adicionar impressora
         active: formData.active,
         available: formData.available,
         image: imageUrl || null
@@ -1702,7 +1702,7 @@ export default function ProductsPage() {
                                               price: "",
                                               category_id: categoryObj.id.toString(),
                                               group_id: groupObj.id.toString(),
-                                              printer_id: "",
+                                              printer_id: "none",
                                               active: true,
                                               available: true,
                                               image: "",
@@ -1721,7 +1721,7 @@ export default function ProductsPage() {
                                               price: "",
                                               category_id: firstItem.category_id.toString(),
                                               group_id: firstItem.group_id.toString(),
-                                              printer_id: "",
+                                              printer_id: "none",
                                               active: true,
                                               available: true,
                                               image: "",
@@ -1951,7 +1951,7 @@ export default function ProductsPage() {
                     <SelectValue placeholder="Selecione uma impressora (opcional)" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Nenhuma</SelectItem>
+                    <SelectItem value="none">Nenhuma</SelectItem>
                     {printers.map((printer) => (
                       <SelectItem key={printer.id} value={printer.id.toString()}>
                         {printer.name} {printer.is_main && <span className="text-orange-600">(Principal)</span>}
