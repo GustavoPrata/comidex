@@ -1,10 +1,5 @@
 {
-  "/admin/items/page": "app/admin/items/page.js",
-  "/admin/print-config/page": "app/admin/print-config/page.js",
-  "/admin/print-queue/page": "app/admin/print-queue/page.js",
-  "/admin/templates/page": "app/admin/templates/page.js",
-  "/api/printer-profiles/route": "app/api/printer-profiles/route.js",
-  "/api/restaurant/route": "app/api/restaurant/route.js",
+  "/admin/page": "app/admin/page.js",
   "/page": "app/page.js",
   "/prompt/page": "app/prompt/page.js"
 }

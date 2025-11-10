@@ -74,7 +74,6 @@ const menuItems: MenuItem[] = [
     submenu: [
       { label: 'Impressoras', href: '/admin/printers', icon: Printer },
       { label: 'Templates', href: '/admin/templates', icon: FileText },
-      { label: 'Fila', href: '/admin/print-queue', icon: FileText },
       { label: 'Perfils', href: '/admin/print-config', icon: SlidersHorizontal },
       { label: 'IRP', href: '/admin/product-printers', icon: Link2 }
     ]
