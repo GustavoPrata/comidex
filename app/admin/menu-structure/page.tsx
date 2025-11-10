@@ -460,32 +460,11 @@ function SortableCategoryItem({
           )}
         </div>
         
-        <div className="flex-1 flex items-center gap-2">
-          <div className="flex-1">
-            <p className="font-medium">{category.name}</p>
-            {category.description && (
-              <p className="text-sm text-gray-500">{category.description}</p>
-            )}
-          </div>
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              // Navigate to items page with category pre-selected
-              const params = new URLSearchParams({
-                action: 'create',
-                group_id: category.group_id?.toString() || '',
-                category_id: category.id.toString()
-              });
-              window.location.href = `/admin/items?${params.toString()}`;
-            }}
-            className="px-3 py-1 text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white rounded-full transition-colors flex items-center gap-1"
-            type="button"
-            title="Adicionar produto nesta categoria"
-          >
-            <Plus className="h-3 w-3" />
-            Produto
-          </button>
+        <div className="flex-1">
+          <p className="font-medium">{category.name}</p>
+          {category.description && (
+            <p className="text-sm text-gray-500">{category.description}</p>
+          )}
         </div>
       </div>
       

@@ -1681,6 +1681,35 @@ export default function ProductsPage() {
                                 </Badge>
                               )}
                             </div>
+                            {/* Add Product Button */}
+                            <button
+                              onClick={() => {
+                                if (categoryObj && groupObj) {
+                                  setFormData({
+                                    name: "",
+                                    description: "",
+                                    price: "",
+                                    category_id: categoryObj.id.toString(),
+                                    group_id: groupObj.id.toString(),
+                                    active: true,
+                                    available: true,
+                                    quantity: "",
+                                    quantityValue: "",
+                                    image: "",
+                                    additional_category_ids: [],
+                                    printer_id: "none"
+                                  });
+                                  setEditingItem(null);
+                                  setIsModalOpen(true);
+                                }
+                              }}
+                              className="px-3 py-1 text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white rounded-full transition-colors flex items-center gap-1"
+                              type="button"
+                              title="Adicionar produto nesta categoria"
+                            >
+                              <Plus className="h-3 w-3" />
+                              Novo Produto
+                            </button>
                           </div>
 
                           {/* Products Container */}
