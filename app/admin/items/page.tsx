@@ -655,6 +655,32 @@ export default function ProductsPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Check URL parameters to auto-open create modal
+  useEffect(() => {
+    // Only check after data is loaded
+    if (loading || groups.length === 0 || categories.length === 0) return;
+    
+    const params = new URLSearchParams(window.location.search);
+    const action = params.get('action');
+    const groupId = params.get('group_id');
+    const categoryId = params.get('category_id');
+    
+    if (action === 'create' && groupId && categoryId) {
+      // Set form data with pre-selected values
+      setFormData(prev => ({
+        ...prev,
+        group_id: groupId,
+        category_id: categoryId
+      }));
+      
+      // Open the modal
+      setIsModalOpen(true);
+      
+      // Clear the URL parameters
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [loading, groups, categories]);
+
   // Set unit form data when opening unit modal
   useEffect(() => {
     if (unitEditItem && isUnitModalOpen) {
