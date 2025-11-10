@@ -1662,9 +1662,11 @@ export default function ProductsPage() {
                   {/* Categories */}
                   <div className="pl-16 space-y-4">
                     {groupCategories.map(({ categoryName, items: categoryItems }, categoryIndex) => {
-                      // Find category and group info from the loaded data
-                      const categoryObj = categories.find(c => c.name === categoryName);
-                      const groupObj = groups.find(g => g.name === groupName);
+                      // Get the category and group IDs from the first item in this category (if exists)
+                      // or find from the loaded data
+                      const firstItem = categoryItems[0];
+                      const categoryId = firstItem?.category_id || categories.find(c => c.name === categoryName)?.id;
+                      const groupId = firstItem?.group_id || groups.find(g => g.name === groupName)?.id;
                       
                       return (
                         <div key={categoryName}>
@@ -1684,13 +1686,14 @@ export default function ProductsPage() {
                             {/* Add Product Button */}
                             <button
                               onClick={() => {
-                                if (categoryObj && groupObj) {
+                                console.log('Adding product to category:', categoryName, 'with categoryId:', categoryId, 'and groupId:', groupId);
+                                if (categoryId && groupId) {
                                   setFormData({
                                     name: "",
                                     description: "",
                                     price: "",
-                                    category_id: categoryObj.id.toString(),
-                                    group_id: groupObj.id.toString(),
+                                    category_id: categoryId.toString(),
+                                    group_id: groupId.toString(),
                                     active: true,
                                     available: true,
                                     quantity: "",
@@ -1701,6 +1704,8 @@ export default function ProductsPage() {
                                   });
                                   setEditingItem(null);
                                   setIsModalOpen(true);
+                                } else {
+                                  toast.error('Erro ao identificar categoria ou grupo');
                                 }
                               }}
                               className="px-3 py-1 text-xs font-medium bg-orange-500 hover:bg-orange-600 text-white rounded-full transition-colors flex items-center gap-1"
@@ -1747,16 +1752,16 @@ export default function ProductsPage() {
                                     <div className="px-2 pb-2">
                                       <button
                                         onClick={() => {
-                                          // Use category and group objects to get IDs
-                                          if (categoryObj && groupObj) {
+                                          // Use the same logic as the header button
+                                          if (categoryId && groupId) {
                                             setFormData({
                                               name: "",
                                               description: "",
                                               quantity: "",
                                               quantityValue: "",
                                               price: "",
-                                              category_id: categoryObj.id.toString(),
-                                              group_id: groupObj.id.toString(),
+                                              category_id: categoryId.toString(),
+                                              group_id: groupId.toString(),
                                               printer_id: "none",
                                               active: true,
                                               available: true,
