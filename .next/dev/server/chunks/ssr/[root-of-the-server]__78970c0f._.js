@@ -1848,7 +1848,7 @@ function TablesPage() {
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "text-2xl font-bold text-blue-500 mb-1",
-                                                    children: table.number
+                                                    children: table.number.startsWith('10') ? table.number.substring(2) : table.number
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
                                                     lineNumber: 441,
