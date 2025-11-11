@@ -57,6 +57,7 @@ export default function TablesPage() {
   const [editingTable, setEditingTable] = useState<RestaurantTable | null>(null);
   const [deleteTable, setDeleteTable] = useState<RestaurantTable | null>(null);
   const [saving, setSaving] = useState(false);
+  const [numberExists, setNumberExists] = useState(false);
   
   // Form state for single table
   const [formData, setFormData] = useState({
@@ -155,6 +156,7 @@ export default function TablesPage() {
         active: true
       });
     }
+    setNumberExists(false);
     setIsModalOpen(true);
   };
 
@@ -162,6 +164,18 @@ export default function TablesPage() {
   const saveTable = async () => {
     try {
       setSaving(true);
+      
+      // Verificar se o número já existe (exceto quando estiver editando a mesma mesa)
+      const existingTable = tables.find(t => 
+        t.number === formData.number && 
+        (!editingTable || t.id !== editingTable.id)
+      );
+      
+      if (existingTable) {
+        toast.error(`Já existe uma ${existingTable.type === 'table' ? 'mesa' : 'posição no balcão'} com o número ${formData.number}!`);
+        setSaving(false);
+        return;
+      }
       
       const tableData = {
         number: formData.number, // Campo number é string no banco de dados
@@ -437,13 +451,31 @@ export default function TablesPage() {
 
           <div className="grid gap-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="number">Número</Label>
+              <Label htmlFor="number">
+                Número 
+                {numberExists && (
+                  <span className="text-red-500 text-xs ml-2">
+                    (Número já existe!)
+                  </span>
+                )}
+              </Label>
               <Input
                 id="number"
                 type="number"
                 value={formData.number}
-                onChange={(e) => setFormData({ ...formData, number: e.target.value })}
+                onChange={(e) => {
+                  const newNumber = e.target.value;
+                  setFormData({ ...formData, number: newNumber });
+                  
+                  // Verificar se o número já existe
+                  const exists = tables.some(t => 
+                    t.number === newNumber && 
+                    (!editingTable || t.id !== editingTable.id)
+                  );
+                  setNumberExists(exists);
+                }}
                 placeholder="1"
+                className={numberExists ? "border-red-500 focus:ring-red-500" : ""}
               />
             </div>
 
@@ -510,13 +542,14 @@ export default function TablesPage() {
                 active: true
               });
               setSaving(false);
+              setNumberExists(false);
             }}>
               Cancelar
             </Button>
             <Button 
               className="bg-orange-500 hover:bg-orange-600 text-white"
               onClick={saveTable}
-              disabled={saving || !formData.number}
+              disabled={saving || !formData.number || numberExists}
             >
               {saving ? (
                 <>

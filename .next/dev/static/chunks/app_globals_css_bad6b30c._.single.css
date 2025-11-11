@@ -3313,6 +3313,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-ring-color: rgb(249 115 22 / var(--tw-ring-opacity, 1));
 }
 
+.focus\:ring-red-500:focus {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity, 1));
+}
+
 .focus\:ring-ring:focus {
   --tw-ring-color: hsl(var(--ring));
 }
