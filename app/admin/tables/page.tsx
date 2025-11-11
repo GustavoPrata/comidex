@@ -15,7 +15,8 @@ import {
   Save,
   Trash2,
   Pencil,
-  MoreVertical
+  MoreVertical,
+  Search
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -57,6 +58,7 @@ import type { RestaurantTable } from "@/types/supabase";
 export default function TablesPage() {
   const [tables, setTables] = useState<RestaurantTable[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -132,10 +134,17 @@ export default function TablesPage() {
     return () => clearTimeout(timer);
   }, []);
 
+  // Filter tables by search term
+  const filteredTables = tables.filter(table => 
+    searchTerm === '' || 
+    table.number.toString().toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (table.type === 'table' ? 'mesa' : 'balcão').includes(searchTerm.toLowerCase())
+  );
+
   // Group tables by type
   const tablesByType = {
-    mesa: tables.filter(t => t.type === 'table'),
-    balcao: tables.filter(t => t.type === 'counter')
+    mesa: filteredTables.filter(t => t.type === 'table'),
+    balcao: filteredTables.filter(t => t.type === 'counter')
   };
 
   // Calculate statistics
@@ -299,32 +308,40 @@ export default function TablesPage() {
 
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="min-h-screen relative">
       {/* Header */}
-      <div className="bg-white dark:bg-black border-b border-gray-200 dark:border-gray-800">
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
         <div className="px-6 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <div>
-              <h1 className="text-2xl font-bold flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/20">
-                  <Square className="h-5 w-5 text-orange-600 dark:text-orange-500" />
-                </div>
-                Mesas e Balcões
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Gerencie as mesas e balcões do restaurante
-              </p>
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Square className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Mesas e Balcões</h1>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
               <Button 
                 variant="outline"
                 onClick={() => setIsBatchModalOpen(true)}
+                className="rounded-full px-6"
               >
                 <Users className="h-4 w-4 mr-2" />
                 Criação em Lote
               </Button>
               <Button 
-                className="bg-orange-500 hover:bg-orange-600 text-white"
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6"
                 onClick={() => openModal()}
               >
                 <Plus className="h-4 w-4 mr-2" />
@@ -364,7 +381,7 @@ export default function TablesPage() {
       </div>
 
       {/* Content */}
-      <div className="px-6 py-6 space-y-6">
+      <div className="p-4 space-y-6">
         {/* Tables Section */}
         <div>
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
