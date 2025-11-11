@@ -78,8 +78,7 @@ export default function TablesPage() {
       try {
         const { data, error } = await supabase
           .from('restaurant_tables')
-          .select('*')
-          .order('number', { ascending: true });
+          .select('*');
 
         if (error) throw error;
         setTables(data || []);
@@ -127,10 +126,17 @@ export default function TablesPage() {
     (table.type === 'table' ? 'mesa' : 'balcão').includes(searchTerm.toLowerCase())
   );
 
+  // Sort tables numerically by number
+  const sortedTables = [...filteredTables].sort((a, b) => {
+    const numA = parseInt(a.number) || 0;
+    const numB = parseInt(b.number) || 0;
+    return numA - numB;
+  });
+
   // Group tables by type
   const tablesByType = {
-    mesa: filteredTables.filter(t => t.type === 'table'),
-    balcao: filteredTables.filter(t => t.type === 'counter')
+    mesa: sortedTables.filter(t => t.type === 'table'),
+    balcao: sortedTables.filter(t => t.type === 'counter')
   };
 
   // Calculate statistics
