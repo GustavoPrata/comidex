@@ -3209,6 +3209,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: hsl(var(--primary) / .8);
 }
 
+.hover\:bg-red-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 226 226 / var(--tw-bg-opacity, 1));
+}
+
 .hover\:bg-red-50:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(254 242 242 / var(--tw-bg-opacity, 1));
@@ -4111,12 +4116,20 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #7c2d1233;
 }
 
+.dark\:hover\:bg-orange-900\/30:hover:is(.dark *) {
+  background-color: #7c2d124d;
+}
+
 .dark\:hover\:bg-red-500\/30:hover:is(.dark *) {
   background-color: #ef44444d;
 }
 
 .dark\:hover\:bg-red-900\/20:hover:is(.dark *) {
   background-color: #7f1d1d33;
+}
+
+.dark\:hover\:bg-red-900\/30:hover:is(.dark *) {
+  background-color: #7f1d1d4d;
 }
 
 .dark\:hover\:bg-white\/10:hover:is(.dark *) {

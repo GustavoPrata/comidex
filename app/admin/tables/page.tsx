@@ -10,21 +10,13 @@ import { Switch } from "@/components/ui/switch";
 import {
   Square,
   Plus,
-  Users,
   Loader2,
   Save,
   Trash2,
   Pencil,
-  MoreVertical,
   Search,
   ChefHat
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -339,7 +331,7 @@ export default function TablesPage() {
                   <Badge variant="outline" className="text-xs mb-2">
                     {table.capacity} lugares
                   </Badge>
-                  <div className="flex items-center justify-center gap-1">
+                  <div className="flex flex-col items-center gap-1">
                     <button
                       onClick={() => toggleActive(table)}
                       className={`w-14 px-2 py-1 text-[10px] font-medium rounded-full transition-colors ${
@@ -350,29 +342,23 @@ export default function TablesPage() {
                     >
                       {table.active ? 'Ativa' : 'Inativa'}
                     </button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-6 w-6 hover:text-orange-500 transition-colors">
-                          <MoreVertical className="h-3 w-3" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-32">
-                        <DropdownMenuItem onClick={() => openModal(table)}>
-                          <Pencil className="h-3 w-3 mr-2" />
-                          Editar
-                        </DropdownMenuItem>
-                        <DropdownMenuItem 
-                          className="text-red-600 dark:text-red-500"
-                          onClick={() => {
-                            setDeleteTable(table);
-                            setIsDeleteModalOpen(true);
-                          }}
-                        >
-                          <Trash2 className="h-3 w-3 mr-2" />
-                          Excluir
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => openModal(table)}
+                        className="p-1 hover:bg-orange-100 dark:hover:bg-orange-900/30 rounded transition-colors"
+                      >
+                        <Pencil className="h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-orange-500" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setDeleteTable(table);
+                          setIsDeleteModalOpen(true);
+                        }}
+                        className="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
+                      >
+                        <Trash2 className="h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-red-500" />
+                      </button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -399,7 +385,7 @@ export default function TablesPage() {
                   <Badge variant="outline" className="text-xs mb-2">
                     1 lugar
                   </Badge>
-                  <div className="flex items-center justify-center gap-1">
+                  <div className="flex flex-col items-center gap-1">
                     <button
                       onClick={() => toggleActive(table)}
                       className={`w-14 px-2 py-1 text-[10px] font-medium rounded-full transition-colors ${
@@ -410,29 +396,23 @@ export default function TablesPage() {
                     >
                       {table.active ? 'Ativa' : 'Inativa'}
                     </button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-6 w-6 hover:text-orange-500 transition-colors">
-                          <MoreVertical className="h-3 w-3" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-32">
-                        <DropdownMenuItem onClick={() => openModal(table)}>
-                          <Pencil className="h-3 w-3 mr-2" />
-                          Editar
-                        </DropdownMenuItem>
-                        <DropdownMenuItem 
-                          className="text-red-600 dark:text-red-500"
-                          onClick={() => {
-                            setDeleteTable(table);
-                            setIsDeleteModalOpen(true);
-                          }}
-                        >
-                          <Trash2 className="h-3 w-3 mr-2" />
-                          Excluir
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="flex items-center gap-1">
+                      <button
+                        onClick={() => openModal(table)}
+                        className="p-1 hover:bg-orange-100 dark:hover:bg-orange-900/30 rounded transition-colors"
+                      >
+                        <Pencil className="h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-orange-500" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          setDeleteTable(table);
+                          setIsDeleteModalOpen(true);
+                        }}
+                        className="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
+                      >
+                        <Trash2 className="h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-red-500" />
+                      </button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
