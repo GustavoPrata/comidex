@@ -1,3 +1,5 @@
 {
-  "/admin/tables/page": "app/admin/tables/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/tables/page": "app/admin/tables/page.js",
+  "/prompt/page": "app/prompt/page.js"
 }

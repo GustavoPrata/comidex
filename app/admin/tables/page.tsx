@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Square,
   Plus,
@@ -528,12 +528,14 @@ export default function TablesPage() {
             </div>
 
             <div className="flex items-center space-x-2">
-              <Switch
+              <Checkbox
                 id="active"
                 checked={formData.active}
-                onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
+                onCheckedChange={(checked) => setFormData({ ...formData, active: checked as boolean })}
               />
-              <Label htmlFor="active">Ativa</Label>
+              <Label htmlFor="active" className="cursor-pointer">
+                Ativa
+              </Label>
             </div>
           </div>
 
