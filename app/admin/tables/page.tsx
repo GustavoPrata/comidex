@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
-  LayoutGrid,
+  Square,
   Plus,
   Users,
   Loader2,
@@ -17,7 +17,7 @@ import {
   Pencil,
   MoreVertical,
   Search,
-  Utensils
+  ChefHat
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -61,7 +61,6 @@ export default function TablesPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isBatchModalOpen, setIsBatchModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editingTable, setEditingTable] = useState<RestaurantTable | null>(null);
   const [deleteTable, setDeleteTable] = useState<RestaurantTable | null>(null);
@@ -75,13 +74,6 @@ export default function TablesPage() {
     active: true
   });
 
-  // Form state for batch creation
-  const [batchFormData, setBatchFormData] = useState({
-    startNumber: "",
-    endNumber: "",
-    capacity: 4,
-    type: "table" as "table" | "counter"
-  });
 
   // Load data with retry logic for reliability
   const loadTables = async () => {
@@ -216,53 +208,6 @@ export default function TablesPage() {
     }
   };
 
-  // Save batch tables
-  const saveBatchTables = async () => {
-    try {
-      setSaving(true);
-      
-      const start = parseInt(batchFormData.startNumber);
-      const end = parseInt(batchFormData.endNumber);
-      
-      if (start > end) {
-        toast.error("Número inicial deve ser menor que o final");
-        return;
-      }
-
-      const newTables = [];
-      for (let i = start; i <= end; i++) {
-        newTables.push({
-          name: batchFormData.type === 'table' ? `Mesa ${i}` : `Balcão ${i}`,
-          number: i,
-          capacity: batchFormData.type === 'counter' ? 1 : batchFormData.capacity,
-          type: batchFormData.type,
-          active: true
-        });
-      }
-
-      const { error } = await supabase
-        .from('restaurant_tables')
-        .insert(newTables);
-
-      if (error) throw error;
-      
-      toast.success(`${newTables.length} mesas criadas com sucesso!`);
-      setIsBatchModalOpen(false);
-      setBatchFormData({
-        startNumber: "",
-        endNumber: "",
-        capacity: 4,
-        type: "table"
-      });
-      loadTables();
-    } catch (error) {
-      console.error('Error creating batch tables:', error);
-      toast.error("Erro ao criar mesas em lote");
-    } finally {
-      setSaving(false);
-    }
-  };
-
   // Delete table
   const handleDelete = async () => {
     if (!deleteTable) return;
@@ -317,7 +262,7 @@ export default function TablesPage() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-lg bg-orange-500">
-                <Utensils className="h-5 w-5 text-white" />
+                <Square className="h-5 w-5 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Mesas e Balcões</h1>
             </div>
@@ -334,19 +279,11 @@ export default function TablesPage() {
                 </button>
               </div>
               <Button 
-                variant="outline"
-                onClick={() => setIsBatchModalOpen(true)}
-                className="rounded-full px-6"
-              >
-                <Users className="h-4 w-4 mr-2" />
-                Criação em Lote
-              </Button>
-              <Button 
                 className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6"
                 onClick={() => openModal()}
               >
                 <Plus className="h-4 w-4 mr-2" />
-                Adicionar Individual
+                Nova Mesa/Balcão
               </Button>
             </div>
           </div>
@@ -386,7 +323,7 @@ export default function TablesPage() {
         {/* Tables Section */}
         <div>
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <LayoutGrid className="h-5 w-5 text-orange-500" />
+            <Square className="h-5 w-5 text-orange-500" />
             Mesas ({tablesByType.mesa.length})
           </h2>
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
@@ -446,7 +383,7 @@ export default function TablesPage() {
         {/* Counter Section */}
         <div>
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Users className="h-5 w-5 text-orange-500" />
+            <ChefHat className="h-5 w-5 text-orange-500" />
             Balcão ({tablesByType.balcao.length})
           </h2>
           <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
@@ -606,117 +543,6 @@ export default function TablesPage() {
                 <>
                   <Save className="h-4 w-4 mr-2" />
                   Salvar
-                </>
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Batch Creation Modal */}
-      <Dialog open={isBatchModalOpen} onOpenChange={(open) => setIsBatchModalOpen(open)}>
-        <DialogContent className="max-w-md">
-          <DialogHeader>
-            <DialogTitle>Criação em Lote</DialogTitle>
-            <DialogDescription>
-              Crie múltiplas mesas ou lugares no balcão de uma vez
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="start-number">Número Inicial</Label>
-                <Input
-                  id="start-number"
-                  type="number"
-                  value={batchFormData.startNumber}
-                  onChange={(e) => setBatchFormData({ ...batchFormData, startNumber: e.target.value })}
-                  placeholder="1"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="end-number">Número Final</Label>
-                <Input
-                  id="end-number"
-                  type="number"
-                  value={batchFormData.endNumber}
-                  onChange={(e) => setBatchFormData({ ...batchFormData, endNumber: e.target.value })}
-                  placeholder="20"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="batch-capacity">
-                  Capacidade {batchFormData.type === 'counter' && '(1 lugar fixo)'}
-                </Label>
-                <Input
-                  id="batch-capacity"
-                  type="number"
-                  value={batchFormData.type === 'counter' ? 1 : batchFormData.capacity}
-                  onChange={(e) => {
-                    if (batchFormData.type !== 'counter') {
-                      setBatchFormData({ ...batchFormData, capacity: parseInt(e.target.value) || 1 })
-                    }
-                  }}
-                  placeholder="4"
-                  disabled={batchFormData.type === 'counter'}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="batch-type">Tipo</Label>
-                <Select
-                  value={batchFormData.type}
-                  onValueChange={(value: "table" | "counter") => {
-                    // Se mudar para balcão, força capacidade para 1
-                    if (value === 'counter') {
-                      setBatchFormData({ ...batchFormData, type: value, capacity: 1 })
-                    } else {
-                      setBatchFormData({ ...batchFormData, type: value })
-                    }
-                  }}
-                >
-                  <SelectTrigger id="batch-type">
-                    <SelectValue placeholder="Selecione" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="table">Mesa</SelectItem>
-                    <SelectItem value="counter">Balcão</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          </div>
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => {
-              setIsBatchModalOpen(false);
-              setBatchFormData({
-                startNumber: '',
-                endNumber: '',
-                capacity: 4,
-                type: 'table'
-              });
-              setSaving(false);
-            }}>
-              Cancelar
-            </Button>
-            <Button 
-              className="bg-orange-500 hover:bg-orange-600 text-white"
-              onClick={saveBatchTables}
-              disabled={saving || !batchFormData.startNumber || !batchFormData.endNumber}
-            >
-              {saving ? (
-                <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  Criando...
-                </>
-              ) : (
-                <>
-                  <Save className="h-4 w-4 mr-2" />
-                  Criar Mesas
                 </>
               )}
             </Button>
