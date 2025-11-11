@@ -352,7 +352,7 @@ export default function TablesPage() {
 
           {/* Statistics */}
           <div className="grid grid-cols-3 gap-4">
-            <Card>
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-orange-500">
                   {tables.length}
@@ -360,7 +360,7 @@ export default function TablesPage() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">Total de Mesas</p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-green-500">
                   {activeCount}
@@ -368,7 +368,7 @@ export default function TablesPage() {
                 <p className="text-sm text-gray-500 dark:text-gray-400">Mesas Ativas</p>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50">
               <CardContent className="p-4">
                 <div className="text-2xl font-bold text-blue-500">
                   {totalCapacity}
@@ -392,7 +392,7 @@ export default function TablesPage() {
             {tablesByType.mesa.map((table) => (
               <Card 
                 key={table.id}
-                className={`border-gray-200 dark:border-gray-800 ${!table.active ? 'opacity-60' : ''}`}
+                className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 shadow-sm ${!table.active ? 'opacity-60' : ''}`}
               >
                 <CardContent className="p-4 text-center">
                   <div className="text-2xl font-bold text-orange-500 mb-1">
@@ -452,7 +452,7 @@ export default function TablesPage() {
             {tablesByType.balcao.map((table) => (
               <Card 
                 key={table.id}
-                className={`border-gray-200 dark:border-gray-800 ${!table.active ? 'opacity-60' : ''}`}
+                className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 shadow-sm ${!table.active ? 'opacity-60' : ''}`}
               >
                 <CardContent className="p-4 text-center">
                   <div className="text-2xl font-bold text-blue-500 mb-1">

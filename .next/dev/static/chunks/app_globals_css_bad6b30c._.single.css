@@ -1923,6 +1923,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #ffffff80;
 }
 
+.bg-white\/60 {
+  background-color: #fff9;
+}
+
 .bg-white\/80 {
   background-color: #fffc;
 }
