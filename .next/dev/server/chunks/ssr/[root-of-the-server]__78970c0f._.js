@@ -1333,10 +1333,10 @@ function TablesPage() {
         try {
             setSaving(true);
             const tableData = {
-                name: formData.type === 'table' ? `Mesa ${formData.number}` : `Balcão ${formData.number}`,
-                number: parseInt(formData.number),
+                number: formData.number,
                 capacity: formData.type === 'counter' ? 1 : formData.capacity,
                 type: formData.type,
+                status: 'available',
                 active: formData.active
             };
             if (editingTable) {
