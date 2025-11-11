@@ -1407,7 +1407,7 @@ function TablesPage() {
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "p-4 space-y-6",
                 children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    tablesByType.mesa.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                 className: "text-lg font-semibold mb-4 flex items-center gap-2",
@@ -1416,8 +1416,8 @@ function TablesPage() {
                                         className: "h-5 w-5 text-orange-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                        lineNumber: 318,
-                                        columnNumber: 13
+                                        lineNumber: 319,
+                                        columnNumber: 15
                                     }, this),
                                     "Mesas (",
                                     tablesByType.mesa.length,
@@ -1425,8 +1425,8 @@ function TablesPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                lineNumber: 317,
-                                columnNumber: 11
+                                lineNumber: 318,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3",
@@ -1440,7 +1440,7 @@ function TablesPage() {
                                                     children: table.number
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 328,
+                                                    lineNumber: 329,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1452,7 +1452,7 @@ function TablesPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 331,
+                                                    lineNumber: 332,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1464,7 +1464,7 @@ function TablesPage() {
                                                             children: table.active ? 'Ativa' : 'Inativa'
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                                            lineNumber: 335,
+                                                            lineNumber: 336,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1477,12 +1477,12 @@ function TablesPage() {
                                                                         className: "h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-orange-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                                                        lineNumber: 350,
+                                                                        lineNumber: 351,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                                    lineNumber: 346,
+                                                                    lineNumber: 347,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1495,49 +1495,49 @@ function TablesPage() {
                                                                         className: "h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-red-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                                                        lineNumber: 359,
+                                                                        lineNumber: 360,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                                    lineNumber: 352,
+                                                                    lineNumber: 353,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                                            lineNumber: 345,
+                                                            lineNumber: 346,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 334,
+                                                    lineNumber: 335,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 327,
+                                            lineNumber: 328,
                                             columnNumber: 17
                                         }, this)
                                     }, table.id, false, {
                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                        lineNumber: 323,
+                                        lineNumber: 324,
                                         columnNumber: 15
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                lineNumber: 321,
-                                columnNumber: 11
+                                lineNumber: 322,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/tables/page.tsx",
-                        lineNumber: 316,
-                        columnNumber: 9
+                        lineNumber: 317,
+                        columnNumber: 11
                     }, this),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    tablesByType.balcao.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
                                 className: "text-lg font-semibold mb-4 flex items-center gap-2",
@@ -1546,8 +1546,8 @@ function TablesPage() {
                                         className: "h-5 w-5 text-orange-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                        lineNumber: 372,
-                                        columnNumber: 13
+                                        lineNumber: 375,
+                                        columnNumber: 15
                                     }, this),
                                     "Balcão (",
                                     tablesByType.balcao.length,
@@ -1555,8 +1555,8 @@ function TablesPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                lineNumber: 371,
-                                columnNumber: 11
+                                lineNumber: 374,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3",
@@ -1570,7 +1570,7 @@ function TablesPage() {
                                                     children: table.number.startsWith('10') ? table.number.substring(2) : table.number
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 382,
+                                                    lineNumber: 385,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1579,7 +1579,7 @@ function TablesPage() {
                                                     children: "1 lugar"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 385,
+                                                    lineNumber: 388,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1591,7 +1591,7 @@ function TablesPage() {
                                                             children: table.active ? 'Ativa' : 'Inativa'
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                                            lineNumber: 389,
+                                                            lineNumber: 392,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1604,12 +1604,12 @@ function TablesPage() {
                                                                         className: "h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-orange-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                                                        lineNumber: 404,
+                                                                        lineNumber: 407,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                                    lineNumber: 400,
+                                                                    lineNumber: 403,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1622,47 +1622,47 @@ function TablesPage() {
                                                                         className: "h-3 w-3 text-gray-600 dark:text-gray-400 hover:text-red-500"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                                                        lineNumber: 413,
+                                                                        lineNumber: 416,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                                    lineNumber: 406,
+                                                                    lineNumber: 409,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                                            lineNumber: 399,
+                                                            lineNumber: 402,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 388,
+                                                    lineNumber: 391,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 381,
+                                            lineNumber: 384,
                                             columnNumber: 17
                                         }, this)
                                     }, table.id, false, {
                                         fileName: "[project]/app/admin/tables/page.tsx",
-                                        lineNumber: 377,
+                                        lineNumber: 380,
                                         columnNumber: 15
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                lineNumber: 375,
-                                columnNumber: 11
+                                lineNumber: 378,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/tables/page.tsx",
-                        lineNumber: 370,
-                        columnNumber: 9
+                        lineNumber: 373,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
@@ -1682,20 +1682,20 @@ function TablesPage() {
                                     children: editingTable ? "Editar Mesa" : "Adicionar Mesa"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 428,
+                                    lineNumber: 432,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: editingTable ? "Atualize as informações da mesa" : "Configure uma nova mesa ou balcão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 429,
+                                    lineNumber: 433,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tables/page.tsx",
-                            lineNumber: 427,
+                            lineNumber: 431,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1709,7 +1709,7 @@ function TablesPage() {
                                             children: "Número"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 436,
+                                            lineNumber: 440,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1723,13 +1723,13 @@ function TablesPage() {
                                             placeholder: "1"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 437,
+                                            lineNumber: 441,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 435,
+                                    lineNumber: 439,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1746,7 +1746,7 @@ function TablesPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 448,
+                                                    lineNumber: 452,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1765,13 +1765,13 @@ function TablesPage() {
                                                     disabled: formData.type === 'counter'
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 451,
+                                                    lineNumber: 455,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 447,
+                                            lineNumber: 451,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1782,7 +1782,7 @@ function TablesPage() {
                                                     children: "Tipo"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 465,
+                                                    lineNumber: 469,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -1809,12 +1809,12 @@ function TablesPage() {
                                                                 placeholder: "Selecione"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                                                lineNumber: 478,
+                                                                lineNumber: 482,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                                            lineNumber: 477,
+                                                            lineNumber: 481,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1824,7 +1824,7 @@ function TablesPage() {
                                                                     children: "Mesa"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                                    lineNumber: 481,
+                                                                    lineNumber: 485,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -1832,31 +1832,31 @@ function TablesPage() {
                                                                     children: "Balcão"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                                    lineNumber: 482,
+                                                                    lineNumber: 486,
                                                                     columnNumber: 21
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                                            lineNumber: 480,
+                                                            lineNumber: 484,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                                    lineNumber: 466,
+                                                    lineNumber: 470,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 464,
+                                            lineNumber: 468,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 446,
+                                    lineNumber: 450,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1871,7 +1871,7 @@ function TablesPage() {
                                                 })
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 489,
+                                            lineNumber: 493,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
@@ -1879,19 +1879,19 @@ function TablesPage() {
                                             children: "Ativa"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tables/page.tsx",
-                                            lineNumber: 494,
+                                            lineNumber: 498,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 488,
+                                    lineNumber: 492,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tables/page.tsx",
-                            lineNumber: 434,
+                            lineNumber: 438,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -1912,7 +1912,7 @@ function TablesPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 499,
+                                    lineNumber: 503,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1925,7 +1925,7 @@ function TablesPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                                lineNumber: 519,
+                                                lineNumber: 523,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -1936,7 +1936,7 @@ function TablesPage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                                lineNumber: 524,
+                                                lineNumber: 528,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvar"
@@ -1944,24 +1944,24 @@ function TablesPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 512,
+                                    lineNumber: 516,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tables/page.tsx",
-                            lineNumber: 498,
+                            lineNumber: 502,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tables/page.tsx",
-                    lineNumber: 426,
+                    lineNumber: 430,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/tables/page.tsx",
-                lineNumber: 425,
+                lineNumber: 429,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -1975,7 +1975,7 @@ function TablesPage() {
                                     children: "Confirmar Exclusão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 537,
+                                    lineNumber: 541,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -1988,13 +1988,13 @@ function TablesPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 538,
+                                    lineNumber: 542,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tables/page.tsx",
-                            lineNumber: 536,
+                            lineNumber: 540,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -2003,7 +2003,7 @@ function TablesPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 544,
+                                    lineNumber: 548,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -2016,7 +2016,7 @@ function TablesPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tables/page.tsx",
-                                                lineNumber: 552,
+                                                lineNumber: 556,
                                                 columnNumber: 19
                                             }, this),
                                             "Excluindo..."
@@ -2024,24 +2024,24 @@ function TablesPage() {
                                     }, void 0, true) : "Excluir"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tables/page.tsx",
-                                    lineNumber: 545,
+                                    lineNumber: 549,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tables/page.tsx",
-                            lineNumber: 543,
+                            lineNumber: 547,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tables/page.tsx",
-                    lineNumber: 535,
+                    lineNumber: 539,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/tables/page.tsx",
-                lineNumber: 534,
+                lineNumber: 538,
                 columnNumber: 7
             }, this)
         ]

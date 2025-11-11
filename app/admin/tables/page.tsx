@@ -313,13 +313,14 @@ export default function TablesPage() {
       {/* Content */}
       <div className="p-4 space-y-6">
         {/* Tables Section */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <Square className="h-5 w-5 text-orange-500" />
-            Mesas ({tablesByType.mesa.length})
-          </h2>
-          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
-            {tablesByType.mesa.map((table) => (
+        {tablesByType.mesa.length > 0 && (
+          <div>
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Square className="h-5 w-5 text-orange-500" />
+              Mesas ({tablesByType.mesa.length})
+            </h2>
+            <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
+              {tablesByType.mesa.map((table) => (
               <Card 
                 key={table.id}
                 className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 shadow-sm ${!table.active ? 'opacity-60' : ''}`}
@@ -363,17 +364,19 @@ export default function TablesPage() {
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Counter Section */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-            <ChefHat className="h-5 w-5 text-orange-500" />
-            Balcão ({tablesByType.balcao.length})
-          </h2>
-          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
-            {tablesByType.balcao.map((table) => (
+        {tablesByType.balcao.length > 0 && (
+          <div>
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <ChefHat className="h-5 w-5 text-orange-500" />
+              Balcão ({tablesByType.balcao.length})
+            </h2>
+            <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
+              {tablesByType.balcao.map((table) => (
               <Card 
                 key={table.id}
                 className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 shadow-sm ${!table.active ? 'opacity-60' : ''}`}
@@ -417,8 +420,9 @@ export default function TablesPage() {
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Add/Edit Modal */}
