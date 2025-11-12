@@ -139,6 +139,16 @@ export default function TablesPage() {
     balcao: sortedTables.filter(t => t.type === 'counter')
   };
 
+  // Calculate next available numbers
+  const getNextNumber = (type: 'table' | 'counter') => {
+    const filtered = tables.filter(t => t.type === type);
+    if (filtered.length === 0) return '1';
+    
+    const numbers = filtered.map(t => parseInt(t.number) || 0);
+    const maxNumber = Math.max(...numbers);
+    return (maxNumber + 1).toString();
+  };
+
   // Calculate statistics
   const totalCapacity = tables.reduce((acc, t) => acc + t.capacity, 0);
   const activeCount = tables.filter(t => t.active).length;
@@ -333,13 +343,12 @@ export default function TablesPage() {
       {/* Content */}
       <div className="p-4 space-y-6">
         {/* Tables Section */}
-        {tablesByType.mesa.length > 0 && (
-          <div>
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-              <Square className="h-5 w-5 text-orange-500" />
-              Mesas ({tablesByType.mesa.length})
-            </h2>
-            <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
+        <div>
+          <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+            <Square className="h-5 w-5 text-orange-500" />
+            Mesas ({tablesByType.mesa.length})
+          </h2>
+          <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 gap-3">
               {tablesByType.mesa.map((table) => (
               <Card 
                 key={table.id}
@@ -384,13 +393,34 @@ export default function TablesPage() {
                 </CardContent>
               </Card>
             ))}
-            </div>
+            
+            {/* Add Next Table Card */}
+            <Card 
+              className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500 cursor-pointer transition-all hover:shadow-md"
+              onClick={() => {
+                setFormData({
+                  number: getNextNumber('table'),
+                  capacity: 4,
+                  type: 'table',
+                  active: true
+                });
+                setEditingTable(null);
+                setNumberExists(false);
+                setIsModalOpen(true);
+              }}
+            >
+              <CardContent className="p-4 text-center flex flex-col items-center justify-center h-full">
+                <Plus className="h-6 w-6 text-gray-400 dark:text-gray-500 mb-2" />
+                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                  Adicionar Mesa #{getNextNumber('table')}
+                </span>
+              </CardContent>
+            </Card>
           </div>
-        )}
+        </div>
 
         {/* Counter Section */}
-        {tablesByType.balcao.length > 0 && (
-          <div>
+        <div>
             <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
               <ChefHat className="h-5 w-5 text-orange-500" />
               Balcão ({tablesByType.balcao.length})
@@ -440,9 +470,31 @@ export default function TablesPage() {
                 </CardContent>
               </Card>
             ))}
-            </div>
+            
+            {/* Add Next Counter Card */}
+            <Card 
+              className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500 cursor-pointer transition-all hover:shadow-md"
+              onClick={() => {
+                setFormData({
+                  number: getNextNumber('counter'),
+                  capacity: 1,
+                  type: 'counter',
+                  active: true
+                });
+                setEditingTable(null);
+                setNumberExists(false);
+                setIsModalOpen(true);
+              }}
+            >
+              <CardContent className="p-4 text-center flex flex-col items-center justify-center h-full">
+                <Plus className="h-6 w-6 text-gray-400 dark:text-gray-500 mb-2" />
+                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                  Adicionar Balcão #{getNextNumber('counter')}
+                </span>
+              </CardContent>
+            </Card>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Add/Edit Modal */}

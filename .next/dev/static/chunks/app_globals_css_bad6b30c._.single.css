@@ -3990,6 +3990,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(75 85 99 / var(--tw-border-opacity, 1));
 }
 
+.dark\:hover\:border-orange-500:hover:is(.dark *) {
+  --tw-border-opacity: 1;
+  border-color: rgb(249 115 22 / var(--tw-border-opacity, 1));
+}
+
 .dark\:hover\:bg-blue-900\/20:hover:is(.dark *) {
   background-color: #1e3a8a33;
 }
