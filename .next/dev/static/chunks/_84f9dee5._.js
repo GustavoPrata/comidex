@@ -3269,344 +3269,6 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
-"[project]/components/ui/scroll-area.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
-
-__turbopack_context__.s([
-    "ScrollArea",
-    ()=>ScrollArea,
-    "ScrollBar",
-    ()=>ScrollBar
-]);
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@radix-ui/react-scroll-area/dist/index.mjs [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-client] (ecmascript)");
-"use client";
-;
-;
-;
-;
-const ScrollArea = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c = ({ className, children, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"], {
-        ref: ref,
-        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("relative overflow-hidden", className),
-        ...props,
-        children: [
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Viewport"], {
-                className: "h-full w-full rounded-[inherit]",
-                children: children
-            }, void 0, false, {
-                fileName: "[project]/components/ui/scroll-area.tsx",
-                lineNumber: 17,
-                columnNumber: 5
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(ScrollBar, {}, void 0, false, {
-                fileName: "[project]/components/ui/scroll-area.tsx",
-                lineNumber: 20,
-                columnNumber: 5
-            }, ("TURBOPACK compile-time value", void 0)),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Corner"], {}, void 0, false, {
-                fileName: "[project]/components/ui/scroll-area.tsx",
-                lineNumber: 21,
-                columnNumber: 5
-            }, ("TURBOPACK compile-time value", void 0))
-        ]
-    }, void 0, true, {
-        fileName: "[project]/components/ui/scroll-area.tsx",
-        lineNumber: 12,
-        columnNumber: 3
-    }, ("TURBOPACK compile-time value", void 0)));
-_c1 = ScrollArea;
-ScrollArea.displayName = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"].displayName;
-const ScrollBar = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](({ className, orientation = "vertical", ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollAreaScrollbar"], {
-        ref: ref,
-        orientation: orientation,
-        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex touch-none select-none transition-colors", orientation === "vertical" && "h-full w-2.5 border-l border-l-transparent p-[1px]", orientation === "horizontal" && "h-2.5 border-t border-t-transparent p-[1px]", className),
-        ...props,
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollAreaThumb"], {
-            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("relative flex-1 rounded-full bg-gray-200 dark:bg-gray-800", orientation === "vertical" && "w-full", orientation === "horizontal" && "h-full")
-        }, void 0, false, {
-            fileName: "[project]/components/ui/scroll-area.tsx",
-            lineNumber: 43,
-            columnNumber: 5
-        }, ("TURBOPACK compile-time value", void 0))
-    }, void 0, false, {
-        fileName: "[project]/components/ui/scroll-area.tsx",
-        lineNumber: 30,
-        columnNumber: 3
-    }, ("TURBOPACK compile-time value", void 0)));
-_c2 = ScrollBar;
-ScrollBar.displayName = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$scroll$2d$area$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollAreaScrollbar"].displayName;
-;
-var _c, _c1, _c2;
-__turbopack_context__.k.register(_c, "ScrollArea$React.forwardRef");
-__turbopack_context__.k.register(_c1, "ScrollArea");
-__turbopack_context__.k.register(_c2, "ScrollBar");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
-}
-}),
-"[project]/client/src/components/IconSelector.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
-
-__turbopack_context__.s([
-    "IconSelector",
-    ()=>IconSelector
-]);
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$menu$2d$icons$2d$library$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/menu-icons-library.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/dialog.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/input.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/scroll-area.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-client] (ecmascript) <export default as Search>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
-;
-;
-;
-;
-;
-;
-;
-;
-function IconSelector({ value, onChange, trigger, placeholder = "Buscar ícone..." }) {
-    _s();
-    const [open, setOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
-    const [search, setSearch] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])('');
-    const selectedIcon = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "IconSelector.useMemo[selectedIcon]": ()=>{
-            if (!value) return null;
-            return __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$menu$2d$icons$2d$library$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["menuIconLibrary"].find({
-                "IconSelector.useMemo[selectedIcon]": (icon)=>icon.name === value
-            }["IconSelector.useMemo[selectedIcon]"]);
-        }
-    }["IconSelector.useMemo[selectedIcon]"], [
-        value
-    ]);
-    const filteredIcons = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
-        "IconSelector.useMemo[filteredIcons]": ()=>{
-            if (!search) return __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$menu$2d$icons$2d$library$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["menuIconLibrary"];
-            const searchLower = search.toLowerCase();
-            return __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$menu$2d$icons$2d$library$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["menuIconLibrary"].filter({
-                "IconSelector.useMemo[filteredIcons]": (icon)=>icon.name.toLowerCase().includes(searchLower) || icon.keywords.some({
-                        "IconSelector.useMemo[filteredIcons]": (k)=>k.includes(searchLower)
-                    }["IconSelector.useMemo[filteredIcons]"])
-            }["IconSelector.useMemo[filteredIcons]"]);
-        }
-    }["IconSelector.useMemo[filteredIcons]"], [
-        search
-    ]);
-    const handleSelect = (iconName)=>{
-        onChange(iconName);
-        setOpen(false);
-        setSearch('');
-    };
-    const handleClear = ()=>{
-        onChange(null);
-        setSearch('');
-    };
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
-        children: [
-            trigger ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                onClick: ()=>setOpen(true),
-                children: trigger
-            }, void 0, false, {
-                fileName: "[project]/client/src/components/IconSelector.tsx",
-                lineNumber: 65,
-                columnNumber: 9
-            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                type: "button",
-                variant: "outline",
-                onClick: ()=>setOpen(true),
-                className: "w-full justify-start",
-                children: selectedIcon ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "flex items-center gap-2",
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(selectedIcon.icon, {
-                            className: "h-4 w-4"
-                        }, void 0, false, {
-                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                            lineNumber: 75,
-                            columnNumber: 15
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                            children: selectedIcon.name
-                        }, void 0, false, {
-                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                            lineNumber: 76,
-                            columnNumber: 15
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/client/src/components/IconSelector.tsx",
-                    lineNumber: 74,
-                    columnNumber: 13
-                }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                    className: "text-muted-foreground",
-                    children: "Selecionar ícone..."
-                }, void 0, false, {
-                    fileName: "[project]/client/src/components/IconSelector.tsx",
-                    lineNumber: 79,
-                    columnNumber: 13
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/client/src/components/IconSelector.tsx",
-                lineNumber: 67,
-                columnNumber: 9
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
-                open: open,
-                onOpenChange: setOpen,
-                modal: false,
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogContent"], {
-                    className: "fixed left-[50%] top-[50%] z-[60] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-2 bg-white dark:bg-gray-900 p-6 shadow-xl duration-200 sm:rounded-lg",
-                    onPointerDownOutside: (e)=>e.preventDefault(),
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogHeader"], {
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogTitle"], {
-                                className: "text-gray-900 dark:text-gray-100",
-                                children: "Selecionar Ícone"
-                            }, void 0, false, {
-                                fileName: "[project]/client/src/components/IconSelector.tsx",
-                                lineNumber: 89,
-                                columnNumber: 13
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                            lineNumber: 88,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "grid gap-4",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "relative",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"], {
-                                            className: "absolute left-2 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500"
-                                        }, void 0, false, {
-                                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                                            lineNumber: 95,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
-                                            value: search,
-                                            onChange: (e)=>setSearch(e.target.value),
-                                            placeholder: placeholder,
-                                            className: "pl-8 pr-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
-                                        }, void 0, false, {
-                                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                                            lineNumber: 96,
-                                            columnNumber: 15
-                                        }, this),
-                                        value && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: handleClear,
-                                            className: "absolute right-2 top-2.5 h-4 w-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
-                                                className: "h-4 w-4"
-                                            }, void 0, false, {
-                                                fileName: "[project]/client/src/components/IconSelector.tsx",
-                                                lineNumber: 108,
-                                                columnNumber: 19
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                                            lineNumber: 103,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/client/src/components/IconSelector.tsx",
-                                    lineNumber: 94,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollArea"], {
-                                    className: "h-[400px] w-full rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-5 gap-3",
-                                            children: filteredIcons.map((icon)=>{
-                                                const Icon = icon.icon;
-                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                    type: "button",
-                                                    onClick: ()=>handleSelect(icon.name),
-                                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex flex-col items-center justify-center p-3 rounded-md border transition-all", "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700", "hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:border-orange-400 dark:hover:border-orange-600 group", value === icon.name && "bg-orange-100 dark:bg-orange-900/30 border-orange-500 dark:border-orange-600"),
-                                                    title: icon.keywords.join(', '),
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("h-5 w-5 mb-1 transition-colors", value === icon.name ? "text-orange-600 dark:text-orange-400" : "text-gray-600 dark:text-gray-400 group-hover:text-orange-500 dark:group-hover:text-orange-400")
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                                                            lineNumber: 131,
-                                                            columnNumber: 23
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-[10px] text-gray-700 dark:text-gray-300 text-center line-clamp-1",
-                                                            children: icon.name
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                                                            lineNumber: 137,
-                                                            columnNumber: 23
-                                                        }, this)
-                                                    ]
-                                                }, icon.name, true, {
-                                                    fileName: "[project]/client/src/components/IconSelector.tsx",
-                                                    lineNumber: 119,
-                                                    columnNumber: 21
-                                                }, this);
-                                            })
-                                        }, void 0, false, {
-                                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                                            lineNumber: 115,
-                                            columnNumber: 15
-                                        }, this),
-                                        filteredIcons.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "text-center py-8 text-muted-foreground",
-                                            children: "Nenhum ícone encontrado"
-                                        }, void 0, false, {
-                                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                                            lineNumber: 144,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/client/src/components/IconSelector.tsx",
-                                    lineNumber: 114,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/client/src/components/IconSelector.tsx",
-                            lineNumber: 92,
-                            columnNumber: 11
-                        }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/client/src/components/IconSelector.tsx",
-                    lineNumber: 85,
-                    columnNumber: 9
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/client/src/components/IconSelector.tsx",
-                lineNumber: 84,
-                columnNumber: 7
-            }, this)
-        ]
-    }, void 0, true);
-}
-_s(IconSelector, "TZrxuJFAj9ke99qjqDN75DRrcoM=");
-_c = IconSelector;
-var _c;
-__turbopack_context__.k.register(_c, "IconSelector");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
-}
-}),
 "[project]/app/admin/menu-structure/page.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -3648,12 +3310,10 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$dnd$2d$kit
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/supabase/client.ts [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/sonner/dist/index.mjs [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$admin$2f$image$2d$upload$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/admin/image-upload.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$client$2f$src$2f$components$2f$IconSelector$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/client/src/components/IconSelector.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$menu$2d$icons$2d$library$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/menu-icons-library.tsx [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature(), _s1 = __turbopack_context__.k.signature(), _s2 = __turbopack_context__.k.signature();
 "use client";
-;
 ;
 ;
 ;
@@ -6028,132 +5688,94 @@ function GripStructurePage() {
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "space-y-4",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                    htmlFor: "icon",
-                                                    children: "Ícone do Grupo"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1824,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$client$2f$src$2f$components$2f$IconSelector$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["IconSelector"], {
-                                                    value: groupFormData.icon,
-                                                    onChange: (iconName)=>setGroupFormData({
-                                                            ...groupFormData,
-                                                            icon: iconName
-                                                        }),
-                                                    placeholder: "Buscar ícone..."
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1825,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-xs text-gray-500 dark:text-gray-500 mt-2",
-                                                    children: "Escolha um ícone para identificar visualmente este grupo"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1830,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1823,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-4",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
-                                                            className: "mb-3 block",
-                                                            children: "Status do Grupo"
-                                                        }, void 0, false, {
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "pt-6 space-y-4",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                        className: "mb-3 block",
+                                                        children: "Status do Grupo"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                                        lineNumber: 1825,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "space-y-3",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "space-y-2",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                    className: "text-xs text-gray-600 dark:text-gray-400",
+                                                                    children: "Visibilidade"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                                                    lineNumber: 1829,
+                                                                    columnNumber: 25
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                                    type: "button",
+                                                                    onClick: ()=>setGroupFormData({
+                                                                            ...groupFormData,
+                                                                            active: !groupFormData.active
+                                                                        }),
+                                                                    className: `w-full px-3 py-2 text-sm font-medium rounded-full transition-colors ${groupFormData.active ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-500 hover:bg-gray-600 text-white'}`,
+                                                                    children: groupFormData.active ? 'Visível' : 'Invisível'
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                                                    lineNumber: 1830,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1838,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "space-y-3",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "space-y-2",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                        className: "text-xs text-gray-600 dark:text-gray-400",
-                                                                        children: "Visibilidade"
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1842,
-                                                                        columnNumber: 25
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                                        type: "button",
-                                                                        onClick: ()=>setGroupFormData({
-                                                                                ...groupFormData,
-                                                                                active: !groupFormData.active
-                                                                            }),
-                                                                        className: `w-full px-3 py-2 text-sm font-medium rounded-full transition-colors ${groupFormData.active ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-gray-500 hover:bg-gray-600 text-white'}`,
-                                                                        children: groupFormData.active ? 'Visível' : 'Invisível'
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1843,
-                                                                        columnNumber: 25
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1841,
-                                                                columnNumber: 23
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1839,
-                                                            columnNumber: 21
+                                                            lineNumber: 1828,
+                                                            columnNumber: 23
                                                         }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                                        lineNumber: 1826,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                                lineNumber: 1824,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3",
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "text-xs text-gray-600 dark:text-gray-400",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "font-medium",
+                                                            children: "Dica:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                                            lineNumber: 1848,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        " Grupos invisíveis não aparecem no cardápio, assim como todas as categorias e produtos dentro deles."
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1837,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "bg-gray-50 dark:bg-gray-800/50 rounded-xl p-3",
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-xs text-gray-600 dark:text-gray-400",
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                className: "font-medium",
-                                                                children: "Dica:"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1861,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            " Grupos invisíveis não aparecem no cardápio, assim como todas as categorias e produtos dentro deles."
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 1860,
-                                                        columnNumber: 21
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1859,
-                                                    columnNumber: 19
+                                                    lineNumber: 1847,
+                                                    columnNumber: 21
                                                 }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1836,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                                lineNumber: 1846,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/menu-structure/page.tsx",
+                                        lineNumber: 1823,
+                                        columnNumber: 17
+                                    }, this)
+                                }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
                                     lineNumber: 1821,
                                     columnNumber: 15
@@ -6176,7 +5798,7 @@ function GripStructurePage() {
                                                     children: "Nome da Categoria *"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1873,
+                                                    lineNumber: 1860,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -6189,13 +5811,13 @@ function GripStructurePage() {
                                                     placeholder: "Ex: Sushi Especial"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1874,
+                                                    lineNumber: 1861,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1872,
+                                            lineNumber: 1859,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6205,7 +5827,7 @@ function GripStructurePage() {
                                                     children: "Descrição"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1883,
+                                                    lineNumber: 1870,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -6219,13 +5841,13 @@ function GripStructurePage() {
                                                     rows: 4
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1884,
+                                                    lineNumber: 1871,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1882,
+                                            lineNumber: 1869,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6234,7 +5856,7 @@ function GripStructurePage() {
                                                     children: "Imagem da Categoria (16:9)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1894,
+                                                    lineNumber: 1881,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$admin$2f$image$2d$upload$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ImageUpload"], {
@@ -6248,19 +5870,19 @@ function GripStructurePage() {
                                                     categoryId: editingItem?.id?.toString()
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1895,
+                                                    lineNumber: 1882,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1893,
+                                            lineNumber: 1880,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1871,
+                                    lineNumber: 1858,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6273,7 +5895,7 @@ function GripStructurePage() {
                                                     children: "Grupo *"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1908,
+                                                    lineNumber: 1895,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -6289,12 +5911,12 @@ function GripStructurePage() {
                                                                 placeholder: "Selecione um grupo"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1914,
+                                                                lineNumber: 1901,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1913,
+                                                            lineNumber: 1900,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -6307,30 +5929,30 @@ function GripStructurePage() {
                                                                             children: "(Rodízio)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                            lineNumber: 1921,
+                                                                            lineNumber: 1908,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, group.id, true, {
                                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                    lineNumber: 1918,
+                                                                    lineNumber: 1905,
                                                                     columnNumber: 25
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1916,
+                                                            lineNumber: 1903,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1909,
+                                                    lineNumber: 1896,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1907,
+                                            lineNumber: 1894,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6343,7 +5965,7 @@ function GripStructurePage() {
                                                             children: "Status da Categoria"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1934,
+                                                            lineNumber: 1921,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6356,7 +5978,7 @@ function GripStructurePage() {
                                                                         children: "Visibilidade"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1938,
+                                                                        lineNumber: 1925,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6369,24 +5991,24 @@ function GripStructurePage() {
                                                                         children: categoryFormData.active ? 'Visível' : 'Invisível'
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1939,
+                                                                        lineNumber: 1926,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1937,
+                                                                lineNumber: 1924,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1935,
+                                                            lineNumber: 1922,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1933,
+                                                    lineNumber: 1920,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6399,37 +6021,37 @@ function GripStructurePage() {
                                                                 children: "Dica:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1957,
+                                                                lineNumber: 1944,
                                                                 columnNumber: 23
                                                             }, this),
                                                             " Categorias invisíveis não aparecem no cardápio, assim como todos os produtos dentro delas."
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 1956,
+                                                        lineNumber: 1943,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1955,
+                                                    lineNumber: 1942,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1932,
+                                            lineNumber: 1919,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1906,
+                                    lineNumber: 1893,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 1869,
+                            lineNumber: 1856,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -6463,7 +6085,7 @@ function GripStructurePage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1967,
+                                    lineNumber: 1954,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -6477,7 +6099,7 @@ function GripStructurePage() {
                                                 className: "mr-2 h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2004,
+                                                lineNumber: 1991,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -6485,13 +6107,13 @@ function GripStructurePage() {
                                     }, void 0, true) : 'Salvar'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1996,
+                                    lineNumber: 1983,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 1966,
+                            lineNumber: 1953,
                             columnNumber: 11
                         }, this)
                     ]
@@ -6516,7 +6138,7 @@ function GripStructurePage() {
                                     children: "Confirmar exclusão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2022,
+                                    lineNumber: 2009,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -6534,7 +6156,7 @@ function GripStructurePage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2025,
+                                                lineNumber: 2012,
                                                 columnNumber: 17
                                             }, this),
                                             deletingItem?.type === 'group' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -6546,7 +6168,7 @@ function GripStructurePage() {
                                                             children: "⚠️ Atenção: Esta ação irá apagar:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2032,
+                                                            lineNumber: 2019,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -6561,7 +6183,7 @@ function GripStructurePage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                    lineNumber: 2035,
+                                                                    lineNumber: 2022,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 (deletingItem.itemCount || 0) > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -6574,19 +6196,19 @@ function GripStructurePage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                    lineNumber: 2038,
+                                                                    lineNumber: 2025,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2033,
+                                                            lineNumber: 2020,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2031,
+                                                    lineNumber: 2018,
                                                     columnNumber: 23
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg mt-2",
@@ -6595,12 +6217,12 @@ function GripStructurePage() {
                                                         children: "Este grupo está vazio e pode ser excluído com segurança."
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 2044,
+                                                        lineNumber: 2031,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2043,
+                                                    lineNumber: 2030,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false),
@@ -6613,7 +6235,7 @@ function GripStructurePage() {
                                                             children: "⚠️ Atenção:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2055,
+                                                            lineNumber: 2042,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6631,13 +6253,13 @@ function GripStructurePage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2056,
+                                                            lineNumber: 2043,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2054,
+                                                    lineNumber: 2041,
                                                     columnNumber: 23
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg mt-2",
@@ -6646,12 +6268,12 @@ function GripStructurePage() {
                                                         children: "Esta categoria está vazia e pode ser excluída com segurança."
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 2062,
+                                                        lineNumber: 2049,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2061,
+                                                    lineNumber: 2048,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false),
@@ -6660,24 +6282,24 @@ function GripStructurePage() {
                                                 children: "Esta ação não pode ser desfeita."
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2069,
+                                                lineNumber: 2056,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                        lineNumber: 2024,
+                                        lineNumber: 2011,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2023,
+                                    lineNumber: 2010,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2021,
+                            lineNumber: 2008,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -6687,7 +6309,7 @@ function GripStructurePage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2074,
+                                    lineNumber: 2061,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -6699,7 +6321,7 @@ function GripStructurePage() {
                                                 className: "mr-2 h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2081,
+                                                lineNumber: 2068,
                                                 columnNumber: 19
                                             }, this),
                                             "Excluindo..."
@@ -6707,24 +6329,24 @@ function GripStructurePage() {
                                     }, void 0, true) : 'Excluir'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2075,
+                                    lineNumber: 2062,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2073,
+                            lineNumber: 2060,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                    lineNumber: 2020,
+                    lineNumber: 2007,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                lineNumber: 2016,
+                lineNumber: 2003,
                 columnNumber: 7
             }, this),
             viewingImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -6741,12 +6363,12 @@ function GripStructurePage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                lineNumber: 2097,
+                                lineNumber: 2084,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2096,
+                            lineNumber: 2083,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6758,7 +6380,7 @@ function GripStructurePage() {
                                     className: "w-full h-auto max-h-[60vh] object-contain rounded-xl"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2102,
+                                    lineNumber: 2089,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6791,14 +6413,14 @@ function GripStructurePage() {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2132,
+                                                            lineNumber: 2119,
                                                             columnNumber: 21
                                                         }, this),
                                                         "Editar Foto"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2111,
+                                                    lineNumber: 2098,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -6818,20 +6440,20 @@ function GripStructurePage() {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2149,
+                                                            lineNumber: 2136,
                                                             columnNumber: 21
                                                         }, this),
                                                         "Baixar"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2136,
+                                                    lineNumber: 2123,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 2110,
+                                            lineNumber: 2097,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -6841,30 +6463,30 @@ function GripStructurePage() {
                                             children: "Fechar"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 2154,
+                                            lineNumber: 2141,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2109,
+                                    lineNumber: 2096,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2100,
+                            lineNumber: 2087,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                    lineNumber: 2095,
+                    lineNumber: 2082,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                lineNumber: 2094,
+                lineNumber: 2081,
                 columnNumber: 9
             }, this)
         ]
@@ -6890,4 +6512,4 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
 }),
 ]);
 
-//# sourceMappingURL=_29a371d4._.js.map
+//# sourceMappingURL=_84f9dee5._.js.map

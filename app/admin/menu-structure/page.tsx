@@ -1802,18 +1802,6 @@ export default function GripStructurePage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="icon">Ícone do Grupo</Label>
-                  <IconSelector
-                    value={groupFormData.icon}
-                    onChange={(iconName: string | null) => setGroupFormData({...groupFormData, icon: iconName})}
-                    placeholder="Buscar ícone..."
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-                    Escolha um ícone para identificar visualmente este grupo
-                  </p>
-                </div>
-
-                <div>
                   <Label htmlFor="price">Preço (R$)</Label>
                   <Input
                     id="price"
@@ -1829,10 +1817,23 @@ export default function GripStructurePage() {
                 </div>
               </div>
 
-              {/* Right column - Status and info */}
+              {/* Right column - Icon, Status and info */}
               <div className="space-y-4">
+                {/* Icon selector */}
+                <div>
+                  <Label htmlFor="icon">Ícone do Grupo</Label>
+                  <IconSelector
+                    value={groupFormData.icon}
+                    onChange={(iconName: string | null) => setGroupFormData({...groupFormData, icon: iconName})}
+                    placeholder="Buscar ícone..."
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                    Escolha um ícone para identificar visualmente este grupo
+                  </p>
+                </div>
+
                 {/* Status section */}
-                <div className="pt-6 space-y-4">
+                <div className="space-y-4">
                   <div>
                     <Label className="mb-3 block">Status do Grupo</Label>
                     <div className="space-y-3">
