@@ -211,9 +211,9 @@ export const menuIconLibrary: MenuIconOption[] = [
   { name: 'Laranja', icon: Citrus, category: 'desserts', keywords: ['laranja', 'citrus', 'vitamina', 'suco'] },
   
   // ESPECIAIS E PROMOÇÕES (19 ícones - incluindo rodízios específicos)
-  { name: 'Rodízio Tradicional', icon: Star, category: 'special', keywords: ['rodízio', 'tradicional', 'clássico', 'normal'] },
+  { name: 'Rodízio Tradicional', icon: Utensils, category: 'special', keywords: ['rodízio', 'tradicional', 'clássico', 'normal'] },
   { name: 'Rodízio Premium', icon: Crown, category: 'special', keywords: ['rodízio', 'premium', 'vip', 'completo', 'top'] },
-  { name: 'À la Carte', icon: Menu, category: 'special', keywords: ['carte', 'menu', 'escolha', 'individual', 'avulso'] },
+  { name: 'À la Carte', icon: Clipboard, category: 'special', keywords: ['carte', 'menu', 'escolha', 'individual', 'avulso'] },
   { name: 'Rodízio', icon: LayoutGrid, category: 'special', keywords: ['rodízio', 'festival', 'livre', 'buffet', 'all you can eat'] },
   { name: 'Estrela Top', icon: Star, category: 'special', keywords: ['estrela', 'favorito', 'top', 'melhor'] },
   { name: 'Coroa Premium', icon: Crown, category: 'special', keywords: ['premium', 'vip', 'exclusivo', 'royal'] },
