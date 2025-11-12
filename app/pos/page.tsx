@@ -1673,12 +1673,6 @@ export default function POSPage() {
                       // Mostrar Categorias do Grupo e Produtos
                       <div className="space-y-4">
                         <div className="grid grid-cols-3 gap-2">
-                          <Button
-                            onClick={() => setSelectedCategory(null)}
-                            className={`${!selectedCategory ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
-                          >
-                            Todos
-                          </Button>
                           {categories
                             .filter((c) => c.active && c.group_id === selectedGroup)
                             .map((category) => {
