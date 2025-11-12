@@ -1022,10 +1022,7 @@ export default function POSPage() {
                             <div className="text-xs text-gray-300 space-y-0.5">
                               <div className="flex items-center justify-center gap-1">
                                 <Users className="h-3 w-3" />
-                                <span>{table.current_session.customer_count}</span>
-                              </div>
-                              <div className="font-bold text-orange-400">
-                                {formatCurrency(table.current_session.total)}
+                                <span>{table.current_session.customer_count} {table.current_session.customer_count === 1 ? 'pessoa' : 'pessoas'}</span>
                               </div>
                               <div className="flex items-center justify-center gap-1">
                                 <Clock className="h-3 w-3" />
