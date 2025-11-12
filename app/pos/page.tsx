@@ -306,6 +306,13 @@ export default function POSPage() {
         current_session: table.current_session?.find((s: any) => s.status === 'open')
       }));
 
+      // Ordenação numérica das mesas/balcões
+      processedTables.sort((a, b) => {
+        const numA = parseInt(a.number) || 0;
+        const numB = parseInt(b.number) || 0;
+        return numA - numB;
+      });
+
       setTables(processedTables);
     } catch (error) {
       console.error('Erro ao carregar mesas:', error);
