@@ -534,7 +534,6 @@ function SortableCategoryItem({
 // Main Component
 export default function GripStructurePage() {
   const [groups, setGroups] = useState<ExtendedGroup[]>([]);
-  const [items, setItems] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -623,35 +622,19 @@ export default function GripStructurePage() {
 
         if (categoriesError) throw categoriesError;
 
-        // Buscar items com informações completas incluindo categoria e grupo
+        // Buscar contagem de itens
         const { data: itemsData } = await supabase
           .from("items")
-          .select(`
-            *,
-            category:categories(
-              id,
-              name,
-              group_id,
-              group:groups(
-                id,
-                name,
-                type
-              )
-            )
-          `)
-          .order("sort_order");
+          .select("category_id, id");
 
         const categoryItemCounts: Record<string, number> = {};
         
-        // Guardar items completos e contar por categoria
-        if (itemsData) {
-          setItems(itemsData);
-          itemsData.forEach((item: any) => {
-            if (item.category_id) {
-              categoryItemCounts[item.category_id] = (categoryItemCounts[item.category_id] || 0) + 1;
-            }
-          });
-        }
+        // Contar itens por categoria
+        itemsData?.forEach((item: any) => {
+          if (item.category_id) {
+            categoryItemCounts[item.category_id] = (categoryItemCounts[item.category_id] || 0) + 1;
+          }
+        });
 
         // Montar grupos com categorias e calcular contagem de itens
         const groupsWithCategories = groupsData?.map((group: any) => {
