@@ -82,26 +82,26 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg">
+        <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-white dark:bg-gray-900 p-6 shadow-lg duration-200 sm:rounded-lg">
           <DialogHeader>
-            <DialogTitle>Selecionar √çcone</DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">Selecionar √çcone</DialogTitle>
           </DialogHeader>
 
           <div className="grid gap-4">
             {/* Barra de busca */}
             <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={placeholder}
-                className="pl-8 pr-8"
+                className="pl-8 pr-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
               />
               {value && (
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="absolute right-2 top-2.5 h-4 w-4 text-muted-foreground hover:text-foreground"
+                  className="absolute right-2 top-2.5 h-4 w-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -109,7 +109,7 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
             </div>
 
             {/* √Årea de √≠cones com scroll */}
-            <ScrollArea className="h-[400px] w-full rounded-md border p-4">
+            <ScrollArea className="h-[400px] w-full rounded-md border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4">
               <div className="grid grid-cols-5 gap-3">
                 {filteredIcons.map((icon) => {
                   const Icon = icon.icon;
@@ -119,16 +119,20 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
                       type="button"
                       onClick={() => handleSelect(icon.name)}
                       className={cn(
-                        "flex flex-col items-center justify-center p-3 rounded-md border transition-all hover:bg-orange-50 hover:border-orange-400 group",
-                        value === icon.name && "bg-orange-100 border-orange-500"
+                        "flex flex-col items-center justify-center p-3 rounded-md border transition-all",
+                        "bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700",
+                        "hover:bg-orange-50 dark:hover:bg-orange-900/20 hover:border-orange-400 dark:hover:border-orange-600 group",
+                        value === icon.name && "bg-orange-100 dark:bg-orange-900/30 border-orange-500 dark:border-orange-600"
                       )}
                       title={icon.keywords.join(', ')}
                     >
                       <Icon className={cn(
                         "h-5 w-5 mb-1 transition-colors",
-                        value === icon.name ? "text-orange-600" : "text-gray-600 group-hover:text-orange-500"
+                        value === icon.name 
+                          ? "text-orange-600 dark:text-orange-400" 
+                          : "text-gray-600 dark:text-gray-400 group-hover:text-orange-500 dark:group-hover:text-orange-400"
                       )} />
-                      <span className="text-[10px] text-gray-700 text-center line-clamp-1">{icon.name}</span>
+                      <span className="text-[10px] text-gray-700 dark:text-gray-300 text-center line-clamp-1">{icon.name}</span>
                     </button>
                   );
                 })}
