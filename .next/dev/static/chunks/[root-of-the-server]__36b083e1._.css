@@ -1564,6 +1564,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   overflow: hidden;
 }
 
+.overflow-visible {
+  overflow: visible;
+}
+
 .overflow-x-auto {
   overflow-x: auto;
 }

@@ -1321,7 +1321,7 @@ export default function POSPage() {
         </div>
 
         {/* Main Content com Tabs */}
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1">
           {/* Left Panel - Carrinho e Categorias */}
           <div className="flex-1 flex flex-col p-4">
             <Tabs defaultValue="cart" className="flex-1 flex flex-col">
@@ -1338,9 +1338,9 @@ export default function POSPage() {
               
               <TabsContent value="cart" className="flex-1 flex flex-col mt-4">
                 {/* Input Section */}
-                <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4">
-                  <CardContent className="p-4">
-                    <div className="space-y-2 relative">
+                <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
+                  <CardContent className="p-4 overflow-visible">
+                    <div className="space-y-2 relative overflow-visible">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="col-span-2 relative">
                           <label className="text-xs text-gray-400 mb-1 block">
