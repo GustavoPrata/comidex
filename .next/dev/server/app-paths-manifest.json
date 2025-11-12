@@ -1,5 +1,4 @@
 {
   "/admin/menu-structure/page": "app/admin/menu-structure/page.js",
-  "/api/groups/route": "app/api/groups/route.js",
   "/prompt/page": "app/prompt/page.js"
 }

@@ -234,9 +234,8 @@ function SortableGroupItem({
                 {(() => {
                   const iconName = (group as any).icon;
                   if (iconName) {
-                    const iconOption = getIconByName(iconName);
-                    if (iconOption) {
-                      const Icon = iconOption.icon;
+                    const Icon = getIconByName(iconName);
+                    if (Icon) {
                       return (
                         <div className="p-1.5 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
                           <Icon className="h-5 w-5 text-orange-600 dark:text-orange-400" />
@@ -1823,7 +1822,7 @@ export default function GripStructurePage() {
                 <div>
                   <Label htmlFor="icon">Ícone do Grupo</Label>
                   <IconSelector
-                    value={groupFormData.icon}
+                    value={groupFormData.icon || undefined}
                     onChange={(iconName: string | null) => setGroupFormData({...groupFormData, icon: iconName})}
                     placeholder="Buscar ícone..."
                   />
