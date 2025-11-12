@@ -138,35 +138,35 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-md translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg">
           <DialogHeader>
             <DialogTitle>Selecionar √çcone</DialogTitle>
           </DialogHeader>
 
-          <div className="space-y-4">
+          <div className="grid gap-4">
             {/* Barra de busca compacta */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={placeholder}
-                className="pl-10 pr-10"
+                className="pl-8 pr-8"
               />
               {value && (
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 rounded"
+                  className="absolute right-2 top-2.5 h-4 w-4 text-muted-foreground hover:text-foreground"
                 >
-                  <X className="h-4 w-4 text-gray-500" />
+                  <X className="h-4 w-4" />
                 </button>
               )}
             </div>
 
             {/* Categorias em select dropdown */}
             <Select value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as any)}>
-              <SelectTrigger className="w-full">
+              <SelectTrigger>
                 <SelectValue placeholder="Selecione uma categoria" />
               </SelectTrigger>
               <SelectContent>
@@ -180,7 +180,7 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
             </Select>
 
             {/* √Årea de √≠cones com scroll */}
-            <ScrollArea className="h-[300px] w-full rounded-md border p-4">
+            <ScrollArea className="h-[280px] w-full rounded-md border p-3">
               <div className="grid grid-cols-4 gap-2">
                 {filteredIcons.map((icon) => {
                   const Icon = icon.icon;
