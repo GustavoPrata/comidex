@@ -1516,7 +1516,7 @@ export default function POSPage() {
                                 <CardContent className="p-3">
                                   <div className="flex items-center justify-between">
                                     {/* Foto do produto */}
-                                    <div className="w-12 h-12 bg-gray-700 rounded mr-3 flex-shrink-0 overflow-hidden">
+                                    <div className="w-20 aspect-video bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
                                       {item.item?.image ? (
                                         <img
                                           src={item.item.image}
