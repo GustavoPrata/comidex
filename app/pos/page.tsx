@@ -968,7 +968,7 @@ export default function POSPage() {
                 >
                   <Card
                     className={`
-                      cursor-pointer transition-all
+                      cursor-pointer transition-all h-[240px]
                       ${table.current_session 
                         ? 'bg-gradient-to-br from-orange-900/40 to-orange-800/30 border-orange-600 shadow-orange-600/20' 
                         : 'bg-gray-800/50 backdrop-blur border-gray-700 hover:bg-gray-700/50'}
@@ -976,7 +976,7 @@ export default function POSPage() {
                     `}
                     onClick={() => handleSelectTable(table)}
                   >
-                    <CardContent className="p-6 text-center relative">
+                    <CardContent className="p-6 text-center relative h-full flex flex-col justify-between">
                       {table.current_session && (
                         <div className="absolute -top-2 -right-2">
                           <div className="relative">
@@ -986,38 +986,49 @@ export default function POSPage() {
                         </div>
                       )}
                       
-                      <div className="mb-2">
-                        {table.type === 'counter' ? (
-                          <User className="h-8 w-8 mx-auto text-white" />
+                      <div>
+                        <div className="mb-2">
+                          {table.type === 'counter' ? (
+                            <User className="h-8 w-8 mx-auto text-white" />
+                          ) : (
+                            <Home className="h-8 w-8 mx-auto text-white" />
+                          )}
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-1">
+                          {table.type === 'counter' ? 'Balcão' : 'Mesa'} {table.number}
+                        </h3>
+                        <p className="text-sm text-gray-400 mb-3">
+                          Capacidade: {table.capacity}
+                        </p>
+                      </div>
+                      
+                      <div>
+                        {table.current_session ? (
+                          <>
+                            <Badge className="bg-orange-600 text-white mb-2">
+                              OCUPADA
+                            </Badge>
+                            <div className="text-xs text-gray-300 mt-2 space-y-1">
+                              <p>👥 {table.current_session.customer_count} pessoas</p>
+                              <p className="font-bold text-orange-400">
+                                {formatCurrency(table.current_session.total)}
+                              </p>
+                              <p>⏰ {format(new Date(table.current_session.opened_at), 'HH:mm')}</p>
+                            </div>
+                          </>
                         ) : (
-                          <Home className="h-8 w-8 mx-auto text-white" />
+                          <>
+                            <Badge className="bg-green-600 text-white mb-2">
+                              LIVRE
+                            </Badge>
+                            <div className="text-xs text-gray-500 mt-2 space-y-1">
+                              <p className="invisible">👥 -</p>
+                              <p className="invisible">-</p>
+                              <p className="invisible">⏰ -</p>
+                            </div>
+                          </>
                         )}
                       </div>
-                      <h3 className="text-xl font-bold text-white mb-1">
-                        {table.type === 'counter' ? 'Balcão' : 'Mesa'} {table.number}
-                      </h3>
-                      <p className="text-sm text-gray-400 mb-3">
-                        Capacidade: {table.capacity}
-                      </p>
-                      
-                      {table.current_session ? (
-                        <>
-                          <Badge className="bg-orange-600 text-white mb-2">
-                            OCUPADA
-                          </Badge>
-                          <div className="text-xs text-gray-300 mt-2">
-                            <p>👥 {table.current_session.customer_count} pessoas</p>
-                            <p className="font-bold text-orange-400">
-                              {formatCurrency(table.current_session.total)}
-                            </p>
-                            <p>⏰ {format(new Date(table.current_session.opened_at), 'HH:mm')}</p>
-                          </div>
-                        </>
-                      ) : (
-                        <Badge className="bg-green-600 text-white">
-                          LIVRE
-                        </Badge>
-                      )}
                     </CardContent>
                   </Card>
                 </motion.div>

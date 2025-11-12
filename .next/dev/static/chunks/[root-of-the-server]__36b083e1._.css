@@ -518,6 +518,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   visibility: visible;
 }
 
+.invisible {
+  visibility: hidden;
+}
+
 .collapse {
   visibility: collapse;
 }
