@@ -106,6 +106,7 @@ interface TableSession {
   total: number;
   final_total?: number;
   notes?: string | null;
+  service_type?: 'a_la_carte' | 'rodizio_tradicional' | 'rodizio_premium';
 }
 
 interface Order {
@@ -190,6 +191,7 @@ export default function POSPage() {
   // Estados de diálogos
   const [openTableDialog, setOpenTableDialog] = useState(false);
   const [customerCount, setCustomerCount] = useState("1");
+  const [serviceType, setServiceType] = useState<'a_la_carte' | 'rodizio_tradicional' | 'rodizio_premium'>('a_la_carte');
   const [paymentDialog, setPaymentDialog] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'pix'>('cash');
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
@@ -474,7 +476,8 @@ export default function POSPage() {
           status: 'open',
           customer_count: parseInt(customerCount) || 1,
           opened_at: new Date().toISOString(),
-          total: 0
+          total: 0,
+          service_type: serviceType
         })
         .select()
         .single();
@@ -1018,7 +1021,18 @@ export default function POSPage() {
                             <Badge className="bg-orange-600 text-white text-xs py-0.5 mb-1">
                               OCUPADA
                             </Badge>
-                            <div className="text-xs text-gray-300 mt-1">
+                            <div className="text-xs text-gray-300 mt-1 space-y-1">
+                              {table.current_session.service_type && (
+                                <div className="text-center">
+                                  <span className="text-yellow-400 font-semibold">
+                                    {table.current_session.service_type === 'a_la_carte' 
+                                      ? 'À la Carte'
+                                      : table.current_session.service_type === 'rodizio_tradicional'
+                                      ? 'Rodízio Tradicional'
+                                      : 'Rodízio Premium'}
+                                  </span>
+                                </div>
+                              )}
                               <div className="flex items-center justify-center gap-1">
                                 <Users className="h-3 w-3" />
                                 <span>{table.current_session.customer_count} {table.current_session.customer_count === 1 ? 'pessoa' : 'pessoas'}</span>
@@ -1095,26 +1109,69 @@ export default function POSPage() {
                 Abrir {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
               </DialogTitle>
               <DialogDescription className="text-gray-400">
-                Informe a quantidade de pessoas
+                Selecione o tipo de serviço e quantidade de pessoas
               </DialogDescription>
             </DialogHeader>
             
-            <div className="py-4">
-              <label className="block text-sm mb-2 text-gray-300">
-                Número de Pessoas
-              </label>
-              <Input
-                type="number"
-                min="1"
-                max={selectedTable?.capacity || 10}
-                value={customerCount}
-                onChange={(e) => setCustomerCount(e.target.value)}
-                className="bg-gray-700 border-gray-600 text-white text-xl"
-                autoFocus
-              />
-              <p className="text-xs text-gray-400 mt-1">
-                Capacidade máxima: {selectedTable?.capacity}
-              </p>
+            <div className="py-4 space-y-4">
+              <div>
+                <label className="block text-sm mb-2 text-gray-300">
+                  Tipo de Serviço
+                </label>
+                <div className="grid grid-cols-3 gap-2">
+                  <Button
+                    type="button"
+                    onClick={() => setServiceType('a_la_carte')}
+                    className={`${
+                      serviceType === 'a_la_carte' 
+                        ? 'bg-orange-600 hover:bg-orange-700' 
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
+                  >
+                    À la Carte
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setServiceType('rodizio_tradicional')}
+                    className={`${
+                      serviceType === 'rodizio_tradicional' 
+                        ? 'bg-orange-600 hover:bg-orange-700' 
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
+                  >
+                    Rodízio Tradicional
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => setServiceType('rodizio_premium')}
+                    className={`${
+                      serviceType === 'rodizio_premium' 
+                        ? 'bg-orange-600 hover:bg-orange-700' 
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
+                  >
+                    Rodízio Premium
+                  </Button>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm mb-2 text-gray-300">
+                  Número de Pessoas
+                </label>
+                <Input
+                  type="number"
+                  min="1"
+                  max={selectedTable?.capacity || 10}
+                  value={customerCount}
+                  onChange={(e) => setCustomerCount(e.target.value)}
+                  className="bg-gray-700 border-gray-600 text-white text-xl"
+                  autoFocus
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Capacidade máxima: {selectedTable?.capacity}
+                </p>
+              </div>
             </div>
             
             <DialogFooter>
@@ -1302,7 +1359,7 @@ export default function POSPage() {
                 </TabsTrigger>
                 <TabsTrigger value="categories" className="data-[state=active]:bg-orange-600">
                   <Package className="mr-2 h-4 w-4" />
-                  Categorias
+                  Grupos e Categorias
                 </TabsTrigger>
               </TabsList>
               
@@ -1486,7 +1543,7 @@ export default function POSPage() {
               <TabsContent value="categories" className="flex-1 mt-4">
                 <Card className="h-full bg-gray-900/50 backdrop-blur border-gray-700">
                   <CardHeader>
-                    <CardTitle>Produtos por Categoria</CardTitle>
+                    <CardTitle>Grupos e Categorias de Produtos</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-3 gap-4 mb-4">
