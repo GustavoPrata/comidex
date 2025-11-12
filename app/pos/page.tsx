@@ -989,11 +989,27 @@ export default function POSPage() {
                       )}
                       
                       <div>
-                        <div className="mb-1">
+                        <div className="mb-1 h-8 flex items-center justify-center">
                           {table.type === 'counter' ? (
-                            <Armchair className="h-6 w-6 mx-auto text-white/90" />
+                            // Ícone de Balcão - barra horizontal com banquinhos
+                            <div className="relative">
+                              <div className="w-10 h-1 bg-white/90 rounded"></div>
+                              <div className="absolute -bottom-2 left-0 flex gap-1">
+                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
+                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
+                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
+                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
+                              </div>
+                            </div>
                           ) : (
-                            <UtensilsCrossed className="h-6 w-6 mx-auto text-white/90" />
+                            // Ícone de Mesa - quadrado com cadeiras ao redor
+                            <div className="relative">
+                              <div className="w-5 h-5 bg-white/90 rounded-sm"></div>
+                              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white/70 rounded-full"></div>
+                              <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2 w-1 h-1 bg-white/70 rounded-full"></div>
+                              <div className="absolute top-1/2 -left-1 transform -translate-y-1/2 w-1 h-1 bg-white/70 rounded-full"></div>
+                              <div className="absolute top-1/2 -right-1 transform -translate-y-1/2 w-1 h-1 bg-white/70 rounded-full"></div>
+                            </div>
                           )}
                         </div>
                         <h3 className="text-lg font-bold text-white">
@@ -1072,9 +1088,24 @@ export default function POSPage() {
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 {selectedTable?.type === 'counter' ? (
-                  <Armchair className="h-5 w-5" />
+                  // Ícone de Balcão
+                  <div className="relative">
+                    <div className="w-6 h-0.5 bg-current rounded"></div>
+                    <div className="absolute -bottom-1 left-0 flex gap-0.5">
+                      <div className="w-1 h-1 bg-current rounded-full opacity-70"></div>
+                      <div className="w-1 h-1 bg-current rounded-full opacity-70"></div>
+                      <div className="w-1 h-1 bg-current rounded-full opacity-70"></div>
+                    </div>
+                  </div>
                 ) : (
-                  <UtensilsCrossed className="h-5 w-5" />
+                  // Ícone de Mesa
+                  <div className="relative">
+                    <div className="w-4 h-4 bg-current rounded-sm"></div>
+                    <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-0.5 bg-current rounded-full opacity-70"></div>
+                    <div className="absolute -bottom-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-0.5 bg-current rounded-full opacity-70"></div>
+                    <div className="absolute top-1/2 -left-0.5 transform -translate-y-1/2 w-0.5 h-0.5 bg-current rounded-full opacity-70"></div>
+                    <div className="absolute top-1/2 -right-0.5 transform -translate-y-1/2 w-0.5 h-0.5 bg-current rounded-full opacity-70"></div>
+                  </div>
                 )}
                 Abrir {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
               </DialogTitle>
