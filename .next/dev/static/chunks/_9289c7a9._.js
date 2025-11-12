@@ -3591,10 +3591,10 @@ function IconSelector({ value, onChange, trigger, placeholder = "Buscar ícone..
                 open: open,
                 onOpenChange: setOpen,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogContent"], {
-                    className: "max-w-5xl h-[80vh] p-0",
+                    className: "max-w-3xl max-h-[500px] p-0 overflow-hidden flex flex-col",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogHeader"], {
-                            className: "px-6 pt-6 pb-2",
+                            className: "px-6 pt-5 pb-2",
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogTitle"], {
                                 children: "Selecionar Ícone"
                             }, void 0, false, {
@@ -3702,10 +3702,10 @@ function IconSelector({ value, onChange, trigger, placeholder = "Buscar ícone..
                                     className: "flex-1 px-6 pb-6",
                                     children: [
                                         !search && selectedCategory === 'all' && suggestedIcons.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "mb-6",
+                                            className: "mb-4",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3",
+                                                    className: "text-sm font-medium text-gray-700 dark:text-gray-300 mb-2",
                                                     children: "Sugestões Rápidas"
                                                 }, void 0, false, {
                                                     fileName: "[project]/client/src/components/IconSelector.tsx",
@@ -3713,23 +3713,23 @@ function IconSelector({ value, onChange, trigger, placeholder = "Buscar ícone..
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "grid grid-cols-8 gap-3",
+                                                    className: "grid grid-cols-6 gap-2",
                                                     children: suggestedIcons.map((icon)=>{
                                                         const Icon = icon.icon;
                                                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                             type: "button",
                                                             onClick: ()=>handleSelect(icon.name),
-                                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all hover:bg-orange-50 hover:border-orange-400 hover:shadow-md", value === icon.name && "bg-orange-100 border-orange-500 shadow-md"),
+                                                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all hover:bg-orange-50 hover:border-orange-400", value === icon.name && "bg-orange-100 border-orange-500"),
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                                                    className: "h-8 w-8 mb-2 text-gray-700"
+                                                                    className: "h-6 w-6 mb-1 text-gray-700"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/client/src/components/IconSelector.tsx",
                                                                     lineNumber: 200,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "text-xs font-medium text-center line-clamp-2",
+                                                                    className: "text-xs text-center line-clamp-1",
                                                                     children: icon.name
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/client/src/components/IconSelector.tsx",
@@ -3755,24 +3755,24 @@ function IconSelector({ value, onChange, trigger, placeholder = "Buscar ícone..
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "grid grid-cols-8 gap-3",
+                                            className: "grid grid-cols-6 gap-2",
                                             children: filteredIcons.map((icon)=>{
                                                 const Icon = icon.icon;
                                                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                     type: "button",
                                                     onClick: ()=>handleSelect(icon.name),
-                                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all hover:bg-orange-50 hover:border-orange-400 hover:shadow-md group", value === icon.name && "bg-orange-100 border-orange-500 shadow-md"),
+                                                    className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all hover:bg-orange-50 hover:border-orange-400 group", value === icon.name && "bg-orange-100 border-orange-500"),
                                                     title: icon.keywords.join(', '),
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                                            className: "h-8 w-8 mb-2 text-gray-700 group-hover:text-orange-600 transition-colors"
+                                                            className: "h-6 w-6 mb-1 text-gray-700 group-hover:text-orange-600 transition-colors"
                                                         }, void 0, false, {
                                                             fileName: "[project]/client/src/components/IconSelector.tsx",
                                                             lineNumber: 223,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "text-xs font-medium text-center line-clamp-2",
+                                                            className: "text-xs text-center line-clamp-1",
                                                             children: icon.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/client/src/components/IconSelector.tsx",

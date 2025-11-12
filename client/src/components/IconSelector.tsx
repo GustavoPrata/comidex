@@ -132,8 +132,8 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-5xl h-[80vh] p-0">
-          <DialogHeader className="px-6 pt-6 pb-2">
+        <DialogContent className="max-w-3xl max-h-[500px] p-0 overflow-hidden flex flex-col">
+          <DialogHeader className="px-6 pt-5 pb-2">
             <DialogTitle>Selecionar √çcone</DialogTitle>
           </DialogHeader>
 
@@ -182,9 +182,9 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
 
             <ScrollArea className="flex-1 px-6 pb-6">
               {!search && selectedCategory === 'all' && suggestedIcons.length > 0 && (
-                <div className="mb-6">
-                  <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Sugest√µes R√°pidas</div>
-                  <div className="grid grid-cols-8 gap-3">
+                <div className="mb-4">
+                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sugest√µes R√°pidas</div>
+                  <div className="grid grid-cols-6 gap-2">
                     {suggestedIcons.map((icon) => {
                       const Icon = icon.icon;
                       return (
@@ -193,12 +193,12 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
                           type="button"
                           onClick={() => handleSelect(icon.name)}
                           className={cn(
-                            "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all hover:bg-orange-50 hover:border-orange-400 hover:shadow-md",
-                            value === icon.name && "bg-orange-100 border-orange-500 shadow-md"
+                            "flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all hover:bg-orange-50 hover:border-orange-400",
+                            value === icon.name && "bg-orange-100 border-orange-500"
                           )}
                         >
-                          <Icon className="h-8 w-8 mb-2 text-gray-700" />
-                          <span className="text-xs font-medium text-center line-clamp-2">{icon.name}</span>
+                          <Icon className="h-6 w-6 mb-1 text-gray-700" />
+                          <span className="text-xs text-center line-clamp-1">{icon.name}</span>
                         </button>
                       );
                     })}
@@ -206,7 +206,7 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
                 </div>
               )}
 
-              <div className="grid grid-cols-8 gap-3">
+              <div className="grid grid-cols-6 gap-2">
                 {filteredIcons.map((icon) => {
                   const Icon = icon.icon;
                   return (
@@ -215,13 +215,13 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
                       type="button"
                       onClick={() => handleSelect(icon.name)}
                       className={cn(
-                        "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all hover:bg-orange-50 hover:border-orange-400 hover:shadow-md group",
-                        value === icon.name && "bg-orange-100 border-orange-500 shadow-md"
+                        "flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all hover:bg-orange-50 hover:border-orange-400 group",
+                        value === icon.name && "bg-orange-100 border-orange-500"
                       )}
                       title={icon.keywords.join(', ')}
                     >
-                      <Icon className="h-8 w-8 mb-2 text-gray-700 group-hover:text-orange-600 transition-colors" />
-                      <span className="text-xs font-medium text-center line-clamp-2">{icon.name}</span>
+                      <Icon className="h-6 w-6 mb-1 text-gray-700 group-hover:text-orange-600 transition-colors" />
+                      <span className="text-xs text-center line-clamp-1">{icon.name}</span>
                     </button>
                   );
                 })}
