@@ -1624,7 +1624,12 @@ export default function ProductsPage() {
                       <div className="flex items-center gap-4">
                         <div className="flex items-center justify-center w-12 h-12 bg-orange-500 text-white rounded-full">
                           {(() => {
-                            // Escolhe ícone baseado no tipo ou nome do grupo
+                            // Use saved icon from database
+                            const Icon = groupObj?.icon ? getIconByName(groupObj.icon) : null;
+                            if (Icon) {
+                              return <Icon className="h-6 w-6" />;
+                            }
+                            // Fallback icons based on type
                             const groupNameLower = groupName.toLowerCase();
                             if (groupObj?.type === 'rodizio' || groupNameLower.includes('rodízio') || groupNameLower.includes('rodizio')) {
                               return <Utensils className="h-6 w-6" />;
@@ -2065,16 +2070,22 @@ export default function ProductsPage() {
                     <SelectValue placeholder="Selecione um grupo" />
                   </SelectTrigger>
                   <SelectContent>
-                    {groups.map((group) => (
-                      <SelectItem key={group.id} value={group.id.toString()}>
-                        {group.name}
-                        {group.type === 'rodizio' && (
-                          <span className="ml-2 text-xs text-orange-600">
-                            (Rodízio)
-                          </span>
-                        )}
-                      </SelectItem>
-                    ))}
+                    {groups.map((group) => {
+                      const Icon = group.icon ? getIconByName(group.icon) : null;
+                      return (
+                        <SelectItem key={group.id} value={group.id.toString()}>
+                          <div className="flex items-center gap-2">
+                            {Icon && <Icon className="h-4 w-4" />}
+                            <span>{group.name}</span>
+                            {group.type === 'rodizio' && (
+                              <span className="ml-2 text-xs text-orange-600">
+                                (Rodízio)
+                              </span>
+                            )}
+                          </div>
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
