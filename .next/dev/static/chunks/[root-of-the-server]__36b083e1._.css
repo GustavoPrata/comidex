@@ -3214,6 +3214,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   transition-duration: .5s;
 }
 
+.\[appearance\:textfield\] {
+  appearance: textfield;
+}
+
 .japanese-pattern {
   z-index: -1;
   pointer-events: none;
@@ -4718,6 +4722,14 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+}
+
+.\[\&\:\:-webkit-inner-spin-button\]\:appearance-none::-webkit-inner-spin-button {
+  appearance: none;
+}
+
+.\[\&\:\:-webkit-outer-spin-button\]\:appearance-none::-webkit-outer-spin-button {
+  appearance: none;
 }
 
 .\[\&\:\:-webkit-scrollbar-thumb\]\:rounded-full::-webkit-scrollbar-thumb {

@@ -1196,7 +1196,7 @@ export default function POSPage() {
                       const value = parseInt(e.target.value) || 1;
                       setCustomerCount(Math.max(1, value));
                     }}
-                    className="bg-gray-800 border-gray-600 text-white text-2xl w-20 text-center"
+                    className="bg-gray-800 border-gray-600 text-white text-2xl w-20 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     pattern="[0-9]*"
                   />
                   
