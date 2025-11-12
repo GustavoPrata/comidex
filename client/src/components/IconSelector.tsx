@@ -26,17 +26,31 @@ interface IconSelectorProps {
 }
 
 const categoryLabels: Record<MenuIconOption['category'], string> = {
-  japanese: '🍱 Japonês',
-  drinks: '🍷 Bebidas',
-  desserts: '🍰 Sobremesas',
-  special: '⭐ Especial',
-  general: '🍽️ Geral',
-  fruits: '🍎 Frutas',
-  cooking: '👨‍🍳 Cozinha',
-  service: '🛎️ Serviço',
-  nature: '🌿 Natureza',
-  status: '✅ Status',
-  action: '⚡ Ação',
+  japanese: 'Japonês',
+  drinks: 'Bebidas',
+  desserts: 'Sobremesas',
+  special: 'Especial',
+  general: 'Geral',
+  fruits: 'Frutas',
+  cooking: 'Cozinha',
+  service: 'Serviço',
+  nature: 'Natureza',
+  status: 'Status',
+  action: 'Ação',
+};
+
+const categoryColors: Record<MenuIconOption['category'], string> = {
+  japanese: 'bg-red-100 hover:bg-red-200 text-red-700',
+  drinks: 'bg-blue-100 hover:bg-blue-200 text-blue-700',
+  desserts: 'bg-pink-100 hover:bg-pink-200 text-pink-700',
+  special: 'bg-yellow-100 hover:bg-yellow-200 text-yellow-700',
+  general: 'bg-gray-100 hover:bg-gray-200 text-gray-700',
+  fruits: 'bg-green-100 hover:bg-green-200 text-green-700',
+  cooking: 'bg-orange-100 hover:bg-orange-200 text-orange-700',
+  service: 'bg-purple-100 hover:bg-purple-200 text-purple-700',
+  nature: 'bg-emerald-100 hover:bg-emerald-200 text-emerald-700',
+  status: 'bg-indigo-100 hover:bg-indigo-200 text-indigo-700',
+  action: 'bg-cyan-100 hover:bg-cyan-200 text-cyan-700',
 };
 
 const categories = Object.keys(categoryLabels) as MenuIconOption['category'][];
@@ -118,7 +132,7 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl h-[600px] p-0">
+        <DialogContent className="max-w-5xl h-[80vh] p-0">
           <DialogHeader className="px-6 pt-6 pb-2">
             <DialogTitle>Selecionar Ícone</DialogTitle>
           </DialogHeader>
@@ -148,10 +162,10 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
           </div>
 
           <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as any)} className="flex-1 flex flex-col">
-            <TabsList className="px-6 h-auto flex-wrap justify-start gap-1 bg-transparent">
+            <TabsList className="px-6 h-auto flex flex-wrap justify-start gap-2 bg-transparent">
               <TabsTrigger 
                 value="all" 
-                className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600"
+                className="px-4 py-2 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600"
               >
                 Todos
               </TabsTrigger>
@@ -159,7 +173,7 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
                 <TabsTrigger 
                   key={category} 
                   value={category}
-                  className="data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600"
+                  className="px-4 py-2 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600"
                 >
                   {categoryLabels[category]}
                 </TabsTrigger>
@@ -168,9 +182,9 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
 
             <ScrollArea className="flex-1 px-6 pb-6">
               {!search && selectedCategory === 'all' && suggestedIcons.length > 0 && (
-                <div className="mb-4">
-                  <div className="text-sm text-muted-foreground mb-2">Sugestões</div>
-                  <div className="grid grid-cols-6 gap-2">
+                <div className="mb-6">
+                  <div className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Sugestões Rápidas</div>
+                  <div className="grid grid-cols-8 gap-3">
                     {suggestedIcons.map((icon) => {
                       const Icon = icon.icon;
                       return (
@@ -179,12 +193,12 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
                           type="button"
                           onClick={() => handleSelect(icon.name)}
                           className={cn(
-                            "flex flex-col items-center justify-center p-3 rounded-lg border transition-all hover:bg-orange-50 hover:border-orange-300",
-                            value === icon.name && "bg-orange-100 border-orange-400"
+                            "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all hover:bg-orange-50 hover:border-orange-400 hover:shadow-md",
+                            value === icon.name && "bg-orange-100 border-orange-500 shadow-md"
                           )}
                         >
-                          <Icon className="h-6 w-6 mb-1" />
-                          <span className="text-xs text-center line-clamp-1">{icon.name}</span>
+                          <Icon className="h-8 w-8 mb-2 text-gray-700" />
+                          <span className="text-xs font-medium text-center line-clamp-2">{icon.name}</span>
                         </button>
                       );
                     })}
@@ -192,7 +206,7 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
                 </div>
               )}
 
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-8 gap-3">
                 {filteredIcons.map((icon) => {
                   const Icon = icon.icon;
                   return (
@@ -201,13 +215,13 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
                       type="button"
                       onClick={() => handleSelect(icon.name)}
                       className={cn(
-                        "flex flex-col items-center justify-center p-3 rounded-lg border transition-all hover:bg-orange-50 hover:border-orange-300",
-                        value === icon.name && "bg-orange-100 border-orange-400"
+                        "flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all hover:bg-orange-50 hover:border-orange-400 hover:shadow-md group",
+                        value === icon.name && "bg-orange-100 border-orange-500 shadow-md"
                       )}
                       title={icon.keywords.join(', ')}
                     >
-                      <Icon className="h-6 w-6 mb-1" />
-                      <span className="text-xs text-center line-clamp-1">{icon.name}</span>
+                      <Icon className="h-8 w-8 mb-2 text-gray-700 group-hover:text-orange-600 transition-colors" />
+                      <span className="text-xs font-medium text-center line-clamp-2">{icon.name}</span>
                     </button>
                   );
                 })}
