@@ -256,7 +256,7 @@ export const menuIconLibrary: MenuIconOption[] = [
   { name: 'Calendário', icon: CalendarDays, category: 'service', keywords: ['calendário', 'data', 'agenda', 'dia'] },
   { name: 'Nascer do Sol', icon: Sunrise, category: 'service', keywords: ['manhã', 'café', 'breakfast', 'amanhecer'] },
   { name: 'Pôr do Sol', icon: Sunset, category: 'service', keywords: ['tarde', 'jantar', 'dinner', 'entardecer'] },
-  { name: 'Noite', icon: MoonStar, category: 'service', keywords: ['noite', 'night', 'jantar', 'late'] },
+  { name: 'Lua', icon: MoonStar, category: 'service', keywords: ['noite', 'night', 'jantar', 'late'] },
   
   // Natureza e Orgânicos
   { name: 'Flor', icon: Flower, category: 'nature', keywords: ['flor', 'natural', 'orgânico', 'jardim'] },
