@@ -968,7 +968,7 @@ export default function POSPage() {
                 >
                   <Card
                     className={`
-                      cursor-pointer transition-all h-[180px]
+                      cursor-pointer transition-all h-[160px]
                       ${table.current_session 
                         ? 'bg-gradient-to-br from-orange-900/40 to-orange-800/30 border-orange-600 shadow-orange-600/20' 
                         : 'bg-gray-800/50 backdrop-blur border-gray-700 hover:bg-gray-700/50'}
@@ -995,11 +995,8 @@ export default function POSPage() {
                           )}
                         </div>
                         <h3 className="text-lg font-bold text-white">
-                          {table.type === 'counter' ? 'B' : 'M'}{table.number}
+                          {table.type === 'counter' ? 'Balcão ' : 'Mesa '}{table.number}
                         </h3>
-                        <p className="text-xs text-gray-400">
-                          {table.capacity} lugares
-                        </p>
                       </div>
                       
                       <div>
@@ -1027,16 +1024,8 @@ export default function POSPage() {
                             <Badge className="bg-green-600 text-white text-xs py-0.5 mb-1">
                               LIVRE
                             </Badge>
-                            <div className="text-xs text-gray-500 space-y-0.5">
-                              <div className="invisible flex items-center justify-center gap-1">
-                                <Users className="h-3 w-3" />
-                                <span>-</span>
-                              </div>
-                              <div className="invisible">-</div>
-                              <div className="invisible flex items-center justify-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                <span>-</span>
-                              </div>
+                            <div className="text-xs text-gray-500 mt-2">
+                              <p>Disponível</p>
                             </div>
                           </>
                         )}

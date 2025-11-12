@@ -440,10 +440,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   visibility: visible;
 }
 
-.invisible {
-  visibility: hidden;
-}
-
 .collapse {
   visibility: collapse;
 }
@@ -833,8 +829,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   height: 24rem;
 }
 
-.h-\[180px\] {
-  height: 180px;
+.h-\[160px\] {
+  height: 160px;
 }
 
 .h-\[200px\] {
