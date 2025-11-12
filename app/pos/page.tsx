@@ -1406,7 +1406,12 @@ export default function POSPage() {
 
                       {/* Resultados da Busca em Tempo Real */}
                       {searchQuery.length > 0 && (
-                        <div className="absolute top-full mt-2 left-0 right-0 z-[100] bg-gray-900/95 backdrop-blur rounded-lg border border-gray-700 shadow-xl max-h-[320px] overflow-hidden">
+                        <div className="fixed mt-2 z-[9999] bg-gray-900/95 backdrop-blur rounded-lg border border-gray-700 shadow-xl max-h-[320px] overflow-hidden"
+                             style={{ 
+                               top: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().bottom + 8 : 0,
+                               left: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().left : 0,
+                               width: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().width : 'auto'
+                             }}>
                           {filteredItems.length === 0 ? (
                             <div className="text-gray-400 p-4 text-center">
                               Nenhum produto encontrado para "{searchQuery}"

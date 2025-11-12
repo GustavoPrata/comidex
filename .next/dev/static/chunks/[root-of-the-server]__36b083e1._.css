@@ -627,10 +627,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   left: 50%;
 }
 
-.right-0 {
-  right: 0;
-}
-
 .right-1\/4 {
   right: 25%;
 }
@@ -671,10 +667,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   top: 50%;
 }
 
-.top-full {
-  top: 100%;
-}
-
 .z-10 {
   z-index: 10;
 }
@@ -687,12 +679,12 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   z-index: 50;
 }
 
-.z-\[100\] {
-  z-index: 100;
-}
-
 .z-\[99999\] {
   z-index: 99999;
+}
+
+.z-\[9999\] {
+  z-index: 9999;
 }
 
 .col-span-1 {
