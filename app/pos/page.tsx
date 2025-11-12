@@ -208,8 +208,6 @@ export default function POSPage() {
   
   // Estados de diálogos
   const [openTableDialog, setOpenTableDialog] = useState(false);
-  const [customerCount, setCustomerCount] = useState("1");
-  const [serviceType, setServiceType] = useState<'a_la_carte' | 'rodizio_tradicional' | 'rodizio_premium'>('a_la_carte');
   const [paymentDialog, setPaymentDialog] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'pix'>('cash');
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
