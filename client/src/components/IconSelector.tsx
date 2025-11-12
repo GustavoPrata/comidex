@@ -81,10 +81,10 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar √
         </Button>
       )}
 
-      <Dialog open={open} onOpenChange={setOpen} modal={false}>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent 
-          className="fixed left-[50%] top-[50%] z-[100] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-2 bg-white dark:bg-gray-900 p-6 shadow-xl duration-200 sm:rounded-lg"
-          onPointerDownOutside={(e) => e.preventDefault()}>
+          className="fixed left-[50%] top-[50%] z-[9999] grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border-2 bg-white dark:bg-gray-900 p-6 shadow-xl duration-200 sm:rounded-lg"
+          style={{ pointerEvents: 'auto' }}>
           <DialogHeader>
             <DialogTitle className="text-gray-900 dark:text-gray-100">Selecionar √çcone</DialogTitle>
           </DialogHeader>
