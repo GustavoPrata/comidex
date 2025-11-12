@@ -76,8 +76,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/admin/image-upload";
-import { IconSelector } from "@/components/IconSelector";
-import { menuIconLibrary, getIconByName } from "@/lib/menu-icons-library";
+import { IconSelector } from "../../../client/src/components/IconSelector";
+import { menuIconLibrary, getIconByName } from "../../../lib/menu-icons-library";
 
 const supabase = createClient();
 import type { Group, Category } from "@/types/supabase";
@@ -1289,7 +1289,8 @@ export default function GripStructurePage() {
         type: "a_la_carte",
         price: "",
         active: false,
-        sort_order: 0
+        sort_order: 0,
+        icon: null
       });
       await loadData();
     } catch (error) {
@@ -1804,7 +1805,7 @@ export default function GripStructurePage() {
                   <Label htmlFor="icon">Ícone do Grupo</Label>
                   <IconSelector
                     value={groupFormData.icon}
-                    onChange={(iconName) => setGroupFormData({...groupFormData, icon: iconName})}
+                    onChange={(iconName: string | null) => setGroupFormData({...groupFormData, icon: iconName})}
                     placeholder="Buscar ícone..."
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
@@ -1972,7 +1973,8 @@ export default function GripStructurePage() {
                   type: "a_la_carte",
                   price: "",
                   active: true,
-                  sort_order: 0
+                  sort_order: 0,
+                  icon: null
                 });
                 setCategoryFormData({
                   name: "",
