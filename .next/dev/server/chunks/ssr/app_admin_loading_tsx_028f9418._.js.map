@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///home/runner/workspace/app/admin/loading.tsx"],"sourcesContent":["export default function Loading() {\n  return (\n    <div className=\"flex items-center justify-center min-h-screen\">\n      <div className=\"text-center\">\n        <div className=\"relative w-20 h-20 mx-auto mb-4\">\n          <div className=\"absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-800\" />\n          <div className=\"absolute inset-0 rounded-full border-4 border-orange-500 border-t-transparent animate-spin\" />\n        </div>\n        <p className=\"text-gray-600 dark:text-gray-400\">Carregando...</p>\n      </div>\n    </div>\n  );\n}"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,8OAAC;QAAI,WAAU;kBACb,cAAA,8OAAC;YAAI,WAAU;;8BACb,8OAAC;oBAAI,WAAU;;sCACb,8OAAC;4BAAI,WAAU;;;;;;sCACf,8OAAC;4BAAI,WAAU;;;;;;;;;;;;8BAEjB,8OAAC;oBAAE,WAAU;8BAAmC;;;;;;;;;;;;;;;;;AAIxD","debugId":null}}]
-}
