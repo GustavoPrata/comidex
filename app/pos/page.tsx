@@ -991,15 +991,11 @@ export default function POSPage() {
                       <div>
                         <div className="mb-1 h-8 flex items-center justify-center">
                           {table.type === 'counter' ? (
-                            // Ícone de Balcão - barra horizontal com banquinhos
-                            <div className="relative">
-                              <div className="w-10 h-1 bg-white/90 rounded"></div>
-                              <div className="absolute -bottom-2 left-0 flex gap-1">
-                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
-                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
-                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
-                                <div className="w-2 h-2 bg-white/70 rounded-full"></div>
-                              </div>
+                            // Ícone de Cadeira Alta de Bar
+                            <div className="relative flex flex-col items-center">
+                              <div className="w-4 h-3 bg-white/90 rounded-t-md"></div>
+                              <div className="w-0.5 h-4 bg-white/80"></div>
+                              <div className="w-3 h-0.5 bg-white/70"></div>
                             </div>
                           ) : (
                             // Ícone de Mesa - quadrado com cadeiras ao redor
@@ -1088,14 +1084,11 @@ export default function POSPage() {
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 {selectedTable?.type === 'counter' ? (
-                  // Ícone de Balcão
-                  <div className="relative">
-                    <div className="w-6 h-0.5 bg-current rounded"></div>
-                    <div className="absolute -bottom-1 left-0 flex gap-0.5">
-                      <div className="w-1 h-1 bg-current rounded-full opacity-70"></div>
-                      <div className="w-1 h-1 bg-current rounded-full opacity-70"></div>
-                      <div className="w-1 h-1 bg-current rounded-full opacity-70"></div>
-                    </div>
+                  // Ícone de Cadeira Alta
+                  <div className="relative flex flex-col items-center h-5">
+                    <div className="w-3 h-2 bg-current rounded-t-sm"></div>
+                    <div className="w-0.5 h-2.5 bg-current opacity-80"></div>
+                    <div className="w-2 h-0.5 bg-current opacity-70"></div>
                   </div>
                 ) : (
                   // Ícone de Mesa

@@ -551,16 +551,24 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   right: 0;
 }
 
+.-bottom-0\.5 {
+  bottom: -.125rem;
+}
+
 .-bottom-1 {
   bottom: -.25rem;
 }
 
-.-bottom-2 {
-  bottom: -.5rem;
+.-left-0\.5 {
+  left: -.125rem;
 }
 
 .-left-1 {
   left: -.25rem;
+}
+
+.-right-0\.5 {
+  right: -.125rem;
 }
 
 .-right-1 {
@@ -569,6 +577,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .-right-2 {
   right: -.5rem;
+}
+
+.-top-0\.5 {
+  top: -.125rem;
 }
 
 .-top-1 {
@@ -839,6 +851,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   height: 0;
 }
 
+.h-0\.5 {
+  height: .125rem;
+}
+
 .h-1 {
   height: .25rem;
 }
@@ -1021,6 +1037,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .w-0 {
   width: 0;
+}
+
+.w-0\.5 {
+  width: .125rem;
 }
 
 .w-1 {
@@ -1613,6 +1633,16 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-top-right-radius: var(--radius);
 }
 
+.rounded-t-md {
+  border-top-left-radius: calc(var(--radius)  - 2px);
+  border-top-right-radius: calc(var(--radius)  - 2px);
+}
+
+.rounded-t-sm {
+  border-top-left-radius: calc(var(--radius)  - 4px);
+  border-top-right-radius: calc(var(--radius)  - 4px);
+}
+
 .rounded-bl-lg {
   border-bottom-left-radius: var(--radius);
 }
@@ -1860,6 +1890,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .bg-card {
   background-color: hsl(var(--card));
+}
+
+.bg-current {
+  background-color: currentColor;
 }
 
 .bg-destructive {
