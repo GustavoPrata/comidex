@@ -214,6 +214,12 @@ export default function POSPage() {
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
   const [printDialog, setPrintDialog] = useState(false);
   
+  // Estados do modal de rodízio
+  const [rodizioModal, setRodizioModal] = useState(false);
+  const [selectedRodizioGroup, setSelectedRodizioGroup] = useState<any>(null);
+  const [rodizioInteiro, setRodizioInteiro] = useState(0);
+  const [rodizioMeio, setRodizioMeio] = useState(0);
+  
   // Refs
   const codeInputRef = useRef<HTMLInputElement>(null);
 
@@ -563,6 +569,73 @@ export default function POSPage() {
     }
   };
 
+  // Função para adicionar rodízio ao carrinho
+  const handleAddRodizio = () => {
+    if (!selectedRodizioGroup) return;
+    
+    const total = rodizioInteiro + rodizioMeio;
+    if (total === 0) {
+      toast.error("Adicione pelo menos 1 rodízio");
+      return;
+    }
+    
+    // Adiciona rodízio inteiro se houver
+    if (rodizioInteiro > 0) {
+      const rodizioItem: OrderItem = {
+        item_id: -1 * Date.now(), // Usar número negativo para IDs temporários de rodízio
+        quantity: rodizioInteiro,
+        unit_price: selectedRodizioGroup.price || 0,
+        total_price: (selectedRodizioGroup.price || 0) * rodizioInteiro,
+        status: 'pending' as const,
+        item: {
+          id: -1 * Date.now(),
+          name: `Rodízio ${selectedRodizioGroup.name} - Inteiro`,
+          group_id: selectedRodizioGroup.id,
+          price: selectedRodizioGroup.price || 0,
+          active: true,
+          category_id: 0,
+          group: selectedRodizioGroup
+        }
+      };
+      setCart(prev => [...prev, rodizioItem]);
+    }
+    
+    // Adiciona rodízio meio se houver
+    if (rodizioMeio > 0) {
+      const rodizioItem: OrderItem = {
+        item_id: -2 * Date.now(), // Usar número negativo para IDs temporários de rodízio
+        quantity: rodizioMeio,
+        unit_price: selectedRodizioGroup.half_price || 0,
+        total_price: (selectedRodizioGroup.half_price || 0) * rodizioMeio,
+        status: 'pending' as const,
+        item: {
+          id: -2 * Date.now(),
+          name: `Rodízio ${selectedRodizioGroup.name} - Meio`,
+          group_id: selectedRodizioGroup.id,
+          price: selectedRodizioGroup.half_price || 0,
+          active: true,
+          category_id: 0,
+          group: selectedRodizioGroup
+        }
+      };
+      setCart(prev => [...prev, rodizioItem]);
+    }
+    
+    // Fecha o modal e vai para as categorias
+    setRodizioModal(false);
+    setSelectedGroup(selectedRodizioGroup.id);
+    
+    // Seleciona a primeira categoria
+    const firstCategory = categories
+      .filter(c => c.active && c.group_id === selectedRodizioGroup.id)
+      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))[0];
+    if (firstCategory) {
+      setSelectedCategory(firstCategory.id);
+    }
+    
+    toast.success("Rodízio adicionado com sucesso!");
+  };
+
   const handleAddItem = (item?: Item) => {
     if (!item) {
       if (!inputValue) {
@@ -583,25 +656,34 @@ export default function POSPage() {
 
     const qty = parseInt(quantity) || 1;
     
-    // Calcular preço considerando rodízio
-    let itemPrice = item.price || 0;
+    // Verifica se o item é de um grupo rodízio
+    const group = item.group_id ? groups.find(g => g.id === item.group_id) : null;
+    const isRodizio = group?.type === 'rodizio';
     
-    // Se o item pertence a um grupo de rodízio
-    if (item.group?.type === 'rodizio') {
-      // Verificar se já tem rodízio desse grupo no carrinho
-      const hasRodizioInCart = cart.some(cartItem => 
+    // Se for rodízio, verifica se já tem rodízio lançado
+    if (isRodizio) {
+      const hasRodizio = cart.some(cartItem => 
         cartItem.item?.group_id === item.group_id && 
-        cartItem.item?.group?.type === 'rodizio'
+        cartItem.item?.name?.includes('Rodízio')
       );
       
-      if (!hasRodizioInCart) {
-        // Se é o primeiro item do rodízio, usar o preço do grupo (cobrança única)
-        itemPrice = item.group.price || 0;
-        toast.info(`Primeiro item do ${item.group.name} - Valor do rodízio: R$ ${itemPrice.toFixed(2)}`);
-      } else {
-        // Se já tem rodízio no carrinho, todos os próximos itens são grátis
-        itemPrice = 0;
+      if (!hasRodizio) {
+        // Se não tem rodízio, mostra o modal para adicionar primeiro
+        toast.error(`É necessário lançar o rodízio ${group.name} primeiro!`);
+        setSelectedRodizioGroup(group);
+        setRodizioInteiro(1);
+        setRodizioMeio(0);
+        setRodizioModal(true);
+        return;
       }
+    }
+    
+    // Calcular preço - se for item de rodízio (e já tem rodízio lançado), é grátis
+    let itemPrice = item.price || 0;
+    
+    if (isRodizio) {
+      // Items de rodízio são sempre grátis (inclusos no rodízio)
+      itemPrice = 0;
     }
     
     const newItem: OrderItem = {
@@ -632,12 +714,8 @@ export default function POSPage() {
 
     // Feedback visual e sonoro
     let message = item.name;
-    if (item.group?.type === 'rodizio') {
-      if (itemPrice === 0) {
-        message = `${item.name} (Rodízio - Grátis)`;
-      } else {
-        message = `${item.name} (Rodízio - R$ ${itemPrice.toFixed(2)})`;
-      }
+    if (isRodizio) {
+      message = `${item.name} (Incluído no Rodízio)`;
     }
     
     toast.success(
@@ -1135,6 +1213,155 @@ export default function POSPage() {
             </Card>
           </motion.div>
         </div>
+
+        {/* Dialog Rodízio */}
+        <Dialog open={rodizioModal} onOpenChange={setRodizioModal}>
+          <DialogContent className="bg-gray-800 text-white border-gray-700">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <Package className="h-5 w-5 text-orange-400" />
+                Lançar Rodízio - {selectedRodizioGroup?.name}
+              </DialogTitle>
+              <DialogDescription className="text-gray-400">
+                Selecione a quantidade de rodízios
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="py-4 space-y-4">
+              {/* Rodízio Inteiro */}
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-sm font-medium">
+                    Rodízio Inteiro
+                  </label>
+                  <span className="text-orange-400 font-bold">
+                    {formatCurrency(selectedRodizioGroup?.price || 0)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-center gap-4">
+                  <Button
+                    type="button"
+                    onClick={() => setRodizioInteiro(prev => Math.max(0, prev - 1))}
+                    disabled={rodizioInteiro <= 0}
+                    className="bg-gray-600 hover:bg-gray-500 disabled:opacity-50"
+                    size="sm"
+                    data-testid="button-rodizio-inteiro-decrement"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      min="0"
+                      value={rodizioInteiro}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value) || 0;
+                        setRodizioInteiro(Math.max(0, value));
+                      }}
+                      className="bg-gray-700 border-gray-600 text-white text-xl w-20 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                    />
+                    <span className="text-gray-400 text-sm">
+                      = {formatCurrency((selectedRodizioGroup?.price || 0) * rodizioInteiro)}
+                    </span>
+                  </div>
+                  
+                  <Button
+                    type="button"
+                    onClick={() => setRodizioInteiro(prev => prev + 1)}
+                    className="bg-gray-600 hover:bg-gray-500"
+                    size="sm"
+                    data-testid="button-rodizio-inteiro-increment"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Rodízio Meio - só mostra se tem preço configurado */}
+              {selectedRodizioGroup?.half_price && selectedRodizioGroup.half_price > 0 && (
+                <div className="bg-gray-700/50 rounded-lg p-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-sm font-medium">
+                      Rodízio Meio (Crianças)
+                    </label>
+                    <span className="text-orange-400 font-bold">
+                      {formatCurrency(selectedRodizioGroup.half_price)}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-center gap-4">
+                    <Button
+                      type="button"
+                      onClick={() => setRodizioMeio(prev => Math.max(0, prev - 1))}
+                      disabled={rodizioMeio <= 0}
+                      className="bg-gray-600 hover:bg-gray-500 disabled:opacity-50"
+                      size="sm"
+                      data-testid="button-rodizio-meio-decrement"
+                    >
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="number"
+                        min="0"
+                        value={rodizioMeio}
+                        onChange={(e) => {
+                          const value = parseInt(e.target.value) || 0;
+                          setRodizioMeio(Math.max(0, value));
+                        }}
+                        className="bg-gray-700 border-gray-600 text-white text-xl w-20 text-center [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      />
+                      <span className="text-gray-400 text-sm">
+                        = {formatCurrency(selectedRodizioGroup.half_price * rodizioMeio)}
+                      </span>
+                    </div>
+                    
+                    <Button
+                      type="button"
+                      onClick={() => setRodizioMeio(prev => prev + 1)}
+                      className="bg-gray-600 hover:bg-gray-500"
+                      size="sm"
+                      data-testid="button-rodizio-meio-increment"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              )}
+              
+              {/* Total */}
+              <div className="bg-gray-900 rounded-lg p-4 border border-orange-500/30">
+                <div className="flex justify-between items-center text-xl font-bold">
+                  <span>Total:</span>
+                  <span className="text-orange-400">
+                    {formatCurrency(
+                      (selectedRodizioGroup?.price || 0) * rodizioInteiro +
+                      (selectedRodizioGroup?.half_price || 0) * rodizioMeio
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            <DialogFooter>
+              <Button
+                onClick={() => setRodizioModal(false)}
+                variant="ghost"
+                className="text-gray-300 hover:text-white hover:bg-gray-700"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleAddRodizio}
+                disabled={rodizioInteiro === 0 && rodizioMeio === 0}
+                className="bg-orange-600 hover:bg-orange-700 disabled:opacity-50"
+              >
+                Confirmar Rodízio
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {/* Dialog Abrir Mesa */}
         <Dialog open={openTableDialog} onOpenChange={setOpenTableDialog}>
@@ -1659,13 +1886,39 @@ export default function POSPage() {
                               >
                                 <Card
                                   onClick={() => {
-                                    setSelectedGroup(group.id);
-                                    // Automaticamente seleciona a primeira categoria do grupo
-                                    const firstCategory = categories
-                                      .filter(c => c.active && c.group_id === group.id)
-                                      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))[0];
-                                    if (firstCategory) {
-                                      setSelectedCategory(firstCategory.id);
+                                    // Se o grupo for rodízio, verifica se já tem rodízio lançado
+                                    if (group.type === 'rodizio') {
+                                      // Verifica se já tem rodízio deste grupo no carrinho
+                                      const hasRodizio = cart.some(item => 
+                                        item.item?.group_id === group.id && 
+                                        item.item?.name?.includes('Rodízio')
+                                      );
+                                      
+                                      if (!hasRodizio) {
+                                        // Se não tem rodízio, abre o modal para adicionar
+                                        setSelectedRodizioGroup(group);
+                                        setRodizioInteiro(1);
+                                        setRodizioMeio(0);
+                                        setRodizioModal(true);
+                                      } else {
+                                        // Se já tem rodízio, vai para as categorias normalmente
+                                        setSelectedGroup(group.id);
+                                        const firstCategory = categories
+                                          .filter(c => c.active && c.group_id === group.id)
+                                          .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))[0];
+                                        if (firstCategory) {
+                                          setSelectedCategory(firstCategory.id);
+                                        }
+                                      }
+                                    } else {
+                                      // Se não for rodízio, procede normalmente
+                                      setSelectedGroup(group.id);
+                                      const firstCategory = categories
+                                        .filter(c => c.active && c.group_id === group.id)
+                                        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))[0];
+                                      if (firstCategory) {
+                                        setSelectedCategory(firstCategory.id);
+                                      }
                                     }
                                   }}
                                   className="h-32 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-orange-700 hover:to-orange-600 border-gray-600 hover:border-orange-500 cursor-pointer transition-all group"
