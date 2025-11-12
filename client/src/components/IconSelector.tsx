@@ -14,7 +14,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -132,81 +138,50 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-3xl max-h-[500px] p-0 overflow-hidden flex flex-col">
-          <DialogHeader className="px-6 pt-5 pb-2">
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
             <DialogTitle>Selecionar Ícone</DialogTitle>
           </DialogHeader>
 
-          <div className="px-6 pb-4">
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder={placeholder}
-                  className="pl-10"
-                />
-              </div>
+          <div className="space-y-4">
+            {/* Barra de busca compacta */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={placeholder}
+                className="pl-10 pr-10"
+              />
               {value && (
-                <Button
+                <button
                   type="button"
-                  variant="ghost"
-                  size="icon"
                   onClick={handleClear}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 rounded"
                 >
-                  <X className="h-4 w-4" />
-                </Button>
+                  <X className="h-4 w-4 text-gray-500" />
+                </button>
               )}
             </div>
-          </div>
 
-          <Tabs value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as any)} className="flex-1 flex flex-col">
-            <TabsList className="px-6 h-auto flex flex-wrap justify-start gap-2 bg-transparent">
-              <TabsTrigger 
-                value="all" 
-                className="px-4 py-2 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600"
-              >
-                Todos
-              </TabsTrigger>
-              {categories.map((category) => (
-                <TabsTrigger 
-                  key={category} 
-                  value={category}
-                  className="px-4 py-2 data-[state=active]:bg-orange-100 data-[state=active]:text-orange-600"
-                >
-                  {categoryLabels[category]}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            {/* Categorias em select dropdown */}
+            <Select value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as any)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Selecione uma categoria" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos os Ícones</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {categoryLabels[category]}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            <ScrollArea className="flex-1 px-6 pb-6">
-              {!search && selectedCategory === 'all' && suggestedIcons.length > 0 && (
-                <div className="mb-4">
-                  <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Sugestões Rápidas</div>
-                  <div className="grid grid-cols-6 gap-2">
-                    {suggestedIcons.map((icon) => {
-                      const Icon = icon.icon;
-                      return (
-                        <button
-                          key={icon.name}
-                          type="button"
-                          onClick={() => handleSelect(icon.name)}
-                          className={cn(
-                            "flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all hover:bg-orange-50 hover:border-orange-400",
-                            value === icon.name && "bg-orange-100 border-orange-500"
-                          )}
-                        >
-                          <Icon className="h-6 w-6 mb-1 text-gray-700" />
-                          <span className="text-xs text-center line-clamp-1">{icon.name}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              <div className="grid grid-cols-6 gap-2">
+            {/* Área de ícones com scroll */}
+            <ScrollArea className="h-[300px] w-full rounded-md border p-4">
+              <div className="grid grid-cols-4 gap-2">
                 {filteredIcons.map((icon) => {
                   const Icon = icon.icon;
                   return (
@@ -215,13 +190,13 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
                       type="button"
                       onClick={() => handleSelect(icon.name)}
                       className={cn(
-                        "flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all hover:bg-orange-50 hover:border-orange-400 group",
+                        "flex flex-col items-center justify-center p-2 rounded-md border transition-all hover:bg-orange-50 hover:border-orange-400 group",
                         value === icon.name && "bg-orange-100 border-orange-500"
                       )}
                       title={icon.keywords.join(', ')}
                     >
-                      <Icon className="h-6 w-6 mb-1 text-gray-700 group-hover:text-orange-600 transition-colors" />
-                      <span className="text-xs text-center line-clamp-1">{icon.name}</span>
+                      <Icon className="h-5 w-5 mb-1 text-gray-600 group-hover:text-orange-600" />
+                      <span className="text-[10px] text-center line-clamp-1">{icon.name}</span>
                     </button>
                   );
                 })}
@@ -233,7 +208,7 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
                 </div>
               )}
             </ScrollArea>
-          </Tabs>
+          </div>
         </DialogContent>
       </Dialog>
     </>
