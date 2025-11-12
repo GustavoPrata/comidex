@@ -121,14 +121,14 @@ function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      className="h-8 w-8 rounded-lg hover:bg-gray-200 dark:hover:bg-white/10"
+      className="h-9 w-9 rounded-xl hover:bg-orange-100 dark:hover:bg-orange-900/30 transition-all duration-200"
       onClick={toggleTheme}
       type="button"
     >
       {theme === "dark" ? (
-        <Sun className="h-4 w-4 text-yellow-400" />
+        <Sun className="h-5 w-5 text-orange-500" />
       ) : (
-        <Moon className="h-4 w-4 text-gray-400" />
+        <Moon className="h-5 w-5 text-orange-500" />
       )}
     </Button>
   );
@@ -186,14 +186,18 @@ export default function AdminSidebar() {
       
       {/* Logo Section */}
       <div className="p-6 border-b border-gray-200 dark:border-gray-700/60 relative">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
-            <ChefHat className="h-6 w-6 text-white" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
+              <ChefHat className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">ComideX</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-400">Sistema Japonês</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 tracking-tight">ComideX</h1>
-            <p className="text-xs text-gray-600 dark:text-gray-400">Sistema Japonês</p>
-          </div>
+          {/* Theme Toggle */}
+          <ThemeToggle />
         </div>
       </div>
 
@@ -320,7 +324,7 @@ export default function AdminSidebar() {
       </div>
 
       {/* Bottom Section */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700/60 space-y-3 relative">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700/60 relative">
         {/* Notifications */}
         <Button 
           variant="ghost" 
@@ -336,12 +340,6 @@ export default function AdminSidebar() {
             3
           </Badge>
         </Button>
-
-        {/* Theme Toggle */}
-        <div className="flex items-center justify-between px-3">
-          <span className="text-xs text-gray-600 dark:text-gray-400">Tema</span>
-          <ThemeToggle />
-        </div>
       </div>
     </div>
   );

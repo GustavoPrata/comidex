@@ -1013,6 +1013,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   width: 2rem;
 }
 
+.w-9 {
+  width: 2.25rem;
+}
+
 .w-96 {
   width: 24rem;
 }
@@ -4131,10 +4135,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:hover\:bg-red-900\/30:hover:is(.dark *) {
   background-color: #7f1d1d4d;
-}
-
-.dark\:hover\:bg-white\/10:hover:is(.dark *) {
-  background-color: #ffffff1a;
 }
 
 .dark\:hover\:bg-yellow-500\/30:hover:is(.dark *) {
