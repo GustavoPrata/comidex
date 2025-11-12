@@ -1281,6 +1281,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   align-items: center;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .justify-end {
   justify-content: flex-end;
 }
@@ -2535,11 +2539,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .text-muted-foreground {
   color: hsl(var(--muted-foreground));
-}
-
-.text-orange-400 {
-  --tw-text-opacity: 1;
-  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
 }
 
 .text-orange-500 {

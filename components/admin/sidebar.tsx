@@ -16,7 +16,7 @@ import {
   ShoppingCart,
   Tablet,
   Code,
-  Bell,
+  ArrowLeft,
   ChevronRight,
   ChevronDown,
   Menu,
@@ -325,20 +325,18 @@ export default function AdminSidebar() {
 
       {/* Bottom Section */}
       <div className="p-4 border-t border-gray-200 dark:border-gray-700/60 relative">
-        {/* Notifications */}
+        {/* Back to Home Button */}
         <Button 
           variant="ghost" 
-          className="w-full justify-between px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800/60 rounded-xl group"
+          className="w-full justify-start px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800/60 rounded-xl group"
+          onClick={() => handleNavigation('/')}
         >
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-gray-100 dark:bg-gray-800/60 rounded-lg group-hover:bg-gray-200 dark:group-hover:bg-gray-700/60">
-              <Bell className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+            <div className="p-2 bg-gray-100 dark:bg-gray-800/60 rounded-lg group-hover:bg-gray-200 dark:group-hover:bg-gray-700/60 transition-all">
+              <ArrowLeft className="h-4 w-4 text-gray-600 dark:text-gray-400 group-hover:text-orange-500" />
             </div>
-            <span className="text-sm text-gray-700 dark:text-gray-300">Notificações</span>
+            <span className="text-sm text-gray-700 dark:text-gray-300">Voltar ao Início</span>
           </div>
-          <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30 text-xs">
-            3
-          </Badge>
         </Button>
       </div>
     </div>
