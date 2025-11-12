@@ -1018,14 +1018,10 @@ export default function POSPage() {
                             <Badge className="bg-orange-600 text-white text-xs py-0.5 mb-1">
                               OCUPADA
                             </Badge>
-                            <div className="text-xs text-gray-300 space-y-0.5">
+                            <div className="text-xs text-gray-300 mt-1">
                               <div className="flex items-center justify-center gap-1">
                                 <Users className="h-3 w-3" />
                                 <span>{table.current_session.customer_count} {table.current_session.customer_count === 1 ? 'pessoa' : 'pessoas'}</span>
-                              </div>
-                              <div className="flex items-center justify-center gap-1">
-                                <Clock className="h-3 w-3" />
-                                <span>{format(new Date(table.current_session.opened_at), 'HH:mm')}</span>
                               </div>
                             </div>
                           </>
