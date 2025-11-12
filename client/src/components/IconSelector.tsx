@@ -88,22 +88,25 @@ export function IconSelector({ value, onChange, trigger, placeholder = "Buscar �
           </DialogHeader>
 
           <div className="grid gap-4">
-            {/* Barra de busca */}
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" />
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder={placeholder}
-                className="pl-8 pr-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
-              />
+            {/* Barra de busca e botão remover */}
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400 dark:text-gray-500" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder={placeholder}
+                  className="pl-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100"
+                />
+              </div>
               {value && (
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="absolute right-2 top-2.5 h-4 w-4 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
+                  className="px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-md border border-red-200 dark:border-red-800 transition-colors flex items-center gap-2"
                 >
                   <X className="h-4 w-4" />
+                  Remover Ícone
                 </button>
               )}
             </div>
