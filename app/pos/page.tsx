@@ -594,27 +594,17 @@ export default function POSPage() {
     if (item.group?.type === 'rodizio') {
       // Verificar se já tem rodízio desse grupo no carrinho
       const hasRodizioInCart = cart.some(cartItem => 
-        cartItem.item?.group_id === item.group_id
+        cartItem.item?.group_id === item.group_id && 
+        cartItem.item?.group?.type === 'rodizio'
       );
       
       if (!hasRodizioInCart) {
-        // Se é o primeiro item do rodízio, usar o preço do grupo
+        // Se é o primeiro item do rodízio, usar o preço do grupo (cobrança única)
         itemPrice = item.group.price || 0;
+        toast.info(`Primeiro item do ${item.group.name} - Valor do rodízio: R$ ${itemPrice.toFixed(2)}`);
       } else {
-        // Se já tem rodízio, o item é grátis
+        // Se já tem rodízio no carrinho, todos os próximos itens são grátis
         itemPrice = 0;
-      }
-    }
-
-    // Se o item é grátis em rodízio mas não tem rodízio no carrinho ainda
-    if (itemPrice === 0 && item.group?.type === 'rodizio') {
-      const hasRodizioInCart = cart.some(cartItem => 
-        cartItem.item?.group_id === item.group_id
-      );
-      
-      if (!hasRodizioInCart) {
-        toast.error(`Adicione primeiro um rodízio ${item.group.name}`);
-        return;
       }
     }
     
