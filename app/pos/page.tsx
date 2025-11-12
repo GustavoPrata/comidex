@@ -1013,9 +1013,158 @@ export default function POSPage() {
     }).format(value);
   };
 
+  // Modal de Rodízio - Fora de qualquer container para garantir renderização
+  const rodizioDialogModal = (
+    <Dialog open={rodizioModal} onOpenChange={setRodizioModal}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Package className="h-5 w-5 text-orange-400" />
+            Lançar Rodízio - {selectedRodizioGroup?.name}
+          </DialogTitle>
+          <DialogDescription className="text-gray-400">
+            Selecione a quantidade de rodízios
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="py-4 space-y-4">
+          {/* Rodízio Inteiro */}
+          <div className="bg-gray-700/50 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">
+                Rodízio Inteiro
+              </label>
+              <span className="text-orange-400 font-bold">
+                {formatCurrency(selectedRodizioGroup?.price || 0)}
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              <Button
+                type="button"
+                onClick={() => setRodizioInteiro(prev => Math.max(0, prev - 1))}
+                disabled={rodizioInteiro <= 0}
+                className="bg-gray-600 hover:bg-gray-500 disabled:opacity-50"
+                size="sm"
+                data-testid="button-rodizio-inteiro-decrement"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={rodizioInteiro}
+                  onChange={(e) => setRodizioInteiro(Math.max(0, parseInt(e.target.value) || 0))}
+                  className="w-20 text-center bg-gray-700 border-gray-600 text-white"
+                  min="0"
+                  data-testid="input-rodizio-inteiro"
+                />
+                <span className="text-sm text-gray-400">pessoas</span>
+              </div>
+              
+              <Button
+                type="button"
+                onClick={() => setRodizioInteiro(prev => prev + 1)}
+                className="bg-gray-600 hover:bg-gray-500"
+                size="sm"
+                data-testid="button-rodizio-inteiro-increment"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Meio Rodízio */}
+          <div className="bg-gray-700/50 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <label className="text-sm font-medium">
+                Meio Rodízio
+              </label>
+              <span className="text-blue-400 font-bold">
+                {formatCurrency((selectedRodizioGroup?.price || 0) / 2)}
+              </span>
+            </div>
+            <div className="flex items-center justify-center gap-4">
+              <Button
+                type="button"
+                onClick={() => setRodizioMeio(prev => Math.max(0, prev - 1))}
+                disabled={rodizioMeio <= 0}
+                className="bg-gray-600 hover:bg-gray-500 disabled:opacity-50"
+                size="sm"
+                data-testid="button-rodizio-meio-decrement"
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  value={rodizioMeio}
+                  onChange={(e) => setRodizioMeio(Math.max(0, parseInt(e.target.value) || 0))}
+                  className="w-20 text-center bg-gray-700 border-gray-600 text-white"
+                  min="0"
+                  data-testid="input-rodizio-meio"
+                />
+                <span className="text-sm text-gray-400">pessoas</span>
+              </div>
+              
+              <Button
+                type="button"
+                onClick={() => setRodizioMeio(prev => prev + 1)}
+                className="bg-gray-600 hover:bg-gray-500"
+                size="sm"
+                data-testid="button-rodizio-meio-increment"
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Total */}
+          <div className="bg-gray-800 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <span className="text-lg font-medium">Total:</span>
+              <div className="text-right">
+                <div className="text-sm text-gray-400">
+                  {rodizioInteiro > 0 && `${rodizioInteiro} inteiro${rodizioInteiro > 1 ? 's' : ''} `}
+                  {rodizioInteiro > 0 && rodizioMeio > 0 && '+ '}
+                  {rodizioMeio > 0 && `${rodizioMeio} meio${rodizioMeio > 1 ? 's' : ''}`}
+                </div>
+                <div className="text-xl font-bold text-orange-400">
+                  {formatCurrency((rodizioInteiro * (selectedRodizioGroup?.price || 0)) + (rodizioMeio * ((selectedRodizioGroup?.price || 0) / 2)))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => setRodizioModal(false)}
+            className="bg-gray-700 hover:bg-gray-600 text-white border-gray-600"
+            data-testid="button-rodizio-cancel"
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleAddRodizio}
+            disabled={rodizioInteiro === 0 && rodizioMeio === 0}
+            className="bg-orange-500 hover:bg-orange-600 text-white"
+            data-testid="button-rodizio-confirm"
+          >
+            Adicionar ao Pedido
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+
   // RENDERIZAÇÃO CONDICIONAL POR TELA
+  let screenContent;
+
   if (loading && screen === 'tables') {
-    return (
+    screenContent = (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
@@ -1028,10 +1177,9 @@ export default function POSPage() {
       </div>
     );
   }
-
   // TELA 1: SELEÇÃO DE MESAS
-  if (screen === 'tables') {
-    return (
+  else if (screen === 'tables') {
+    screenContent = (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -1468,10 +1616,9 @@ export default function POSPage() {
       </div>
     );
   }
-
   // TELA 2: SESSÃO/PEDIDOS MELHORADA
-  if (screen === 'session') {
-    return (
+  else if (screen === 'session') {
+    screenContent = (
       <div className="h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white flex flex-col">
         {/* Header Melhorado */}
         <div className="bg-gray-900/80 backdrop-blur px-4 py-3 flex items-center justify-between border-b border-gray-700">
@@ -2366,8 +2513,8 @@ export default function POSPage() {
   }
 
   // TELA 3: HISTÓRICO DE VENDAS
-  if (screen === 'history') {
-    return (
+  else if (screen === 'history') {
+    screenContent = (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 p-6">
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -2582,5 +2729,11 @@ export default function POSPage() {
     );
   }
 
-  return null;
+  // RETURN ÚNICO FINAL - Renderiza o modal e o conteúdo da tela
+  return (
+    <>
+      {rodizioDialogModal}
+      {screenContent}
+    </>
+  );
 }
