@@ -1668,23 +1668,28 @@ export default function POSPage() {
                                   }}
                                   className="h-32 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-orange-700 hover:to-orange-600 border-gray-600 hover:border-orange-500 cursor-pointer transition-all group"
                                 >
-                                  <CardContent className="h-full flex flex-col items-center justify-center p-4 relative">
+                                  <CardContent className="h-full flex flex-col items-center justify-between p-4 relative">
+                                    {/* Badge Rodízio */}
                                     {group.type === 'rodizio' && (
                                       <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-xs px-2 py-1 rounded-full font-semibold shadow-lg">
                                         Rodízio
                                       </div>
                                     )}
-                                    <div className="bg-gray-900/50 p-3 rounded-full mb-2 group-hover:bg-orange-600/30 transition-colors">
-                                      <Icon className="h-10 w-10 text-gray-200 group-hover:text-white" />
+                                    
+                                    {/* Valor sempre no canto esquerdo */}
+                                    <div className="absolute top-2 left-2 text-yellow-400 font-bold text-sm">
+                                      {group.price ? `R$ ${group.price.toFixed(2)}` : ''}
                                     </div>
-                                    <h3 className="text-center text-white font-semibold text-base">
-                                      {group.name}
-                                    </h3>
-                                    {group.price && (
-                                      <div className="text-xs mt-2 text-yellow-400 font-bold bg-black/30 px-2 py-1 rounded-full">
-                                        R$ {group.price.toFixed(2)}
+
+                                    {/* Conteúdo centralizado */}
+                                    <div className="flex-1 flex flex-col items-center justify-center">
+                                      <div className="bg-gray-900/50 p-3 rounded-full mb-2 group-hover:bg-orange-600/30 transition-colors">
+                                        <Icon className="h-10 w-10 text-gray-200 group-hover:text-white" />
                                       </div>
-                                    )}
+                                      <h3 className="text-center text-white font-semibold text-base">
+                                        {group.name}
+                                      </h3>
+                                    </div>
                                   </CardContent>
                                 </Card>
                               </motion.div>
