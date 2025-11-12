@@ -122,7 +122,6 @@ interface TableSession {
   total: number;
   final_total?: number;
   notes?: string | null;
-  service_type?: 'a_la_carte' | 'rodizio_tradicional' | 'rodizio_premium';
 }
 
 interface Order {
@@ -208,6 +207,7 @@ export default function POSPage() {
   
   // Estados de diálogos
   const [openTableDialog, setOpenTableDialog] = useState(false);
+  const [customerCount, setCustomerCount] = useState(1);
   const [paymentDialog, setPaymentDialog] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'pix'>('cash');
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
@@ -484,6 +484,7 @@ export default function POSPage() {
   // FUNÇÕES DE MESA/SESSÃO
   const handleSelectTable = async (table: RestaurantTable) => {
     setSelectedTable(table);
+    setCustomerCount(1); // Reset para 1 ao selecionar nova mesa
     
     if (table.current_session) {
       setCurrentSession(table.current_session);
@@ -504,10 +505,9 @@ export default function POSPage() {
         .insert({
           table_id: selectedTable.id,
           status: 'open',
-          customer_count: 1,
+          customer_count: customerCount,
           opened_at: new Date().toISOString(),
-          total: 0,
-          service_type: 'a_la_carte'
+          total: 0
         })
         .select()
         .single();
@@ -528,9 +528,10 @@ export default function POSPage() {
       toast.success(`Mesa ${selectedTable.number} aberta`);
       
       await loadTables();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao abrir mesa:', error);
-      toast.error('Erro ao abrir mesa');
+      const errorMessage = error?.message || error?.details || 'Erro desconhecido ao abrir mesa';
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -1083,17 +1084,6 @@ export default function POSPage() {
                               OCUPADA
                             </Badge>
                             <div className="text-xs text-gray-300 mt-1 space-y-1">
-                              {table.current_session.service_type && (
-                                <div className="text-center">
-                                  <span className="text-yellow-400 font-semibold">
-                                    {table.current_session.service_type === 'a_la_carte' 
-                                      ? 'À la Carte'
-                                      : table.current_session.service_type === 'rodizio_tradicional'
-                                      ? 'Rodízio Tradicional'
-                                      : 'Rodízio Premium'}
-                                  </span>
-                                </div>
-                              )}
                               <div className="flex items-center justify-center gap-1">
                                 <Users className="h-3 w-3" />
                                 <span>{table.current_session.customer_count} {table.current_session.customer_count === 1 ? 'pessoa' : 'pessoas'}</span>
@@ -1174,11 +1164,69 @@ export default function POSPage() {
               </DialogDescription>
             </DialogHeader>
             
-            <div className="py-4">
+            <div className="py-4 space-y-4">
               <div className="bg-gray-700/50 rounded-lg p-4 text-center">
                 <p className="text-lg">
                   Deseja abrir {selectedTable?.type === 'counter' ? 'o balcão' : 'a mesa'} {selectedTable?.number}?
                 </p>
+              </div>
+              
+              {/* Campo de quantidade de pessoas */}
+              <div>
+                <label className="block text-sm mb-2 text-gray-300">
+                  Quantidade de Pessoas
+                </label>
+                <div className="flex items-center justify-center gap-4">
+                  <Button
+                    type="button"
+                    onClick={() => setCustomerCount(prev => Math.max(1, prev - 1))}
+                    disabled={customerCount <= 1}
+                    className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50"
+                    size="sm"
+                    data-testid="button-decrement-pessoas"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="number"
+                      min="1"
+                      max={selectedTable?.capacity || 12}
+                      value={customerCount}
+                      onChange={(e) => {
+                        const value = parseInt(e.target.value) || 1;
+                        const max = selectedTable?.capacity || 12;
+                        setCustomerCount(Math.max(1, Math.min(max, value)));
+                      }}
+                      className="bg-gray-800 border-gray-600 text-white text-2xl w-20 text-center"
+                      pattern="[0-9]*"
+                    />
+                    <span className="text-gray-400 text-sm">
+                      / {selectedTable?.capacity || 12} máx
+                    </span>
+                  </div>
+                  
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      const max = selectedTable?.capacity || 12;
+                      setCustomerCount(prev => Math.min(max, prev + 1));
+                    }}
+                    disabled={customerCount >= (selectedTable?.capacity || 12)}
+                    className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50"
+                    size="sm"
+                    data-testid="button-increment-pessoas"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                {selectedTable?.capacity && (
+                  <p className="text-xs text-gray-500 text-center mt-2">
+                    Capacidade máxima da mesa: {selectedTable.capacity} pessoas
+                  </p>
+                )}
               </div>
             </div>
             
