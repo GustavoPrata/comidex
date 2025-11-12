@@ -2,7 +2,7 @@
     script: typeof document === "object" ? document.currentScript : undefined,
     chunks: [
   "static/chunks/node_modules_@supabase_node-fetch_browser_ebbd8575.js",
-  "static/chunks/node_modules_59a1cfa5._.js",
+  "static/chunks/node_modules_ab352db6._.js",
   "static/chunks/_c5851598._.js"
 ],
     source: "dynamic"
