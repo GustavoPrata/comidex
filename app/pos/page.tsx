@@ -1515,6 +1515,21 @@ export default function POSPage() {
                               <Card className="bg-gray-800/50 backdrop-blur border-gray-700 hover:bg-gray-800/70 transition-all">
                                 <CardContent className="p-3">
                                   <div className="flex items-center justify-between">
+                                    {/* Foto do produto */}
+                                    <div className="w-12 h-12 bg-gray-700 rounded mr-3 flex-shrink-0 overflow-hidden">
+                                      {item.item?.image ? (
+                                        <img
+                                          src={item.item.image}
+                                          alt={item.item?.name || ''}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-gray-500">
+                                          <Package className="h-6 w-6" />
+                                        </div>
+                                      )}
+                                    </div>
+                                    
                                     <div className="flex-1">
                                       <div className="font-medium text-white flex items-center gap-2">
                                         {item.item?.name || `Produto ${item.item_id}`}
