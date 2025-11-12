@@ -493,7 +493,6 @@ export default function POSPage() {
       setScreen('session');
     } else {
       setOpenTableDialog(true);
-      setCustomerCount("1");
     }
   };
 
@@ -507,10 +506,10 @@ export default function POSPage() {
         .insert({
           table_id: selectedTable.id,
           status: 'open',
-          customer_count: parseInt(customerCount) || 1,
+          customer_count: 1,
           opened_at: new Date().toISOString(),
           total: 0,
-          service_type: serviceType
+          service_type: 'a_la_carte'
         })
         .select()
         .single();
@@ -1173,67 +1172,14 @@ export default function POSPage() {
                 Abrir {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
               </DialogTitle>
               <DialogDescription className="text-gray-400">
-                Selecione o tipo de serviço e quantidade de pessoas
+                Confirme a abertura da mesa
               </DialogDescription>
             </DialogHeader>
             
-            <div className="py-4 space-y-4">
-              <div>
-                <label className="block text-sm mb-2 text-gray-300">
-                  Tipo de Serviço
-                </label>
-                <div className="grid grid-cols-3 gap-2">
-                  <Button
-                    type="button"
-                    onClick={() => setServiceType('a_la_carte')}
-                    className={`${
-                      serviceType === 'a_la_carte' 
-                        ? 'bg-orange-600 hover:bg-orange-700' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                  >
-                    À la Carte
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => setServiceType('rodizio_tradicional')}
-                    className={`${
-                      serviceType === 'rodizio_tradicional' 
-                        ? 'bg-orange-600 hover:bg-orange-700' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                  >
-                    Rodízio Tradicional
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => setServiceType('rodizio_premium')}
-                    className={`${
-                      serviceType === 'rodizio_premium' 
-                        ? 'bg-orange-600 hover:bg-orange-700' 
-                        : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                  >
-                    Rodízio Premium
-                  </Button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm mb-2 text-gray-300">
-                  Número de Pessoas
-                </label>
-                <Input
-                  type="number"
-                  min="1"
-                  max={selectedTable?.capacity || 10}
-                  value={customerCount}
-                  onChange={(e) => setCustomerCount(e.target.value)}
-                  className="bg-gray-700 border-gray-600 text-white text-xl"
-                  autoFocus
-                />
-                <p className="text-xs text-gray-400 mt-1">
-                  Capacidade máxima: {selectedTable?.capacity}
+            <div className="py-4">
+              <div className="bg-gray-700/50 rounded-lg p-4 text-center">
+                <p className="text-lg">
+                  Deseja abrir {selectedTable?.type === 'counter' ? 'o balcão' : 'a mesa'} {selectedTable?.number}?
                 </p>
               </div>
             </div>
