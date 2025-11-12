@@ -954,7 +954,7 @@ export default function POSPage() {
           </div>
 
           {/* Grid de Mesas com Animação */}
-          <div className="grid grid-cols-6 gap-4">
+          <div className="grid grid-cols-8 gap-3">
             <AnimatePresence>
               {tables.map((table, index) => (
                 <motion.div
@@ -968,7 +968,7 @@ export default function POSPage() {
                 >
                   <Card
                     className={`
-                      cursor-pointer transition-all h-[240px]
+                      cursor-pointer transition-all h-[180px]
                       ${table.current_session 
                         ? 'bg-gradient-to-br from-orange-900/40 to-orange-800/30 border-orange-600 shadow-orange-600/20' 
                         : 'bg-gray-800/50 backdrop-blur border-gray-700 hover:bg-gray-700/50'}
@@ -976,7 +976,7 @@ export default function POSPage() {
                     `}
                     onClick={() => handleSelectTable(table)}
                   >
-                    <CardContent className="p-6 text-center relative h-full flex flex-col justify-between">
+                    <CardContent className="p-4 text-center relative h-full flex flex-col justify-between">
                       {table.current_session && (
                         <div className="absolute -top-2 -right-2">
                           <div className="relative">
@@ -987,44 +987,56 @@ export default function POSPage() {
                       )}
                       
                       <div>
-                        <div className="mb-2">
+                        <div className="mb-1">
                           {table.type === 'counter' ? (
-                            <User className="h-8 w-8 mx-auto text-white" />
+                            <User className="h-6 w-6 mx-auto text-white/90" />
                           ) : (
-                            <Home className="h-8 w-8 mx-auto text-white" />
+                            <Home className="h-6 w-6 mx-auto text-white/90" />
                           )}
                         </div>
-                        <h3 className="text-xl font-bold text-white mb-1">
-                          {table.type === 'counter' ? 'Balcão' : 'Mesa'} {table.number}
+                        <h3 className="text-lg font-bold text-white">
+                          {table.type === 'counter' ? 'B' : 'M'}{table.number}
                         </h3>
-                        <p className="text-sm text-gray-400 mb-3">
-                          Capacidade: {table.capacity}
+                        <p className="text-xs text-gray-400">
+                          {table.capacity} lugares
                         </p>
                       </div>
                       
                       <div>
                         {table.current_session ? (
                           <>
-                            <Badge className="bg-orange-600 text-white mb-2">
+                            <Badge className="bg-orange-600 text-white text-xs py-0.5 mb-1">
                               OCUPADA
                             </Badge>
-                            <div className="text-xs text-gray-300 mt-2 space-y-1">
-                              <p>👥 {table.current_session.customer_count} pessoas</p>
-                              <p className="font-bold text-orange-400">
+                            <div className="text-xs text-gray-300 space-y-0.5">
+                              <div className="flex items-center justify-center gap-1">
+                                <Users className="h-3 w-3" />
+                                <span>{table.current_session.customer_count}</span>
+                              </div>
+                              <div className="font-bold text-orange-400">
                                 {formatCurrency(table.current_session.total)}
-                              </p>
-                              <p>⏰ {format(new Date(table.current_session.opened_at), 'HH:mm')}</p>
+                              </div>
+                              <div className="flex items-center justify-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                <span>{format(new Date(table.current_session.opened_at), 'HH:mm')}</span>
+                              </div>
                             </div>
                           </>
                         ) : (
                           <>
-                            <Badge className="bg-green-600 text-white mb-2">
+                            <Badge className="bg-green-600 text-white text-xs py-0.5 mb-1">
                               LIVRE
                             </Badge>
-                            <div className="text-xs text-gray-500 mt-2 space-y-1">
-                              <p className="invisible">👥 -</p>
-                              <p className="invisible">-</p>
-                              <p className="invisible">⏰ -</p>
+                            <div className="text-xs text-gray-500 space-y-0.5">
+                              <div className="invisible flex items-center justify-center gap-1">
+                                <Users className="h-3 w-3" />
+                                <span>-</span>
+                              </div>
+                              <div className="invisible">-</div>
+                              <div className="invisible flex items-center justify-center gap-1">
+                                <Clock className="h-3 w-3" />
+                                <span>-</span>
+                              </div>
                             </div>
                           </>
                         )}

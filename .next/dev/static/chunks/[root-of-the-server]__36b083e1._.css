@@ -911,6 +911,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   height: 24rem;
 }
 
+.h-\[180px\] {
+  height: 180px;
+}
+
 .h-\[200px\] {
   height: 200px;
 }
@@ -1353,8 +1357,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
-.grid-cols-6 {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+.grid-cols-8 {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
 }
 
 .flex-col {
@@ -1449,6 +1453,12 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-0\.5 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(.125rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(.125rem * var(--tw-space-y-reverse));
 }
 
 .space-y-1 > :not([hidden]) ~ :not([hidden]) {
@@ -2842,6 +2852,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-white\/90 {
+  color: #ffffffe6;
 }
 
 .text-yellow-400 {
