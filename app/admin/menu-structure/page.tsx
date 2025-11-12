@@ -1791,9 +1791,18 @@ export default function GripStructurePage() {
                   <Label htmlFor="type">Tipo do Grupo *</Label>
                   <Select 
                     value={groupFormData.type}
-                    onValueChange={(value: 'rodizio' | 'a_la_carte' | 'bebidas') => 
-                      setGroupFormData({...groupFormData, type: value})
-                    }
+                    onValueChange={(value: 'rodizio' | 'a_la_carte' | 'bebidas') => {
+                      if (value !== 'rodizio') {
+                        setGroupFormData({
+                          ...groupFormData, 
+                          type: value,
+                          price: "",
+                          half_price: ""
+                        });
+                      } else {
+                        setGroupFormData({...groupFormData, type: value});
+                      }
+                    }}
                   >
                     <SelectTrigger id="type">
                       <SelectValue placeholder="Selecione o tipo" />
@@ -1806,35 +1815,33 @@ export default function GripStructurePage() {
                   </Select>
                 </div>
 
-                <div>
-                  <Label htmlFor="price">Preço (R$)</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    step="0.01"
-                    value={groupFormData.price}
-                    onChange={(e) => setGroupFormData({...groupFormData, price: e.target.value})}
-                    placeholder="0.00"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-                    Opcional - usado para rodízios com preço fixo
-                  </p>
-                </div>
+                {groupFormData.type === 'rodizio' && (
+                  <>
+                    <div>
+                      <Label htmlFor="price">Preço (R$)</Label>
+                      <Input
+                        id="price"
+                        type="number"
+                        step="0.01"
+                        value={groupFormData.price}
+                        onChange={(e) => setGroupFormData({...groupFormData, price: e.target.value})}
+                        placeholder="0.00"
+                      />
+                    </div>
 
-                <div>
-                  <Label htmlFor="half_price">Preço Médio - Crianças (R$)</Label>
-                  <Input
-                    id="half_price"
-                    type="number"
-                    step="0.01"
-                    value={groupFormData.half_price}
-                    onChange={(e) => setGroupFormData({...groupFormData, half_price: e.target.value})}
-                    placeholder="0.00"
-                  />
-                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
-                    Opcional - valor para crianças (normalmente metade do preço)
-                  </p>
-                </div>
+                    <div>
+                      <Label htmlFor="half_price">Preço Médio - Crianças (R$)</Label>
+                      <Input
+                        id="half_price"
+                        type="number"
+                        step="0.01"
+                        value={groupFormData.half_price}
+                        onChange={(e) => setGroupFormData({...groupFormData, half_price: e.target.value})}
+                        placeholder="0.00"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Right column - Icon, Status and info */}
