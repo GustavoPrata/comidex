@@ -924,12 +924,11 @@ export default function POSPage() {
           </motion.div>
 
           {/* Estatísticas Animadas */}
-          <div className="grid grid-cols-5 gap-4 mb-8">
+          <div className="grid grid-cols-4 gap-4 mb-8">
             {[
               { label: 'Mesas Abertas', value: tables.filter(t => t.current_session).length, icon: Users, color: 'blue' },
               { label: 'Mesas Livres', value: tables.filter(t => !t.current_session).length, icon: UtensilsCrossed, color: 'green' },
               { label: 'Total de Mesas', value: tables.length, icon: Receipt, color: 'orange' },
-              { label: 'Vendas Hoje', value: formatCurrency(salesStats.totalSales), icon: TrendingUp, color: 'purple' },
               { label: 'Hora Atual', value: format(new Date(), 'HH:mm'), icon: Clock, color: 'pink' }
             ].map((stat, index) => (
               <motion.div
