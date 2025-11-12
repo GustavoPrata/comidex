@@ -4,7 +4,7 @@ import {
   type MenuIconOption,
   getIconsByCategory,
   defaultGroupIcons 
-} from '@lib/menu-icons-library';
+} from '../../../lib/menu-icons-library';
 import { 
   Dialog,
   DialogContent,

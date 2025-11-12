@@ -76,6 +76,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/admin/image-upload";
+import { IconSelector } from "@/components/IconSelector";
+import { menuIconLibrary, getIconByName } from "@/lib/menu-icons-library";
 
 const supabase = createClient();
 import type { Group, Category } from "@/types/supabase";
@@ -228,6 +230,22 @@ function SortableGroupItem({
             {/* Group Info */}
             <div>
               <div className="flex items-center gap-2">
+                {/* Group Icon */}
+                {(() => {
+                  const iconName = (group as any).icon;
+                  if (iconName) {
+                    const iconOption = getIconByName(iconName);
+                    if (iconOption) {
+                      const Icon = iconOption.icon;
+                      return (
+                        <div className="p-1.5 bg-orange-100 dark:bg-orange-900/20 rounded-lg">
+                          <Icon className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                        </div>
+                      );
+                    }
+                  }
+                  return null;
+                })()}
                 <h3 className="text-lg font-semibold">{group.name}</h3>
                 {getTypeBadge(group.type)}
                 {group.price && (
@@ -549,7 +567,8 @@ export default function GripStructurePage() {
     type: "a_la_carte" as 'rodizio' | 'a_la_carte' | 'bebidas' | 'outros',
     price: "",
     active: false,
-    sort_order: 0
+    sort_order: 0,
+    icon: null as string | null
   });
 
   const [categoryFormData, setCategoryFormData] = useState({
@@ -734,7 +753,8 @@ export default function GripStructurePage() {
         type: "a_la_carte",
         price: "",
         active: false,
-        sort_order: 0
+        sort_order: 0,
+        icon: null
       });
       setCategoryFormData({
         name: "",
@@ -1165,7 +1185,8 @@ export default function GripStructurePage() {
         type: group.type,
         price: group.price !== null && group.price !== undefined ? group.price.toString() : "",
         active: group.active,
-        sort_order: group.sort_order
+        sort_order: group.sort_order,
+        icon: (group as any).icon || null
       });
     } else {
       setEditingItem(null);
@@ -1174,7 +1195,8 @@ export default function GripStructurePage() {
         type: "a_la_carte",
         price: "",
         active: true,
-        sort_order: groups.length
+        sort_order: groups.length,
+        icon: null
       });
     }
     setIsModalOpen(true);
@@ -1776,6 +1798,18 @@ export default function GripStructurePage() {
                       <SelectItem value="bebidas">Bebidas</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="icon">Ícone do Grupo</Label>
+                  <IconSelector
+                    value={groupFormData.icon}
+                    onChange={(iconName) => setGroupFormData({...groupFormData, icon: iconName})}
+                    placeholder="Buscar ícone..."
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                    Escolha um ícone para identificar visualmente este grupo
+                  </p>
                 </div>
 
                 <div>
