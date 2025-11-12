@@ -51,13 +51,15 @@ import {
   FileText,
   Settings,
   ChevronRight,
+  ChevronLeft,
   Zap,
   Star,
   ShoppingBag,
   Calculator,
   Keyboard,
   UtensilsCrossed,
-  Armchair
+  Armchair,
+  Soup
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -168,6 +170,7 @@ export default function POSPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [todayOrders, setTodayOrders] = useState<Order[]>([]);
   const [salesStats, setSalesStats] = useState<SalesStats>({
@@ -311,7 +314,7 @@ export default function POSPage() {
       }));
 
       // Ordenação numérica das mesas/balcões
-      processedTables.sort((a, b) => {
+      processedTables.sort((a: any, b: any) => {
         const numA = parseInt(a.number) || 0;
         const numB = parseInt(b.number) || 0;
         return numA - numB;
@@ -1543,59 +1546,144 @@ export default function POSPage() {
               <TabsContent value="categories" className="flex-1 mt-4">
                 <Card className="h-full bg-gray-900/50 backdrop-blur border-gray-700">
                   <CardHeader>
-                    <CardTitle>Grupos e Categorias de Produtos</CardTitle>
+                    <CardTitle className="flex items-center justify-between">
+                      <span>{selectedGroup ? `${selectedGroup} - Categorias` : 'Grupos de Produtos'}</span>
+                      {selectedGroup && (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            setSelectedGroup(null);
+                            setSelectedCategory(null);
+                          }}
+                          className="text-gray-300 hover:text-white"
+                        >
+                          <ChevronLeft className="h-4 w-4 mr-1" />
+                          Voltar aos Grupos
+                        </Button>
+                      )}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-3 gap-4 mb-4">
-                      <Button
-                        onClick={() => setSelectedCategory(null)}
-                        className={`${!selectedCategory ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
-                      >
-                        Todas
-                      </Button>
-                      {categories.map((category) => {
-                        const Icon = categoryIcons[category.name] || Package;
-                        return (
+                    {!selectedGroup ? (
+                      // Mostrar Grupos
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-3 gap-4">
                           <Button
-                            key={category.id}
-                            onClick={() => setSelectedCategory(category.id)}
-                            className={`${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
+                            onClick={() => setSelectedGroup('Entradas')}
+                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
                           >
-                            <Icon className="mr-2 h-4 w-4" />
-                            {category.name}
+                            <Package className="h-8 w-8 mb-2" />
+                            Entradas
                           </Button>
-                        );
-                      })}
-                    </div>
-                    
-                    <ScrollArea className="h-[400px]">
-                      <div className="grid grid-cols-2 gap-2">
-                        {filteredItems.map((item) => (
-                          <motion.div
-                            key={item.id}
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
+                          <Button
+                            onClick={() => setSelectedGroup('Pratos Quentes')}
+                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
                           >
-                            <Card
-                              className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all"
-                              onClick={() => handleAddItem(item)}
-                            >
-                              <CardContent className="p-3">
-                                <div className="font-medium text-white text-sm">
-                                  {item.name}
-                                </div>
-                                <div className="text-xs text-gray-400 mt-1">
-                                  Código: {item.id}
-                                </div>
-                                <div className="font-bold text-orange-400 mt-2">
-                                  {formatCurrency(item.price || 0)}
-                                </div>
-                              </CardContent>
-                            </Card>
-                          </motion.div>
-                        ))}
+                            <Soup className="h-8 w-8 mb-2" />
+                            Pratos Quentes
+                          </Button>
+                          <Button
+                            onClick={() => setSelectedGroup('Sushi')}
+                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
+                          >
+                            <Fish className="h-8 w-8 mb-2" />
+                            Sushi
+                          </Button>
+                          <Button
+                            onClick={() => setSelectedGroup('Bebidas')}
+                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
+                          >
+                            <Coffee className="h-8 w-8 mb-2" />
+                            Bebidas
+                          </Button>
+                          <Button
+                            onClick={() => setSelectedGroup('Sobremesas')}
+                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
+                          >
+                            <IceCream className="h-8 w-8 mb-2" />
+                            Sobremesas
+                          </Button>
+                          <Button
+                            onClick={() => setSelectedGroup('Especiais')}
+                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
+                          >
+                            <Star className="h-8 w-8 mb-2" />
+                            Especiais
+                          </Button>
+                        </div>
                       </div>
-                    </ScrollArea>
+                    ) : (
+                      // Mostrar Categorias do Grupo e Produtos
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-3 gap-2">
+                          <Button
+                            onClick={() => setSelectedCategory(null)}
+                            className={`${!selectedCategory ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
+                          >
+                            Todos
+                          </Button>
+                          {(() => {
+                            // Mapear categorias aos grupos
+                            const groupCategories: Record<string, string[]> = {
+                              'Entradas': ['Sunomono', 'Carpaccio', 'Ceviche', 'Temaki'],
+                              'Pratos Quentes': ['Yakisoba', 'Teppanyaki', 'Tempurá', 'Gyoza'],
+                              'Sushi': ['Sashimi', 'Nigiri', 'Combinados', 'Hot Roll'],
+                              'Bebidas': ['Refrigerantes', 'Sucos', 'Cervejas', 'Saquê'],
+                              'Sobremesas': ['Dorayaki', 'Mochi', 'Tempurá de Sorvete'],
+                              'Especiais': ['Omakase', 'Festival', 'Promoções']
+                            };
+                            
+                            const currentGroupCategories = groupCategories[selectedGroup] || [];
+                            
+                            return categories
+                              .filter((c) => c.active && currentGroupCategories.includes(c.name))
+                              .map((category) => {
+                                const Icon = categoryIcons[category.name] || Package;
+                                return (
+                                  <Button
+                                    key={category.id}
+                                    onClick={() => setSelectedCategory(category.id)}
+                                    className={`${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
+                                  >
+                                    <Icon className="mr-2 h-4 w-4" />
+                                    {category.name}
+                                  </Button>
+                                );
+                              });
+                          })()}
+                        </div>
+                        
+                        <ScrollArea className="h-[400px]">
+                          <div className="grid grid-cols-2 gap-2">
+                            {filteredItems.map((item) => (
+                              <motion.div
+                                key={item.id}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                              >
+                                <Card
+                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all"
+                                  onClick={() => handleAddItem(item)}
+                                >
+                                  <CardContent className="p-3">
+                                    <div className="font-medium text-white text-sm">
+                                      {item.name}
+                                    </div>
+                                    <div className="text-xs text-gray-400 mt-1">
+                                      Código: {item.id}
+                                    </div>
+                                    <div className="font-bold text-orange-400 mt-2">
+                                      {formatCurrency(item.price || 0)}
+                                    </div>
+                                  </CardContent>
+                                </Card>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </ScrollArea>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
