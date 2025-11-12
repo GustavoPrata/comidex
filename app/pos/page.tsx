@@ -1216,7 +1216,7 @@ export default function POSPage() {
 
         {/* Dialog Rodízio */}
         <Dialog open={rodizioModal} onOpenChange={setRodizioModal}>
-          <DialogContent className="bg-gray-800 text-white border-gray-700" style={{ zIndex: 99999 }}>
+          <DialogContent className="fixed left-[50%] top-[50%] z-[9999] w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-gray-700 bg-gray-800 p-6 shadow-lg sm:rounded-lg text-white">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5 text-orange-400" />
@@ -1855,6 +1855,17 @@ export default function POSPage() {
                           ? `${groups.find(g => g.id === selectedGroup)?.name || ''} - Categorias` 
                           : 'Grupos de Produtos'}
                       </span>
+                      {/* BOTÃO DE TESTE TEMPORÁRIO */}
+                      <Button 
+                        onClick={() => {
+                          console.log('Teste: abrindo modal manualmente');
+                          setRodizioModal(true);
+                          setSelectedRodizioGroup(groups.find(g => g.type === 'rodizio') || null);
+                        }}
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        TESTE MODAL
+                      </Button>
                       {selectedGroup && (
                         <Button
                           size="sm"
@@ -1896,10 +1907,12 @@ export default function POSPage() {
                                       
                                       if (!hasRodizio) {
                                         // Se não tem rodízio, abre o modal para adicionar
+                                        console.log('Abrindo modal de rodízio para:', group.name);
                                         setSelectedRodizioGroup(group);
                                         setRodizioInteiro(1);
                                         setRodizioMeio(0);
                                         setRodizioModal(true);
+                                        console.log('Estado rodizioModal deve ser true agora');
                                       } else {
                                         // Se já tem rodízio, vai para as categorias normalmente
                                         setSelectedGroup(group.id);
