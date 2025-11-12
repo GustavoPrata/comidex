@@ -565,6 +565,7 @@ export default function GripStructurePage() {
     name: "",
     type: "a_la_carte" as 'rodizio' | 'a_la_carte' | 'bebidas' | 'outros',
     price: "",
+    half_price: "",
     active: false,
     sort_order: 0,
     icon: null as string | null
@@ -751,6 +752,7 @@ export default function GripStructurePage() {
         name: "",
         type: "a_la_carte",
         price: "",
+        half_price: "",
         active: false,
         sort_order: 0,
         icon: null
@@ -1183,6 +1185,7 @@ export default function GripStructurePage() {
         name: group.name,
         type: group.type,
         price: group.price !== null && group.price !== undefined ? group.price.toString() : "",
+        half_price: (group as any).half_price !== null && (group as any).half_price !== undefined ? (group as any).half_price.toString() : "",
         active: group.active,
         sort_order: group.sort_order,
         icon: (group as any).icon || null
@@ -1193,6 +1196,7 @@ export default function GripStructurePage() {
         name: "",
         type: "a_la_carte",
         price: "",
+        half_price: "",
         active: true,
         sort_order: groups.length,
         icon: null
@@ -1240,7 +1244,8 @@ export default function GripStructurePage() {
       setSaving(true);
       const data = {
         ...groupFormData,
-        price: groupFormData.price ? parseFloat(groupFormData.price) : null
+        price: groupFormData.price ? parseFloat(groupFormData.price) : null,
+        half_price: groupFormData.half_price ? parseFloat(groupFormData.half_price) : null
       };
 
       if (editingItem) {
@@ -1287,6 +1292,7 @@ export default function GripStructurePage() {
         name: "",
         type: "a_la_carte",
         price: "",
+        half_price: "",
         active: false,
         sort_order: 0,
         icon: null
@@ -1814,6 +1820,21 @@ export default function GripStructurePage() {
                     Opcional - usado para rodízios com preço fixo
                   </p>
                 </div>
+
+                <div>
+                  <Label htmlFor="half_price">Preço Médio - Crianças (R$)</Label>
+                  <Input
+                    id="half_price"
+                    type="number"
+                    step="0.01"
+                    value={groupFormData.half_price}
+                    onChange={(e) => setGroupFormData({...groupFormData, half_price: e.target.value})}
+                    placeholder="0.00"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                    Opcional - valor para crianças (normalmente metade do preço)
+                  </p>
+                </div>
               </div>
 
               {/* Right column - Icon, Status and info */}
@@ -1972,6 +1993,7 @@ export default function GripStructurePage() {
                   name: "",
                   type: "a_la_carte",
                   price: "",
+                  half_price: "",
                   active: true,
                   sort_order: 0,
                   icon: null
