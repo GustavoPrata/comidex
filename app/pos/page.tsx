@@ -262,10 +262,7 @@ export default function POSPage() {
       
       // Atalhos da sessão
       if (screen === 'session') {
-        if (e.ctrlKey && e.key === 'f') {
-          e.preventDefault();
-          setSearchOpen(!searchOpen);
-        } else if (e.key === '+' && !e.ctrlKey) {
+        if (e.key === '+' && !e.ctrlKey) {
           e.preventDefault();
           setQuantity(prev => (parseInt(prev) + 1).toString());
         } else if (e.key === '-' && !e.ctrlKey) {
@@ -1348,72 +1345,6 @@ export default function POSPage() {
           </div>
         </div>
 
-        {/* Busca Inteligente */}
-        <AnimatePresence>
-          {searchOpen && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              className="bg-gray-800/50 backdrop-blur border-b border-gray-700 p-4"
-            >
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Digite o nome ou código do produto..."
-                  className="pl-10 bg-gray-700 border-gray-600 text-white text-lg"
-                  autoFocus
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' && filteredItems.length > 0) {
-                      handleAddItem(filteredItems[0]);
-                      setSearchQuery("");
-                      setSearchOpen(false);
-                    }
-                  }}
-                />
-              </div>
-              
-              {searchQuery.length > 0 && (
-                <div className="mt-3 max-h-[400px] overflow-auto bg-gray-900 rounded-lg border border-gray-700">
-                  {filteredItems.length === 0 ? (
-                    <div className="text-gray-400 p-4 text-center">
-                      Nenhum produto encontrado.
-                    </div>
-                  ) : (
-                    <div className="p-2 space-y-1">
-                      {filteredItems.slice(0, 10).map((item) => (
-                        <div
-                          key={item.id}
-                          className="flex items-center justify-between p-3 hover:bg-gray-800 cursor-pointer rounded-lg transition-colors"
-                          onClick={() => {
-                            handleAddItem(item);
-                            setSearchQuery("");
-                            setSearchOpen(false);
-                          }}
-                        >
-                          <div>
-                            <div className="font-medium text-white">{item.name}</div>
-                            <div className="text-sm text-gray-400">
-                              Código: {item.id} • {item.category?.name}
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="font-bold text-orange-400">
-                              {formatCurrency(item.price || 0)}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* Main Content com Tabs */}
         <div className="flex flex-1 overflow-hidden">
           {/* Left Panel - Carrinho e Categorias */}
@@ -1434,51 +1365,134 @@ export default function POSPage() {
                 {/* Input Section */}
                 <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4">
                   <CardContent className="p-4">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="col-span-2">
-                        <label className="text-xs text-gray-400 mb-1 block">
-                          Código ou Nome do Produto
-                        </label>
-                        <Input
-                          ref={codeInputRef}
-                          value={inputValue}
-                          onChange={(e) => setInputValue(e.target.value)}
-                          onFocus={() => setActiveInput("code")}
-                          onKeyPress={(e) => e.key === "Enter" && handleAddItem()}
-                          className="bg-gray-800 border-gray-600 text-white text-2xl h-14"
-                          placeholder="Digite ou busque"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-xs text-gray-400 mb-1 block">Quantidade</label>
-                        <div className="flex gap-1">
-                          <Input
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
-                            onFocus={() => setActiveInput("quantity")}
-                            onKeyPress={(e) => e.key === "Enter" && handleAddItem()}
-                            className="bg-gray-800 border-gray-600 text-white text-2xl h-14 w-20 text-center"
-                            type="number"
-                            min="1"
-                          />
-                          <div className="flex flex-col gap-1">
-                            <Button 
-                              onClick={() => setQuantity(prev => (parseInt(prev) + 1).toString())}
-                              className="h-6 px-2 bg-gray-700 hover:bg-gray-600"
-                              size="sm"
-                            >
-                              <Plus className="h-3 w-3" />
-                            </Button>
-                            <Button 
-                              onClick={() => setQuantity(prev => Math.max(1, parseInt(prev) - 1).toString())}
-                              className="h-6 px-2 bg-gray-700 hover:bg-gray-600"
-                              size="sm"
-                            >
-                              <Minus className="h-3 w-3" />
-                            </Button>
+                    <div className="space-y-2 relative">
+                      <div className="grid grid-cols-3 gap-4">
+                        <div className="col-span-2 relative">
+                          <label className="text-xs text-gray-400 mb-1 block">
+                            Buscar Produto
+                          </label>
+                          <div className="relative">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            <Input
+                              ref={codeInputRef}
+                              value={inputValue}
+                              onChange={(e) => {
+                                setInputValue(e.target.value);
+                                setSearchQuery(e.target.value);
+                              }}
+                              onFocus={() => setActiveInput("code")}
+                              onKeyPress={(e) => {
+                                if (e.key === "Enter") {
+                                  if (searchQuery && filteredItems.length > 0) {
+                                    handleAddItem(filteredItems[0]);
+                                    setInputValue("");
+                                    setSearchQuery("");
+                                  } else {
+                                    handleAddItem();
+                                  }
+                                }
+                              }}
+                              className="bg-gray-800 border-gray-600 text-white text-2xl h-14 pl-10"
+                              placeholder="Nome ou código..."
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-400 mb-1 block">Quantidade</label>
+                          <div className="flex gap-1">
+                            <Input
+                              value={quantity}
+                              onChange={(e) => setQuantity(e.target.value)}
+                              onFocus={() => setActiveInput("quantity")}
+                              onKeyPress={(e) => e.key === "Enter" && handleAddItem()}
+                              className="bg-gray-800 border-gray-600 text-white text-2xl h-14 w-20 text-center"
+                              type="number"
+                              min="1"
+                            />
+                            <div className="flex flex-col gap-1">
+                              <Button 
+                                onClick={() => setQuantity(prev => (parseInt(prev) + 1).toString())}
+                                className="h-6 px-2 bg-gray-700 hover:bg-gray-600"
+                                size="sm"
+                              >
+                                <Plus className="h-3 w-3" />
+                              </Button>
+                              <Button 
+                                onClick={() => setQuantity(prev => Math.max(1, parseInt(prev) - 1).toString())}
+                                className="h-6 px-2 bg-gray-700 hover:bg-gray-600"
+                                size="sm"
+                              >
+                                <Minus className="h-3 w-3" />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
+
+                      {/* Resultados da Busca em Tempo Real */}
+                      {searchQuery.length > 0 && (
+                        <div className="mt-2 absolute left-0 right-0 z-10 bg-gray-900/95 backdrop-blur rounded-lg border border-gray-700 shadow-xl max-h-[320px] overflow-hidden">
+                          {filteredItems.length === 0 ? (
+                            <div className="text-gray-400 p-4 text-center">
+                              Nenhum produto encontrado para "{searchQuery}"
+                            </div>
+                          ) : (
+                            <ScrollArea className="max-h-[320px]">
+                              <div className="p-2">
+                                {filteredItems.slice(0, 8).map((item) => (
+                                  <button
+                                    key={item.id}
+                                    data-testid={`search-result-${item.id}`}
+                                    className="w-full flex items-center p-2 hover:bg-gray-800 rounded-lg transition-all group"
+                                    onClick={() => {
+                                      handleAddItem(item);
+                                      setInputValue("");
+                                      setSearchQuery("");
+                                    }}
+                                  >
+                                    {/* Foto do produto */}
+                                    <div className="w-12 h-12 bg-gray-700 rounded mr-3 flex-shrink-0 overflow-hidden">
+                                      {item.image ? (
+                                        <img
+                                          src={item.image}
+                                          alt={item.name}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center text-gray-500">
+                                          <Package className="h-6 w-6" />
+                                        </div>
+                                      )}
+                                    </div>
+                                    
+                                    {/* Informações do produto */}
+                                    <div className="flex-1 text-left">
+                                      <div className="font-medium text-white group-hover:text-orange-400 transition-colors">
+                                        {item.name}
+                                      </div>
+                                      <div className="text-xs text-gray-400">
+                                        {item.group?.name || '—'} • {item.category?.name || '—'}
+                                      </div>
+                                    </div>
+                                    
+                                    {/* Valor */}
+                                    <div className="text-right">
+                                      <div className="font-bold text-orange-400">
+                                        {item.price ? formatCurrency(item.price) : 'Sem preço'}
+                                      </div>
+                                    </div>
+                                  </button>
+                                ))}
+                                {filteredItems.length > 8 && (
+                                  <div className="text-center text-xs text-gray-500 py-2 border-t border-gray-800">
+                                    +{filteredItems.length - 8} produtos encontrados
+                                  </div>
+                                )}
+                              </div>
+                            </ScrollArea>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

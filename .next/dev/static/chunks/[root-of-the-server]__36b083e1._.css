@@ -627,6 +627,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   left: 50%;
 }
 
+.right-0 {
+  right: 0;
+}
+
 .right-1\/4 {
   right: 25%;
 }
@@ -781,6 +785,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .mr-2 {
   margin-right: .5rem;
+}
+
+.mr-3 {
+  margin-right: .75rem;
 }
 
 .mt-0\.5 {
@@ -997,6 +1005,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .max-h-96 {
   max-height: 24rem;
+}
+
+.max-h-\[320px\] {
+  max-height: 320px;
 }
 
 .max-h-\[400px\] {
@@ -1949,6 +1961,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .bg-gray-900\/80 {
   background-color: #111827cc;
+}
+
+.bg-gray-900\/95 {
+  background-color: #111827f2;
 }
 
 .bg-green-100 {
