@@ -2024,50 +2024,1359 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trees$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trees$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trees.js [app-ssr] (ecmascript) <export default as Trees>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2d$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CakeSlice$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cake-slice.js [app-ssr] (ecmascript) <export default as CakeSlice>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2d$kindling$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FlameKindling$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flame-kindling.js [app-ssr] (ecmascript) <export default as FlameKindling>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-ellipsis.js [app-ssr] (ecmascript) <export default as CircleEllipsis>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$disc$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Disc$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/disc.js [app-ssr] (ecmascript) <export default as Disc>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bean$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bean$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/bean.js [app-ssr] (ecmascript) <export default as Bean>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package-2.js [app-ssr] (ecmascript) <export default as Package2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Triangle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/triangle.js [app-ssr] (ecmascript) <export default as Triangle>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/square.js [app-ssr] (ecmascript) <export default as Square>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle.js [app-ssr] (ecmascript) <export default as Circle>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$octagon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Octagon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/octagon.js [app-ssr] (ecmascript) <export default as Octagon>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleOff$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-off.js [app-ssr] (ecmascript) <export default as CircleOff>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/grip.js [app-ssr] (ecmascript) <export default as Grip>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flower-2.js [app-ssr] (ecmascript) <export default as Flower2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplets$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplets$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/droplets.js [app-ssr] (ecmascript) <export default as Droplets>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Slice$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/slice.js [app-ssr] (ecmascript) <export default as Slice>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$donut$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Donut$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/donut.js [app-ssr] (ecmascript) <export default as Donut>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$code$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileCode$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file-code.js [app-ssr] (ecmascript) <export default as FileCode>");
 ;
 const menuIconLibrary = [
-    // Comida Japonesa e Asiática
+    // Comida Japonesa e Asiática - Pratos Principais
     {
-        name: 'Peixe',
+        name: 'Sushi',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
         category: 'japanese',
         keywords: [
-            'peixe',
             'sushi',
-            'sashimi',
-            'japonês'
+            'peixe',
+            'japonês',
+            'niguiri'
         ]
     },
     {
-        name: 'Sopa',
+        name: 'Sashimi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
+        category: 'japanese',
+        keywords: [
+            'sashimi',
+            'peixe',
+            'cru',
+            'fresco'
+        ]
+    },
+    {
+        name: 'Temaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Triangle$3e$__["Triangle"],
+        category: 'japanese',
+        keywords: [
+            'temaki',
+            'cone',
+            'sushi',
+            'hand roll'
+        ]
+    },
+    {
+        name: 'Uramaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
+        category: 'japanese',
+        keywords: [
+            'uramaki',
+            'california',
+            'roll',
+            'invertido'
+        ]
+    },
+    {
+        name: 'Hot Roll',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
+        category: 'japanese',
+        keywords: [
+            'hot',
+            'quente',
+            'frito',
+            'empanado'
+        ]
+    },
+    {
+        name: 'Maki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
+        category: 'japanese',
+        keywords: [
+            'maki',
+            'roll',
+            'alga',
+            'nori'
+        ]
+    },
+    {
+        name: 'Hossomaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleOff$3e$__["CircleOff"],
+        category: 'japanese',
+        keywords: [
+            'hossomaki',
+            'fino',
+            'simples',
+            'pepino'
+        ]
+    },
+    {
+        name: 'Futomaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$disc$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Disc$3e$__["Disc"],
+        category: 'japanese',
+        keywords: [
+            'futomaki',
+            'grosso',
+            'grande',
+            'colorido'
+        ]
+    },
+    {
+        name: 'Gunkan',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$octagon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Octagon$3e$__["Octagon"],
+        category: 'japanese',
+        keywords: [
+            'gunkan',
+            'navio',
+            'ovas',
+            'uni'
+        ]
+    },
+    {
+        name: 'Chirashi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__["Salad"],
+        category: 'japanese',
+        keywords: [
+            'chirashi',
+            'tigela',
+            'misto',
+            'bowl'
+        ]
+    },
+    {
+        name: 'Ramen',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__["Soup"],
         category: 'japanese',
         keywords: [
-            'sopa',
-            'lámen',
             'ramen',
-            'miso'
+            'lamen',
+            'sopa',
+            'macarrão'
         ]
     },
     {
-        name: 'Pauzinhos',
+        name: 'Udon',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wheat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wheat$3e$__["Wheat"],
+        category: 'japanese',
+        keywords: [
+            'udon',
+            'macarrão',
+            'grosso',
+            'quente'
+        ]
+    },
+    {
+        name: 'Soba',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
+        category: 'japanese',
+        keywords: [
+            'soba',
+            'macarrão',
+            'frio',
+            'sarraceno'
+        ]
+    },
+    {
+        name: 'Yakisoba',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3x3$3e$__["Grid3x3"],
+        category: 'japanese',
+        keywords: [
+            'yakisoba',
+            'frito',
+            'macarrão',
+            'legumes'
+        ]
+    },
+    {
+        name: 'Tempura',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__["CircleEllipsis"],
+        category: 'japanese',
+        keywords: [
+            'tempura',
+            'frito',
+            'camarão',
+            'vegetal'
+        ]
+    },
+    {
+        name: 'Gyoza',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__["Pizza"],
+        category: 'japanese',
+        keywords: [
+            'gyoza',
+            'dumpling',
+            'pastel',
+            'vapor'
+        ]
+    },
+    {
+        name: 'Tonkatsu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ham$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Ham$3e$__["Ham"],
+        category: 'japanese',
+        keywords: [
+            'tonkatsu',
+            'porco',
+            'empanado',
+            'panko'
+        ]
+    },
+    {
+        name: 'Karaage',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$drumstick$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Drumstick$3e$__["Drumstick"],
+        category: 'japanese',
+        keywords: [
+            'karaage',
+            'frango',
+            'frito',
+            'crocante'
+        ]
+    },
+    {
+        name: 'Teriyaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beef$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beef$3e$__["Beef"],
+        category: 'japanese',
+        keywords: [
+            'teriyaki',
+            'molho',
+            'grelhado',
+            'doce'
+        ]
+    },
+    {
+        name: 'Yakitori',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Slice$3e$__["Slice"],
+        category: 'japanese',
+        keywords: [
+            'yakitori',
+            'espeto',
+            'frango',
+            'grelhado'
+        ]
+    },
+    {
+        name: 'Katsudon',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__["Egg"],
+        category: 'japanese',
+        keywords: [
+            'katsudon',
+            'bowl',
+            'tonkatsu',
+            'ovo'
+        ]
+    },
+    {
+        name: 'Oyakodon',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__["Package2"],
+        category: 'japanese',
+        keywords: [
+            'oyakodon',
+            'frango',
+            'ovo',
+            'arroz'
+        ]
+    },
+    {
+        name: 'Tendon',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
+        category: 'japanese',
+        keywords: [
+            'tendon',
+            'tempura',
+            'arroz',
+            'bowl'
+        ]
+    },
+    {
+        name: 'Onigiri',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Triangle$3e$__["Triangle"],
+        category: 'japanese',
+        keywords: [
+            'onigiri',
+            'bolinho',
+            'arroz',
+            'alga'
+        ]
+    },
+    {
+        name: 'Takoyaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__["CircleEllipsis"],
+        category: 'japanese',
+        keywords: [
+            'takoyaki',
+            'polvo',
+            'bolinho',
+            'molho'
+        ]
+    },
+    {
+        name: 'Okonomiyaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$disc$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Disc$3e$__["Disc"],
+        category: 'japanese',
+        keywords: [
+            'okonomiyaki',
+            'panqueca',
+            'japonesa',
+            'osaka'
+        ]
+    },
+    {
+        name: 'Donburi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        category: 'japanese',
+        keywords: [
+            'donburi',
+            'bowl',
+            'arroz',
+            'tigela'
+        ]
+    },
+    {
+        name: 'Bento',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__["Package2"],
+        category: 'japanese',
+        keywords: [
+            'bento',
+            'marmita',
+            'caixa',
+            'completo'
+        ]
+    },
+    {
+        name: 'Sukiyaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cooking$2d$pot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CookingPot$3e$__["CookingPot"],
+        category: 'japanese',
+        keywords: [
+            'sukiyaki',
+            'panela',
+            'carne',
+            'inverno'
+        ]
+    },
+    {
+        name: 'Shabu Shabu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$waves$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Waves$3e$__["Waves"],
+        category: 'japanese',
+        keywords: [
+            'shabu',
+            'fondue',
+            'japonês',
+            'caldo'
+        ]
+    },
+    {
+        name: 'Teppanyaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3x3$3e$__["Grid3x3"],
+        category: 'japanese',
+        keywords: [
+            'teppan',
+            'chapa',
+            'grelhado',
+            'show'
+        ]
+    },
+    {
+        name: 'Robatayaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
+        category: 'japanese',
+        keywords: [
+            'robata',
+            'carvão',
+            'grelha',
+            'tradicional'
+        ]
+    },
+    {
+        name: 'Kushiyaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Slice$3e$__["Slice"],
+        category: 'japanese',
+        keywords: [
+            'kushi',
+            'espeto',
+            'yakitori',
+            'grelhado'
+        ]
+    },
+    {
+        name: 'Oden',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cooking$2d$pot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CookingPot$3e$__["CookingPot"],
+        category: 'japanese',
+        keywords: [
+            'oden',
+            'cozido',
+            'inverno',
+            'konbini'
+        ]
+    },
+    {
+        name: 'Chawanmushi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__["Egg"],
+        category: 'japanese',
+        keywords: [
+            'chawanmushi',
+            'ovo',
+            'vapor',
+            'custard'
+        ]
+    },
+    {
+        name: 'Nikuman',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        category: 'japanese',
+        keywords: [
+            'nikuman',
+            'pão',
+            'vapor',
+            'recheado'
+        ]
+    },
+    {
+        name: 'Hashi',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__["UtensilsCrossed"],
         category: 'japanese',
         keywords: [
             'hashi',
             'pauzinhos',
-            'japonês',
-            'asiático'
+            'chopsticks',
+            'talher'
+        ]
+    },
+    // Peixes e Frutos do Mar
+    {
+        name: 'Atum',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'atum',
+            'maguro',
+            'tuna',
+            'vermelho'
         ]
     },
     {
-        name: 'Concha',
+        name: 'Salmão',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'salmão',
+            'sake',
+            'salmon',
+            'laranja'
+        ]
+    },
+    {
+        name: 'Hamachi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'hamachi',
+            'yellowtail',
+            'olhete',
+            'peixe'
+        ]
+    },
+    {
+        name: 'Tai',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'tai',
+            'pargo',
+            'snapper',
+            'branco'
+        ]
+    },
+    {
+        name: 'Unagi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'unagi',
+            'enguia',
+            'eel',
+            'grelhado'
+        ]
+    },
+    {
+        name: 'Anago',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'anago',
+            'congro',
+            'enguia',
+            'mar'
+        ]
+    },
+    {
+        name: 'Kohada',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'kohada',
+            'arenque',
+            'sardinha',
+            'prata'
+        ]
+    },
+    {
+        name: 'Saba',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'saba',
+            'cavalinha',
+            'mackerel',
+            'azul'
+        ]
+    },
+    {
+        name: 'Kani',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
         category: 'japanese',
         keywords: [
-            'frutos do mar',
-            'marisco',
-            'ostra'
+            'kani',
+            'caranguejo',
+            'crab',
+            'marisco'
+        ]
+    },
+    {
+        name: 'Ebi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
+        category: 'japanese',
+        keywords: [
+            'ebi',
+            'camarão',
+            'shrimp',
+            'tempura'
+        ]
+    },
+    {
+        name: 'Tako',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$octagon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Octagon$3e$__["Octagon"],
+        category: 'japanese',
+        keywords: [
+            'tako',
+            'polvo',
+            'octopus',
+            'tentáculo'
+        ]
+    },
+    {
+        name: 'Ika',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
+        category: 'japanese',
+        keywords: [
+            'ika',
+            'lula',
+            'squid',
+            'calamar'
+        ]
+    },
+    {
+        name: 'Hotate',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
+        category: 'japanese',
+        keywords: [
+            'hotate',
+            'vieira',
+            'scallop',
+            'marisco'
+        ]
+    },
+    {
+        name: 'Ikura',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleOff$3e$__["CircleOff"],
+        category: 'japanese',
+        keywords: [
+            'ikura',
+            'ovas',
+            'salmão',
+            'caviar'
+        ]
+    },
+    {
+        name: 'Uni',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"],
+        category: 'japanese',
+        keywords: [
+            'uni',
+            'ouriço',
+            'sea urchin',
+            'delicacy'
+        ]
+    },
+    {
+        name: 'Tobiko',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
+        category: 'japanese',
+        keywords: [
+            'tobiko',
+            'ovas',
+            'peixe voador',
+            'colorido'
+        ]
+    },
+    {
+        name: 'Masago',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
+        category: 'japanese',
+        keywords: [
+            'masago',
+            'ovas',
+            'capelim',
+            'laranja'
+        ]
+    },
+    {
+        name: 'Fugu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'fugu',
+            'baiacu',
+            'pufferfish',
+            'especial'
+        ]
+    },
+    // Vegetais e Acompanhamentos
+    {
+        name: 'Wasabi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"],
+        category: 'japanese',
+        keywords: [
+            'wasabi',
+            'raiz',
+            'forte',
+            'picante'
+        ]
+    },
+    {
+        name: 'Gari',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$carrot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Carrot$3e$__["Carrot"],
+        category: 'japanese',
+        keywords: [
+            'gengibre',
+            'gari',
+            'conserva',
+            'rosa'
+        ]
+    },
+    {
+        name: 'Nori',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$code$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileCode$3e$__["FileCode"],
+        category: 'japanese',
+        keywords: [
+            'nori',
+            'alga',
+            'folha',
+            'seaweed'
+        ]
+    },
+    {
+        name: 'Wakame',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
+        category: 'japanese',
+        keywords: [
+            'wakame',
+            'alga',
+            'salada',
+            'verde'
+        ]
+    },
+    {
+        name: 'Konbu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$waves$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Waves$3e$__["Waves"],
+        category: 'japanese',
+        keywords: [
+            'konbu',
+            'kelp',
+            'dashi',
+            'alga'
+        ]
+    },
+    {
+        name: 'Hijiki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
+        category: 'japanese',
+        keywords: [
+            'hijiki',
+            'alga',
+            'preta',
+            'mineral'
+        ]
+    },
+    {
+        name: 'Daikon',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$carrot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Carrot$3e$__["Carrot"],
+        category: 'japanese',
+        keywords: [
+            'daikon',
+            'nabo',
+            'rabanete',
+            'branco'
+        ]
+    },
+    {
+        name: 'Shiitake',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
+        category: 'japanese',
+        keywords: [
+            'shiitake',
+            'cogumelo',
+            'mushroom',
+            'umami'
+        ]
+    },
+    {
+        name: 'Enoki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trees$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trees$3e$__["Trees"],
+        category: 'japanese',
+        keywords: [
+            'enoki',
+            'cogumelo',
+            'fino',
+            'branco'
+        ]
+    },
+    {
+        name: 'Shimeji',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
+        category: 'japanese',
+        keywords: [
+            'shimeji',
+            'cogumelo',
+            'cluster',
+            'marrom'
+        ]
+    },
+    {
+        name: 'Edamame',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bean$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bean$3e$__["Bean"],
+        category: 'japanese',
+        keywords: [
+            'edamame',
+            'soja',
+            'vagem',
+            'aperitivo'
+        ]
+    },
+    {
+        name: 'Tofu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        category: 'japanese',
+        keywords: [
+            'tofu',
+            'queijo',
+            'soja',
+            'vegano'
+        ]
+    },
+    {
+        name: 'Abura-age',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__["Package2"],
+        category: 'japanese',
+        keywords: [
+            'abura',
+            'tofu',
+            'frito',
+            'inari'
+        ]
+    },
+    {
+        name: 'Gobo',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
+        category: 'japanese',
+        keywords: [
+            'gobo',
+            'bardana',
+            'raiz',
+            'fibra'
+        ]
+    },
+    {
+        name: 'Renkon',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower2$3e$__["Flower2"],
+        category: 'japanese',
+        keywords: [
+            'renkon',
+            'lótus',
+            'raiz',
+            'crocante'
+        ]
+    },
+    {
+        name: 'Kabocha',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
+        category: 'japanese',
+        keywords: [
+            'kabocha',
+            'abóbora',
+            'japonesa',
+            'doce'
+        ]
+    },
+    {
+        name: 'Natto',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
+        category: 'japanese',
+        keywords: [
+            'natto',
+            'soja',
+            'fermentado',
+            'pegajoso'
+        ]
+    },
+    {
+        name: 'Takuan',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
+        category: 'japanese',
+        keywords: [
+            'takuan',
+            'daikon',
+            'conserva',
+            'amarelo'
+        ]
+    },
+    {
+        name: 'Umeboshi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cherry$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cherry$3e$__["Cherry"],
+        category: 'japanese',
+        keywords: [
+            'umeboshi',
+            'ameixa',
+            'conserva',
+            'azedo'
+        ]
+    },
+    {
+        name: 'Myoga',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower$3e$__["Flower"],
+        category: 'japanese',
+        keywords: [
+            'myoga',
+            'gengibre',
+            'botão',
+            'aromático'
+        ]
+    },
+    {
+        name: 'Shiso',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
+        category: 'japanese',
+        keywords: [
+            'shiso',
+            'perilla',
+            'folha',
+            'aromático'
+        ]
+    },
+    {
+        name: 'Mitsuba',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
+        category: 'japanese',
+        keywords: [
+            'mitsuba',
+            'salsa',
+            'japonesa',
+            'erva'
+        ]
+    },
+    // Molhos e Temperos
+    {
+        name: 'Shoyu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplet$3e$__["Droplet"],
+        category: 'japanese',
+        keywords: [
+            'shoyu',
+            'soja',
+            'molho',
+            'soy sauce'
+        ]
+    },
+    {
+        name: 'Miso',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        category: 'japanese',
+        keywords: [
+            'miso',
+            'pasta',
+            'soja',
+            'fermentado'
+        ]
+    },
+    {
+        name: 'Mirin',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
+        category: 'japanese',
+        keywords: [
+            'mirin',
+            'vinho',
+            'arroz',
+            'doce'
+        ]
+    },
+    {
+        name: 'Ponzu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplets$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplets$3e$__["Droplets"],
+        category: 'japanese',
+        keywords: [
+            'ponzu',
+            'cítrico',
+            'shoyu',
+            'molho'
+        ]
+    },
+    {
+        name: 'Tare',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplet$3e$__["Droplet"],
+        category: 'japanese',
+        keywords: [
+            'tare',
+            'molho',
+            'base',
+            'teriyaki'
+        ]
+    },
+    {
+        name: 'Dashi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__["Soup"],
+        category: 'japanese',
+        keywords: [
+            'dashi',
+            'caldo',
+            'base',
+            'umami'
+        ]
+    },
+    {
+        name: 'Mentsuyu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplets$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplets$3e$__["Droplets"],
+        category: 'japanese',
+        keywords: [
+            'mentsuyu',
+            'molho',
+            'macarrão',
+            'base'
+        ]
+    },
+    {
+        name: 'Karashi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
+        category: 'japanese',
+        keywords: [
+            'karashi',
+            'mostarda',
+            'japonesa',
+            'picante'
+        ]
+    },
+    {
+        name: 'Rayu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
+        category: 'japanese',
+        keywords: [
+            'rayu',
+            'óleo',
+            'pimenta',
+            'chili'
+        ]
+    },
+    {
+        name: 'Shichimi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
+        category: 'japanese',
+        keywords: [
+            'shichimi',
+            'togarashi',
+            'pimenta',
+            'sete'
+        ]
+    },
+    {
+        name: 'Furikake',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"],
+        category: 'japanese',
+        keywords: [
+            'furikake',
+            'tempero',
+            'arroz',
+            'topping'
+        ]
+    },
+    {
+        name: 'Yuzu Kosho',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"],
+        category: 'japanese',
+        keywords: [
+            'yuzu',
+            'kosho',
+            'pimenta',
+            'cítrico'
+        ]
+    },
+    {
+        name: 'Sesame',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
+        category: 'japanese',
+        keywords: [
+            'gergelim',
+            'sesame',
+            'semente',
+            'goma'
+        ]
+    },
+    // Doces e Sobremesas
+    {
+        name: 'Mochi',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cookie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cookie$3e$__["Cookie"],
+        category: 'japanese',
+        keywords: [
+            'mochi',
+            'doce',
+            'arroz',
+            'glutinoso'
+        ]
+    },
+    {
+        name: 'Dorayaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sandwich$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sandwich$3e$__["Sandwich"],
+        category: 'japanese',
+        keywords: [
+            'dorayaki',
+            'panqueca',
+            'anko',
+            'doce'
+        ]
+    },
+    {
+        name: 'Taiyaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
+        category: 'japanese',
+        keywords: [
+            'taiyaki',
+            'peixe',
+            'doce',
+            'waffle'
+        ]
+    },
+    {
+        name: 'Dango',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__["CircleEllipsis"],
+        category: 'japanese',
+        keywords: [
+            'dango',
+            'espeto',
+            'doce',
+            'mochi'
+        ]
+    },
+    {
+        name: 'Daifuku',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cookie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cookie$3e$__["Cookie"],
+        category: 'japanese',
+        keywords: [
+            'daifuku',
+            'mochi',
+            'recheado',
+            'doce'
+        ]
+    },
+    {
+        name: 'Yokan',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
+        category: 'japanese',
+        keywords: [
+            'yokan',
+            'gelatina',
+            'feijão',
+            'doce'
+        ]
+    },
+    {
+        name: 'Anmitsu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__["Salad"],
+        category: 'japanese',
+        keywords: [
+            'anmitsu',
+            'sobremesa',
+            'frutas',
+            'agar'
+        ]
+    },
+    {
+        name: 'Kakigori',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__["IceCream"],
+        category: 'japanese',
+        keywords: [
+            'kakigori',
+            'raspadinha',
+            'gelo',
+            'verão'
+        ]
+    },
+    {
+        name: 'Matcha Ice',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__["IceCream"],
+        category: 'japanese',
+        keywords: [
+            'matcha',
+            'sorvete',
+            'verde',
+            'chá'
+        ]
+    },
+    {
+        name: 'Anpan',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$donut$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Donut$3e$__["Donut"],
+        category: 'japanese',
+        keywords: [
+            'anpan',
+            'pão',
+            'doce',
+            'feijão'
+        ]
+    },
+    {
+        name: 'Melonpan',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cookie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cookie$3e$__["Cookie"],
+        category: 'japanese',
+        keywords: [
+            'melonpan',
+            'pão',
+            'doce',
+            'melão'
+        ]
+    },
+    {
+        name: 'Castella',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cake$3e$__["Cake"],
+        category: 'japanese',
+        keywords: [
+            'castella',
+            'bolo',
+            'esponja',
+            'português'
+        ]
+    },
+    {
+        name: 'Monaka',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__["Diamond"],
+        category: 'japanese',
+        keywords: [
+            'monaka',
+            'wafer',
+            'doce',
+            'recheado'
+        ]
+    },
+    // Bebidas
+    {
+        name: 'Sake',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
+        category: 'japanese',
+        keywords: [
+            'sake',
+            'nihonshu',
+            'arroz',
+            'álcool'
+        ]
+    },
+    {
+        name: 'Shochu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
+        category: 'japanese',
+        keywords: [
+            'shochu',
+            'destilado',
+            'batata',
+            'álcool'
+        ]
+    },
+    {
+        name: 'Umeshu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cherry$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cherry$3e$__["Cherry"],
+        category: 'japanese',
+        keywords: [
+            'umeshu',
+            'ameixa',
+            'licor',
+            'doce'
+        ]
+    },
+    {
+        name: 'Chuhai',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cup$2d$soda$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CupSoda$3e$__["CupSoda"],
+        category: 'japanese',
+        keywords: [
+            'chuhai',
+            'coquetel',
+            'lata',
+            'álcool'
+        ]
+    },
+    {
+        name: 'Matcha',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
+        category: 'japanese',
+        keywords: [
+            'matcha',
+            'chá',
+            'verde',
+            'pó'
+        ]
+    },
+    {
+        name: 'Sencha',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
+        category: 'japanese',
+        keywords: [
+            'sencha',
+            'chá',
+            'verde',
+            'folha'
+        ]
+    },
+    {
+        name: 'Genmaicha',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
+        category: 'japanese',
+        keywords: [
+            'genmaicha',
+            'chá',
+            'arroz',
+            'torrado'
+        ]
+    },
+    {
+        name: 'Hojicha',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
+        category: 'japanese',
+        keywords: [
+            'hojicha',
+            'chá',
+            'torrado',
+            'marrom'
+        ]
+    },
+    {
+        name: 'Mugicha',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
+        category: 'japanese',
+        keywords: [
+            'mugicha',
+            'chá',
+            'cevada',
+            'gelado'
+        ]
+    },
+    {
+        name: 'Ramune',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$milk$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Milk$3e$__["Milk"],
+        category: 'japanese',
+        keywords: [
+            'ramune',
+            'refrigerante',
+            'bolinha',
+            'verão'
+        ]
+    },
+    {
+        name: 'Calpis',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$glass$2d$water$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GlassWater$3e$__["GlassWater"],
+        category: 'japanese',
+        keywords: [
+            'calpis',
+            'calpico',
+            'lácteo',
+            'doce'
+        ]
+    },
+    {
+        name: 'Amazake',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$milk$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Milk$3e$__["Milk"],
+        category: 'japanese',
+        keywords: [
+            'amazake',
+            'doce',
+            'arroz',
+            'fermentado'
+        ]
+    },
+    // Conceitos e Experiências
+    {
+        name: 'Omakase',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chef$2d$hat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChefHat$3e$__["ChefHat"],
+        category: 'japanese',
+        keywords: [
+            'omakase',
+            'chef',
+            'escolha',
+            'surpresa'
+        ]
+    },
+    {
+        name: 'Kaiseki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$crown$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Crown$3e$__["Crown"],
+        category: 'japanese',
+        keywords: [
+            'kaiseki',
+            'alta',
+            'gastronomia',
+            'estação'
+        ]
+    },
+    {
+        name: 'Izakaya',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__["Store"],
+        category: 'japanese',
+        keywords: [
+            'izakaya',
+            'bar',
+            'japonês',
+            'petisco'
+        ]
+    },
+    {
+        name: 'Premium',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__["Diamond"],
+        category: 'japanese',
+        keywords: [
+            'premium',
+            'especial',
+            'top',
+            'melhor'
+        ]
+    },
+    {
+        name: 'Festival',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__["PartyPopper"],
+        category: 'japanese',
+        keywords: [
+            'matsuri',
+            'festival',
+            'celebração',
+            'evento'
+        ]
+    },
+    {
+        name: 'Wagyu',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$award$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Award$3e$__["Award"],
+        category: 'japanese',
+        keywords: [
+            'wagyu',
+            'carne',
+            'premium',
+            'marmorizada'
         ]
     },
     // Bebidas
