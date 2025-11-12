@@ -396,7 +396,7 @@ export default function TablesPage() {
             
             {/* Add Next Table Card */}
             <Card 
-              className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500 cursor-pointer transition-all hover:shadow-md"
+              className="relative overflow-hidden bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 border-2 border-dashed border-orange-300 dark:border-orange-700 hover:border-orange-500 dark:hover:border-orange-500 cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-105 group"
               onClick={() => {
                 setFormData({
                   number: getNextNumber('table'),
@@ -409,12 +409,15 @@ export default function TablesPage() {
                 setIsModalOpen(true);
               }}
             >
-              <CardContent className="p-4 text-center flex flex-col items-center justify-center h-full">
-                <Plus className="h-6 w-6 text-gray-400 dark:text-gray-500 mb-2" />
-                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                  Adicionar Mesa #{getNextNumber('table')}
+              <CardContent className="p-4 text-center flex flex-col items-center justify-center h-full relative z-10">
+                <div className="bg-white dark:bg-gray-900 rounded-full p-3 mb-2 shadow-sm group-hover:shadow-md transition-shadow">
+                  <Plus className="h-5 w-5 text-orange-500 group-hover:rotate-90 transition-transform duration-300" />
+                </div>
+                <span className="text-xs font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide">
+                  Mesa #{getNextNumber('table')}
                 </span>
               </CardContent>
+              <div className="absolute inset-0 bg-gradient-to-t from-orange-200/20 to-transparent dark:from-orange-800/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
             </Card>
           </div>
         </div>
@@ -473,7 +476,7 @@ export default function TablesPage() {
             
             {/* Add Next Counter Card */}
             <Card 
-              className="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 hover:border-orange-400 dark:hover:border-orange-500 cursor-pointer transition-all hover:shadow-md"
+              className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border-2 border-dashed border-blue-300 dark:border-blue-700 hover:border-blue-500 dark:hover:border-blue-500 cursor-pointer transition-all duration-200 hover:shadow-lg hover:scale-105 group"
               onClick={() => {
                 setFormData({
                   number: getNextNumber('counter'),
@@ -486,12 +489,15 @@ export default function TablesPage() {
                 setIsModalOpen(true);
               }}
             >
-              <CardContent className="p-4 text-center flex flex-col items-center justify-center h-full">
-                <Plus className="h-6 w-6 text-gray-400 dark:text-gray-500 mb-2" />
-                <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                  Adicionar Balcão #{getNextNumber('counter')}
+              <CardContent className="p-4 text-center flex flex-col items-center justify-center h-full relative z-10">
+                <div className="bg-white dark:bg-gray-900 rounded-full p-3 mb-2 shadow-sm group-hover:shadow-md transition-shadow">
+                  <Plus className="h-5 w-5 text-blue-500 group-hover:rotate-90 transition-transform duration-300" />
+                </div>
+                <span className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase tracking-wide">
+                  Balcão #{getNextNumber('counter')}
                 </span>
               </CardContent>
+              <div className="absolute inset-0 bg-gradient-to-t from-blue-200/20 to-transparent dark:from-blue-800/20 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
             </Card>
           </div>
         </div>
