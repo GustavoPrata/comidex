@@ -1216,7 +1216,7 @@ export default function POSPage() {
 
         {/* Dialog Rodízio */}
         <Dialog open={rodizioModal} onOpenChange={setRodizioModal}>
-          <DialogContent className="bg-gray-800 text-white border-gray-700">
+          <DialogContent className="bg-gray-800 text-white border-gray-700" style={{ zIndex: 99999 }}>
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Package className="h-5 w-5 text-orange-400" />
