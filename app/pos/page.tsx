@@ -55,7 +55,9 @@ import {
   Star,
   ShoppingBag,
   Calculator,
-  Keyboard
+  Keyboard,
+  UtensilsCrossed,
+  Armchair
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -925,7 +927,7 @@ export default function POSPage() {
           <div className="grid grid-cols-5 gap-4 mb-8">
             {[
               { label: 'Mesas Abertas', value: tables.filter(t => t.current_session).length, icon: Users, color: 'blue' },
-              { label: 'Mesas Livres', value: tables.filter(t => !t.current_session).length, icon: Home, color: 'green' },
+              { label: 'Mesas Livres', value: tables.filter(t => !t.current_session).length, icon: UtensilsCrossed, color: 'green' },
               { label: 'Total de Mesas', value: tables.length, icon: Receipt, color: 'orange' },
               { label: 'Vendas Hoje', value: formatCurrency(salesStats.totalSales), icon: TrendingUp, color: 'purple' },
               { label: 'Hora Atual', value: format(new Date(), 'HH:mm'), icon: Clock, color: 'pink' }
@@ -989,9 +991,9 @@ export default function POSPage() {
                       <div>
                         <div className="mb-1">
                           {table.type === 'counter' ? (
-                            <User className="h-6 w-6 mx-auto text-white/90" />
+                            <Armchair className="h-6 w-6 mx-auto text-white/90" />
                           ) : (
-                            <Home className="h-6 w-6 mx-auto text-white/90" />
+                            <UtensilsCrossed className="h-6 w-6 mx-auto text-white/90" />
                           )}
                         </div>
                         <h3 className="text-lg font-bold text-white">
@@ -1069,7 +1071,11 @@ export default function POSPage() {
           <DialogContent className="bg-gray-800 text-white border-gray-700">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
-                <Home className="h-5 w-5" />
+                {selectedTable?.type === 'counter' ? (
+                  <Armchair className="h-5 w-5" />
+                ) : (
+                  <UtensilsCrossed className="h-5 w-5" />
+                )}
                 Abrir {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
               </DialogTitle>
               <DialogDescription className="text-gray-400">
@@ -1969,7 +1975,7 @@ export default function POSPage() {
                         {new Set(todayOrders.map(o => o.table_id)).size}
                       </p>
                     </div>
-                    <Home className="h-10 w-10 text-orange-400" />
+                    <UtensilsCrossed className="h-10 w-10 text-orange-400" />
                   </div>
                 </CardContent>
               </Card>
