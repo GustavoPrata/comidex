@@ -683,10 +683,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   z-index: 99999;
 }
 
-.z-\[9999\] {
-  z-index: 9999;
-}
-
 .col-span-1 {
   grid-column: span 1 / span 1;
 }
@@ -1969,10 +1965,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .bg-gray-900\/80 {
   background-color: #111827cc;
-}
-
-.bg-gray-900\/95 {
-  background-color: #111827f2;
 }
 
 .bg-green-100 {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { createPortal } from 'react-dom';
 import { createClient } from "@/lib/supabase/client";
 import { getIconByName } from "@/lib/menu-icons-library";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -1404,13 +1405,14 @@ export default function POSPage() {
                         </div>
                       </div>
 
-                      {/* Resultados da Busca em Tempo Real */}
-                      {searchQuery.length > 0 && (
-                        <div className="fixed mt-2 z-[9999] bg-gray-900/95 backdrop-blur rounded-lg border border-gray-700 shadow-xl max-h-[320px] overflow-hidden"
+                      {/* Portal para Resultados da Busca em Tempo Real */}
+                      {searchQuery.length > 0 && typeof document !== 'undefined' && createPortal(
+                        <div className="fixed z-[99999] bg-gray-900 rounded-lg border-2 border-orange-500 shadow-2xl max-h-[320px] overflow-hidden"
                              style={{ 
-                               top: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().bottom + 8 : 0,
-                               left: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().left : 0,
-                               width: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().width : 'auto'
+                               top: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().bottom + 8 : '50%',
+                               left: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().left : '50%',
+                               width: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().width : '400px',
+                               transform: codeInputRef.current ? 'none' : 'translate(-50%, -50%)'
                              }}>
                           {filteredItems.length === 0 ? (
                             <div className="text-gray-400 p-4 text-center">
@@ -1471,7 +1473,8 @@ export default function POSPage() {
                               </div>
                             </ScrollArea>
                           )}
-                        </div>
+                        </div>,
+                        document.body
                       )}
                     </div>
                   </CardContent>
