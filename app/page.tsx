@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { ChefHat, Users, ChevronRight } from "lucide-react";
-import { useState } from "react";
 
 // Import das imagens geradas
 const adminImage = "/generated_images/Dashboard_focused_office_view_8abde768.png";
@@ -11,7 +10,6 @@ const posImage = "/generated_images/POS_system_interface_6e354903.png";
 
 export default function HomePage() {
   const router = useRouter();
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   const cards = [
     {
@@ -74,20 +72,13 @@ export default function HomePage() {
           {cards.map((card) => (
             <div
               key={card.id}
-              onMouseEnter={() => setHoveredCard(card.id)}
-              onMouseLeave={() => setHoveredCard(null)}
               onClick={() => router.push(card.route)}
-              className="group relative cursor-pointer transform-gpu transition-all duration-700 hover:scale-[1.02] hover:-translate-y-2"
+              className="group relative cursor-pointer transform-gpu transition-all duration-300 hover:scale-[1.01]"
             >
               {/* Card container */}
               <div className="relative h-[400px]">
-                {/* Glow effect no hover */}
-                <div 
-                  className={`absolute inset-0 bg-gradient-to-r ${card.gradient} rounded-3xl opacity-0 group-hover:opacity-20 blur-xl transition-all duration-700 scale-110`} 
-                />
-                
                 {/* Card principal */}
-                <div className="relative h-full bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-700">
+                <div className="relative h-full bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                   {/* Imagem com overlay gradient */}
                   <div className="relative h-[240px] overflow-hidden">
                     <Image
@@ -95,11 +86,9 @@ export default function HomePage() {
                       alt={card.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover transform transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover transform transition-transform duration-300 group-hover:scale-105"
                       loading="lazy"
                     />
-                    {/* Overlay gradient */}
-                    <div className={`absolute inset-0 bg-gradient-to-t ${card.gradient} opacity-0 group-hover:opacity-40 transition-opacity duration-700`} />
                   </div>
 
                   {/* Conteúdo do card */}
@@ -114,9 +103,9 @@ export default function HomePage() {
                         </h3>
                       </div>
                       
-                      {/* Ícone de seta animado */}
-                      <div className="transform transition-all duration-500 group-hover:translate-x-1">
-                        <ChevronRight className="h-5 w-5 text-gray-400 group-hover:text-orange-500" />
+                      {/* Ícone de seta */}
+                      <div className="transform transition-all duration-300 group-hover:translate-x-1">
+                        <ChevronRight className="h-5 w-5 text-gray-400" />
                       </div>
                     </div>
                     
@@ -124,28 +113,18 @@ export default function HomePage() {
                       {card.description}
                     </p>
 
-                    {/* Features com animação stagger */}
+                    {/* Features */}
                     <div className="flex flex-wrap gap-2">
                       {card.features.map((feature, index) => (
                         <span
                           key={index}
-                          className={`text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 transform transition-all duration-500 ${
-                            hoveredCard === card.id 
-                              ? 'translate-y-0 opacity-100' 
-                              : 'translate-y-2 opacity-0'
-                          }`}
-                          style={{
-                            transitionDelay: `${index * 100}ms`
-                          }}
+                          className="text-xs px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
                         >
                           {feature}
                         </span>
                       ))}
                     </div>
                   </div>
-
-                  {/* Bottom gradient line animado */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-700" />
                 </div>
               </div>
             </div>
