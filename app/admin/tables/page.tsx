@@ -403,7 +403,7 @@ export default function TablesPage() {
               >
                 <CardContent className="p-4 text-center">
                   <div className="text-2xl font-bold text-blue-500 mb-1">
-                    {table.number.startsWith('10') ? table.number.substring(2) : table.number}
+                    {table.number}
                   </div>
                   <Badge variant="outline" className="text-xs mb-2">
                     1 lugar
