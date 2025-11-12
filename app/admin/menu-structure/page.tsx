@@ -1818,7 +1818,7 @@ export default function GripStructurePage() {
                 {groupFormData.type === 'rodizio' && (
                   <>
                     <div>
-                      <Label htmlFor="price">Preço (R$)</Label>
+                      <Label htmlFor="price">Preço (R$) *</Label>
                       <Input
                         id="price"
                         type="number"
@@ -1826,11 +1826,12 @@ export default function GripStructurePage() {
                         value={groupFormData.price}
                         onChange={(e) => setGroupFormData({...groupFormData, price: e.target.value})}
                         placeholder="0.00"
+                        required
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="half_price">Preço Médio - Crianças (R$)</Label>
+                      <Label htmlFor="half_price">Preço Médio - Crianças (R$) *</Label>
                       <Input
                         id="half_price"
                         type="number"
@@ -1838,6 +1839,7 @@ export default function GripStructurePage() {
                         value={groupFormData.half_price}
                         onChange={(e) => setGroupFormData({...groupFormData, half_price: e.target.value})}
                         placeholder="0.00"
+                        required
                       />
                     </div>
                   </>
@@ -2023,7 +2025,9 @@ export default function GripStructurePage() {
             </Button>
             <Button 
               onClick={modalType === 'group' ? saveGroup : saveCategory} 
-              disabled={saving || (modalType === 'group' ? !groupFormData.name : (!categoryFormData.name || !categoryFormData.group_id))}
+              disabled={saving || (modalType === 'group' ? 
+                (!groupFormData.name || (groupFormData.type === 'rodizio' && (!groupFormData.price || !groupFormData.half_price))) : 
+                (!categoryFormData.name || !categoryFormData.group_id))}
               className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
               type="button"
             >

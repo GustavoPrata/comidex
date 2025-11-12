@@ -6063,7 +6063,7 @@ function GripStructurePage() {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                             htmlFor: "price",
-                                                            children: "Preço (R$)"
+                                                            children: "Preço (R$) *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
                                                             lineNumber: 1821,
@@ -6078,7 +6078,8 @@ function GripStructurePage() {
                                                                     ...groupFormData,
                                                                     price: e.target.value
                                                                 }),
-                                                            placeholder: "0.00"
+                                                            placeholder: "0.00",
+                                                            required: true
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
                                                             lineNumber: 1822,
@@ -6094,10 +6095,10 @@ function GripStructurePage() {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
                                                             htmlFor: "half_price",
-                                                            children: "Preço Médio - Crianças (R$)"
+                                                            children: "Preço Médio - Crianças (R$) *"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1833,
+                                                            lineNumber: 1834,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -6109,16 +6110,17 @@ function GripStructurePage() {
                                                                     ...groupFormData,
                                                                     half_price: e.target.value
                                                                 }),
-                                                            placeholder: "0.00"
+                                                            placeholder: "0.00",
+                                                            required: true
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1834,
+                                                            lineNumber: 1835,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1832,
+                                                    lineNumber: 1833,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
@@ -6139,7 +6141,7 @@ function GripStructurePage() {
                                                     children: "Ícone do Grupo"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1851,
+                                                    lineNumber: 1853,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$client$2f$src$2f$components$2f$IconSelector$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["IconSelector"], {
@@ -6151,7 +6153,7 @@ function GripStructurePage() {
                                                     placeholder: "Buscar ícone..."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1852,
+                                                    lineNumber: 1854,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6159,13 +6161,13 @@ function GripStructurePage() {
                                                     children: "Escolha um ícone para identificar visualmente este grupo"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1857,
+                                                    lineNumber: 1859,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1850,
+                                            lineNumber: 1852,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6178,7 +6180,7 @@ function GripStructurePage() {
                                                             children: "Status do Grupo"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1865,
+                                                            lineNumber: 1867,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6191,7 +6193,7 @@ function GripStructurePage() {
                                                                         children: "Visibilidade"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1869,
+                                                                        lineNumber: 1871,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6204,24 +6206,24 @@ function GripStructurePage() {
                                                                         children: groupFormData.active ? 'Visível' : 'Invisível'
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1870,
+                                                                        lineNumber: 1872,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1868,
+                                                                lineNumber: 1870,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1866,
+                                                            lineNumber: 1868,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1864,
+                                                    lineNumber: 1866,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6234,31 +6236,31 @@ function GripStructurePage() {
                                                                 children: "Dica:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1888,
+                                                                lineNumber: 1890,
                                                                 columnNumber: 23
                                                             }, this),
                                                             " Grupos invisíveis não aparecem no cardápio, assim como todas as categorias e produtos dentro deles."
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 1887,
+                                                        lineNumber: 1889,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1886,
+                                                    lineNumber: 1888,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1863,
+                                            lineNumber: 1865,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1848,
+                                    lineNumber: 1850,
                                     columnNumber: 15
                                 }, this)
                             ]
@@ -6279,7 +6281,7 @@ function GripStructurePage() {
                                                     children: "Nome da Categoria *"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1900,
+                                                    lineNumber: 1902,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -6292,13 +6294,13 @@ function GripStructurePage() {
                                                     placeholder: "Ex: Sushi Especial"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1901,
+                                                    lineNumber: 1903,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1899,
+                                            lineNumber: 1901,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6308,7 +6310,7 @@ function GripStructurePage() {
                                                     children: "Descrição"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1910,
+                                                    lineNumber: 1912,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -6322,13 +6324,13 @@ function GripStructurePage() {
                                                     rows: 4
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1911,
+                                                    lineNumber: 1913,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1909,
+                                            lineNumber: 1911,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6337,7 +6339,7 @@ function GripStructurePage() {
                                                     children: "Imagem da Categoria (16:9)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1921,
+                                                    lineNumber: 1923,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$admin$2f$image$2d$upload$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ImageUpload"], {
@@ -6351,19 +6353,19 @@ function GripStructurePage() {
                                                     categoryId: editingItem?.id?.toString()
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1922,
+                                                    lineNumber: 1924,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1920,
+                                            lineNumber: 1922,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1898,
+                                    lineNumber: 1900,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6376,7 +6378,7 @@ function GripStructurePage() {
                                                     children: "Grupo *"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1935,
+                                                    lineNumber: 1937,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -6392,12 +6394,12 @@ function GripStructurePage() {
                                                                 placeholder: "Selecione um grupo"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1941,
+                                                                lineNumber: 1943,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1940,
+                                                            lineNumber: 1942,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -6410,30 +6412,30 @@ function GripStructurePage() {
                                                                             children: "(Rodízio)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                            lineNumber: 1948,
+                                                                            lineNumber: 1950,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, group.id, true, {
                                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                    lineNumber: 1945,
+                                                                    lineNumber: 1947,
                                                                     columnNumber: 25
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1943,
+                                                            lineNumber: 1945,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1936,
+                                                    lineNumber: 1938,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1934,
+                                            lineNumber: 1936,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6446,7 +6448,7 @@ function GripStructurePage() {
                                                             children: "Status da Categoria"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1961,
+                                                            lineNumber: 1963,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6459,7 +6461,7 @@ function GripStructurePage() {
                                                                         children: "Visibilidade"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1965,
+                                                                        lineNumber: 1967,
                                                                         columnNumber: 25
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -6472,24 +6474,24 @@ function GripStructurePage() {
                                                                         children: categoryFormData.active ? 'Visível' : 'Invisível'
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                        lineNumber: 1966,
+                                                                        lineNumber: 1968,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1964,
+                                                                lineNumber: 1966,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 1962,
+                                                            lineNumber: 1964,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1960,
+                                                    lineNumber: 1962,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6502,37 +6504,37 @@ function GripStructurePage() {
                                                                 children: "Dica:"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                lineNumber: 1984,
+                                                                lineNumber: 1986,
                                                                 columnNumber: 23
                                                             }, this),
                                                             " Categorias invisíveis não aparecem no cardápio, assim como todos os produtos dentro delas."
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 1983,
+                                                        lineNumber: 1985,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 1982,
+                                                    lineNumber: 1984,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 1959,
+                                            lineNumber: 1961,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1933,
+                                    lineNumber: 1935,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 1896,
+                            lineNumber: 1898,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -6567,12 +6569,12 @@ function GripStructurePage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 1994,
+                                    lineNumber: 1996,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                     onClick: modalType === 'group' ? saveGroup : saveCategory,
-                                    disabled: saving || (modalType === 'group' ? !groupFormData.name : !categoryFormData.name || !categoryFormData.group_id),
+                                    disabled: saving || (modalType === 'group' ? !groupFormData.name || groupFormData.type === 'rodizio' && (!groupFormData.price || !groupFormData.half_price) : !categoryFormData.name || !categoryFormData.group_id),
                                     className: "bg-orange-500 hover:bg-orange-600 text-white rounded-full",
                                     type: "button",
                                     children: saving ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -6581,7 +6583,7 @@ function GripStructurePage() {
                                                 className: "mr-2 h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2032,
+                                                lineNumber: 2036,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -6589,13 +6591,13 @@ function GripStructurePage() {
                                     }, void 0, true) : 'Salvar'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2024,
+                                    lineNumber: 2026,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 1993,
+                            lineNumber: 1995,
                             columnNumber: 11
                         }, this)
                     ]
@@ -6620,7 +6622,7 @@ function GripStructurePage() {
                                     children: "Confirmar exclusão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2050,
+                                    lineNumber: 2054,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -6638,7 +6640,7 @@ function GripStructurePage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2053,
+                                                lineNumber: 2057,
                                                 columnNumber: 17
                                             }, this),
                                             deletingItem?.type === 'group' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -6650,7 +6652,7 @@ function GripStructurePage() {
                                                             children: "⚠️ Atenção: Esta ação irá apagar:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2060,
+                                                            lineNumber: 2064,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -6665,7 +6667,7 @@ function GripStructurePage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                    lineNumber: 2063,
+                                                                    lineNumber: 2067,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 (deletingItem.itemCount || 0) > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
@@ -6678,19 +6680,19 @@ function GripStructurePage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                                    lineNumber: 2066,
+                                                                    lineNumber: 2070,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2061,
+                                                            lineNumber: 2065,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2059,
+                                                    lineNumber: 2063,
                                                     columnNumber: 23
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg mt-2",
@@ -6699,12 +6701,12 @@ function GripStructurePage() {
                                                         children: "Este grupo está vazio e pode ser excluído com segurança."
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 2072,
+                                                        lineNumber: 2076,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2071,
+                                                    lineNumber: 2075,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false),
@@ -6717,7 +6719,7 @@ function GripStructurePage() {
                                                             children: "⚠️ Atenção:"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2083,
+                                                            lineNumber: 2087,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -6735,13 +6737,13 @@ function GripStructurePage() {
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2084,
+                                                            lineNumber: 2088,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2082,
+                                                    lineNumber: 2086,
                                                     columnNumber: 23
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg mt-2",
@@ -6750,12 +6752,12 @@ function GripStructurePage() {
                                                         children: "Esta categoria está vazia e pode ser excluída com segurança."
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                        lineNumber: 2090,
+                                                        lineNumber: 2094,
                                                         columnNumber: 25
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2089,
+                                                    lineNumber: 2093,
                                                     columnNumber: 23
                                                 }, this)
                                             }, void 0, false),
@@ -6764,24 +6766,24 @@ function GripStructurePage() {
                                                 children: "Esta ação não pode ser desfeita."
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2097,
+                                                lineNumber: 2101,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                        lineNumber: 2052,
+                                        lineNumber: 2056,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2051,
+                                    lineNumber: 2055,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2049,
+                            lineNumber: 2053,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -6791,7 +6793,7 @@ function GripStructurePage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2102,
+                                    lineNumber: 2106,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -6803,7 +6805,7 @@ function GripStructurePage() {
                                                 className: "mr-2 h-4 w-4 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                lineNumber: 2109,
+                                                lineNumber: 2113,
                                                 columnNumber: 19
                                             }, this),
                                             "Excluindo..."
@@ -6811,24 +6813,24 @@ function GripStructurePage() {
                                     }, void 0, true) : 'Excluir'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2103,
+                                    lineNumber: 2107,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2101,
+                            lineNumber: 2105,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                    lineNumber: 2048,
+                    lineNumber: 2052,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                lineNumber: 2044,
+                lineNumber: 2048,
                 columnNumber: 7
             }, this),
             viewingImage && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -6845,12 +6847,12 @@ function GripStructurePage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                lineNumber: 2125,
+                                lineNumber: 2129,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2124,
+                            lineNumber: 2128,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6862,7 +6864,7 @@ function GripStructurePage() {
                                     className: "w-full h-auto max-h-[60vh] object-contain rounded-xl"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2130,
+                                    lineNumber: 2134,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -6895,14 +6897,14 @@ function GripStructurePage() {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2160,
+                                                            lineNumber: 2164,
                                                             columnNumber: 21
                                                         }, this),
                                                         "Editar Foto"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2139,
+                                                    lineNumber: 2143,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -6922,20 +6924,20 @@ function GripStructurePage() {
                                                             className: "h-4 w-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                            lineNumber: 2177,
+                                                            lineNumber: 2181,
                                                             columnNumber: 21
                                                         }, this),
                                                         "Baixar"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                                    lineNumber: 2164,
+                                                    lineNumber: 2168,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 2138,
+                                            lineNumber: 2142,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -6945,30 +6947,30 @@ function GripStructurePage() {
                                             children: "Fechar"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                            lineNumber: 2182,
+                                            lineNumber: 2186,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                                    lineNumber: 2137,
+                                    lineNumber: 2141,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/menu-structure/page.tsx",
-                            lineNumber: 2128,
+                            lineNumber: 2132,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/menu-structure/page.tsx",
-                    lineNumber: 2123,
+                    lineNumber: 2127,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/menu-structure/page.tsx",
-                lineNumber: 2122,
+                lineNumber: 2126,
                 columnNumber: 9
             }, this)
         ]
