@@ -1,39 +1,45 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import {
+import { 
+  LogOut, 
+  FileText, 
+  RotateCcw, 
+  User, 
+  Truck, 
+  Coffee,
+  MapPin,
+  CreditCard as CardIcon,
+  Package,
   Users,
+  Home,
   ShoppingCart,
-  Plus,
-  Minus,
-  CreditCard,
-  Clock,
-  Loader2,
-  CheckCircle,
-  DollarSign
+  X,
+  Check,
+  Delete,
+  ArrowLeft
 } from "lucide-react";
 
 const supabase = createClient();
+
+interface Item {
+  id: number;
+  name: string;
+  price: number;
+  category_id?: number;
+}
+
+interface CartItem {
+  item: Item;
+  quantity: number;
+  total: number;
+}
 
 interface RestaurantTable {
   id: number;
@@ -43,60 +49,37 @@ interface RestaurantTable {
   active: boolean;
 }
 
-interface TableSession {
-  id: number;
-  table_id: number;
-  status: string;
-  customer_count: number;
-  opened_at: string;
-  closed_at?: string;
-  total: number;
-  final_total?: number;
-}
-
-interface Item {
-  id: number;
-  name: string;
-  price: number;
-  description?: string;
-  category_id?: number;
-  available: boolean;
-}
-
-interface Category {
-  id: number;
-  name: string;
-  active: boolean;
-}
-
 export default function POSPage() {
-  const [tables, setTables] = useState<RestaurantTable[]>([]);
-  const [sessions, setSessions] = useState<Map<number, TableSession>>(new Map());
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [quantity, setQuantity] = useState("1");
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [currentTable, setCurrentTable] = useState<string>("Mesa");
   const [items, setItems] = useState<Item[]>([]);
+  const [tables, setTables] = useState<RestaurantTable[]>([]);
+  const [activeInput, setActiveInput] = useState<"code" | "quantity">("code");
   const [loading, setLoading] = useState(true);
-  
-  // Modal states
-  const [selectedTable, setSelectedTable] = useState<RestaurantTable | null>(null);
-  const [isSessionModalOpen, setIsSessionModalOpen] = useState(false);
-  const [activeSession, setActiveSession] = useState<TableSession | null>(null);
-  
-  // Order management
-  const [cart, setCart] = useState<{ item: Item; quantity: number }[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
-  const [customerCount, setCustomerCount] = useState(1);
-  
-  // UI states
-  const [saving, setSaving] = useState(false);
+  const codeInputRef = useRef<HTMLInputElement>(null);
+  const quantityInputRef = useRef<HTMLInputElement>(null);
 
-  // Load initial data
+  // Load data on mount
   useEffect(() => {
     loadData();
+    // Focus on code input by default
+    codeInputRef.current?.focus();
   }, []);
 
   const loadData = async () => {
     setLoading(true);
     try {
+      // Load items
+      const { data: itemsData } = await supabase
+        .from('items')
+        .select('*')
+        .eq('active', true)
+        .eq('available', true);
+      
+      setItems(itemsData || []);
+
       // Load tables
       const { data: tablesData } = await supabase
         .from('restaurant_tables')
@@ -105,536 +88,391 @@ export default function POSPage() {
         .order('number');
 
       setTables(tablesData || []);
-
-      // Load active sessions
-      const { data: sessionsData } = await supabase
-        .from('table_sessions')
-        .select('*')
-        .eq('status', 'active');
-
-      const sessionsMap = new Map<number, TableSession>();
-      sessionsData?.forEach(session => {
-        sessionsMap.set(session.table_id, session);
-      });
-      setSessions(sessionsMap);
-
-      // Load categories
-      const { data: categoriesData } = await supabase
-        .from('categories')
-        .select('*')
-        .eq('active', true);
-
-      setCategories(categoriesData || []);
-
-      // Load items
-      const { data: itemsData } = await supabase
-        .from('items')
-        .select('*')
-        .eq('active', true)
-        .eq('available', true);
-
-      setItems(itemsData || []);
-
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
-      toast.error('Erro ao carregar dados');
     } finally {
       setLoading(false);
     }
   };
 
-  // Open new session
-  const openSession = async () => {
-    if (!selectedTable) return;
-    
-    setSaving(true);
-    try {
-      const { data, error } = await supabase
-        .from('table_sessions')
-        .insert({
-          table_id: selectedTable.id,
-          status: 'active',
-          customer_count: customerCount,
-          total: 0
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      toast.success(`Mesa ${selectedTable.number} aberta com sucesso!`);
-      setIsSessionModalOpen(false);
-      setSelectedTable(null);
-      setCustomerCount(1);
-      await loadData();
-    } catch (error) {
-      console.error('Erro ao abrir sessão:', error);
-      toast.error('Erro ao abrir mesa');
-    } finally {
-      setSaving(false);
+  // Handle numpad input
+  const handleNumpadClick = (value: string) => {
+    if (activeInput === "code") {
+      setInputValue(prev => prev + value);
+    } else {
+      setQuantity(prev => prev + value);
     }
   };
 
-  // Add item to cart
-  const addToCart = (item: Item) => {
+  // Handle backspace
+  const handleBackspace = () => {
+    if (activeInput === "code") {
+      setInputValue(prev => prev.slice(0, -1));
+    } else {
+      setQuantity(prev => prev.slice(0, -1) || "1");
+    }
+  };
+
+  // Handle clear
+  const handleClear = () => {
+    if (activeInput === "code") {
+      setInputValue("");
+    } else {
+      setQuantity("1");
+    }
+  };
+
+  // Handle confirm (add to cart)
+  const handleConfirm = () => {
+    if (!inputValue) {
+      toast.error("Digite o código do produto");
+      return;
+    }
+
+    // Find item by code or name
+    const item = items.find(i => 
+      i.id.toString() === inputValue || 
+      i.name.toLowerCase().includes(inputValue.toLowerCase())
+    );
+
+    if (!item) {
+      toast.error("Produto não encontrado");
+      return;
+    }
+
+    const qty = parseInt(quantity) || 1;
+    
+    // Add to cart
     setCart(prev => {
-      const existing = prev.find(cartItem => cartItem.item.id === item.id);
+      const existing = prev.find(c => c.item.id === item.id);
       if (existing) {
-        return prev.map(cartItem =>
-          cartItem.item.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
-            : cartItem
+        return prev.map(c => 
+          c.item.id === item.id 
+            ? { ...c, quantity: c.quantity + qty, total: (c.quantity + qty) * c.item.price }
+            : c
         );
       } else {
-        return [...prev, { item, quantity: 1 }];
+        return [...prev, {
+          item,
+          quantity: qty,
+          total: item.price * qty
+        }];
       }
     });
-    toast.success(`${item.name} adicionado ao pedido`);
+
+    toast.success(`${item.name} adicionado`);
+    setInputValue("");
+    setQuantity("1");
+    codeInputRef.current?.focus();
   };
 
   // Calculate total
   const calculateTotal = () => {
-    return cart.reduce((sum, item) => sum + (item.item.price * item.quantity), 0);
+    return cart.reduce((sum, item) => sum + item.total, 0);
   };
 
-  // Save order
-  const saveOrder = async () => {
-    if (!activeSession || cart.length === 0) return;
-
-    setSaving(true);
-    try {
-      // Update session total
-      const newTotal = activeSession.total + calculateTotal();
-      const { error } = await supabase
-        .from('table_sessions')
-        .update({ total: newTotal })
-        .eq('id', activeSession.id);
-
-      if (error) throw error;
-
-      setCart([]);
-      toast.success('Pedido enviado com sucesso!');
-      await loadData();
-    } catch (error) {
-      console.error('Erro ao salvar pedido:', error);
-      toast.error('Erro ao enviar pedido');
-    } finally {
-      setSaving(false);
-    }
+  // Remove item from cart
+  const removeFromCart = (itemId: number) => {
+    setCart(prev => prev.filter(c => c.item.id !== itemId));
+    toast.success("Item removido");
   };
 
-  // Close session
-  const closeSession = async () => {
-    if (!activeSession) return;
-
-    setSaving(true);
-    try {
-      const { error } = await supabase
-        .from('table_sessions')
-        .update({
-          status: 'closed',
-          closed_at: new Date().toISOString(),
-          final_total: activeSession.total
-        })
-        .eq('id', activeSession.id);
-
-      if (error) throw error;
-
-      toast.success('Conta fechada com sucesso!');
-      setActiveSession(null);
-      setCart([]);
-      setIsSessionModalOpen(false);
-      await loadData();
-    } catch (error) {
-      console.error('Erro ao fechar sessão:', error);
-      toast.error('Erro ao fechar conta');
-    } finally {
-      setSaving(false);
-    }
+  // Format currency
+  const formatCurrency = (value: number) => {
+    return value.toFixed(2).replace('.', ',');
   };
 
-  // Filter items by category
-  const filteredItems = selectedCategory 
-    ? items.filter(item => item.category_id === selectedCategory)
-    : items;
+  // Action buttons configuration
+  const actionButtons = [
+    { icon: LogOut, label: "Sair", onClick: () => window.location.href = "/" },
+    { icon: FileText, label: "Fechar contas", onClick: () => toast.info("Fechar contas") },
+    { icon: RotateCcw, label: "Estornar ult. venda", onClick: () => toast.info("Estornar venda") },
+    { icon: User, label: "Trocar vendedor", onClick: () => toast.info("Trocar vendedor") },
+    { icon: Truck, label: "Mudar p/ delivery", onClick: () => setCurrentTable("Delivery") },
+    { icon: Coffee, label: "Mudar p/ balcão", onClick: () => setCurrentTable("Balcão") },
+    { icon: MapPin, label: "Abrir mapa", onClick: () => toast.info("Abrir mapa") },
+    { icon: CardIcon, label: "Mudar p/ ficha crédito", onClick: () => toast.info("Ficha crédito") },
+    { icon: Package, label: "Consultar material", onClick: () => toast.info("Consultar material") },
+    { icon: Home, label: "Mudar p/ mesa", onClick: () => setCurrentTable("Mesa") },
+    { icon: Users, label: "Consultar preço", onClick: () => toast.info("Consultar preço") },
+    { icon: ShoppingCart, label: "Procurar pedido", onClick: () => toast.info("Procurar pedido") },
+  ];
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+      <div className="min-h-screen flex items-center justify-center bg-gray-800">
+        <div className="text-white">Carregando...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="h-screen bg-gray-800 text-white flex flex-col">
       {/* Header */}
-      <div className="bg-white dark:bg-gray-800 border-b p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <ShoppingCart className="h-6 w-6 text-orange-500" />
-            <h1 className="text-2xl font-bold">Sistema POS</h1>
-          </div>
-          <div className="flex items-center gap-4">
-            <Badge className="bg-green-500">
-              {sessions.size} mesas ativas
-            </Badge>
-            <Button
-              variant="ghost"
-              onClick={() => window.location.href = '/'}
-            >
-              Voltar
-            </Button>
-          </div>
+      <div className="bg-gray-900 px-4 py-2 flex items-center justify-between border-b border-gray-700">
+        <div className="flex items-center gap-4">
+          <Badge variant="outline" className="text-white border-white">
+            {currentTable}
+          </Badge>
+          <span className="text-sm text-gray-400">ComideX POS</span>
+        </div>
+        <div className="text-sm text-gray-400">
+          {new Date().toLocaleString('pt-BR')}
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="p-6">
-        {/* Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <Card>
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left Panel - Products and Input */}
+        <div className="flex-1 flex flex-col p-4">
+          {/* Input Section */}
+          <Card className="bg-gray-900 border-gray-700 mb-4">
             <CardContent className="p-4">
-              <div className="flex items-center justify-between">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <p className="text-sm text-gray-600">Mesas Ocupadas</p>
-                  <p className="text-2xl font-bold">{sessions.size}/{tables.length}</p>
+                  <label className="text-xs text-gray-400 mb-1 block">Código do Item</label>
+                  <Input
+                    ref={codeInputRef}
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onFocus={() => setActiveInput("code")}
+                    onKeyPress={(e) => e.key === "Enter" && handleConfirm()}
+                    className="bg-gray-800 border-gray-600 text-white text-2xl h-14"
+                    placeholder="Digite ou escaneie"
+                  />
                 </div>
-                <Users className="h-8 w-8 text-blue-500" />
-              </div>
-            </CardContent>
-          </Card>
-          
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600">Vendas Ativas</p>
-                  <p className="text-2xl font-bold">
-                    R$ {Array.from(sessions.values()).reduce((sum, s) => sum + s.total, 0).toFixed(2)}
-                  </p>
+                  <label className="text-xs text-gray-400 mb-1 block">Qtd</label>
+                  <div className="flex gap-2">
+                    <Input
+                      ref={quantityInputRef}
+                      value={quantity}
+                      onChange={(e) => setQuantity(e.target.value)}
+                      onFocus={() => setActiveInput("quantity")}
+                      onKeyPress={(e) => e.key === "Enter" && handleConfirm()}
+                      className="bg-gray-800 border-gray-600 text-white text-2xl h-14 w-24 text-center"
+                      type="number"
+                      min="1"
+                    />
+                    <Button 
+                      onClick={() => setQuantity(prev => (parseInt(prev) + 1).toString())}
+                      className="h-14 px-4 bg-gray-700 hover:bg-gray-600"
+                    >
+                      ▲
+                    </Button>
+                    <Button 
+                      onClick={() => setQuantity(prev => Math.max(1, parseInt(prev) - 1).toString())}
+                      className="h-14 px-4 bg-gray-700 hover:bg-gray-600"
+                    >
+                      ▼
+                    </Button>
+                  </div>
                 </div>
-                <DollarSign className="h-8 w-8 text-green-500" />
               </div>
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Clientes</p>
-                  <p className="text-2xl font-bold">
-                    {Array.from(sessions.values()).reduce((sum, s) => sum + s.customer_count, 0)}
-                  </p>
-                </div>
-                <Users className="h-8 w-8 text-purple-500" />
+          {/* Cart Items */}
+          <Card className="flex-1 bg-gray-900 border-gray-700 overflow-hidden">
+            <CardContent className="p-4 h-full flex flex-col">
+              <div className="flex-1 overflow-auto">
+                {cart.length === 0 ? (
+                  <div className="text-center text-gray-500 mt-8">
+                    <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                    <p>(Não há itens vendidos)</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {cart.map((item, index) => (
+                      <div key={index} className="bg-gray-800 p-3 rounded flex items-center justify-between">
+                        <div className="flex-1">
+                          <div className="font-medium">{item.item.name}</div>
+                          <div className="text-sm text-gray-400">
+                            {item.quantity} x R$ {formatCurrency(item.item.price)}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="font-bold text-lg">
+                            R$ {formatCurrency(item.total)}
+                          </span>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => removeFromCart(item.item.id)}
+                            className="text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            </CardContent>
-          </Card>
 
-          <Card>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Taxa Ocupação</p>
-                  <p className="text-2xl font-bold">
-                    {tables.length > 0 ? Math.round((sessions.size / tables.length) * 100) : 0}%
-                  </p>
+              {/* Totals */}
+              <div className="border-t border-gray-700 pt-4 mt-4 space-y-2">
+                <div className="flex justify-between text-xl">
+                  <span>Subtotal:</span>
+                  <span>R$ {formatCurrency(calculateTotal())}</span>
                 </div>
-                <Clock className="h-8 w-8 text-orange-500" />
+                <div className="flex justify-between text-2xl font-bold text-orange-400">
+                  <span>Total:</span>
+                  <span>R$ {formatCurrency(calculateTotal())}</span>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Tables Grid */}
-        <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-          {tables.map((table) => {
-            const session = sessions.get(table.id);
-            const isOccupied = !!session;
-            
-            return (
-              <Card
-                key={table.id}
-                className={`cursor-pointer transition-all hover:shadow-lg ${
-                  isOccupied 
-                    ? 'bg-orange-50 dark:bg-orange-950 border-orange-300' 
-                    : 'bg-white dark:bg-gray-800'
-                }`}
-                onClick={() => {
-                  setSelectedTable(table);
-                  if (session) {
-                    setActiveSession(session);
-                    setCart([]);
-                  }
-                  setIsSessionModalOpen(true);
-                }}
-              >
-                <CardContent className="p-4 text-center">
-                  <div className="text-3xl font-bold mb-2">
-                    {table.number}
-                  </div>
-                  <Badge variant={isOccupied ? "default" : "outline"}>
-                    {table.capacity} lugares
-                  </Badge>
-                  {isOccupied && session && (
-                    <div className="mt-2">
-                      <p className="text-xs text-gray-600">
-                        {session.customer_count} pessoas
-                      </p>
-                      <p className="text-sm font-bold text-orange-600">
-                        R$ {session.total.toFixed(2)}
-                      </p>
-                    </div>
-                  )}
-                  {!isOccupied && (
-                    <p className="text-sm text-green-600 mt-2">
-                      Disponível
-                    </p>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
+        {/* Right Panel - Numpad */}
+        <div className="w-96 p-4 flex flex-col gap-4">
+          {/* Numpad */}
+          <Card className="bg-gray-900 border-gray-700">
+            <CardContent className="p-4">
+              <div className="grid grid-cols-3 gap-2">
+                {/* Row 1 */}
+                <Button
+                  onClick={() => handleNumpadClick("7")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  7
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick("8")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  8
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick("9")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  9
+                </Button>
+
+                {/* Row 2 */}
+                <Button
+                  onClick={() => handleNumpadClick("4")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  4
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick("5")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  5
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick("6")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  6
+                </Button>
+
+                {/* Row 3 */}
+                <Button
+                  onClick={() => handleNumpadClick("1")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  1
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick("2")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  2
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick("3")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  3
+                </Button>
+
+                {/* Row 4 */}
+                <Button
+                  onClick={() => handleBackspace()}
+                  className="h-16 text-xl bg-gray-700 hover:bg-gray-600"
+                >
+                  <ArrowLeft className="h-6 w-6 mx-auto" />
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick("0")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  0
+                </Button>
+                <Button
+                  onClick={() => handleNumpadClick(".")}
+                  className="h-16 text-2xl bg-gray-700 hover:bg-gray-600"
+                >
+                  .
+                </Button>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="grid grid-cols-2 gap-2 mt-3">
+                <Button
+                  onClick={handleClear}
+                  className="h-16 bg-red-600 hover:bg-red-700 text-xl"
+                >
+                  <X className="h-8 w-8" />
+                </Button>
+                <Button
+                  onClick={handleConfirm}
+                  className="h-16 bg-green-600 hover:bg-green-700 text-xl"
+                >
+                  <Check className="h-8 w-8" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick Info */}
+          <Card className="bg-gray-900 border-gray-700">
+            <CardContent className="p-4 space-y-2">
+              <div className="text-sm text-gray-400">Operador: Admin</div>
+              <div className="text-sm text-gray-400">Terminal: 001</div>
+              <div className="text-sm text-gray-400">
+                Itens no carrinho: {cart.length}
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 
-      {/* Session Management Modal */}
-      <Dialog open={isSessionModalOpen} onOpenChange={setIsSessionModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
-          <DialogHeader>
-            <DialogTitle>
-              Mesa {selectedTable?.number}
-              {activeSession && (
-                <Badge className="ml-2 bg-orange-500">
-                  R$ {activeSession.total.toFixed(2)}
-                </Badge>
-              )}
-            </DialogTitle>
-            <DialogDescription>
-              {activeSession 
-                ? 'Gerencie o pedido desta mesa'
-                : 'Abra uma nova sessão para esta mesa'
-              }
-            </DialogDescription>
-          </DialogHeader>
+      {/* Bottom Action Bar */}
+      <div className="bg-gray-900 border-t border-gray-700 p-2">
+        <div className="flex gap-1 overflow-x-auto">
+          {actionButtons.map((action, index) => (
+            <Button
+              key={index}
+              onClick={action.onClick}
+              className="flex-shrink-0 h-20 px-3 bg-gray-700 hover:bg-gray-600 flex flex-col items-center justify-center gap-1"
+            >
+              <action.icon className="h-6 w-6" />
+              <span className="text-xs text-center leading-tight max-w-[60px]">
+                {action.label}
+              </span>
+            </Button>
+          ))}
+        </div>
+      </div>
 
-          {!activeSession ? (
-            // Open new session form
-            <div className="space-y-4 py-4">
-              <div>
-                <label className="text-sm font-medium mb-2 block">
-                  Quantidade de Clientes
-                </label>
-                <div className="flex items-center gap-2">
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={() => setCustomerCount(Math.max(1, customerCount - 1))}
-                  >
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <Input
-                    type="number"
-                    value={customerCount}
-                    onChange={(e) => setCustomerCount(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-20 text-center"
-                    min="1"
-                  />
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    onClick={() => setCustomerCount(customerCount + 1)}
-                  >
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-
-              <DialogFooter>
-                <Button variant="outline" onClick={() => {
-                  setIsSessionModalOpen(false);
-                  setSelectedTable(null);
-                }}>
-                  Cancelar
-                </Button>
-                <Button 
-                  onClick={openSession}
-                  disabled={saving}
-                  className="bg-green-500 hover:bg-green-600"
-                >
-                  {saving ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Abrindo...
-                    </>
-                  ) : (
-                    <>
-                      <CheckCircle className="h-4 w-4 mr-2" />
-                      Abrir Mesa
-                    </>
-                  )}
-                </Button>
-              </DialogFooter>
-            </div>
-          ) : (
-            // Active session management
-            <div className="flex flex-col h-[60vh]">
-              <Tabs defaultValue="products" className="flex-1 flex flex-col">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="products">Produtos</TabsTrigger>
-                  <TabsTrigger value="cart">
-                    Carrinho ({cart.length})
-                    {cart.length > 0 && (
-                      <Badge className="ml-2 bg-orange-500">
-                        R$ {calculateTotal().toFixed(2)}
-                      </Badge>
-                    )}
-                  </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="products" className="flex-1 overflow-auto">
-                  <div className="mb-4">
-                    <div className="flex gap-2 flex-wrap">
-                      <Button
-                        size="sm"
-                        variant={selectedCategory === null ? 'default' : 'outline'}
-                        onClick={() => setSelectedCategory(null)}
-                      >
-                        Todos
-                      </Button>
-                      {categories.map(category => (
-                        <Button
-                          key={category.id}
-                          size="sm"
-                          variant={selectedCategory === category.id ? 'default' : 'outline'}
-                          onClick={() => setSelectedCategory(category.id)}
-                        >
-                          {category.name}
-                        </Button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                    {filteredItems.map(item => (
-                      <Card
-                        key={item.id}
-                        className="cursor-pointer hover:shadow-lg"
-                        onClick={() => addToCart(item)}
-                      >
-                        <CardContent className="p-3">
-                          <h4 className="font-medium text-sm mb-1">
-                            {item.name}
-                          </h4>
-                          <p className="text-xs text-gray-500 mb-2">
-                            {item.description}
-                          </p>
-                          <div className="flex items-center justify-between">
-                            <span className="text-lg font-bold text-green-600">
-                              R$ {item.price.toFixed(2)}
-                            </span>
-                            <Plus className="h-5 w-5 text-gray-400" />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="cart" className="flex-1 overflow-auto">
-                  {cart.length === 0 ? (
-                    <div className="flex items-center justify-center h-full">
-                      <div className="text-center">
-                        <ShoppingCart className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                        <p className="text-gray-500">Carrinho vazio</p>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-2">
-                      {cart.map((cartItem, index) => (
-                        <Card key={index}>
-                          <CardContent className="p-3">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <h4 className="font-medium">{cartItem.item.name}</h4>
-                                <p className="text-sm text-gray-500">
-                                  R$ {cartItem.item.price.toFixed(2)} x {cartItem.quantity}
-                                </p>
-                              </div>
-                              <div className="text-right">
-                                <p className="font-bold">
-                                  R$ {(cartItem.item.price * cartItem.quantity).toFixed(2)}
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                      
-                      <div className="border-t pt-4">
-                        <div className="flex justify-between text-xl font-bold mb-4">
-                          <span>Total:</span>
-                          <span className="text-green-600">
-                            R$ {calculateTotal().toFixed(2)}
-                          </span>
-                        </div>
-                        <Button
-                          className="w-full bg-green-500 hover:bg-green-600"
-                          size="lg"
-                          onClick={saveOrder}
-                          disabled={saving}
-                        >
-                          {saving ? (
-                            <>
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              Enviando...
-                            </>
-                          ) : (
-                            <>
-                              <CheckCircle className="h-4 w-4 mr-2" />
-                              Enviar Pedido
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </TabsContent>
-              </Tabs>
-
-              <DialogFooter className="border-t pt-4">
-                <Button variant="outline" onClick={() => {
-                  setIsSessionModalOpen(false);
-                  setSelectedTable(null);
-                  setActiveSession(null);
-                  setCart([]);
-                }}>
-                  Voltar
-                </Button>
-                <Button
-                  variant="destructive"
-                  onClick={closeSession}
-                  disabled={saving}
-                >
-                  {saving ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Fechando...
-                    </>
-                  ) : (
-                    <>
-                      <CreditCard className="h-4 w-4 mr-2" />
-                      Fechar Conta
-                    </>
-                  )}
-                </Button>
-              </DialogFooter>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Footer */}
+      <div className="bg-black px-4 py-1 flex items-center justify-between text-xs text-gray-500">
+        <div className="flex gap-4">
+          <span>ID: A1014</span>
+          <span>Loja 1 RESTAURANTE FILIAL</span>
+          <span>Term: 001</span>
+        </div>
+        <div className="flex gap-4">
+          <span>Usuário: Admin</span>
+          <span>DB novo: {new Date().toLocaleDateString('pt-BR')}</span>
+        </div>
+      </div>
     </div>
   );
 }

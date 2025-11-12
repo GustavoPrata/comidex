@@ -699,10 +699,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-bottom: 1.5rem;
 }
 
-.mb-8 {
-  margin-bottom: 2rem;
-}
-
 .ml-1 {
   margin-left: .25rem;
 }
@@ -765,6 +761,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
 }
 
 .block {
@@ -905,10 +905,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .h-\[400px\] {
   height: 400px;
-}
-
-.h-\[60vh\] {
-  height: 60vh;
 }
 
 .h-\[var\(--radix-select-trigger-height\)\] {
@@ -1137,6 +1133,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .max-w-6xl {
   max-width: 72rem;
+}
+
+.max-w-\[60px\] {
+  max-width: 60px;
 }
 
 .max-w-lg {
@@ -1634,6 +1634,16 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 
+.border-gray-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(75 85 99 / var(--tw-border-opacity, 1));
+}
+
+.border-gray-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));
+}
+
 .border-gray-800 {
   --tw-border-opacity: 1;
   border-color: rgb(31 41 55 / var(--tw-border-opacity, 1));
@@ -1799,6 +1809,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .bg-gray-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(107 114 128 / var(--tw-bg-opacity, 1));
+}
+
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gray-800 {
@@ -2392,10 +2407,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   text-align: center;
 }
 
-.text-right {
-  text-align: right;
-}
-
 .align-middle {
   vertical-align: middle;
 }
@@ -2474,6 +2485,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .leading-none {
   line-height: 1;
+}
+
+.leading-tight {
+  line-height: 1.25;
 }
 
 .tracking-tight {
@@ -2601,6 +2616,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: hsl(var(--muted-foreground));
 }
 
+.text-orange-400 {
+  --tw-text-opacity: 1;
+  color: rgb(251 146 60 / var(--tw-text-opacity, 1));
+}
+
 .text-orange-500 {
   --tw-text-opacity: 1;
   color: rgb(249 115 22 / var(--tw-text-opacity, 1));
@@ -2637,6 +2657,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .text-purple-600 {
   --tw-text-opacity: 1;
   color: rgb(147 51 234 / var(--tw-text-opacity, 1));
+}
+
+.text-red-400 {
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113 / var(--tw-text-opacity, 1));
 }
 
 .text-red-500 {
@@ -3145,11 +3170,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #22c55e33;
 }
 
-.hover\:bg-green-600:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
-}
-
 .hover\:bg-green-700:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
@@ -3211,6 +3231,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(185 28 28 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:bg-red-900\/20:hover {
+  background-color: #7f1d1d33;
+}
+
 .hover\:bg-secondary\/80:hover {
   background-color: hsl(var(--secondary) / .8);
 }
@@ -3265,6 +3289,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .hover\:text-orange-700:hover {
   --tw-text-opacity: 1;
   color: rgb(194 65 12 / var(--tw-text-opacity, 1));
+}
+
+.hover\:text-red-300:hover {
+  --tw-text-opacity: 1;
+  color: rgb(252 165 165 / var(--tw-text-opacity, 1));
 }
 
 .hover\:text-red-500:hover {
@@ -4287,10 +4316,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .md\:grid-cols-4 {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
   .md\:grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
@@ -4333,10 +4358,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .lg\:grid-cols-6 {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
   .lg\:grid-cols-8 {
     grid-template-columns: repeat(8, minmax(0, 1fr));
   }
@@ -4353,10 +4374,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
   .xl\:grid-cols-4 {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .xl\:grid-cols-8 {
-    grid-template-columns: repeat(8, minmax(0, 1fr));
   }
 }
 
