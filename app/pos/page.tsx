@@ -1406,7 +1406,7 @@ export default function POSPage() {
 
                       {/* Resultados da Busca em Tempo Real */}
                       {searchQuery.length > 0 && (
-                        <div className="mt-2 absolute left-0 right-0 z-50 bg-gray-900/95 backdrop-blur rounded-lg border border-gray-700 shadow-xl max-h-[320px] overflow-hidden">
+                        <div className="absolute bottom-full mb-2 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur rounded-lg border border-gray-700 shadow-xl max-h-[320px] overflow-hidden">
                           {filteredItems.length === 0 ? (
                             <div className="text-gray-400 p-4 text-center">
                               Nenhum produto encontrado para "{searchQuery}"
