@@ -939,7 +939,7 @@ export default function POSPage() {
     }
     
     return filtered;
-  }, [items, selectedCategory, searchQuery]);
+  }, [items, selectedGroup, selectedCategory, searchQuery]);
 
   // Formatação
   const formatCurrency = (value: number) => {
@@ -1650,26 +1650,44 @@ export default function POSPage() {
                           {groups.map((group) => {
                             const Icon = (group.icon ? getIconByName(group.icon) : null) || Package;
                             return (
-                              <Button
+                              <motion.div
                                 key={group.id}
-                                onClick={() => setSelectedGroup(group.id)}
-                                className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center relative"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                               >
-                                {group.type === 'rodizio' && (
-                                  <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded">
-                                    Rodízio
-                                  </div>
-                                )}
-                                <Icon className="h-8 w-8 mb-2" />
-                                <span className="text-center">
-                                  {group.name}
-                                  {group.price && (
-                                    <div className="text-xs mt-1 text-yellow-400">
-                                      R$ {group.price.toFixed(2)}
+                                <Card
+                                  onClick={() => {
+                                    setSelectedGroup(group.id);
+                                    // Automaticamente seleciona a primeira categoria do grupo
+                                    const firstCategory = categories
+                                      .filter(c => c.active && c.group_id === group.id)
+                                      .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))[0];
+                                    if (firstCategory) {
+                                      setSelectedCategory(firstCategory.id);
+                                    }
+                                  }}
+                                  className="h-32 bg-gradient-to-br from-gray-800 to-gray-700 hover:from-orange-700 hover:to-orange-600 border-gray-600 hover:border-orange-500 cursor-pointer transition-all group"
+                                >
+                                  <CardContent className="h-full flex flex-col items-center justify-center p-4 relative">
+                                    {group.type === 'rodizio' && (
+                                      <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-black text-xs px-2 py-1 rounded-full font-semibold shadow-lg">
+                                        Rodízio
+                                      </div>
+                                    )}
+                                    <div className="bg-gray-900/50 p-3 rounded-full mb-2 group-hover:bg-orange-600/30 transition-colors">
+                                      <Icon className="h-10 w-10 text-gray-200 group-hover:text-white" />
                                     </div>
-                                  )}
-                                </span>
-                              </Button>
+                                    <h3 className="text-center text-white font-semibold text-base">
+                                      {group.name}
+                                    </h3>
+                                    {group.price && (
+                                      <div className="text-xs mt-2 text-yellow-400 font-bold bg-black/30 px-2 py-1 rounded-full">
+                                        R$ {group.price.toFixed(2)}
+                                      </div>
+                                    )}
+                                  </CardContent>
+                                </Card>
+                              </motion.div>
                             );
                           })}
                         </div>
