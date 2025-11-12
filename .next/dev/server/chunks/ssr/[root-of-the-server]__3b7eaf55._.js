@@ -1923,8 +1923,6 @@ function ImageUpload({ value, onChange, aspectRatio = 16 / 9, className = "", ca
 __turbopack_context__.s([
     "defaultGroupIcons",
     ()=>defaultGroupIcons,
-    "findIconByKeyword",
-    ()=>findIconByKeyword,
     "getIconByName",
     ()=>getIconByName,
     "getIconsByCategory",
@@ -1932,224 +1930,59 @@ __turbopack_context__.s([
     "menuIconLibrary",
     ()=>menuIconLibrary
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/fish.js [app-ssr] (ecmascript) <export default as Fish>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/soup.js [app-ssr] (ecmascript) <export default as Soup>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/pizza.js [app-ssr] (ecmascript) <export default as Pizza>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sandwich$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sandwich$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sandwich.js [app-ssr] (ecmascript) <export default as Sandwich>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beef$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beef$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/beef.js [app-ssr] (ecmascript) <export default as Beef>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/coffee.js [app-ssr] (ecmascript) <export default as Coffee>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beer$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/beer.js [app-ssr] (ecmascript) <export default as Beer>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/wine.js [app-ssr] (ecmascript) <export default as Wine>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$martini$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Martini$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/martini.js [app-ssr] (ecmascript) <export default as Martini>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$glass$2d$water$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GlassWater$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/glass-water.js [app-ssr] (ecmascript) <export default as GlassWater>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$milk$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Milk$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/milk.js [app-ssr] (ecmascript) <export default as Milk>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/fish.js [app-ssr] (ecmascript) <export default as Fish>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/soup.js [app-ssr] (ecmascript) <export default as Soup>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Utensils$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/utensils.js [app-ssr] (ecmascript) <export default as Utensils>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/utensils-crossed.js [app-ssr] (ecmascript) <export default as UtensilsCrossed>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/pizza.js [app-ssr] (ecmascript) <export default as Pizza>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sandwich$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sandwich$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sandwich.js [app-ssr] (ecmascript) <export default as Sandwich>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beef$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beef$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/beef.js [app-ssr] (ecmascript) <export default as Beef>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/ice-cream-cone.js [app-ssr] (ecmascript) <export default as IceCream>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cake$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cake.js [app-ssr] (ecmascript) <export default as Cake>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cookie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cookie$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cookie.js [app-ssr] (ecmascript) <export default as Cookie>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$candy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Candy$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/candy.js [app-ssr] (ecmascript) <export default as Candy>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cherry$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cherry$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cherry.js [app-ssr] (ecmascript) <export default as Cherry>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$apple$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Apple$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/apple.js [app-ssr] (ecmascript) <export default as Apple>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$banana$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Banana$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/banana.js [app-ssr] (ecmascript) <export default as Banana>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grape$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grape$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/grape.js [app-ssr] (ecmascript) <export default as Grape>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$citrus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Citrus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/citrus.js [app-ssr] (ecmascript) <export default as Citrus>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/utensils-crossed.js [app-ssr] (ecmascript) <export default as UtensilsCrossed>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Utensils$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/utensils.js [app-ssr] (ecmascript) <export default as Utensils>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chef$2d$hat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChefHat$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/chef-hat.js [app-ssr] (ecmascript) <export default as ChefHat>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cooking$2d$pot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CookingPot$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cooking-pot.js [app-ssr] (ecmascript) <export default as CookingPot>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refrigerator$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Refrigerator$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/refrigerator.js [app-ssr] (ecmascript) <export default as Refrigerator>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$microwave$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Microwave$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/microwave.js [app-ssr] (ecmascript) <export default as Microwave>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$concierge$2d$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ConciergeBell$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/concierge-bell.js [app-ssr] (ecmascript) <export default as ConciergeBell>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/star.js [app-ssr] (ecmascript) <export default as Star>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$crown$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Crown$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/crown.js [app-ssr] (ecmascript) <export default as Crown>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$award$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Award$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/award.js [app-ssr] (ecmascript) <export default as Award>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trophy.js [app-ssr] (ecmascript) <export default as Trophy>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gem$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gem$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/gem.js [app-ssr] (ecmascript) <export default as Gem>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/diamond.js [app-ssr] (ecmascript) <export default as Diamond>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sparkles.js [app-ssr] (ecmascript) <export default as Sparkles>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zap.js [app-ssr] (ecmascript) <export default as Zap>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as Package>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$bag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingBag$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shopping-bag.js [app-ssr] (ecmascript) <export default as ShoppingBag>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flame.js [app-ssr] (ecmascript) <export default as Flame>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gift$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gift$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/gift.js [app-ssr] (ecmascript) <export default as Gift>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/party-popper.js [app-ssr] (ecmascript) <export default as PartyPopper>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/leaf.js [app-ssr] (ecmascript) <export default as Leaf>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wheat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wheat$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/wheat.js [app-ssr] (ecmascript) <export default as Wheat>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shell.js [app-ssr] (ecmascript) <export default as Shell>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/egg.js [app-ssr] (ecmascript) <export default as Egg>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$citrus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Citrus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/citrus.js [app-ssr] (ecmascript) <export default as Citrus>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCart$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shopping-cart.js [app-ssr] (ecmascript) <export default as ShoppingCart>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/store.js [app-ssr] (ecmascript) <export default as Store>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$truck$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Truck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/truck.js [app-ssr] (ecmascript) <export default as Truck>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/clock.js [app-ssr] (ecmascript) <export default as Clock>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$timer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Timer$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/timer.js [app-ssr] (ecmascript) <export default as Timer>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$alarm$2d$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlarmClock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/alarm-clock.js [app-ssr] (ecmascript) <export default as AlarmClock>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2d$days$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CalendarDays$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/calendar-days.js [app-ssr] (ecmascript) <export default as CalendarDays>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/leaf.js [app-ssr] (ecmascript) <export default as Leaf>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flower.js [app-ssr] (ecmascript) <export default as Flower>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/tree-pine.js [app-ssr] (ecmascript) <export default as TreePine>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wheat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wheat$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/wheat.js [app-ssr] (ecmascript) <export default as Wheat>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/heart.js [app-ssr] (ecmascript) <export default as Heart>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flame.js [app-ssr] (ecmascript) <export default as Flame>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$snowflake$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Snowflake$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/snowflake.js [app-ssr] (ecmascript) <export default as Snowflake>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sun$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sun$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sun.js [app-ssr] (ecmascript) <export default as Sun>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Moon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/moon.js [app-ssr] (ecmascript) <export default as Moon>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cloud$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cloud.js [app-ssr] (ecmascript) <export default as Cloud>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplet$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/droplet.js [app-ssr] (ecmascript) <export default as Droplet>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$thermometer$2d$sun$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ThermometerSun$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/thermometer-sun.js [app-ssr] (ecmascript) <export default as ThermometerSun>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/salad.js [app-ssr] (ecmascript) <export default as Salad>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/egg.js [app-ssr] (ecmascript) <export default as Egg>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$croissant$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Croissant$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/croissant.js [app-ssr] (ecmascript) <export default as Croissant>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$popcorn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Popcorn$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/popcorn.js [app-ssr] (ecmascript) <export default as Popcorn>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$carrot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Carrot$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/carrot.js [app-ssr] (ecmascript) <export default as Carrot>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$hand$2d$platter$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__HandPlatter$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/hand-platter.js [app-ssr] (ecmascript) <export default as HandPlatter>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$concierge$2d$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ConciergeBell$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/concierge-bell.js [app-ssr] (ecmascript) <export default as ConciergeBell>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$drumstick$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Drumstick$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/drumstick.js [app-ssr] (ecmascript) <export default as Drumstick>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ham$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Ham$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/ham.js [app-ssr] (ecmascript) <export default as Ham>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/shell.js [app-ssr] (ecmascript) <export default as Shell>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$house$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Home$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/house.js [app-ssr] (ecmascript) <export default as Home>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/menu.js [app-ssr] (ecmascript) <export default as Menu>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3x3$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/grid-3x3.js [app-ssr] (ecmascript) <export default as Grid3x3>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutGrid$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/layout-grid.js [app-ssr] (ecmascript) <export default as LayoutGrid>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$dollar$2d$sign$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleDollarSign$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-dollar-sign.js [app-ssr] (ecmascript) <export default as CircleDollarSign>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/dollar-sign.js [app-ssr] (ecmascript) <export default as DollarSign>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$percent$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Percent$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/percent.js [app-ssr] (ecmascript) <export default as Percent>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/tag.js [app-ssr] (ecmascript) <export default as Tag>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tags$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tags$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/tags.js [app-ssr] (ecmascript) <export default as Tags>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gift$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gift$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/gift.js [app-ssr] (ecmascript) <export default as Gift>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sparkle.js [app-ssr] (ecmascript) <export default as Sparkle>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ticket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Ticket$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/ticket.js [app-ssr] (ecmascript) <export default as Ticket>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ticket$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TicketCheck$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/ticket-check.js [app-ssr] (ecmascript) <export default as TicketCheck>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/party-popper.js [app-ssr] (ecmascript) <export default as PartyPopper>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cup$2d$soda$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CupSoda$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cup-soda.js [app-ssr] (ecmascript) <export default as CupSoda>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/list.js [app-ssr] (ecmascript) <export default as List>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$2x2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid2x2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/grid-2x2.js [app-ssr] (ecmascript) <export default as Grid2x2>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sunrise$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sunrise$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sunrise.js [app-ssr] (ecmascript) <export default as Sunrise>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sunset$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sunset$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sunset.js [app-ssr] (ecmascript) <export default as Sunset>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2d$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MoonStar$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/moon-star.js [app-ssr] (ecmascript) <export default as MoonStar>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2d$rain$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CloudRain$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cloud-rain.js [app-ssr] (ecmascript) <export default as CloudRain>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2d$snow$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CloudSnow$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cloud-snow.js [app-ssr] (ecmascript) <export default as CloudSnow>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$waves$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Waves$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/waves.js [app-ssr] (ecmascript) <export default as Waves>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mountain$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Mountain$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/mountain.js [app-ssr] (ecmascript) <export default as Mountain>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trees$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trees$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trees.js [app-ssr] (ecmascript) <export default as Trees>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2d$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CakeSlice$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/cake-slice.js [app-ssr] (ecmascript) <export default as CakeSlice>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2d$kindling$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FlameKindling$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flame-kindling.js [app-ssr] (ecmascript) <export default as FlameKindling>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-ellipsis.js [app-ssr] (ecmascript) <export default as CircleEllipsis>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$disc$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Disc$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/disc.js [app-ssr] (ecmascript) <export default as Disc>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bean$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bean$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/bean.js [app-ssr] (ecmascript) <export default as Bean>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-ssr] (ecmascript) <export default as Package>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package-2.js [app-ssr] (ecmascript) <export default as Package2>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Triangle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/triangle.js [app-ssr] (ecmascript) <export default as Triangle>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/square.js [app-ssr] (ecmascript) <export default as Square>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle.js [app-ssr] (ecmascript) <export default as Circle>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$octagon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Octagon$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/octagon.js [app-ssr] (ecmascript) <export default as Octagon>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleOff$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-off.js [app-ssr] (ecmascript) <export default as CircleOff>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/grip.js [app-ssr] (ecmascript) <export default as Grip>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/flower-2.js [app-ssr] (ecmascript) <export default as Flower2>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplets$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplets$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/droplets.js [app-ssr] (ecmascript) <export default as Droplets>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Slice$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/slice.js [app-ssr] (ecmascript) <export default as Slice>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$donut$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Donut$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/donut.js [app-ssr] (ecmascript) <export default as Donut>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$code$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileCode$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file-code.js [app-ssr] (ecmascript) <export default as FileCode>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/heart.js [app-ssr] (ecmascript) <export default as Heart>");
 ;
 const menuIconLibrary = [
-    // Comida Japonesa e Asiática - Pratos Principais
+    // Ícones principais para categorias japonesas (10 ícones)
     {
         name: 'Sushi',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
         category: 'japanese',
         keywords: [
             'sushi',
-            'peixe',
-            'japonês',
-            'niguiri'
-        ]
-    },
-    {
-        name: 'Sashimi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
-        category: 'japanese',
-        keywords: [
             'sashimi',
             'peixe',
-            'cru',
-            'fresco'
-        ]
-    },
-    {
-        name: 'Temaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Triangle$3e$__["Triangle"],
-        category: 'japanese',
-        keywords: [
-            'temaki',
-            'cone',
-            'sushi',
-            'hand roll'
-        ]
-    },
-    {
-        name: 'Uramaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
-        category: 'japanese',
-        keywords: [
-            'uramaki',
-            'california',
-            'roll',
-            'invertido'
-        ]
-    },
-    {
-        name: 'Hot Roll',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
-        category: 'japanese',
-        keywords: [
-            'hot',
-            'quente',
-            'frito',
-            'empanado'
-        ]
-    },
-    {
-        name: 'Maki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
-        category: 'japanese',
-        keywords: [
-            'maki',
-            'roll',
-            'alga',
-            'nori'
-        ]
-    },
-    {
-        name: 'Hossomaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleOff$3e$__["CircleOff"],
-        category: 'japanese',
-        keywords: [
-            'hossomaki',
-            'fino',
-            'simples',
-            'pepino'
-        ]
-    },
-    {
-        name: 'Futomaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$disc$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Disc$3e$__["Disc"],
-        category: 'japanese',
-        keywords: [
-            'futomaki',
-            'grosso',
-            'grande',
-            'colorido'
-        ]
-    },
-    {
-        name: 'Gunkan',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$octagon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Octagon$3e$__["Octagon"],
-        category: 'japanese',
-        keywords: [
-            'gunkan',
-            'navio',
-            'ovas',
-            'uni'
-        ]
-    },
-    {
-        name: 'Chirashi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__["Salad"],
-        category: 'japanese',
-        keywords: [
-            'chirashi',
-            'tigela',
-            'misto',
-            'bowl'
+            'japonês',
+            'nigiri',
+            'maki'
         ]
     },
     {
@@ -2159,1236 +1992,115 @@ const menuIconLibrary = [
         keywords: [
             'ramen',
             'lamen',
-            'sopa',
-            'macarrão'
-        ]
-    },
-    {
-        name: 'Udon',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wheat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wheat$3e$__["Wheat"],
-        category: 'japanese',
-        keywords: [
             'udon',
-            'macarrão',
-            'grosso',
-            'quente'
-        ]
-    },
-    {
-        name: 'Soba',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
-        category: 'japanese',
-        keywords: [
             'soba',
             'macarrão',
-            'frio',
-            'sarraceno'
+            'sopa'
+        ]
+    },
+    {
+        name: 'Temaki',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__["Pizza"],
+        category: 'japanese',
+        keywords: [
+            'temaki',
+            'cone',
+            'hand roll',
+            'japonês'
+        ]
+    },
+    {
+        name: 'Combinado',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__["UtensilsCrossed"],
+        category: 'japanese',
+        keywords: [
+            'combinado',
+            'combo',
+            'misto',
+            'variado',
+            'prato'
         ]
     },
     {
         name: 'Yakisoba',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3x3$3e$__["Grid3x3"],
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wheat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wheat$3e$__["Wheat"],
         category: 'japanese',
         keywords: [
             'yakisoba',
+            'yakimeshi',
             'frito',
-            'macarrão',
-            'legumes'
+            'teppan'
         ]
     },
     {
-        name: 'Tempura',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__["CircleEllipsis"],
+        name: 'Frutos do Mar',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
         category: 'japanese',
         keywords: [
-            'tempura',
-            'frito',
             'camarão',
-            'vegetal'
+            'polvo',
+            'lula',
+            'ostra',
+            'marisco'
         ]
     },
     {
-        name: 'Gyoza',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__["Pizza"],
-        category: 'japanese',
-        keywords: [
-            'gyoza',
-            'dumpling',
-            'pastel',
-            'vapor'
-        ]
-    },
-    {
-        name: 'Tonkatsu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ham$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Ham$3e$__["Ham"],
-        category: 'japanese',
-        keywords: [
-            'tonkatsu',
-            'porco',
-            'empanado',
-            'panko'
-        ]
-    },
-    {
-        name: 'Karaage',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$drumstick$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Drumstick$3e$__["Drumstick"],
-        category: 'japanese',
-        keywords: [
-            'karaage',
-            'frango',
-            'frito',
-            'crocante'
-        ]
-    },
-    {
-        name: 'Teriyaki',
+        name: 'Carne',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beef$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beef$3e$__["Beef"],
         category: 'japanese',
         keywords: [
-            'teriyaki',
-            'molho',
-            'grelhado',
-            'doce'
-        ]
-    },
-    {
-        name: 'Yakitori',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Slice$3e$__["Slice"],
-        category: 'japanese',
-        keywords: [
-            'yakitori',
-            'espeto',
-            'frango',
-            'grelhado'
-        ]
-    },
-    {
-        name: 'Katsudon',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__["Egg"],
-        category: 'japanese',
-        keywords: [
-            'katsudon',
-            'bowl',
-            'tonkatsu',
-            'ovo'
-        ]
-    },
-    {
-        name: 'Oyakodon',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__["Package2"],
-        category: 'japanese',
-        keywords: [
-            'oyakodon',
-            'frango',
-            'ovo',
-            'arroz'
-        ]
-    },
-    {
-        name: 'Tendon',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
-        category: 'japanese',
-        keywords: [
-            'tendon',
-            'tempura',
-            'arroz',
-            'bowl'
-        ]
-    },
-    {
-        name: 'Onigiri',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$triangle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Triangle$3e$__["Triangle"],
-        category: 'japanese',
-        keywords: [
-            'onigiri',
-            'bolinho',
-            'arroz',
-            'alga'
-        ]
-    },
-    {
-        name: 'Takoyaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__["CircleEllipsis"],
-        category: 'japanese',
-        keywords: [
-            'takoyaki',
-            'polvo',
-            'bolinho',
-            'molho'
-        ]
-    },
-    {
-        name: 'Okonomiyaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$disc$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Disc$3e$__["Disc"],
-        category: 'japanese',
-        keywords: [
-            'okonomiyaki',
-            'panqueca',
-            'japonesa',
-            'osaka'
-        ]
-    },
-    {
-        name: 'Donburi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
-        category: 'japanese',
-        keywords: [
-            'donburi',
-            'bowl',
-            'arroz',
-            'tigela'
-        ]
-    },
-    {
-        name: 'Bento',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__["Package2"],
-        category: 'japanese',
-        keywords: [
-            'bento',
-            'marmita',
-            'caixa',
-            'completo'
-        ]
-    },
-    {
-        name: 'Sukiyaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cooking$2d$pot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CookingPot$3e$__["CookingPot"],
-        category: 'japanese',
-        keywords: [
-            'sukiyaki',
-            'panela',
             'carne',
-            'inverno'
-        ]
-    },
-    {
-        name: 'Shabu Shabu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$waves$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Waves$3e$__["Waves"],
-        category: 'japanese',
-        keywords: [
-            'shabu',
-            'fondue',
-            'japonês',
-            'caldo'
-        ]
-    },
-    {
-        name: 'Teppanyaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3x3$3e$__["Grid3x3"],
-        category: 'japanese',
-        keywords: [
+            'bife',
             'teppan',
-            'chapa',
             'grelhado',
-            'show'
-        ]
-    },
-    {
-        name: 'Robatayaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
-        category: 'japanese',
-        keywords: [
-            'robata',
-            'carvão',
-            'grelha',
-            'tradicional'
-        ]
-    },
-    {
-        name: 'Kushiyaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Slice$3e$__["Slice"],
-        category: 'japanese',
-        keywords: [
-            'kushi',
-            'espeto',
-            'yakitori',
-            'grelhado'
-        ]
-    },
-    {
-        name: 'Oden',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cooking$2d$pot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CookingPot$3e$__["CookingPot"],
-        category: 'japanese',
-        keywords: [
-            'oden',
-            'cozido',
-            'inverno',
-            'konbini'
-        ]
-    },
-    {
-        name: 'Chawanmushi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__["Egg"],
-        category: 'japanese',
-        keywords: [
-            'chawanmushi',
-            'ovo',
-            'vapor',
-            'custard'
-        ]
-    },
-    {
-        name: 'Nikuman',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
-        category: 'japanese',
-        keywords: [
-            'nikuman',
-            'pão',
-            'vapor',
-            'recheado'
-        ]
-    },
-    {
-        name: 'Hashi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__["UtensilsCrossed"],
-        category: 'japanese',
-        keywords: [
-            'hashi',
-            'pauzinhos',
-            'chopsticks',
-            'talher'
-        ]
-    },
-    // Peixes e Frutos do Mar
-    {
-        name: 'Atum',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'atum',
-            'maguro',
-            'tuna',
-            'vermelho'
-        ]
-    },
-    {
-        name: 'Salmão',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'salmão',
-            'sake',
-            'salmon',
-            'laranja'
-        ]
-    },
-    {
-        name: 'Hamachi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'hamachi',
-            'yellowtail',
-            'olhete',
-            'peixe'
-        ]
-    },
-    {
-        name: 'Tai',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'tai',
-            'pargo',
-            'snapper',
-            'branco'
-        ]
-    },
-    {
-        name: 'Unagi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'unagi',
-            'enguia',
-            'eel',
-            'grelhado'
-        ]
-    },
-    {
-        name: 'Anago',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'anago',
-            'congro',
-            'enguia',
-            'mar'
-        ]
-    },
-    {
-        name: 'Kohada',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'kohada',
-            'arenque',
-            'sardinha',
-            'prata'
-        ]
-    },
-    {
-        name: 'Saba',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'saba',
-            'cavalinha',
-            'mackerel',
-            'azul'
-        ]
-    },
-    {
-        name: 'Kani',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
-        category: 'japanese',
-        keywords: [
-            'kani',
-            'caranguejo',
-            'crab',
-            'marisco'
-        ]
-    },
-    {
-        name: 'Ebi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
-        category: 'japanese',
-        keywords: [
-            'ebi',
-            'camarão',
-            'shrimp',
-            'tempura'
-        ]
-    },
-    {
-        name: 'Tako',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$octagon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Octagon$3e$__["Octagon"],
-        category: 'japanese',
-        keywords: [
-            'tako',
-            'polvo',
-            'octopus',
-            'tentáculo'
-        ]
-    },
-    {
-        name: 'Ika',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
-        category: 'japanese',
-        keywords: [
-            'ika',
-            'lula',
-            'squid',
-            'calamar'
-        ]
-    },
-    {
-        name: 'Hotate',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
-        category: 'japanese',
-        keywords: [
-            'hotate',
-            'vieira',
-            'scallop',
-            'marisco'
-        ]
-    },
-    {
-        name: 'Ikura',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$off$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleOff$3e$__["CircleOff"],
-        category: 'japanese',
-        keywords: [
-            'ikura',
-            'ovas',
-            'salmão',
-            'caviar'
-        ]
-    },
-    {
-        name: 'Uni',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"],
-        category: 'japanese',
-        keywords: [
-            'uni',
-            'ouriço',
-            'sea urchin',
-            'delicacy'
-        ]
-    },
-    {
-        name: 'Tobiko',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
-        category: 'japanese',
-        keywords: [
-            'tobiko',
-            'ovas',
-            'peixe voador',
-            'colorido'
-        ]
-    },
-    {
-        name: 'Masago',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
-        category: 'japanese',
-        keywords: [
-            'masago',
-            'ovas',
-            'capelim',
-            'laranja'
-        ]
-    },
-    {
-        name: 'Fugu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'fugu',
-            'baiacu',
-            'pufferfish',
-            'especial'
-        ]
-    },
-    // Vegetais e Acompanhamentos
-    {
-        name: 'Wasabi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"],
-        category: 'japanese',
-        keywords: [
-            'wasabi',
-            'raiz',
-            'forte',
-            'picante'
-        ]
-    },
-    {
-        name: 'Gari',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$carrot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Carrot$3e$__["Carrot"],
-        category: 'japanese',
-        keywords: [
-            'gengibre',
-            'gari',
-            'conserva',
-            'rosa'
-        ]
-    },
-    {
-        name: 'Nori',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$code$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FileCode$3e$__["FileCode"],
-        category: 'japanese',
-        keywords: [
-            'nori',
-            'alga',
-            'folha',
-            'seaweed'
-        ]
-    },
-    {
-        name: 'Wakame',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-        category: 'japanese',
-        keywords: [
-            'wakame',
-            'alga',
-            'salada',
-            'verde'
-        ]
-    },
-    {
-        name: 'Konbu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$waves$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Waves$3e$__["Waves"],
-        category: 'japanese',
-        keywords: [
-            'konbu',
-            'kelp',
-            'dashi',
-            'alga'
-        ]
-    },
-    {
-        name: 'Hijiki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
-        category: 'japanese',
-        keywords: [
-            'hijiki',
-            'alga',
-            'preta',
-            'mineral'
-        ]
-    },
-    {
-        name: 'Daikon',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$carrot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Carrot$3e$__["Carrot"],
-        category: 'japanese',
-        keywords: [
-            'daikon',
-            'nabo',
-            'rabanete',
-            'branco'
-        ]
-    },
-    {
-        name: 'Shiitake',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
-        category: 'japanese',
-        keywords: [
-            'shiitake',
-            'cogumelo',
-            'mushroom',
-            'umami'
-        ]
-    },
-    {
-        name: 'Enoki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trees$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trees$3e$__["Trees"],
-        category: 'japanese',
-        keywords: [
-            'enoki',
-            'cogumelo',
-            'fino',
-            'branco'
-        ]
-    },
-    {
-        name: 'Shimeji',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
-        category: 'japanese',
-        keywords: [
-            'shimeji',
-            'cogumelo',
-            'cluster',
-            'marrom'
-        ]
-    },
-    {
-        name: 'Edamame',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$bean$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Bean$3e$__["Bean"],
-        category: 'japanese',
-        keywords: [
-            'edamame',
-            'soja',
-            'vagem',
-            'aperitivo'
-        ]
-    },
-    {
-        name: 'Tofu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
-        category: 'japanese',
-        keywords: [
-            'tofu',
-            'queijo',
-            'soja',
-            'vegano'
-        ]
-    },
-    {
-        name: 'Abura-age',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__["Package2"],
-        category: 'japanese',
-        keywords: [
-            'abura',
-            'tofu',
-            'frito',
-            'inari'
-        ]
-    },
-    {
-        name: 'Gobo',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
-        category: 'japanese',
-        keywords: [
-            'gobo',
-            'bardana',
-            'raiz',
-            'fibra'
-        ]
-    },
-    {
-        name: 'Renkon',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower2$3e$__["Flower2"],
-        category: 'japanese',
-        keywords: [
-            'renkon',
-            'lótus',
-            'raiz',
-            'crocante'
-        ]
-    },
-    {
-        name: 'Kabocha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
-        category: 'japanese',
-        keywords: [
-            'kabocha',
-            'abóbora',
-            'japonesa',
-            'doce'
-        ]
-    },
-    {
-        name: 'Natto',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grip$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grip$3e$__["Grip"],
-        category: 'japanese',
-        keywords: [
-            'natto',
-            'soja',
-            'fermentado',
-            'pegajoso'
-        ]
-    },
-    {
-        name: 'Takuan',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
-        category: 'japanese',
-        keywords: [
-            'takuan',
-            'daikon',
-            'conserva',
-            'amarelo'
-        ]
-    },
-    {
-        name: 'Umeboshi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cherry$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cherry$3e$__["Cherry"],
-        category: 'japanese',
-        keywords: [
-            'umeboshi',
-            'ameixa',
-            'conserva',
-            'azedo'
-        ]
-    },
-    {
-        name: 'Myoga',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower$3e$__["Flower"],
-        category: 'japanese',
-        keywords: [
-            'myoga',
-            'gengibre',
-            'botão',
-            'aromático'
-        ]
-    },
-    {
-        name: 'Shiso',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-        category: 'japanese',
-        keywords: [
-            'shiso',
-            'perilla',
-            'folha',
-            'aromático'
-        ]
-    },
-    {
-        name: 'Mitsuba',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-        category: 'japanese',
-        keywords: [
-            'mitsuba',
-            'salsa',
-            'japonesa',
-            'erva'
-        ]
-    },
-    // Molhos e Temperos
-    {
-        name: 'Shoyu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplet$3e$__["Droplet"],
-        category: 'japanese',
-        keywords: [
-            'shoyu',
-            'soja',
-            'molho',
-            'soy sauce'
-        ]
-    },
-    {
-        name: 'Miso',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
-        category: 'japanese',
-        keywords: [
-            'miso',
-            'pasta',
-            'soja',
-            'fermentado'
-        ]
-    },
-    {
-        name: 'Mirin',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
-        category: 'japanese',
-        keywords: [
-            'mirin',
-            'vinho',
-            'arroz',
-            'doce'
-        ]
-    },
-    {
-        name: 'Ponzu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplets$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplets$3e$__["Droplets"],
-        category: 'japanese',
-        keywords: [
-            'ponzu',
-            'cítrico',
-            'shoyu',
-            'molho'
-        ]
-    },
-    {
-        name: 'Tare',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplet$3e$__["Droplet"],
-        category: 'japanese',
-        keywords: [
-            'tare',
-            'molho',
-            'base',
             'teriyaki'
         ]
     },
     {
-        name: 'Dashi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__["Soup"],
+        name: 'Tempura',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__["Egg"],
         category: 'japanese',
         keywords: [
-            'dashi',
-            'caldo',
-            'base',
-            'umami'
+            'tempura',
+            'frito',
+            'empanado',
+            'hot',
+            'karaage'
         ]
     },
     {
-        name: 'Mentsuyu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplets$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplets$3e$__["Droplets"],
-        category: 'japanese',
-        keywords: [
-            'mentsuyu',
-            'molho',
-            'macarrão',
-            'base'
-        ]
-    },
-    {
-        name: 'Karashi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
-        category: 'japanese',
-        keywords: [
-            'karashi',
-            'mostarda',
-            'japonesa',
-            'picante'
-        ]
-    },
-    {
-        name: 'Rayu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
-        category: 'japanese',
-        keywords: [
-            'rayu',
-            'óleo',
-            'pimenta',
-            'chili'
-        ]
-    },
-    {
-        name: 'Shichimi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
-        category: 'japanese',
-        keywords: [
-            'shichimi',
-            'togarashi',
-            'pimenta',
-            'sete'
-        ]
-    },
-    {
-        name: 'Furikake',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"],
-        category: 'japanese',
-        keywords: [
-            'furikake',
-            'tempero',
-            'arroz',
-            'topping'
-        ]
-    },
-    {
-        name: 'Yuzu Kosho',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"],
-        category: 'japanese',
-        keywords: [
-            'yuzu',
-            'kosho',
-            'pimenta',
-            'cítrico'
-        ]
-    },
-    {
-        name: 'Sesame',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Circle$3e$__["Circle"],
-        category: 'japanese',
-        keywords: [
-            'gergelim',
-            'sesame',
-            'semente',
-            'goma'
-        ]
-    },
-    // Doces e Sobremesas
-    {
-        name: 'Mochi',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cookie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cookie$3e$__["Cookie"],
-        category: 'japanese',
-        keywords: [
-            'mochi',
-            'doce',
-            'arroz',
-            'glutinoso'
-        ]
-    },
-    {
-        name: 'Dorayaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sandwich$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sandwich$3e$__["Sandwich"],
-        category: 'japanese',
-        keywords: [
-            'dorayaki',
-            'panqueca',
-            'anko',
-            'doce'
-        ]
-    },
-    {
-        name: 'Taiyaki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-        category: 'japanese',
-        keywords: [
-            'taiyaki',
-            'peixe',
-            'doce',
-            'waffle'
-        ]
-    },
-    {
-        name: 'Dango',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$ellipsis$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleEllipsis$3e$__["CircleEllipsis"],
-        category: 'japanese',
-        keywords: [
-            'dango',
-            'espeto',
-            'doce',
-            'mochi'
-        ]
-    },
-    {
-        name: 'Daifuku',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cookie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cookie$3e$__["Cookie"],
-        category: 'japanese',
-        keywords: [
-            'daifuku',
-            'mochi',
-            'recheado',
-            'doce'
-        ]
-    },
-    {
-        name: 'Yokan',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$square$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Square$3e$__["Square"],
-        category: 'japanese',
-        keywords: [
-            'yokan',
-            'gelatina',
-            'feijão',
-            'doce'
-        ]
-    },
-    {
-        name: 'Anmitsu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__["Salad"],
-        category: 'japanese',
-        keywords: [
-            'anmitsu',
-            'sobremesa',
-            'frutas',
-            'agar'
-        ]
-    },
-    {
-        name: 'Kakigori',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__["IceCream"],
-        category: 'japanese',
-        keywords: [
-            'kakigori',
-            'raspadinha',
-            'gelo',
-            'verão'
-        ]
-    },
-    {
-        name: 'Matcha Ice',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__["IceCream"],
-        category: 'japanese',
-        keywords: [
-            'matcha',
-            'sorvete',
-            'verde',
-            'chá'
-        ]
-    },
-    {
-        name: 'Anpan',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$donut$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Donut$3e$__["Donut"],
-        category: 'japanese',
-        keywords: [
-            'anpan',
-            'pão',
-            'doce',
-            'feijão'
-        ]
-    },
-    {
-        name: 'Melonpan',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cookie$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cookie$3e$__["Cookie"],
-        category: 'japanese',
-        keywords: [
-            'melonpan',
-            'pão',
-            'doce',
-            'melão'
-        ]
-    },
-    {
-        name: 'Castella',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cake$3e$__["Cake"],
-        category: 'japanese',
-        keywords: [
-            'castella',
-            'bolo',
-            'esponja',
-            'português'
-        ]
-    },
-    {
-        name: 'Monaka',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__["Diamond"],
-        category: 'japanese',
-        keywords: [
-            'monaka',
-            'wafer',
-            'doce',
-            'recheado'
-        ]
-    },
-    // Bebidas
-    {
-        name: 'Sake',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
-        category: 'japanese',
-        keywords: [
-            'sake',
-            'nihonshu',
-            'arroz',
-            'álcool'
-        ]
-    },
-    {
-        name: 'Shochu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
-        category: 'japanese',
-        keywords: [
-            'shochu',
-            'destilado',
-            'batata',
-            'álcool'
-        ]
-    },
-    {
-        name: 'Umeshu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cherry$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cherry$3e$__["Cherry"],
-        category: 'japanese',
-        keywords: [
-            'umeshu',
-            'ameixa',
-            'licor',
-            'doce'
-        ]
-    },
-    {
-        name: 'Chuhai',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cup$2d$soda$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CupSoda$3e$__["CupSoda"],
-        category: 'japanese',
-        keywords: [
-            'chuhai',
-            'coquetel',
-            'lata',
-            'álcool'
-        ]
-    },
-    {
-        name: 'Matcha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-        category: 'japanese',
-        keywords: [
-            'matcha',
-            'chá',
-            'verde',
-            'pó'
-        ]
-    },
-    {
-        name: 'Sencha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-        category: 'japanese',
-        keywords: [
-            'sencha',
-            'chá',
-            'verde',
-            'folha'
-        ]
-    },
-    {
-        name: 'Genmaicha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
-        category: 'japanese',
-        keywords: [
-            'genmaicha',
-            'chá',
-            'arroz',
-            'torrado'
-        ]
-    },
-    {
-        name: 'Hojicha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
-        category: 'japanese',
-        keywords: [
-            'hojicha',
-            'chá',
-            'torrado',
-            'marrom'
-        ]
-    },
-    {
-        name: 'Mugicha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
-        category: 'japanese',
-        keywords: [
-            'mugicha',
-            'chá',
-            'cevada',
-            'gelado'
-        ]
-    },
-    {
-        name: 'Ramune',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$milk$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Milk$3e$__["Milk"],
-        category: 'japanese',
-        keywords: [
-            'ramune',
-            'refrigerante',
-            'bolinha',
-            'verão'
-        ]
-    },
-    {
-        name: 'Calpis',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$glass$2d$water$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GlassWater$3e$__["GlassWater"],
-        category: 'japanese',
-        keywords: [
-            'calpis',
-            'calpico',
-            'lácteo',
-            'doce'
-        ]
-    },
-    {
-        name: 'Amazake',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$milk$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Milk$3e$__["Milk"],
-        category: 'japanese',
-        keywords: [
-            'amazake',
-            'doce',
-            'arroz',
-            'fermentado'
-        ]
-    },
-    // Conceitos e Experiências
-    {
-        name: 'Omakase',
+        name: 'Chef Special',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chef$2d$hat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChefHat$3e$__["ChefHat"],
         category: 'japanese',
         keywords: [
             'omakase',
             'chef',
-            'escolha',
-            'surpresa'
-        ]
-    },
-    {
-        name: 'Kaiseki',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$crown$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Crown$3e$__["Crown"],
-        category: 'japanese',
-        keywords: [
-            'kaiseki',
-            'alta',
-            'gastronomia',
-            'estação'
-        ]
-    },
-    {
-        name: 'Izakaya',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__["Store"],
-        category: 'japanese',
-        keywords: [
-            'izakaya',
-            'bar',
-            'japonês',
-            'petisco'
-        ]
-    },
-    {
-        name: 'Premium',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__["Diamond"],
-        category: 'japanese',
-        keywords: [
-            'premium',
             'especial',
-            'top',
-            'melhor'
+            'exclusivo'
         ]
     },
     {
-        name: 'Festival',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__["PartyPopper"],
+        name: 'Bento',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
         category: 'japanese',
         keywords: [
-            'matsuri',
-            'festival',
-            'celebração',
-            'evento'
+            'bento',
+            'box',
+            'marmita',
+            'combo'
         ]
     },
+    // Bebidas (8 ícones)
     {
-        name: 'Wagyu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$award$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Award$3e$__["Award"],
-        category: 'japanese',
-        keywords: [
-            'wagyu',
-            'carne',
-            'premium',
-            'marmorizada'
-        ]
-    },
-    // Bebidas
-    {
-        name: 'Café',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
+        name: 'Sake',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
         category: 'drinks',
         keywords: [
-            'café',
-            'expresso',
-            'cappuccino',
-            'latte'
+            'sake',
+            'vinho',
+            'japonês',
+            'bebida',
+            'álcool'
         ]
     },
     {
@@ -3397,31 +2109,33 @@ const menuIconLibrary = [
         category: 'drinks',
         keywords: [
             'cerveja',
-            'chopp',
             'beer',
-            'alcool'
+            'chopp',
+            'asahi',
+            'kirin'
         ]
     },
     {
-        name: 'Vinho',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
-        category: 'drinks',
-        keywords: [
-            'vinho',
-            'tinto',
-            'branco',
-            'rosé'
-        ]
-    },
-    {
-        name: 'Martini',
+        name: 'Coquetel',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$martini$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Martini$3e$__["Martini"],
         category: 'drinks',
         keywords: [
-            'martini',
-            'coquetel',
             'drink',
+            'coquetel',
+            'caipirinha',
             'cocktail'
+        ]
+    },
+    {
+        name: 'Refrigerante',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$milk$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Milk$3e$__["Milk"],
+        category: 'drinks',
+        keywords: [
+            'refrigerante',
+            'soda',
+            'coca',
+            'guaraná',
+            'suco'
         ]
     },
     {
@@ -3431,44 +2145,45 @@ const menuIconLibrary = [
         keywords: [
             'água',
             'water',
-            'bebida',
-            'hidratação'
+            'mineral',
+            'com gás'
         ]
     },
     {
-        name: 'Leite',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$milk$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Milk$3e$__["Milk"],
+        name: 'Café',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
         category: 'drinks',
         keywords: [
-            'leite',
-            'milk',
-            'laticínio',
-            'dairy'
+            'café',
+            'chá',
+            'matcha',
+            'verde',
+            'quente'
         ]
     },
     {
-        name: 'Refrigerante',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cup$2d$soda$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CupSoda$3e$__["CupSoda"],
+        name: 'Drink Premium',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__["Diamond"],
         category: 'drinks',
         keywords: [
-            'refrigerante',
-            'soda',
-            'coca',
-            'guaraná'
+            'premium',
+            'especial',
+            'whisky',
+            'importado'
         ]
     },
     {
-        name: 'Gotas',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$droplet$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Droplet$3e$__["Droplet"],
+        name: 'Bebida Gelada',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__["IceCream"],
         category: 'drinks',
         keywords: [
-            'suco',
-            'líquido',
-            'bebida',
-            'gota'
+            'gelado',
+            'frozen',
+            'shake',
+            'smoothie'
         ]
     },
-    // Sobremesas
+    // Sobremesas (5 ícones)
     {
         name: 'Sorvete',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__["IceCream"],
@@ -3476,8 +2191,19 @@ const menuIconLibrary = [
         keywords: [
             'sorvete',
             'gelato',
-            'ice cream',
-            'sobremesa'
+            'açaí',
+            'frozen'
+        ]
+    },
+    {
+        name: 'Doce',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$candy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Candy$3e$__["Candy"],
+        category: 'desserts',
+        keywords: [
+            'doce',
+            'mochi',
+            'dorayaki',
+            'japonês'
         ]
     },
     {
@@ -3486,20 +2212,9 @@ const menuIconLibrary = [
         category: 'desserts',
         keywords: [
             'bolo',
-            'cake',
-            'aniversário',
-            'torta'
-        ]
-    },
-    {
-        name: 'Fatia de Bolo',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2d$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CakeSlice$3e$__["CakeSlice"],
-        category: 'desserts',
-        keywords: [
-            'fatia',
-            'pedaço',
-            'bolo',
-            'torta'
+            'torta',
+            'cheesecake',
+            'sobremesa'
         ]
     },
     {
@@ -3509,75 +2224,131 @@ const menuIconLibrary = [
         keywords: [
             'biscoito',
             'cookie',
-            'bolacha',
-            'doce'
+            'petit',
+            'gateau'
         ]
     },
     {
-        name: 'Doce',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$candy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Candy$3e$__["Candy"],
-        category: 'desserts',
-        keywords: [
-            'doce',
-            'bala',
-            'candy',
-            'açúcar'
-        ]
-    },
-    {
-        name: 'Cereja',
+        name: 'Fruta',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cherry$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cherry$3e$__["Cherry"],
         category: 'desserts',
         keywords: [
-            'cereja',
-            'cherry',
             'fruta',
-            'sobremesa'
+            'salada',
+            'frutas',
+            'natural'
         ]
     },
+    // Especiais e Promoções (8 ícones)
     {
-        name: 'Croissant',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$croissant$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Croissant$3e$__["Croissant"],
-        category: 'desserts',
+        name: 'Premium',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$crown$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Crown$3e$__["Crown"],
+        category: 'special',
         keywords: [
-            'croissant',
-            'pão',
-            'francês',
-            'padaria'
+            'premium',
+            'especial',
+            'vip',
+            'exclusivo'
         ]
     },
     {
-        name: 'Pipoca',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$popcorn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Popcorn$3e$__["Popcorn"],
-        category: 'desserts',
+        name: 'Rodízio',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"],
+        category: 'special',
         keywords: [
-            'pipoca',
-            'popcorn',
-            'cinema',
-            'snack'
+            'rodízio',
+            'festival',
+            'all you can eat',
+            'livre'
         ]
     },
-    // Pratos Principais
     {
-        name: 'Talheres',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Utensils$3e$__["Utensils"],
+        name: 'Promoção',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gift$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gift$3e$__["Gift"],
+        category: 'special',
+        keywords: [
+            'promoção',
+            'desconto',
+            'oferta',
+            'combo'
+        ]
+    },
+    {
+        name: 'Picante',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
+        category: 'special',
+        keywords: [
+            'picante',
+            'hot',
+            'spicy',
+            'apimentado'
+        ]
+    },
+    {
+        name: 'Favorito',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"],
+        category: 'special',
+        keywords: [
+            'favorito',
+            'popular',
+            'mais pedido',
+            'top'
+        ]
+    },
+    {
+        name: 'Novidade',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"],
+        category: 'special',
+        keywords: [
+            'novo',
+            'novidade',
+            'lançamento',
+            'new'
+        ]
+    },
+    {
+        name: 'Festa',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__["PartyPopper"],
+        category: 'special',
+        keywords: [
+            'festa',
+            'evento',
+            'celebração',
+            'aniversário'
+        ]
+    },
+    {
+        name: 'Campeão',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"],
+        category: 'special',
+        keywords: [
+            'melhor',
+            'campeão',
+            'top',
+            'premiado'
+        ]
+    },
+    // Geral e Serviços (9 ícones)
+    {
+        name: 'Vegetariano',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
         category: 'general',
         keywords: [
-            'talheres',
-            'restaurante',
-            'comida',
-            'refeição'
+            'vegetariano',
+            'vegano',
+            'salada',
+            'verde'
         ]
     },
     {
-        name: 'Pizza',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__["Pizza"],
+        name: 'Entrada',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$citrus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Citrus$3e$__["Citrus"],
         category: 'general',
         keywords: [
-            'pizza',
-            'italiana',
-            'fast food',
-            'delivery'
+            'entrada',
+            'aperitivo',
+            'petisco',
+            'porção'
         ]
     },
     {
@@ -3587,862 +2358,94 @@ const menuIconLibrary = [
         keywords: [
             'sanduíche',
             'lanche',
-            'hambúrguer',
-            'sandwich'
+            'burger',
+            'wrap'
         ]
     },
     {
-        name: 'Carne',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beef$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beef$3e$__["Beef"],
+        name: 'Talheres',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Utensils$3e$__["Utensils"],
         category: 'general',
         keywords: [
-            'carne',
-            'bife',
-            'churrasco',
-            'beef'
+            'prato',
+            'refeição',
+            'comida',
+            'principal'
         ]
     },
     {
-        name: 'Frango',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$drumstick$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Drumstick$3e$__["Drumstick"],
-        category: 'general',
-        keywords: [
-            'frango',
-            'galinha',
-            'aves',
-            'chicken'
-        ]
-    },
-    {
-        name: 'Presunto',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ham$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Ham$3e$__["Ham"],
-        category: 'general',
-        keywords: [
-            'presunto',
-            'ham',
-            'frios',
-            'carne'
-        ]
-    },
-    {
-        name: 'Salada',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__["Salad"],
-        category: 'general',
-        keywords: [
-            'salada',
-            'vegetal',
-            'verde',
-            'saudável'
-        ]
-    },
-    {
-        name: 'Ovo',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$egg$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Egg$3e$__["Egg"],
-        category: 'general',
-        keywords: [
-            'ovo',
-            'egg',
-            'café da manhã',
-            'proteína'
-        ]
-    },
-    // Frutas e Vegetais
-    {
-        name: 'Maçã',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$apple$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Apple$3e$__["Apple"],
-        category: 'fruits',
-        keywords: [
-            'maçã',
-            'apple',
-            'fruta',
-            'saudável'
-        ]
-    },
-    {
-        name: 'Banana',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$banana$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Banana$3e$__["Banana"],
-        category: 'fruits',
-        keywords: [
-            'banana',
-            'fruta',
-            'potássio',
-            'tropical'
-        ]
-    },
-    {
-        name: 'Uva',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grape$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grape$3e$__["Grape"],
-        category: 'fruits',
-        keywords: [
-            'uva',
-            'grape',
-            'vinho',
-            'fruta'
-        ]
-    },
-    {
-        name: 'Cítrico',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$citrus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Citrus$3e$__["Citrus"],
-        category: 'fruits',
-        keywords: [
-            'laranja',
-            'limão',
-            'citrus',
-            'vitamina c'
-        ]
-    },
-    {
-        name: 'Cenoura',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$carrot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Carrot$3e$__["Carrot"],
-        category: 'fruits',
-        keywords: [
-            'cenoura',
-            'carrot',
-            'vegetal',
-            'legume'
-        ]
-    },
-    {
-        name: 'Folha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-        category: 'fruits',
-        keywords: [
-            'folha',
-            'vegetal',
-            'salada',
-            'verde'
-        ]
-    },
-    {
-        name: 'Trigo',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wheat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wheat$3e$__["Wheat"],
-        category: 'fruits',
-        keywords: [
-            'trigo',
-            'wheat',
-            'grão',
-            'cereal'
-        ]
-    },
-    // Especiais e Premium
-    {
-        name: 'Estrela',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"],
-        category: 'special',
-        keywords: [
-            'estrela',
-            'especial',
-            'premium',
-            'destaque'
-        ]
-    },
-    {
-        name: 'Coroa',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$crown$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Crown$3e$__["Crown"],
-        category: 'special',
-        keywords: [
-            'coroa',
-            'premium',
-            'vip',
-            'rei'
-        ]
-    },
-    {
-        name: 'Prêmio',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$award$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Award$3e$__["Award"],
-        category: 'special',
-        keywords: [
-            'prêmio',
-            'medalha',
-            'campeão',
-            'melhor'
-        ]
-    },
-    {
-        name: 'Troféu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trophy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trophy$3e$__["Trophy"],
-        category: 'special',
-        keywords: [
-            'troféu',
-            'vitória',
-            'competição',
-            'primeiro'
-        ]
-    },
-    {
-        name: 'Diamante',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__["Diamond"],
-        category: 'special',
-        keywords: [
-            'diamante',
-            'luxo',
-            'premium',
-            'exclusivo'
-        ]
-    },
-    {
-        name: 'Gema',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gem$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gem$3e$__["Gem"],
-        category: 'special',
-        keywords: [
-            'gema',
-            'joia',
-            'precioso',
-            'valioso'
-        ]
-    },
-    {
-        name: 'Brilho',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"],
-        category: 'special',
-        keywords: [
-            'brilho',
-            'especial',
-            'novo',
-            'destaque'
-        ]
-    },
-    {
-        name: 'Raio',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"],
-        category: 'special',
-        keywords: [
-            'raio',
-            'rápido',
-            'flash',
-            'promoção'
-        ]
-    },
-    {
-        name: 'Chama',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
-        category: 'special',
-        keywords: [
-            'fogo',
-            'quente',
-            'picante',
-            'hot'
-        ]
-    },
-    {
-        name: 'Fogo',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2d$kindling$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__FlameKindling$3e$__["FlameKindling"],
-        category: 'special',
-        keywords: [
-            'fogo',
-            'churrasco',
-            'grill',
-            'quente'
-        ]
-    },
-    {
-        name: 'Presente',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gift$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gift$3e$__["Gift"],
-        category: 'special',
-        keywords: [
-            'presente',
-            'gift',
-            'brinde',
-            'oferta'
-        ]
-    },
-    {
-        name: 'Festa',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__["PartyPopper"],
-        category: 'special',
-        keywords: [
-            'festa',
-            'celebração',
-            'party',
-            'comemoração'
-        ]
-    },
-    {
-        name: 'Ticket',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ticket$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Ticket$3e$__["Ticket"],
-        category: 'special',
-        keywords: [
-            'ticket',
-            'cupom',
-            'voucher',
-            'desconto'
-        ]
-    },
-    {
-        name: 'Coração',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"],
-        category: 'special',
-        keywords: [
-            'amor',
-            'favorito',
-            'like',
-            'preferido'
-        ]
-    },
-    // Cozinha e Preparo
-    {
-        name: 'Chef',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chef$2d$hat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChefHat$3e$__["ChefHat"],
-        category: 'cooking',
-        keywords: [
-            'chef',
-            'cozinheiro',
-            'cozinha',
-            'gastronomia'
-        ]
-    },
-    {
-        name: 'Panela',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cooking$2d$pot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CookingPot$3e$__["CookingPot"],
-        category: 'cooking',
-        keywords: [
-            'panela',
-            'cozinha',
-            'preparo',
-            'cooking'
-        ]
-    },
-    {
-        name: 'Geladeira',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$refrigerator$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Refrigerator$3e$__["Refrigerator"],
-        category: 'cooking',
-        keywords: [
-            'geladeira',
-            'frio',
-            'conservar',
-            'refrigerar'
-        ]
-    },
-    {
-        name: 'Microondas',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$microwave$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Microwave$3e$__["Microwave"],
-        category: 'cooking',
-        keywords: [
-            'microondas',
-            'aquecer',
-            'esquentar',
-            'rápido'
-        ]
-    },
-    {
-        name: 'Termômetro',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$thermometer$2d$sun$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ThermometerSun$3e$__["ThermometerSun"],
-        category: 'cooking',
-        keywords: [
-            'temperatura',
-            'quente',
-            'frio',
-            'medir'
-        ]
-    },
-    // Serviço e Entrega
-    {
-        name: 'Bandeja',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$hand$2d$platter$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__HandPlatter$3e$__["HandPlatter"],
-        category: 'service',
-        keywords: [
-            'bandeja',
-            'servir',
-            'garçom',
-            'serviço'
-        ]
-    },
-    {
-        name: 'Sineta',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$concierge$2d$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ConciergeBell$3e$__["ConciergeBell"],
-        category: 'service',
-        keywords: [
-            'sino',
-            'chamar',
-            'serviço',
-            'hotel'
-        ]
-    },
-    {
-        name: 'Sacola',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$bag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingBag$3e$__["ShoppingBag"],
-        category: 'service',
-        keywords: [
-            'sacola',
-            'compra',
-            'delivery',
-            'entrega'
-        ]
-    },
-    {
-        name: 'Carrinho',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCart$3e$__["ShoppingCart"],
-        category: 'service',
-        keywords: [
-            'carrinho',
-            'compras',
-            'pedido',
-            'cart'
-        ]
-    },
-    {
-        name: 'Loja',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__["Store"],
-        category: 'service',
-        keywords: [
-            'loja',
-            'restaurante',
-            'estabelecimento',
-            'local'
-        ]
-    },
-    {
-        name: 'Caminhão',
+        name: 'Delivery',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$truck$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Truck$3e$__["Truck"],
         category: 'service',
         keywords: [
             'entrega',
             'delivery',
-            'transporte',
-            'envio'
+            'moto',
+            'ifood'
         ]
     },
     {
-        name: 'Pacote',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
+        name: 'Mesa',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$store$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Store$3e$__["Store"],
         category: 'service',
         keywords: [
-            'pacote',
+            'mesa',
+            'restaurante',
+            'local',
+            'salão'
+        ]
+    },
+    {
+        name: 'Pedido',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$cart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingCart$3e$__["ShoppingCart"],
+        category: 'service',
+        keywords: [
             'pedido',
+            'carrinho',
+            'compra',
+            'order'
+        ]
+    },
+    {
+        name: 'Embalagem',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package2$3e$__["Package2"],
+        category: 'service',
+        keywords: [
+            'viagem',
             'embalagem',
-            'box'
+            'para levar',
+            'takeaway'
         ]
     },
-    // Tempo e Horário
     {
-        name: 'Relógio',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"],
+        name: 'Serviço',
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$concierge$2d$bell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ConciergeBell$3e$__["ConciergeBell"],
         category: 'service',
         keywords: [
-            'horário',
-            'tempo',
-            'hora',
-            'relógio'
-        ]
-    },
-    {
-        name: 'Timer',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$timer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Timer$3e$__["Timer"],
-        category: 'service',
-        keywords: [
-            'timer',
-            'cronômetro',
-            'tempo',
-            'contagem'
-        ]
-    },
-    {
-        name: 'Alarme',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$alarm$2d$clock$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__AlarmClock$3e$__["AlarmClock"],
-        category: 'service',
-        keywords: [
-            'alarme',
-            'despertar',
-            'aviso',
-            'alerta'
-        ]
-    },
-    {
-        name: 'Calendário',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$calendar$2d$days$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CalendarDays$3e$__["CalendarDays"],
-        category: 'service',
-        keywords: [
-            'calendário',
-            'data',
-            'agenda',
-            'dia'
-        ]
-    },
-    {
-        name: 'Nascer do Sol',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sunrise$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sunrise$3e$__["Sunrise"],
-        category: 'service',
-        keywords: [
-            'manhã',
-            'café',
-            'breakfast',
-            'amanhecer'
-        ]
-    },
-    {
-        name: 'Pôr do Sol',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sunset$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sunset$3e$__["Sunset"],
-        category: 'service',
-        keywords: [
-            'tarde',
-            'jantar',
-            'dinner',
-            'entardecer'
-        ]
-    },
-    {
-        name: 'Lua',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2d$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MoonStar$3e$__["MoonStar"],
-        category: 'service',
-        keywords: [
-            'noite',
-            'night',
-            'jantar',
-            'late'
-        ]
-    },
-    // Natureza e Orgânicos
-    {
-        name: 'Flor',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flower$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flower$3e$__["Flower"],
-        category: 'nature',
-        keywords: [
-            'flor',
-            'natural',
-            'orgânico',
-            'jardim'
-        ]
-    },
-    {
-        name: 'Pinheiro',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
-        category: 'nature',
-        keywords: [
-            'árvore',
-            'natural',
-            'ecológico',
-            'verde'
-        ]
-    },
-    {
-        name: 'Árvores',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trees$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trees$3e$__["Trees"],
-        category: 'nature',
-        keywords: [
-            'floresta',
-            'natural',
-            'eco',
-            'sustentável'
-        ]
-    },
-    {
-        name: 'Montanha',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$mountain$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Mountain$3e$__["Mountain"],
-        category: 'nature',
-        keywords: [
-            'montanha',
-            'natural',
-            'altitude',
-            'paisagem'
-        ]
-    },
-    {
-        name: 'Ondas',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$waves$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Waves$3e$__["Waves"],
-        category: 'nature',
-        keywords: [
-            'mar',
-            'oceano',
-            'praia',
-            'seafood'
-        ]
-    },
-    {
-        name: 'Sol',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sun$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sun$3e$__["Sun"],
-        category: 'nature',
-        keywords: [
-            'sol',
-            'verão',
-            'quente',
-            'tropical'
-        ]
-    },
-    {
-        name: 'Lua',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Moon$3e$__["Moon"],
-        category: 'nature',
-        keywords: [
-            'lua',
-            'noite',
-            'romântico',
-            'especial'
-        ]
-    },
-    {
-        name: 'Nuvem',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cloud$3e$__["Cloud"],
-        category: 'nature',
-        keywords: [
-            'nuvem',
-            'clima',
-            'weather',
-            'ambiente'
-        ]
-    },
-    {
-        name: 'Chuva',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2d$rain$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CloudRain$3e$__["CloudRain"],
-        category: 'nature',
-        keywords: [
-            'chuva',
-            'inverno',
-            'frio',
-            'rain'
-        ]
-    },
-    {
-        name: 'Neve',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cloud$2d$snow$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CloudSnow$3e$__["CloudSnow"],
-        category: 'nature',
-        keywords: [
-            'neve',
-            'inverno',
-            'gelado',
-            'frio'
-        ]
-    },
-    {
-        name: 'Floco de Neve',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$snowflake$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Snowflake$3e$__["Snowflake"],
-        category: 'nature',
-        keywords: [
-            'gelado',
-            'frozen',
-            'frio',
-            'inverno'
-        ]
-    },
-    // Promoções e Ofertas
-    {
-        name: 'Etiqueta',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__["Tag"],
-        category: 'special',
-        keywords: [
-            'preço',
-            'promoção',
-            'desconto',
-            'oferta'
-        ]
-    },
-    {
-        name: 'Etiquetas',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tags$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tags$3e$__["Tags"],
-        category: 'special',
-        keywords: [
-            'preços',
-            'promoções',
-            'ofertas',
-            'descontos'
-        ]
-    },
-    {
-        name: 'Porcentagem',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$percent$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Percent$3e$__["Percent"],
-        category: 'special',
-        keywords: [
-            'desconto',
-            'porcentagem',
-            'promoção',
-            'off'
-        ]
-    },
-    {
-        name: 'Cifrão',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"],
-        category: 'special',
-        keywords: [
-            'preço',
-            'valor',
-            'dinheiro',
-            'pagamento'
-        ]
-    },
-    {
-        name: 'Cifrão Círculo',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$dollar$2d$sign$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CircleDollarSign$3e$__["CircleDollarSign"],
-        category: 'special',
-        keywords: [
-            'preço especial',
-            'valor',
-            'promoção',
-            'oferta'
-        ]
-    },
-    {
-        name: 'Brilho Único',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkle$3e$__["Sparkle"],
-        category: 'special',
-        keywords: [
-            'novo',
-            'novidade',
-            'lançamento',
-            'especial'
-        ]
-    },
-    {
-        name: 'Ticket Check',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ticket$2d$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TicketCheck$3e$__["TicketCheck"],
-        category: 'special',
-        keywords: [
-            'cupom usado',
-            'validado',
-            'confirmado',
-            'check'
-        ]
-    },
-    // Interface e Navegação
-    {
-        name: 'Menu',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"],
-        category: 'general',
-        keywords: [
-            'menu',
-            'cardápio',
-            'lista',
-            'opções'
-        ]
-    },
-    {
-        name: 'Casa',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$house$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Home$3e$__["Home"],
-        category: 'general',
-        keywords: [
-            'home',
-            'início',
-            'casa',
-            'principal'
-        ]
-    },
-    {
-        name: 'Grade 3x3',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3x3$3e$__["Grid3x3"],
-        category: 'general',
-        keywords: [
-            'grade',
-            'grid',
-            'categorias',
-            'layout'
-        ]
-    },
-    {
-        name: 'Grade 2x2',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$2x2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid2x2$3e$__["Grid2x2"],
-        category: 'general',
-        keywords: [
-            'grade',
-            'grid',
-            'layout',
-            'visualização'
-        ]
-    },
-    {
-        name: 'Layout Grid',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$layout$2d$grid$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__LayoutGrid$3e$__["LayoutGrid"],
-        category: 'general',
-        keywords: [
-            'layout',
-            'organização',
-            'grid',
-            'estrutura'
-        ]
-    },
-    {
-        name: 'Lista',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$list$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__List$3e$__["List"],
-        category: 'general',
-        keywords: [
-            'lista',
-            'itens',
-            'menu',
-            'list'
+            'serviço',
+            'atendimento',
+            'garçom',
+            'mesa'
         ]
     }
 ];
-function findIconByKeyword(keyword) {
-    const lowerKeyword = keyword.toLowerCase();
-    return menuIconLibrary.find((icon)=>icon.keywords.some((k)=>k.includes(lowerKeyword)) || icon.name.toLowerCase().includes(lowerKeyword));
-}
 function getIconsByCategory(category) {
     return menuIconLibrary.filter((icon)=>icon.category === category);
 }
-function getIconByName(name) {
-    return menuIconLibrary.find((icon)=>icon.name === name);
-}
 const defaultGroupIcons = {
-    // Rodízio
-    'rodizio': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$crown$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Crown$3e$__["Crown"],
-    'rodizio tradicional': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"],
-    'rodizio premium': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$diamond$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Diamond$3e$__["Diamond"],
-    // À la Carte
-    'a la carte': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Utensils$3e$__["Utensils"],
-    'à la carte': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Utensils$3e$__["Utensils"],
-    // Bebidas
-    'bebidas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
-    'drinks': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
-    'cerveja': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beer$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beer$3e$__["Beer"],
-    'vinho': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
-    'cocktails': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$martini$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Martini$3e$__["Martini"],
-    'sucos': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$glass$2d$water$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__GlassWater$3e$__["GlassWater"],
-    'refrigerantes': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cup$2d$soda$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CupSoda$3e$__["CupSoda"],
-    // Comida Japonesa
-    'sushi': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-    'sashimi': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-    'temaki': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shell$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Shell$3e$__["Shell"],
-    'niguiri': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-    'hot roll': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$flame$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Flame$3e$__["Flame"],
-    'combinados': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__["UtensilsCrossed"],
-    'yakisoba': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__["Soup"],
-    'lámen': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__["Soup"],
-    'ramen': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$soup$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Soup$3e$__["Soup"],
-    // Entradas
-    'entradas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$hand$2d$platter$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__HandPlatter$3e$__["HandPlatter"],
-    'aperitivos': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__["Salad"],
-    'petiscos': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$popcorn$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Popcorn$3e$__["Popcorn"],
-    // Pratos Principais
-    'pratos quentes': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cooking$2d$pot$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CookingPot$3e$__["CookingPot"],
-    'pratos principais': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beef$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beef$3e$__["Beef"],
-    'carnes': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$beef$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Beef$3e$__["Beef"],
-    'aves': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$drumstick$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Drumstick$3e$__["Drumstick"],
-    'peixes': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$fish$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Fish$3e$__["Fish"],
-    'massas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sandwich$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sandwich$3e$__["Sandwich"],
-    'pizzas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__["Pizza"],
-    // Sobremesas
-    'sobremesas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ice$2d$cream$2d$cone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__IceCream$3e$__["IceCream"],
-    'doces': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$candy$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Candy$3e$__["Candy"],
-    'bolos': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Cake$3e$__["Cake"],
-    'tortas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$cake$2d$slice$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CakeSlice$3e$__["CakeSlice"],
-    // Especiais
-    'especiais': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"],
-    'premium': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$crown$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Crown$3e$__["Crown"],
-    'chef': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chef$2d$hat$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ChefHat$3e$__["ChefHat"],
-    'promoções': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"],
-    'ofertas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Tag$3e$__["Tag"],
-    'combos': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gift$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gift$3e$__["Gift"],
-    'festival': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$party$2d$popper$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__PartyPopper$3e$__["PartyPopper"],
-    // Vegetariano/Vegano
-    'vegetariano': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-    'vegano': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$leaf$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Leaf$3e$__["Leaf"],
-    'saladas': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$salad$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Salad$3e$__["Salad"],
-    'orgânico': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$tree$2d$pine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__TreePine$3e$__["TreePine"],
-    // Café da Manhã
-    'café da manhã': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sunrise$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sunrise$3e$__["Sunrise"],
-    'breakfast': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"],
-    // Almoço
-    'almoço': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sun$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Sun$3e$__["Sun"],
-    'lunch': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Utensils$3e$__["Utensils"],
-    // Jantar
-    'jantar': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$moon$2d$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__MoonStar$3e$__["MoonStar"],
-    'dinner': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"],
-    // Delivery
-    'delivery': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$truck$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Truck$3e$__["Truck"],
-    'para viagem': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$shopping$2d$bag$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__ShoppingBag$3e$__["ShoppingBag"],
-    'takeaway': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"],
-    // Geral
-    'todos': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$grid$2d$3x3$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Grid3x3$3e$__["Grid3x3"],
-    'menu': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$menu$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Menu$3e$__["Menu"],
-    'favoritos': __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$heart$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Heart$3e$__["Heart"]
+    rodizio: 'Rodízio',
+    premium: 'Premium',
+    tradicional: 'Sushi',
+    bebidas: 'Bebida',
+    sobremesas: 'Sorvete',
+    entradas: 'Entrada',
+    pratos: 'Talheres',
+    especiais: 'Chef Special'
 };
+function getIconByName(name) {
+    const iconOption = menuIconLibrary.find((icon)=>icon.name === name);
+    return iconOption?.icon;
+}
 }),
 "[project]/components/ui/scroll-area.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
