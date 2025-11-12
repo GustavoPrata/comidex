@@ -1188,45 +1188,28 @@ export default function POSPage() {
                     <Minus className="h-4 w-4" />
                   </Button>
                   
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      min="1"
-                      max={selectedTable?.capacity || 12}
-                      value={customerCount}
-                      onChange={(e) => {
-                        const value = parseInt(e.target.value) || 1;
-                        const max = selectedTable?.capacity || 12;
-                        setCustomerCount(Math.max(1, Math.min(max, value)));
-                      }}
-                      className="bg-gray-800 border-gray-600 text-white text-2xl w-20 text-center"
-                      pattern="[0-9]*"
-                    />
-                    <span className="text-gray-400 text-sm">
-                      / {selectedTable?.capacity || 12} máx
-                    </span>
-                  </div>
+                  <Input
+                    type="number"
+                    min="1"
+                    value={customerCount}
+                    onChange={(e) => {
+                      const value = parseInt(e.target.value) || 1;
+                      setCustomerCount(Math.max(1, value));
+                    }}
+                    className="bg-gray-800 border-gray-600 text-white text-2xl w-20 text-center"
+                    pattern="[0-9]*"
+                  />
                   
                   <Button
                     type="button"
-                    onClick={() => {
-                      const max = selectedTable?.capacity || 12;
-                      setCustomerCount(prev => Math.min(max, prev + 1));
-                    }}
-                    disabled={customerCount >= (selectedTable?.capacity || 12)}
-                    className="bg-gray-700 hover:bg-gray-600 disabled:opacity-50"
+                    onClick={() => setCustomerCount(prev => prev + 1)}
+                    className="bg-gray-700 hover:bg-gray-600"
                     size="sm"
                     data-testid="button-increment-pessoas"
                   >
                     <Plus className="h-4 w-4" />
                   </Button>
                 </div>
-                
-                {selectedTable?.capacity && (
-                  <p className="text-xs text-gray-500 text-center mt-2">
-                    Capacidade máxima da mesa: {selectedTable.capacity} pessoas
-                  </p>
-                )}
               </div>
             </div>
             
