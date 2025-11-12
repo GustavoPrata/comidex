@@ -210,7 +210,11 @@ export const menuIconLibrary: MenuIconOption[] = [
   { name: 'Maçã Verde', icon: Apple, category: 'desserts', keywords: ['maçã', 'apple', 'verde', 'fruta'] },
   { name: 'Laranja', icon: Citrus, category: 'desserts', keywords: ['laranja', 'citrus', 'vitamina', 'suco'] },
   
-  // ESPECIAIS E PROMOÇÕES (15 ícones)
+  // ESPECIAIS E PROMOÇÕES (19 ícones - incluindo rodízios específicos)
+  { name: 'Rodízio Tradicional', icon: Star, category: 'special', keywords: ['rodízio', 'tradicional', 'clássico', 'normal'] },
+  { name: 'Rodízio Premium', icon: Crown, category: 'special', keywords: ['rodízio', 'premium', 'vip', 'completo', 'top'] },
+  { name: 'À la Carte', icon: Menu, category: 'special', keywords: ['carte', 'menu', 'escolha', 'individual', 'avulso'] },
+  { name: 'Rodízio', icon: LayoutGrid, category: 'special', keywords: ['rodízio', 'festival', 'livre', 'buffet', 'all you can eat'] },
   { name: 'Estrela Top', icon: Star, category: 'special', keywords: ['estrela', 'favorito', 'top', 'melhor'] },
   { name: 'Coroa Premium', icon: Crown, category: 'special', keywords: ['premium', 'vip', 'exclusivo', 'royal'] },
   { name: 'Prêmio', icon: Award, category: 'special', keywords: ['prêmio', 'award', 'certificado', 'qualidade'] },
@@ -278,9 +282,12 @@ export function getIconsByCategory(category: MenuIconOption['category']): MenuIc
 
 // Ícones padrão sugeridos para grupos comuns
 export const defaultGroupIcons = {
-  rodizio: 'Rodízio Festival',
+  rodizio: 'Rodízio',
+  rodizio_tradicional: 'Rodízio Tradicional',
+  rodizio_premium: 'Rodízio Premium',
+  a_la_carte: 'À la Carte',
   premium: 'Coroa Premium',
-  tradicional: 'Peixe Cru',
+  tradicional: 'Rodízio Tradicional',
   bebidas: 'Cerveja Gelada',
   sobremesas: 'Sorvete',
   entradas: 'Cone Temaki',
