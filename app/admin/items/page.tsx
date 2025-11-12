@@ -91,6 +91,7 @@ import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/admin/image-upload";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { getIconByName } from "@/lib/menu-icons-library";
 
 const supabase = createClient();
 import type { Item, Category, Group, AdditionalCategory, Additional } from "@/types/supabase";
@@ -1502,20 +1503,24 @@ export default function ProductsPage() {
               </Button>
               {groups
                 .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
-                .map((group) => (
-                  <Button
-                    key={group.id}
-                    variant={selectedGroup === group.id.toString() ? "default" : "outline"}
-                    size="sm"
-                    onClick={() => {
-                      setSelectedGroup(group.id.toString());
-                      setSelectedCategory("all");
-                    }}
-                    className={selectedGroup === group.id.toString() ? "bg-orange-500 hover:bg-orange-600 text-white rounded-full" : "rounded-full"}
-                  >
-                    {group.name}
-                  </Button>
-                ))}
+                .map((group) => {
+                  const Icon = group.icon ? getIconByName(group.icon) : null;
+                  return (
+                    <Button
+                      key={group.id}
+                      variant={selectedGroup === group.id.toString() ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => {
+                        setSelectedGroup(group.id.toString());
+                        setSelectedCategory("all");
+                      }}
+                      className={selectedGroup === group.id.toString() ? "bg-orange-500 hover:bg-orange-600 text-white rounded-full" : "rounded-full"}
+                    >
+                      {Icon && <Icon className="h-4 w-4 mr-1" />}
+                      {group.name}
+                    </Button>
+                  );
+                })}
             </div>
           </div>
 

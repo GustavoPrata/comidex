@@ -1,6 +1,5 @@
 {
+  "/admin/items/page": "app/admin/items/page.js",
   "/admin/menu-structure/page": "app/admin/menu-structure/page.js",
-  "/api/groups/route": "app/api/groups/route.js",
-  "/api/prompt-message/route": "app/api/prompt-message/route.js",
   "/prompt/page": "app/prompt/page.js"
 }

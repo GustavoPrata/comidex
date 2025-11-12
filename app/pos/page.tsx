@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { getIconByName } from "@/lib/menu-icons-library";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,6 +76,7 @@ interface Group {
   type: 'rodizio' | 'a_la_carte' | 'bebidas';
   active: boolean;
   sort_order: number;
+  icon?: string | null;
 }
 
 interface Category {
@@ -1645,28 +1647,31 @@ export default function POSPage() {
                       // Mostrar Grupos
                       <div className="space-y-4">
                         <div className="grid grid-cols-3 gap-4">
-                          {groups.map((group) => (
-                            <Button
-                              key={group.id}
-                              onClick={() => setSelectedGroup(group.id)}
-                              className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center relative"
-                            >
-                              {group.type === 'rodizio' && (
-                                <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded">
-                                  Rodízio
-                                </div>
-                              )}
-                              <Package className="h-8 w-8 mb-2" />
-                              <span className="text-center">
-                                {group.name}
-                                {group.price && (
-                                  <div className="text-xs mt-1 text-yellow-400">
-                                    R$ {group.price.toFixed(2)}
+                          {groups.map((group) => {
+                            const Icon = (group.icon ? getIconByName(group.icon) : null) || Package;
+                            return (
+                              <Button
+                                key={group.id}
+                                onClick={() => setSelectedGroup(group.id)}
+                                className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center relative"
+                              >
+                                {group.type === 'rodizio' && (
+                                  <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded">
+                                    Rodízio
                                   </div>
                                 )}
-                              </span>
-                            </Button>
-                          ))}
+                                <Icon className="h-8 w-8 mb-2" />
+                                <span className="text-center">
+                                  {group.name}
+                                  {group.price && (
+                                    <div className="text-xs mt-1 text-yellow-400">
+                                      R$ {group.price.toFixed(2)}
+                                    </div>
+                                  )}
+                                </span>
+                              </Button>
+                            );
+                          })}
                         </div>
                       </div>
                     ) : (

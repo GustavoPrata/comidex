@@ -11,6 +11,7 @@ export interface Database {
           type: 'rodizio' | 'a_la_carte' | 'bebidas'
           active: boolean
           sort_order: number
+          icon: string | null
           created_at: string
           updated_at: string
         }
