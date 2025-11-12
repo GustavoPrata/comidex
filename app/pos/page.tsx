@@ -68,11 +68,21 @@ import { motion, AnimatePresence } from "framer-motion";
 const supabase = createClient();
 
 // Types
+interface Group {
+  id: number;
+  name: string;
+  price: number | null;
+  type: 'rodizio' | 'a_la_carte' | 'bebidas';
+  active: boolean;
+  sort_order: number;
+}
+
 interface Category {
   id: number;
   name: string;
   active: boolean;
   sort_order: number;
+  group_id: number | null;
   icon?: string;
 }
 
@@ -82,7 +92,9 @@ interface Item {
   description?: string | null;
   price: number | null;
   category_id: number;
+  group_id: number;
   category?: Category;
+  group?: Group;
   available: boolean;
   active: boolean;
   image?: string | null;
@@ -170,8 +182,9 @@ export default function POSPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [groups, setGroups] = useState<Group[]>([]);
   const [todayOrders, setTodayOrders] = useState<Order[]>([]);
   const [salesStats, setSalesStats] = useState<SalesStats>({
     totalSales: 0,
@@ -277,6 +290,7 @@ export default function POSPage() {
     try {
       await Promise.all([
         loadTables(), 
+        loadGroups(),
         loadItems(), 
         loadCategories(),
         loadTodayOrders()
@@ -327,13 +341,30 @@ export default function POSPage() {
     }
   };
 
+  const loadGroups = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('groups')
+        .select('*')
+        .eq('active', true)
+        .order('sort_order');
+
+      if (error) throw error;
+      setGroups(data || []);
+    } catch (error) {
+      console.error('Erro ao carregar grupos:', error);
+      toast.error('Erro ao carregar grupos');
+    }
+  };
+
   const loadItems = async () => {
     try {
       const { data, error } = await supabase
         .from('items')
         .select(`
           *,
-          category:categories(*)
+          category:categories(*),
+          group:groups(*)
         `)
         .eq('active', true)
         .eq('available', true)
@@ -552,19 +583,45 @@ export default function POSPage() {
       }
     }
 
-    if (!item.price) {
-      toast.error("Produto sem preço definido");
-      return;
+    const qty = parseInt(quantity) || 1;
+    
+    // Calcular preço considerando rodízio
+    let itemPrice = item.price || 0;
+    
+    // Se o item pertence a um grupo de rodízio
+    if (item.group?.type === 'rodizio') {
+      // Verificar se já tem rodízio desse grupo no carrinho
+      const hasRodizioInCart = cart.some(cartItem => 
+        cartItem.item?.group_id === item.group_id
+      );
+      
+      if (!hasRodizioInCart) {
+        // Se é o primeiro item do rodízio, usar o preço do grupo
+        itemPrice = item.group.price || 0;
+      } else {
+        // Se já tem rodízio, o item é grátis
+        itemPrice = 0;
+      }
     }
 
-    const qty = parseInt(quantity) || 1;
+    // Se o item é grátis em rodízio mas não tem rodízio no carrinho ainda
+    if (itemPrice === 0 && item.group?.type === 'rodizio') {
+      const hasRodizioInCart = cart.some(cartItem => 
+        cartItem.item?.group_id === item.group_id
+      );
+      
+      if (!hasRodizioInCart) {
+        toast.error(`Adicione primeiro um rodízio ${item.group.name}`);
+        return;
+      }
+    }
     
     const newItem: OrderItem = {
       item_id: item.id,
       item: item,
       quantity: qty,
-      unit_price: item.price,
-      total_price: item.price * qty,
+      unit_price: itemPrice,
+      total_price: itemPrice * qty,
       status: 'pending'
     };
 
@@ -586,10 +643,19 @@ export default function POSPage() {
     });
 
     // Feedback visual e sonoro
+    let message = item.name;
+    if (item.group?.type === 'rodizio') {
+      if (itemPrice === 0) {
+        message = `${item.name} (Rodízio - Grátis)`;
+      } else {
+        message = `${item.name} (Rodízio - R$ ${itemPrice.toFixed(2)})`;
+      }
+    }
+    
     toast.success(
       <div className="flex items-center gap-2">
         <Check className="h-4 w-4" />
-        <span>{item.name} adicionado</span>
+        <span>{message} adicionado</span>
       </div>
     );
     
@@ -853,6 +919,12 @@ export default function POSPage() {
   const filteredItems = useMemo(() => {
     let filtered = items;
     
+    // Filtrar por grupo se selecionado
+    if (selectedGroup) {
+      filtered = filtered.filter(item => item.group_id === selectedGroup);
+    }
+    
+    // Filtrar por categoria se selecionado
     if (selectedCategory) {
       filtered = filtered.filter(item => item.category_id === selectedCategory);
     }
@@ -1547,7 +1619,11 @@ export default function POSPage() {
                 <Card className="h-full bg-gray-900/50 backdrop-blur border-gray-700">
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                      <span>{selectedGroup ? `${selectedGroup} - Categorias` : 'Grupos de Produtos'}</span>
+                      <span>
+                        {selectedGroup 
+                          ? `${groups.find(g => g.id === selectedGroup)?.name || ''} - Categorias` 
+                          : 'Grupos de Produtos'}
+                      </span>
                       {selectedGroup && (
                         <Button
                           size="sm"
@@ -1569,48 +1645,28 @@ export default function POSPage() {
                       // Mostrar Grupos
                       <div className="space-y-4">
                         <div className="grid grid-cols-3 gap-4">
-                          <Button
-                            onClick={() => setSelectedGroup('Entradas')}
-                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
-                          >
-                            <Package className="h-8 w-8 mb-2" />
-                            Entradas
-                          </Button>
-                          <Button
-                            onClick={() => setSelectedGroup('Pratos Quentes')}
-                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
-                          >
-                            <Soup className="h-8 w-8 mb-2" />
-                            Pratos Quentes
-                          </Button>
-                          <Button
-                            onClick={() => setSelectedGroup('Sushi')}
-                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
-                          >
-                            <Fish className="h-8 w-8 mb-2" />
-                            Sushi
-                          </Button>
-                          <Button
-                            onClick={() => setSelectedGroup('Bebidas')}
-                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
-                          >
-                            <Coffee className="h-8 w-8 mb-2" />
-                            Bebidas
-                          </Button>
-                          <Button
-                            onClick={() => setSelectedGroup('Sobremesas')}
-                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
-                          >
-                            <IceCream className="h-8 w-8 mb-2" />
-                            Sobremesas
-                          </Button>
-                          <Button
-                            onClick={() => setSelectedGroup('Especiais')}
-                            className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center"
-                          >
-                            <Star className="h-8 w-8 mb-2" />
-                            Especiais
-                          </Button>
+                          {groups.map((group) => (
+                            <Button
+                              key={group.id}
+                              onClick={() => setSelectedGroup(group.id)}
+                              className="h-24 text-lg bg-gray-700 hover:bg-orange-600 flex flex-col items-center justify-center relative"
+                            >
+                              {group.type === 'rodizio' && (
+                                <div className="absolute top-2 right-2 bg-yellow-500 text-black text-xs px-2 py-1 rounded">
+                                  Rodízio
+                                </div>
+                              )}
+                              <Package className="h-8 w-8 mb-2" />
+                              <span className="text-center">
+                                {group.name}
+                                {group.price && (
+                                  <div className="text-xs mt-1 text-yellow-400">
+                                    R$ {group.price.toFixed(2)}
+                                  </div>
+                                )}
+                              </span>
+                            </Button>
+                          ))}
                         </div>
                       </div>
                     ) : (
@@ -1623,35 +1679,21 @@ export default function POSPage() {
                           >
                             Todos
                           </Button>
-                          {(() => {
-                            // Mapear categorias aos grupos
-                            const groupCategories: Record<string, string[]> = {
-                              'Entradas': ['Sunomono', 'Carpaccio', 'Ceviche', 'Temaki'],
-                              'Pratos Quentes': ['Yakisoba', 'Teppanyaki', 'Tempurá', 'Gyoza'],
-                              'Sushi': ['Sashimi', 'Nigiri', 'Combinados', 'Hot Roll'],
-                              'Bebidas': ['Refrigerantes', 'Sucos', 'Cervejas', 'Saquê'],
-                              'Sobremesas': ['Dorayaki', 'Mochi', 'Tempurá de Sorvete'],
-                              'Especiais': ['Omakase', 'Festival', 'Promoções']
-                            };
-                            
-                            const currentGroupCategories = groupCategories[selectedGroup] || [];
-                            
-                            return categories
-                              .filter((c) => c.active && currentGroupCategories.includes(c.name))
-                              .map((category) => {
-                                const Icon = categoryIcons[category.name] || Package;
-                                return (
-                                  <Button
-                                    key={category.id}
-                                    onClick={() => setSelectedCategory(category.id)}
-                                    className={`${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
-                                  >
-                                    <Icon className="mr-2 h-4 w-4" />
-                                    {category.name}
-                                  </Button>
-                                );
-                              });
-                          })()}
+                          {categories
+                            .filter((c) => c.active && c.group_id === selectedGroup)
+                            .map((category) => {
+                              const Icon = categoryIcons[category.name] || Package;
+                              return (
+                                <Button
+                                  key={category.id}
+                                  onClick={() => setSelectedCategory(category.id)}
+                                  className={`${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
+                                >
+                                  <Icon className="mr-2 h-4 w-4" />
+                                  {category.name}
+                                </Button>
+                              );
+                            })}
                         </div>
                         
                         <ScrollArea className="h-[400px]">
