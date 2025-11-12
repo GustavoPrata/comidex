@@ -1886,37 +1886,22 @@ export default function POSPage() {
                               >
                                 <Card
                                   onClick={() => {
-                                    console.log('Grupo clicado:', group);
-                                    console.log('Tipo do grupo:', group.type);
-                                    console.log('Carrinho atual:', cart);
-                                    
                                     // Se o grupo for rodízio, verifica se já tem rodízio lançado
                                     if (group.type === 'rodizio') {
-                                      console.log('É um grupo rodízio!');
                                       // Verifica se já tem rodízio deste grupo no carrinho
                                       const hasRodizio = cart.some(item => 
                                         item.item?.group_id === group.id && 
                                         item.item?.name?.includes('Rodízio')
                                       );
                                       
-                                      console.log('Já tem rodízio no carrinho?', hasRodizio);
-                                      
                                       if (!hasRodizio) {
                                         // Se não tem rodízio, abre o modal para adicionar
-                                        console.log('Abrindo modal de rodízio');
                                         setSelectedRodizioGroup(group);
                                         setRodizioInteiro(1);
                                         setRodizioMeio(0);
                                         setRodizioModal(true);
-                                        console.log('Modal configurado:', {
-                                          selectedRodizioGroup: group,
-                                          rodizioInteiro: 1,
-                                          rodizioMeio: 0,
-                                          rodizioModal: true
-                                        });
                                       } else {
                                         // Se já tem rodízio, vai para as categorias normalmente
-                                        console.log('Já tem rodízio, indo para categorias');
                                         setSelectedGroup(group.id);
                                         const firstCategory = categories
                                           .filter(c => c.active && c.group_id === group.id)
@@ -1927,7 +1912,6 @@ export default function POSPage() {
                                       }
                                     } else {
                                       // Se não for rodízio, procede normalmente
-                                      console.log('Grupo normal, indo para categorias');
                                       setSelectedGroup(group.id);
                                       const firstCategory = categories
                                         .filter(c => c.active && c.group_id === group.id)
