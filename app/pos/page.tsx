@@ -535,6 +535,7 @@ export default function POSPage() {
 
   // FUNÇÕES DE MESA/SESSÃO
   const handleSelectTable = async (table: RestaurantTable) => {
+    console.log('Mesa selecionada:', table);
     setSelectedTable(table);
     setCustomerCount(1); // Reset para 1 ao selecionar nova mesa
     
@@ -542,6 +543,8 @@ export default function POSPage() {
       setCurrentSession(table.current_session);
       await loadSessionDetails(table.id);
       setScreen('session');
+      // Garante que a mesa está selecionada na sessão
+      console.log('Indo para sessão com mesa:', table.id);
     } else {
       setOpenTableDialog(true);
     }
@@ -865,31 +868,44 @@ export default function POSPage() {
     }
 
     if (!selectedTable?.id) {
-      toast.error("Selecione uma mesa primeiro");
+      toast.error("Mesa não selecionada. Volte para a tela de mesas e selecione uma mesa.");
+      console.error("Erro: selectedTable não está definida", selectedTable);
       return;
     }
 
     try {
+      console.log('Lançando pedido para mesa:', selectedTable.id);
+      
       // Atualizar status da mesa
       const { error: tableError } = await supabase
         .from('tables')
         .update({ status: 'occupied' })
         .eq('id', selectedTable.id);
 
-      if (tableError) throw tableError;
+      if (tableError) {
+        console.error('Erro ao atualizar status da mesa:', tableError);
+        throw tableError;
+      }
 
       // Verificar se já existe uma comanda aberta para esta mesa
-      const { data: existingOrders } = await supabase
+      const { data: existingOrders, error: checkError } = await supabase
         .from('orders')
         .select('id')
         .eq('table_id', selectedTable.id)
         .eq('status', 'open')
         .single();
 
+      // Ignorar erro PGRST116 (nenhuma linha encontrada)
+      if (checkError && checkError.code !== 'PGRST116') {
+        console.error('Erro ao verificar pedidos existentes:', checkError);
+        throw checkError;
+      }
+
       let orderId;
 
-      if (existingOrders) {
+      if (existingOrders?.id) {
         orderId = existingOrders.id;
+        console.log('Usando comanda existente:', orderId);
       } else {
         // Criar nova comanda
         const { data: newOrder, error: orderError } = await supabase
@@ -902,8 +918,12 @@ export default function POSPage() {
           .select()
           .single();
 
-        if (orderError) throw orderError;
+        if (orderError) {
+          console.error('Erro ao criar nova comanda:', orderError);
+          throw orderError;
+        }
         orderId = newOrder.id;
+        console.log('Nova comanda criada:', orderId);
       }
 
       // Adicionar itens ao pedido
@@ -936,14 +956,26 @@ export default function POSPage() {
         };
       });
 
+      console.log('Inserindo itens:', orderItems);
+
       const { error: itemsError } = await supabase
         .from('order_items')
         .insert(orderItems);
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('Erro ao inserir itens:', itemsError);
+        throw itemsError;
+      }
+
+      console.log('Itens inseridos com sucesso');
 
       // Processar impressão
-      await processPrinting(orderId);
+      try {
+        await processPrinting(orderId);
+      } catch (printError) {
+        console.error('Erro na impressão (continuando):', printError);
+        // Não vamos falhar o pedido por erro de impressão
+      }
 
       // Limpar carrinho
       setCart([]);
@@ -957,9 +989,9 @@ export default function POSPage() {
           <span>Pedido lançado com sucesso!</span>
         </div>
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao lançar pedido:', error);
-      toast.error("Erro ao lançar pedido");
+      toast.error(error.message || "Erro ao lançar pedido. Verifique o console para mais detalhes.");
     }
   };
 
