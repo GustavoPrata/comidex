@@ -738,17 +738,28 @@ export default function POSPage() {
   };
 
   const handleUpdateQuantity = (itemId: number, delta: number) => {
-    setCart(prev => prev.map(item => {
-      if (item.item_id === itemId) {
-        const newQty = Math.max(1, item.quantity + delta);
-        return {
-          ...item,
-          quantity: newQty,
-          total_price: item.unit_price * newQty
-        };
+    setCart(prev => {
+      // Find the item to check current quantity
+      const currentItem = prev.find(item => item.item_id === itemId);
+      
+      // If decreasing and quantity is 1, remove the item
+      if (currentItem && currentItem.quantity === 1 && delta === -1) {
+        return prev.filter(item => item.item_id !== itemId);
       }
-      return item;
-    }));
+      
+      // Otherwise, update the quantity
+      return prev.map(item => {
+        if (item.item_id === itemId) {
+          const newQty = Math.max(1, item.quantity + delta);
+          return {
+            ...item,
+            quantity: newQty,
+            total_price: item.unit_price * newQty
+          };
+        }
+        return item;
+      });
+    });
   };
 
   const handleRemoveItem = (itemId: number) => {
