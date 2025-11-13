@@ -887,7 +887,6 @@ export default function POSPage() {
         const { error: orderError } = await supabase
           .from('orders')
           .update({
-            subtotal: total,
             total: total,
             updated_at: new Date().toISOString()
           })
@@ -922,12 +921,8 @@ export default function POSPage() {
             order_number: orderNumber,
             table_id: selectedTable.id,
             status: 'confirmed',
-            payment_status: 'pending',
-            type: 'dine_in',
-            subtotal: total,
-            discount: 0,
-            delivery_fee: 0,
-            total: total
+            total: total,
+            notes: null
           })
           .select()
           .single();
@@ -1003,9 +998,7 @@ export default function POSPage() {
         .from('orders')
         .update({
           status: 'completed',
-          payment_status: 'paid',
-          payment_method: paymentMethod,
-          completed_at: new Date().toISOString()
+          updated_at: new Date().toISOString()
         })
         .eq('id', currentOrder.id);
 
