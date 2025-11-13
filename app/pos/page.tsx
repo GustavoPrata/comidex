@@ -1865,7 +1865,7 @@ export default function POSPage() {
                   Carrinho ({cart.length})
                 </TabsTrigger>
                 <TabsTrigger value="categories" className="data-[state=active]:bg-orange-600">
-                  <Package className="mr-2 h-4 w-4" />
+                  <ShoppingBag className="mr-2 h-4 w-4" />
                   Produtos
                 </TabsTrigger>
               </TabsList>
