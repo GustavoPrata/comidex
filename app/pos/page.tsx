@@ -756,17 +756,49 @@ export default function POSPage() {
       }
     });
 
-    // Feedback visual e sonoro
+    // Mudar automaticamente para aba "Comanda" para mostrar o item adicionado
+    setActiveTab('orders');
+
+    // Feedback visual e sonoro com animação
     let message = item.name;
     if (isRodizio) {
       message = `${item.name} (Incluído no Rodízio)`;
     }
     
+    // Criar um toast customizado com animação
     toast.success(
-      <div className="flex items-center gap-2">
-        <Check className="h-4 w-4" />
-        <span>{message} adicionado</span>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.5, x: -100 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        className="flex items-center gap-3"
+      >
+        <motion.div
+          initial={{ rotate: -180 }}
+          animate={{ rotate: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <ShoppingCart className="h-5 w-5 text-green-500" />
+        </motion.div>
+        <div>
+          <div className="font-semibold">{message}</div>
+          <div className="text-xs text-gray-400">Adicionado ao carrinho!</div>
+        </div>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <Check className="h-5 w-5 text-green-500" />
+        </motion.div>
+      </motion.div>,
+      {
+        duration: 3000,
+        style: {
+          background: 'linear-gradient(to right, #1f2937, #111827)',
+          color: '#fff',
+        }
+      }
     );
     
     setInputValue("");
@@ -2035,10 +2067,11 @@ export default function POSPage() {
                                           alt={item.item?.name || ''}
                                           className="w-full h-full object-cover"
                                         />
-                                      ) : item.item?.icon ? (
+                                      ) : (item as any).icon || item.item?.icon ? (
                                         <div className="w-full h-full flex items-center justify-center text-orange-400">
                                           {(() => {
-                                            const IconComponent = getIconByName(item.item.icon);
+                                            const iconName = (item as any).icon || item.item?.icon;
+                                            const IconComponent = getIconByName(iconName);
                                             return IconComponent ? <IconComponent className="h-6 w-6" /> : <Package className="h-6 w-6" />;
                                           })()}
                                         </div>
