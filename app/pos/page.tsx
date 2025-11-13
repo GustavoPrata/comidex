@@ -248,9 +248,6 @@ export default function POSPage() {
       if (e.key === 'F1') {
         e.preventDefault();
         setScreen('tables');
-      } else if (e.key === 'F2' && selectedTable) {
-        e.preventDefault();
-        handleSaveOrder();
       } else if (e.key === 'F3' && cart.length > 0) {
         e.preventDefault();
         setPaymentDialog(true);
@@ -1096,6 +1093,8 @@ export default function POSPage() {
   };
 
   // FUNÇÕES DE PEDIDO/PAGAMENTO
+  // Função handleSaveOrder removida - agora só existe Lançar e Cancelar
+  /*
   const handleSaveOrder = async () => {
     if (!currentSession || !selectedTable || cart.length === 0) {
       toast.error("Adicione itens ao pedido");
@@ -1218,6 +1217,7 @@ export default function POSPage() {
       setLoading(false);
     }
   };
+  */
 
   const handlePayment = async () => {
     if (!currentOrder || !currentSession || !selectedTable) return;
@@ -1738,7 +1738,6 @@ export default function POSPage() {
                     Atalhos:
                   </span>
                   <span><kbd className="px-2 py-1 bg-gray-700 rounded">F1</kbd> Mesas</span>
-                  <span><kbd className="px-2 py-1 bg-gray-700 rounded">F2</kbd> Salvar</span>
                   <span><kbd className="px-2 py-1 bg-gray-700 rounded">F3</kbd> Pagar</span>
                   <span><kbd className="px-2 py-1 bg-gray-700 rounded">F4</kbd> Imprimir</span>
                   <span><kbd className="px-2 py-1 bg-gray-700 rounded">F5</kbd> Atualizar</span>
@@ -2052,15 +2051,6 @@ export default function POSPage() {
               </Button>
             ) : (
               <>
-                <Button
-                  onClick={handleSaveOrder}
-                  disabled={loading}
-                  className="bg-blue-600 hover:bg-blue-700"
-                  size="sm"
-                >
-                  <Check className="mr-2 h-4 w-4" />
-                  Salvar (F2)
-                </Button>
                 <Button
                   onClick={() => setPrintDialog(true)}
                   className="bg-purple-600 hover:bg-purple-700"
