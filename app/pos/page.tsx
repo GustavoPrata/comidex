@@ -480,13 +480,47 @@ export default function POSPage() {
 
       if (!error && orderData) {
         setCurrentOrder(orderData as any);
-        setCart(orderData.items || []);
+        
+        // Transform order items to cart format
+        const cartItems = orderData.items?.map((orderItem: any) => {
+          // Handle rodízio items (no item_id)
+          if (!orderItem.item_id) {
+            return {
+              item_id: -1 * Date.now() - Math.random() * 1000, // Generate negative ID for cart
+              quantity: orderItem.quantity,
+              unit_price: orderItem.unit_price,
+              total_price: orderItem.total_price,
+              status: orderItem.status || 'novo',
+              item: {
+                name: orderItem.notes || 'Rodízio', // Get name from notes field
+                price: orderItem.unit_price,
+                group: {
+                  type: 'rodizio'
+                }
+              }
+            };
+          }
+          
+          // Handle regular items
+          return {
+            item_id: orderItem.item_id,
+            quantity: orderItem.quantity,
+            unit_price: orderItem.unit_price,
+            total_price: orderItem.total_price,
+            status: orderItem.status || 'novo',
+            item: orderItem.item
+          };
+        }) || [];
+        
+        setCart(cartItems);
       } else {
         setCart([]);
         setCurrentOrder(null);
       }
     } catch (error) {
       console.error('Erro ao carregar detalhes da sessão:', error);
+      setCart([]);
+      setCurrentOrder(null);
     }
   };
 
@@ -959,6 +993,12 @@ export default function POSPage() {
         })
         .eq('id', currentSession.id);
 
+      // Update cart items status to 'delivered' after saving
+      setCart(prevCart => prevCart.map(item => ({
+        ...item,
+        status: 'delivered'
+      })));
+      
       toast.success("Pedido salvo com sucesso");
     } catch (error: any) {
       console.error('Erro ao salvar pedido:', error);
