@@ -857,6 +857,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   height: 1.5rem;
 }
 
+.h-64 {
+  height: 16rem;
+}
+
 .h-7 {
   height: 1.75rem;
 }
@@ -1597,6 +1601,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .border-b {
   border-bottom-width: 1px;
+}
+
+.border-b-2 {
+  border-bottom-width: 2px;
 }
 
 .border-b-4 {
@@ -2358,6 +2366,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   padding: .375rem;
 }
 
+.p-12 {
+  padding: 3rem;
+}
+
 .p-2 {
   padding: .5rem;
 }
@@ -2868,6 +2880,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .text-yellow-400 {
   --tw-text-opacity: 1;
   color: rgb(250 204 21 / var(--tw-text-opacity, 1));
+}
+
+.text-yellow-500 {
+  --tw-text-opacity: 1;
+  color: rgb(234 179 8 / var(--tw-text-opacity, 1));
 }
 
 .text-yellow-600 {

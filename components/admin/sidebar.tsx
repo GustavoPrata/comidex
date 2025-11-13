@@ -32,7 +32,8 @@ import {
   BookOpen,
   Monitor,
   SlidersHorizontal,
-  Link2
+  Link2,
+  Bell
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -139,6 +140,27 @@ export default function AdminSidebar() {
   const router = useRouter();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  // Fetch unread notifications count
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await fetch('/api/notifications?unread=true');
+        const data = await response.json();
+        setUnreadCount(data.unread_count || 0);
+      } catch (error) {
+        console.error('Failed to fetch notifications:', error);
+      }
+    };
+
+    fetchNotifications();
+    // Poll every 30 seconds
+    const interval = setInterval(fetchNotifications, 30000);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   // Auto-expand parent menu when a submenu item is active
   useEffect(() => {
@@ -324,7 +346,28 @@ export default function AdminSidebar() {
       </div>
 
       {/* Bottom Section */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700/60 relative">
+      <div className="p-4 border-t border-gray-200 dark:border-gray-700/60 relative space-y-2">
+        {/* Notifications Button */}
+        <Button 
+          variant="ghost" 
+          className="w-full justify-start px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-gray-800/60 rounded-xl group relative"
+          onClick={() => handleNavigation('/admin/notifications')}
+        >
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 dark:bg-gray-800/60 rounded-lg group-hover:bg-gray-200 dark:group-hover:bg-gray-700/60 transition-all">
+                <Bell className="h-4 w-4 text-gray-600 dark:text-gray-400 group-hover:text-orange-500" />
+              </div>
+              <span className="text-sm text-gray-700 dark:text-gray-300">Notificações</span>
+            </div>
+            {unreadCount > 0 && (
+              <Badge className="bg-red-500 text-white text-xs px-2 py-0.5">
+                {unreadCount}
+              </Badge>
+            )}
+          </div>
+        </Button>
+        
         {/* Back to Home Button */}
         <Button 
           variant="ghost" 

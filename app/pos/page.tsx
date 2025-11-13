@@ -771,6 +771,97 @@ export default function POSPage() {
     return cart.reduce((sum, item) => sum + item.total_price, 0);
   };
 
+  // Process printing for order items
+  const processPrinting = async (orderId: number) => {
+    try {
+      // Get order items with their details
+      const { data: orderItems, error: itemsError } = await supabase
+        .from('order_items')
+        .select(`
+          *,
+          item:items (
+            id,
+            name,
+            group_id,
+            group:groups (
+              id,
+              name,
+              type
+            )
+          )
+        `)
+        .eq('order_id', orderId);
+
+      if (itemsError) throw itemsError;
+      if (!orderItems) return;
+
+      const itemsWithoutPrinter: any[] = [];
+      const itemsToPrint: any[] = [];
+
+      // Process each item
+      for (const orderItem of orderItems) {
+        // Skip rodízio items (they don't print)
+        if (orderItem.item?.group?.type === 'rodizio') {
+          continue;
+        }
+
+        // Check if item has a printer configured
+        const { data: printerConfig } = await supabase
+          .from('product_printers')
+          .select('printer_id')
+          .eq('product_id', orderItem.item_id)
+          .single();
+
+        if (!printerConfig || !printerConfig.printer_id) {
+          // Item doesn't have a printer configured
+          itemsWithoutPrinter.push({
+            item_id: orderItem.item_id,
+            item_name: orderItem.item?.name || `Item ${orderItem.item_id}`,
+            order_id: orderId,
+            quantity: orderItem.quantity
+          });
+        } else {
+          // Item has a printer configured
+          itemsToPrint.push({
+            ...orderItem,
+            printer_id: printerConfig.printer_id
+          });
+        }
+      }
+
+      // Create notifications for items without printer
+      if (itemsWithoutPrinter.length > 0) {
+        for (const item of itemsWithoutPrinter) {
+          await supabase
+            .from('notifications')
+            .insert({
+              message: `Produto "${item.item_name}" foi lançado sem impressora configurada`,
+              type: 'printer_missing',
+              item_id: item.item_id,
+              item_name: item.item_name,
+              metadata: {
+                order_id: item.order_id,
+                quantity: item.quantity,
+                table: selectedTable?.number,
+                timestamp: new Date().toISOString()
+              }
+            });
+        }
+      }
+
+      // TODO: Process items with printer (send to print queue)
+      // This will be implemented later with the print queue system
+      if (itemsToPrint.length > 0) {
+        // For now, just log what would be printed
+        console.log('Items to print:', itemsToPrint);
+      }
+
+    } catch (error) {
+      console.error('Error processing printing:', error);
+      // Don't throw error to not block order saving
+    }
+  };
+
   // FUNÇÕES DE PEDIDO/PAGAMENTO
   const handleSaveOrder = async () => {
     if (!currentSession || !selectedTable || cart.length === 0) {
@@ -813,6 +904,9 @@ export default function POSPage() {
           );
 
         if (itemsError) throw itemsError;
+        
+        // Process printing after saving order
+        await processPrinting(currentOrder.id);
       } else {
         const orderNumber = `${selectedTable.number}-${Date.now().toString().slice(-6)}`;
         
@@ -850,6 +944,9 @@ export default function POSPage() {
         if (itemsError) throw itemsError;
         
         setCurrentOrder(orderData as any);
+        
+        // Process printing after saving order
+        await processPrinting(orderData.id);
       }
 
       await supabase
