@@ -905,7 +905,7 @@ export default function POSPage() {
               unit_price: item.unit_price,
               total_price: item.total_price,
               status: item.status,
-              notes: item.item_id < 0 ? item.item?.name : null // Save rodízio name in notes
+              notes: item.item_id < 0 ? item.item?.name || null : null // Save rodízio name in notes
             }))
           );
 
@@ -944,7 +944,7 @@ export default function POSPage() {
               unit_price: item.unit_price,
               total_price: item.total_price,
               status: item.status,
-              notes: item.item_id < 0 ? item.item?.name : null // Save rodízio name in notes
+              notes: item.item_id < 0 ? item.item?.name || null : null // Save rodízio name in notes
             }))
           );
 
@@ -965,9 +965,16 @@ export default function POSPage() {
         .eq('id', currentSession.id);
 
       toast.success("Pedido salvo com sucesso");
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao salvar pedido:', error);
-      toast.error('Erro ao salvar pedido');
+      console.error('Detalhes do erro:', {
+        message: error?.message,
+        details: error?.details,
+        hint: error?.hint,
+        code: error?.code,
+        fullError: JSON.stringify(error, null, 2)
+      });
+      toast.error(`Erro ao salvar pedido: ${error?.message || 'Erro desconhecido'}`);
     } finally {
       setLoading(false);
     }
