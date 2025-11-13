@@ -2873,7 +2873,7 @@ function POSPage() {
                 const { data: newOrder, error: orderError } = await supabase.from('orders').insert({
                     table_id: selectedTable.id,
                     status: 'open',
-                    total_amount: calculateTotal()
+                    total: calculateTotal()
                 }).select().single();
                 if (orderError) {
                     console.error('Erro ao criar nova comanda:', orderError);

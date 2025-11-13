@@ -910,7 +910,7 @@ export default function POSPage() {
           .insert({
             table_id: selectedTable.id,
             status: 'open',
-            total_amount: calculateTotal()
+            total: calculateTotal()
           })
           .select()
           .single();

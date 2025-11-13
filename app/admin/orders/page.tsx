@@ -58,7 +58,7 @@ interface Order {
   table_number: number;
   status: string;
   created_at: string;
-  total_amount: number;
+  total: number;
   items_count: number;
   items?: OrderItem[];
 }
@@ -107,7 +107,7 @@ export default function OrdersPage() {
         table_number: pedido.mesa || 0,
         status: pedido.status || 'open',
         created_at: pedido.created_at,
-        total_amount: pedido.total || 0,
+        total: pedido.total || 0,
         items_count: pedido.tablet_pedido_itens?.length || 0,
         items: pedido.tablet_pedido_itens?.map((item: any) => ({
           id: item.id,
@@ -141,7 +141,7 @@ export default function OrdersPage() {
     preparing: orders.filter(o => o.status === 'preparing').length,
     ready: orders.filter(o => o.status === 'ready').length,
     delivered: orders.filter(o => o.status === 'delivered').length,
-    totalAmount: orders.reduce((sum, o) => sum + o.total_amount, 0)
+    totalAmount: orders.reduce((sum, o) => sum + o.total, 0)
   };
 
   // Get status badge
@@ -193,7 +193,7 @@ export default function OrdersPage() {
       Mesa: order.table_number,
       Status: order.status,
       Items: order.items_count,
-      Total: order.total_amount,
+      Total: order.total,
       Data: new Date(order.created_at).toLocaleString('pt-BR')
     }));
     
@@ -409,7 +409,7 @@ export default function OrdersPage() {
                       {order.items_count} {order.items_count === 1 ? 'item' : 'itens'}
                     </span>
                     <span className="text-lg font-bold text-orange-500">
-                      R$ {order.total_amount.toFixed(2)}
+                      R$ {order.total.toFixed(2)}
                     </span>
                   </div>
                 </div>
@@ -465,7 +465,7 @@ export default function OrdersPage() {
               <div className="flex items-center justify-between pt-4 border-t">
                 <span className="text-lg font-semibold">Total:</span>
                 <span className="text-2xl font-bold text-orange-500">
-                  R$ {selectedOrder.total_amount.toFixed(2)}
+                  R$ {selectedOrder.total.toFixed(2)}
                 </span>
               </div>
             </div>
