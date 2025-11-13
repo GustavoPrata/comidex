@@ -102,6 +102,7 @@ interface Item {
   available: boolean;
   active: boolean;
   image?: string | null;
+  icon?: string | null;
 }
 
 interface RestaurantTable {
@@ -590,12 +591,14 @@ export default function POSPage() {
         status: 'pending' as const,
         item: {
           id: -1 * Date.now(),
-          name: `Rodízio ${selectedRodizioGroup.name} - Inteiro`,
+          name: `Rodízio ${selectedRodizioGroup.name}`,
           group_id: selectedRodizioGroup.id,
           price: selectedRodizioGroup.price || 0,
           active: true,
+          available: true,
           category_id: 0,
-          group: selectedRodizioGroup
+          group: selectedRodizioGroup,
+          icon: selectedRodizioGroup.icon
         }
       };
       setCart(prev => [...prev, rodizioItem]);
@@ -611,12 +614,14 @@ export default function POSPage() {
         status: 'pending' as const,
         item: {
           id: -2 * Date.now(),
-          name: `Rodízio ${selectedRodizioGroup.name} - Meio`,
+          name: `Rodízio ${selectedRodizioGroup.name} (Meio)`,
           group_id: selectedRodizioGroup.id,
           price: selectedRodizioGroup.half_price || 0,
           active: true,
+          available: true,
           category_id: 0,
-          group: selectedRodizioGroup
+          group: selectedRodizioGroup,
+          icon: selectedRodizioGroup.icon
         }
       };
       setCart(prev => [...prev, rodizioItem]);
@@ -1896,6 +1901,13 @@ export default function POSPage() {
                                           alt={item.item?.name || ''}
                                           className="w-full h-full object-cover"
                                         />
+                                      ) : item.item?.icon ? (
+                                        <div className="w-full h-full flex items-center justify-center text-orange-400">
+                                          {(() => {
+                                            const IconComponent = getIconByName(item.item.icon);
+                                            return IconComponent ? <IconComponent className="h-6 w-6" /> : <Package className="h-6 w-6" />;
+                                          })()}
+                                        </div>
                                       ) : (
                                         <div className="w-full h-full flex items-center justify-center text-gray-500">
                                           <Package className="h-6 w-6" />
