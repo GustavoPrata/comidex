@@ -2938,7 +2938,7 @@ function POSPage() {
         try {
             console.log('Lançando pedido para mesa:', selectedTable.id);
             // Atualizar status da mesa
-            const { error: tableError } = await supabase.from('tables').update({
+            const { error: tableError } = await supabase.from('restaurant_tables').update({
                 status: 'occupied'
             }).eq('id', selectedTable.id);
             if (tableError) {

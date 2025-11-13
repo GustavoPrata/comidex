@@ -878,7 +878,7 @@ export default function POSPage() {
       
       // Atualizar status da mesa
       const { error: tableError } = await supabase
-        .from('tables')
+        .from('restaurant_tables')
         .update({ status: 'occupied' })
         .eq('id', selectedTable.id);
 
