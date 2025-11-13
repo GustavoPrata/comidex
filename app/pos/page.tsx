@@ -216,6 +216,9 @@ export default function POSPage() {
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
   const [printDialog, setPrintDialog] = useState(false);
   
+  // Estado da aba ativa
+  const [activeTab, setActiveTab] = useState<string>('cart');
+  
   // Estados do modal de rodízio
   const [rodizioModal, setRodizioModal] = useState(false);
   const [selectedRodizioGroup, setSelectedRodizioGroup] = useState<any>(null);
@@ -757,7 +760,7 @@ export default function POSPage() {
     });
 
     // Mudar automaticamente para aba "Comanda" para mostrar o item adicionado
-    setActiveTab('orders');
+    setActiveTab('cart');
 
     // Feedback visual e sonoro com animação
     let message = item.name;
@@ -1904,7 +1907,7 @@ export default function POSPage() {
         <div className="flex flex-1">
           {/* Left Panel - Carrinho e Categorias */}
           <div className="flex-1 flex flex-col p-4">
-            <Tabs defaultValue="cart" className="flex-1 flex flex-col">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
               {/* Input Section com Tabs */}
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
                 <CardContent className="p-3 overflow-visible">
