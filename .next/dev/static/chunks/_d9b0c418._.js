@@ -5037,7 +5037,7 @@ function POSPage() {
                                                         lineNumber: 1868,
                                                         columnNumber: 19
                                                     }, this),
-                                                    "Grupos e Categorias"
+                                                    "Produtos"
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/pos/page.tsx",

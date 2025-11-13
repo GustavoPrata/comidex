@@ -1866,7 +1866,7 @@ export default function POSPage() {
                 </TabsTrigger>
                 <TabsTrigger value="categories" className="data-[state=active]:bg-orange-600">
                   <Package className="mr-2 h-4 w-4" />
-                  Grupos e Categorias
+                  Produtos
                 </TabsTrigger>
               </TabsList>
               
