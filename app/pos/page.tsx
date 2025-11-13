@@ -800,6 +800,11 @@ export default function POSPage() {
 
       // Process each item
       for (const orderItem of orderItems) {
+        // Skip items without item_id (rodízios)
+        if (!orderItem.item_id || orderItem.item_id < 0) {
+          continue;
+        }
+        
         // Skip rodízio items (they don't print)
         if (orderItem.item?.group?.type === 'rodizio') {
           continue;
@@ -895,11 +900,12 @@ export default function POSPage() {
           .insert(
             cart.map(item => ({
               order_id: currentOrder.id,
-              item_id: item.item_id,
+              item_id: item.item_id > 0 ? item.item_id : null, // Rodízios have negative IDs, save as null
               quantity: item.quantity,
               unit_price: item.unit_price,
               total_price: item.total_price,
-              status: item.status
+              status: item.status,
+              notes: item.item_id < 0 ? item.item?.name : null // Save rodízio name in notes
             }))
           );
 
@@ -933,11 +939,12 @@ export default function POSPage() {
           .insert(
             cart.map(item => ({
               order_id: orderData.id,
-              item_id: item.item_id,
+              item_id: item.item_id > 0 ? item.item_id : null, // Rodízios have negative IDs, save as null
               quantity: item.quantity,
               unit_price: item.unit_price,
               total_price: item.total_price,
-              status: item.status
+              status: item.status,
+              notes: item.item_id < 0 ? item.item?.name : null // Save rodízio name in notes
             }))
           );
 
