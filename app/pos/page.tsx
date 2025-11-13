@@ -61,7 +61,9 @@ import {
   Keyboard,
   UtensilsCrossed,
   Armchair,
-  Soup
+  Soup,
+  Send,
+  CheckCircle2
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -629,7 +631,7 @@ export default function POSPage() {
         quantity: rodizioInteiro,
         unit_price: selectedRodizioGroup.price || 0,
         total_price: (selectedRodizioGroup.price || 0) * rodizioInteiro,
-        status: 'pending' as const,
+        status: 'novo' as any,
         item: {
           id: -1 * Date.now(),
           name: selectedRodizioGroup.name,
@@ -652,7 +654,7 @@ export default function POSPage() {
         quantity: rodizioMeio,
         unit_price: selectedRodizioGroup.half_price || 0,
         total_price: (selectedRodizioGroup.half_price || 0) * rodizioMeio,
-        status: 'pending' as const,
+        status: 'novo' as any,
         item: {
           id: -2 * Date.now(),
           name: `${selectedRodizioGroup.name} (Meio)`,
@@ -742,7 +744,7 @@ export default function POSPage() {
       quantity: qty,
       unit_price: itemPrice,
       total_price: itemPrice * qty,
-      status: 'pending'
+      status: 'novo' as any // Status inicial como "novo"
     };
 
     setCart(prev => {
@@ -841,6 +843,124 @@ export default function POSPage() {
   const handleRemoveItem = (itemId: number) => {
     setCart(prev => prev.filter(item => item.item_id !== itemId));
     toast.success("Item removido");
+  };
+
+  const handleCancelOrder = () => {
+    if (cart.length === 0) {
+      toast.error("Carrinho já está vazio");
+      return;
+    }
+
+    // Confirmação antes de cancelar
+    if (confirm("Deseja realmente cancelar todos os itens do carrinho?")) {
+      setCart([]);
+      toast.success("Carrinho limpo com sucesso");
+    }
+  };
+
+  const handleLaunchOrder = async () => {
+    if (cart.length === 0) {
+      toast.error("Adicione itens ao carrinho primeiro");
+      return;
+    }
+
+    if (!selectedTable?.id) {
+      toast.error("Selecione uma mesa primeiro");
+      return;
+    }
+
+    try {
+      // Atualizar status da mesa
+      const { error: tableError } = await supabase
+        .from('tables')
+        .update({ status: 'occupied' })
+        .eq('id', selectedTable.id);
+
+      if (tableError) throw tableError;
+
+      // Verificar se já existe uma comanda aberta para esta mesa
+      const { data: existingOrders } = await supabase
+        .from('orders')
+        .select('id')
+        .eq('table_id', selectedTable.id)
+        .eq('status', 'open')
+        .single();
+
+      let orderId;
+
+      if (existingOrders) {
+        orderId = existingOrders.id;
+      } else {
+        // Criar nova comanda
+        const { data: newOrder, error: orderError } = await supabase
+          .from('orders')
+          .insert({
+            table_id: selectedTable.id,
+            status: 'open',
+            total_amount: calculateTotal()
+          })
+          .select()
+          .single();
+
+        if (orderError) throw orderError;
+        orderId = newOrder.id;
+      }
+
+      // Adicionar itens ao pedido
+      const orderItems = cart.map(item => {
+        // Para rodízios (IDs negativos), adicionar metadata
+        if (item.item_id < 0) {
+          return {
+            order_id: orderId,
+            item_id: null, // Rodízio não tem item_id real
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            total_price: item.total_price,
+            status: 'pending',
+            metadata: {
+              type: 'rodizio',
+              icon: item.item?.icon || '',
+              group_id: item.item?.group_id || 0,
+              name: item.item?.name || ''
+            }
+          };
+        }
+        // Para itens normais
+        return {
+          order_id: orderId,
+          item_id: item.item_id,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total_price: item.total_price,
+          status: 'pending'
+        };
+      });
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) throw itemsError;
+
+      // Processar impressão
+      await processPrinting(orderId);
+
+      // Limpar carrinho
+      setCart([]);
+      
+      // Mudar para aba de pedidos
+      setActiveTab('orders');
+      
+      toast.success(
+        <div className="flex items-center gap-2">
+          <CheckCircle2 className="h-5 w-5" />
+          <span>Pedido lançado com sucesso!</span>
+        </div>
+      );
+    } catch (error) {
+      console.error('Erro ao lançar pedido:', error);
+      toast.error("Erro ao lançar pedido");
+    }
   };
 
   const calculateTotal = () => {
@@ -1408,6 +1528,31 @@ export default function POSPage() {
                 <p className="text-gray-400">Sistema Profissional de Vendas</p>
               </div>
               <div className="flex gap-2">
+                <Button
+                  onClick={() => {
+                    // Se houver itens no carrinho, confirmar antes de sair
+                    if (cart.length > 0) {
+                      const action = confirm("Você tem itens não lançados no carrinho.\n\nDeseja lançar o pedido antes de sair?\n\nOK = Lançar e Sair\nCancelar = Cancelar itens e Sair");
+                      
+                      if (action) {
+                        // Lançar pedido antes de sair
+                        handleLaunchOrder().then(() => {
+                          window.location.href = '/';
+                        });
+                      } else {
+                        // Cancelar itens e sair
+                        setCart([]);
+                        window.location.href = '/';
+                      }
+                    } else {
+                      window.location.href = '/';
+                    }
+                  }}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  <Home className="mr-2 h-4 w-4" />
+                  Voltar (ESC)
+                </Button>
                 <Button
                   onClick={() => setScreen('history')}
                   className="bg-gray-800 hover:bg-gray-700"
@@ -2091,8 +2236,11 @@ export default function POSPage() {
                                     <div className="flex-1">
                                       <div className="font-medium text-white flex items-center gap-2">
                                         {item.item?.name || `Produto ${item.item_id}`}
-                                        {index === cart.length - 1 && (
-                                          <Badge className="bg-green-600 text-xs">NOVO</Badge>
+                                        {((item as any).status === 'novo' || item.status === 'pending') && (
+                                          <Badge className="bg-yellow-600 text-xs">NOVO</Badge>
+                                        )}
+                                        {(item as any).status === 'launched' && (
+                                          <Badge className="bg-green-600 text-xs">LANÇADO</Badge>
                                         )}
                                       </div>
                                       <div className="text-sm text-gray-400 mt-1">
@@ -2170,6 +2318,25 @@ export default function POSPage() {
                               {formatCurrency(calculateTotal())}
                             </motion.span>
                           </div>
+                        </div>
+                        
+                        {/* Botões de Lançar e Cancelar */}
+                        <div className="flex gap-3 mt-4">
+                          <Button
+                            onClick={handleCancelOrder}
+                            variant="outline"
+                            className="flex-1 h-12 text-red-400 border-red-600 hover:bg-red-900/20 hover:text-red-300"
+                          >
+                            <X className="h-5 w-5 mr-2" />
+                            Cancelar
+                          </Button>
+                          <Button
+                            onClick={handleLaunchOrder}
+                            className="flex-1 h-12 bg-green-600 hover:bg-green-700 text-white"
+                          >
+                            <Send className="h-5 w-5 mr-2" />
+                            Lançar Pedido
+                          </Button>
                         </div>
                       </motion.div>
                     )}
