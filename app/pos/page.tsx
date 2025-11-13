@@ -709,10 +709,13 @@ export default function POSPage() {
     
     // Se for rodízio, verifica se já tem rodízio lançado
     if (isRodizio) {
-      const hasRodizio = cart.some(cartItem => 
-        cartItem.item?.group_id === item.group_id && 
-        cartItem.item?.name?.includes('Rodízio')
-      );
+      const hasRodizio = cart.some(cartItem => {
+        // Verifica se é um rodízio (tem ID negativo) e se é do mesmo grupo
+        const isRodizioItem = cartItem.item_id < 0;
+        const isSameGroup = cartItem.item?.group_id === item.group_id;
+        const hasRodizioInName = cartItem.item?.name?.includes(group?.name || '');
+        return isRodizioItem && (isSameGroup || hasRodizioInName);
+      });
       
       if (!hasRodizio) {
         // Se não tem rodízio, mostra o modal para adicionar primeiro
@@ -2217,10 +2220,13 @@ export default function POSPage() {
                                     // Se o grupo for rodízio, verifica se já tem rodízio lançado
                                     if (group.type === 'rodizio') {
                                       // Verifica se já tem rodízio deste grupo no carrinho
-                                      const hasRodizio = cart.some(item => 
-                                        item.item?.group_id === group.id && 
-                                        item.item?.name?.includes('Rodízio')
-                                      );
+                                      const hasRodizio = cart.some(cartItem => {
+                                        // Verifica se é um rodízio (tem ID negativo) e se é do mesmo grupo
+                                        const isRodizioItem = cartItem.item_id < 0;
+                                        const isSameGroup = cartItem.item?.group_id === group.id;
+                                        const hasRodizioInName = cartItem.item?.name?.includes(group.name);
+                                        return isRodizioItem && (isSameGroup || hasRodizioInName);
+                                      });
                                       
                                       if (!hasRodizio) {
                                         // Se não tem rodízio, abre o modal para adicionar
