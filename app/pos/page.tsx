@@ -905,9 +905,12 @@ export default function POSPage() {
         console.log('Usando comanda existente:', orderId);
       } else {
         // Criar nova comanda
+        const orderNumber = `${selectedTable.number}-${Date.now().toString().slice(-6)}`;
+        
         const { data: newOrder, error: orderError } = await supabase
           .from('orders')
           .insert({
+            order_number: orderNumber,
             table_id: selectedTable.id,
             status: 'open',
             total: calculateTotal()
