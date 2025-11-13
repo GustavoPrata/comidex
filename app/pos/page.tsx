@@ -846,21 +846,32 @@ export default function POSPage() {
   };
 
   const handleCancelOrder = () => {
-    if (cart.length === 0) {
-      toast.error("Carrinho já está vazio");
+    const newItems = cart.filter(item => item.status !== 'delivered');
+    const launchedItems = cart.filter(item => item.status === 'delivered');
+    
+    if (newItems.length === 0) {
+      toast.error("Não há itens novos para cancelar. Todos já foram lançados.");
       return;
     }
 
     // Confirmação antes de cancelar
-    if (confirm("Deseja realmente cancelar todos os itens do carrinho?")) {
-      setCart([]);
-      toast.success("Carrinho limpo com sucesso");
+    const message = launchedItems.length > 0 
+      ? `Deseja cancelar ${newItems.length} item(ns) novo(s)? Os ${launchedItems.length} item(ns) já lançado(s) serão mantidos.`
+      : "Deseja realmente cancelar todos os itens do carrinho?";
+      
+    if (confirm(message)) {
+      // Mantém apenas itens já lançados
+      setCart(launchedItems);
+      toast.success(`${newItems.length} item(ns) cancelado(s)`);
     }
   };
 
   const handleLaunchOrder = async () => {
-    if (cart.length === 0) {
-      toast.error("Adicione itens ao carrinho primeiro");
+    // Filtrar apenas itens não lançados
+    const newItems = cart.filter(item => item.status !== 'delivered');
+    
+    if (newItems.length === 0) {
+      toast.error("Todos os itens já foram lançados. Adicione novos itens primeiro.");
       return;
     }
 
@@ -926,8 +937,8 @@ export default function POSPage() {
         console.log('Nova comanda criada:', orderId);
       }
 
-      // Adicionar itens ao pedido
-      const orderItems = cart.map(item => {
+      // Adicionar apenas itens novos (não lançados) ao pedido
+      const orderItems = newItems.map(item => {
         // Para rodízios (IDs negativos), adicionar metadata
         if (item.item_id < 0) {
           return {
@@ -977,16 +988,31 @@ export default function POSPage() {
         // Não vamos falhar o pedido por erro de impressão
       }
 
-      // Limpar carrinho
-      setCart([]);
+      // Marcar apenas os itens recém-lançados como delivered
+      setCart(cart.map(item => {
+        // Se o item estava nos newItems (foi lançado agora), marca como delivered
+        if (newItems.some(newItem => 
+          newItem.item_id === item.item_id && 
+          newItem.quantity === item.quantity &&
+          newItem.status === item.status
+        )) {
+          return {
+            ...item,
+            status: 'delivered' as const,
+            order_id: orderId
+          };
+        }
+        // Mantém itens já lançados como estão
+        return item;
+      }));
       
-      // Mudar para aba de pedidos
-      setActiveTab('orders');
+      // Manter na aba do carrinho para continuar adicionando
+      setActiveTab('cart');
       
       toast.success(
         <div className="flex items-center gap-2">
           <CheckCircle2 className="h-5 w-5" />
-          <span>Pedido lançado com sucesso!</span>
+          <span>Pedido lançado! Você pode continuar adicionando itens.</span>
         </div>
       );
     } catch (error: any) {
@@ -997,6 +1023,16 @@ export default function POSPage() {
 
   const calculateTotal = () => {
     return cart.reduce((sum, item) => sum + item.total_price, 0);
+  };
+
+  const calculateNewItemsTotal = () => {
+    return cart.filter(item => item.status !== 'delivered')
+      .reduce((sum, item) => sum + item.total_price, 0);
+  };
+
+  const calculateLaunchedTotal = () => {
+    return cart.filter(item => item.status === 'delivered')
+      .reduce((sum, item) => sum + item.total_price, 0);
   };
 
   // Process printing for order items
@@ -2232,8 +2268,18 @@ export default function POSPage() {
                               transition={{ duration: 0.2 }}
                               className="mb-2"
                             >
-                              <Card className="bg-gray-800/50 backdrop-blur border-gray-700 hover:bg-gray-800/70 transition-all">
-                                <CardContent className="p-3">
+                              <Card className={`backdrop-blur transition-all ${
+                                item.status === 'delivered' 
+                                  ? 'bg-green-900/30 border-green-700/50 opacity-75' 
+                                  : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'
+                              }`}>
+                                <CardContent className="p-3 relative">
+                                  {item.status === 'delivered' && (
+                                    <div className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                                      <CheckCircle2 className="h-3 w-3" />
+                                      Lançado
+                                    </div>
+                                  )}
                                   <div className="flex items-center justify-between">
                                     {/* Foto do produto */}
                                     <div className="w-14 h-14 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
@@ -2326,14 +2372,22 @@ export default function POSPage() {
                         className="mt-4"
                       >
                         <div className="border-t border-gray-700 pt-4 space-y-2">
-                          <div className="flex justify-between text-xl">
-                            <span>Subtotal:</span>
-                            <span>{formatCurrency(calculateTotal())}</span>
-                          </div>
+                          {calculateLaunchedTotal() > 0 && (
+                            <div className="flex justify-between text-sm text-green-400">
+                              <span>Lançado:</span>
+                              <span>{formatCurrency(calculateLaunchedTotal())}</span>
+                            </div>
+                          )}
+                          {calculateNewItemsTotal() > 0 && (
+                            <div className="flex justify-between text-lg">
+                              <span>Novos Itens:</span>
+                              <span>{formatCurrency(calculateNewItemsTotal())}</span>
+                            </div>
+                          )}
                           <div className="flex justify-between text-2xl font-bold text-orange-400">
                             <span className="flex items-center gap-2">
                               <Calculator className="h-6 w-6" />
-                              Total:
+                              Total Geral:
                             </span>
                             <motion.span
                               key={calculateTotal()}
