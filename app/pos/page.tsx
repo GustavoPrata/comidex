@@ -485,20 +485,24 @@ export default function POSPage() {
         const cartItems = orderData.items?.map((orderItem: any) => {
           // Handle rodízio items (no item_id)
           if (!orderItem.item_id) {
-            return {
+            // Extract rodízio metadata if available
+            const metadata = orderItem.metadata || {};
+            const rodizioItem = {
               item_id: -1 * Date.now() - Math.random() * 1000, // Generate negative ID for cart
               quantity: orderItem.quantity,
               unit_price: orderItem.unit_price,
               total_price: orderItem.total_price,
               status: orderItem.status || 'novo',
+              icon: metadata.icon || null, // Recover icon from metadata
               item: {
-                name: orderItem.notes || 'Rodízio', // Get name from notes field
+                name: metadata.name || orderItem.notes || 'Rodízio', // Get name from metadata or notes
                 price: orderItem.unit_price,
                 group: {
                   type: 'rodizio'
                 }
               }
             };
+            return rodizioItem;
           }
           
           // Handle regular items
@@ -938,7 +942,12 @@ export default function POSPage() {
               unit_price: item.unit_price,
               total_price: item.total_price,
               status: item.status,
-              notes: item.item_id < 0 ? item.item?.name || null : null // Save rodízio name in notes
+              notes: item.item_id < 0 ? item.item?.name || null : null, // Save rodízio name in notes
+              metadata: item.item_id < 0 ? { 
+                type: 'rodizio',
+                icon: (item as any).icon || null,
+                name: item.item?.name || null
+              } : null // Save rodízio metadata
             }))
           );
 
@@ -973,7 +982,12 @@ export default function POSPage() {
               unit_price: item.unit_price,
               total_price: item.total_price,
               status: item.status,
-              notes: item.item_id < 0 ? item.item?.name || null : null // Save rodízio name in notes
+              notes: item.item_id < 0 ? item.item?.name || null : null, // Save rodízio name in notes
+              metadata: item.item_id < 0 ? { 
+                type: 'rodizio',
+                icon: (item as any).icon || null,
+                name: item.item?.name || null
+              } : null // Save rodízio metadata
             }))
           );
 

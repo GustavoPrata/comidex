@@ -174,6 +174,7 @@ export interface Database {
           unit_price: number
           total_price: number
           notes: string | null
+          metadata: any | null
           status: 'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled'
           created_at: string
           updated_at: string
