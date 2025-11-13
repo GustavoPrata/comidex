@@ -1056,7 +1056,7 @@ export default function POSPage() {
                   type="number"
                   value={rodizioInteiro}
                   onChange={(e) => setRodizioInteiro(Math.max(0, parseInt(e.target.value) || 0))}
-                  className="w-20 text-center bg-gray-700 border-gray-600 text-white"
+                  className="w-20 text-center bg-gray-700 border-gray-600 text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   min="0"
                   data-testid="input-rodizio-inteiro"
                 />
@@ -1101,7 +1101,7 @@ export default function POSPage() {
                   type="number"
                   value={rodizioMeio}
                   onChange={(e) => setRodizioMeio(Math.max(0, parseInt(e.target.value) || 0))}
-                  className="w-20 text-center bg-gray-700 border-gray-600 text-white"
+                  className="w-20 text-center bg-gray-700 border-gray-600 text-white [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   min="0"
                   data-testid="input-rodizio-meio"
                 />
