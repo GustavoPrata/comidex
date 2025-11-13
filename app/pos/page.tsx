@@ -591,7 +591,7 @@ export default function POSPage() {
         status: 'pending' as const,
         item: {
           id: -1 * Date.now(),
-          name: `Rodízio ${selectedRodizioGroup.name}`,
+          name: selectedRodizioGroup.name,
           group_id: selectedRodizioGroup.id,
           price: selectedRodizioGroup.price || 0,
           active: true,
@@ -614,7 +614,7 @@ export default function POSPage() {
         status: 'pending' as const,
         item: {
           id: -2 * Date.now(),
-          name: `Rodízio ${selectedRodizioGroup.name} (Meio)`,
+          name: `${selectedRodizioGroup.name} (Meio)`,
           group_id: selectedRodizioGroup.id,
           price: selectedRodizioGroup.half_price || 0,
           active: true,
