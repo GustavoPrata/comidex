@@ -1858,88 +1858,57 @@ export default function POSPage() {
         <div className="flex flex-1">
           {/* Left Panel - Carrinho e Categorias */}
           <div className="flex-1 flex flex-col p-4">
-            <Tabs defaultValue="cart" className="flex-1 flex flex-col">
-              <TabsList className="bg-gray-800 border-gray-700">
-                <TabsTrigger value="cart" className="data-[state=active]:bg-orange-600">
-                  <ShoppingCart className="mr-2 h-4 w-4" />
-                  Carrinho ({cart.length})
-                </TabsTrigger>
-                <TabsTrigger value="categories" className="data-[state=active]:bg-orange-600">
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  Produtos
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="cart" className="flex-1 flex flex-col mt-4">
-                {/* Input Section */}
-                <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
-                  <CardContent className="p-4 overflow-visible">
-                    <div className="space-y-2 relative overflow-visible">
-                      <div className="grid grid-cols-3 gap-4">
-                        <div className="col-span-2 relative">
-                          <label className="text-xs text-gray-400 mb-1 block">
-                            Buscar Produto
-                          </label>
-                          <div className="relative">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                            <Input
-                              ref={codeInputRef}
-                              value={inputValue}
-                              onChange={(e) => {
-                                setInputValue(e.target.value);
-                                setSearchQuery(e.target.value);
-                              }}
-                              onFocus={() => setActiveInput("code")}
-                              onKeyPress={(e) => {
-                                if (e.key === "Enter") {
-                                  if (searchQuery && filteredItems.length > 0) {
-                                    handleAddItem(filteredItems[0]);
-                                    setInputValue("");
-                                    setSearchQuery("");
-                                  } else {
-                                    handleAddItem();
-                                  }
-                                }
-                              }}
-                              className="bg-gray-800 border-gray-600 text-white text-2xl h-14 pl-10"
-                              placeholder="Nome ou código..."
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <label className="text-xs text-gray-400 mb-1 block">Quantidade</label>
-                          <div className="flex gap-1">
-                            <Input
-                              value={quantity}
-                              onChange={(e) => setQuantity(e.target.value)}
-                              onFocus={() => setActiveInput("quantity")}
-                              onKeyPress={(e) => e.key === "Enter" && handleAddItem()}
-                              className="bg-gray-800 border-gray-600 text-white text-2xl h-14 w-20 text-center"
-                              type="number"
-                              min="1"
-                            />
-                            <div className="flex flex-col gap-1">
-                              <Button 
-                                onClick={() => setQuantity(prev => (parseInt(prev) + 1).toString())}
-                                className="h-6 px-2 bg-gray-700 hover:bg-gray-600"
-                                size="sm"
-                              >
-                                <Plus className="h-3 w-3" />
-                              </Button>
-                              <Button 
-                                onClick={() => setQuantity(prev => Math.max(1, parseInt(prev) - 1).toString())}
-                                className="h-6 px-2 bg-gray-700 hover:bg-gray-600"
-                                size="sm"
-                              >
-                                <Minus className="h-3 w-3" />
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+            {/* Input Section com Tabs */}
+            <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
+              <CardContent className="p-3 overflow-visible">
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                      <Input
+                        ref={codeInputRef}
+                        value={inputValue}
+                        onChange={(e) => {
+                          setInputValue(e.target.value);
+                          setSearchQuery(e.target.value);
+                          setQuantity("1"); // Reset quantity to 1 when searching
+                        }}
+                        onFocus={() => setActiveInput("code")}
+                        onKeyPress={(e) => {
+                          if (e.key === "Enter") {
+                            if (searchQuery && filteredItems.length > 0) {
+                              handleAddItem(filteredItems[0]);
+                              setInputValue("");
+                              setSearchQuery("");
+                              setQuantity("1");
+                            } else {
+                              handleAddItem();
+                            }
+                          }
+                        }}
+                        className="bg-gray-800 border-gray-600 text-white text-lg h-10 pl-9"
+                        placeholder="Buscar produto..."
+                      />
+                    </div>
+                  </div>
+                  <TabsList className="bg-gray-800 border-gray-700 h-10">
+                    <TabsTrigger value="cart" className="data-[state=active]:bg-orange-600 h-full px-3">
+                      <ShoppingCart className="mr-2 h-4 w-4" />
+                      Carrinho ({cart.length})
+                    </TabsTrigger>
+                    <TabsTrigger value="categories" className="data-[state=active]:bg-orange-600 h-full px-3">
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      Produtos
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              </CardContent>
+            </Card>
 
-                      {/* Portal para Resultados da Busca em Tempo Real */}
-                      {searchQuery.length > 0 && typeof document !== 'undefined' && createPortal(
+            <Tabs defaultValue="cart" className="flex-1 flex flex-col">
+              <TabsContent value="cart" className="flex-1 flex flex-col">
+                {/* Portal para Resultados da Busca em Tempo Real */}
+                {searchQuery.length > 0 && typeof document !== 'undefined' && createPortal(
                         <div className="fixed z-[99999] bg-gray-900 rounded-lg border-2 border-orange-500 shadow-2xl max-h-[320px] overflow-hidden"
                              style={{ 
                                top: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().bottom + 8 : '50%',
@@ -2009,9 +1978,6 @@ export default function POSPage() {
                         </div>,
                         document.body
                       )}
-                    </div>
-                  </CardContent>
-                </Card>
 
                 {/* Lista de Itens Animada */}
                 <Card className="flex-1 bg-gray-900/50 backdrop-blur border-gray-700 overflow-hidden">
