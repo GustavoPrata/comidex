@@ -8,6 +8,7 @@ export interface Database {
           id: number
           name: string
           price: number | null
+          half_price: number | null
           type: 'rodizio' | 'a_la_carte' | 'bebidas'
           active: boolean
           sort_order: number

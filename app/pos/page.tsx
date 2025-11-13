@@ -74,6 +74,7 @@ interface Group {
   id: number;
   name: string;
   price: number | null;
+  half_price: number | null;
   type: 'rodizio' | 'a_la_carte' | 'bebidas';
   active: boolean;
   sort_order: number;
@@ -1050,7 +1051,7 @@ export default function POSPage() {
                 <Minus className="h-4 w-4" />
               </Button>
               
-              <div className="flex items-center gap-2">
+              <div className="flex items-center">
                 <Input
                   type="number"
                   value={rodizioInteiro}
@@ -1059,7 +1060,6 @@ export default function POSPage() {
                   min="0"
                   data-testid="input-rodizio-inteiro"
                 />
-                <span className="text-sm text-gray-400">pessoas</span>
               </div>
               
               <Button
@@ -1081,7 +1081,7 @@ export default function POSPage() {
                 Meio Rodízio
               </label>
               <span className="text-blue-400 font-bold">
-                {formatCurrency((selectedRodizioGroup?.price || 0) / 2)}
+                {formatCurrency(selectedRodizioGroup?.half_price || 0)}
               </span>
             </div>
             <div className="flex items-center justify-center gap-4">
@@ -1096,7 +1096,7 @@ export default function POSPage() {
                 <Minus className="h-4 w-4" />
               </Button>
               
-              <div className="flex items-center gap-2">
+              <div className="flex items-center">
                 <Input
                   type="number"
                   value={rodizioMeio}
@@ -1105,7 +1105,6 @@ export default function POSPage() {
                   min="0"
                   data-testid="input-rodizio-meio"
                 />
-                <span className="text-sm text-gray-400">pessoas</span>
               </div>
               
               <Button
@@ -1131,7 +1130,7 @@ export default function POSPage() {
                   {rodizioMeio > 0 && `${rodizioMeio} meio${rodizioMeio > 1 ? 's' : ''}`}
                 </div>
                 <div className="text-xl font-bold text-orange-400">
-                  {formatCurrency((rodizioInteiro * (selectedRodizioGroup?.price || 0)) + (rodizioMeio * ((selectedRodizioGroup?.price || 0) / 2)))}
+                  {formatCurrency((rodizioInteiro * (selectedRodizioGroup?.price || 0)) + (rodizioMeio * (selectedRodizioGroup?.half_price || 0)))}
                 </div>
               </div>
             </div>
@@ -2002,17 +2001,6 @@ export default function POSPage() {
                           ? `${groups.find(g => g.id === selectedGroup)?.name || ''} - Categorias` 
                           : 'Grupos de Produtos'}
                       </span>
-                      {/* BOTÃO DE TESTE TEMPORÁRIO */}
-                      <Button 
-                        onClick={() => {
-                          console.log('Teste: abrindo modal manualmente');
-                          setRodizioModal(true);
-                          setSelectedRodizioGroup(groups.find(g => g.type === 'rodizio') || null);
-                        }}
-                        className="bg-red-600 hover:bg-red-700"
-                      >
-                        TESTE MODAL
-                      </Button>
                       {selectedGroup && (
                         <Button
                           size="sm"
@@ -2054,12 +2042,10 @@ export default function POSPage() {
                                       
                                       if (!hasRodizio) {
                                         // Se não tem rodízio, abre o modal para adicionar
-                                        console.log('Abrindo modal de rodízio para:', group.name);
                                         setSelectedRodizioGroup(group);
                                         setRodizioInteiro(1);
                                         setRodizioMeio(0);
                                         setRodizioModal(true);
-                                        console.log('Estado rodizioModal deve ser true agora');
                                       } else {
                                         // Se já tem rodízio, vai para as categorias normalmente
                                         setSelectedGroup(group.id);
