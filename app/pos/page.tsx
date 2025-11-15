@@ -292,6 +292,105 @@ export default function POSPage() {
     }
   }, [screen]);
 
+  // Função para carregar pedidos existentes de uma mesa
+  const loadExistingOrderItems = async (tableId: string) => {
+    try {
+      console.log('Carregando pedidos existentes para mesa:', tableId);
+      
+      // Buscar pedidos abertos da mesa
+      const { data: orders, error: ordersError } = await supabase
+        .from('orders')
+        .select('id, order_number, status, total')
+        .eq('table_id', tableId)
+        .eq('status', 'open')
+        .single();
+
+      if (ordersError) {
+        if (ordersError.code !== 'PGRST116') { // Ignorar se não encontrar pedido
+          console.error('Erro ao buscar pedidos:', ordersError);
+        }
+        return;
+      }
+
+      if (!orders) {
+        console.log('Nenhum pedido aberto encontrado para a mesa');
+        return;
+      }
+
+      console.log('Pedido encontrado:', orders);
+      setCurrentOrder(orders);
+
+      // Buscar itens do pedido
+      const { data: orderItems, error: itemsError } = await supabase
+        .from('order_items')
+        .select(`
+          *,
+          items:item_id(
+            id,
+            name,
+            price,
+            category_id,
+            group_id,
+            description
+          )
+        `)
+        .eq('order_id', orders.id)
+        .order('created_at', { ascending: true });
+
+      if (itemsError) {
+        console.error('Erro ao buscar itens do pedido:', itemsError);
+        toast.error('Erro ao carregar itens do pedido');
+        return;
+      }
+
+      if (orderItems && orderItems.length > 0) {
+        console.log(`Carregando ${orderItems.length} itens do pedido`);
+        
+        // Converter itens do banco para o formato do carrinho
+        const cartItems: OrderItem[] = orderItems.map((orderItem: any) => {
+          // Para rodízios (item_id null)
+          if (!orderItem.item_id && orderItem.metadata) {
+            const metadata = orderItem.metadata as any;
+            return {
+              id: metadata.id || Math.random() * -1000000,
+              name: metadata.name || 'Rodízio',
+              price: orderItem.price,
+              quantity: orderItem.quantity,
+              observation: orderItem.observation || '',
+              status: 'delivered', // Itens do banco já foram lançados
+              group_id: metadata.group_id,
+              category_id: metadata.category_id,
+              description: metadata.description
+            };
+          }
+          
+          // Para itens normais
+          const item = orderItem.items as any;
+          return {
+            id: item?.id || orderItem.item_id,
+            name: item?.name || 'Item',
+            price: orderItem.price,
+            quantity: orderItem.quantity,
+            observation: orderItem.observation || '',
+            status: 'delivered', // Itens do banco já foram lançados
+            group_id: item?.group_id,
+            category_id: item?.category_id,
+            description: item?.description
+          };
+        });
+        
+        setCart(cartItems);
+        toast.success(`${cartItems.length} item(ns) carregado(s) do pedido #${orders.order_number}`);
+      } else {
+        console.log('Nenhum item encontrado no pedido');
+        setCart([]); // Limpar carrinho se não há itens
+      }
+    } catch (error) {
+      console.error('Erro ao carregar itens existentes:', error);
+      toast.error('Erro ao carregar pedido existente');
+    }
+  };
+
   // Funções de carregamento
   const loadInitialData = async () => {
     setLoading(true);
@@ -539,6 +638,10 @@ export default function POSPage() {
     if (table.current_session) {
       setCurrentSession(table.current_session);
       await loadSessionDetails(table.id);
+      
+      // Carregar itens existentes do pedido
+      await loadExistingOrderItems(table.id.toString());
+      
       setScreen('session');
       // Garante que a mesa está selecionada na sessão
       console.log('Indo para sessão com mesa:', table.id);
@@ -576,6 +679,7 @@ export default function POSPage() {
       setCurrentSession(sessionData);
       setOpenTableDialog(false);
       setCart([]);
+      setCurrentOrder(null); // Limpar order ao abrir nova mesa
       setScreen('session');
       toast.success(`Mesa ${selectedTable.number} aberta`);
       
