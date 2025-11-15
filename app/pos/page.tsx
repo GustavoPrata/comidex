@@ -352,30 +352,48 @@ export default function POSPage() {
           if (!orderItem.item_id && orderItem.metadata) {
             const metadata = orderItem.metadata as any;
             return {
-              id: metadata.id || Math.random() * -1000000,
-              name: metadata.name || 'Rodízio',
-              price: orderItem.price,
-              quantity: orderItem.quantity,
-              observation: orderItem.observation || '',
-              status: 'delivered', // Itens do banco já foram lançados
-              group_id: metadata.group_id,
-              category_id: metadata.category_id,
-              description: metadata.description
+              id: metadata.id || Math.floor(Math.random() * -1000000),
+              order_id: orders.id,
+              item_id: metadata.id || Math.floor(Math.random() * -1000000),
+              item: {
+                id: metadata.id || Math.floor(Math.random() * -1000000),
+                name: metadata.name || 'Rodízio',
+                price: orderItem.unit_price || 0,
+                group_id: metadata.group_id,
+                category_id: metadata.category_id,
+                description: metadata.description
+              },
+              quantity: orderItem.quantity || 1,
+              unit_price: orderItem.unit_price || 0,
+              total_price: (orderItem.unit_price || 0) * (orderItem.quantity || 1),
+              notes: orderItem.observation || '',
+              status: 'delivered' as const // Itens do banco já foram lançados
             };
           }
           
           // Para itens normais
           const item = orderItem.items as any;
           return {
-            id: item?.id || orderItem.item_id,
-            name: item?.name || 'Item',
-            price: orderItem.price,
-            quantity: orderItem.quantity,
-            observation: orderItem.observation || '',
-            status: 'delivered', // Itens do banco já foram lançados
-            group_id: item?.group_id,
-            category_id: item?.category_id,
-            description: item?.description
+            id: orderItem.id,
+            order_id: orders.id,
+            item_id: orderItem.item_id || 0,
+            item: item ? {
+              id: item.id,
+              name: item.name || `Item #${orderItem.item_id}`,
+              price: item.price || orderItem.unit_price || 0,
+              group_id: item.group_id,
+              category_id: item.category_id,
+              description: item.description
+            } : {
+              id: orderItem.item_id,
+              name: `Item #${orderItem.item_id}`,
+              price: orderItem.unit_price || 0
+            },
+            quantity: orderItem.quantity || 1,
+            unit_price: orderItem.unit_price || 0,
+            total_price: (orderItem.unit_price || 0) * (orderItem.quantity || 1),
+            notes: orderItem.observation || '',
+            status: 'delivered' as const // Itens do banco já foram lançados
           };
         });
         
