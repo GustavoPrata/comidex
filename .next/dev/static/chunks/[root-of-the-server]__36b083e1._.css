@@ -2003,8 +2003,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
 }
 
-.bg-green-900\/30 {
-  background-color: #14532d4d;
+.bg-green-900\/20 {
+  background-color: #14532d33;
 }
 
 .bg-muted {

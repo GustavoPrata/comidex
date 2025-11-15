@@ -361,7 +361,9 @@ export default function POSPage() {
                 price: orderItem.unit_price || 0,
                 group_id: metadata.group_id,
                 category_id: metadata.category_id,
-                description: metadata.description
+                description: metadata.description,
+                icon: metadata.icon,
+                image: metadata.image
               },
               quantity: orderItem.quantity || 1,
               unit_price: orderItem.unit_price || 0,
@@ -383,7 +385,9 @@ export default function POSPage() {
               price: item.price || orderItem.unit_price || 0,
               group_id: item.group_id,
               category_id: item.category_id,
-              description: item.description
+              description: item.description,
+              image: item.image,
+              icon: item.icon
             } : {
               id: orderItem.item_id,
               name: `Item #${orderItem.item_id}`,
@@ -1074,7 +1078,8 @@ export default function POSPage() {
               type: 'rodizio',
               icon: item.item?.icon || '',
               group_id: item.item?.group_id || 0,
-              name: item.item?.name || ''
+              name: item.item?.name || '',
+              image: item.item?.image || ''
             }
           };
         }
@@ -1295,8 +1300,10 @@ export default function POSPage() {
               notes: item.item_id < 0 ? item.item?.name || null : null, // Save rodízio name in notes
               metadata: item.item_id < 0 ? { 
                 type: 'rodizio',
-                icon: (item as any).icon || null,
-                name: item.item?.name || null
+                icon: item.item?.icon || (item as any).icon || null,
+                name: item.item?.name || null,
+                group_id: item.item?.group_id || null,
+                image: item.item?.image || null
               } : null // Save rodízio metadata
             }))
           );
@@ -1335,8 +1342,10 @@ export default function POSPage() {
               notes: item.item_id < 0 ? item.item?.name || null : null, // Save rodízio name in notes
               metadata: item.item_id < 0 ? { 
                 type: 'rodizio',
-                icon: (item as any).icon || null,
-                name: item.item?.name || null
+                icon: item.item?.icon || (item as any).icon || null,
+                name: item.item?.name || null,
+                group_id: item.item?.group_id || null,
+                image: item.item?.image || null
               } : null // Save rodízio metadata
             }))
           );
@@ -2392,16 +2401,10 @@ export default function POSPage() {
                             >
                               <Card className={`backdrop-blur transition-all ${
                                 item.status === 'delivered' 
-                                  ? 'bg-green-900/30 border-green-700/50 opacity-75' 
+                                  ? 'bg-green-900/20 border-green-700/50' 
                                   : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'
                               }`}>
-                                <CardContent className="p-3 relative">
-                                  {item.status === 'delivered' && (
-                                    <div className="absolute top-2 right-2 bg-green-600 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                                      <CheckCircle2 className="h-3 w-3" />
-                                      Lançado
-                                    </div>
-                                  )}
+                                <CardContent className="p-3">
                                   <div className="flex items-center justify-between">
                                     {/* Foto do produto */}
                                     <div className="w-14 h-14 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
@@ -2427,14 +2430,8 @@ export default function POSPage() {
                                     </div>
                                     
                                     <div className="flex-1">
-                                      <div className="font-medium text-white flex items-center gap-2">
+                                      <div className="font-medium text-white">
                                         {item.item?.name || `Produto ${item.item_id}`}
-                                        {((item as any).status === 'novo' || item.status === 'pending') && (
-                                          <Badge className="bg-yellow-600 text-xs">NOVO</Badge>
-                                        )}
-                                        {(item as any).status === 'launched' && (
-                                          <Badge className="bg-green-600 text-xs">LANÇADO</Badge>
-                                        )}
                                       </div>
                                       <div className="text-sm text-gray-400 mt-1">
                                         {formatCurrency(item.unit_price)} × {item.quantity}
