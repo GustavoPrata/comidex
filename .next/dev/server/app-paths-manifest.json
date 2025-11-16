@@ -1,7 +1,5 @@
 {
-  "/admin/items/page": "app/admin/items/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/api/notifications/route": "app/api/notifications/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
   "/pos/page": "app/pos/page.js",
   "/prompt/page": "app/prompt/page.js"
