@@ -218,6 +218,17 @@ export default function POSPage() {
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
   const [printDialog, setPrintDialog] = useState(false);
   
+  // Estados do checkout completo
+  const [checkoutDialog, setCheckoutDialog] = useState(false);
+  const [groupedItems, setGroupedItems] = useState<any[]>([]);
+  const [discountType, setDiscountType] = useState<'percentage' | 'fixed'>('percentage');
+  const [discountValue, setDiscountValue] = useState(0);
+  const [splitCount, setSplitCount] = useState(1);
+  const [payments, setPayments] = useState<any[]>([]);
+  const [calculatorValue, setCalculatorValue] = useState('');
+  const [calculatorDisplay, setCalculatorDisplay] = useState('0');
+  const [activePaymentInput, setActivePaymentInput] = useState<number | null>(null);
+  
   // Estado da aba ativa
   const [activeTab, setActiveTab] = useState<string>('cart');
   
@@ -250,7 +261,7 @@ export default function POSPage() {
         setScreen('tables');
       } else if (e.key === 'F3' && cart.length > 0) {
         e.preventDefault();
-        setPaymentDialog(true);
+        startCheckout();
       } else if (e.key === 'F4') {
         e.preventDefault();
         setPrintDialog(true);
@@ -267,6 +278,7 @@ export default function POSPage() {
         setPrintDialog(false);
         setOpenTableDialog(false);
         setCloseSessionDialog(false);
+        setCheckoutDialog(false);
       }
       
       // Atalhos da sessão
@@ -297,12 +309,14 @@ export default function POSPage() {
     try {
       console.log('Carregando pedidos existentes para mesa:', tableId);
       
-      // Buscar pedidos abertos da mesa
+      // Buscar pedidos não finalizados da mesa
       const { data: orders, error: ordersError } = await supabase
         .from('orders')
         .select('id, order_number, status, total')
         .eq('table_id', tableId)
-        .eq('status', 'open')
+        .not('status', 'in', '(completed,cancelled)')
+        .order('created_at', { ascending: false })
+        .limit(1)
         .single();
 
       if (ordersError) {
@@ -1064,6 +1078,220 @@ export default function POSPage() {
       // Mantém apenas itens já lançados
       setCart(launchedItems);
       toast.success(`${newItems.length} item(ns) cancelado(s)`);
+    }
+  };
+
+  // Função para agrupar itens duplicados
+  const groupCartItems = () => {
+    const grouped: any[] = [];
+    cart.forEach(item => {
+      if (item.status === 'cancelled') return; // Ignorar itens cancelados
+      
+      const existing = grouped.find(g => 
+        g.item_id === item.item_id && 
+        g.unit_price === item.unit_price &&
+        g.notes === item.notes
+      );
+      
+      if (existing) {
+        existing.quantity += item.quantity;
+        existing.total_price += item.total_price;
+        existing.items.push(item);
+      } else {
+        grouped.push({
+          ...item,
+          items: [item],
+          grouped_quantity: item.quantity
+        });
+      }
+    });
+    return grouped;
+  };
+
+  // Calcular total com desconto
+  const calculateTotalWithDiscount = () => {
+    const subtotal = calculateTotal();
+    if (discountType === 'percentage') {
+      return subtotal - (subtotal * discountValue / 100);
+    } else {
+      return Math.max(0, subtotal - discountValue);
+    }
+  };
+
+  // Calcular valor restante a pagar
+  const calculateRemaining = () => {
+    const total = calculateTotalWithDiscount();
+    const paid = payments.reduce((sum, p) => sum + p.amount, 0);
+    return Math.max(0, total - paid);
+  };
+
+  // Calcular troco
+  const calculateChange = () => {
+    const total = calculateTotalWithDiscount();
+    const paid = payments.reduce((sum, p) => sum + p.amount, 0);
+    return Math.max(0, paid - total);
+  };
+
+  // Adicionar pagamento
+  const addPayment = (amount: number, method: string) => {
+    const remaining = calculateRemaining();
+    if (remaining <= 0) {
+      toast.error("Conta já está totalmente paga!");
+      return;
+    }
+    
+    const paymentAmount = Math.min(amount, remaining);
+    setPayments([...payments, {
+      id: Date.now(),
+      amount: paymentAmount,
+      method: method,
+      timestamp: new Date()
+    }]);
+    
+    if (calculateRemaining() - paymentAmount <= 0) {
+      toast.success("Pagamento completo!");
+    }
+  };
+
+  // Remover pagamento
+  const removePayment = (paymentId: number) => {
+    setPayments(payments.filter(p => p.id !== paymentId));
+  };
+
+  // Iniciar checkout
+  const startCheckout = () => {
+    const grouped = groupCartItems();
+    setGroupedItems(grouped);
+    setCheckoutDialog(true);
+    setPayments([]);
+    setDiscountValue(0);
+    setSplitCount(1);
+    setCalculatorDisplay('0');
+  };
+
+  // Finalizar checkout e processar pagamento
+  const finishCheckout = async () => {
+    const remaining = calculateRemaining();
+    if (remaining > 0) {
+      toast.error(`Ainda faltam ${formatCurrency(remaining)} para pagar!`);
+      return;
+    }
+    
+    if (!selectedTable) {
+      toast.error("Mesa não encontrada!");
+      return;
+    }
+    
+    setLoading(true);
+    
+    try {
+      // Buscar pedido atual da mesa
+      const { data: order, error: orderError } = await supabase
+        .from('orders')
+        .select('id')
+        .eq('table_id', selectedTable.id)
+        .not('status', 'in', '(completed,cancelled)')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+
+      if (orderError || !order) {
+        throw new Error('Pedido não encontrado');
+      }
+
+      // Salvar pagamentos no banco
+      for (const payment of payments) {
+        await supabase
+          .from('payments')
+          .insert({
+            order_id: order.id,
+            amount: payment.amount,
+            method: payment.method,
+            status: 'completed'
+          });
+      }
+      
+      // Salvar desconto se houver
+      if (discountValue > 0) {
+        const discountAmount = discountType === 'percentage' 
+          ? calculateTotal() * discountValue / 100 
+          : discountValue;
+          
+        await supabase
+          .from('discounts')
+          .insert({
+            order_id: order.id,
+            type: discountType,
+            value: discountValue,
+            amount: discountAmount
+          });
+      }
+      
+      // Salvar divisão se houver
+      if (splitCount > 1) {
+        const amountPerPerson = calculateTotalWithDiscount() / splitCount;
+        
+        for (let i = 1; i <= splitCount; i++) {
+          await supabase
+            .from('payment_splits')
+            .insert({
+              order_id: order.id,
+              person_number: i,
+              amount: amountPerPerson
+            });
+        }
+      }
+      
+      // Atualizar ordem
+      await supabase
+        .from('orders')
+        .update({
+          payment_status: 'paid',
+          payment_method: payments.length > 1 ? 'mixed' : payments[0].method,
+          discount: discountValue > 0 ? (discountType === 'percentage' ? calculateTotal() * discountValue / 100 : discountValue) : 0,
+          status: 'completed',
+          completed_at: new Date().toISOString(),
+          total: calculateTotalWithDiscount()
+        })
+        .eq('id', order.id);
+      
+      // Atualizar mesa para disponível
+      await supabase
+        .from('tables')
+        .update({ 
+          status: 'available',
+          current_order_id: null
+        })
+        .eq('id', selectedTable.id);
+      
+      toast.success("Conta fechada com sucesso!");
+      
+      // Limpar tudo e voltar
+      setCheckoutDialog(false);
+      setPaymentDialog(false);
+      setCart([]);
+      setCurrentOrder(null);
+      setCurrentSession(null);
+      setSelectedTable(null);
+      setScreen('tables');
+      loadTables();
+      
+    } catch (error: any) {
+      console.error('Erro ao fechar conta:', error);
+      toast.error("Erro ao processar pagamento!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Reabrir mesa (cancelar checkout)
+  const reopenTable = () => {
+    if (confirm("Deseja reabrir a mesa e cancelar o fechamento?")) {
+      setCheckoutDialog(false);
+      setPayments([]);
+      setDiscountValue(0);
+      setSplitCount(1);
+      toast.success("Mesa reaberta!");
     }
   };
 
@@ -2321,13 +2549,13 @@ export default function POSPage() {
                   Imprimir (F4)
                 </Button>
                 <Button
-                  onClick={() => setPaymentDialog(true)}
+                  onClick={startCheckout}
                   disabled={loading || cart.length === 0}
                   className="bg-green-600 hover:bg-green-700"
                   size="sm"
                 >
                   <CreditCard className="mr-2 h-4 w-4" />
-                  Pagar (F3)
+                  Fechar Conta (F3)
                 </Button>
               </>
             )}
@@ -2971,6 +3199,347 @@ export default function POSPage() {
                 )}
               </Button>
             </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Dialog Checkout Completo */}
+        <Dialog open={checkoutDialog} onOpenChange={setCheckoutDialog}>
+          <DialogContent className="bg-gray-900 text-white border-gray-700 max-w-6xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center justify-between text-2xl">
+                <span className="flex items-center gap-3">
+                  <Calculator className="h-7 w-7 text-orange-400" />
+                  Fechamento de Conta - Mesa {selectedTable?.number}
+                </span>
+                <Button
+                  onClick={reopenTable}
+                  variant="outline"
+                  className="text-yellow-400 border-yellow-400 hover:bg-yellow-400/10"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Reabrir Mesa
+                </Button>
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="grid grid-cols-3 gap-6">
+              {/* Coluna 1: Resumo de Itens e Descontos */}
+              <div className="space-y-4">
+                {/* Itens Agrupados */}
+                <Card className="bg-gray-800 border-gray-700">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Resumo da Conta</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-[250px]">
+                      <div className="space-y-2">
+                        {groupedItems.map((item, idx) => (
+                          <div key={idx} className="flex justify-between items-center p-2 bg-gray-700/50 rounded">
+                            <div className="flex-1">
+                              <div className="font-medium">{item.item?.name || 'Produto'}</div>
+                              <div className="text-sm text-gray-400">
+                                {formatCurrency(item.unit_price)} × {item.quantity}
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="font-bold text-orange-400">
+                                {formatCurrency(item.total_price)}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                    
+                    {/* Totais */}
+                    <div className="mt-4 pt-4 border-t border-gray-600 space-y-2">
+                      <div className="flex justify-between">
+                        <span>Subtotal:</span>
+                        <span className="font-bold">{formatCurrency(calculateTotal())}</span>
+                      </div>
+                      
+                      {/* Desconto */}
+                      <div className="flex items-center gap-2">
+                        <span>Desconto:</span>
+                        <div className="flex gap-1">
+                          <Button
+                            size="sm"
+                            onClick={() => setDiscountType('percentage')}
+                            className={discountType === 'percentage' ? 'bg-orange-600' : 'bg-gray-700'}
+                          >
+                            %
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => setDiscountType('fixed')}
+                            className={discountType === 'fixed' ? 'bg-orange-600' : 'bg-gray-700'}
+                          >
+                            R$
+                          </Button>
+                        </div>
+                        <Input
+                          type="number"
+                          value={discountValue}
+                          onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
+                          className="w-20 h-8 bg-gray-700 border-gray-600 text-white"
+                          min="0"
+                        />
+                        {discountValue > 0 && (
+                          <span className="text-red-400">
+                            -{formatCurrency(
+                              discountType === 'percentage' 
+                                ? calculateTotal() * discountValue / 100 
+                                : discountValue
+                            )}
+                          </span>
+                        )}
+                      </div>
+                      
+                      {/* Total com Desconto */}
+                      <div className="flex justify-between text-xl font-bold">
+                        <span>Total:</span>
+                        <span className="text-orange-400">
+                          {formatCurrency(calculateTotalWithDiscount())}
+                        </span>
+                      </div>
+                      
+                      {/* Divisão */}
+                      <div className="flex items-center gap-2">
+                        <span>Dividir em:</span>
+                        <div className="flex items-center gap-1">
+                          <Button
+                            size="sm"
+                            onClick={() => setSplitCount(Math.max(1, splitCount - 1))}
+                            className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </Button>
+                          <span className="w-12 text-center font-bold">{splitCount}</span>
+                          <Button
+                            size="sm"
+                            onClick={() => setSplitCount(splitCount + 1)}
+                            className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </Button>
+                        </div>
+                        {splitCount > 1 && (
+                          <span className="text-sm text-gray-400">
+                            ({formatCurrency(calculateTotalWithDiscount() / splitCount)} cada)
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Coluna 2: Calculadora e Pagamento */}
+              <div className="space-y-4">
+                {/* Display da Calculadora */}
+                <Card className="bg-gray-800 border-gray-700">
+                  <CardContent className="p-4">
+                    <div className="bg-black rounded p-3 text-right text-3xl font-mono text-green-400">
+                      {calculatorDisplay}
+                    </div>
+                    
+                    {/* Teclado da Calculadora */}
+                    <div className="grid grid-cols-3 gap-2 mt-4">
+                      {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', 'C'].map((key) => (
+                        <Button
+                          key={key}
+                          onClick={() => {
+                            if (key === 'C') {
+                              setCalculatorDisplay('0');
+                            } else if (calculatorDisplay === '0') {
+                              setCalculatorDisplay(key);
+                            } else {
+                              setCalculatorDisplay(calculatorDisplay + key);
+                            }
+                          }}
+                          className={`h-14 text-xl font-bold ${
+                            key === 'C' ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
+                          }`}
+                        >
+                          {key}
+                        </Button>
+                      ))}
+                    </div>
+                    
+                    {/* Botões de Valor Rápido */}
+                    <div className="grid grid-cols-4 gap-2 mt-4">
+                      {[10, 20, 50, 100].map((value) => (
+                        <Button
+                          key={value}
+                          onClick={() => setCalculatorDisplay(value.toString())}
+                          className="bg-gray-700 hover:bg-gray-600"
+                        >
+                          R$ {value}
+                        </Button>
+                      ))}
+                    </div>
+                    
+                    {/* Botões de Pagamento */}
+                    <div className="grid grid-cols-2 gap-2 mt-4">
+                      <Button
+                        onClick={() => {
+                          const amount = parseFloat(calculatorDisplay) || 0;
+                          if (amount > 0) {
+                            addPayment(amount, 'cash');
+                            setCalculatorDisplay('0');
+                          }
+                        }}
+                        className="bg-green-600 hover:bg-green-700 h-12"
+                      >
+                        <DollarSign className="mr-2 h-5 w-5" />
+                        Dinheiro
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          const amount = parseFloat(calculatorDisplay) || 0;
+                          if (amount > 0) {
+                            addPayment(amount, 'credit');
+                            setCalculatorDisplay('0');
+                          }
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 h-12"
+                      >
+                        <CreditCard className="mr-2 h-5 w-5" />
+                        Crédito
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          const amount = parseFloat(calculatorDisplay) || 0;
+                          if (amount > 0) {
+                            addPayment(amount, 'debit');
+                            setCalculatorDisplay('0');
+                          }
+                        }}
+                        className="bg-purple-600 hover:bg-purple-700 h-12"
+                      >
+                        <CreditCard className="mr-2 h-5 w-5" />
+                        Débito
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          const amount = parseFloat(calculatorDisplay) || 0;
+                          if (amount > 0) {
+                            addPayment(amount, 'pix');
+                            setCalculatorDisplay('0');
+                          }
+                        }}
+                        className="bg-cyan-600 hover:bg-cyan-700 h-12"
+                      >
+                        <Smartphone className="mr-2 h-5 w-5" />
+                        PIX
+                      </Button>
+                    </div>
+                    
+                    {/* Botão Total Restante */}
+                    <Button
+                      onClick={() => setCalculatorDisplay(calculateRemaining().toString())}
+                      className="w-full mt-2 bg-orange-600 hover:bg-orange-700 h-12 text-lg"
+                    >
+                      Valor Restante: {formatCurrency(calculateRemaining())}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+              
+              {/* Coluna 3: Pagamentos Realizados */}
+              <div className="space-y-4">
+                <Card className="bg-gray-800 border-gray-700">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Pagamentos Realizados</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-[300px]">
+                      <div className="space-y-2">
+                        {payments.length === 0 ? (
+                          <div className="text-center text-gray-500 py-8">
+                            <CreditCard className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                            <p>Nenhum pagamento registrado</p>
+                          </div>
+                        ) : (
+                          payments.map((payment) => (
+                            <div key={payment.id} className="flex justify-between items-center p-3 bg-gray-700/50 rounded">
+                              <div>
+                                <div className="font-medium">
+                                  {payment.method === 'cash' && 'Dinheiro'}
+                                  {payment.method === 'credit' && 'Crédito'}
+                                  {payment.method === 'debit' && 'Débito'}
+                                  {payment.method === 'pix' && 'PIX'}
+                                </div>
+                                <div className="text-sm text-gray-400">
+                                  {format(payment.timestamp, 'HH:mm:ss')}
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="font-bold text-green-400">
+                                  {formatCurrency(payment.amount)}
+                                </span>
+                                <Button
+                                  size="sm"
+                                  onClick={() => removePayment(payment.id)}
+                                  className="h-8 w-8 p-0 bg-red-600 hover:bg-red-700"
+                                >
+                                  <X className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </ScrollArea>
+                    
+                    {/* Resumo de Pagamentos */}
+                    <div className="mt-4 pt-4 border-t border-gray-600 space-y-2">
+                      <div className="flex justify-between">
+                        <span>Total Pago:</span>
+                        <span className="font-bold text-green-400">
+                          {formatCurrency(payments.reduce((sum, p) => sum + p.amount, 0))}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Restante:</span>
+                        <span className={`font-bold ${calculateRemaining() > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                          {formatCurrency(calculateRemaining())}
+                        </span>
+                      </div>
+                      {calculateChange() > 0 && (
+                        <div className="flex justify-between">
+                          <span>Troco:</span>
+                          <span className="font-bold text-yellow-400">
+                            {formatCurrency(calculateChange())}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+                
+                {/* Botão Finalizar */}
+                <Button
+                  onClick={finishCheckout}
+                  disabled={calculateRemaining() > 0 || loading}
+                  className="w-full h-14 text-lg font-bold bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? (
+                    <RefreshCw className="h-5 w-5 animate-spin" />
+                  ) : calculateRemaining() > 0 ? (
+                    <>
+                      <AlertCircle className="mr-2 h-5 w-5" />
+                      Faltam {formatCurrency(calculateRemaining())}
+                    </>
+                  ) : (
+                    <>
+                      <Check className="mr-2 h-5 w-5" />
+                      Finalizar Pagamento
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </DialogContent>
         </Dialog>
 

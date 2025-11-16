@@ -22,7 +22,8 @@ The system is built with a modern web stack. The frontend utilizes **Next.js 15*
 
 **Feature Specifications:**
 - **Admin Panel:** Dashboard with real-time statistics, comprehensive CRUD operations for menu items (including image uploads, categorization, pricing), category management (ordering, activation/deactivation), table control (types, capacity, status), and printer configuration.
-- **POS System:** Grid-based table visualization with real-time status, session management (opening/closing), order management per table, and automatic value calculation.
+- **POS System:** Grid-based table visualization with real-time status, session management (opening/closing), order management per table, automatic value calculation, and complete checkout system.
+- **Checkout System:** Professional bill closing interface with 3-column layout featuring grouped items summary, calculator with numeric keypad, multiple payment methods (cash, credit, debit, PIX), partial payment tracking, percentage or fixed discounts, split by people functionality, payment history with removal option, table reopen capability, and automatic order/table status updates. All payment data is persisted to database.
 - **Printing System:** Manages multiple printers, queues by sector (kitchen, bar, cash register), online/offline status, and automatic order formatting. Includes a professional virtual printer system for testing and development with PDF generation and advanced configurations (paper size, DPI, margins, charset, etc.).
 - **Image Handling:** Optimized image upload system where images are saved only upon confirmation. Placeholder images for categories and products, with drag-and-drop and image enhancement features.
 - **Error Handling:** Implemented retry mechanisms with exponential backoff for Supabase data loading, ensuring reliable page loads across all admin pages.

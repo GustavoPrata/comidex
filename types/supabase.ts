@@ -208,18 +208,71 @@ export interface Database {
       payments: {
         Row: {
           id: number
-          order_id: number
+          order_id: number | null
+          session_id: number | null
           amount: number
-          payment_method: 'cash' | 'card' | 'pix'
-          status: 'pending' | 'completed' | 'failed' | 'refunded'
+          payment_method: 'cash' | 'credit' | 'debit' | 'pix'
+          status: 'pending' | 'completed' | 'failed' | 'refunded' | 'cancelled'
           reference_number: string | null
           notes: string | null
+          change_amount: number
           paid_at: string | null
           created_at: string
           updated_at: string
         }
         Insert: Omit<Database['public']['Tables']['payments']['Row'], 'id' | 'created_at' | 'updated_at'>
         Update: Partial<Database['public']['Tables']['payments']['Insert']>
+      }
+      payment_splits: {
+        Row: {
+          id: number
+          session_id: number | null
+          order_id: number | null
+          split_type: 'equal' | 'custom' | 'percentage'
+          number_of_people: number
+          person_number: number | null
+          amount_per_person: number
+          amount_paid: number
+          status: 'pending' | 'partial' | 'paid'
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['payment_splits']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['payment_splits']['Insert']>
+      }
+      discounts: {
+        Row: {
+          id: number
+          order_id: number | null
+          session_id: number | null
+          discount_type: 'percentage' | 'fixed'
+          discount_value: number
+          discount_amount: number
+          reason: string | null
+          applied_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['discounts']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['discounts']['Insert']>
+      }
+      table_sessions: {
+        Row: {
+          id: number
+          table_id: number | null
+          status: string | null
+          customer_count: number
+          opened_at: string | null
+          closed_at: string | null
+          total: number
+          final_total: number | null
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: Omit<Database['public']['Tables']['table_sessions']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['table_sessions']['Insert']>
       }
     }
   }
@@ -238,6 +291,9 @@ export type OrderItem = Database['public']['Tables']['order_items']['Row']
 export type OrderItemAdditional = Database['public']['Tables']['order_item_additionals']['Row']
 export type ItemAdditionalCategory = Database['public']['Tables']['item_additional_categories']['Row']
 export type Payment = Database['public']['Tables']['payments']['Row']
+export type PaymentSplit = Database['public']['Tables']['payment_splits']['Row']
+export type Discount = Database['public']['Tables']['discounts']['Row']
+export type TableSession = Database['public']['Tables']['table_sessions']['Row']
 export type PrintQueue = Database['public']['Tables']['print_queue']['Row']
 
 // Insert types
@@ -253,6 +309,9 @@ export type OrderItemInsert = Database['public']['Tables']['order_items']['Inser
 export type OrderItemAdditionalInsert = Database['public']['Tables']['order_item_additionals']['Insert']
 export type ItemAdditionalCategoryInsert = Database['public']['Tables']['item_additional_categories']['Insert']
 export type PaymentInsert = Database['public']['Tables']['payments']['Insert']
+export type PaymentSplitInsert = Database['public']['Tables']['payment_splits']['Insert']
+export type DiscountInsert = Database['public']['Tables']['discounts']['Insert']
+export type TableSessionInsert = Database['public']['Tables']['table_sessions']['Insert']
 export type PrintQueueInsert = Database['public']['Tables']['print_queue']['Insert']
 
 // Update types
@@ -268,4 +327,7 @@ export type OrderItemUpdate = Database['public']['Tables']['order_items']['Updat
 export type OrderItemAdditionalUpdate = Database['public']['Tables']['order_item_additionals']['Update']
 export type ItemAdditionalCategoryUpdate = Database['public']['Tables']['item_additional_categories']['Update']
 export type PaymentUpdate = Database['public']['Tables']['payments']['Update']
+export type PaymentSplitUpdate = Database['public']['Tables']['payment_splits']['Update']
+export type DiscountUpdate = Database['public']['Tables']['discounts']['Update']
+export type TableSessionUpdate = Database['public']['Tables']['table_sessions']['Update']
 export type PrintQueueUpdate = Database['public']['Tables']['print_queue']['Update']
