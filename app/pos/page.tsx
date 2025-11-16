@@ -32,7 +32,6 @@ import {
   User,
   Plus,
   Minus,
-  Trash2,
   Receipt,
   Clock,
   AlertCircle,
@@ -2813,7 +2812,13 @@ export default function POSPage() {
                                       <Button
                                         size="sm"
                                         variant="ghost"
-                                        onClick={() => handleRemoveItem(item.id!)}
+                                        onClick={() => {
+                                          if (item.status === 'cancelled') {
+                                            handleRemoveItem(item.id!); // Restaurar item cancelado
+                                          } else {
+                                            handleUpdateQuantity(item.id!, -1); // Remover/decrementar quantidade igual ao botão -
+                                          }
+                                        }}
                                         className={`h-7 w-7 p-0 ${
                                           item.status === 'cancelled'
                                             ? 'text-green-400 hover:text-green-300 hover:bg-green-900/20'
@@ -2826,7 +2831,7 @@ export default function POSPage() {
                                         {item.status === 'cancelled' ? (
                                           <RefreshCw className="h-4 w-4" />
                                         ) : (
-                                          <Trash2 className="h-4 w-4" />
+                                          <X className="h-5 w-5 font-bold" />
                                         )}
                                       </Button>
                                     </div>
