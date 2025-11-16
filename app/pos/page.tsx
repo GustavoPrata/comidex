@@ -2045,7 +2045,6 @@ export default function POSPage() {
                   <Calculator className="h-10 w-10 text-orange-400" />
                   Caixa ComideX
                 </h1>
-                <p className="text-gray-400">Sistema Profissional de Vendas</p>
               </div>
               <div className="flex gap-2">
                 <Button
