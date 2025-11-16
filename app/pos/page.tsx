@@ -3093,17 +3093,6 @@ export default function POSPage() {
           </div>
         </div>
 
-        {/* Footer com mais informações */}
-        <div className="bg-gray-900/80 backdrop-blur border-t border-gray-700 px-4 py-2 flex items-center justify-between text-xs text-gray-500">
-          <div className="flex gap-4">
-            <span>Terminal: POS-001</span>
-            <span>Operador: Admin</span>
-            <span>Pedido: #{currentOrder?.order_number || 'Novo'}</span>
-          </div>
-          <div className="flex gap-4">
-            <span>{format(new Date(), "dd/MM/yyyy HH:mm:ss", { locale: ptBR })}</span>
-          </div>
-        </div>
 
         {/* Dialogs Melhorados */}
         {/* Dialog Pagamento com Animação */}
