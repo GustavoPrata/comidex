@@ -757,7 +757,7 @@ export default function POSPage() {
         quantity: rodizioInteiro,
         unit_price: selectedRodizioGroup.price || 0,
         total_price: (selectedRodizioGroup.price || 0) * rodizioInteiro,
-        status: 'novo' as any,
+        status: 'pending' as const,
         item: {
           id: -1 * Date.now(),
           name: selectedRodizioGroup.name,
@@ -780,7 +780,7 @@ export default function POSPage() {
         quantity: rodizioMeio,
         unit_price: selectedRodizioGroup.half_price || 0,
         total_price: (selectedRodizioGroup.half_price || 0) * rodizioMeio,
-        status: 'novo' as any,
+        status: 'pending' as const,
         item: {
           id: -2 * Date.now(),
           name: `${selectedRodizioGroup.name} (Meio)`,
@@ -953,9 +953,44 @@ export default function POSPage() {
       // Find the item to check current quantity
       const currentItem = prev.find(item => item.id === cartLineId);
       
-      // If decreasing and quantity is 1, remove the item
+      // If decreasing and quantity is 1
       if (currentItem && currentItem.quantity === 1 && delta === -1) {
-        return prev.filter(item => item.id !== cartLineId);
+        // Se o item não foi lançado, remove do carrinho
+        if (currentItem.status === 'pending' || !currentItem.status) {
+          toast.success("Item removido");
+          return prev.filter(item => item.id !== cartLineId);
+        }
+        // Se o item foi lançado, marca como cancelado
+        if (currentItem.status === 'delivered') {
+          toast.error("Item marcado como cancelado");
+          return prev.map(item => {
+            if (item.id === cartLineId) {
+              return {
+                ...item,
+                status: 'cancelled' as any
+              };
+            }
+            return item;
+          });
+        }
+        // Se já está cancelado, mantém como está
+        return prev;
+      }
+      
+      // Se está aumentando quantidade de item cancelado, restaura
+      if (currentItem?.status === 'cancelled' && delta > 0) {
+        toast.success("Item restaurado");
+        return prev.map(item => {
+          if (item.id === cartLineId) {
+            return {
+              ...item,
+              status: 'delivered' as any,
+              quantity: item.quantity + delta,
+              total_price: item.unit_price * (item.quantity + delta)
+            };
+          }
+          return item;
+        });
       }
       
       // Otherwise, update the quantity
@@ -974,29 +1009,40 @@ export default function POSPage() {
   };
 
   const handleRemoveItem = (cartLineId: number) => {
-    setCart(prev => prev.map(item => {
-      if (item.id === cartLineId) {
-        // Se já foi lançado (delivered), não pode remover
-        if (item.status === 'delivered') {
-          toast.error("Item já lançado não pode ser removido");
-          return item;
-        }
-        // Marcar como cancelado em vez de remover
-        return {
-          ...item,
-          status: item.status === 'cancelled' ? 'novo' : 'cancelled' as any
-        };
-      }
-      return item;
-    }));
-    
     const item = cart.find(i => i.id === cartLineId);
-    if (item && item.status !== 'delivered') {
-      if (item.status === 'cancelled') {
-        toast.success("Item restaurado");
-      } else {
-        toast.error("Item marcado para cancelamento");
-      }
+    if (!item) return;
+    
+    // Se o item não foi lançado (pending), remove do carrinho
+    if (item.status === 'pending' || !item.status) {
+      setCart(prev => prev.filter(item => item.id !== cartLineId));
+      toast.success("Item removido");
+      return;
+    }
+    
+    // Se o item foi lançado, alterna entre delivered e cancelled
+    if (item.status === 'delivered') {
+      setCart(prev => prev.map(item => {
+        if (item.id === cartLineId) {
+          return {
+            ...item,
+            status: 'cancelled' as any
+          };
+        }
+        return item;
+      }));
+      toast.error("Item marcado como cancelado");
+    } else if (item.status === 'cancelled') {
+      // Restaurar item cancelado
+      setCart(prev => prev.map(item => {
+        if (item.id === cartLineId) {
+          return {
+            ...item,
+            status: 'delivered' as any
+          };
+        }
+        return item;
+      }));
+      toast.success("Item restaurado");
     }
   };
 
@@ -2503,11 +2549,18 @@ export default function POSPage() {
                                         <Button
                                           size="sm"
                                           onClick={() => handleUpdateQuantity(item.id!, -1)}
-                                          className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
+                                          className={`h-7 w-7 p-0 ${
+                                            item.status === 'cancelled' 
+                                              ? 'bg-gray-800 opacity-50 cursor-not-allowed' 
+                                              : 'bg-gray-700 hover:bg-gray-600'
+                                          }`}
+                                          disabled={item.status === 'cancelled'}
                                         >
                                           <Minus className="h-3 w-3" />
                                         </Button>
-                                        <span className="w-8 text-center font-medium">
+                                        <span className={`w-8 text-center font-medium ${
+                                          item.status === 'cancelled' ? 'text-red-500 line-through' : ''
+                                        }`}>
                                           {item.quantity}
                                         </span>
                                         <Button
@@ -2520,7 +2573,11 @@ export default function POSPage() {
                                       </div>
                                       
                                       <div className="text-right">
-                                        <div className="font-bold text-lg text-orange-400">
+                                        <div className={`font-bold text-lg ${
+                                          item.status === 'cancelled' 
+                                            ? 'text-red-500 line-through' 
+                                            : 'text-orange-400'
+                                        }`}>
                                           {formatCurrency(item.total_price)}
                                         </div>
                                       </div>
