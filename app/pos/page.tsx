@@ -2689,12 +2689,12 @@ export default function POSPage() {
                                 whileTap={{ scale: 0.98 }}
                               >
                                 <Card
-                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden h-[180px] flex flex-col"
+                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden"
                                   onClick={() => handleAddItem(item)}
                                 >
-                                  {/* Foto do produto com proporção 16:9 */}
-                                  <div className="relative w-full" style={{ paddingBottom: '56.25%' /* 16:9 aspect ratio */ }}>
-                                    <div className="absolute inset-0 bg-gray-900 overflow-hidden rounded-t-lg">
+                                  <CardContent className="p-3">
+                                    {/* Foto do produto - tamanho fixo pequeno */}
+                                    <div className="w-full h-20 bg-gray-900 rounded-lg overflow-hidden mb-2">
                                       {item.image ? (
                                         <img
                                           src={item.image}
@@ -2707,18 +2707,17 @@ export default function POSPage() {
                                         </div>
                                       )}
                                     </div>
-                                  </div>
-                                  <CardContent className="p-2 flex-1 flex flex-col justify-between">
-                                    <div>
-                                      <div className="font-medium text-white text-xs line-clamp-1">
+                                    {/* Informações do produto */}
+                                    <div className="space-y-1">
+                                      <div className="font-medium text-white text-sm line-clamp-2">
                                         {item.name}
                                       </div>
-                                      <div className="text-xs text-gray-500 mt-0.5">
-                                        #{item.id}
+                                      <div className="text-xs text-gray-500">
+                                        Código: {item.id}
                                       </div>
-                                    </div>
-                                    <div className="font-bold text-orange-400 text-sm mt-1">
-                                      {formatCurrency(item.price || 0)}
+                                      <div className="font-bold text-orange-400 text-sm pt-1">
+                                        {formatCurrency(item.price || 0)}
+                                      </div>
                                     </div>
                                   </CardContent>
                                 </Card>
