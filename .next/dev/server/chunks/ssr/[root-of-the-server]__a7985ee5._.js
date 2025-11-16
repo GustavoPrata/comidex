@@ -5717,7 +5717,7 @@ function POSPage() {
                                                                         },
                                                                         className: "mb-2",
                                                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
-                                                                            className: `backdrop-blur transition-all ${item.status === 'delivered' ? 'bg-green-900/20 border-green-700/50' : item.status === 'cancelled' ? 'bg-red-900/20 border-red-700/50 opacity-75' : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'}`,
+                                                                            className: `backdrop-blur transition-all ${item.status === 'delivered' ? 'bg-green-900/20 border-green-700/50' : item.status === 'cancelled' ? 'bg-red-900/30 border-red-600' : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'}`,
                                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
                                                                                 className: "p-3",
                                                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -5779,7 +5779,7 @@ function POSPage() {
                                                                                             className: "flex-1",
                                                                                             children: [
                                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                                    className: `font-medium ${item.status === 'cancelled' ? 'text-red-400 line-through decoration-2' : 'text-white'}`,
+                                                                                                    className: `font-medium ${item.status === 'cancelled' ? 'text-red-500 line-through decoration-red-600 decoration-2' : 'text-white'}`,
                                                                                                     children: item.item?.name || `Produto ${item.item_id}`
                                                                                                 }, void 0, false, {
                                                                                                     fileName: "[project]/app/pos/page.tsx",
@@ -5787,7 +5787,7 @@ function POSPage() {
                                                                                                     columnNumber: 39
                                                                                                 }, this),
                                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                                    className: `text-sm mt-1 ${item.status === 'cancelled' ? 'text-red-300 line-through' : 'text-gray-400'}`,
+                                                                                                    className: `text-sm mt-1 ${item.status === 'cancelled' ? 'text-red-400 line-through decoration-red-600' : 'text-gray-400'}`,
                                                                                                     children: [
                                                                                                         formatCurrency(item.unit_price),
                                                                                                         " × ",
@@ -5799,7 +5799,7 @@ function POSPage() {
                                                                                                     columnNumber: 39
                                                                                                 }, this),
                                                                                                 item.status === 'cancelled' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                                    className: "text-xs text-red-500 font-bold mt-1",
+                                                                                                    className: "text-xs text-red-600 font-bold mt-1 uppercase",
                                                                                                     children: "CANCELADO"
                                                                                                 }, void 0, false, {
                                                                                                     fileName: "[project]/app/pos/page.tsx",

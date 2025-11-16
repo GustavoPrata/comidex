@@ -2448,7 +2448,7 @@ export default function POSPage() {
                                 item.status === 'delivered' 
                                   ? 'bg-green-900/20 border-green-700/50'
                                   : item.status === 'cancelled'
-                                  ? 'bg-red-900/20 border-red-700/50 opacity-75'
+                                  ? 'bg-red-900/30 border-red-600'
                                   : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'
                               }`}>
                                 <CardContent className="p-3">
@@ -2479,20 +2479,20 @@ export default function POSPage() {
                                     <div className="flex-1">
                                       <div className={`font-medium ${
                                         item.status === 'cancelled' 
-                                          ? 'text-red-400 line-through decoration-2' 
+                                          ? 'text-red-500 line-through decoration-red-600 decoration-2' 
                                           : 'text-white'
                                       }`}>
                                         {item.item?.name || `Produto ${item.item_id}`}
                                       </div>
                                       <div className={`text-sm mt-1 ${
                                         item.status === 'cancelled' 
-                                          ? 'text-red-300 line-through' 
+                                          ? 'text-red-400 line-through decoration-red-600' 
                                           : 'text-gray-400'
                                       }`}>
                                         {formatCurrency(item.unit_price)} × {item.quantity}
                                       </div>
                                       {item.status === 'cancelled' && (
-                                        <div className="text-xs text-red-500 font-bold mt-1">
+                                        <div className="text-xs text-red-600 font-bold mt-1 uppercase">
                                           CANCELADO
                                         </div>
                                       )}
