@@ -332,8 +332,7 @@ export default function POSPage() {
             category_id,
             group_id,
             description,
-            image,
-            icon
+            image
           )
         `)
         .eq('order_id', orders.id)
@@ -388,8 +387,7 @@ export default function POSPage() {
               group_id: item.group_id,
               category_id: item.category_id,
               description: item.description,
-              image: item.image,
-              icon: item.icon
+              image: item.image
             } : {
               id: orderItem.item_id,
               name: `Item #${orderItem.item_id}`,
