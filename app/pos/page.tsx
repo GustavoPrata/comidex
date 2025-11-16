@@ -3050,8 +3050,8 @@ export default function POSPage() {
                                   onClick={() => handleAddItem(item)}
                                 >
                                   <CardContent className="p-3 h-full flex flex-col">
-                                    {/* Foto do produto - tamanho fixo com aspect ratio */}
-                                    <div className="relative w-full aspect-[4/3] bg-gray-900 rounded-lg overflow-hidden mb-2">
+                                    {/* Foto do produto - tamanho fixo menor */}
+                                    <div className="relative w-full h-16 bg-gray-900 rounded-lg overflow-hidden mb-2 flex-shrink-0">
                                       {item.image ? (
                                         <img
                                           src={item.image}
@@ -3060,7 +3060,7 @@ export default function POSPage() {
                                         />
                                       ) : (
                                         <div className="absolute inset-0 flex items-center justify-center text-gray-600">
-                                          <Package className="h-12 w-12" />
+                                          <Package className="h-8 w-8" />
                                         </div>
                                       )}
                                     </div>

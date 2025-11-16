@@ -784,10 +784,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   display: none;
 }
 
-.aspect-\[4\/3\] {
-  aspect-ratio: 4 / 3;
-}
-
 .h-0 {
   height: 0;
 }
