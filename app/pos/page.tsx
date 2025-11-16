@@ -974,8 +974,30 @@ export default function POSPage() {
   };
 
   const handleRemoveItem = (cartLineId: number) => {
-    setCart(prev => prev.filter(item => item.id !== cartLineId));
-    toast.success("Item removido");
+    setCart(prev => prev.map(item => {
+      if (item.id === cartLineId) {
+        // Se já foi lançado (delivered), não pode remover
+        if (item.status === 'delivered') {
+          toast.error("Item já lançado não pode ser removido");
+          return item;
+        }
+        // Marcar como cancelado em vez de remover
+        return {
+          ...item,
+          status: item.status === 'cancelled' ? 'novo' : 'cancelled' as any
+        };
+      }
+      return item;
+    }));
+    
+    const item = cart.find(i => i.id === cartLineId);
+    if (item && item.status !== 'delivered') {
+      if (item.status === 'cancelled') {
+        toast.success("Item restaurado");
+      } else {
+        toast.error("Item marcado para cancelamento");
+      }
+    }
   };
 
   const handleCancelOrder = () => {
@@ -1000,11 +1022,17 @@ export default function POSPage() {
   };
 
   const handleLaunchOrder = async () => {
-    // Filtrar apenas itens não lançados
-    const newItems = cart.filter(item => item.status !== 'delivered');
+    // Filtrar apenas itens não lançados e não cancelados
+    const newItems = cart.filter(item => item.status !== 'delivered' && item.status !== 'cancelled');
+    const cancelledItems = cart.filter(item => item.status === 'cancelled');
     
-    if (newItems.length === 0) {
+    if (newItems.length === 0 && cancelledItems.length === 0) {
       toast.error("Todos os itens já foram lançados. Adicione novos itens primeiro.");
+      return;
+    }
+    
+    if (newItems.length === 0 && cancelledItems.length > 0) {
+      toast.error("Apenas itens cancelados no carrinho. Adicione novos itens ou restaure os cancelados.");
       return;
     }
 
@@ -1156,16 +1184,23 @@ export default function POSPage() {
   };
 
   const calculateTotal = () => {
-    return cart.reduce((sum, item) => sum + item.total_price, 0);
+    return cart
+      .filter(item => item.status !== 'cancelled')
+      .reduce((sum, item) => sum + item.total_price, 0);
   };
 
   const calculateNewItemsTotal = () => {
-    return cart.filter(item => item.status !== 'delivered')
+    return cart.filter(item => item.status !== 'delivered' && item.status !== 'cancelled')
       .reduce((sum, item) => sum + item.total_price, 0);
   };
 
   const calculateLaunchedTotal = () => {
     return cart.filter(item => item.status === 'delivered')
+      .reduce((sum, item) => sum + item.total_price, 0);
+  };
+
+  const calculateCancelledTotal = () => {
+    return cart.filter(item => item.status === 'cancelled')
       .reduce((sum, item) => sum + item.total_price, 0);
   };
 
@@ -1373,10 +1408,10 @@ export default function POSPage() {
         })
         .eq('id', currentSession.id);
 
-      // Update cart items status to 'delivered' after saving
+      // Update cart items status to 'delivered' after saving (except for cancelled items)
       setCart(prevCart => prevCart.map(item => ({
         ...item,
-        status: 'delivered'
+        status: item.status === 'cancelled' ? 'cancelled' : 'delivered'
       })));
       
       toast.success("Pedido salvo com sucesso");
@@ -2411,7 +2446,9 @@ export default function POSPage() {
                             >
                               <Card className={`backdrop-blur transition-all ${
                                 item.status === 'delivered' 
-                                  ? 'bg-green-900/20 border-green-700/50' 
+                                  ? 'bg-green-900/20 border-green-700/50'
+                                  : item.status === 'cancelled'
+                                  ? 'bg-red-900/20 border-red-700/50 opacity-75'
                                   : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'
                               }`}>
                                 <CardContent className="p-3">
@@ -2440,12 +2477,25 @@ export default function POSPage() {
                                     </div>
                                     
                                     <div className="flex-1">
-                                      <div className="font-medium text-white">
+                                      <div className={`font-medium ${
+                                        item.status === 'cancelled' 
+                                          ? 'text-red-400 line-through decoration-2' 
+                                          : 'text-white'
+                                      }`}>
                                         {item.item?.name || `Produto ${item.item_id}`}
                                       </div>
-                                      <div className="text-sm text-gray-400 mt-1">
+                                      <div className={`text-sm mt-1 ${
+                                        item.status === 'cancelled' 
+                                          ? 'text-red-300 line-through' 
+                                          : 'text-gray-400'
+                                      }`}>
                                         {formatCurrency(item.unit_price)} × {item.quantity}
                                       </div>
+                                      {item.status === 'cancelled' && (
+                                        <div className="text-xs text-red-500 font-bold mt-1">
+                                          CANCELADO
+                                        </div>
+                                      )}
                                     </div>
                                     
                                     <div className="flex items-center gap-3">
@@ -2479,9 +2529,20 @@ export default function POSPage() {
                                         size="sm"
                                         variant="ghost"
                                         onClick={() => handleRemoveItem(item.id!)}
-                                        className="h-7 w-7 p-0 text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                                        className={`h-7 w-7 p-0 ${
+                                          item.status === 'cancelled'
+                                            ? 'text-green-400 hover:text-green-300 hover:bg-green-900/20'
+                                            : item.status === 'delivered'
+                                            ? 'text-gray-500 cursor-not-allowed opacity-50'
+                                            : 'text-red-400 hover:text-red-300 hover:bg-red-900/20'
+                                        }`}
+                                        disabled={item.status === 'delivered'}
                                       >
-                                        <Trash2 className="h-4 w-4" />
+                                        {item.status === 'cancelled' ? (
+                                          <RefreshCw className="h-4 w-4" />
+                                        ) : (
+                                          <Trash2 className="h-4 w-4" />
+                                        )}
                                       </Button>
                                     </div>
                                   </div>
@@ -2505,6 +2566,12 @@ export default function POSPage() {
                             <div className="flex justify-between text-sm text-green-400">
                               <span>Lançado:</span>
                               <span>{formatCurrency(calculateLaunchedTotal())}</span>
+                            </div>
+                          )}
+                          {calculateCancelledTotal() > 0 && (
+                            <div className="flex justify-between text-sm text-red-400 line-through">
+                              <span>Cancelado:</span>
+                              <span>{formatCurrency(calculateCancelledTotal())}</span>
                             </div>
                           )}
                           {calculateNewItemsTotal() > 0 && (
