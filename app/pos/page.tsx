@@ -331,7 +331,9 @@ export default function POSPage() {
             price,
             category_id,
             group_id,
-            description
+            description,
+            image,
+            icon
           )
         `)
         .eq('order_id', orders.id)
@@ -865,6 +867,7 @@ export default function POSPage() {
     }
     
     const newItem: OrderItem = {
+      id: Date.now() + Math.random(), // ID único para cada linha do carrinho
       item_id: item.id,
       item: item,
       quantity: qty,
@@ -874,10 +877,15 @@ export default function POSPage() {
     };
 
     setCart(prev => {
-      const existing = prev.find(c => c.item_id === item.id);
+      // Procurar apenas por itens NÃO lançados para mesclar
+      const existing = prev.find(c => 
+        c.item_id === item.id && c.status !== 'delivered'
+      );
+      
       if (existing) {
+        // Mesclar apenas com itens novos
         return prev.map(c => 
-          c.item_id === item.id 
+          c.id === existing.id 
             ? { 
                 ...c, 
                 quantity: c.quantity + qty, 
@@ -886,6 +894,7 @@ export default function POSPage() {
             : c
         );
       } else {
+        // Sempre criar nova linha - não mesclar com itens lançados
         return [...prev, newItem];
       }
     });
@@ -941,19 +950,19 @@ export default function POSPage() {
     codeInputRef.current?.focus();
   };
 
-  const handleUpdateQuantity = (itemId: number, delta: number) => {
+  const handleUpdateQuantity = (cartLineId: number, delta: number) => {
     setCart(prev => {
       // Find the item to check current quantity
-      const currentItem = prev.find(item => item.item_id === itemId);
+      const currentItem = prev.find(item => item.id === cartLineId);
       
       // If decreasing and quantity is 1, remove the item
       if (currentItem && currentItem.quantity === 1 && delta === -1) {
-        return prev.filter(item => item.item_id !== itemId);
+        return prev.filter(item => item.id !== cartLineId);
       }
       
       // Otherwise, update the quantity
       return prev.map(item => {
-        if (item.item_id === itemId) {
+        if (item.id === cartLineId) {
           const newQty = Math.max(1, item.quantity + delta);
           return {
             ...item,
@@ -966,8 +975,8 @@ export default function POSPage() {
     });
   };
 
-  const handleRemoveItem = (itemId: number) => {
-    setCart(prev => prev.filter(item => item.item_id !== itemId));
+  const handleRemoveItem = (cartLineId: number) => {
+    setCart(prev => prev.filter(item => item.id !== cartLineId));
     toast.success("Item removido");
   };
 
@@ -2442,7 +2451,7 @@ export default function POSPage() {
                                       <div className="flex items-center gap-1">
                                         <Button
                                           size="sm"
-                                          onClick={() => handleUpdateQuantity(item.item_id, -1)}
+                                          onClick={() => handleUpdateQuantity(item.id!, -1)}
                                           className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
                                         >
                                           <Minus className="h-3 w-3" />
@@ -2452,7 +2461,7 @@ export default function POSPage() {
                                         </span>
                                         <Button
                                           size="sm"
-                                          onClick={() => handleUpdateQuantity(item.item_id, 1)}
+                                          onClick={() => handleUpdateQuantity(item.id!, 1)}
                                           className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
                                         >
                                           <Plus className="h-3 w-3" />
@@ -2468,7 +2477,7 @@ export default function POSPage() {
                                       <Button
                                         size="sm"
                                         variant="ghost"
-                                        onClick={() => handleRemoveItem(item.item_id)}
+                                        onClick={() => handleRemoveItem(item.id!)}
                                         className="h-7 w-7 p-0 text-red-400 hover:text-red-300 hover:bg-red-900/20"
                                       >
                                         <Trash2 className="h-4 w-4" />
