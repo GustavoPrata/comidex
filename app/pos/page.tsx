@@ -2668,14 +2668,12 @@ export default function POSPage() {
                           {categories
                             .filter((c) => c.active && c.group_id === selectedGroup)
                             .map((category) => {
-                              const Icon = categoryIcons[category.name] || Package;
                               return (
                                 <Button
                                   key={category.id}
                                   onClick={() => setSelectedCategory(category.id)}
                                   className={`${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
                                 >
-                                  <Icon className="mr-2 h-4 w-4" />
                                   {category.name}
                                 </Button>
                               );
