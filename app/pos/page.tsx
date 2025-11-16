@@ -2805,7 +2805,7 @@ export default function POSPage() {
                         </div>
                         
                         <ScrollArea className="h-[400px]">
-                          <div className="grid grid-cols-2 gap-2">
+                          <div className="grid grid-cols-3 gap-3">
                             {filteredItems.map((item) => (
                               <motion.div
                                 key={item.id}
@@ -2813,33 +2813,35 @@ export default function POSPage() {
                                 whileTap={{ scale: 0.98 }}
                               >
                                 <Card
-                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden"
+                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden h-full"
                                   onClick={() => handleAddItem(item)}
                                 >
-                                  <CardContent className="p-3">
-                                    {/* Foto do produto - tamanho fixo pequeno */}
-                                    <div className="w-full h-20 bg-gray-900 rounded-lg overflow-hidden mb-2">
+                                  <CardContent className="p-3 h-full flex flex-col">
+                                    {/* Foto do produto - tamanho fixo com aspect ratio */}
+                                    <div className="relative w-full aspect-[4/3] bg-gray-900 rounded-lg overflow-hidden mb-2">
                                       {item.image ? (
                                         <img
                                           src={item.image}
                                           alt={item.name}
-                                          className="w-full h-full object-cover"
+                                          className="absolute inset-0 w-full h-full object-contain"
                                         />
                                       ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-gray-600">
-                                          <Package className="h-8 w-8" />
+                                        <div className="absolute inset-0 flex items-center justify-center text-gray-600">
+                                          <Package className="h-12 w-12" />
                                         </div>
                                       )}
                                     </div>
                                     {/* Informações do produto */}
-                                    <div className="space-y-1">
-                                      <div className="font-medium text-white text-sm line-clamp-2">
-                                        {item.name}
+                                    <div className="flex-1 flex flex-col justify-between">
+                                      <div>
+                                        <div className="font-medium text-white text-sm line-clamp-2 min-h-[2.5rem]">
+                                          {item.name}
+                                        </div>
+                                        <div className="text-xs text-gray-500 mt-1">
+                                          Código: {item.id}
+                                        </div>
                                       </div>
-                                      <div className="text-xs text-gray-500">
-                                        Código: {item.id}
-                                      </div>
-                                      <div className="font-bold text-orange-400 text-sm pt-1">
+                                      <div className="font-bold text-orange-400 text-base pt-2">
                                         {formatCurrency(item.price || 0)}
                                       </div>
                                     </div>
