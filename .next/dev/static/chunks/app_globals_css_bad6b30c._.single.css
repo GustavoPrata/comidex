@@ -741,6 +741,13 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-top: 2rem;
 }
 
+.line-clamp-1 {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
 .block {
   display: block;
 }

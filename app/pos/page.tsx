@@ -2688,11 +2688,25 @@ export default function POSPage() {
                                 whileTap={{ scale: 0.98 }}
                               >
                                 <Card
-                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all"
+                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden"
                                   onClick={() => handleAddItem(item)}
                                 >
+                                  {/* Foto do produto */}
+                                  <div className="h-24 bg-gray-900 overflow-hidden">
+                                    {item.image ? (
+                                      <img
+                                        src={item.image}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    ) : (
+                                      <div className="w-full h-full flex items-center justify-center text-gray-600">
+                                        <Package className="h-10 w-10" />
+                                      </div>
+                                    )}
+                                  </div>
                                   <CardContent className="p-3">
-                                    <div className="font-medium text-white text-sm">
+                                    <div className="font-medium text-white text-sm line-clamp-1">
                                       {item.name}
                                     </div>
                                     <div className="text-xs text-gray-400 mt-1">
