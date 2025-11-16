@@ -2749,12 +2749,14 @@ export default function POSPage() {
                                     </div>
                                     
                                     <div className="flex-1">
-                                      <div className={`font-medium ${
-                                        item.status === 'cancelled' 
-                                          ? 'text-red-500 line-through decoration-red-600 decoration-2' 
-                                          : 'text-white'
-                                      }`}>
-                                        {item.item?.name || `Produto ${item.item_id}`}
+                                      <div className="font-medium flex items-center">
+                                        <span className={`${
+                                          item.status === 'cancelled' 
+                                            ? 'text-red-500 line-through decoration-red-600 decoration-2' 
+                                            : 'text-white'
+                                        }`}>
+                                          {item.item?.name || `Produto ${item.item_id}`}
+                                        </span>
                                         {item.status === 'cancelled' && (
                                           <span className="text-xs text-red-600 font-bold ml-2 uppercase">
                                             CANCELADO
