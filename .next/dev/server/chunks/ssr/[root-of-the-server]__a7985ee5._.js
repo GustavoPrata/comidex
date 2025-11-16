@@ -6005,8 +6005,18 @@ function POSPage() {
                                                                                             children: [
                                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                                                     className: `font-medium ${item.status === 'cancelled' ? 'text-red-500 line-through decoration-red-600 decoration-2' : 'text-white'}`,
-                                                                                                    children: item.item?.name || `Produto ${item.item_id}`
-                                                                                                }, void 0, false, {
+                                                                                                    children: [
+                                                                                                        item.item?.name || `Produto ${item.item_id}`,
+                                                                                                        item.status === 'cancelled' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                                            className: "text-xs text-red-600 font-bold ml-2 uppercase",
+                                                                                                            children: "CANCELADO"
+                                                                                                        }, void 0, false, {
+                                                                                                            fileName: "[project]/app/pos/page.tsx",
+                                                                                                            lineNumber: 2760,
+                                                                                                            columnNumber: 43
+                                                                                                        }, this)
+                                                                                                    ]
+                                                                                                }, void 0, true, {
                                                                                                     fileName: "[project]/app/pos/page.tsx",
                                                                                                     lineNumber: 2753,
                                                                                                     columnNumber: 39
@@ -6020,16 +6030,8 @@ function POSPage() {
                                                                                                     ]
                                                                                                 }, void 0, true, {
                                                                                                     fileName: "[project]/app/pos/page.tsx",
-                                                                                                    lineNumber: 2760,
+                                                                                                    lineNumber: 2765,
                                                                                                     columnNumber: 39
-                                                                                                }, this),
-                                                                                                item.status === 'cancelled' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                                    className: "text-xs text-red-600 font-bold mt-1 uppercase",
-                                                                                                    children: "CANCELADO"
-                                                                                                }, void 0, false, {
-                                                                                                    fileName: "[project]/app/pos/page.tsx",
-                                                                                                    lineNumber: 2768,
-                                                                                                    columnNumber: 41
                                                                                                 }, this)
                                                                                             ]
                                                                                         }, void 0, true, {

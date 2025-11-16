@@ -2756,6 +2756,11 @@ export default function POSPage() {
                                           : 'text-white'
                                       }`}>
                                         {item.item?.name || `Produto ${item.item_id}`}
+                                        {item.status === 'cancelled' && (
+                                          <span className="text-xs text-red-600 font-bold ml-2 uppercase">
+                                            CANCELADO
+                                          </span>
+                                        )}
                                       </div>
                                       <div className={`text-sm mt-1 ${
                                         item.status === 'cancelled' 
@@ -2764,11 +2769,6 @@ export default function POSPage() {
                                       }`}>
                                         {formatCurrency(item.unit_price)} × {item.quantity}
                                       </div>
-                                      {item.status === 'cancelled' && (
-                                        <div className="text-xs text-red-600 font-bold mt-1 uppercase">
-                                          CANCELADO
-                                        </div>
-                                      )}
                                     </div>
                                     
                                     <div className="flex items-center gap-3">
