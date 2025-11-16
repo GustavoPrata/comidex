@@ -1731,8 +1731,8 @@ export default function POSPage() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-                  <Zap className="h-10 w-10 text-orange-400" />
-                  ComideX POS Pro
+                  <ShoppingBag className="h-10 w-10 text-orange-400" />
+                  Caixa ComideX
                 </h1>
                 <p className="text-gray-400">Sistema Profissional de Vendas</p>
               </div>
