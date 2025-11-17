@@ -1225,6 +1225,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   min-width: fit-content;
 }
 
+.min-w-0 {
+  min-width: 0;
+}
+
 .max-w-2xl {
   max-width: 42rem;
 }
