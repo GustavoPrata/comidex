@@ -968,7 +968,6 @@ export default function POSPage() {
           status: 'open',
           opened_at: new Date().toISOString(),
           customer_count: currentSession.customer_count || 1,
-          service_type: currentSession.service_type || 'a_la_carte',
           total: 0
         })
         .select()
