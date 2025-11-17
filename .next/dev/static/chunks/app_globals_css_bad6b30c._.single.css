@@ -517,8 +517,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   bottom: 0;
 }
 
-.bottom-2 {
-  bottom: .5rem;
+.bottom-4 {
+  bottom: 1rem;
 }
 
 .bottom-full {
@@ -2311,9 +2311,9 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.via-gray-900\/50 {
+.via-gray-900\/80 {
   --tw-gradient-to: #11182700 var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), #11182780 var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-stops: var(--tw-gradient-from), #111827cc var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .via-orange-300 {

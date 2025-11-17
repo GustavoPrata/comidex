@@ -319,8 +319,8 @@ export default function POSPage() {
       }
     };
     
-    // Verificar posição inicial
-    setTimeout(handleScroll, 100);
+    // Verificar posição inicial após um pequeno delay para garantir renderização
+    setTimeout(handleScroll, 200);
     
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
@@ -3337,8 +3337,8 @@ export default function POSPage() {
                             })}
                         </div>
                         
-                        <div className="relative">
-                          <ScrollArea ref={productsScrollRef} className="h-[400px]">
+                        <div className="relative h-[400px]">
+                          <ScrollArea ref={productsScrollRef} className="h-full">
                             {filteredItems.length === 0 ? (
                               <div className="flex flex-col items-center justify-center h-full text-gray-400">
                                 <Package className="h-16 w-16 mb-4 opacity-50" />
@@ -3396,21 +3396,21 @@ export default function POSPage() {
                           </ScrollArea>
                           
                           {/* Indicador elegante de mais produtos */}
-                          {filteredItems.length > 8 && productsScrollPosition !== 'bottom' && (
-                            <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none">
-                              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
-                              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-auto text-orange-400 hover:text-orange-300 transition-all duration-300 flex flex-col items-center gap-1 cursor-pointer"
+                          {filteredItems.length > 4 && productsScrollPosition !== 'bottom' && (
+                            <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none z-10">
+                              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
+                              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-auto text-orange-400 hover:text-orange-300 transition-all duration-300 flex flex-col items-center gap-1 cursor-pointer animate-bounce"
                                    onClick={() => {
                                      const scrollContainer = productsScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
                                      if (scrollContainer) {
                                        scrollContainer.scrollTo({
                                          top: scrollContainer.scrollHeight,
-                                         behavior: 'auto'
+                                         behavior: 'smooth'
                                        });
                                      }
                                    }}>
-                                <ChevronDown className="h-5 w-5 animate-pulse" />
-                                <span className="text-[10px] uppercase tracking-wider font-medium">mais produtos</span>
+                                <ChevronDown className="h-6 w-6" />
+                                <span className="text-xs uppercase tracking-wider font-semibold bg-gray-900/80 px-2 py-1 rounded">mais produtos</span>
                               </div>
                             </div>
                           )}
