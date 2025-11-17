@@ -3020,69 +3020,106 @@ export default function POSPage() {
   else if (screen === 'session') {
     screenContent = (
       <div className="h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white flex flex-col">
-        {/* Header Melhorado */}
-        <div className="bg-gray-900/80 backdrop-blur px-4 py-3 flex items-center justify-between border-b border-gray-700">
-          <div className="flex items-center gap-4">
-            <Button
-              onClick={() => setScreen('tables')}
-              size="sm"
-              className="bg-gray-800 hover:bg-gray-700"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <div className="flex items-center gap-2">
-                <Badge className="bg-orange-600">
-                  {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
-                </Badge>
-                <Badge variant="outline" className="text-white border-white">
-                  {currentSession?.customer_count} {currentSession?.customer_count === 1 ? 'pessoa' : 'pessoas'}
-                </Badge>
+        {/* Header Melhorado com Design Aprimorado */}
+        <div className="bg-gradient-to-r from-gray-900 to-gray-800 backdrop-blur px-6 py-4 border-b-2 border-orange-600/30">
+          <div className="flex items-center justify-between">
+            {/* Lado Esquerdo - Informações da Mesa */}
+            <div className="flex items-center gap-6">
+              <Button
+                onClick={() => setScreen('tables')}
+                size="lg"
+                className="bg-gray-800 hover:bg-gray-700 border border-gray-600 h-12 px-4"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </Button>
+              
+              {/* Informação Principal da Mesa */}
+              <div className="flex items-center gap-8">
+                {/* Mesa/Balcão */}
+                <div className="flex items-center gap-3">
+                  <div className="bg-orange-600 p-3 rounded-lg">
+                    <UtensilsCrossed className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">
+                      {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
+                    </h2>
+                    <p className="text-sm text-gray-400">
+                      {selectedTable?.type === 'counter' ? 'Atendimento no balcão' : 'Atendimento na mesa'}
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Separador Visual */}
+                <div className="h-12 w-px bg-gray-600" />
+                
+                {/* Pessoas */}
+                <div className="flex items-center gap-3">
+                  <div className="bg-blue-600 p-3 rounded-lg">
+                    <Users className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">
+                      {currentSession?.customer_count || 0} {(currentSession?.customer_count || 0) === 1 ? 'Pessoa' : 'Pessoas'}
+                    </h3>
+                    <p className="text-sm text-gray-400">Capacidade: {selectedTable?.capacity || 4} pessoas</p>
+                  </div>
+                </div>
+                
+                {/* Separador Visual */}
+                <div className="h-12 w-px bg-gray-600" />
+                
+                {/* Horário */}
+                <div className="flex items-center gap-3">
+                  <div className="bg-green-600 p-3 rounded-lg">
+                    <Clock className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">
+                      {currentSession && format(new Date(currentSession.opened_at), 'HH:mm')}
+                    </h3>
+                    <p className="text-sm text-gray-400">
+                      Aberta há {currentSession && (() => {
+                        const diff = new Date().getTime() - new Date(currentSession.opened_at).getTime();
+                        const minutes = Math.floor(diff / 60000);
+                        const hours = Math.floor(minutes / 60);
+                        const mins = minutes % 60;
+                        return hours > 0 ? `${hours}h ${mins}min` : `${mins} minutos`;
+                      })()}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <p className="text-xs text-gray-400 mt-1">
-                Aberta às {currentSession && format(new Date(currentSession.opened_at), 'HH:mm')}
-              </p>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-            {/* Botão Cancelar Mesa */}
-            <Button
-              onClick={() => setCancelTableDialog(true)}
-              className="bg-red-600 hover:bg-red-700"
-              size="sm"
-            >
-              <X className="mr-2 h-4 w-4" />
-              Cancelar Mesa
-            </Button>
             
-            {/* Botão Transferir Mesa */}
-            <Button
-              onClick={() => setTransferTableDialog(true)}
-              className="bg-blue-600 hover:bg-blue-700"
-              size="sm"
-            >
-              <ArrowRight className="mr-2 h-4 w-4" />
-              Transferir
-            </Button>
-            
-            <Button
-              onClick={() => setPrintDialog(true)}
-              disabled={cart.length === 0}
-              className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed" : "bg-purple-600 hover:bg-purple-700"}
-              size="sm"
-            >
-              <Printer className="mr-2 h-4 w-4" />
-              Imprimir (F4)
-            </Button>
-            <Button
-              onClick={startCheckout}
-              disabled={loading || cart.length === 0}
-              className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"}
-              size="sm"
-            >
-              <CreditCard className="mr-2 h-4 w-4" />
-              Fechar Conta (F3)
-            </Button>
+            {/* Lado Direito - Ações */}
+            <div className="flex items-center gap-3">
+              {/* Total do Pedido */}
+              <div className="bg-gray-700/50 px-4 py-2 rounded-lg border border-gray-600 mr-4">
+                <p className="text-sm text-gray-400">Total do Pedido</p>
+                <p className="text-2xl font-bold text-orange-500">
+                  R$ {cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2).replace('.', ',')}
+                </p>
+              </div>
+              
+              {/* Botão Transferir Mesa */}
+              <Button
+                onClick={() => setTransferTableDialog(true)}
+                className="bg-blue-600 hover:bg-blue-700 h-12 px-6 text-base font-semibold"
+              >
+                <ArrowRight className="mr-2 h-5 w-5" />
+                Transferir Mesa
+              </Button>
+              
+              {/* Botão Cancelar Mesa */}
+              <Button
+                onClick={() => setCancelTableDialog(true)}
+                className="bg-red-600 hover:bg-red-700 h-12 px-6 text-base font-semibold"
+              >
+                <X className="mr-2 h-5 w-5" />
+                Cancelar Mesa
+              </Button>
+            </div>
           </div>
         </div>
 
