@@ -850,18 +850,33 @@ export default function POSPage() {
 
   // Função para cancelar todos os itens e limpar a mesa
   const handleCancelTable = async () => {
-    if (!currentSession) return;
+    if (!currentSession) {
+      toast.error("Nenhuma sessão ativa encontrada");
+      return;
+    }
     
     setLoading(true);
     try {
-      // Cancelar todos os itens da sessão
-      const { error: itemsError } = await supabase
+      // Primeiro, buscar os itens da sessão para ter certeza que existem
+      const { data: items } = await supabase
         .from('session_items')
-        .update({ status: 'cancelled' })
+        .select('*')
         .eq('session_id', currentSession.id)
-        .neq('status', 'cancelled'); // Não cancelar os já cancelados
+        .neq('status', 'cancelled');
 
-      if (itemsError) throw itemsError;
+      if (items && items.length > 0) {
+        // Cancelar todos os itens da sessão
+        const { error: itemsError } = await supabase
+          .from('session_items')
+          .update({ status: 'cancelled' })
+          .eq('session_id', currentSession.id)
+          .neq('status', 'cancelled');
+
+        if (itemsError) {
+          console.error('Erro ao cancelar itens:', itemsError);
+          throw itemsError;
+        }
+      }
 
       // Fechar a sessão
       const { error: sessionError } = await supabase
@@ -873,7 +888,10 @@ export default function POSPage() {
         })
         .eq('id', currentSession.id);
 
-      if (sessionError) throw sessionError;
+      if (sessionError) {
+        console.error('Erro ao fechar sessão:', sessionError);
+        throw sessionError;
+      }
 
       // Liberar a mesa
       const { error: tableError } = await supabase
@@ -881,7 +899,10 @@ export default function POSPage() {
         .update({ status: 'available' })
         .eq('id', currentSession.table_id);
 
-      if (tableError) throw tableError;
+      if (tableError) {
+        console.error('Erro ao liberar mesa:', tableError);
+        throw tableError;
+      }
 
       toast.success("Mesa cancelada e limpa com sucesso!");
       
@@ -893,10 +914,10 @@ export default function POSPage() {
       setSelectedTable(null);
       
       // Recarregar mesas
-      loadTables();
-    } catch (error) {
-      console.error('Erro ao cancelar mesa:', error);
-      toast.error("Erro ao cancelar mesa");
+      await loadTables();
+    } catch (error: any) {
+      console.error('Erro completo ao cancelar mesa:', error);
+      toast.error(`Erro ao cancelar mesa: ${error.message || 'Erro desconhecido'}`);
     } finally {
       setLoading(false);
     }
