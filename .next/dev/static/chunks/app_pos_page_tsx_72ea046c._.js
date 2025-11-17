@@ -5,7 +5,7 @@
   "static/chunks/_d9b0c418._.js",
   "static/chunks/node_modules_@supabase_storage-js_dist_module_434fd12f._.js",
   "static/chunks/node_modules_@supabase_auth-js_dist_module_e6c70351._.js",
-  "static/chunks/node_modules_lucide-react_dist_esm_f6dadb92._.js",
+  "static/chunks/node_modules_lucide-react_dist_esm_ad4e981f._.js",
   "static/chunks/node_modules_framer-motion_dist_es_011a2bde._.js",
   "static/chunks/node_modules_72ecaecd._.js"
 ],

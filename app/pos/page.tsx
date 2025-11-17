@@ -65,7 +65,8 @@ import {
   Armchair,
   Soup,
   Send,
-  CheckCircle2
+  CheckCircle2,
+  ArrowRight
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -222,6 +223,8 @@ export default function POSPage() {
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'pix'>('cash');
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
   const [printDialog, setPrintDialog] = useState(false);
+  const [transferTableDialog, setTransferTableDialog] = useState(false);
+  const [targetTableNumber, setTargetTableNumber] = useState('');
   
   // Estados do modal de cancelamento parcial
   const [cancelQuantityDialog, setCancelQuantityDialog] = useState(false);
@@ -825,6 +828,132 @@ export default function POSPage() {
       console.error('Erro ao abrir mesa:', error);
       const errorMessage = error?.message || error?.details || 'Erro desconhecido ao abrir mesa';
       toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para cancelar todos os itens e limpar a mesa
+  const handleCancelTable = async () => {
+    if (!currentSession) return;
+    
+    setLoading(true);
+    try {
+      // Cancelar todos os itens da sessão
+      const { error: itemsError } = await supabase
+        .from('session_items')
+        .update({ status: 'cancelled' })
+        .eq('session_id', currentSession.id)
+        .neq('status', 'cancelled'); // Não cancelar os já cancelados
+
+      if (itemsError) throw itemsError;
+
+      // Fechar a sessão
+      const { error: sessionError } = await supabase
+        .from('table_sessions')
+        .update({ 
+          status: 'closed',
+          closed_at: new Date().toISOString(),
+          total: 0
+        })
+        .eq('id', currentSession.id);
+
+      if (sessionError) throw sessionError;
+
+      // Liberar a mesa
+      const { error: tableError } = await supabase
+        .from('restaurant_tables')
+        .update({ status: 'available' })
+        .eq('id', currentSession.table_id);
+
+      if (tableError) throw tableError;
+
+      toast.success("Mesa cancelada e limpa com sucesso!");
+      
+      // Resetar estado
+      setCart([]);
+      setCurrentSession(null);
+      setCurrentOrder(null);
+      setScreen('tables');
+      setSelectedTable(null);
+      
+      // Recarregar mesas
+      loadTables();
+    } catch (error) {
+      console.error('Erro ao cancelar mesa:', error);
+      toast.error("Erro ao cancelar mesa");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Função para transferir mesa
+  const handleTransferTable = async () => {
+    if (!currentSession || !targetTableNumber) return;
+    
+    setLoading(true);
+    try {
+      // Buscar a mesa de destino
+      const { data: targetTable, error: targetError } = await supabase
+        .from('restaurant_tables')
+        .select('*')
+        .eq('number', parseInt(targetTableNumber))
+        .single();
+
+      if (targetError || !targetTable) {
+        toast.error(`Mesa ${targetTableNumber} não encontrada`);
+        return;
+      }
+
+      // Verificar se a mesa destino está livre
+      if (targetTable.status !== 'available') {
+        toast.error(`Mesa ${targetTableNumber} está ocupada`);
+        return;
+      }
+
+      // Atualizar a sessão para a nova mesa
+      const { error: sessionError } = await supabase
+        .from('table_sessions')
+        .update({ table_id: targetTable.id })
+        .eq('id', currentSession.id);
+
+      if (sessionError) throw sessionError;
+
+      // Atualizar status das mesas
+      // Liberar mesa antiga
+      const { error: oldTableError } = await supabase
+        .from('restaurant_tables')
+        .update({ status: 'available' })
+        .eq('id', currentSession.table_id);
+
+      if (oldTableError) throw oldTableError;
+
+      // Ocupar mesa nova
+      const { error: newTableError } = await supabase
+        .from('restaurant_tables')
+        .update({ status: 'occupied' })
+        .eq('id', targetTable.id);
+
+      if (newTableError) throw newTableError;
+
+      toast.success(`Mesa transferida para ${targetTableNumber} com sucesso!`);
+      
+      // Fechar o dialog e resetar
+      setTransferTableDialog(false);
+      setTargetTableNumber('');
+      
+      // Voltar para tela de mesas
+      setCart([]);
+      setCurrentSession(null);
+      setCurrentOrder(null);
+      setScreen('tables');
+      setSelectedTable(null);
+      
+      // Recarregar mesas
+      loadTables();
+    } catch (error) {
+      console.error('Erro ao transferir mesa:', error);
+      toast.error("Erro ao transferir mesa");
     } finally {
       setLoading(false);
     }
@@ -2706,14 +2835,30 @@ export default function POSPage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            {/* Botão Cancelar Mesa */}
             <Button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className="bg-gray-800 hover:bg-gray-700"
+              onClick={() => {
+                if (confirm('Tem certeza que deseja cancelar todos os itens e limpar a mesa?')) {
+                  handleCancelTable();
+                }
+              }}
+              className="bg-red-600 hover:bg-red-700"
               size="sm"
             >
-              <Search className="mr-2 h-4 w-4" />
-              Buscar (Ctrl+F)
+              <X className="mr-2 h-4 w-4" />
+              Cancelar Mesa
             </Button>
+            
+            {/* Botão Transferir Mesa */}
+            <Button
+              onClick={() => setTransferTableDialog(true)}
+              className="bg-blue-600 hover:bg-blue-700"
+              size="sm"
+            >
+              <ArrowRight className="mr-2 h-4 w-4" />
+              Transferir
+            </Button>
+            
             {cart.length === 0 ? (
               <Button
                 onClick={() => setCloseSessionDialog(true)}
@@ -4020,6 +4165,72 @@ export default function POSPage() {
                 className="flex-1 bg-red-600 hover:bg-red-700"
               >
                 Confirmar
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Dialog Transferir Mesa */}
+        <Dialog open={transferTableDialog} onOpenChange={setTransferTableDialog}>
+          <DialogContent className="bg-gray-800 text-white border-gray-700">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <ArrowRight className="h-5 w-5 text-blue-400" />
+                Transferir Mesa
+              </DialogTitle>
+              <DialogDescription className="text-gray-400">
+                Transferir todos os pedidos para outra mesa
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="py-4 space-y-4">
+              <div className="bg-blue-900/30 border border-blue-600 rounded-lg p-3 mb-4">
+                <div className="flex items-center gap-2 text-blue-400">
+                  <AlertCircle className="h-4 w-4" />
+                  <p className="text-sm">
+                    Mesa atual: {selectedTable?.number || 'N/A'}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium mb-2 block">
+                  Número da Mesa de Destino
+                </label>
+                <input
+                  type="number"
+                  value={targetTableNumber}
+                  onChange={(e) => setTargetTableNumber(e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-white"
+                  placeholder="Digite o número da mesa"
+                  autoFocus
+                />
+              </div>
+            </div>
+            
+            <DialogFooter>
+              <Button
+                onClick={() => {
+                  setTransferTableDialog(false);
+                  setTargetTableNumber('');
+                }}
+                className="bg-gray-700 hover:bg-gray-600"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={handleTransferTable}
+                disabled={loading || !targetTableNumber}
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                {loading ? (
+                  <RefreshCw className="h-4 w-4 animate-spin" />
+                ) : (
+                  <>
+                    <ArrowRight className="mr-2 h-4 w-4" />
+                    Transferir
+                  </>
+                )}
               </Button>
             </DialogFooter>
           </DialogContent>
