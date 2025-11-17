@@ -2842,27 +2842,29 @@ export default function POSPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 pt-0 relative">
-                    {/* Botões de Scroll */}
-                    {cart.length > 0 && (
-                      <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
-                        {scrollPosition !== 'top' && (
-                          <Button
-                            onClick={scrollToTop}
-                            size="icon"
-                            className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
-                          >
-                            <ChevronUp className="h-4 w-4" />
-                          </Button>
-                        )}
-                        {scrollPosition !== 'bottom' && (
-                          <Button
-                            onClick={scrollToBottom}
-                            size="icon"
-                            className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
-                          >
-                            <ChevronDown className="h-4 w-4" />
-                          </Button>
-                        )}
+                    {/* Botão de Scroll para Cima - no topo */}
+                    {cart.length > 0 && scrollPosition !== 'top' && (
+                      <div className="absolute right-2 top-0 z-10">
+                        <Button
+                          onClick={scrollToTop}
+                          size="icon"
+                          className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
+                        >
+                          <ChevronUp className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {/* Botão de Scroll para Baixo - no fundo */}
+                    {cart.length > 0 && scrollPosition !== 'bottom' && (
+                      <div className="absolute right-2 bottom-0 z-10">
+                        <Button
+                          onClick={scrollToBottom}
+                          size="icon"
+                          className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
+                        >
+                          <ChevronDown className="h-4 w-4" />
+                        </Button>
                       </div>
                     )}
                     
