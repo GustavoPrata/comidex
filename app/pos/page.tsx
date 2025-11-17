@@ -230,10 +230,16 @@ export default function POSPage() {
   // Auto scroll para o final quando adicionar novos itens
   useEffect(() => {
     if (cartScrollRef.current) {
-      const scrollContainer = cartScrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
-      if (scrollContainer) {
-        scrollContainer.scrollTop = scrollContainer.scrollHeight;
-      }
+      // Pequeno delay para garantir que o DOM atualizou
+      setTimeout(() => {
+        const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+        if (scrollContainer) {
+          scrollContainer.scrollTo({
+            top: scrollContainer.scrollHeight,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
     }
   }, [cart]);
   
