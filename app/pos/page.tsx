@@ -294,31 +294,28 @@ export default function POSPage() {
   }, [cart.length]); // Adicionado cart.length para recalcular quando mudar
   
   
-  // Auto scroll para o final apenas quando adicionar novos itens
+  // Auto scroll para o final sempre que houver mudanças no carrinho ou ao abrir
   useEffect(() => {
-    // Só faz scroll se o número de itens aumentou
-    if (cart.length > previousCartLengthRef.current) {
-      // Aguardar para garantir que a aba cart esteja renderizada
-      setTimeout(() => {
-        // Verificar se estamos na aba cart antes de fazer scroll
-        if (cartScrollRef.current) {
-          scrollToBottom();
-          // Forçar atualização da posição do scroll após adicionar item
-          setTimeout(() => {
-            const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-            if (scrollContainer) {
-              const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-              const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
-              if (isAtBottom) {
-                setScrollPosition('bottom');
-              }
+    // Aguardar para garantir que a aba cart esteja renderizada
+    setTimeout(() => {
+      // Sempre fazer scroll para o final
+      if (cartScrollRef.current) {
+        scrollToBottom();
+        // Forçar atualização da posição do scroll
+        setTimeout(() => {
+          const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+          if (scrollContainer) {
+            const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+            if (isAtBottom) {
+              setScrollPosition('bottom');
             }
-          }, 100);
-        }
-      }, 300); // Tempo suficiente para garantir renderização
-    }
+          }
+        }, 100);
+      }
+    }, 300); // Tempo suficiente para garantir renderização
     previousCartLengthRef.current = cart.length;
-  }, [cart.length]); // Removido activeTab da dependência por estar declarado depois
+  }, [cart.length]); // Sempre que o carrinho mudar
   
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
@@ -333,6 +330,17 @@ export default function POSPage() {
   
   // Estado da aba ativa
   const [activeTab, setActiveTab] = useState<string>('cart');
+  
+  // Scroll para o final quando a aba cart for ativada
+  useEffect(() => {
+    if (activeTab === 'cart' && cart.length > 0) {
+      setTimeout(() => {
+        if (cartScrollRef.current) {
+          scrollToBottom();
+        }
+      }, 100);
+    }
+  }, [activeTab, cart.length]);
   
   // Estados do modal de rodízio
   const [rodizioModal, setRodizioModal] = useState(false);
@@ -758,6 +766,12 @@ export default function POSPage() {
         }) || [];
         
         setCart(cartItems);
+        // Scroll para o final após carregar os itens
+        setTimeout(() => {
+          if (cartScrollRef.current) {
+            scrollToBottom();
+          }
+        }, 100);
       } else {
         setCart([]);
         setCurrentOrder(null);
