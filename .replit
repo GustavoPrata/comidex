@@ -118,6 +118,3 @@ author = 44958585
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "tsx server/prompt-console.ts"
-
-[agent]
-integrations = ["javascript_openai:1.0.0"]
