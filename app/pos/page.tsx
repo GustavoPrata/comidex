@@ -1582,7 +1582,14 @@ export default function POSPage() {
   const calculateTotal = () => {
     return cart
       .filter(item => item.status !== 'cancelled')
-      .reduce((sum, item) => sum + item.total_price, 0);
+      .reduce((sum, item) => {
+        // Se tem quantidade cancelada parcialmente, calcula o valor das unidades ativas
+        if (item.cancelledQuantity && item.cancelledQuantity > 0) {
+          const activeQuantity = item.quantity - item.cancelledQuantity;
+          return sum + (item.unit_price * activeQuantity);
+        }
+        return sum + item.total_price;
+      }, 0);
   };
 
   const calculateNewItemsTotal = () => {
@@ -2943,7 +2950,11 @@ export default function POSPage() {
                                           ? 'text-red-400 line-through decoration-red-600' 
                                           : 'text-gray-400'
                                       }`}>
-                                        {formatCurrency(item.unit_price)} × {item.quantity}
+                                        {formatCurrency(item.unit_price)} × {
+                                          item.cancelledQuantity && item.cancelledQuantity > 0
+                                            ? `${item.quantity - item.cancelledQuantity} (${item.cancelledQuantity} cancelado)`
+                                            : item.quantity
+                                        }
                                       </div>
                                       {/* Mostra horário de lançamento para itens lançados */}
                                       {item.launched_at && item.status === 'delivered' && (
@@ -3016,7 +3027,11 @@ export default function POSPage() {
                                             ? 'text-red-500 line-through' 
                                             : 'text-orange-400'
                                         }`}>
-                                          {formatCurrency(item.total_price)}
+                                          {formatCurrency(
+                                            item.cancelledQuantity && item.cancelledQuantity > 0
+                                              ? item.unit_price * (item.quantity - item.cancelledQuantity)
+                                              : item.total_price
+                                          )}
                                         </div>
                                       </div>
                                       
@@ -3458,12 +3473,23 @@ export default function POSPage() {
                             <div className="flex-1">
                               <div className="font-medium">{item.item?.name || 'Produto'}</div>
                               <div className="text-sm text-gray-400">
-                                {formatCurrency(item.unit_price)} × {item.quantity}
+                                {formatCurrency(item.unit_price)} × {
+                                  item.cancelledQuantity && item.cancelledQuantity > 0
+                                    ? `${item.quantity - item.cancelledQuantity}`
+                                    : item.quantity
+                                }
+                                {item.cancelledQuantity && item.cancelledQuantity > 0 && (
+                                  <span className="text-red-400"> ({item.cancelledQuantity} cancelado)</span>
+                                )}
                               </div>
                             </div>
                             <div className="text-right">
                               <div className="font-bold text-orange-400">
-                                {formatCurrency(item.total_price)}
+                                {formatCurrency(
+                                  item.cancelledQuantity && item.cancelledQuantity > 0
+                                    ? item.unit_price * (item.quantity - item.cancelledQuantity)
+                                    : item.total_price
+                                )}
                               </div>
                             </div>
                           </div>
