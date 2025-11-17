@@ -2865,31 +2865,7 @@ export default function POSPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 pt-0 relative">
-                    {/* Botões de Scroll integrados à barra */}
-                    {cart.length > 0 && (
-                      <>
-                        {scrollPosition !== 'top' && (
-                          <button
-                            onClick={scrollToTop}
-                            className="absolute right-3 top-0 z-10 bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded-b-md transition-colors"
-                            title="Ir para o início"
-                          >
-                            <ChevronUp className="h-4 w-4" />
-                          </button>
-                        )}
-                        {scrollPosition !== 'bottom' && (
-                          <button
-                            onClick={scrollToBottom}
-                            className="absolute right-3 bottom-0 z-10 bg-orange-600 hover:bg-orange-500 text-white px-2 py-1 rounded-t-md transition-colors"
-                            title="Ir para o final"
-                          >
-                            <ChevronDown className="h-4 w-4" />
-                          </button>
-                        )}
-                      </>
-                    )}
-                    
-                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-10" style={{ willChange: 'scroll-position' }}>
+                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4" style={{ willChange: 'scroll-position' }}>
                       {cart.length === 0 ? (
                         <div className="flex items-center justify-center h-full">
                           <div className="text-center text-gray-500">
@@ -3113,6 +3089,22 @@ export default function POSPage() {
                         </AnimatePresence>
                       )}
                     </ScrollArea>
+
+                    {/* Botão para ver mais produtos */}
+                    {cart.length > 0 && scrollPosition !== 'bottom' && (
+                      <div className="mt-3 px-2">
+                        <motion.button
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          onClick={scrollToBottom}
+                          className="w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white py-2.5 px-4 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-3 border border-gray-600"
+                        >
+                          <ChevronDown className="h-4 w-4 animate-bounce" />
+                          <span className="text-sm font-medium">Ver últimos produtos</span>
+                          <ChevronDown className="h-4 w-4 animate-bounce" />
+                        </motion.button>
+                      </div>
+                    )}
 
                     {/* Totais Animados */}
                     {cart.length > 0 && (

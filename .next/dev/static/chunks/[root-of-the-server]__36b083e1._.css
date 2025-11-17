@@ -1665,11 +1665,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-radius: .75rem;
 }
 
-.rounded-b-md {
-  border-bottom-right-radius: calc(var(--radius)  - 2px);
-  border-bottom-left-radius: calc(var(--radius)  - 2px);
-}
-
 .rounded-t-lg {
   border-top-left-radius: var(--radius);
   border-top-right-radius: var(--radius);
@@ -2661,6 +2656,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   padding-right: .5rem;
 }
 
+.pr-4 {
+  padding-right: 1rem;
+}
+
 .pt-0 {
   padding-top: 0;
 }
@@ -3633,6 +3632,12 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(161 98 7 / var(--tw-bg-opacity, 1));
 }
 
+.hover\:from-gray-700:hover {
+  --tw-gradient-from: #374151 var(--tw-gradient-from-position);
+  --tw-gradient-to: #37415100 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .hover\:from-green-700:hover {
   --tw-gradient-from: #15803d var(--tw-gradient-from-position);
   --tw-gradient-to: #15803d00 var(--tw-gradient-to-position);
@@ -3649,6 +3654,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-from: #c2410c var(--tw-gradient-from-position);
   --tw-gradient-to: #c2410c00 var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.hover\:to-gray-600:hover {
+  --tw-gradient-to: #4b5563 var(--tw-gradient-to-position);
 }
 
 .hover\:to-green-800:hover {
