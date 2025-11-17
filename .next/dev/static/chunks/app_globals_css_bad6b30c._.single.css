@@ -968,6 +968,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-height: var(--radix-dropdown-menu-content-available-height);
 }
 
+.min-h-0 {
+  min-height: 0;
+}
+
 .min-h-\[120px\] {
   min-height: 120px;
 }
@@ -2584,6 +2588,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.pb-0 {
+  padding-bottom: 0;
 }
 
 .pb-2 {

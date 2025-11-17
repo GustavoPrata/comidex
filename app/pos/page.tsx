@@ -3341,8 +3341,8 @@ export default function POSPage() {
         {/* Main Content com Layout 70/30 */}
         <div className="flex flex-1 overflow-hidden">
           {/* Left Panel 70% - Carrinho e Categorias */}
-          <div className="w-[70%] flex flex-col p-4 border-r border-gray-700 overflow-hidden">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
+          <div className="w-[70%] flex flex-col border-r border-gray-700 overflow-hidden">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col p-4 pb-0">
               {/* Input Section com Tabs */}
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
                 <CardContent className="p-3 overflow-visible">
@@ -3389,7 +3389,7 @@ export default function POSPage() {
                   </div>
                 </CardContent>
               </Card>
-              <TabsContent value="cart" className="flex-1 flex flex-col">
+              <TabsContent value="cart" className="flex-1 flex flex-col overflow-hidden">
                 {/* Portal para Resultados da Busca em Tempo Real */}
                 {searchQuery.length > 0 && typeof document !== 'undefined' && createPortal(
                         <div className="fixed z-[99999] bg-gray-900 rounded-lg border-2 border-orange-500 shadow-2xl max-h-[320px] overflow-hidden"
@@ -3461,7 +3461,7 @@ export default function POSPage() {
                       )}
 
                 {/* Lista de Itens Animada */}
-                <Card className="flex-1 bg-gray-900/50 backdrop-blur border-gray-700 overflow-hidden flex flex-col">
+                <Card className="flex-1 bg-gray-900/50 backdrop-blur border-gray-700 overflow-hidden flex flex-col min-h-0">
                   <CardHeader className="pb-3 flex-shrink-0">
                     <CardTitle className="text-lg flex items-center justify-between">
                       <span className="flex items-center gap-2">
@@ -3493,9 +3493,9 @@ export default function POSPage() {
                       </div>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0 flex-1">
-                    <div className="relative">
-                      <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4" style={{ willChange: 'scroll-position' }}>
+                  <CardContent className="p-4 pt-0 flex-1 overflow-hidden">
+                    <div className="relative h-full">
+                      <ScrollArea ref={cartScrollRef} className="h-full pr-4" style={{ willChange: 'scroll-position' }}>
                         {(() => {
                           const filteredCart = showCancelledOnly 
                             ? cart.filter(item => item.status === 'cancelled')
@@ -3756,33 +3756,6 @@ export default function POSPage() {
                       </div>
                     )}
                   </div>
-
-                    {/* Botões de Ação - Otimizados para espaço */}
-                    {cart.length > 0 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="mt-auto pt-2"
-                      >
-                        <div className="flex gap-2">
-                          <Button
-                            onClick={handleCancelOrder}
-                            variant="outline"
-                            className="flex-1 h-14 text-red-400 border-red-600 hover:bg-red-900/20 hover:text-red-300 font-semibold"
-                          >
-                            <X className="h-5 w-5 mr-2" />
-                            Cancelar
-                          </Button>
-                          <Button
-                            onClick={handleLaunchOrder}
-                            className="flex-1 h-14 bg-green-600 hover:bg-green-700 text-white font-semibold"
-                          >
-                            <Send className="h-5 w-5 mr-2" />
-                            Lançar Pedido
-                          </Button>
-                        </div>
-                      </motion.div>
-                    )}
                   </CardContent>
                 </Card>
               </TabsContent>
@@ -3980,6 +3953,39 @@ export default function POSPage() {
                 </Card>
               </TabsContent>
             </Tabs>
+            
+            {/* Botões de Ação na parte inferior do painel esquerdo */}
+            <div className="p-4 pt-2 bg-gray-900/50 border-t border-gray-700">
+              <div className="flex gap-2">
+                <Button
+                  onClick={() => setScreen('tables')}
+                  variant="outline"
+                  className="flex-1 h-10 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Voltar
+                </Button>
+                {cart.length > 0 && (
+                  <>
+                    <Button
+                      onClick={handleCancelOrder}
+                      variant="outline"
+                      className="flex-1 h-10 text-red-400 border-red-600 hover:bg-red-900/20 hover:text-red-300 font-medium"
+                    >
+                      <X className="h-4 w-4 mr-2" />
+                      Cancelar
+                    </Button>
+                    <Button
+                      onClick={handleLaunchOrder}
+                      className="flex-1 h-10 bg-green-600 hover:bg-green-700 text-white font-medium"
+                    >
+                      <Send className="h-4 w-4 mr-2" />
+                      Lançar
+                    </Button>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
           
           {/* Right Panel 30% - Menu Lateral Compacto */}
@@ -4111,15 +4117,6 @@ export default function POSPage() {
               </div>
             </div>
             
-            {/* Botão Voltar para Mesas */}
-            <Button
-              onClick={() => setScreen('tables')}
-              variant="outline"
-              className="w-full h-12 text-base font-semibold mt-4 border-gray-600 hover:bg-gray-800 text-gray-300"
-            >
-              <ArrowLeft className="mr-3 h-5 w-5" />
-              Voltar para Mesas
-            </Button>
           </div>
         </div>
 
