@@ -2837,19 +2837,17 @@ export default function POSPage() {
                                           <Button
                                             size="sm"
                                             onClick={() => handleUpdateQuantity(item.id!, -1)}
-                                            className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600 rounded-full transition-all"
+                                            className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
                                           >
                                             <Minus className="h-3 w-3" />
                                           </Button>
-                                          <div className="min-w-[32px] text-center">
-                                            <span className="font-bold text-lg text-white">
-                                              {item.quantity}
-                                            </span>
-                                          </div>
+                                          <span className="w-8 text-center font-medium">
+                                            {item.quantity}
+                                          </span>
                                           <Button
                                             size="sm"
                                             onClick={() => handleUpdateQuantity(item.id!, 1)}
-                                            className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600 rounded-full transition-all"
+                                            className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
                                           >
                                             <Plus className="h-3 w-3" />
                                           </Button>
