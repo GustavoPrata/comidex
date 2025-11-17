@@ -669,6 +669,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-bottom: 2rem;
 }
 
+.ml-0\.5 {
+  margin-left: .125rem;
+}
+
 .ml-1 {
   margin-left: .25rem;
 }
@@ -1380,6 +1384,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .items-center {
   align-items: center;
+}
+
+.items-baseline {
+  align-items: baseline;
 }
 
 .justify-start {
