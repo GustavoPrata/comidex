@@ -2804,15 +2804,37 @@ export default function POSPage() {
                                   <div className="flex items-center justify-between">
                                     {/* Foto do produto */}
                                     <div className="w-14 h-14 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
-                                      <img
-                                        src={item.item?.image || '/fotos/placeholder/placeholder.png'}
-                                        alt={item.item?.name || ''}
-                                        className="w-full h-full object-cover"
-                                        onError={(e) => {
-                                          const target = e.target as HTMLImageElement;
-                                          target.src = '/fotos/placeholder/placeholder.png';
-                                        }}
-                                      />
+                                      {item.item?.image ? (
+                                        <img
+                                          src={item.item.image}
+                                          alt={item.item?.name || ''}
+                                          className="w-full h-full object-cover"
+                                        />
+                                      ) : (item as any).icon || item.item?.icon ? (
+                                        <div className="w-full h-full flex items-center justify-center text-orange-400">
+                                          {(() => {
+                                            const iconName = (item as any).icon || item.item?.icon;
+                                            const IconComponent = getIconByName(iconName);
+                                            return IconComponent ? <IconComponent className="h-6 w-6" /> : <Package className="h-6 w-6" />;
+                                          })()}
+                                        </div>
+                                      ) : (
+                                        <div className="w-full h-full flex items-center justify-center">
+                                          <img
+                                            src="/fotos/placeholder/placeholder.png"
+                                            alt="Placeholder"
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => {
+                                              const target = e.target as HTMLImageElement;
+                                              target.style.display = 'none';
+                                              const parent = target.parentElement;
+                                              if (parent) {
+                                                parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-gray-500"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>';
+                                              }
+                                            }}
+                                          />
+                                        </div>
+                                      )}
                                     </div>
                                     
                                     <div className="flex-1">
