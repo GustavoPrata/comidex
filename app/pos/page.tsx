@@ -1296,13 +1296,14 @@ export default function POSPage() {
     };
 
     setCart(prev => {
-      // Procurar apenas por itens NÃO lançados para mesclar
+      // Procurar apenas por itens PENDENTES (não lançados) para mesclar
+      // Itens lançados (delivered/cancelled) NUNCA devem ser agrupados com novos
       const existing = prev.find(c => 
-        c.item_id === item.id && c.status !== 'delivered'
+        c.item_id === item.id && (c.status === 'pending' || !c.status)
       );
       
       if (existing) {
-        // Mesclar apenas com itens novos
+        // Mesclar apenas com itens pendentes (não lançados)
         return prev.map(c => 
           c.id === existing.id 
             ? { 
@@ -1313,7 +1314,7 @@ export default function POSPage() {
             : c
         );
       } else {
-        // Sempre criar nova linha - não mesclar com itens lançados
+        // Criar nova linha - itens lançados ficam separados
         return [...prev, newItem];
       }
     });
