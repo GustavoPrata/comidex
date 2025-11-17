@@ -2938,36 +2938,24 @@ export default function POSPage() {
               Transferir
             </Button>
             
-            {cart.length === 0 ? (
-              <Button
-                onClick={() => setCloseSessionDialog(true)}
-                className="bg-red-600 hover:bg-red-700"
-                size="sm"
-              >
-                <X className="mr-2 h-4 w-4" />
-                Fechar Vazia
-              </Button>
-            ) : (
-              <>
-                <Button
-                  onClick={() => setPrintDialog(true)}
-                  className="bg-purple-600 hover:bg-purple-700"
-                  size="sm"
-                >
-                  <Printer className="mr-2 h-4 w-4" />
-                  Imprimir (F4)
-                </Button>
-                <Button
-                  onClick={startCheckout}
-                  disabled={loading || cart.length === 0}
-                  className="bg-green-600 hover:bg-green-700"
-                  size="sm"
-                >
-                  <CreditCard className="mr-2 h-4 w-4" />
-                  Fechar Conta (F3)
-                </Button>
-              </>
-            )}
+            <Button
+              onClick={() => setPrintDialog(true)}
+              disabled={cart.length === 0}
+              className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed" : "bg-purple-600 hover:bg-purple-700"}
+              size="sm"
+            >
+              <Printer className="mr-2 h-4 w-4" />
+              Imprimir (F4)
+            </Button>
+            <Button
+              onClick={startCheckout}
+              disabled={loading || cart.length === 0}
+              className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"}
+              size="sm"
+            >
+              <CreditCard className="mr-2 h-4 w-4" />
+              Fechar Conta (F3)
+            </Button>
           </div>
         </div>
 
