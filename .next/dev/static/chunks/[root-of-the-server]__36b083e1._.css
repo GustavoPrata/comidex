@@ -1844,6 +1844,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(220 38 38 / var(--tw-border-opacity, 1));
 }
 
+.border-red-800 {
+  --tw-border-opacity: 1;
+  border-color: rgb(153 27 27 / var(--tw-border-opacity, 1));
+}
+
 .border-transparent {
   border-color: #0000;
 }
@@ -2154,6 +2159,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .bg-red-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
+}
+
+.bg-red-900\/20 {
+  background-color: #7f1d1d33;
 }
 
 .bg-red-900\/30 {

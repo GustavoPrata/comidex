@@ -3743,76 +3743,72 @@ export default function POSPage() {
         <Dialog open={cancelQuantityDialog} onOpenChange={setCancelQuantityDialog}>
           <DialogContent className="bg-gray-800 text-white border-gray-700 max-w-sm">
             <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <X className="h-5 w-5 text-red-400" />
+              <DialogTitle className="text-center text-lg font-bold">
                 Cancelar Item
               </DialogTitle>
             </DialogHeader>
             
-            <div className="space-y-4">
+            <div className="space-y-6">
               {itemToCancel && (
                 <>
-                  <div className="bg-gray-700/50 rounded-lg p-3">
-                    <p className="font-medium">{itemToCancel.item?.name || 'Produto'}</p>
-                    <p className="text-sm text-gray-400">Total disponível: {itemToCancel.quantity}</p>
+                  <div className="bg-gray-700/50 rounded-lg p-4 text-center">
+                    <p className="font-bold text-lg">{itemToCancel.item?.name || 'Produto'}</p>
+                    <p className="text-sm text-gray-400 mt-1">Disponível: {itemToCancel.quantity} unidades</p>
                   </div>
                   
-                  <div className="space-y-2">
-                    <Label>Quantidade a cancelar:</Label>
-                    <div className="flex items-center gap-2">
+                  <div className="space-y-3">
+                    <p className="text-center text-gray-300">Quantidade a cancelar:</p>
+                    <div className="flex items-center justify-center gap-3">
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => setCancelQuantity(Math.max(1, cancelQuantity - 1))}
-                        className="h-10 w-10 p-0 bg-gray-700 hover:bg-gray-600 border-gray-600"
+                        className="h-12 w-12 p-0 bg-gray-700 hover:bg-gray-600 border-gray-600 rounded-full"
+                        disabled={cancelQuantity <= 1}
                       >
-                        <Minus className="h-4 w-4" />
+                        <Minus className="h-5 w-5" />
                       </Button>
-                      <Input
-                        type="number"
-                        value={cancelQuantity}
-                        onChange={(e) => {
-                          const val = parseInt(e.target.value) || 1;
-                          setCancelQuantity(Math.min(itemToCancel.quantity, Math.max(1, val)));
-                        }}
-                        className="w-20 text-center bg-gray-700 border-gray-600 text-white font-bold text-lg"
-                        min={1}
-                        max={itemToCancel.quantity}
-                      />
+                      <div className="bg-gray-900 px-6 py-2 rounded-lg border border-gray-600">
+                        <span className="text-2xl font-bold text-white">
+                          {cancelQuantity}
+                        </span>
+                      </div>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => setCancelQuantity(Math.min(itemToCancel.quantity, cancelQuantity + 1))}
-                        className="h-10 w-10 p-0 bg-gray-700 hover:bg-gray-600 border-gray-600"
+                        className="h-12 w-12 p-0 bg-gray-700 hover:bg-gray-600 border-gray-600 rounded-full"
+                        disabled={cancelQuantity >= itemToCancel.quantity}
                       >
-                        <Plus className="h-4 w-4" />
+                        <Plus className="h-5 w-5" />
                       </Button>
                     </div>
                   </div>
                   
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Valor a cancelar:</span>
-                    <span className="text-red-400 font-bold">
-                      {formatCurrency((itemToCancel.unit_price || 0) * cancelQuantity)}
-                    </span>
+                  <div className="bg-red-900/20 border border-red-800 rounded-lg p-3">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-300">Valor a cancelar:</span>
+                      <span className="text-red-400 font-bold text-xl">
+                        {formatCurrency((itemToCancel.unit_price || 0) * cancelQuantity)}
+                      </span>
+                    </div>
                   </div>
                 </>
               )}
             </div>
             
-            <DialogFooter className="gap-2">
+            <DialogFooter className="gap-2 mt-4">
               <Button
                 onClick={() => setCancelQuantityDialog(false)}
-                className="bg-gray-700 hover:bg-gray-600"
+                className="flex-1 bg-gray-700 hover:bg-gray-600"
               >
                 Voltar
               </Button>
               <Button
                 onClick={handleConfirmCancelQuantity}
-                className="bg-red-600 hover:bg-red-700"
+                className="flex-1 bg-red-600 hover:bg-red-700"
               >
-                <X className="mr-2 h-4 w-4" />
-                Confirmar Cancelamento
+                Confirmar
               </Button>
             </DialogFooter>
           </DialogContent>
