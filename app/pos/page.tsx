@@ -2893,7 +2893,30 @@ export default function POSPage() {
                                   ? 'bg-red-900/30 border-red-600'
                                   : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'
                               }`}>
-                                <CardContent className="p-3">
+                                <CardContent className="p-3 relative">
+                                  {/* Horário - centralizado com transform */}
+                                  {(item.status === 'delivered' || item.status === 'cancelled') && (
+                                    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
+                                      <div className={`${item.status === 'delivered' ? 'text-green-400' : 'text-red-400'} flex flex-col items-center justify-center`}>
+                                        <Clock className="h-3 w-3 mb-1" />
+                                        <div className="flex items-center">
+                                          {(() => {
+                                            const date = item.launched_at ? new Date(item.launched_at) : new Date();
+                                            const hours = date.getHours().toString().padStart(2, '0');
+                                            const minutes = date.getMinutes().toString().padStart(2, '0');
+                                            const seconds = date.getSeconds().toString().padStart(2, '0');
+                                            return (
+                                              <>
+                                                <span className="text-sm font-medium">{hours}:{minutes}</span>
+                                                <span className="text-[11px] font-normal opacity-80">:{seconds}</span>
+                                              </>
+                                            );
+                                          })()}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                  
                                   <div className="flex items-center justify-between">
                                     {/* Foto do produto */}
                                     <div className="w-14 h-14 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
@@ -2957,31 +2980,6 @@ export default function POSPage() {
                                             : item.quantity
                                         }
                                       </div>
-                                    </div>
-                                    
-                                    {/* Horário - centralizado com flex */}
-                                    <div className="flex-1 flex items-center justify-center">
-                                      {(item.status === 'delivered' || item.status === 'cancelled') ? (
-                                        <div className={`${item.status === 'delivered' ? 'text-green-400' : 'text-red-400'} flex flex-col items-center justify-center`}>
-                                          <Clock className="h-3 w-3 mb-1" />
-                                          <div className="flex items-center">
-                                            {(() => {
-                                              const date = item.launched_at ? new Date(item.launched_at) : new Date();
-                                              const hours = date.getHours().toString().padStart(2, '0');
-                                              const minutes = date.getMinutes().toString().padStart(2, '0');
-                                              const seconds = date.getSeconds().toString().padStart(2, '0');
-                                              return (
-                                                <>
-                                                  <span className="text-sm font-medium">{hours}:{minutes}</span>
-                                                  <span className="text-[11px] font-normal opacity-80">:{seconds}</span>
-                                                </>
-                                              );
-                                            })()}
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <div></div>
-                                      )}
                                     </div>
                                     
                                     <div className="flex items-center gap-3">
