@@ -1,7 +1,6 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/printers/page": "app/admin/printers/page.js",
   "/api/notifications/route": "app/api/notifications/route.js",
-  "/api/printers/status/route": "app/api/printers/status/route.js",
   "/page": "app/page.js",
   "/pos/page": "app/pos/page.js",
   "/prompt/page": "app/prompt/page.js"

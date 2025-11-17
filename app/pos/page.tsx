@@ -3215,53 +3215,21 @@ export default function POSPage() {
               </div>
             </div>
             
-            {/* Lado Direito - Ações */}
-            <div className="flex items-center gap-3">
-              {/* Botão Imprimir */}
-              <Button
-                onClick={() => setPrintDialog(true)}
-                disabled={cart.length === 0}
-                className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed h-12 px-6 text-base font-semibold" : "bg-purple-600 hover:bg-purple-700 h-12 px-6 text-base font-semibold"}
-              >
-                <Printer className="mr-2 h-5 w-5" />
-                Imprimir
-              </Button>
-              
-              {/* Botão Fechar Conta */}
-              <Button
-                onClick={startCheckout}
-                disabled={loading || cart.length === 0}
-                className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed h-12 px-6 text-base font-semibold" : "bg-green-600 hover:bg-green-700 h-12 px-6 text-base font-semibold"}
-              >
-                <CreditCard className="mr-2 h-5 w-5" />
-                Fechar Conta
-              </Button>
-              
-              {/* Botão Transferir Mesa */}
-              <Button
-                onClick={() => setTransferTableDialog(true)}
-                className="bg-blue-600 hover:bg-blue-700 h-12 px-6 text-base font-semibold"
-              >
-                <ArrowRight className="mr-2 h-5 w-5" />
-                Transferir
-              </Button>
-              
-              {/* Botão Cancelar Mesa */}
-              <Button
-                onClick={() => setCancelTableDialog(true)}
-                className="bg-red-600 hover:bg-red-700 h-12 px-6 text-base font-semibold"
-              >
-                <X className="mr-2 h-5 w-5" />
-                Cancelar Mesa
-              </Button>
+            {/* Lado Direito - Informação de Status */}
+            <div className="flex items-center gap-4">
+              {/* Status da Mesa */}
+              <div className="bg-gray-800/50 px-4 py-2 rounded-lg border border-gray-600">
+                <p className="text-xs text-gray-400">Status</p>
+                <p className="text-sm font-bold text-green-400">Mesa Ativa</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Main Content com Tabs */}
+        {/* Main Content com Layout 70/30 */}
         <div className="flex flex-1">
-          {/* Left Panel - Carrinho e Categorias */}
-          <div className="flex-1 flex flex-col p-4">
+          {/* Left Panel 70% - Carrinho e Categorias */}
+          <div className="w-[70%] flex flex-col p-4 border-r border-gray-700">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
               {/* Input Section com Tabs */}
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
@@ -3899,6 +3867,112 @@ export default function POSPage() {
                 </Card>
               </TabsContent>
             </Tabs>
+          </div>
+          
+          {/* Right Panel 30% - Botões de Ação */}
+          <div className="w-[30%] flex flex-col p-6 bg-gray-900/50">
+            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+              <Settings className="h-5 w-5 text-orange-500" />
+              Ações da Mesa
+            </h3>
+            
+            {/* Seção Principal - Operações */}
+            <div className="space-y-4 mb-6">
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+                <h4 className="text-sm text-gray-400 mb-3 font-semibold">Operações Principais</h4>
+                
+                {/* Botão Fechar Conta */}
+                <Button
+                  onClick={startCheckout}
+                  disabled={loading || cart.length === 0}
+                  className={`w-full h-14 text-base font-bold mb-3 ${
+                    cart.length === 0 
+                      ? "bg-gray-600 cursor-not-allowed" 
+                      : "bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/20"
+                  }`}
+                >
+                  <CreditCard className="mr-3 h-6 w-6" />
+                  Fechar Conta
+                </Button>
+                
+                {/* Botão Imprimir */}
+                <Button
+                  onClick={() => setPrintDialog(true)}
+                  disabled={cart.length === 0}
+                  className={`w-full h-14 text-base font-bold ${
+                    cart.length === 0 
+                      ? "bg-gray-600 cursor-not-allowed" 
+                      : "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-600/20"
+                  }`}
+                >
+                  <Printer className="mr-3 h-6 w-6" />
+                  Imprimir Conta
+                </Button>
+              </div>
+            </div>
+            
+            {/* Seção Gerenciamento */}
+            <div className="space-y-4 mb-6">
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+                <h4 className="text-sm text-gray-400 mb-3 font-semibold">Gerenciamento</h4>
+                
+                {/* Botão Transferir */}
+                <Button
+                  onClick={() => setTransferTableDialog(true)}
+                  className="w-full h-12 text-base font-semibold mb-3 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20"
+                >
+                  <ArrowRight className="mr-3 h-5 w-5" />
+                  Transferir Mesa
+                </Button>
+                
+                {/* Botão Cancelar Mesa */}
+                <Button
+                  onClick={() => setCancelTableDialog(true)}
+                  className="w-full h-12 text-base font-semibold bg-red-600 hover:bg-red-700 shadow-lg shadow-red-600/20"
+                >
+                  <X className="mr-3 h-5 w-5" />
+                  Cancelar Mesa
+                </Button>
+              </div>
+            </div>
+            
+            {/* Seção Informações Rápidas */}
+            <div className="space-y-4 flex-1">
+              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
+                <h4 className="text-sm text-gray-400 mb-3 font-semibold">Resumo</h4>
+                
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">Itens:</span>
+                    <span className="text-white font-bold">{cart.length}</span>
+                  </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">Total:</span>
+                    <span className="text-2xl font-bold text-orange-500">
+                      R$ {cart.reduce((total, item) => total + (item.unit_price * item.quantity), 0).toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Espaço para futuras funcionalidades */}
+              <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 border-dashed">
+                <p className="text-gray-500 text-xs text-center">
+                  Área reservada para novas funcionalidades
+                </p>
+              </div>
+            </div>
+            
+            {/* Botão Voltar para Mesas */}
+            <Button
+              onClick={() => setScreen('tables')}
+              variant="outline"
+              className="w-full h-12 text-base font-semibold mt-4 border-gray-600 hover:bg-gray-800 text-gray-300"
+            >
+              <ArrowLeft className="mr-3 h-5 w-5" />
+              Voltar para Mesas
+            </Button>
           </div>
         </div>
 
