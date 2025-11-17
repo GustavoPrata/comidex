@@ -3043,9 +3043,11 @@ export default function POSPage() {
                                             : 'text-orange-400'
                                         }`}>
                                           {formatCurrency(
-                                            item.cancelledQuantity && item.cancelledQuantity > 0
-                                              ? item.unit_price * (item.quantity - item.cancelledQuantity)
-                                              : item.total_price
+                                            item.status === 'cancelled' 
+                                              ? item.total_price // Sempre mostra o valor total original quando cancelado
+                                              : (item.cancelledQuantity && item.cancelledQuantity > 0
+                                                  ? item.unit_price * (item.quantity - item.cancelledQuantity)
+                                                  : item.total_price)
                                           )}
                                         </div>
                                       </div>
