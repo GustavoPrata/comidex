@@ -265,11 +265,13 @@ export default function POSPage() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-          const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+          // Ajustado para ser mais preciso na detecção do final
+          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5; // Tolerância de 5px
+          const isAtTop = scrollTop <= 5;
           
-          if (scrollPercentage <= 5) {
+          if (isAtTop) {
             setScrollPosition('top');
-          } else if (scrollPercentage >= 95) {
+          } else if (isAtBottom) {
             setScrollPosition('bottom');
           } else {
             setScrollPosition('middle');
@@ -279,6 +281,9 @@ export default function POSPage() {
         ticking = true;
       }
     };
+    
+    // Verificar posição inicial
+    handleScroll();
     
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
@@ -293,6 +298,17 @@ export default function POSPage() {
         // Verificar se estamos na aba cart antes de fazer scroll
         if (cartScrollRef.current) {
           scrollToBottom();
+          // Forçar atualização da posição do scroll após adicionar item
+          setTimeout(() => {
+            const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+            if (scrollContainer) {
+              const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+              const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+              if (isAtBottom) {
+                setScrollPosition('bottom');
+              }
+            }
+          }, 100);
         }
       }, 300); // Tempo suficiente para garantir renderização
     }
