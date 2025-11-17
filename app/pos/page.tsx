@@ -2894,9 +2894,9 @@ export default function POSPage() {
                                   : 'bg-gray-800/50 border-gray-700 hover:bg-gray-800/70'
                               }`}>
                                 <CardContent className="p-3">
-                                  <div className="flex items-center justify-between">
-                                    {/* Foto do produto */}
-                                    <div className="w-14 h-14 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
+                                  <div className="flex items-center">
+                                    {/* Foto do produto - largura fixa */}
+                                    <div className="w-14 h-14 bg-gray-700 rounded-lg flex-shrink-0 overflow-hidden">
                                       {item.item?.image ? (
                                         <img
                                           src={item.item.image}
@@ -2930,7 +2930,8 @@ export default function POSPage() {
                                       )}
                                     </div>
                                     
-                                    <div className="flex-1">
+                                    {/* Nome e preço - largura fixa */}
+                                    <div className="w-48 px-3 flex-shrink-0">
                                       <div className="font-medium flex items-center">
                                         <span className={`${
                                           item.status === 'cancelled' 
@@ -2958,38 +2959,28 @@ export default function POSPage() {
                                       </div>
                                     </div>
                                     
-                                    {/* Mostra horário de lançamento para itens lançados - no centro */}
-                                    <div className="flex-1 flex items-center justify-center">
-                                      {item.status === 'delivered' ? (
-                                        <div className="text-green-400 flex flex-col items-center justify-center">
-                                          <Clock className="h-3 w-3 mb-1" />
-                                          <div className="flex items-baseline">
+                                    {/* Horário centralizado - largura fixa no centro */}
+                                    <div className="w-24 flex items-center justify-center flex-shrink-0">
+                                      {item.status === 'delivered' && (
+                                        <div className="text-green-400 flex flex-col items-center">
+                                          <Clock className="h-3 w-3" />
+                                          <div className="mt-1 text-center">
                                             <span className="text-sm font-medium">
-                                              {item.launched_at 
-                                                ? new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
-                                                    hour: '2-digit', 
-                                                    minute: '2-digit'
-                                                  })
-                                                : new Date().toLocaleTimeString('pt-BR', { 
-                                                    hour: '2-digit', 
-                                                    minute: '2-digit'
-                                                  })
-                                              }
-                                            </span>
-                                            <span className="text-[10px] ml-0.5">
-                                              :{item.launched_at 
-                                                ? new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
-                                                    second: '2-digit'
-                                                  }).split(':')[2]
-                                                : new Date().toLocaleTimeString('pt-BR', { 
-                                                    second: '2-digit'
-                                                  }).split(':')[2]
-                                              }
+                                              {(() => {
+                                                const date = item.launched_at ? new Date(item.launched_at) : new Date();
+                                                const hours = date.getHours().toString().padStart(2, '0');
+                                                const minutes = date.getMinutes().toString().padStart(2, '0');
+                                                const seconds = date.getSeconds().toString().padStart(2, '0');
+                                                return (
+                                                  <>
+                                                    {hours}:{minutes}
+                                                    <span className="text-[10px]">:{seconds}</span>
+                                                  </>
+                                                );
+                                              })()}
                                             </span>
                                           </div>
                                         </div>
-                                      ) : (
-                                        <div></div>
                                       )}
                                     </div>
                                     
