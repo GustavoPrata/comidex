@@ -3147,53 +3147,56 @@ export default function POSPage() {
                             })}
                         </div>
                         
-                        <ScrollArea className="h-[400px]">
-                          <div className="grid grid-cols-3 gap-3">
-                            {filteredItems.map((item) => (
-                              <motion.div
-                                key={item.id}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                              >
-                                <Card
-                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden h-full"
-                                  onClick={() => handleAddItem(item)}
+                        <div className="h-[calc(100vh-380px)] min-h-[400px]">
+                          <ScrollArea className="h-full w-full">
+                            <div className="grid grid-cols-3 gap-3 pr-4">
+                              {filteredItems.map((item) => (
+                                <motion.div
+                                  key={item.id}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
                                 >
-                                  <CardContent className="p-3 h-full flex flex-col">
-                                    {/* Foto do produto - tamanho fixo menor */}
-                                    <div className="relative w-full h-16 bg-gray-900 rounded-lg overflow-hidden mb-2 flex-shrink-0">
-                                      {item.image ? (
-                                        <img
-                                          src={item.image}
-                                          alt={item.name}
-                                          className="absolute inset-0 w-full h-full object-contain"
-                                        />
-                                      ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center text-gray-600">
-                                          <Package className="h-8 w-8" />
+                                  <Card
+                                    className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden h-full"
+                                    onClick={() => handleAddItem(item)}
+                                    data-testid={`item-card-${item.id}`}
+                                  >
+                                    <CardContent className="p-3 h-full flex flex-col">
+                                      {/* Foto do produto - tamanho fixo menor */}
+                                      <div className="relative w-full h-16 bg-gray-900 rounded-lg overflow-hidden mb-2 flex-shrink-0">
+                                        {item.image ? (
+                                          <img
+                                            src={item.image}
+                                            alt={item.name}
+                                            className="absolute inset-0 w-full h-full object-contain"
+                                          />
+                                        ) : (
+                                          <div className="absolute inset-0 flex items-center justify-center text-gray-600">
+                                            <Package className="h-8 w-8" />
+                                          </div>
+                                        )}
+                                      </div>
+                                      {/* Informações do produto */}
+                                      <div className="flex-1 flex flex-col justify-between">
+                                        <div>
+                                          <div className="font-medium text-white text-sm line-clamp-2 min-h-[2.5rem]">
+                                            {item.name}
+                                          </div>
+                                          <div className="text-xs text-gray-500 mt-1">
+                                            Código: {item.id}
+                                          </div>
                                         </div>
-                                      )}
-                                    </div>
-                                    {/* Informações do produto */}
-                                    <div className="flex-1 flex flex-col justify-between">
-                                      <div>
-                                        <div className="font-medium text-white text-sm line-clamp-2 min-h-[2.5rem]">
-                                          {item.name}
-                                        </div>
-                                        <div className="text-xs text-gray-500 mt-1">
-                                          Código: {item.id}
+                                        <div className="font-bold text-orange-400 text-base pt-2">
+                                          {formatCurrency(item.price || 0)}
                                         </div>
                                       </div>
-                                      <div className="font-bold text-orange-400 text-base pt-2">
-                                        {formatCurrency(item.price || 0)}
-                                      </div>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              </motion.div>
-                            ))}
-                          </div>
-                        </ScrollArea>
+                                    </CardContent>
+                                  </Card>
+                                </motion.div>
+                              ))}
+                            </div>
+                          </ScrollArea>
+                        </div>
                       </div>
                     )}
                   </CardContent>
