@@ -2718,17 +2718,15 @@ export default function POSPage() {
                                   >
                                     {/* Foto do produto */}
                                     <div className="w-14 h-14 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
-                                      {item.image ? (
-                                        <img
-                                          src={item.image}
-                                          alt={item.name}
-                                          className="w-full h-full object-cover"
-                                        />
-                                      ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-gray-500">
-                                          <Package className="h-6 w-6" />
-                                        </div>
-                                      )}
+                                      <img
+                                        src={item.image || '/fotos/placeholder/placeholder.png'}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          const target = e.target as HTMLImageElement;
+                                          target.src = '/fotos/placeholder/placeholder.png';
+                                        }}
+                                      />
                                     </div>
                                     
                                     {/* Informações do produto */}
@@ -2806,25 +2804,15 @@ export default function POSPage() {
                                   <div className="flex items-center justify-between">
                                     {/* Foto do produto */}
                                     <div className="w-14 h-14 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
-                                      {item.item?.image ? (
-                                        <img
-                                          src={item.item.image}
-                                          alt={item.item?.name || ''}
-                                          className="w-full h-full object-cover"
-                                        />
-                                      ) : (item as any).icon || item.item?.icon ? (
-                                        <div className="w-full h-full flex items-center justify-center text-orange-400">
-                                          {(() => {
-                                            const iconName = (item as any).icon || item.item?.icon;
-                                            const IconComponent = getIconByName(iconName);
-                                            return IconComponent ? <IconComponent className="h-6 w-6" /> : <Package className="h-6 w-6" />;
-                                          })()}
-                                        </div>
-                                      ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-gray-500">
-                                          <Package className="h-6 w-6" />
-                                        </div>
-                                      )}
+                                      <img
+                                        src={item.item?.image || '/fotos/placeholder/placeholder.png'}
+                                        alt={item.item?.name || ''}
+                                        className="w-full h-full object-cover"
+                                        onError={(e) => {
+                                          const target = e.target as HTMLImageElement;
+                                          target.src = '/fotos/placeholder/placeholder.png';
+                                        }}
+                                      />
                                     </div>
                                     
                                     <div className="flex-1">
@@ -3162,17 +3150,15 @@ export default function POSPage() {
                                   <CardContent className="p-3 h-full flex flex-col">
                                     {/* Foto do produto - tamanho fixo menor */}
                                     <div className="relative w-full h-16 bg-gray-900 rounded-lg overflow-hidden mb-2 flex-shrink-0">
-                                      {item.image ? (
-                                        <img
-                                          src={item.image}
-                                          alt={item.name}
-                                          className="absolute inset-0 w-full h-full object-contain"
-                                        />
-                                      ) : (
-                                        <div className="absolute inset-0 flex items-center justify-center text-gray-600">
-                                          <Package className="h-8 w-8" />
-                                        </div>
-                                      )}
+                                      <img
+                                        src={item.image || '/fotos/placeholder/placeholder.png'}
+                                        alt={item.name}
+                                        className="absolute inset-0 w-full h-full object-contain"
+                                        onError={(e) => {
+                                          const target = e.target as HTMLImageElement;
+                                          target.src = '/fotos/placeholder/placeholder.png';
+                                        }}
+                                      />
                                     </div>
                                     {/* Informações do produto */}
                                     <div className="flex-1 flex flex-col justify-between">
