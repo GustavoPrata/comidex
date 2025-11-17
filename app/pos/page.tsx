@@ -2865,7 +2865,7 @@ export default function POSPage() {
                           <Button
                             onClick={scrollToTop}
                             size="icon"
-                            className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
+                            className="h-8 w-8 rounded-full bg-gray-600 hover:bg-gray-700"
                           >
                             <ChevronUp className="h-4 w-4" />
                           </Button>
