@@ -2959,27 +2959,37 @@ export default function POSPage() {
                                     </div>
                                     
                                     {/* Mostra horário de lançamento para itens lançados - no centro */}
-                                    <div className="flex-shrink-0 mx-3 flex items-center">
+                                    <div className="flex-1 flex items-center justify-center">
                                       {item.status === 'delivered' ? (
-                                        <div className="text-xs text-green-400 flex flex-col items-center justify-center">
-                                          <Clock className="h-3 w-3" />
-                                          <span className="mt-1">
-                                            {item.launched_at 
-                                              ? new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
-                                                  hour: '2-digit', 
-                                                  minute: '2-digit',
-                                                  second: '2-digit'
-                                                })
-                                              : new Date().toLocaleTimeString('pt-BR', { 
-                                                  hour: '2-digit', 
-                                                  minute: '2-digit',
-                                                  second: '2-digit'
-                                                })
-                                            }
-                                          </span>
+                                        <div className="text-green-400 flex flex-col items-center justify-center">
+                                          <Clock className="h-3 w-3 mb-1" />
+                                          <div className="flex items-baseline">
+                                            <span className="text-sm font-medium">
+                                              {item.launched_at 
+                                                ? new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
+                                                    hour: '2-digit', 
+                                                    minute: '2-digit'
+                                                  })
+                                                : new Date().toLocaleTimeString('pt-BR', { 
+                                                    hour: '2-digit', 
+                                                    minute: '2-digit'
+                                                  })
+                                              }
+                                            </span>
+                                            <span className="text-[10px] ml-0.5">
+                                              :{item.launched_at 
+                                                ? new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
+                                                    second: '2-digit'
+                                                  }).split(':')[2]
+                                                : new Date().toLocaleTimeString('pt-BR', { 
+                                                    second: '2-digit'
+                                                  }).split(':')[2]
+                                              }
+                                            </span>
+                                          </div>
                                         </div>
                                       ) : (
-                                        <div className="w-16"></div>
+                                        <div></div>
                                       )}
                                     </div>
                                     

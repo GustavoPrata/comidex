@@ -626,11 +626,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-right: -.25rem;
 }
 
-.mx-3 {
-  margin-left: .75rem;
-  margin-right: .75rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -672,6 +667,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .mb-8 {
   margin-bottom: 2rem;
+}
+
+.ml-0\.5 {
+  margin-left: .125rem;
 }
 
 .ml-1 {
@@ -1385,6 +1384,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .items-center {
   align-items: center;
+}
+
+.items-baseline {
+  align-items: baseline;
 }
 
 .justify-start {
