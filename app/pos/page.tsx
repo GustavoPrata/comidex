@@ -80,6 +80,7 @@ import {
   Soup,
   Send,
   CheckCircle2,
+  XCircle,
   ArrowRight
 } from "lucide-react";
 import { format } from "date-fns";
@@ -3609,60 +3610,25 @@ export default function POSPage() {
                     )}
                   </div>
 
-                    {/* Totais Animados */}
+                    {/* Botões de Ação */}
                     {cart.length > 0 && (
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="mt-4"
                       >
-                        <div className="border-t border-gray-700 pt-4 space-y-2">
-                          {calculateLaunchedTotal() > 0 && (
-                            <div className="flex justify-between text-sm text-green-400">
-                              <span>Lançado:</span>
-                              <span>{formatCurrency(calculateLaunchedTotal())}</span>
-                            </div>
-                          )}
-                          {calculateCancelledTotal() > 0 && (
-                            <div className="flex justify-between text-sm text-red-400 line-through">
-                              <span>Cancelado:</span>
-                              <span>{formatCurrency(calculateCancelledTotal())}</span>
-                            </div>
-                          )}
-                          {calculateNewItemsTotal() > 0 && (
-                            <div className="flex justify-between text-lg">
-                              <span>Novos Itens:</span>
-                              <span>{formatCurrency(calculateNewItemsTotal())}</span>
-                            </div>
-                          )}
-                          <div className="flex justify-between text-2xl font-bold text-orange-400">
-                            <span className="flex items-center gap-2">
-                              <Calculator className="h-6 w-6" />
-                              Total Geral:
-                            </span>
-                            <motion.span
-                              key={calculateTotal()}
-                              initial={{ scale: 1.2 }}
-                              animate={{ scale: 1 }}
-                            >
-                              {formatCurrency(calculateTotal())}
-                            </motion.span>
-                          </div>
-                        </div>
-                        
-                        {/* Botões de Lançar e Cancelar */}
-                        <div className="flex gap-3 mt-4">
+                        <div className="flex gap-3">
                           <Button
                             onClick={handleCancelOrder}
                             variant="outline"
-                            className="flex-1 h-12 text-red-400 border-red-600 hover:bg-red-900/20 hover:text-red-300"
+                            className="flex-1 h-14 text-red-400 border-red-600 hover:bg-red-900/20 hover:text-red-300 font-semibold"
                           >
                             <X className="h-5 w-5 mr-2" />
                             Cancelar
                           </Button>
                           <Button
                             onClick={handleLaunchOrder}
-                            className="flex-1 h-12 bg-green-600 hover:bg-green-700 text-white"
+                            className="flex-1 h-14 bg-green-600 hover:bg-green-700 text-white font-semibold"
                           >
                             <Send className="h-5 w-5 mr-2" />
                             Lançar Pedido
@@ -3939,19 +3905,66 @@ export default function POSPage() {
             {/* Seção Informações Rápidas */}
             <div className="space-y-4 flex-1">
               <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                <h4 className="text-sm text-gray-400 mb-3 font-semibold">Resumo</h4>
+                <h4 className="text-sm text-gray-400 mb-3 font-semibold flex items-center gap-2">
+                  <Calculator className="h-4 w-4" />
+                  Resumo Detalhado
+                </h4>
                 
                 <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Itens:</span>
+                  {/* Quantidade de Itens */}
+                  <div className="flex justify-between items-center pb-2 border-b border-gray-700">
+                    <span className="text-gray-400 text-sm">Total de Itens:</span>
                     <span className="text-white font-bold">{cart.length}</span>
                   </div>
                   
+                  {/* Itens Lançados */}
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-400 text-sm">Total:</span>
-                    <span className="text-2xl font-bold text-orange-500">
-                      R$ {cart.reduce((total, item) => total + (item.unit_price * item.quantity), 0).toFixed(2).replace('.', ',')}
+                    <span className="text-green-400 text-sm flex items-center gap-1">
+                      <CheckCircle2 className="h-3 w-3" />
+                      Lançados:
                     </span>
+                    <span className="text-green-400 font-semibold">
+                      R$ {calculateLaunchedTotal().toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+                  
+                  {/* Itens Cancelados */}
+                  <div className="flex justify-between items-center">
+                    <span className="text-red-400 text-sm flex items-center gap-1">
+                      <XCircle className="h-3 w-3" />
+                      Cancelados:
+                    </span>
+                    <span className="text-red-400 font-semibold line-through">
+                      R$ {calculateCancelledTotal().toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+                  
+                  {/* Novos Itens */}
+                  <div className="flex justify-between items-center">
+                    <span className="text-yellow-400 text-sm flex items-center gap-1">
+                      <AlertCircle className="h-3 w-3" />
+                      Novos:
+                    </span>
+                    <span className="text-yellow-400 font-semibold">
+                      R$ {calculateNewItemsTotal().toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+                  
+                  {/* Separador */}
+                  <div className="border-t border-gray-600 pt-2"></div>
+                  
+                  {/* Total Geral */}
+                  <div className="flex justify-between items-center">
+                    <span className="text-white text-base font-semibold">Total Geral:</span>
+                    <motion.span 
+                      className="text-2xl font-bold text-orange-500"
+                      key={calculateTotal()}
+                      initial={{ scale: 1.2 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      R$ {calculateTotal().toFixed(2).replace('.', ',')}
+                    </motion.span>
                   </div>
                 </div>
               </div>
