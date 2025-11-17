@@ -1408,8 +1408,9 @@ export default function POSPage() {
               ...item,
               status: 'delivered' as any,
               quantity: item.quantity + delta,
-              total_price: item.unit_price * (item.quantity + delta)
-            };
+              total_price: item.unit_price * (item.quantity + delta),
+              wasRestored: true // Flag para indicar que foi restaurado e precisa ser lançado
+            } as any;
           }
           return item;
         });
@@ -1471,8 +1472,8 @@ export default function POSPage() {
           return {
             ...updated,
             status: 'delivered' as any,
-            wasRestored: true // Marcar que foi restaurado para processar no lançamento
-          };
+            wasRestored: true // Flag para indicar que foi restaurado e precisa ser lançado
+          } as any;
         }
         return item;
       }));
@@ -1510,24 +1511,33 @@ export default function POSPage() {
   };
 
   const handleCancelOrder = () => {
-    const newItems = cart.filter(item => item.status !== 'delivered');
-    const launchedItems = cart.filter(item => item.status === 'delivered');
+    // Identifica itens que precisam ser cancelados (pendentes ou restaurados)
+    const itemsToCancelOrRevert = cart.filter(item => 
+      item.status === 'pending' || 
+      !item.status || 
+      (item as any).wasRestored === true
+    );
     
-    if (newItems.length === 0) {
-      toast.error("Não há itens novos para cancelar. Todos já foram lançados.");
+    if (itemsToCancelOrRevert.length === 0) {
+      toast.error("Não há alterações para cancelar.");
       return;
     }
 
-    // Confirmação antes de cancelar
-    const message = launchedItems.length > 0 
-      ? `Deseja cancelar ${newItems.length} item(ns) novo(s)? Os ${launchedItems.length} item(ns) já lançado(s) serão mantidos.`
-      : "Deseja realmente cancelar todos os itens do carrinho?";
-      
-    if (confirm(message)) {
-      // Mantém apenas itens já lançados
-      setCart(launchedItems);
-      toast.success(`${newItems.length} item(ns) cancelado(s)`);
-    }
+    // Remove itens pendentes e reverte itens restaurados (remove flag wasRestored)
+    setCart(prev => prev
+      .filter(item => item.status === 'delivered' || item.status === 'cancelled')
+      .map(item => {
+        // Se o item foi restaurado, remove a flag wasRestored
+        if ((item as any).wasRestored) {
+          const updated = { ...item };
+          delete (updated as any).wasRestored;
+          return updated;
+        }
+        return item;
+      })
+    );
+    
+    toast.success("Alterações canceladas");
   };
 
   // Função para agrupar itens duplicados
