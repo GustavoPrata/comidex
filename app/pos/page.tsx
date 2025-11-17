@@ -3884,7 +3884,7 @@ export default function POSPage() {
                 <Button
                   onClick={() => setScreen('tables')}
                   variant="outline"
-                  className="h-10 px-4 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
+                  className="h-10 px-6 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Voltar
@@ -3901,20 +3901,32 @@ export default function POSPage() {
                   );
                   const hasChanges = hasPendingItems || hasRestoredItems;
                   
-                  if (!hasChanges) return null;
-                  
                   return (
-                    <div className="flex rounded-full bg-gray-800 border border-gray-700 overflow-hidden">
+                    <div className={`flex rounded-full border border-gray-700 overflow-hidden ${
+                      hasChanges 
+                        ? 'bg-gray-800' 
+                        : 'bg-gray-900 opacity-50 cursor-not-allowed'
+                    }`}>
                       <button
-                        onClick={handleCancelOrder}
-                        className="px-4 py-2 text-red-400 hover:bg-red-900/20 hover:text-red-300 font-medium transition-all flex items-center gap-2 border-r border-gray-700"
+                        onClick={hasChanges ? handleCancelOrder : undefined}
+                        disabled={!hasChanges}
+                        className={`px-6 py-2 font-medium transition-all flex items-center gap-2 border-r border-gray-700 ${
+                          hasChanges
+                            ? 'text-red-400 hover:bg-red-900/20 hover:text-red-300'
+                            : 'text-gray-600 cursor-not-allowed'
+                        }`}
                       >
                         <X className="h-4 w-4" />
                         Cancelar
                       </button>
                       <button
-                        onClick={handleLaunchOrder}
-                        className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-medium transition-all flex items-center gap-2"
+                        onClick={hasChanges ? handleLaunchOrder : undefined}
+                        disabled={!hasChanges}
+                        className={`px-7 py-2 font-medium transition-all flex items-center gap-2 ${
+                          hasChanges
+                            ? 'bg-green-600 hover:bg-green-700 text-white'
+                            : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                        }`}
                       >
                         <Send className="h-4 w-4" />
                         Lançar
