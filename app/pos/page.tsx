@@ -3342,7 +3342,7 @@ export default function POSPage() {
         <div className="flex flex-1 overflow-hidden">
           {/* Left Panel 70% - Carrinho e Categorias */}
           <div className="w-[70%] flex flex-col border-r border-gray-700 overflow-hidden">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col p-4 pb-0">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col p-4 pb-0 overflow-hidden">
               {/* Input Section com Tabs */}
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
                 <CardContent className="p-3 overflow-visible">
@@ -3389,7 +3389,7 @@ export default function POSPage() {
                   </div>
                 </CardContent>
               </Card>
-              <TabsContent value="cart" className="flex-1 flex flex-col overflow-hidden">
+              <TabsContent value="cart" className="flex-1 flex flex-col overflow-hidden min-h-0">
                 {/* Portal para Resultados da Busca em Tempo Real */}
                 {searchQuery.length > 0 && typeof document !== 'undefined' && createPortal(
                         <div className="fixed z-[99999] bg-gray-900 rounded-lg border-2 border-orange-500 shadow-2xl max-h-[320px] overflow-hidden"
@@ -3760,9 +3760,9 @@ export default function POSPage() {
                 </Card>
               </TabsContent>
               
-              <TabsContent value="categories" className="flex-1 mt-4">
-                <Card className="h-full bg-gray-900/50 backdrop-blur border-gray-700">
-                  <CardHeader>
+              <TabsContent value="categories" className="flex-1 mt-4 overflow-hidden">
+                <Card className="h-full bg-gray-900/50 backdrop-blur border-gray-700 flex flex-col">
+                  <CardHeader className="flex-shrink-0">
                     <CardTitle className="flex items-center justify-between">
                       <span>
                         {selectedGroup 
@@ -3785,7 +3785,7 @@ export default function POSPage() {
                       )}
                     </CardTitle>
                   </CardHeader>
-                  <CardContent>
+                  <CardContent className="flex-1 overflow-y-auto">
                     {!selectedGroup ? (
                       // Mostrar Grupos
                       <div className="space-y-4">
