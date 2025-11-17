@@ -458,7 +458,8 @@ export default function POSPage() {
               unit_price: orderItem.unit_price || 0,
               total_price: (orderItem.unit_price || 0) * (orderItem.quantity || 1),
               notes: orderItem.observation || '',
-              status: 'delivered' as const // Itens do banco já foram lançados
+              status: 'delivered' as const, // Itens do banco já foram lançados
+              launched_at: orderItem.created_at // Usar created_at como horário de lançamento
             };
           }
           
@@ -485,7 +486,8 @@ export default function POSPage() {
             unit_price: orderItem.unit_price || 0,
             total_price: (orderItem.unit_price || 0) * (orderItem.quantity || 1),
             notes: orderItem.observation || '',
-            status: 'delivered' as const // Itens do banco já foram lançados
+            status: 'delivered' as const, // Itens do banco já foram lançados
+            launched_at: orderItem.created_at // Usar created_at como horário de lançamento
           };
         });
         
@@ -1519,16 +1521,18 @@ export default function POSPage() {
 
       console.log('Inserindo itens:', orderItems);
 
-      const { error: itemsError } = await supabase
+      // Inserir e retornar os itens com created_at
+      const { data: insertedItems, error: itemsError } = await supabase
         .from('order_items')
-        .insert(orderItems);
+        .insert(orderItems)
+        .select('*, created_at'); // Retornar os itens inseridos com created_at
 
       if (itemsError) {
         console.error('Erro ao inserir itens:', itemsError);
         throw itemsError;
       }
 
-      console.log('Itens inseridos com sucesso');
+      console.log('Itens inseridos com sucesso:', insertedItems);
 
       // Processar impressão
       try {
@@ -1538,11 +1542,19 @@ export default function POSPage() {
         // Não vamos falhar o pedido por erro de impressão
       }
 
-      // Marcar apenas os itens recém-lançados como delivered e adicionar timestamp
-      const launchedTimestamp = new Date().toISOString();
+      // Marcar apenas os itens recém-lançados como delivered e adicionar timestamp do banco
       setCart(cart.map(item => {
         // Se o item estava nos newItems (foi lançado agora), marca como delivered
-        if (newItems.some(newItem => 
+        const insertedItem = insertedItems?.find(inserted => {
+          // Para rodízios
+          if (item.item_id < 0 && !inserted.item_id) {
+            return inserted.metadata?.name === item.item?.name;
+          }
+          // Para itens normais
+          return inserted.item_id === item.item_id;
+        });
+        
+        if (insertedItem && newItems.some(newItem => 
           newItem.item_id === item.item_id && 
           newItem.quantity === item.quantity &&
           newItem.status === item.status
@@ -1551,7 +1563,7 @@ export default function POSPage() {
             ...item,
             status: 'delivered' as const,
             order_id: orderId,
-            launched_at: launchedTimestamp
+            launched_at: insertedItem.created_at // Usar created_at do banco
           };
         }
         // Mantém itens já lançados como estão
