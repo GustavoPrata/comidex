@@ -2323,7 +2323,7 @@ function POSPage() {
                             "POSPage.useEffect.handleScroll": ()=>{
                                 const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
                                 // Ajustado para ser mais preciso na detecção do final
-                                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5; // Tolerância de 5px
+                                const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10; // Tolerância de 10px
                                 const isAtTop = scrollTop <= 5;
                                 if (isAtTop) {
                                     setScrollPosition('top');
@@ -2340,7 +2340,7 @@ function POSPage() {
                 }
             }["POSPage.useEffect.handleScroll"];
             // Verificar posição inicial
-            handleScroll();
+            setTimeout(handleScroll, 100);
             scrollContainer.addEventListener('scroll', handleScroll, {
                 passive: true
             });
@@ -2348,7 +2348,9 @@ function POSPage() {
                 "POSPage.useEffect": ()=>scrollContainer.removeEventListener('scroll', handleScroll)
             })["POSPage.useEffect"];
         }
-    }["POSPage.useEffect"], []); // Removido cart das dependências para evitar re-criar o listener
+    }["POSPage.useEffect"], [
+        cart.length
+    ]); // Adicionado cart.length para recalcular quando mudar
     // Auto scroll para o final apenas quando adicionar novos itens
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "POSPage.useEffect": ()=>{
@@ -6596,7 +6598,7 @@ function POSPage() {
                                                             lineNumber: 2884,
                                                             columnNumber: 21
                                                         }, this),
-                                                        cart.length > 3 && scrollPosition === 'middle' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        cart.length > 2 && scrollPosition !== 'bottom' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: "absolute bottom-0 left-0 right-0 h-16 pointer-events-none",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {

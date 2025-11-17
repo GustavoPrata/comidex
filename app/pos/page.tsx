@@ -266,7 +266,7 @@ export default function POSPage() {
         window.requestAnimationFrame(() => {
           const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
           // Ajustado para ser mais preciso na detecção do final
-          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5; // Tolerância de 5px
+          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10; // Tolerância de 10px
           const isAtTop = scrollTop <= 5;
           
           if (isAtTop) {
@@ -283,11 +283,11 @@ export default function POSPage() {
     };
     
     // Verificar posição inicial
-    handleScroll();
+    setTimeout(handleScroll, 100);
     
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, []); // Removido cart das dependências para evitar re-criar o listener
+  }, [cart.length]); // Adicionado cart.length para recalcular quando mudar
   
   // Auto scroll para o final apenas quando adicionar novos itens
   useEffect(() => {
@@ -3107,7 +3107,7 @@ export default function POSPage() {
                     </ScrollArea>
 
                     {/* Indicador elegante de mais produtos */}
-                    {cart.length > 3 && scrollPosition === 'middle' && (
+                    {cart.length > 2 && scrollPosition !== 'bottom' && (
                       <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none">
                         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
                         <button
