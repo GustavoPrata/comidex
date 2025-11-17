@@ -1,5 +1,19 @@
 "use client";
 
+// Funções utilitárias para cálculos decimais precisos
+const toDecimal = (value: number): number => {
+  return Math.round(value * 100) / 100;
+};
+
+const calculateItemTotal = (quantity: number, price: number): number => {
+  return toDecimal(quantity * price);
+};
+
+const sumTotals = (values: number[]): number => {
+  const sum = values.reduce((acc, val) => acc + val * 100, 0);
+  return sum / 100;
+};
+
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { createPortal } from 'react-dom';
 import { createClient } from "@/lib/supabase/client";
@@ -189,6 +203,7 @@ export default function POSPage() {
   // Estados principais
   const [screen, setScreen] = useState<Screen>('tables');
   const [loading, setLoading] = useState(false);
+  const [operationInProgress, setOperationInProgress] = useState<string | null>(null);
   const [tables, setTables] = useState<RestaurantTable[]>([]);
   const [items, setItems] = useState<Item[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -855,6 +870,13 @@ export default function POSPage() {
       return;
     }
     
+    // Prevenir operações duplicadas
+    if (operationInProgress === 'cancel-table') {
+      toast.warning("Operação já em andamento...");
+      return;
+    }
+    
+    setOperationInProgress('cancel-table');
     setLoading(true);
     try {
       // Buscar o pedido ativo da mesa
@@ -862,7 +884,9 @@ export default function POSPage() {
         .from('orders')
         .select('*')
         .eq('table_id', currentSession.table_id)
-        .eq('status', 'open')
+        .in('status', ['pending', 'confirmed', 'preparing', 'ready', 'delivered'])
+        .order('created_at', { ascending: false })
+        .limit(1)
         .single();
 
       if (activeOrder) {
@@ -935,45 +959,58 @@ export default function POSPage() {
       toast.error(`Erro ao cancelar mesa: ${error.message || 'Erro desconhecido'}`);
     } finally {
       setLoading(false);
+      setOperationInProgress(null);
     }
   };
 
-  // Função para transferir mesa
+  // Função para transferir mesa com tratamento robusto de erros
   const handleTransferTable = async () => {
     if (!currentSession || !targetTableNumber) {
       toast.error('Sessão ou mesa de destino não especificada');
       return;
     }
     
+    // Prevenir operações duplicadas
+    if (operationInProgress === 'transfer-table') {
+      toast.warning("Transferência já em andamento...");
+      return;
+    }
+    
+    // Validar número da mesa
+    const targetNum = parseInt(targetTableNumber);
+    if (isNaN(targetNum) || targetNum <= 0) {
+      toast.error('Número da mesa inválido');
+      return;
+    }
+    
+    setOperationInProgress('transfer-table');
     setLoading(true);
+    
+    // Salvar estado atual para rollback se necessário
+    const originalSession = currentSession;
+    const originalCart = [...cart];
+    
     try {
-      console.log('Iniciando transferência de mesa', { 
-        currentSession: currentSession.id,
-        targetTableNumber 
-      });
-
-      // Buscar a mesa de destino
-      const { data: targetTable, error: targetError } = await supabase
-        .from('restaurant_tables')
-        .select('*')
-        .eq('number', parseInt(targetTableNumber))
-        .single();
+      // Buscar a mesa de destino com timeout
+      const { data: targetTable, error: targetError } = await Promise.race([
+        supabase
+          .from('restaurant_tables')
+          .select('*')
+          .eq('number', targetNum)
+          .single(),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Timeout ao buscar mesa')), 5000)
+        )
+      ]) as any;
 
       if (targetError || !targetTable) {
-        console.error('Mesa não encontrada:', targetError);
-        toast.error(`Mesa ${targetTableNumber} não encontrada`);
-        setLoading(false);
-        return;
+        throw new Error(`Mesa ${targetTableNumber} não encontrada`);
       }
 
       // Verificar se a mesa destino está livre
       if (targetTable.status !== 'available') {
-        toast.error(`Mesa ${targetTableNumber} está ocupada`);
-        setLoading(false);
-        return;
+        throw new Error(`Mesa ${targetTableNumber} está ocupada`);
       }
-
-      console.log('Mesa destino encontrada:', targetTable.id);
 
       // Criar nova sessão para a mesa de destino
       const { data: newSession, error: newSessionError } = await supabase
@@ -1000,7 +1037,9 @@ export default function POSPage() {
         .from('orders')
         .select('*')
         .eq('table_id', currentSession.table_id)
-        .eq('status', 'open')
+        .in('status', ['pending', 'confirmed', 'preparing', 'ready', 'delivered'])
+        .order('created_at', { ascending: false })
+        .limit(1)
         .single();
 
       if (sourceOrder) {
@@ -1010,7 +1049,7 @@ export default function POSPage() {
           .insert({
             order_number: `ORDER-${Date.now()}`,
             table_id: targetTable.id,
-            status: 'open',
+            status: 'pending',
             total: 0
           })
           .select()
@@ -1042,8 +1081,11 @@ export default function POSPage() {
           .eq('order_id', targetOrder.id)
           .neq('status', 'cancelled');
 
-        const newTotal = orderItems?.reduce((sum, item) => 
-          sum + (item.quantity * item.unit_price), 0) || 0;
+        // Usar cálculo com precisão decimal
+        const newTotal = orderItems?.reduce((sum: number, item: any) => {
+          const itemTotal = Math.round(item.quantity * item.unit_price * 100) / 100;
+          return Math.round((sum + itemTotal) * 100) / 100;
+        }, 0) || 0;
 
         const { error: totalError } = await supabase
           .from('orders')
@@ -1072,7 +1114,7 @@ export default function POSPage() {
         if (closeOrderError) throw closeOrderError;
       }
 
-      // Fechar a sessão antiga
+      // Fechar a sessão antiga com verificação
       const { error: closeError } = await supabase
         .from('table_sessions')
         .update({ 
@@ -1082,7 +1124,10 @@ export default function POSPage() {
         })
         .eq('id', currentSession.id);
 
-      if (closeError) throw closeError;
+      if (closeError) {
+        console.error('Erro ao fechar sessão antiga:', closeError);
+        throw new Error('Falha ao fechar sessão original');
+      }
 
       // Liberar mesa antiga
       const { error: oldTableError } = await supabase
@@ -1120,6 +1165,7 @@ export default function POSPage() {
       toast.error(`Erro ao transferir mesa: ${error.message || 'Erro desconhecido'}`);
     } finally {
       setLoading(false);
+      setOperationInProgress(null);
     }
   };
 

@@ -14,7 +14,10 @@ export async function createClient() {
   }
   
   try {
-    console.log('✅ [Server] Conectando ao Supabase real...')
+    // Log seguro sem expor informações sensíveis
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ [Server] Conectando ao Supabase...')
+    }
     const cookieStore = await cookies()
 
     return createServerClient<Database>(

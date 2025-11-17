@@ -36,9 +36,10 @@ export function getSupabaseConfig() {
     supabaseKey.startsWith('eyJ')
   
   if (isValid) {
-    console.log('✅ Supabase configurado corretamente!')
-    console.log('   URL:', supabaseUrl.substring(0, 40) + '...')
-    console.log('   Key:', supabaseKey.substring(0, 20) + '...')
+    // Log seguro sem expor dados sensíveis
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ Supabase configurado corretamente!')
+    }
     return {
       url: supabaseUrl!,
       anonKey: supabaseKey!,
@@ -46,8 +47,6 @@ export function getSupabaseConfig() {
     }
   } else {
     console.warn('⚠️ Supabase não configurado ou variáveis inválidas')
-    console.log('   ENV1:', env1.substring(0, 30))
-    console.log('   ENV2:', env2.substring(0, 30))
     return {
       url: null,
       anonKey: null,
