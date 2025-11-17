@@ -4001,13 +4001,6 @@ export default function POSPage() {
                   </div>
                 </div>
               </div>
-              
-              {/* Área Reservada Minimalista */}
-              <div className="mt-3 bg-gray-800/20 rounded p-2 border border-gray-700/30 border-dashed">
-                <p className="text-gray-600 text-[10px] text-center">
-                  Espaço para futuras funções
-                </p>
-              </div>
             </div>
             
             {/* Botão Voltar para Mesas */}
