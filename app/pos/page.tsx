@@ -54,6 +54,8 @@ import {
   Settings,
   ChevronRight,
   ChevronLeft,
+  ChevronUp,
+  ChevronDown,
   Zap,
   Star,
   ShoppingBag,
@@ -155,6 +157,8 @@ interface OrderItem {
   notes?: string | null;
   status: 'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
   cancelledQuantity?: number;
+  launched_at?: string; // Timestamp do momento do lançamento
+  lineId?: string; // ID único da linha no carrinho
 }
 
 interface SalesStats {
@@ -226,22 +230,63 @@ export default function POSPage() {
   
   // Ref para o ScrollArea dos itens do carrinho
   const cartScrollRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState<'top' | 'middle' | 'bottom'>('top');
+  const previousCartLengthRef = useRef(0);
   
-  // Auto scroll para o final quando adicionar novos itens
+  // Função para rolar para o topo
+  const scrollToTop = () => {
+    const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollContainer) {
+      scrollContainer.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
+  
+  // Função para rolar para o final
+  const scrollToBottom = () => {
+    const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (scrollContainer) {
+      scrollContainer.scrollTo({
+        top: scrollContainer.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+  };
+  
+  // Monitora posição do scroll para mostrar/ocultar botões
   useEffect(() => {
-    if (cartScrollRef.current) {
-      // Pequeno delay para garantir que o DOM atualizou
+    const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (!scrollContainer) return;
+    
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+      const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+      
+      if (scrollPercentage <= 5) {
+        setScrollPosition('top');
+      } else if (scrollPercentage >= 95) {
+        setScrollPosition('bottom');
+      } else {
+        setScrollPosition('middle');
+      }
+    };
+    
+    scrollContainer.addEventListener('scroll', handleScroll);
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, [cart]);
+  
+  // Auto scroll para o final apenas quando adicionar novos itens
+  useEffect(() => {
+    // Só faz scroll se o número de itens aumentou
+    if (cart.length > previousCartLengthRef.current && cartScrollRef.current) {
       setTimeout(() => {
-        const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-        if (scrollContainer) {
-          scrollContainer.scrollTo({
-            top: scrollContainer.scrollHeight,
-            behavior: 'smooth'
-          });
-        }
+        scrollToBottom();
       }, 100);
     }
-  }, [cart]);
+    previousCartLengthRef.current = cart.length;
+  }, [cart.length]);
   
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
@@ -1489,7 +1534,8 @@ export default function POSPage() {
         // Não vamos falhar o pedido por erro de impressão
       }
 
-      // Marcar apenas os itens recém-lançados como delivered
+      // Marcar apenas os itens recém-lançados como delivered e adicionar timestamp
+      const launchedTimestamp = new Date().toISOString();
       setCart(cart.map(item => {
         // Se o item estava nos newItems (foi lançado agora), marca como delivered
         if (newItems.some(newItem => 
@@ -1500,7 +1546,8 @@ export default function POSPage() {
           return {
             ...item,
             status: 'delivered' as const,
-            order_id: orderId
+            order_id: orderId,
+            launched_at: launchedTimestamp
           };
         }
         // Mantém itens já lançados como estão
@@ -2787,8 +2834,32 @@ export default function POSPage() {
                       </Badge>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4">
+                  <CardContent className="p-4 pt-0 relative">
+                    {/* Botões de Scroll */}
+                    {cart.length > 0 && (
+                      <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
+                        {scrollPosition !== 'top' && (
+                          <Button
+                            onClick={scrollToTop}
+                            size="icon"
+                            className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
+                          >
+                            <ChevronUp className="h-4 w-4" />
+                          </Button>
+                        )}
+                        {scrollPosition !== 'bottom' && (
+                          <Button
+                            onClick={scrollToBottom}
+                            size="icon"
+                            className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
+                          >
+                            <ChevronDown className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                    
+                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-10">
                       {cart.length === 0 ? (
                         <div className="flex items-center justify-center h-full">
                           <div className="text-center text-gray-500">
@@ -2874,6 +2945,17 @@ export default function POSPage() {
                                       }`}>
                                         {formatCurrency(item.unit_price)} × {item.quantity}
                                       </div>
+                                      {/* Mostra horário de lançamento para itens lançados */}
+                                      {item.launched_at && item.status === 'delivered' && (
+                                        <div className="text-xs text-green-400 mt-1 flex items-center gap-1">
+                                          <Clock className="h-3 w-3" />
+                                          {new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
+                                            hour: '2-digit', 
+                                            minute: '2-digit',
+                                            second: '2-digit'
+                                          })}
+                                        </div>
+                                      )}
                                     </div>
                                     
                                     <div className="flex items-center gap-3">
