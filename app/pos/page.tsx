@@ -925,10 +925,18 @@ export default function POSPage() {
 
   // Função para transferir mesa
   const handleTransferTable = async () => {
-    if (!currentSession || !targetTableNumber) return;
+    if (!currentSession || !targetTableNumber) {
+      toast.error('Sessão ou mesa de destino não especificada');
+      return;
+    }
     
     setLoading(true);
     try {
+      console.log('Iniciando transferência de mesa', { 
+        currentSession: currentSession.id,
+        targetTableNumber 
+      });
+
       // Buscar a mesa de destino
       const { data: targetTable, error: targetError } = await supabase
         .from('restaurant_tables')
@@ -937,6 +945,7 @@ export default function POSPage() {
         .single();
 
       if (targetError || !targetTable) {
+        console.error('Mesa não encontrada:', targetError);
         toast.error(`Mesa ${targetTableNumber} não encontrada`);
         setLoading(false);
         return;
@@ -949,6 +958,8 @@ export default function POSPage() {
         return;
       }
 
+      console.log('Mesa destino encontrada:', targetTable.id);
+
       // Criar nova sessão para a mesa de destino
       const { data: newSession, error: newSessionError } = await supabase
         .from('table_sessions')
@@ -957,13 +968,18 @@ export default function POSPage() {
           status: 'open',
           opened_at: new Date().toISOString(),
           customer_count: currentSession.customer_count || 1,
-          service_type: currentSession.service_type,
+          service_type: currentSession.service_type || 'a_la_carte',
           total: 0
         })
         .select()
         .single();
 
-      if (newSessionError) throw newSessionError;
+      if (newSessionError || !newSession) {
+        console.error('Erro ao criar nova sessão:', newSessionError);
+        throw new Error('Falha ao criar nova sessão para a mesa de destino');
+      }
+
+      console.log('Nova sessão criada:', newSession.id);
 
       // Transferir todos os itens não cancelados para a nova sessão
       const { error: itemsError } = await supabase
@@ -972,7 +988,10 @@ export default function POSPage() {
         .eq('session_id', currentSession.id)
         .neq('status', 'cancelled');
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('Erro ao transferir itens:', itemsError);
+        throw itemsError;
+      }
 
       // Atualizar o total da nova sessão
       const { data: sessionItems } = await supabase
@@ -1034,9 +1053,9 @@ export default function POSPage() {
       
       // Recarregar mesas
       loadTables();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao transferir mesa:', error);
-      toast.error("Erro ao transferir mesa");
+      toast.error(`Erro ao transferir mesa: ${error.message || 'Erro desconhecido'}`);
     } finally {
       setLoading(false);
     }
