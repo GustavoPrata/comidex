@@ -2963,22 +2963,19 @@ export default function POSPage() {
                                       {item.status === 'delivered' ? (
                                         <div className="text-green-400 flex flex-col items-center justify-center">
                                           <Clock className="h-3 w-3 mb-1" />
-                                          <div className="flex items-baseline">
-                                            <span className="text-sm font-medium">
-                                              {(() => {
-                                                const date = item.launched_at ? new Date(item.launched_at) : new Date();
-                                                const hours = date.getHours().toString().padStart(2, '0');
-                                                const minutes = date.getMinutes().toString().padStart(2, '0');
-                                                return `${hours}:${minutes}`;
-                                              })()}
-                                            </span>
-                                            <span className="text-[10px] ml-0.5">
-                                              :{(() => {
-                                                const date = item.launched_at ? new Date(item.launched_at) : new Date();
-                                                const seconds = date.getSeconds().toString().padStart(2, '0');
-                                                return seconds;
-                                              })()}
-                                            </span>
+                                          <div className="flex items-center">
+                                            {(() => {
+                                              const date = item.launched_at ? new Date(item.launched_at) : new Date();
+                                              const hours = date.getHours().toString().padStart(2, '0');
+                                              const minutes = date.getMinutes().toString().padStart(2, '0');
+                                              const seconds = date.getSeconds().toString().padStart(2, '0');
+                                              return (
+                                                <>
+                                                  <span className="text-sm font-medium">{hours}:{minutes}</span>
+                                                  <span className="text-[11px] font-normal opacity-80">:{seconds}</span>
+                                                </>
+                                              );
+                                            })()}
                                           </div>
                                         </div>
                                       ) : (
