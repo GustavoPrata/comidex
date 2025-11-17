@@ -227,6 +227,7 @@ export default function POSPage() {
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [cart, setCart] = useState<OrderItem[]>([]);
   const [serviceTaxPercentage, setServiceTaxPercentage] = useState<number>(0);
+  const [showCancelledOnly, setShowCancelledOnly] = useState(false);
   
   // Estados do numpad e entrada
   const [inputValue, setInputValue] = useState("");
@@ -3378,7 +3379,7 @@ export default function POSPage() {
                     <TabsList className="bg-gray-800 border-gray-700 h-10">
                       <TabsTrigger value="cart" className="data-[state=active]:bg-orange-600 h-full px-3">
                         <ShoppingCart className="mr-2 h-4 w-4" />
-                        Carrinho ({cart.length})
+                        Carrinho
                       </TabsTrigger>
                       <TabsTrigger value="categories" className="data-[state=active]:bg-orange-600 h-full px-3">
                         <ShoppingBag className="mr-2 h-4 w-4" />
@@ -3467,25 +3468,60 @@ export default function POSPage() {
                         <ShoppingBag className="h-5 w-5 text-orange-400" />
                         Itens do Pedido
                       </span>
-                      <Badge variant="outline" className="text-white">
-                        {cart.length} {cart.length === 1 ? 'item' : 'itens'}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setShowCancelledOnly(!showCancelledOnly)}
+                          className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
+                            showCancelledOnly 
+                              ? 'bg-red-600 text-white' 
+                              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                          }`}
+                          data-testid="toggle-cancelled-filter"
+                        >
+                          {showCancelledOnly ? (
+                            <span className="flex items-center gap-1">
+                              <XCircle className="h-4 w-4" />
+                              Cancelados
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <CheckCircle2 className="h-4 w-4" />
+                              Todos
+                            </span>
+                          )}
+                        </button>
+                      </div>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 pt-0 flex-1">
                     <div className="relative">
                       <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4" style={{ willChange: 'scroll-position' }}>
-                        {cart.length === 0 ? (
-                          <div className="flex items-center justify-center h-full">
-                            <div className="text-center text-gray-500">
-                              <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                              <p>Carrinho vazio</p>
-                              <p className="text-sm mt-2">Adicione produtos usando o código ou busca</p>
+                        {(() => {
+                          const filteredCart = showCancelledOnly 
+                            ? cart.filter(item => item.status === 'cancelled')
+                            : cart;
+                          
+                          return filteredCart.length === 0 ? (
+                            <div className="flex items-center justify-center h-full">
+                              <div className="text-center text-gray-500">
+                                {showCancelledOnly ? (
+                                  <>
+                                    <XCircle className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                                    <p>Nenhum item cancelado</p>
+                                    <p className="text-sm mt-2">Clique em "Todos" para ver todos os itens</p>
+                                  </>
+                                ) : (
+                                  <>
+                                    <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                                    <p>Carrinho vazio</p>
+                                    <p className="text-sm mt-2">Adicione produtos usando o código ou busca</p>
+                                  </>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        ) : (
-                          <AnimatePresence>
-                            {cart.map((item, index) => (
+                          ) : (
+                            <AnimatePresence>
+                              {filteredCart.map((item, index) => (
                             <motion.div
                               key={`${item.item_id}-${index}`}
                               initial={{ opacity: 0, x: -50 }}
@@ -3696,7 +3732,8 @@ export default function POSPage() {
                             </motion.div>
                           ))}
                         </AnimatePresence>
-                      )}
+                      )
+                    })()}
                     </ScrollArea>
                     
                     {/* Indicador elegante de mais itens */}
