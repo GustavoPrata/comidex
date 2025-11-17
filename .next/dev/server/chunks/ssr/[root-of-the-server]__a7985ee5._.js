@@ -2273,16 +2273,15 @@ function POSPage() {
             // Aguardar para garantir que a aba cart esteja renderizada
             setTimeout(()=>{
                 // Verificar se estamos na aba cart antes de fazer scroll
-                if (activeTab === 'cart' && cartScrollRef.current) {
+                if (cartScrollRef.current) {
                     scrollToBottom();
                 }
             }, 300); // Tempo suficiente para garantir renderização
         }
         previousCartLengthRef.current = cart.length;
     }, [
-        cart.length,
-        activeTab
-    ]); // Adicionado activeTab como dependência
+        cart.length
+    ]); // Removido activeTab da dependência por estar declarado depois
     // Estados do checkout completo
     const [checkoutDialog, setCheckoutDialog] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [groupedItems, setGroupedItems] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);

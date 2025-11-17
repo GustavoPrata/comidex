@@ -284,13 +284,13 @@ export default function POSPage() {
       // Aguardar para garantir que a aba cart esteja renderizada
       setTimeout(() => {
         // Verificar se estamos na aba cart antes de fazer scroll
-        if (activeTab === 'cart' && cartScrollRef.current) {
+        if (cartScrollRef.current) {
           scrollToBottom();
         }
       }, 300); // Tempo suficiente para garantir renderização
     }
     previousCartLengthRef.current = cart.length;
-  }, [cart.length, activeTab]); // Adicionado activeTab como dependência
+  }, [cart.length]); // Removido activeTab da dependência por estar declarado depois
   
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
@@ -1545,7 +1545,7 @@ export default function POSPage() {
       // Marcar apenas os itens recém-lançados como delivered e adicionar timestamp do banco
       setCart(cart.map(item => {
         // Se o item estava nos newItems (foi lançado agora), marca como delivered
-        const insertedItem = insertedItems?.find(inserted => {
+        const insertedItem = insertedItems?.find((inserted: any) => {
           // Para rodízios
           if (item.item_id < 0 && !inserted.item_id) {
             return inserted.metadata?.name === item.item?.name;
