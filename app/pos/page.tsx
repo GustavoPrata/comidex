@@ -3228,9 +3228,9 @@ export default function POSPage() {
         </div>
 
         {/* Main Content com Layout 70/30 */}
-        <div className="flex flex-1">
+        <div className="flex flex-1 overflow-hidden">
           {/* Left Panel 70% - Carrinho e Categorias */}
-          <div className="w-[70%] flex flex-col p-4 border-r border-gray-700">
+          <div className="w-[70%] flex flex-col p-4 border-r border-gray-700 overflow-hidden">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col">
               {/* Input Section com Tabs */}
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
@@ -3349,9 +3349,9 @@ export default function POSPage() {
                         document.body
                       )}
 
-                {/* Lista de Itens Animada */}
-                <Card className="flex-1 bg-gray-900/50 backdrop-blur border-gray-700 overflow-hidden">
-                  <CardHeader className="pb-3">
+                {/* Lista de Itens Animada - Usando todo o espaço disponível */}
+                <Card className="flex-1 bg-gray-900/50 backdrop-blur border-gray-700 overflow-hidden flex flex-col">
+                  <CardHeader className="pb-3 flex-shrink-0">
                     <CardTitle className="text-lg flex items-center justify-between">
                       <span className="flex items-center gap-2">
                         <ShoppingBag className="h-5 w-5 text-orange-400" />
@@ -3362,9 +3362,9 @@ export default function POSPage() {
                       </Badge>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0">
-                    <div className="relative">
-                      <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4" style={{ willChange: 'scroll-position' }}>
+                  <CardContent className="p-4 pt-0 flex-1 overflow-hidden">
+                    <div className="relative h-full">
+                      <ScrollArea ref={cartScrollRef} className="h-full pr-4" style={{ willChange: 'scroll-position' }}>
                         {cart.length === 0 ? (
                           <div className="flex items-center justify-center h-full">
                             <div className="text-center text-gray-500">
@@ -3610,14 +3610,14 @@ export default function POSPage() {
                     )}
                   </div>
 
-                    {/* Botões de Ação */}
+                    {/* Botões de Ação - Otimizados para espaço */}
                     {cart.length > 0 && (
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="mt-4"
+                        className="mt-auto pt-2"
                       >
-                        <div className="flex gap-3">
+                        <div className="flex gap-2">
                           <Button
                             onClick={handleCancelOrder}
                             variant="outline"
@@ -3911,12 +3911,6 @@ export default function POSPage() {
                 </h4>
                 
                 <div className="space-y-3">
-                  {/* Quantidade de Itens */}
-                  <div className="flex justify-between items-center pb-2 border-b border-gray-700">
-                    <span className="text-gray-400 text-sm">Total de Itens:</span>
-                    <span className="text-white font-bold">{cart.length}</span>
-                  </div>
-                  
                   {/* Itens Lançados */}
                   <div className="flex justify-between items-center">
                     <span className="text-green-400 text-sm flex items-center gap-1">

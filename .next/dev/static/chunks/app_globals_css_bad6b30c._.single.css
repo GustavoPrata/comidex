@@ -745,6 +745,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-top: 2rem;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+
 .line-clamp-2 {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
