@@ -494,7 +494,6 @@ export default function POSPage() {
           )
         `)
         .eq('order_id', orders.id)
-        .neq('status', 'cancelled') // Não carregar itens cancelados
         .order('created_at', { ascending: true });
 
       if (itemsError) {
@@ -529,7 +528,7 @@ export default function POSPage() {
               unit_price: orderItem.unit_price || 0,
               total_price: (orderItem.unit_price || 0) * (orderItem.quantity || 1),
               notes: orderItem.observation || '',
-              status: 'delivered' as const, // Itens do banco já foram lançados
+              status: orderItem.status === 'cancelled' ? ('cancelled' as const) : ('delivered' as const), // Manter status do banco
               launched_at: orderItem.created_at // Usar created_at como horário de lançamento
             };
           }
@@ -557,7 +556,7 @@ export default function POSPage() {
             unit_price: orderItem.unit_price || 0,
             total_price: (orderItem.unit_price || 0) * (orderItem.quantity || 1),
             notes: orderItem.observation || '',
-            status: 'delivered' as const, // Itens do banco já foram lançados
+            status: orderItem.status === 'cancelled' ? ('cancelled' as const) : ('delivered' as const), // Manter status do banco
             launched_at: orderItem.created_at // Usar created_at como horário de lançamento
           };
         });
@@ -2006,11 +2005,11 @@ export default function POSPage() {
       
       // Verificar se ainda há itens ativos na mesa após cancelamentos
       const activeItemsCount = cart.filter(item => 
-        item.status === 'delivered' && !item.cancelledQuantity
+        item.status !== 'cancelled'
       ).length;
       
       // Se todos os itens foram cancelados, atualizar mesa para disponível
-      if (activeItemsCount === 0 && itemsToCancel.length > 0) {
+      if (activeItemsCount === 0 && cart.length > 0) {
         console.log('Todos os itens foram cancelados, liberando mesa');
         
         // Atualizar status da mesa para disponível
