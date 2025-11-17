@@ -1160,6 +1160,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-width: 28rem;
 }
 
+.max-w-sm {
+  max-width: 24rem;
+}
+
 .flex-1 {
   flex: 1;
 }
@@ -1291,10 +1295,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .cursor-move {
   cursor: move;
-}
-
-.cursor-not-allowed {
-  cursor: not-allowed;
 }
 
 .cursor-pointer {

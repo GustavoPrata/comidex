@@ -7,6 +7,7 @@ import { getIconByName } from "@/lib/menu-icons-library";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -153,6 +154,7 @@ interface OrderItem {
   total_price: number;
   notes?: string | null;
   status: 'pending' | 'preparing' | 'ready' | 'delivered' | 'cancelled';
+  cancelledQuantity?: number;
 }
 
 interface SalesStats {
@@ -216,6 +218,11 @@ export default function POSPage() {
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'pix'>('cash');
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
   const [printDialog, setPrintDialog] = useState(false);
+  
+  // Estados do modal de cancelamento parcial
+  const [cancelQuantityDialog, setCancelQuantityDialog] = useState(false);
+  const [itemToCancel, setItemToCancel] = useState<any>(null);
+  const [cancelQuantity, setCancelQuantity] = useState(1);
   
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
@@ -1034,22 +1041,33 @@ export default function POSPage() {
     
     // Se o item foi lançado, alterna entre delivered e cancelled
     if (item.status === 'delivered') {
-      setCart(prev => prev.map(item => {
-        if (item.id === cartLineId) {
-          return {
-            ...item,
-            status: 'cancelled' as any
-          };
-        }
-        return item;
-      }));
-      toast.error("Item marcado como cancelado");
+      // Se tem apenas 1 unidade, cancela direto
+      if (item.quantity === 1) {
+        setCart(prev => prev.map(item => {
+          if (item.id === cartLineId) {
+            return {
+              ...item,
+              status: 'cancelled' as any,
+              cancelledQuantity: 1
+            };
+          }
+          return item;
+        }));
+        toast.error("Item cancelado");
+      } else {
+        // Se tem mais de 1 unidade, abre modal para escolher quantidade
+        setItemToCancel(item);
+        setCancelQuantity(1);
+        setCancelQuantityDialog(true);
+      }
     } else if (item.status === 'cancelled') {
       // Restaurar item cancelado
       setCart(prev => prev.map(item => {
         if (item.id === cartLineId) {
+          const updated = { ...item };
+          delete updated.cancelledQuantity;
           return {
-            ...item,
+            ...updated,
             status: 'delivered' as any
           };
         }
@@ -1057,6 +1075,35 @@ export default function POSPage() {
       }));
       toast.success("Item restaurado");
     }
+  };
+  
+  const handleConfirmCancelQuantity = () => {
+    if (!itemToCancel) return;
+    
+    setCart(prev => prev.map(item => {
+      if (item.id === itemToCancel.id) {
+        const cancelledQty = cancelQuantity;
+        if (cancelledQty >= item.quantity) {
+          // Cancela tudo
+          return {
+            ...item,
+            status: 'cancelled' as any,
+            cancelledQuantity: item.quantity
+          };
+        } else {
+          // Cancela parcialmente
+          return {
+            ...item,
+            cancelledQuantity: cancelledQty
+          };
+        }
+      }
+      return item;
+    }));
+    
+    toast.error(`${cancelQuantity} ${cancelQuantity === 1 ? 'item cancelado' : 'itens cancelados'}`);
+    setCancelQuantityDialog(false);
+    setItemToCancel(null);
   };
 
   const handleCancelOrder = () => {
@@ -1469,12 +1516,23 @@ export default function POSPage() {
 
   const calculateLaunchedTotal = () => {
     return cart.filter(item => item.status === 'delivered')
-      .reduce((sum, item) => sum + item.total_price, 0);
+      .reduce((sum, item) => {
+        const cancelledQty = item.cancelledQuantity || 0;
+        const activeQty = item.quantity - cancelledQty;
+        return sum + (item.unit_price * activeQty);
+      }, 0);
   };
 
   const calculateCancelledTotal = () => {
-    return cart.filter(item => item.status === 'cancelled')
+    const fullyCancelled = cart.filter(item => item.status === 'cancelled')
       .reduce((sum, item) => sum + item.total_price, 0);
+    
+    const partiallyCancelled = cart.filter(item => item.status === 'delivered' && item.cancelledQuantity)
+      .reduce((sum, item) => {
+        return sum + (item.unit_price * (item.cancelledQuantity || 0));
+      }, 0);
+    
+    return fullyCancelled + partiallyCancelled;
   };
 
   // Process printing for order items
@@ -2795,13 +2853,21 @@ export default function POSPage() {
                                           </Button>
                                         </div>
                                       ) : (
-                                        /* Para itens lançados/cancelados, apenas mostra a quantidade */
-                                        <div className="flex items-center justify-center w-24">
-                                          <span className={`text-center font-bold text-lg ${
+                                        /* Para itens lançados, mostra quantidade com cancelados se houver */
+                                        <div className="flex items-center gap-1">
+                                          <span className={`font-bold ${
                                             item.status === 'cancelled' ? 'text-red-500 line-through' : 'text-white'
                                           }`}>
-                                            Qtd: {item.quantity}
+                                            {item.quantity - (item.cancelledQuantity || 0)}
                                           </span>
+                                          {item.cancelledQuantity && item.cancelledQuantity > 0 && item.status !== 'cancelled' && (
+                                            <>
+                                              <span className="text-gray-500">/</span>
+                                              <span className="text-red-500 line-through text-sm">
+                                                {item.cancelledQuantity}
+                                              </span>
+                                            </>
+                                          )}
                                         </div>
                                       )}
                                       
@@ -3657,6 +3723,85 @@ export default function POSPage() {
                     Fechar Mesa
                   </>
                 )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        
+        {/* Dialog de Cancelamento Parcial */}
+        <Dialog open={cancelQuantityDialog} onOpenChange={setCancelQuantityDialog}>
+          <DialogContent className="bg-gray-800 text-white border-gray-700 max-w-sm">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <X className="h-5 w-5 text-red-400" />
+                Cancelar Item
+              </DialogTitle>
+            </DialogHeader>
+            
+            <div className="space-y-4">
+              {itemToCancel && (
+                <>
+                  <div className="bg-gray-700/50 rounded-lg p-3">
+                    <p className="font-medium">{itemToCancel.item?.name || 'Produto'}</p>
+                    <p className="text-sm text-gray-400">Total disponível: {itemToCancel.quantity}</p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label>Quantidade a cancelar:</Label>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setCancelQuantity(Math.max(1, cancelQuantity - 1))}
+                        className="h-10 w-10 p-0 bg-gray-700 hover:bg-gray-600 border-gray-600"
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+                      <Input
+                        type="number"
+                        value={cancelQuantity}
+                        onChange={(e) => {
+                          const val = parseInt(e.target.value) || 1;
+                          setCancelQuantity(Math.min(itemToCancel.quantity, Math.max(1, val)));
+                        }}
+                        className="w-20 text-center bg-gray-700 border-gray-600 text-white font-bold text-lg"
+                        min={1}
+                        max={itemToCancel.quantity}
+                      />
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => setCancelQuantity(Math.min(itemToCancel.quantity, cancelQuantity + 1))}
+                        className="h-10 w-10 p-0 bg-gray-700 hover:bg-gray-600 border-gray-600"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </div>
+                  
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Valor a cancelar:</span>
+                    <span className="text-red-400 font-bold">
+                      {formatCurrency((itemToCancel.unit_price || 0) * cancelQuantity)}
+                    </span>
+                  </div>
+                </>
+              )}
+            </div>
+            
+            <DialogFooter className="gap-2">
+              <Button
+                onClick={() => setCancelQuantityDialog(false)}
+                className="bg-gray-700 hover:bg-gray-600"
+              >
+                Voltar
+              </Button>
+              <Button
+                onClick={handleConfirmCancelQuantity}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                <X className="mr-2 h-4 w-4" />
+                Confirmar Cancelamento
               </Button>
             </DialogFooter>
           </DialogContent>
