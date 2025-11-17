@@ -3879,34 +3879,49 @@ export default function POSPage() {
             
             {/* Botões de Ação na parte inferior do painel esquerdo */}
             <div className="p-4 pt-2 bg-gray-900/50 border-t border-gray-700">
-              <div className="flex gap-2">
+              <div className="flex justify-between items-center gap-4">
+                {/* Botão Voltar - Lado Esquerdo */}
                 <Button
                   onClick={() => setScreen('tables')}
                   variant="outline"
-                  className="flex-1 h-10 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
+                  className="h-10 px-4 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Voltar
                 </Button>
-                {cart.length > 0 && (
-                  <>
-                    <Button
-                      onClick={handleCancelOrder}
-                      variant="outline"
-                      className="flex-1 h-10 text-red-400 border-red-600 hover:bg-red-900/20 hover:text-red-300 font-medium"
-                    >
-                      <X className="h-4 w-4 mr-2" />
-                      Cancelar
-                    </Button>
-                    <Button
-                      onClick={handleLaunchOrder}
-                      className="flex-1 h-10 bg-green-600 hover:bg-green-700 text-white font-medium"
-                    >
-                      <Send className="h-4 w-4 mr-2" />
-                      Lançar
-                    </Button>
-                  </>
-                )}
+                
+                {/* Botões Cancelar/Lançar - Lado Direito (unidos) */}
+                {(() => {
+                  // Verifica se há alterações pendentes
+                  const hasPendingItems = cart.some(item => 
+                    item.status === 'pending' || !item.status
+                  );
+                  const hasRestoredItems = cart.some((item: any) => 
+                    item.wasRestored === true
+                  );
+                  const hasChanges = hasPendingItems || hasRestoredItems;
+                  
+                  if (!hasChanges) return null;
+                  
+                  return (
+                    <div className="flex rounded-full bg-gray-800 border border-gray-700 overflow-hidden">
+                      <button
+                        onClick={handleCancelOrder}
+                        className="px-4 py-2 text-red-400 hover:bg-red-900/20 hover:text-red-300 font-medium transition-all flex items-center gap-2 border-r border-gray-700"
+                      >
+                        <X className="h-4 w-4" />
+                        Cancelar
+                      </button>
+                      <button
+                        onClick={handleLaunchOrder}
+                        className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-medium transition-all flex items-center gap-2"
+                      >
+                        <Send className="h-4 w-4" />
+                        Lançar
+                      </button>
+                    </div>
+                  );
+                })()}
               </div>
             </div>
           </div>
