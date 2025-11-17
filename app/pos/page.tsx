@@ -2773,32 +2773,37 @@ export default function POSPage() {
                                     </div>
                                     
                                     <div className="flex items-center gap-3">
-                                      <div className="flex items-center gap-1">
-                                        <Button
-                                          size="sm"
-                                          onClick={() => handleUpdateQuantity(item.id!, -1)}
-                                          className={`h-7 w-7 p-0 ${
-                                            item.status === 'cancelled' 
-                                              ? 'bg-gray-800 opacity-50 cursor-not-allowed' 
-                                              : 'bg-gray-700 hover:bg-gray-600'
-                                          }`}
-                                          disabled={item.status === 'cancelled'}
-                                        >
-                                          <Minus className="h-3 w-3" />
-                                        </Button>
-                                        <span className={`w-8 text-center font-medium ${
-                                          item.status === 'cancelled' ? 'text-red-500 line-through' : ''
-                                        }`}>
-                                          {item.quantity}
-                                        </span>
-                                        <Button
-                                          size="sm"
-                                          onClick={() => handleUpdateQuantity(item.id!, 1)}
-                                          className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
-                                        >
-                                          <Plus className="h-3 w-3" />
-                                        </Button>
-                                      </div>
+                                      {/* Só mostra botões +/- para itens não lançados */}
+                                      {item.status === 'pending' || !item.status ? (
+                                        <div className="flex items-center gap-1">
+                                          <Button
+                                            size="sm"
+                                            onClick={() => handleUpdateQuantity(item.id!, -1)}
+                                            className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
+                                          >
+                                            <Minus className="h-3 w-3" />
+                                          </Button>
+                                          <span className="w-8 text-center font-medium">
+                                            {item.quantity}
+                                          </span>
+                                          <Button
+                                            size="sm"
+                                            onClick={() => handleUpdateQuantity(item.id!, 1)}
+                                            className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
+                                          >
+                                            <Plus className="h-3 w-3" />
+                                          </Button>
+                                        </div>
+                                      ) : (
+                                        /* Para itens lançados/cancelados, apenas mostra a quantidade */
+                                        <div className="flex items-center justify-center w-24">
+                                          <span className={`text-center font-bold text-lg ${
+                                            item.status === 'cancelled' ? 'text-red-500 line-through' : 'text-white'
+                                          }`}>
+                                            Qtd: {item.quantity}
+                                          </span>
+                                        </div>
+                                      )}
                                       
                                       <div className="text-right">
                                         <div className={`font-bold text-lg ${
@@ -2810,22 +2815,37 @@ export default function POSPage() {
                                         </div>
                                       </div>
                                       
-                                      <Button
-                                        size="sm"
-                                        variant="ghost"
-                                        onClick={() => handleRemoveItem(item.id!)}
-                                        className={`h-7 w-7 p-0 ${
-                                          item.status === 'cancelled'
-                                            ? 'text-green-400 hover:text-green-300 hover:bg-green-900/20'
-                                            : 'text-red-400 hover:text-red-300 hover:bg-red-900/20'
-                                        }`}
-                                      >
-                                        {item.status === 'cancelled' ? (
-                                          <RefreshCw className="h-4 w-4" />
-                                        ) : (
+                                      {/* Botão de cancelar/restaurar só aparece para itens lançados */}
+                                      {(item.status === 'delivered' || item.status === 'cancelled') && (
+                                        <Button
+                                          size="sm"
+                                          variant="ghost"
+                                          onClick={() => handleRemoveItem(item.id!)}
+                                          className={`h-7 w-7 p-0 ${
+                                            item.status === 'cancelled'
+                                              ? 'text-green-400 hover:text-green-300 hover:bg-green-900/20'
+                                              : 'text-red-400 hover:text-red-300 hover:bg-red-900/20'
+                                          }`}
+                                        >
+                                          {item.status === 'cancelled' ? (
+                                            <RefreshCw className="h-4 w-4" />
+                                          ) : (
+                                            <X className="h-5 w-5 font-bold" />
+                                          )}
+                                        </Button>
+                                      )}
+                                      
+                                      {/* Botão de excluir para itens não lançados */}
+                                      {(item.status === 'pending' || !item.status) && (
+                                        <Button
+                                          size="sm"
+                                          variant="ghost"
+                                          onClick={() => handleRemoveItem(item.id!)}
+                                          className="h-7 w-7 p-0 text-red-400 hover:text-red-300 hover:bg-red-900/20"
+                                        >
                                           <X className="h-5 w-5 font-bold" />
-                                        )}
-                                      </Button>
+                                        </Button>
+                                      )}
                                     </div>
                                   </div>
                                 </CardContent>
