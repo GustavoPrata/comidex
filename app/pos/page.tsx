@@ -1526,7 +1526,8 @@ export default function POSPage() {
           delete updated.cancelledQuantity;
           return {
             ...updated,
-            status: 'delivered' as any
+            status: 'delivered' as any,
+            wasRestored: true // Marcar que foi restaurado para processar no lançamento
           };
         }
         return item;
@@ -1811,6 +1812,12 @@ export default function POSPage() {
     // Filtrar itens por status
     const newItems = cart.filter(item => item.status === 'pending');
     const cancelledItems = cart.filter(item => item.status === 'cancelled' && item.id && !item.lineId);
+    const restoredItems = cart.filter(item => 
+      item.status === 'delivered' && 
+      (item as any).wasRestored === true && 
+      item.id && 
+      item.order_id
+    );
     const itemsToUpdate = cart.filter(item => 
       (item.status === 'cancelled' || item.status === 'pending') && 
       item.id && 
@@ -1818,7 +1825,7 @@ export default function POSPage() {
     );
     
     // Se não há nada para processar (todos já lançados)
-    if (newItems.length === 0 && cancelledItems.length === 0 && itemsToUpdate.length === 0) {
+    if (newItems.length === 0 && cancelledItems.length === 0 && restoredItems.length === 0 && itemsToUpdate.length === 0) {
       toast.error("Nenhuma alteração para lançar. Adicione novos itens ou modifique os existentes.");
       return;
     }
@@ -1902,6 +1909,27 @@ export default function POSPage() {
         console.log('Itens cancelados atualizados com sucesso');
       }
 
+      // Processar itens restaurados (que eram cancelados e foram restaurados)
+      if (restoredItems.length > 0) {
+        console.log('Atualizando itens restaurados no banco:', restoredItems);
+        
+        for (const item of restoredItems) {
+          const { error: updateError } = await supabase
+            .from('order_items')
+            .update({ 
+              status: 'pending' // Voltar para pending para ser entregue novamente
+            })
+            .eq('id', item.id);
+          
+          if (updateError) {
+            console.error('Erro ao atualizar item restaurado:', updateError);
+            throw updateError;
+          }
+        }
+        
+        console.log('Itens restaurados atualizados com sucesso');
+      }
+
       // Adicionar apenas itens novos (não lançados) ao pedido
       const orderItems = newItems.map(item => {
         // Para rodízios (IDs negativos), adicionar metadata
@@ -1964,6 +1992,12 @@ export default function POSPage() {
 
       // Marcar apenas os itens recém-lançados como delivered e adicionar timestamp do banco
       setCart(cart.map(item => {
+        // Se o item foi restaurado, limpar a flag wasRestored
+        if ((item as any).wasRestored) {
+          const { wasRestored, ...itemWithoutFlag } = item as any;
+          return itemWithoutFlag;
+        }
+        
         // Se o item estava nos newItems (foi lançado agora), marca como delivered
         const insertedItem = insertedItems?.find((inserted: any) => {
           // Para rodízios
