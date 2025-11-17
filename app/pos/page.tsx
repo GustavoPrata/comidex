@@ -3837,54 +3837,64 @@ export default function POSPage() {
           
           {/* Right Panel 30% - Menu Lateral Compacto */}
           <div className="w-[30%] flex flex-col p-4 bg-gray-900/50">
-            {/* Ações Rápidas - Tudo Junto */}
-            <div className="space-y-2">
-              {/* Botão Fechar Conta */}
-              <Button
-                onClick={startCheckout}
-                disabled={loading || cart.length === 0}
-                className={`w-full h-11 text-sm font-semibold ${
-                  cart.length === 0 
-                    ? "bg-gray-600 cursor-not-allowed" 
-                    : "bg-green-600 hover:bg-green-700"
-                }`}
-              >
-                <CreditCard className="mr-2 h-4 w-4" />
-                Fechar Conta
-              </Button>
-              
-              {/* Botão Imprimir */}
-              <Button
-                onClick={() => setPrintDialog(true)}
-                disabled={cart.length === 0}
-                className={`w-full h-11 text-sm font-semibold ${
-                  cart.length === 0 
-                    ? "bg-gray-600 cursor-not-allowed" 
-                    : "bg-purple-600 hover:bg-purple-700"
-                }`}
-              >
-                <Printer className="mr-2 h-4 w-4" />
-                Imprimir Conta
-              </Button>
-              
-              {/* Botão Transferir */}
-              <Button
-                onClick={() => setTransferTableDialog(true)}
-                className="w-full h-11 text-sm font-semibold bg-blue-600 hover:bg-blue-700"
-              >
-                <ArrowRight className="mr-2 h-4 w-4" />
-                Transferir Mesa
-              </Button>
-              
-              {/* Botão Cancelar Mesa */}
-              <Button
-                onClick={() => setCancelTableDialog(true)}
-                className="w-full h-11 text-sm font-semibold bg-red-600 hover:bg-red-700"
-              >
-                  <X className="mr-2 h-4 w-4" />
-                Cancelar Mesa
-              </Button>
-            </div>
+            {/* Card de Ações com Título */}
+            <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Settings className="h-4 w-4 text-orange-400" />
+                  Ações da Mesa
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 pt-0">
+                <div className="space-y-2">
+                  {/* Botão Fechar Conta - Principal em laranja */}
+                  <Button
+                    onClick={startCheckout}
+                    disabled={loading || cart.length === 0}
+                    className={`w-full h-11 text-sm font-semibold transition-all ${
+                      cart.length === 0 
+                        ? "bg-gray-700 text-gray-400 cursor-not-allowed" 
+                        : "bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20"
+                    }`}
+                  >
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Fechar Conta
+                  </Button>
+                  
+                  {/* Botão Imprimir - Secundário */}
+                  <Button
+                    onClick={() => setPrintDialog(true)}
+                    disabled={cart.length === 0}
+                    className={`w-full h-11 text-sm font-semibold transition-all ${
+                      cart.length === 0 
+                        ? "bg-gray-700 text-gray-400 cursor-not-allowed" 
+                        : "bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
+                    }`}
+                  >
+                    <Printer className="mr-2 h-4 w-4" />
+                    Imprimir Conta
+                  </Button>
+                  
+                  {/* Botão Transferir - Secundário */}
+                  <Button
+                    onClick={() => setTransferTableDialog(true)}
+                    className="w-full h-11 text-sm font-semibold bg-gray-700 hover:bg-gray-600 text-white border border-gray-600 transition-all"
+                  >
+                    <ArrowRight className="mr-2 h-4 w-4" />
+                    Transferir Mesa
+                  </Button>
+                  
+                  {/* Botão Cancelar Mesa - Destrutivo mais sutil */}
+                  <Button
+                    onClick={() => setCancelTableDialog(true)}
+                    className="w-full h-11 text-sm font-semibold bg-gray-700 hover:bg-red-900/30 text-red-400 border border-gray-600 hover:border-red-800 transition-all"
+                  >
+                    <X className="mr-2 h-4 w-4" />
+                    Cancelar Mesa
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
             
             {/* Resumo Financeiro Compacto */}
             <div className="mt-auto pt-3">

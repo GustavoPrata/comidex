@@ -3504,6 +3504,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(249 115 22 / var(--tw-border-opacity, 1));
 }
 
+.hover\:border-red-800:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(153 27 27 / var(--tw-border-opacity, 1));
+}
+
 .hover\:bg-blue-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(219 234 254 / var(--tw-bg-opacity, 1));
@@ -3666,6 +3671,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .hover\:bg-red-900\/20:hover {
   background-color: #7f1d1d33;
+}
+
+.hover\:bg-red-900\/30:hover {
+  background-color: #7f1d1d4d;
 }
 
 .hover\:bg-secondary\/80:hover {
