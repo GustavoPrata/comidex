@@ -3090,19 +3090,17 @@ export default function POSPage() {
                       )}
                     </ScrollArea>
 
-                    {/* Botão para ver mais produtos */}
+                    {/* Botão para ver mais produtos - design minimalista */}
                     {cart.length > 0 && scrollPosition !== 'bottom' && (
-                      <div className="mt-3 px-2">
-                        <motion.button
-                          initial={{ opacity: 0, y: -10 }}
-                          animate={{ opacity: 1, y: 0 }}
+                      <div className="mt-2 flex justify-center">
+                        <button
                           onClick={scrollToBottom}
-                          className="w-full bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white py-2.5 px-4 rounded-lg shadow-lg transition-all duration-200 flex items-center justify-center gap-3 border border-gray-600"
+                          className="text-gray-400 hover:text-orange-500 transition-colors duration-200 flex items-center gap-1 text-xs"
                         >
-                          <ChevronDown className="h-4 w-4 animate-bounce" />
-                          <span className="text-sm font-medium">Ver últimos produtos</span>
-                          <ChevronDown className="h-4 w-4 animate-bounce" />
-                        </motion.button>
+                          <ChevronDown className="h-3 w-3" />
+                          <span>mais produtos</span>
+                          <ChevronDown className="h-3 w-3" />
+                        </button>
                       </div>
                     )}
 
