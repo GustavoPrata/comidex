@@ -233,6 +233,10 @@ export default function POSPage() {
   const [scrollPosition, setScrollPosition] = useState<'top' | 'middle' | 'bottom'>('top');
   const previousCartLengthRef = useRef(0);
   
+  // Ref e estado para ScrollArea dos produtos
+  const productsScrollRef = useRef<HTMLDivElement>(null);
+  const [productsScrollPosition, setProductsScrollPosition] = useState<'top' | 'middle' | 'bottom'>('top');
+  
   // Função para rolar para o topo
   const scrollToTop = () => {
     const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
@@ -288,6 +292,39 @@ export default function POSPage() {
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
   }, [cart.length]); // Adicionado cart.length para recalcular quando mudar
+  
+  // Monitora posição do scroll dos produtos
+  useEffect(() => {
+    const scrollContainer = productsScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+    if (!scrollContainer) return;
+    
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+          const isAtTop = scrollTop <= 5;
+          
+          if (isAtTop) {
+            setProductsScrollPosition('top');
+          } else if (isAtBottom) {
+            setProductsScrollPosition('bottom');
+          } else {
+            setProductsScrollPosition('middle');
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    
+    // Verificar posição inicial
+    setTimeout(handleScroll, 100);
+    
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    return () => scrollContainer.removeEventListener('scroll', handleScroll);
+  }, [selectedGroup, selectedCategory]);
   
   // Auto scroll para o final apenas quando adicionar novos itens
   useEffect(() => {
@@ -3106,19 +3143,6 @@ export default function POSPage() {
                       )}
                     </ScrollArea>
 
-                    {/* Indicador elegante de mais produtos */}
-                    {cart.length > 2 && scrollPosition !== 'bottom' && (
-                      <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none">
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
-                        <button
-                          onClick={scrollToBottom}
-                          className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-auto text-orange-400 hover:text-orange-300 transition-all duration-300 flex flex-col items-center gap-1"
-                        >
-                          <ChevronDown className="h-5 w-5 animate-pulse" />
-                          <span className="text-[10px] uppercase tracking-wider font-medium">mais itens</span>
-                        </button>
-                      </div>
-                    )}
 
                     {/* Totais Animados */}
                     {cart.length > 0 && (
@@ -3313,18 +3337,19 @@ export default function POSPage() {
                             })}
                         </div>
                         
-                        <ScrollArea className="h-[400px]">
-                          {filteredItems.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center h-full text-gray-400">
-                              <Package className="h-16 w-16 mb-4 opacity-50" />
-                              <p className="text-lg font-medium mb-2">Nenhum produto encontrado</p>
-                              {searchQuery && (
-                                <p className="text-sm">Para a busca: "{searchQuery}"</p>
-                              )}
-                              {!searchQuery && selectedCategory && (
-                                <p className="text-sm">Nesta categoria</p>
-                              )}
-                            </div>
+                        <div className="relative">
+                          <ScrollArea ref={productsScrollRef} className="h-[400px]">
+                            {filteredItems.length === 0 ? (
+                              <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                                <Package className="h-16 w-16 mb-4 opacity-50" />
+                                <p className="text-lg font-medium mb-2">Nenhum produto encontrado</p>
+                                {searchQuery && (
+                                  <p className="text-sm">Para a busca: "{searchQuery}"</p>
+                                )}
+                                {!searchQuery && selectedCategory && (
+                                  <p className="text-sm">Nesta categoria</p>
+                                )}
+                              </div>
                           ) : (
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                               {filteredItems.map((item) => (
@@ -3368,7 +3393,28 @@ export default function POSPage() {
                               ))}
                             </div>
                           )}
-                        </ScrollArea>
+                          </ScrollArea>
+                          
+                          {/* Indicador elegante de mais produtos */}
+                          {filteredItems.length > 8 && productsScrollPosition !== 'bottom' && (
+                            <div className="absolute bottom-0 left-0 right-0 h-16 pointer-events-none">
+                              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
+                              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-auto text-orange-400 hover:text-orange-300 transition-all duration-300 flex flex-col items-center gap-1 cursor-pointer"
+                                   onClick={() => {
+                                     const scrollContainer = productsScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
+                                     if (scrollContainer) {
+                                       scrollContainer.scrollTo({
+                                         top: scrollContainer.scrollHeight,
+                                         behavior: 'auto'
+                                       });
+                                     }
+                                   }}>
+                                <ChevronDown className="h-5 w-5 animate-pulse" />
+                                <span className="text-[10px] uppercase tracking-wider font-medium">mais produtos</span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
                       </div>
                     )}
                   </CardContent>
