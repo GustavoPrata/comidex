@@ -1776,17 +1776,18 @@ export default function POSPage() {
   };
 
   const handleLaunchOrder = async () => {
-    // Filtrar apenas itens não lançados e não cancelados
-    const newItems = cart.filter(item => item.status !== 'delivered' && item.status !== 'cancelled');
-    const cancelledItems = cart.filter(item => item.status === 'cancelled');
+    // Filtrar itens por status
+    const newItems = cart.filter(item => item.status === 'pending');
+    const cancelledItems = cart.filter(item => item.status === 'cancelled' && item.id && !item.lineId);
+    const itemsToUpdate = cart.filter(item => 
+      (item.status === 'cancelled' || item.status === 'pending') && 
+      item.id && 
+      !item.lineId
+    );
     
-    if (newItems.length === 0 && cancelledItems.length === 0) {
-      toast.error("Todos os itens já foram lançados. Adicione novos itens primeiro.");
-      return;
-    }
-    
-    if (newItems.length === 0 && cancelledItems.length > 0) {
-      toast.error("Apenas itens cancelados no carrinho. Adicione novos itens ou restaure os cancelados.");
+    // Se não há nada para processar (todos já lançados)
+    if (newItems.length === 0 && cancelledItems.length === 0 && itemsToUpdate.length === 0) {
+      toast.error("Nenhuma alteração para lançar. Adicione novos itens ou modifique os existentes.");
       return;
     }
 
@@ -1852,6 +1853,34 @@ export default function POSPage() {
         console.log('Nova comanda criada:', orderId);
       }
 
+      // Processar itens cancelados que já foram lançados anteriormente
+      const itemsToCancel = cart.filter(item => 
+        item.status === 'cancelled' && 
+        item.id && 
+        item.order_id
+      );
+
+      if (itemsToCancel.length > 0) {
+        console.log('Atualizando itens cancelados no banco:', itemsToCancel);
+        
+        for (const item of itemsToCancel) {
+          const { error: updateError } = await supabase
+            .from('order_items')
+            .update({ 
+              status: 'cancelled',
+              quantity: 0  // Zerar quantidade para itens cancelados
+            })
+            .eq('id', item.id);
+          
+          if (updateError) {
+            console.error('Erro ao atualizar item cancelado:', updateError);
+            throw updateError;
+          }
+        }
+        
+        console.log('Itens cancelados atualizados com sucesso');
+      }
+
       // Adicionar apenas itens novos (não lançados) ao pedido
       const orderItems = newItems.map(item => {
         // Para rodízios (IDs negativos), adicionar metadata
@@ -1883,20 +1912,26 @@ export default function POSPage() {
         };
       });
 
-      console.log('Inserindo itens:', orderItems);
+      let insertedItems = null;
+      
+      // Só inserir novos itens se houver algum
+      if (orderItems.length > 0) {
+        console.log('Inserindo itens novos:', orderItems);
 
-      // Inserir e retornar os itens com created_at
-      const { data: insertedItems, error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems)
-        .select('*, created_at'); // Retornar os itens inseridos com created_at
+        // Inserir e retornar os itens com created_at
+        const { data: items, error: itemsError } = await supabase
+          .from('order_items')
+          .insert(orderItems)
+          .select('*, created_at'); // Retornar os itens inseridos com created_at
 
-      if (itemsError) {
-        console.error('Erro ao inserir itens:', itemsError);
-        throw itemsError;
+        if (itemsError) {
+          console.error('Erro ao inserir itens:', itemsError);
+          throw itemsError;
+        }
+
+        insertedItems = items;
+        console.log('Itens inseridos com sucesso:', insertedItems);
       }
-
-      console.log('Itens inseridos com sucesso:', insertedItems);
 
       // Processar impressão
       try {
@@ -1947,10 +1982,18 @@ export default function POSPage() {
         }
       }, 100);
       
+      // Mensagem de sucesso apropriada
+      let successMessage = "Pedido lançado!";
+      if (itemsToCancel.length > 0 && newItems.length === 0) {
+        successMessage = "Cancelamentos salvos com sucesso!";
+      } else if (itemsToCancel.length > 0 && newItems.length > 0) {
+        successMessage = "Pedido lançado e cancelamentos salvos!";
+      }
+      
       toast.success(
         <div className="flex items-center gap-2">
           <CheckCircle2 className="h-5 w-5" />
-          <span>Pedido lançado! Você pode continuar adicionando itens.</span>
+          <span>{successMessage} Você pode continuar adicionando itens.</span>
         </div>
       );
     } catch (error: any) {
