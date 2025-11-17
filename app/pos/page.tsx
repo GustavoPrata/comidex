@@ -1510,6 +1510,16 @@ export default function POSPage() {
       // Manter na aba do carrinho para continuar adicionando
       setActiveTab('cart');
       
+      // Rolar automaticamente para mostrar os itens lançados
+      setTimeout(() => {
+        if (cartScrollRef.current) {
+          const scrollElement = cartScrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+          if (scrollElement) {
+            scrollElement.scrollTop = scrollElement.scrollHeight;
+          }
+        }
+      }, 100);
+      
       toast.success(
         <div className="flex items-center gap-2">
           <CheckCircle2 className="h-5 w-5" />

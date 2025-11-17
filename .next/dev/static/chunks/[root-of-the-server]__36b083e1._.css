@@ -826,13 +826,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   overflow: hidden;
 }
 
-.line-clamp-1 {
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  display: -webkit-box;
-  overflow: hidden;
-}
-
 .block {
   display: block;
 }
@@ -1015,10 +1008,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .h-screen {
   height: 100vh;
-}
-
-.h-\[60px\] {
-  height: 60px;
 }
 
 .max-h-32 {
@@ -1209,6 +1198,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   width: 1px;
 }
 
+.min-w-0 {
+  min-width: 0;
+}
+
 .min-w-\[8rem\] {
   min-width: 8rem;
 }
@@ -1223,10 +1216,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .min-w-fit {
   min-width: fit-content;
-}
-
-.min-w-0 {
-  min-width: 0;
 }
 
 .max-w-2xl {
@@ -2685,10 +2674,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .pt-4 {
   padding-top: 1rem;
-}
-
-.pl-3 {
-  padding-left: .75rem;
 }
 
 .text-left {
