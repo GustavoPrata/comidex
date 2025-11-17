@@ -280,13 +280,17 @@ export default function POSPage() {
   // Auto scroll para o final apenas quando adicionar novos itens
   useEffect(() => {
     // Só faz scroll se o número de itens aumentou
-    if (cart.length > previousCartLengthRef.current && cartScrollRef.current) {
+    if (cart.length > previousCartLengthRef.current) {
+      // Aguardar para garantir que a aba cart esteja renderizada
       setTimeout(() => {
-        scrollToBottom();
-      }, 100);
+        // Verificar se estamos na aba cart antes de fazer scroll
+        if (activeTab === 'cart' && cartScrollRef.current) {
+          scrollToBottom();
+        }
+      }, 300); // Tempo suficiente para garantir renderização
     }
     previousCartLengthRef.current = cart.length;
-  }, [cart.length]);
+  }, [cart.length, activeTab]); // Adicionado activeTab como dependência
   
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
