@@ -2965,26 +2965,19 @@ export default function POSPage() {
                                           <Clock className="h-3 w-3 mb-1" />
                                           <div className="flex items-baseline">
                                             <span className="text-sm font-medium">
-                                              {item.launched_at 
-                                                ? new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
-                                                    hour: '2-digit', 
-                                                    minute: '2-digit'
-                                                  })
-                                                : new Date().toLocaleTimeString('pt-BR', { 
-                                                    hour: '2-digit', 
-                                                    minute: '2-digit'
-                                                  })
-                                              }
+                                              {(() => {
+                                                const date = item.launched_at ? new Date(item.launched_at) : new Date();
+                                                const hours = date.getHours().toString().padStart(2, '0');
+                                                const minutes = date.getMinutes().toString().padStart(2, '0');
+                                                return `${hours}:${minutes}`;
+                                              })()}
                                             </span>
                                             <span className="text-[10px] ml-0.5">
-                                              :{item.launched_at 
-                                                ? new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
-                                                    second: '2-digit'
-                                                  }).split(':')[2]
-                                                : new Date().toLocaleTimeString('pt-BR', { 
-                                                    second: '2-digit'
-                                                  }).split(':')[2]
-                                              }
+                                              :{(() => {
+                                                const date = item.launched_at ? new Date(item.launched_at) : new Date();
+                                                const seconds = date.getSeconds().toString().padStart(2, '0');
+                                                return seconds;
+                                              })()}
                                             </span>
                                           </div>
                                         </div>
