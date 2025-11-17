@@ -1451,8 +1451,9 @@ export default function POSPage() {
             return {
               ...item,
               status: 'cancelled' as any,
-              cancelledQuantity: 1
-            };
+              cancelledQuantity: 1,
+              wasCancelled: true // Flag para indicar que foi cancelado e precisa ser lançado
+            } as any;
           }
           return item;
         }));
@@ -1492,14 +1493,16 @@ export default function POSPage() {
           return {
             ...item,
             status: 'cancelled' as any,
-            cancelledQuantity: item.quantity
-          };
+            cancelledQuantity: item.quantity,
+            wasCancelled: true // Flag para indicar que foi cancelado e precisa ser lançado
+          } as any;
         } else {
           // Cancela parcialmente
           return {
             ...item,
-            cancelledQuantity: cancelledQty
-          };
+            cancelledQuantity: cancelledQty,
+            wasCancelled: true // Flag para indicar cancelamento parcial pendente
+          } as any;
         }
       }
       return item;
@@ -1511,11 +1514,12 @@ export default function POSPage() {
   };
 
   const handleCancelOrder = () => {
-    // Identifica itens que precisam ser cancelados (pendentes ou restaurados)
+    // Identifica itens que precisam ser cancelados (pendentes, restaurados ou cancelados)
     const itemsToCancelOrRevert = cart.filter(item => 
       item.status === 'pending' || 
       !item.status || 
-      (item as any).wasRestored === true
+      (item as any).wasRestored === true ||
+      (item as any).wasCancelled === true
     );
     
     if (itemsToCancelOrRevert.length === 0) {
@@ -1523,17 +1527,28 @@ export default function POSPage() {
       return;
     }
 
-    // Remove itens pendentes e reverte itens restaurados (remove flag wasRestored)
+    // Remove itens pendentes e reverte flags de itens modificados
     setCart(prev => prev
       .filter(item => item.status === 'delivered' || item.status === 'cancelled')
       .map(item => {
+        const updated = { ...item };
+        
         // Se o item foi restaurado, remove a flag wasRestored
-        if ((item as any).wasRestored) {
-          const updated = { ...item };
+        if ((updated as any).wasRestored) {
           delete (updated as any).wasRestored;
-          return updated;
         }
-        return item;
+        
+        // Se o item foi cancelado, reverte para delivered e remove flags
+        if ((updated as any).wasCancelled) {
+          delete (updated as any).wasCancelled;
+          delete (updated as any).cancelledQuantity;
+          // Se estava totalmente cancelado, volta para delivered
+          if (updated.status === 'cancelled') {
+            return { ...updated, status: 'delivered' as any };
+          }
+        }
+        
+        return updated;
       })
     );
     
@@ -1772,6 +1787,9 @@ export default function POSPage() {
       item.id && 
       item.order_id
     );
+    const itemsWithCancelledFlag = cart.filter(item =>
+      (item as any).wasCancelled === true
+    );
     const itemsToUpdate = cart.filter(item => 
       (item.status === 'cancelled' || item.status === 'pending') && 
       item.id && 
@@ -1779,7 +1797,7 @@ export default function POSPage() {
     );
     
     // Se não há nada para processar (todos já lançados)
-    if (newItems.length === 0 && cancelledItems.length === 0 && restoredItems.length === 0 && itemsToUpdate.length === 0) {
+    if (newItems.length === 0 && cancelledItems.length === 0 && restoredItems.length === 0 && itemsToUpdate.length === 0 && itemsWithCancelledFlag.length === 0) {
       toast.error("Nenhuma alteração para lançar. Adicione novos itens ou modifique os existentes.");
       return;
     }
@@ -1837,7 +1855,7 @@ export default function POSPage() {
 
       // Processar itens cancelados que já foram lançados anteriormente
       const itemsToCancel = cart.filter(item => 
-        item.status === 'cancelled' && 
+        (item.status === 'cancelled' || (item as any).wasCancelled === true) && 
         item.id && 
         item.order_id
       );
@@ -1846,17 +1864,34 @@ export default function POSPage() {
         console.log('Atualizando itens cancelados no banco:', itemsToCancel);
         
         for (const item of itemsToCancel) {
-          const { error: updateError } = await supabase
-            .from('order_items')
-            .update({ 
-              status: 'cancelled'
-              // Não zerar quantity aqui - manter o valor original para histórico
-            })
-            .eq('id', item.id);
-          
-          if (updateError) {
-            console.error('Erro ao atualizar item cancelado:', updateError);
-            throw updateError;
+          // Se tem cancelamento parcial
+          if ((item as any).cancelledQuantity && (item as any).cancelledQuantity < item.quantity) {
+            // Atualizar quantidade cancelada no banco (cancelamento parcial)
+            const { error: updateError } = await supabase
+              .from('order_items')
+              .update({ 
+                cancelled_quantity: (item as any).cancelledQuantity
+              })
+              .eq('id', item.id);
+            
+            if (updateError) {
+              console.error('Erro ao atualizar cancelamento parcial:', updateError);
+              throw updateError;
+            }
+          } else {
+            // Cancelamento total
+            const { error: updateError } = await supabase
+              .from('order_items')
+              .update({ 
+                status: 'cancelled'
+                // Não zerar quantity aqui - manter o valor original para histórico
+              })
+              .eq('id', item.id);
+            
+            if (updateError) {
+              console.error('Erro ao atualizar item cancelado:', updateError);
+              throw updateError;
+            }
           }
         }
         
@@ -1949,6 +1984,12 @@ export default function POSPage() {
         // Se o item foi restaurado, limpar a flag wasRestored
         if ((item as any).wasRestored) {
           const { wasRestored, ...itemWithoutFlag } = item as any;
+          return itemWithoutFlag;
+        }
+        
+        // Se o item foi cancelado, limpar a flag wasCancelled
+        if ((item as any).wasCancelled) {
+          const { wasCancelled, ...itemWithoutFlag } = item as any;
           return itemWithoutFlag;
         }
         
@@ -3909,7 +3950,10 @@ export default function POSPage() {
                   const hasRestoredItems = cart.some((item: any) => 
                     item.wasRestored === true
                   );
-                  const hasChanges = hasPendingItems || hasRestoredItems;
+                  const hasCancelledItems = cart.some((item: any) => 
+                    item.wasCancelled === true
+                  );
+                  const hasChanges = hasPendingItems || hasRestoredItems || hasCancelledItems;
                   
                   return (
                     <div className={`flex rounded-full border border-gray-700 overflow-hidden ${
