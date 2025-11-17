@@ -1108,16 +1108,16 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   width: 24rem;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .w-full {
   width: 100%;
 }
 
 .w-px {
   width: 1px;
-}
-
-.w-auto {
-  width: auto;
 }
 
 .min-w-\[8rem\] {

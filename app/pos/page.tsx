@@ -1912,15 +1912,20 @@ export default function POSPage() {
   const filteredItems = useMemo(() => {
     let filtered = items;
     
-    // Filtrar por grupo se selecionado
-    if (selectedGroup) {
-      filtered = filtered.filter(item => item.group_id === selectedGroup);
+    // Se estiver na aba de carrinho, buscar em todos os produtos
+    // Se estiver na aba de categorias, respeitar o filtro de grupo/categoria
+    if (activeTab === 'categories') {
+      // Filtrar por grupo se selecionado
+      if (selectedGroup) {
+        filtered = filtered.filter(item => item.group_id === selectedGroup);
+      }
+      
+      // Filtrar por categoria se selecionado
+      if (selectedCategory) {
+        filtered = filtered.filter(item => item.category_id === selectedCategory);
+      }
     }
-    
-    // Filtrar por categoria se selecionado
-    if (selectedCategory) {
-      filtered = filtered.filter(item => item.category_id === selectedCategory);
-    }
+    // Na aba 'cart', não aplicar filtros de grupo/categoria, buscar em todos os produtos
     
     if (searchQuery) {
       filtered = filtered.filter(item =>
@@ -1930,7 +1935,7 @@ export default function POSPage() {
     }
     
     return filtered;
-  }, [items, selectedGroup, selectedCategory, searchQuery]);
+  }, [items, selectedGroup, selectedCategory, searchQuery, activeTab]);
 
   // Formatação
   const formatCurrency = (value: number) => {
