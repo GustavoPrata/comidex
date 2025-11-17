@@ -3349,7 +3349,7 @@ export default function POSPage() {
                         document.body
                       )}
 
-                {/* Lista de Itens Animada - Usando todo o espaço disponível */}
+                {/* Lista de Itens Animada */}
                 <Card className="flex-1 bg-gray-900/50 backdrop-blur border-gray-700 overflow-hidden flex flex-col">
                   <CardHeader className="pb-3 flex-shrink-0">
                     <CardTitle className="text-lg flex items-center justify-between">
@@ -3362,9 +3362,9 @@ export default function POSPage() {
                       </Badge>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0 flex-1 overflow-hidden">
-                    <div className="relative h-full">
-                      <ScrollArea ref={cartScrollRef} className="h-full pr-4" style={{ willChange: 'scroll-position' }}>
+                  <CardContent className="p-4 pt-0 flex-1">
+                    <div className="relative">
+                      <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4" style={{ willChange: 'scroll-position' }}>
                         {cart.length === 0 ? (
                           <div className="flex items-center justify-center h-full">
                             <div className="text-center text-gray-500">
