@@ -3035,17 +3035,78 @@ export default function POSPage() {
               
               {/* Informação Principal da Mesa */}
               <div className="flex items-center gap-8">
-                {/* Mesa/Balcão */}
+                {/* Mesa/Balcão com Tipo de Atendimento Inteligente */}
                 <div className="flex items-center gap-3">
                   <div className="bg-orange-600 p-3 rounded-lg">
-                    <UtensilsCrossed className="h-6 w-6 text-white" />
+                    {(() => {
+                      // Detectar ícone baseado no grupo dos itens
+                      if (cart.length > 0 && cart[0]?.item?.group?.icon) {
+                        const IconComponent = getIconByName(cart[0].item.group.icon);
+                        if (IconComponent) {
+                          return <IconComponent className="h-6 w-6 text-white" />;
+                        }
+                      }
+                      return <UtensilsCrossed className="h-6 w-6 text-white" />;
+                    })()}
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-white">
                       {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
                     </h2>
                     <p className="text-sm text-gray-400">
-                      {selectedTable?.type === 'counter' ? 'Atendimento no balcão' : 'Atendimento na mesa'}
+                      {(() => {
+                        // Detectar tipo de atendimento baseado nos itens do carrinho
+                        if (cart.length > 0) {
+                          // Buscar grupos únicos com suas informações completas
+                          const groupsInCart = cart
+                            .filter(item => item.item?.group)
+                            .map(item => item.item!.group!);
+                          const uniqueGroupNames = [...new Set(groupsInCart.map(g => g.name))];
+                          
+                          // Prioridade 1: Rodízio (pegar o nome completo)
+                          const rodizioGroup = groupsInCart.find(g => 
+                            g.name?.toLowerCase().includes('rodizio') || 
+                            g.name?.toLowerCase().includes('rodízio')
+                          );
+                          
+                          if (rodizioGroup) {
+                            return `${rodizioGroup.name}`;
+                          }
+                          
+                          // Prioridade 2: À la Carte
+                          const carteGroup = groupsInCart.find(g => 
+                            g.name?.toLowerCase().includes('carte') ||
+                            g.name?.toLowerCase().includes('la carte')
+                          );
+                          
+                          if (carteGroup) {
+                            return 'Atendimento À la Carte';
+                          }
+                          
+                          // Prioridade 3: Delivery ou outros tipos especiais
+                          const deliveryGroup = groupsInCart.find(g => 
+                            g.name?.toLowerCase().includes('delivery') ||
+                            g.name?.toLowerCase().includes('entrega')
+                          );
+                          
+                          if (deliveryGroup) {
+                            return 'Pedido Delivery';
+                          }
+                          
+                          // Se tem grupos mistos
+                          if (uniqueGroupNames.length > 1) {
+                            return 'Atendimento Misto';
+                          }
+                          
+                          // Se tem apenas um grupo, mostrar o nome dele
+                          if (uniqueGroupNames.length === 1) {
+                            return uniqueGroupNames[0];
+                          }
+                        }
+                        
+                        // Valor padrão baseado no tipo da mesa
+                        return selectedTable?.type === 'counter' ? 'Atendimento no balcão' : 'Aguardando pedido';
+                      })()}
                     </p>
                   </div>
                 </div>
@@ -3094,13 +3155,25 @@ export default function POSPage() {
             
             {/* Lado Direito - Ações */}
             <div className="flex items-center gap-3">
-              {/* Total do Pedido */}
-              <div className="bg-gray-700/50 px-4 py-2 rounded-lg border border-gray-600 mr-4">
-                <p className="text-sm text-gray-400">Total do Pedido</p>
-                <p className="text-2xl font-bold text-orange-500">
-                  R$ {cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2).replace('.', ',')}
-                </p>
-              </div>
+              {/* Botão Imprimir */}
+              <Button
+                onClick={() => setPrintDialog(true)}
+                disabled={cart.length === 0}
+                className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed h-12 px-6 text-base font-semibold" : "bg-purple-600 hover:bg-purple-700 h-12 px-6 text-base font-semibold"}
+              >
+                <Printer className="mr-2 h-5 w-5" />
+                Imprimir
+              </Button>
+              
+              {/* Botão Fechar Conta */}
+              <Button
+                onClick={startCheckout}
+                disabled={loading || cart.length === 0}
+                className={cart.length === 0 ? "bg-gray-600 cursor-not-allowed h-12 px-6 text-base font-semibold" : "bg-green-600 hover:bg-green-700 h-12 px-6 text-base font-semibold"}
+              >
+                <CreditCard className="mr-2 h-5 w-5" />
+                Fechar Conta
+              </Button>
               
               {/* Botão Transferir Mesa */}
               <Button
@@ -3108,7 +3181,7 @@ export default function POSPage() {
                 className="bg-blue-600 hover:bg-blue-700 h-12 px-6 text-base font-semibold"
               >
                 <ArrowRight className="mr-2 h-5 w-5" />
-                Transferir Mesa
+                Transferir
               </Button>
               
               {/* Botão Cancelar Mesa */}
