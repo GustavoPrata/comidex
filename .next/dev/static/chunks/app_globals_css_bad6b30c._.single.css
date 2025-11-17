@@ -1116,6 +1116,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   width: 1px;
 }
 
+.w-auto {
+  width: auto;
+}
+
 .min-w-\[8rem\] {
   min-width: 8rem;
 }
@@ -1126,6 +1130,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .min-w-\[var\(--radix-select-trigger-width\)\] {
   min-width: var(--radix-select-trigger-width);
+}
+
+.min-w-fit {
+  min-width: fit-content;
 }
 
 .max-w-2xl {

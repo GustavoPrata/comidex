@@ -3127,7 +3127,7 @@ export default function POSPage() {
                                 <Button
                                   key={category.id}
                                   onClick={() => setSelectedCategory(category.id)}
-                                  className={`h-6 text-xs font-medium px-2 py-0 w-auto min-w-fit ${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
+                                  className={`h-7 text-sm font-medium px-2 py-0 w-auto min-w-fit ${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
                                 >
                                   {category.name}
                                 </Button>
