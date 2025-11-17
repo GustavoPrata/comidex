@@ -3136,49 +3136,62 @@ export default function POSPage() {
                         </div>
                         
                         <ScrollArea className="h-[400px]">
-                          <div className="grid grid-cols-3 gap-3">
-                            {filteredItems.map((item) => (
-                              <motion.div
-                                key={item.id}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                              >
-                                <Card
-                                  className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden h-full"
-                                  onClick={() => handleAddItem(item)}
+                          {filteredItems.length === 0 ? (
+                            <div className="flex flex-col items-center justify-center h-full text-gray-400">
+                              <Package className="h-16 w-16 mb-4 opacity-50" />
+                              <p className="text-lg font-medium mb-2">Nenhum produto encontrado</p>
+                              {searchQuery && (
+                                <p className="text-sm">Para a busca: "{searchQuery}"</p>
+                              )}
+                              {!searchQuery && selectedCategory && (
+                                <p className="text-sm">Nesta categoria</p>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="grid grid-cols-3 gap-3">
+                              {filteredItems.map((item) => (
+                                <motion.div
+                                  key={item.id}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
                                 >
-                                  <CardContent className="p-3 h-full flex flex-col">
-                                    {/* Foto do produto - tamanho fixo menor */}
-                                    <div className="relative w-full h-16 bg-gray-900 rounded-lg overflow-hidden mb-2 flex-shrink-0">
-                                      <img
-                                        src={item.image || '/fotos/placeholder/placeholder.png'}
-                                        alt={item.name}
-                                        className="absolute inset-0 w-full h-full object-contain"
-                                        onError={(e) => {
-                                          const target = e.target as HTMLImageElement;
-                                          target.src = '/fotos/placeholder/placeholder.png';
-                                        }}
-                                      />
-                                    </div>
-                                    {/* Informações do produto */}
-                                    <div className="flex-1 flex flex-col justify-between">
-                                      <div>
-                                        <div className="font-medium text-white text-sm line-clamp-2 min-h-[2.5rem]">
-                                          {item.name}
+                                  <Card
+                                    className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden h-full"
+                                    onClick={() => handleAddItem(item)}
+                                  >
+                                    <CardContent className="p-3 h-full flex flex-col">
+                                      {/* Foto do produto - tamanho fixo menor */}
+                                      <div className="relative w-full h-16 bg-gray-900 rounded-lg overflow-hidden mb-2 flex-shrink-0">
+                                        <img
+                                          src={item.image || '/fotos/placeholder/placeholder.png'}
+                                          alt={item.name}
+                                          className="absolute inset-0 w-full h-full object-contain"
+                                          onError={(e) => {
+                                            const target = e.target as HTMLImageElement;
+                                            target.src = '/fotos/placeholder/placeholder.png';
+                                          }}
+                                        />
+                                      </div>
+                                      {/* Informações do produto */}
+                                      <div className="flex-1 flex flex-col justify-between">
+                                        <div>
+                                          <div className="font-medium text-white text-sm line-clamp-2 min-h-[2.5rem]">
+                                            {item.name}
+                                          </div>
+                                          <div className="text-xs text-gray-500 mt-1">
+                                            Código: {item.id}
+                                          </div>
                                         </div>
-                                        <div className="text-xs text-gray-500 mt-1">
-                                          Código: {item.id}
+                                        <div className="font-bold text-orange-400 text-base pt-2">
+                                          {formatCurrency(item.price || 0)}
                                         </div>
                                       </div>
-                                      <div className="font-bold text-orange-400 text-base pt-2">
-                                        {formatCurrency(item.price || 0)}
-                                      </div>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              </motion.div>
-                            ))}
-                          </div>
+                                    </CardContent>
+                                  </Card>
+                                </motion.div>
+                              ))}
+                            </div>
+                          )}
                         </ScrollArea>
                       </div>
                     )}
