@@ -857,24 +857,39 @@ export default function POSPage() {
     
     setLoading(true);
     try {
-      // Primeiro, buscar os itens da sessão para ter certeza que existem
-      const { data: items } = await supabase
-        .from('session_items')
+      // Buscar o pedido ativo da mesa
+      const { data: activeOrder } = await supabase
+        .from('orders')
         .select('*')
-        .eq('session_id', currentSession.id)
-        .neq('status', 'cancelled');
+        .eq('table_id', currentSession.table_id)
+        .eq('status', 'open')
+        .single();
 
-      if (items && items.length > 0) {
-        // Cancelar todos os itens da sessão
+      if (activeOrder) {
+        // Cancelar todos os itens do pedido
         const { error: itemsError } = await supabase
-          .from('session_items')
+          .from('order_items')
           .update({ status: 'cancelled' })
-          .eq('session_id', currentSession.id)
+          .eq('order_id', activeOrder.id)
           .neq('status', 'cancelled');
 
         if (itemsError) {
           console.error('Erro ao cancelar itens:', itemsError);
           throw itemsError;
+        }
+
+        // Fechar o pedido
+        const { error: orderError } = await supabase
+          .from('orders')
+          .update({ 
+            status: 'cancelled',
+            total: 0
+          })
+          .eq('id', activeOrder.id);
+
+        if (orderError) {
+          console.error('Erro ao cancelar pedido:', orderError);
+          throw orderError;
         }
       }
 
@@ -980,34 +995,82 @@ export default function POSPage() {
 
       console.log('Nova sessão criada:', newSession.id);
 
-      // Transferir todos os itens não cancelados para a nova sessão
-      const { error: itemsError } = await supabase
-        .from('session_items')
-        .update({ session_id: newSession.id })
-        .eq('session_id', currentSession.id)
-        .neq('status', 'cancelled');
+      // Buscar o pedido ativo da mesa origem
+      const { data: sourceOrder } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('table_id', currentSession.table_id)
+        .eq('status', 'open')
+        .single();
 
-      if (itemsError) {
-        console.error('Erro ao transferir itens:', itemsError);
-        throw itemsError;
+      if (sourceOrder) {
+        // Criar novo pedido para a mesa destino
+        const { data: targetOrder, error: newOrderError } = await supabase
+          .from('orders')
+          .insert({
+            order_number: `ORDER-${Date.now()}`,
+            table_id: targetTable.id,
+            status: 'open',
+            total: 0
+          })
+          .select()
+          .single();
+
+        if (newOrderError || !targetOrder) {
+          console.error('Erro ao criar novo pedido:', newOrderError);
+          throw new Error('Falha ao criar novo pedido para a mesa de destino');
+        }
+
+        console.log('Novo pedido criado:', targetOrder.id);
+
+        // Transferir todos os itens não cancelados para o novo pedido
+        const { error: itemsError } = await supabase
+          .from('order_items')
+          .update({ order_id: targetOrder.id })
+          .eq('order_id', sourceOrder.id)
+          .neq('status', 'cancelled');
+
+        if (itemsError) {
+          console.error('Erro ao transferir itens:', itemsError);
+          throw itemsError;
+        }
+
+        // Atualizar o total do novo pedido
+        const { data: orderItems } = await supabase
+          .from('order_items')
+          .select('quantity, unit_price')
+          .eq('order_id', targetOrder.id)
+          .neq('status', 'cancelled');
+
+        const newTotal = orderItems?.reduce((sum, item) => 
+          sum + (item.quantity * item.unit_price), 0) || 0;
+
+        const { error: totalError } = await supabase
+          .from('orders')
+          .update({ total: newTotal })
+          .eq('id', targetOrder.id);
+
+        if (totalError) throw totalError;
+
+        // Atualizar total da nova sessão
+        const { error: sessionTotalError } = await supabase
+          .from('table_sessions')
+          .update({ total: newTotal })
+          .eq('id', newSession.id);
+
+        if (sessionTotalError) throw sessionTotalError;
+
+        // Fechar o pedido antigo
+        const { error: closeOrderError } = await supabase
+          .from('orders')
+          .update({ 
+            status: 'closed',
+            total: 0
+          })
+          .eq('id', sourceOrder.id);
+
+        if (closeOrderError) throw closeOrderError;
       }
-
-      // Atualizar o total da nova sessão
-      const { data: sessionItems } = await supabase
-        .from('session_items')
-        .select('quantity, unit_price')
-        .eq('session_id', newSession.id)
-        .neq('status', 'cancelled');
-
-      const newTotal = sessionItems?.reduce((sum, item) => 
-        sum + (item.quantity * item.unit_price), 0) || 0;
-
-      const { error: totalError } = await supabase
-        .from('table_sessions')
-        .update({ total: newTotal })
-        .eq('id', newSession.id);
-
-      if (totalError) throw totalError;
 
       // Fechar a sessão antiga
       const { error: closeError } = await supabase
