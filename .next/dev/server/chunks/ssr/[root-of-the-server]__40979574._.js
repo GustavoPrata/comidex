@@ -2825,7 +2825,7 @@ function POSPage() {
             quantity: qty,
             unit_price: itemPrice,
             total_price: itemPrice * qty,
-            status: 'novo'
+            status: 'pending' // Status inicial como "pending"
         };
         setCart((prev)=>{
             // Procurar apenas por itens NÃO lançados para mesclar

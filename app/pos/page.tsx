@@ -891,7 +891,7 @@ export default function POSPage() {
       quantity: qty,
       unit_price: itemPrice,
       total_price: itemPrice * qty,
-      status: 'novo' as any // Status inicial como "novo"
+      status: 'pending' // Status inicial como "pending"
     };
 
     setCart(prev => {
