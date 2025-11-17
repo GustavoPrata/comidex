@@ -3462,50 +3462,43 @@ export default function POSPage() {
                         <ShoppingBag className="h-5 w-5 text-orange-400" />
                         Itens do Pedido
                       </span>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setFilterMode('all')}
-                          className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                            filterMode === 'all' 
-                              ? 'bg-orange-600 text-white' 
-                              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                          }`}
-                          data-testid="filter-all"
-                        >
+                      <button
+                        onClick={() => {
+                          // Ciclar entre os modos: all -> delivered -> cancelled -> all
+                          if (filterMode === 'all') {
+                            setFilterMode('delivered');
+                          } else if (filterMode === 'delivered') {
+                            setFilterMode('cancelled');
+                          } else {
+                            setFilterMode('all');
+                          }
+                        }}
+                        className={`px-4 py-1 rounded-md text-sm font-medium transition-all ${
+                          filterMode === 'all' 
+                            ? 'bg-orange-600 text-white' 
+                            : filterMode === 'delivered'
+                            ? 'bg-green-600 text-white'
+                            : 'bg-red-600 text-white'
+                        }`}
+                        data-testid="filter-toggle"
+                      >
+                        {filterMode === 'all' ? (
                           <span className="flex items-center gap-1">
                             <ShoppingCart className="h-4 w-4" />
                             Todos
                           </span>
-                        </button>
-                        <button
-                          onClick={() => setFilterMode('delivered')}
-                          className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                            filterMode === 'delivered' 
-                              ? 'bg-green-600 text-white' 
-                              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                          }`}
-                          data-testid="filter-delivered"
-                        >
+                        ) : filterMode === 'delivered' ? (
                           <span className="flex items-center gap-1">
                             <CheckCircle2 className="h-4 w-4" />
                             Lançados
                           </span>
-                        </button>
-                        <button
-                          onClick={() => setFilterMode('cancelled')}
-                          className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                            filterMode === 'cancelled' 
-                              ? 'bg-red-600 text-white' 
-                              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                          }`}
-                          data-testid="filter-cancelled"
-                        >
+                        ) : (
                           <span className="flex items-center gap-1">
                             <XCircle className="h-4 w-4" />
                             Cancelados
                           </span>
-                        </button>
-                      </div>
+                        )}
+                      </button>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 pt-0 flex-1 overflow-hidden">
