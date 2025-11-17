@@ -225,6 +225,7 @@ export default function POSPage() {
   const [printDialog, setPrintDialog] = useState(false);
   const [transferTableDialog, setTransferTableDialog] = useState(false);
   const [targetTableNumber, setTargetTableNumber] = useState('');
+  const [cancelTableDialog, setCancelTableDialog] = useState(false);
   
   // Estados do modal de cancelamento parcial
   const [cancelQuantityDialog, setCancelQuantityDialog] = useState(false);
@@ -916,24 +917,71 @@ export default function POSPage() {
 
       if (targetError || !targetTable) {
         toast.error(`Mesa ${targetTableNumber} não encontrada`);
+        setLoading(false);
         return;
       }
 
       // Verificar se a mesa destino está livre
       if (targetTable.status !== 'available') {
         toast.error(`Mesa ${targetTableNumber} está ocupada`);
+        setLoading(false);
         return;
       }
 
-      // Atualizar a sessão para a nova mesa
-      const { error: sessionError } = await supabase
+      // Criar nova sessão para a mesa de destino
+      const { data: newSession, error: newSessionError } = await supabase
         .from('table_sessions')
-        .update({ table_id: targetTable.id })
+        .insert({
+          table_id: targetTable.id,
+          status: 'open',
+          opened_at: new Date().toISOString(),
+          customer_count: currentSession.customer_count || 1,
+          service_type: currentSession.service_type,
+          total: 0
+        })
+        .select()
+        .single();
+
+      if (newSessionError) throw newSessionError;
+
+      // Transferir todos os itens não cancelados para a nova sessão
+      const { error: itemsError } = await supabase
+        .from('session_items')
+        .update({ session_id: newSession.id })
+        .eq('session_id', currentSession.id)
+        .neq('status', 'cancelled');
+
+      if (itemsError) throw itemsError;
+
+      // Atualizar o total da nova sessão
+      const { data: sessionItems } = await supabase
+        .from('session_items')
+        .select('quantity, unit_price')
+        .eq('session_id', newSession.id)
+        .neq('status', 'cancelled');
+
+      const newTotal = sessionItems?.reduce((sum, item) => 
+        sum + (item.quantity * item.unit_price), 0) || 0;
+
+      const { error: totalError } = await supabase
+        .from('table_sessions')
+        .update({ total: newTotal })
+        .eq('id', newSession.id);
+
+      if (totalError) throw totalError;
+
+      // Fechar a sessão antiga
+      const { error: closeError } = await supabase
+        .from('table_sessions')
+        .update({ 
+          status: 'closed',
+          closed_at: new Date().toISOString(),
+          total: 0
+        })
         .eq('id', currentSession.id);
 
-      if (sessionError) throw sessionError;
+      if (closeError) throw closeError;
 
-      // Atualizar status das mesas
       // Liberar mesa antiga
       const { error: oldTableError } = await supabase
         .from('restaurant_tables')
@@ -2851,11 +2899,7 @@ export default function POSPage() {
           <div className="flex items-center gap-2">
             {/* Botão Cancelar Mesa */}
             <Button
-              onClick={() => {
-                if (confirm('Tem certeza que deseja cancelar todos os itens e limpar a mesa?')) {
-                  handleCancelTable();
-                }
-              }}
+              onClick={() => setCancelTableDialog(true)}
               className="bg-red-600 hover:bg-red-700"
               size="sm"
             >
@@ -4245,6 +4289,60 @@ export default function POSPage() {
                     Transferir
                   </>
                 )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        
+        {/* Dialog Cancelar Mesa */}
+        <Dialog open={cancelTableDialog} onOpenChange={setCancelTableDialog}>
+          <DialogContent className="bg-gray-800 text-white border-gray-700">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-red-400">
+                <AlertCircle className="h-5 w-5" />
+                Confirmar Cancelamento
+              </DialogTitle>
+              <DialogDescription className="text-gray-400">
+                Esta ação não pode ser desfeita
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="py-4 space-y-4">
+              <div className="bg-red-900/30 border border-red-600 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="h-5 w-5 text-red-400 mt-0.5" />
+                  <div className="space-y-2">
+                    <p className="text-sm text-red-300 font-medium">
+                      Tem certeza que deseja cancelar a mesa {selectedTable?.number}?
+                    </p>
+                    <ul className="text-xs text-gray-400 space-y-1">
+                      <li>• Todos os pedidos serão cancelados</li>
+                      <li>• A mesa será liberada</li>
+                      <li>• A sessão será fechada</li>
+                      <li>• Esta ação não pode ser desfeita</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <DialogFooter>
+              <Button
+                onClick={() => setCancelTableDialog(false)}
+                variant="ghost"
+                className="bg-gray-700 hover:bg-gray-600"
+              >
+                Voltar
+              </Button>
+              <Button
+                onClick={() => {
+                  setCancelTableDialog(false);
+                  handleCancelTable();
+                }}
+                className="bg-red-600 hover:bg-red-700"
+              >
+                <X className="mr-2 h-4 w-4" />
+                Sim, Cancelar Mesa
               </Button>
             </DialogFooter>
           </DialogContent>
