@@ -2956,9 +2956,12 @@ export default function POSPage() {
                                             : item.quantity
                                         }
                                       </div>
-                                      {/* Mostra horário de lançamento para itens lançados */}
-                                      {item.launched_at && item.status === 'delivered' && (
-                                        <div className="text-xs text-green-400 mt-1 flex items-center gap-1">
+                                    </div>
+                                    
+                                    {/* Mostra horário de lançamento para itens lançados - no centro */}
+                                    <div className="flex-shrink-0 mx-3">
+                                      {item.launched_at && item.status === 'delivered' ? (
+                                        <div className="text-xs text-green-400 flex items-center gap-1">
                                           <Clock className="h-3 w-3" />
                                           {new Date(item.launched_at).toLocaleTimeString('pt-BR', { 
                                             hour: '2-digit', 
@@ -2966,6 +2969,8 @@ export default function POSPage() {
                                             second: '2-digit'
                                           })}
                                         </div>
+                                      ) : (
+                                        <div className="w-16"></div>
                                       )}
                                     </div>
                                     

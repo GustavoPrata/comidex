@@ -704,6 +704,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-right: -.25rem;
 }
 
+.mx-3 {
+  margin-left: .75rem;
+  margin-right: .75rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
