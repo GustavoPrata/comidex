@@ -1,0 +1,157 @@
+{
+  "imagens_ja_baixadas": 27,
+  "total_produtos": 101,
+  "faltam": 74,
+  "proximos_lotes": [
+    {
+      "categoria": "Sobremesas e Doces",
+      "itens": [
+        {"nome": "Nachos com Sorvete", "prompt": "nachos dessert ice cream sweet"},
+        {"nome": "Hot Roll Doce", "prompt": "sweet dessert sushi roll fried"},
+        {"nome": "Harumaki Romeu e Julieta", "prompt": "spring roll guava cheese dessert"}
+      ]
+    },
+    {
+      "categoria": "Pratos e Porções",
+      "itens": [
+        {"nome": "Porção Batata Frita", "prompt": "french fries golden crispy portion"},
+        {"nome": "Porção Frango Empanado", "prompt": "breaded chicken strips fried crispy"},
+        {"nome": "Porção Tilápia Empanada", "prompt": "breaded fish fillet fried tilapia"},
+        {"nome": "Prato Frango com Fritas", "prompt": "chicken plate with french fries meal"},
+        {"nome": "Prato Tilápia com Fritas", "prompt": "fish plate tilapia with french fries"}
+      ]
+    },
+    {
+      "categoria": "Especiais MAAD",
+      "itens": [
+        {"nome": "Salmão MAAD", "prompt": "premium salmon sushi special roll"},
+        {"nome": "Atum MAAD", "prompt": "premium tuna sushi special roll"},
+        {"nome": "Camarão MAAD", "prompt": "premium shrimp sushi special roll"},
+        {"nome": "Kaka MAAD", "prompt": "premium special sushi roll creative"},
+        {"nome": "Dubai MAAD", "prompt": "luxury gold leaf sushi roll premium"},
+        {"nome": "Fire MAAD", "prompt": "flaming sushi roll torched premium"},
+        {"nome": "Ebi Hot Shake MAAD", "prompt": "shrimp salmon hot roll premium"}
+      ]
+    },
+    {
+      "categoria": "Variações Adicionais",
+      "itens": [
+        {"nome": "Niguiri Camarão", "prompt": "shrimp nigiri sushi cooked"},
+        {"nome": "Niguiri Polvo", "prompt": "octopus nigiri sushi japanese"},
+        {"nome": "Niguiri Atum", "prompt": "tuna nigiri sushi raw fish"},
+        {"nome": "Niguiri Salmão Especial", "prompt": "special salmon nigiri blowtorch"},
+        {"nome": "Niguiri Salmão Fry Ouro", "prompt": "fried salmon nigiri gold leaf luxury"},
+        {"nome": "Sashimi Tilápia", "prompt": "tilapia sashimi white fish sliced"},
+        {"nome": "Sashimi Peixe Prego/Limão", "prompt": "white fish sashimi lemon japanese"},
+        {"nome": "Sashimi Polvo", "prompt": "octopus sashimi sliced raw"},
+        {"nome": "Temaki California", "prompt": "california hand roll temaki cone"},
+        {"nome": "Temaki Camarão", "prompt": "shrimp temaki hand roll cone"},
+        {"nome": "Temaki Atum", "prompt": "tuna temaki hand roll cone"},
+        {"nome": "Temaki Hot Roll", "prompt": "hot roll temaki fried cone"},
+        {"nome": "Temaki Salmão Fry", "prompt": "fried salmon temaki cone crispy"},
+        {"nome": "Uramaki Atum", "prompt": "tuna uramaki inside out roll"},
+        {"nome": "Uramaki Camarão", "prompt": "shrimp uramaki inside out roll"},
+        {"nome": "Uramaki Salmão Fry", "prompt": "fried salmon uramaki crispy roll"},
+        {"nome": "Uramaki Filadélfia Fry", "prompt": "fried philadelphia roll crispy cream cheese"},
+        {"nome": "Uramaki Salmão Mel Fry", "prompt": "fried honey salmon roll sweet"},
+        {"nome": "Uramaki Camarão Fry Ouro", "prompt": "fried shrimp roll gold leaf luxury"},
+        {"nome": "Uramaki Salmão Fry Ouro", "prompt": "fried salmon roll gold leaf luxury"}
+      ]
+    },
+    {
+      "categoria": "Maki Rolls",
+      "itens": [
+        {"nome": "Shakemaki", "prompt": "salmon maki roll simple sushi"},
+        {"nome": "Tekamaki", "prompt": "tuna maki roll simple sushi"},
+        {"nome": "Acelgamaki Salmão", "prompt": "salmon acelga maki roll vegetables"},
+        {"nome": "Acelgamaki Atum", "prompt": "tuna acelga maki roll vegetables"},
+        {"nome": "Acelgamaki Salmão Fry", "prompt": "fried salmon acelga roll crispy"}
+      ]
+    },
+    {
+      "categoria": "Hot Rolls Adicionais",
+      "itens": [
+        {"nome": "Hot Roll Camarão", "prompt": "fried shrimp hot roll crispy"},
+        {"nome": "Hot Roll Shimeji", "prompt": "fried mushroom hot roll shimeji"},
+        {"nome": "Hot Roll Doritos", "prompt": "doritos crust sushi roll fusion"}
+      ]
+    },
+    {
+      "categoria": "Harumaki Adicionais",
+      "itens": [
+        {"nome": "Harumaki Legumes", "prompt": "vegetable spring roll harumaki"},
+        {"nome": "Harumaki Queijo", "prompt": "cheese spring roll harumaki fried"}
+      ]
+    },
+    {
+      "categoria": "Joe Fusion",
+      "itens": [
+        {"nome": "Joe Camarão", "prompt": "shrimp joy sushi fusion modern"},
+        {"nome": "Joe Geleia Framboesa", "prompt": "raspberry jam sushi sweet fusion"},
+        {"nome": "Joe Shimeji", "prompt": "mushroom joe sushi shimeji fusion"},
+        {"nome": "Joe Couve Fry", "prompt": "fried kale sushi roll crispy"},
+        {"nome": "Joe Sugar", "prompt": "sugar dessert sushi sweet fusion"}
+      ]
+    },
+    {
+      "categoria": "Carpaccio Adicionais",
+      "itens": [
+        {"nome": "Carpaccio Polvo Trufado", "prompt": "octopus carpaccio truffle oil thin"},
+        {"nome": "Carpaccio Camarão Trufado", "prompt": "shrimp carpaccio truffle oil raw"},
+        {"nome": "Carpaccio Misto Trufado", "prompt": "mixed seafood carpaccio truffle"}
+      ]
+    },
+    {
+      "categoria": "Ceviche Adicional",
+      "itens": [
+        {"nome": "Ceviche Especial", "prompt": "special ceviche premium seafood citrus"}
+      ]
+    },
+    {
+      "categoria": "Chapa Teppanyaki",
+      "itens": [
+        {"nome": "Chapa Shimeji", "prompt": "grilled mushroom teppanyaki shimeji"},
+        {"nome": "Chapa Shitake", "prompt": "grilled shiitake mushroom teppanyaki"},
+        {"nome": "Chapa Polvo", "prompt": "grilled octopus teppanyaki hot plate"},
+        {"nome": "Chapa Mista", "prompt": "mixed grilled seafood teppanyaki"},
+        {"nome": "Chapa Camarão", "prompt": "grilled shrimp teppanyaki sizzling"}
+      ]
+    },
+    {
+      "categoria": "Guioza Adicional",
+      "itens": [
+        {"nome": "Guioza Suína", "prompt": "pork gyoza dumpling pan fried"}
+      ]
+    },
+    {
+      "categoria": "Pastel Adicional",
+      "itens": [
+        {"nome": "Pastel Camarão", "prompt": "shrimp pastel fried pastry brazilian"},
+        {"nome": "Pastel Bacalhau", "prompt": "codfish pastel fried pastry"}
+      ]
+    },
+    {
+      "categoria": "Tempura Adicional",
+      "itens": [
+        {"nome": "Tempura Camarão", "prompt": "shrimp tempura light batter fried"}
+      ]
+    },
+    {
+      "categoria": "Batera Adicional",
+      "itens": [
+        {"nome": "Batera Atum", "prompt": "pressed tuna sushi battera osaka"}
+      ]
+    },
+    {
+      "categoria": "Outros Especiais",
+      "itens": [
+        {"nome": "Polvo no gelo", "prompt": "octopus on ice raw fresh seafood"},
+        {"nome": "Lula Com Salmão", "prompt": "squid with salmon japanese sashimi"},
+        {"nome": "Ishigo", "prompt": "ishigo japanese artisanal sushi"},
+        {"nome": "Roru Tomato", "prompt": "tomato sushi roll fusion fresh"},
+        {"nome": "Yakissoba Frango", "prompt": "chicken yakisoba noodles stir fry"},
+        {"nome": "Yakissoba Frutos do Mar", "prompt": "seafood yakisoba noodles japanese"}
+      ]
+    }
+  ]
+}
