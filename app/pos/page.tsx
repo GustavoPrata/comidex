@@ -3040,10 +3040,13 @@ export default function POSPage() {
                   <div className="bg-orange-600 p-3 rounded-lg">
                     {(() => {
                       // Detectar ícone baseado no grupo dos itens
-                      if (cart.length > 0 && cart[0]?.item?.group?.icon) {
-                        const IconComponent = getIconByName(cart[0].item.group.icon);
-                        if (IconComponent) {
-                          return <IconComponent className="h-6 w-6 text-white" />;
+                      if (cart.length > 0 && cart[0]?.item?.group_id) {
+                        const group = groups.find(g => g.id === cart[0].item?.group_id);
+                        if (group?.icon) {
+                          const IconComponent = getIconByName(group.icon);
+                          if (IconComponent) {
+                            return <IconComponent className="h-6 w-6 text-white" />;
+                          }
                         }
                       }
                       return <UtensilsCrossed className="h-6 w-6 text-white" />;
@@ -3057,14 +3060,23 @@ export default function POSPage() {
                       {(() => {
                         // Detectar tipo de atendimento baseado nos itens do carrinho
                         if (cart.length > 0) {
-                          // Buscar grupos únicos com suas informações completas
-                          const groupsInCart = cart
-                            .filter(item => item.item?.group)
-                            .map(item => item.item!.group!);
-                          const uniqueGroupNames = [...new Set(groupsInCart.map(g => g.name))];
+                          // Buscar grupos baseado no group_id dos items
+                          const groupsInCart: Group[] = [];
+                          const groupNames: string[] = [];
+                          
+                          cart.forEach(cartItem => {
+                            if (cartItem.item?.group_id) {
+                              const group = groups.find(g => g.id === cartItem.item?.group_id);
+                              if (group && !groupNames.includes(group.name)) {
+                                groupsInCart.push(group);
+                                groupNames.push(group.name);
+                              }
+                            }
+                          });
                           
                           // Prioridade 1: Rodízio (pegar o nome completo)
                           const rodizioGroup = groupsInCart.find(g => 
+                            g.type === 'rodizio' ||
                             g.name?.toLowerCase().includes('rodizio') || 
                             g.name?.toLowerCase().includes('rodízio')
                           );
@@ -3076,7 +3088,8 @@ export default function POSPage() {
                           // Prioridade 2: À la Carte
                           const carteGroup = groupsInCart.find(g => 
                             g.name?.toLowerCase().includes('carte') ||
-                            g.name?.toLowerCase().includes('la carte')
+                            g.name?.toLowerCase().includes('la carte') ||
+                            g.name?.toLowerCase().includes('à la carte')
                           );
                           
                           if (carteGroup) {
@@ -3094,13 +3107,13 @@ export default function POSPage() {
                           }
                           
                           // Se tem grupos mistos
-                          if (uniqueGroupNames.length > 1) {
+                          if (groupNames.length > 1) {
                             return 'Atendimento Misto';
                           }
                           
                           // Se tem apenas um grupo, mostrar o nome dele
-                          if (uniqueGroupNames.length === 1) {
-                            return uniqueGroupNames[0];
+                          if (groupNames.length === 1) {
+                            return groupNames[0];
                           }
                         }
                         
