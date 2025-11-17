@@ -226,6 +226,7 @@ export default function POSPage() {
   const [currentSession, setCurrentSession] = useState<TableSession | null>(null);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [cart, setCart] = useState<OrderItem[]>([]);
+  const [serviceTaxPercentage, setServiceTaxPercentage] = useState<number>(0);
   
   // Estados do numpad e entrada
   const [inputValue, setInputValue] = useState("");
@@ -276,6 +277,22 @@ export default function POSPage() {
     }
   };
   
+  // Buscar a taxa de serviço do restaurante
+  useEffect(() => {
+    const fetchServiceTax = async () => {
+      try {
+        const response = await fetch('/api/restaurant');
+        if (response.ok) {
+          const data = await response.json();
+          setServiceTaxPercentage(data.service_tax_percentage || 0);
+        }
+      } catch (error) {
+        console.error('Erro ao buscar taxa de serviço:', error);
+      }
+    };
+    fetchServiceTax();
+  }, []);
+
   // Monitora posição do scroll para mostrar/ocultar botões (otimizado com requestAnimationFrame)
   useEffect(() => {
     const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
@@ -1597,11 +1614,19 @@ export default function POSPage() {
 
   // Calcular total com desconto
   const calculateTotalWithDiscount = () => {
-    const subtotal = calculateTotal();
+    const subtotal = calculateSubtotal(); // Usar subtotal em vez de total
+    const serviceTax = calculateServiceTax();
+    const totalWithTax = subtotal + serviceTax;
+    
     if (discountType === 'percentage') {
-      return subtotal - (subtotal * discountValue / 100);
+      // Aplicar desconto no subtotal (antes da taxa)
+      const discountAmount = subtotal * discountValue / 100;
+      const subtotalAfterDiscount = subtotal - discountAmount;
+      const serviceTaxAfterDiscount = serviceTaxPercentage > 0 ? (subtotalAfterDiscount * serviceTaxPercentage / 100) : 0;
+      return subtotalAfterDiscount + serviceTaxAfterDiscount;
     } else {
-      return Math.max(0, subtotal - discountValue);
+      // Desconto fixo aplicado no total (após taxa)
+      return Math.max(0, totalWithTax - discountValue);
     }
   };
 
@@ -1701,7 +1726,7 @@ export default function POSPage() {
       // Salvar desconto se houver
       if (discountValue > 0) {
         const discountAmount = discountType === 'percentage' 
-          ? calculateTotal() * discountValue / 100 
+          ? calculateSubtotal() * discountValue / 100 
           : discountValue;
           
         await supabase
@@ -1735,7 +1760,7 @@ export default function POSPage() {
         .update({
           payment_status: 'paid',
           payment_method: payments.length > 1 ? 'mixed' : payments[0].method,
-          discount: discountValue > 0 ? (discountType === 'percentage' ? calculateTotal() * discountValue / 100 : discountValue) : 0,
+          discount: discountValue > 0 ? (discountType === 'percentage' ? calculateSubtotal() * discountValue / 100 : discountValue) : 0,
           status: 'completed',
           completed_at: new Date().toISOString(),
           total: calculateTotalWithDiscount()
@@ -2009,7 +2034,8 @@ export default function POSPage() {
     }
   };
 
-  const calculateTotal = () => {
+  // Calcular subtotal (sem taxa de serviço)
+  const calculateSubtotal = () => {
     return cart
       .filter(item => item.status !== 'cancelled')
       .reduce((sum, item) => {
@@ -2020,6 +2046,19 @@ export default function POSPage() {
         }
         return sum + item.total_price;
       }, 0);
+  };
+
+  // Calcular valor da taxa de serviço
+  const calculateServiceTax = () => {
+    const subtotal = calculateSubtotal();
+    return serviceTaxPercentage > 0 ? (subtotal * serviceTaxPercentage / 100) : 0;
+  };
+
+  // Calcular total com taxa de serviço
+  const calculateTotal = () => {
+    const subtotal = calculateSubtotal();
+    const serviceTax = calculateServiceTax();
+    return subtotal + serviceTax;
   };
 
   const calculateNewItemsTotal = () => {
@@ -3921,6 +3960,26 @@ export default function POSPage() {
                       R$ {calculateCancelledTotal().toFixed(2).replace('.', ',')}
                     </span>
                   </div>
+
+                  {/* Subtotal */}
+                  <div className="flex justify-between items-center pt-1">
+                    <span className="text-gray-400 text-xs">Subtotal</span>
+                    <span className="text-gray-300 text-sm">
+                      R$ {calculateSubtotal().toFixed(2).replace('.', ',')}
+                    </span>
+                  </div>
+                  
+                  {/* Taxa de Serviço - só mostra se > 0 */}
+                  {serviceTaxPercentage > 0 && (
+                    <div className="flex justify-between items-center">
+                      <span className="text-yellow-400 text-xs">
+                        Taxa de Serviço ({serviceTaxPercentage}%)
+                      </span>
+                      <span className="text-yellow-400 text-sm">
+                        +R$ {calculateServiceTax().toFixed(2).replace('.', ',')}
+                      </span>
+                    </div>
+                  )}
                   
                   {/* Total Geral */}
                   <div className="border-t border-gray-600 pt-2 mt-1">
@@ -4127,8 +4186,16 @@ export default function POSPage() {
                     <div className="mt-4 pt-4 border-t border-gray-600 space-y-2">
                       <div className="flex justify-between">
                         <span>Subtotal:</span>
-                        <span className="font-bold">{formatCurrency(calculateTotal())}</span>
+                        <span className="font-bold">{formatCurrency(calculateSubtotal())}</span>
                       </div>
+                      
+                      {/* Taxa de Serviço - só mostra se > 0 */}
+                      {serviceTaxPercentage > 0 && (
+                        <div className="flex justify-between text-yellow-400">
+                          <span>Taxa de Serviço ({serviceTaxPercentage}%):</span>
+                          <span className="font-bold">+{formatCurrency(calculateServiceTax())}</span>
+                        </div>
+                      )}
                       
                       {/* Desconto */}
                       <div className="flex items-center gap-2">
