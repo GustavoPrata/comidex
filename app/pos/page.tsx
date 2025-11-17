@@ -3119,7 +3119,7 @@ export default function POSPage() {
                     ) : (
                       // Mostrar Categorias do Grupo e Produtos
                       <div className="space-y-4">
-                        <div className="grid grid-cols-5 md:grid-cols-6 gap-1">
+                        <div className="flex flex-wrap gap-1">
                           {categories
                             .filter((c) => c.active && c.group_id === selectedGroup)
                             .map((category) => {
@@ -3127,7 +3127,7 @@ export default function POSPage() {
                                 <Button
                                   key={category.id}
                                   onClick={() => setSelectedCategory(category.id)}
-                                  className={`h-7 text-xs font-medium px-1 py-0.5 ${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
+                                  className={`h-6 text-xs font-medium px-2 py-0 w-auto min-w-fit ${selectedCategory === category.id ? 'bg-orange-600' : 'bg-gray-700'} hover:bg-orange-700`}
                                 >
                                   {category.name}
                                 </Button>
