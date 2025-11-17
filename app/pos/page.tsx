@@ -2823,11 +2823,8 @@ export default function POSPage() {
                                         className={`h-7 w-7 p-0 ${
                                           item.status === 'cancelled'
                                             ? 'text-green-400 hover:text-green-300 hover:bg-green-900/20'
-                                            : item.status === 'delivered'
-                                            ? 'text-gray-500 cursor-not-allowed opacity-50'
                                             : 'text-red-400 hover:text-red-300 hover:bg-red-900/20'
                                         }`}
-                                        disabled={item.status === 'delivered'}
                                       >
                                         {item.status === 'cancelled' ? (
                                           <RefreshCw className="h-4 w-4" />
