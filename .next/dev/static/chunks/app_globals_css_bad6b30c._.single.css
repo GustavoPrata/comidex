@@ -908,10 +908,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   height: 400px;
 }
 
-.h-\[calc\(100\%-60px\)\] {
-  height: calc(100% - 60px);
-}
-
 .h-\[var\(--radix-select-trigger-height\)\] {
   height: var(--radix-select-trigger-height);
 }

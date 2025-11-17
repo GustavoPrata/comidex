@@ -224,6 +224,19 @@ export default function POSPage() {
   const [itemToCancel, setItemToCancel] = useState<any>(null);
   const [cancelQuantity, setCancelQuantity] = useState(1);
   
+  // Ref para o ScrollArea dos itens do carrinho
+  const cartScrollRef = useRef<HTMLDivElement>(null);
+  
+  // Auto scroll para o final quando adicionar novos itens
+  useEffect(() => {
+    if (cartScrollRef.current) {
+      const scrollContainer = cartScrollRef.current.querySelector('[data-radix-scroll-area-viewport]');
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
+    }
+  }, [cart]);
+  
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
   const [groupedItems, setGroupedItems] = useState<any[]>([]);
@@ -2755,13 +2768,15 @@ export default function POSPage() {
                       </Badge>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0 h-[calc(100%-60px)] flex flex-col">
-                    <ScrollArea className="flex-1 pr-4">
+                  <CardContent className="p-4 pt-0">
+                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4">
                       {cart.length === 0 ? (
-                        <div className="text-center text-gray-500 mt-8">
-                          <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                          <p>Carrinho vazio</p>
-                          <p className="text-sm mt-2">Adicione produtos usando o código ou busca</p>
+                        <div className="flex items-center justify-center h-full">
+                          <div className="text-center text-gray-500">
+                            <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                            <p>Carrinho vazio</p>
+                            <p className="text-sm mt-2">Adicione produtos usando o código ou busca</p>
+                          </div>
                         </div>
                       ) : (
                         <AnimatePresence>
@@ -3742,12 +3757,6 @@ export default function POSPage() {
         {/* Dialog de Cancelamento Parcial */}
         <Dialog open={cancelQuantityDialog} onOpenChange={setCancelQuantityDialog}>
           <DialogContent className="bg-gray-800 text-white border-gray-700 max-w-sm">
-            <DialogHeader>
-              <DialogTitle className="text-center text-lg font-bold">
-                Cancelar Item
-              </DialogTitle>
-            </DialogHeader>
-            
             <div className="space-y-6">
               {itemToCancel && (
                 <>
@@ -3789,7 +3798,7 @@ export default function POSPage() {
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">Valor a cancelar:</span>
                       <span className="text-red-400 font-bold text-xl">
-                        {formatCurrency((itemToCancel.unit_price || 0) * cancelQuantity)}
+                        R$ {((itemToCancel.unit_price || itemToCancel.item?.price || 0) * cancelQuantity).toFixed(2).replace('.', ',')}
                       </span>
                     </div>
                   </div>
