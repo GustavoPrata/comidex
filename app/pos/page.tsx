@@ -2895,13 +2895,13 @@ export default function POSPage() {
                               }`}>
                                 <CardContent className="p-3 relative">
                                   {/* Horário - centralizado com transform */}
-                                  {(item.status === 'delivered' || item.status === 'cancelled') && (
+                                  {(item.status === 'delivered' || item.status === 'cancelled') && item.launched_at && (
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
                                       <div className={`${item.status === 'delivered' ? 'text-green-400' : 'text-red-400'} flex flex-col items-center justify-center`}>
                                         <Clock className="h-3 w-3 mb-1" />
                                         <div className="flex items-center">
                                           {(() => {
-                                            const date = item.launched_at ? new Date(item.launched_at) : new Date();
+                                            const date = new Date(item.launched_at);
                                             const hours = date.getHours().toString().padStart(2, '0');
                                             const minutes = date.getMinutes().toString().padStart(2, '0');
                                             const seconds = date.getSeconds().toString().padStart(2, '0');
