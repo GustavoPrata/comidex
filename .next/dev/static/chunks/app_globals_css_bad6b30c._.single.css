@@ -1120,6 +1120,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   width: 1px;
 }
 
+.min-w-\[32px\] {
+  min-width: 32px;
+}
+
 .min-w-\[8rem\] {
   min-width: 8rem;
 }

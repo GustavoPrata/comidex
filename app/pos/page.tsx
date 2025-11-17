@@ -2837,37 +2837,50 @@ export default function POSPage() {
                                           <Button
                                             size="sm"
                                             onClick={() => handleUpdateQuantity(item.id!, -1)}
-                                            className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
+                                            className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600 rounded-full transition-all"
                                           >
                                             <Minus className="h-3 w-3" />
                                           </Button>
-                                          <span className="w-8 text-center font-medium">
-                                            {item.quantity}
-                                          </span>
+                                          <div className="min-w-[32px] text-center">
+                                            <span className="font-bold text-lg text-white">
+                                              {item.quantity}
+                                            </span>
+                                          </div>
                                           <Button
                                             size="sm"
                                             onClick={() => handleUpdateQuantity(item.id!, 1)}
-                                            className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
+                                            className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600 rounded-full transition-all"
                                           >
                                             <Plus className="h-3 w-3" />
                                           </Button>
                                         </div>
                                       ) : (
-                                        /* Para itens lançados, mostra quantidade com cancelados se houver */
-                                        <div className="flex items-center gap-1">
-                                          <span className={`font-bold ${
-                                            item.status === 'cancelled' ? 'text-red-500 line-through' : 'text-white'
-                                          }`}>
-                                            {item.quantity - (item.cancelledQuantity || 0)}
-                                          </span>
-                                          {item.cancelledQuantity && item.cancelledQuantity > 0 && item.status !== 'cancelled' && (
-                                            <>
-                                              <span className="text-gray-500">/</span>
-                                              <span className="text-red-500 line-through text-sm">
-                                                {item.cancelledQuantity}
+                                        /* Para itens lançados, mostra quantidade de forma elegante */
+                                        <div className="flex items-center">
+                                          <div className="bg-gray-700/50 px-3 py-1 rounded-lg border border-gray-600">
+                                            <div className="flex items-center gap-2">
+                                              {item.cancelledQuantity && item.cancelledQuantity > 0 && item.status !== 'cancelled' ? (
+                                                <>
+                                                  <span className="font-bold text-lg text-white">
+                                                    {item.quantity - item.cancelledQuantity}
+                                                  </span>
+                                                  <span className="text-gray-500 text-sm">/</span>
+                                                  <span className="text-red-500 line-through text-sm">
+                                                    {item.cancelledQuantity}
+                                                  </span>
+                                                </>
+                                              ) : (
+                                                <span className={`font-bold text-lg ${
+                                                  item.status === 'cancelled' ? 'text-red-500 line-through' : 'text-white'
+                                                }`}>
+                                                  {item.quantity}
+                                                </span>
+                                              )}
+                                              <span className="text-gray-400 text-xs uppercase tracking-wider ml-1">
+                                                UN
                                               </span>
-                                            </>
-                                          )}
+                                            </div>
+                                          </div>
                                         </div>
                                       )}
                                       
