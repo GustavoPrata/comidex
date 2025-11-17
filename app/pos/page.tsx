@@ -2882,19 +2882,20 @@ export default function POSPage() {
                       </Badge>
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 pt-0 relative">
-                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4" style={{ willChange: 'scroll-position' }}>
-                      {cart.length === 0 ? (
-                        <div className="flex items-center justify-center h-full">
-                          <div className="text-center text-gray-500">
-                            <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                            <p>Carrinho vazio</p>
-                            <p className="text-sm mt-2">Adicione produtos usando o código ou busca</p>
+                  <CardContent className="p-4 pt-0">
+                    <div className="relative">
+                      <ScrollArea ref={cartScrollRef} className="h-[400px] pr-4" style={{ willChange: 'scroll-position' }}>
+                        {cart.length === 0 ? (
+                          <div className="flex items-center justify-center h-full">
+                            <div className="text-center text-gray-500">
+                              <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                              <p>Carrinho vazio</p>
+                              <p className="text-sm mt-2">Adicione produtos usando o código ou busca</p>
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <AnimatePresence>
-                          {cart.map((item, index) => (
+                        ) : (
+                          <AnimatePresence>
+                            {cart.map((item, index) => (
                             <motion.div
                               key={`${item.item_id}-${index}`}
                               initial={{ opacity: 0, x: -50 }}
@@ -3107,12 +3108,12 @@ export default function POSPage() {
                         </AnimatePresence>
                       )}
                     </ScrollArea>
-
+                    
                     {/* Indicador elegante de mais itens */}
                     {cart.length > 8 && scrollPosition !== 'bottom' && (
-                      <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none z-10">
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-transparent"></div>
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 pointer-events-auto text-orange-400 hover:text-orange-300 transition-all duration-300 flex flex-col items-center gap-1 cursor-pointer animate-bounce"
+                      <div className="absolute bottom-0 left-0 right-4 h-16 pointer-events-none z-10">
+                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent"></div>
+                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-auto text-orange-400 hover:text-orange-300 transition-all duration-300 flex items-center gap-2 cursor-pointer"
                              onClick={() => {
                                const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
                                if (scrollContainer) {
@@ -3122,11 +3123,12 @@ export default function POSPage() {
                                  });
                                }
                              }}>
-                          <ChevronDown className="h-6 w-6" />
-                          <span className="text-xs uppercase tracking-wider font-semibold bg-gray-900/80 px-2 py-1 rounded">mais itens</span>
+                          <ChevronDown className="h-5 w-5 animate-pulse" />
+                          <span className="text-[10px] uppercase tracking-wider font-medium">mais itens</span>
                         </div>
                       </div>
                     )}
+                  </div>
 
                     {/* Totais Animados */}
                     {cart.length > 0 && (

@@ -517,8 +517,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   bottom: 0;
 }
 
-.bottom-4 {
-  bottom: 1rem;
+.bottom-2 {
+  bottom: .5rem;
 }
 
 .bottom-full {
@@ -551,10 +551,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .left-\[50\%\] {
   left: 50%;
-}
-
-.right-0 {
-  right: 0;
 }
 
 .right-1\/4 {
@@ -2239,6 +2235,12 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-gray-900\/90 {
+  --tw-gradient-from: #111827e6 var(--tw-gradient-from-position);
+  --tw-gradient-to: #11182700 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .from-green-600 {
   --tw-gradient-from: #16a34a var(--tw-gradient-from-position);
   --tw-gradient-to: #16a34a00 var(--tw-gradient-to-position);
@@ -2311,9 +2313,9 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.via-gray-900\/80 {
+.via-gray-900\/50 {
   --tw-gradient-to: #11182700 var(--tw-gradient-to-position);
-  --tw-gradient-stops: var(--tw-gradient-from), #111827cc var(--tw-gradient-via-position), var(--tw-gradient-to);
+  --tw-gradient-stops: var(--tw-gradient-from), #11182780 var(--tw-gradient-via-position), var(--tw-gradient-to);
 }
 
 .via-orange-300 {
