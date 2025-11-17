@@ -2958,10 +2958,10 @@ export default function POSPage() {
                                       </div>
                                     </div>
                                     
-                                    {/* Mostra horário de lançamento para itens lançados - no centro */}
+                                    {/* Mostra horário de lançamento para itens lançados ou cancelados - no centro */}
                                     <div className="flex-1 flex items-center justify-center">
-                                      {item.status === 'delivered' ? (
-                                        <div className="text-green-400 flex flex-col items-center justify-center">
+                                      {(item.status === 'delivered' || item.status === 'cancelled') ? (
+                                        <div className={`${item.status === 'delivered' ? 'text-green-400' : 'text-red-400'} flex flex-col items-center justify-center`}>
                                           <Clock className="h-3 w-3 mb-1" />
                                           <div className="flex items-center">
                                             {(() => {
