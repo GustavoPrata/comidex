@@ -740,7 +740,7 @@ export default function POSPage() {
           )
         `)
         .eq('table_id', tableId)
-        .in('status', ['pending', 'confirmed', 'preparing', 'ready', 'delivered'])
+        .eq('status', 'open') // Buscar apenas orders abertos
         .single();
 
       if (!error && orderData) {
@@ -753,11 +753,14 @@ export default function POSPage() {
             // Extract rodízio metadata if available
             const metadata = orderItem.metadata || {};
             const rodizioItem = {
+              id: orderItem.id, // Manter ID do banco para atualizações
+              order_id: orderItem.order_id,
               item_id: -1 * Date.now() - Math.random() * 1000, // Generate negative ID for cart
               quantity: orderItem.quantity,
               unit_price: orderItem.unit_price,
               total_price: orderItem.total_price,
-              status: orderItem.status || 'novo',
+              status: orderItem.status === 'cancelled' ? 'cancelled' : 'delivered', // Preservar cancelamento ou marcar como lançado
+              launched_at: orderItem.created_at,
               icon: metadata.icon || null, // Recover icon from metadata
               item: {
                 name: metadata.name || orderItem.notes || 'Rodízio', // Get name from metadata or notes
@@ -772,11 +775,14 @@ export default function POSPage() {
           
           // Handle regular items
           return {
+            id: orderItem.id, // Manter ID do banco para atualizações
+            order_id: orderItem.order_id,
             item_id: orderItem.item_id,
             quantity: orderItem.quantity,
             unit_price: orderItem.unit_price,
             total_price: orderItem.total_price,
-            status: orderItem.status || 'novo',
+            status: orderItem.status === 'cancelled' ? 'cancelled' : 'delivered', // Preservar cancelamento ou marcar como lançado
+            launched_at: orderItem.created_at,
             item: orderItem.item
           };
         }) || [];
@@ -1867,8 +1873,8 @@ export default function POSPage() {
           const { error: updateError } = await supabase
             .from('order_items')
             .update({ 
-              status: 'cancelled',
-              quantity: 0  // Zerar quantidade para itens cancelados
+              status: 'cancelled'
+              // Não zerar quantity aqui - manter o valor original para histórico
             })
             .eq('id', item.id);
           
