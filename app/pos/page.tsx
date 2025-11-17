@@ -3835,138 +3835,107 @@ export default function POSPage() {
             </Tabs>
           </div>
           
-          {/* Right Panel 30% - Botões de Ação */}
-          <div className="w-[30%] flex flex-col p-6 bg-gray-900/50">
-            <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Settings className="h-5 w-5 text-orange-500" />
-              Ações da Mesa
-            </h3>
-            
-            {/* Seção Principal - Operações */}
-            <div className="space-y-4 mb-6">
-              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                <h4 className="text-sm text-gray-400 mb-3 font-semibold">Operações Principais</h4>
-                
-                {/* Botão Fechar Conta */}
-                <Button
-                  onClick={startCheckout}
-                  disabled={loading || cart.length === 0}
-                  className={`w-full h-14 text-base font-bold mb-3 ${
-                    cart.length === 0 
-                      ? "bg-gray-600 cursor-not-allowed" 
-                      : "bg-green-600 hover:bg-green-700 shadow-lg shadow-green-600/20"
-                  }`}
-                >
-                  <CreditCard className="mr-3 h-6 w-6" />
-                  Fechar Conta
-                </Button>
-                
-                {/* Botão Imprimir */}
-                <Button
-                  onClick={() => setPrintDialog(true)}
-                  disabled={cart.length === 0}
-                  className={`w-full h-14 text-base font-bold ${
-                    cart.length === 0 
-                      ? "bg-gray-600 cursor-not-allowed" 
-                      : "bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-600/20"
-                  }`}
-                >
-                  <Printer className="mr-3 h-6 w-6" />
-                  Imprimir Conta
-                </Button>
-              </div>
+          {/* Right Panel 30% - Menu Lateral Compacto */}
+          <div className="w-[30%] flex flex-col p-4 bg-gray-900/50">
+            {/* Ações Rápidas - Tudo Junto */}
+            <div className="space-y-2">
+              {/* Botão Fechar Conta */}
+              <Button
+                onClick={startCheckout}
+                disabled={loading || cart.length === 0}
+                className={`w-full h-11 text-sm font-semibold ${
+                  cart.length === 0 
+                    ? "bg-gray-600 cursor-not-allowed" 
+                    : "bg-green-600 hover:bg-green-700"
+                }`}
+              >
+                <CreditCard className="mr-2 h-4 w-4" />
+                Fechar Conta
+              </Button>
+              
+              {/* Botão Imprimir */}
+              <Button
+                onClick={() => setPrintDialog(true)}
+                disabled={cart.length === 0}
+                className={`w-full h-11 text-sm font-semibold ${
+                  cart.length === 0 
+                    ? "bg-gray-600 cursor-not-allowed" 
+                    : "bg-purple-600 hover:bg-purple-700"
+                }`}
+              >
+                <Printer className="mr-2 h-4 w-4" />
+                Imprimir Conta
+              </Button>
+              
+              {/* Botão Transferir */}
+              <Button
+                onClick={() => setTransferTableDialog(true)}
+                className="w-full h-11 text-sm font-semibold bg-blue-600 hover:bg-blue-700"
+              >
+                <ArrowRight className="mr-2 h-4 w-4" />
+                Transferir Mesa
+              </Button>
+              
+              {/* Botão Cancelar Mesa */}
+              <Button
+                onClick={() => setCancelTableDialog(true)}
+                className="w-full h-11 text-sm font-semibold bg-red-600 hover:bg-red-700"
+              >
+                  <X className="mr-2 h-4 w-4" />
+                Cancelar Mesa
+              </Button>
             </div>
             
-            {/* Seção Gerenciamento */}
-            <div className="space-y-4 mb-6">
-              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                <h4 className="text-sm text-gray-400 mb-3 font-semibold">Gerenciamento</h4>
-                
-                {/* Botão Transferir */}
-                <Button
-                  onClick={() => setTransferTableDialog(true)}
-                  className="w-full h-12 text-base font-semibold mb-3 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20"
-                >
-                  <ArrowRight className="mr-3 h-5 w-5" />
-                  Transferir Mesa
-                </Button>
-                
-                {/* Botão Cancelar Mesa */}
-                <Button
-                  onClick={() => setCancelTableDialog(true)}
-                  className="w-full h-12 text-base font-semibold bg-red-600 hover:bg-red-700 shadow-lg shadow-red-600/20"
-                >
-                  <X className="mr-3 h-5 w-5" />
-                  Cancelar Mesa
-                </Button>
-              </div>
-            </div>
-            
-            {/* Seção Informações Rápidas */}
-            <div className="space-y-4 flex-1">
-              <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700">
-                <h4 className="text-sm text-gray-400 mb-3 font-semibold flex items-center gap-2">
-                  <Calculator className="h-4 w-4" />
-                  Resumo Detalhado
-                </h4>
-                
-                <div className="space-y-3">
+            {/* Resumo Financeiro Compacto */}
+            <div className="mt-auto pt-3">
+              <div className="bg-gray-800/40 rounded-lg p-3 border border-gray-700">
+                <div className="space-y-2">
                   {/* Itens Lançados */}
                   <div className="flex justify-between items-center">
-                    <span className="text-green-400 text-sm flex items-center gap-1">
+                    <span className="text-green-400 text-xs flex items-center gap-1">
                       <CheckCircle2 className="h-3 w-3" />
-                      Lançados:
+                      Lançados
                     </span>
-                    <span className="text-green-400 font-semibold">
+                    <span className="text-green-400 font-semibold text-sm">
                       R$ {calculateLaunchedTotal().toFixed(2).replace('.', ',')}
                     </span>
                   </div>
                   
                   {/* Itens Cancelados */}
                   <div className="flex justify-between items-center">
-                    <span className="text-red-400 text-sm flex items-center gap-1">
+                    <span className="text-red-400 text-xs flex items-center gap-1">
                       <XCircle className="h-3 w-3" />
-                      Cancelados:
+                      Cancelados
                     </span>
-                    <span className="text-red-400 font-semibold line-through">
+                    <span className="text-red-400 font-semibold text-sm line-through">
                       R$ {calculateCancelledTotal().toFixed(2).replace('.', ',')}
                     </span>
                   </div>
                   
-                  {/* Novos Itens */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-yellow-400 text-sm flex items-center gap-1">
-                      <AlertCircle className="h-3 w-3" />
-                      Novos:
-                    </span>
-                    <span className="text-yellow-400 font-semibold">
-                      R$ {calculateNewItemsTotal().toFixed(2).replace('.', ',')}
-                    </span>
-                  </div>
-                  
-                  {/* Separador */}
-                  <div className="border-t border-gray-600 pt-2"></div>
-                  
                   {/* Total Geral */}
-                  <div className="flex justify-between items-center">
-                    <span className="text-white text-base font-semibold">Total Geral:</span>
-                    <motion.span 
-                      className="text-2xl font-bold text-orange-500"
-                      key={calculateTotal()}
-                      initial={{ scale: 1.2 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      R$ {calculateTotal().toFixed(2).replace('.', ',')}
-                    </motion.span>
+                  <div className="border-t border-gray-600 pt-2 mt-1">
+                    <div className="flex justify-between items-center">
+                      <span className="text-white text-sm font-bold">
+                        💰 Total
+                      </span>
+                      <motion.span 
+                        className="text-lg font-bold text-orange-500"
+                        key={calculateTotal()}
+                        initial={{ scale: 1.1 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        R$ {calculateTotal().toFixed(2).replace('.', ',')}
+                      </motion.span>
+                    </div>
                   </div>
                 </div>
               </div>
               
-              {/* Espaço para futuras funcionalidades */}
-              <div className="bg-gray-800/30 rounded-lg p-4 border border-gray-700/50 border-dashed">
-                <p className="text-gray-500 text-xs text-center">
-                  Área reservada para novas funcionalidades
+              {/* Área Reservada Minimalista */}
+              <div className="mt-3 bg-gray-800/20 rounded p-2 border border-gray-700/30 border-dashed">
+                <p className="text-gray-600 text-[10px] text-center">
+                  Espaço para futuras funções
                 </p>
               </div>
             </div>

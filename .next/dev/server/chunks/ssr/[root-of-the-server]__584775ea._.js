@@ -363,9 +363,10 @@ function getSupabaseConfig() {
     // Validação final
     const isValid = supabaseUrl && supabaseKey && supabaseUrl.startsWith('https://') && supabaseUrl.includes('.supabase.') && supabaseKey.startsWith('eyJ');
     if (isValid) {
-        console.log('✅ Supabase configurado corretamente!');
-        console.log('   URL:', supabaseUrl.substring(0, 40) + '...');
-        console.log('   Key:', supabaseKey.substring(0, 20) + '...');
+        // Log seguro sem expor dados sensíveis
+        if ("TURBOPACK compile-time truthy", 1) {
+            console.log('✅ Supabase configurado corretamente!');
+        }
         return {
             url: supabaseUrl,
             anonKey: supabaseKey,
@@ -373,8 +374,6 @@ function getSupabaseConfig() {
         };
     } else {
         console.warn('⚠️ Supabase não configurado ou variáveis inválidas');
-        console.log('   ENV1:', env1.substring(0, 30));
-        console.log('   ENV2:', env2.substring(0, 30));
         return {
             url: null,
             anonKey: null,
