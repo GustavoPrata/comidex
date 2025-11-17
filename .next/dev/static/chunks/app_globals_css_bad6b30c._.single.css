@@ -517,6 +517,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   bottom: 0;
 }
 
+.bottom-2 {
+  bottom: .5rem;
+}
+
 .bottom-full {
   bottom: 100%;
 }

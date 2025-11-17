@@ -2860,7 +2860,7 @@ export default function POSPage() {
                   <CardContent className="p-4 pt-0 relative">
                     {/* Botões de Scroll */}
                     {cart.length > 0 && (
-                      <div className="absolute right-2 top-2 z-10 flex flex-col gap-2">
+                      <div className="absolute right-2 bottom-2 z-10 flex flex-col gap-2">
                         {scrollPosition !== 'top' && (
                           <Button
                             onClick={scrollToTop}
