@@ -1727,10 +1727,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));
 }
 
-.border-gray-700\/30 {
-  border-color: #3741514d;
-}
-
 .border-gray-800 {
   --tw-border-opacity: 1;
   border-color: rgb(31 41 55 / var(--tw-border-opacity, 1));
@@ -1966,10 +1962,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .bg-gray-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
-}
-
-.bg-gray-800\/20 {
-  background-color: #1f293733;
 }
 
 .bg-gray-800\/40 {

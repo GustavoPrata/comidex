@@ -478,7 +478,7 @@ export default function POSPage() {
       console.log('Pedido encontrado:', orders);
       setCurrentOrder(orders);
 
-      // Buscar itens do pedido
+      // Buscar itens do pedido - incluindo o status
       const { data: orderItems, error: itemsError } = await supabase
         .from('order_items')
         .select(`
@@ -494,6 +494,7 @@ export default function POSPage() {
           )
         `)
         .eq('order_id', orders.id)
+        .neq('status', 'cancelled') // Não carregar itens cancelados
         .order('created_at', { ascending: true });
 
       if (itemsError) {
@@ -1831,17 +1832,6 @@ export default function POSPage() {
 
     try {
       console.log('Lançando pedido para mesa:', selectedTable.id);
-      
-      // Atualizar status da mesa
-      const { error: tableError } = await supabase
-        .from('restaurant_tables')
-        .update({ status: 'occupied' })
-        .eq('id', selectedTable.id);
-
-      if (tableError) {
-        console.error('Erro ao atualizar status da mesa:', tableError);
-        throw tableError;
-      }
 
       // Verificar se já existe uma comanda aberta para esta mesa
       const { data: existingOrders, error: checkError } = await supabase
@@ -2013,6 +2003,54 @@ export default function POSPage() {
           }
         }
       }, 100);
+      
+      // Verificar se ainda há itens ativos na mesa após cancelamentos
+      const activeItemsCount = cart.filter(item => 
+        item.status === 'delivered' && !item.cancelledQuantity
+      ).length;
+      
+      // Se todos os itens foram cancelados, atualizar mesa para disponível
+      if (activeItemsCount === 0 && itemsToCancel.length > 0) {
+        console.log('Todos os itens foram cancelados, liberando mesa');
+        
+        // Atualizar status da mesa para disponível
+        await supabase
+          .from('restaurant_tables')
+          .update({ status: 'available' })
+          .eq('id', selectedTable.id);
+          
+        // Fechar o pedido
+        await supabase
+          .from('orders')
+          .update({ 
+            status: 'cancelled',
+            total: 0
+          })
+          .eq('id', orderId);
+        
+        // Fechar a sessão se existir
+        if (currentSession) {
+          await supabase
+            .from('table_sessions')
+            .update({ 
+              status: 'closed',
+              closed_at: new Date().toISOString()
+            })
+            .eq('id', currentSession.id);
+        }
+        
+        toast.success("Mesa liberada - todos os itens foram cancelados");
+        // Voltar para a tela de mesas
+        setTimeout(() => {
+          setScreen('tables');
+          setCart([]);
+          setSelectedTable(null);
+          setCurrentSession(null);
+          loadTables(); // Recarregar lista de mesas
+        }, 1500);
+        
+        return;
+      }
       
       // Mensagem de sucesso apropriada
       let successMessage = "Pedido lançado!";
