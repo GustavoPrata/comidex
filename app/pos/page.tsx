@@ -227,7 +227,7 @@ export default function POSPage() {
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
   const [cart, setCart] = useState<OrderItem[]>([]);
   const [serviceTaxPercentage, setServiceTaxPercentage] = useState<number>(0);
-  const [showCancelledOnly, setShowCancelledOnly] = useState(false);
+  const [filterMode, setFilterMode] = useState<'all' | 'delivered' | 'cancelled'>('all');
   
   // Estados do numpad e entrada
   const [inputValue, setInputValue] = useState("");
@@ -3464,25 +3464,46 @@ export default function POSPage() {
                       </span>
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => setShowCancelledOnly(!showCancelledOnly)}
+                          onClick={() => setFilterMode('all')}
                           className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
-                            showCancelledOnly 
+                            filterMode === 'all' 
+                              ? 'bg-orange-600 text-white' 
+                              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                          }`}
+                          data-testid="filter-all"
+                        >
+                          <span className="flex items-center gap-1">
+                            <ShoppingCart className="h-4 w-4" />
+                            Todos
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => setFilterMode('delivered')}
+                          className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
+                            filterMode === 'delivered' 
+                              ? 'bg-green-600 text-white' 
+                              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                          }`}
+                          data-testid="filter-delivered"
+                        >
+                          <span className="flex items-center gap-1">
+                            <CheckCircle2 className="h-4 w-4" />
+                            Lançados
+                          </span>
+                        </button>
+                        <button
+                          onClick={() => setFilterMode('cancelled')}
+                          className={`px-3 py-1 rounded-md text-sm font-medium transition-all ${
+                            filterMode === 'cancelled' 
                               ? 'bg-red-600 text-white' 
                               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                           }`}
-                          data-testid="toggle-cancelled-filter"
+                          data-testid="filter-cancelled"
                         >
-                          {showCancelledOnly ? (
-                            <span className="flex items-center gap-1">
-                              <XCircle className="h-4 w-4" />
-                              Cancelados
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-1">
-                              <CheckCircle2 className="h-4 w-4" />
-                              Todos
-                            </span>
-                          )}
+                          <span className="flex items-center gap-1">
+                            <XCircle className="h-4 w-4" />
+                            Cancelados
+                          </span>
                         </button>
                       </div>
                     </CardTitle>
@@ -3491,18 +3512,26 @@ export default function POSPage() {
                     <div className="relative h-full">
                       <ScrollArea ref={cartScrollRef} className="h-full pr-4" style={{ willChange: 'scroll-position' }}>
                         {(() => {
-                          const filteredCart = showCancelledOnly 
+                          const filteredCart = filterMode === 'cancelled' 
                             ? cart.filter(item => item.status === 'cancelled')
+                            : filterMode === 'delivered'
+                            ? cart.filter(item => item.status === 'delivered')
                             : cart;
                           
                           return filteredCart.length === 0 ? (
                             <div className="flex items-center justify-center h-full">
                               <div className="text-center text-gray-500">
-                                {showCancelledOnly ? (
+                                {filterMode === 'cancelled' ? (
                                   <>
                                     <XCircle className="h-16 w-16 mx-auto mb-4 opacity-50" />
                                     <p>Nenhum item cancelado</p>
                                     <p className="text-sm mt-2">Clique em "Todos" para ver todos os itens</p>
+                                  </>
+                                ) : filterMode === 'delivered' ? (
+                                  <>
+                                    <CheckCircle2 className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                                    <p>Nenhum item lançado</p>
+                                    <p className="text-sm mt-2">Lance os itens primeiro ou clique em "Todos"</p>
                                   </>
                                 ) : (
                                   <>
