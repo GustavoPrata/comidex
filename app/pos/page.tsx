@@ -239,7 +239,7 @@ export default function POSPage() {
     if (scrollContainer) {
       scrollContainer.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: 'auto' // Mudado de 'smooth' para 'auto' para melhor performance
       });
     }
   };
@@ -250,32 +250,39 @@ export default function POSPage() {
     if (scrollContainer) {
       scrollContainer.scrollTo({
         top: scrollContainer.scrollHeight,
-        behavior: 'smooth'
+        behavior: 'auto' // Mudado de 'smooth' para 'auto' para melhor performance
       });
     }
   };
   
-  // Monitora posição do scroll para mostrar/ocultar botões
+  // Monitora posição do scroll para mostrar/ocultar botões (otimizado com requestAnimationFrame)
   useEffect(() => {
     const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
     if (!scrollContainer) return;
     
+    let ticking = false;
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-      const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
-      
-      if (scrollPercentage <= 5) {
-        setScrollPosition('top');
-      } else if (scrollPercentage >= 95) {
-        setScrollPosition('bottom');
-      } else {
-        setScrollPosition('middle');
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
+          const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
+          
+          if (scrollPercentage <= 5) {
+            setScrollPosition('top');
+          } else if (scrollPercentage >= 95) {
+            setScrollPosition('bottom');
+          } else {
+            setScrollPosition('middle');
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
     
-    scrollContainer.addEventListener('scroll', handleScroll);
+    scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
     return () => scrollContainer.removeEventListener('scroll', handleScroll);
-  }, [cart]);
+  }, []); // Removido cart das dependências para evitar re-criar o listener
   
   // Auto scroll para o final apenas quando adicionar novos itens
   useEffect(() => {
@@ -2882,7 +2889,7 @@ export default function POSPage() {
                       </div>
                     )}
                     
-                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-10">
+                    <ScrollArea ref={cartScrollRef} className="h-[400px] pr-10" style={{ willChange: 'scroll-position' }}>
                       {cart.length === 0 ? (
                         <div className="flex items-center justify-center h-full">
                           <div className="text-center text-gray-500">
