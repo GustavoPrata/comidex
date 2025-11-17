@@ -3175,20 +3175,20 @@ export default function POSPage() {
                               )}
                             </div>
                           ) : (
-                            <div className="flex flex-col gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                               {filteredItems.map((item) => (
                                 <motion.div
                                   key={item.id}
-                                  whileHover={{ scale: 1.01 }}
-                                  whileTap={{ scale: 0.99 }}
+                                  whileHover={{ scale: 1.02 }}
+                                  whileTap={{ scale: 0.98 }}
                                 >
                                   <Card
-                                    className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden"
+                                    className="bg-gray-800 border-gray-700 hover:bg-gray-700 cursor-pointer transition-all overflow-hidden h-full"
                                     onClick={() => handleAddItem(item)}
                                   >
-                                    <CardContent className="p-2 flex items-center gap-3">
-                                      {/* Foto do produto - tamanho fixo 96x60 com borda arredondada */}
-                                      <div className="w-24 h-[60px] bg-gray-900 rounded-lg overflow-hidden flex-shrink-0">
+                                    <CardContent className="p-2 flex items-center gap-2">
+                                      {/* Foto do produto - tamanho fixo com borda arredondada */}
+                                      <div className="w-16 h-16 bg-gray-900 rounded-lg overflow-hidden flex-shrink-0">
                                         <img
                                           src={item.image || '/fotos/placeholder/placeholder.png'}
                                           alt={item.name}
@@ -3200,19 +3200,15 @@ export default function POSPage() {
                                         />
                                       </div>
                                       {/* Informações do produto */}
-                                      <div className="flex-1 flex items-center justify-between">
-                                        <div className="flex-1">
-                                          <div className="font-medium text-white text-sm line-clamp-1">
-                                            {item.name}
-                                          </div>
-                                          <div className="text-xs text-gray-500 mt-0.5">
-                                            Código: {item.id}
-                                          </div>
+                                      <div className="flex-1 min-w-0">
+                                        <div className="font-medium text-white text-xs line-clamp-2">
+                                          {item.name}
                                         </div>
-                                        <div className="text-right pl-3">
-                                          <div className="font-bold text-orange-400 text-base">
-                                            {formatCurrency(item.price || 0)}
-                                          </div>
+                                        <div className="text-[10px] text-gray-500 mt-0.5">
+                                          Cód: {item.id}
+                                        </div>
+                                        <div className="font-bold text-orange-400 text-sm mt-1">
+                                          {formatCurrency(item.price || 0)}
                                         </div>
                                       </div>
                                     </CardContent>
