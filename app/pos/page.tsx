@@ -3915,8 +3915,9 @@ export default function POSPage() {
                   {/* Total Geral */}
                   <div className="border-t border-gray-600 pt-2 mt-1">
                     <div className="flex justify-between items-center">
-                      <span className="text-white text-sm font-bold">
-                        💰 Total
+                      <span className="text-white text-sm font-bold flex items-center gap-1">
+                        <DollarSign className="h-3 w-3 text-orange-400" />
+                        Total
                       </span>
                       <motion.span 
                         className="text-lg font-bold text-orange-500"
