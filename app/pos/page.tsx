@@ -2959,8 +2959,8 @@ export default function POSPage() {
                                       </div>
                                     </div>
                                     
-                                    {/* Horário - largura fixa, sempre na mesma posição */}
-                                    <div className="w-20 flex items-center justify-center flex-shrink-0">
+                                    {/* Horário - centralizado com flex */}
+                                    <div className="flex-1 flex items-center justify-center">
                                       {(item.status === 'delivered' || item.status === 'cancelled') ? (
                                         <div className={`${item.status === 'delivered' ? 'text-green-400' : 'text-red-400'} flex flex-col items-center justify-center`}>
                                           <Clock className="h-3 w-3 mb-1" />
@@ -2980,7 +2980,7 @@ export default function POSPage() {
                                           </div>
                                         </div>
                                       ) : (
-                                        <div className="w-20"></div>
+                                        <div></div>
                                       )}
                                     </div>
                                     
