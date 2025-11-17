@@ -595,10 +595,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   bottom: 0;
 }
 
-.bottom-2 {
-  bottom: .5rem;
-}
-
 .bottom-full {
   bottom: 100%;
 }
@@ -1667,6 +1663,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .rounded-xl {
   border-radius: .75rem;
+}
+
+.rounded-b-md {
+  border-bottom-right-radius: calc(var(--radius)  - 2px);
+  border-bottom-left-radius: calc(var(--radius)  - 2px);
 }
 
 .rounded-t-lg {

@@ -2865,28 +2865,28 @@ export default function POSPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 pt-0 relative">
-                    {/* Botões de Scroll */}
+                    {/* Botões de Scroll integrados à barra */}
                     {cart.length > 0 && (
-                      <div className="absolute right-2 bottom-2 z-10 flex flex-col gap-2">
+                      <>
                         {scrollPosition !== 'top' && (
-                          <Button
+                          <button
                             onClick={scrollToTop}
-                            size="icon"
-                            className="h-8 w-8 rounded-full bg-gray-600 hover:bg-gray-700"
+                            className="absolute right-3 top-0 z-10 bg-gray-700 hover:bg-gray-600 text-white px-2 py-1 rounded-b-md transition-colors"
+                            title="Ir para o início"
                           >
                             <ChevronUp className="h-4 w-4" />
-                          </Button>
+                          </button>
                         )}
                         {scrollPosition !== 'bottom' && (
-                          <Button
+                          <button
                             onClick={scrollToBottom}
-                            size="icon"
-                            className="h-8 w-8 rounded-full bg-orange-600 hover:bg-orange-700"
+                            className="absolute right-3 bottom-0 z-10 bg-orange-600 hover:bg-orange-500 text-white px-2 py-1 rounded-t-md transition-colors"
+                            title="Ir para o final"
                           >
                             <ChevronDown className="h-4 w-4" />
-                          </Button>
+                          </button>
                         )}
-                      </div>
+                      </>
                     )}
                     
                     <ScrollArea ref={cartScrollRef} className="h-[400px] pr-10" style={{ willChange: 'scroll-position' }}>
