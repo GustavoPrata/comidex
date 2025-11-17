@@ -256,27 +256,7 @@ export default function POSPage() {
   const previousCartLengthRef = useRef(0);
   
   
-  // Função para rolar para o topo
-  const scrollToTop = () => {
-    const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-    if (scrollContainer) {
-      scrollContainer.scrollTo({
-        top: 0,
-        behavior: 'auto' // Mudado de 'smooth' para 'auto' para melhor performance
-      });
-    }
-  };
-  
-  // Função para rolar para o final
-  const scrollToBottom = () => {
-    const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-    if (scrollContainer) {
-      scrollContainer.scrollTo({
-        top: scrollContainer.scrollHeight,
-        behavior: 'auto' // Mudado de 'smooth' para 'auto' para melhor performance
-      });
-    }
-  };
+  // Removidas funções de scroll automático - os itens mais recentes aparecem em cima
   
   // Buscar a taxa de serviço do restaurante
   useEffect(() => {
@@ -329,29 +309,6 @@ export default function POSPage() {
   }, [cart.length]); // Adicionado cart.length para recalcular quando mudar
   
   
-  // Auto scroll para o final sempre que houver mudanças no carrinho ou ao abrir
-  useEffect(() => {
-    // Aguardar para garantir que a aba cart esteja renderizada
-    setTimeout(() => {
-      // Sempre fazer scroll para o final
-      if (cartScrollRef.current) {
-        scrollToBottom();
-        // Forçar atualização da posição do scroll
-        setTimeout(() => {
-          const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-          if (scrollContainer) {
-            const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
-            const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
-            if (isAtBottom) {
-              setScrollPosition('bottom');
-            }
-          }
-        }, 100);
-      }
-    }, 300); // Tempo suficiente para garantir renderização
-    previousCartLengthRef.current = cart.length;
-  }, [cart.length]); // Sempre que o carrinho mudar
-  
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
   const [groupedItems, setGroupedItems] = useState<any[]>([]);
@@ -366,16 +323,6 @@ export default function POSPage() {
   // Estado da aba ativa
   const [activeTab, setActiveTab] = useState<string>('cart');
   
-  // Scroll para o final quando a aba cart for ativada
-  useEffect(() => {
-    if (activeTab === 'cart' && cart.length > 0) {
-      setTimeout(() => {
-        if (cartScrollRef.current) {
-          scrollToBottom();
-        }
-      }, 100);
-    }
-  }, [activeTab, cart.length]);
   
   // Estados do modal de rodízio
   const [rodizioModal, setRodizioModal] = useState(false);
@@ -807,12 +754,7 @@ export default function POSPage() {
         }) || [];
         
         setCart(cartItems);
-        // Scroll para o final após carregar os itens
-        setTimeout(() => {
-          if (cartScrollRef.current) {
-            scrollToBottom();
-          }
-        }, 100);
+        // Removido scroll automático - itens recentes ficam no topo
       } else {
         setCart([]);
         setCurrentOrder(null);
@@ -3521,13 +3463,13 @@ export default function POSPage() {
                             </div>
                           ) : (
                             <AnimatePresence>
-                              {filteredCart.map((item, index) => (
+                              {filteredCart.slice().reverse().map((item, index) => (
                             <motion.div
                               key={`${item.item_id}-${index}`}
-                              initial={{ opacity: 0, x: -50 }}
-                              animate={{ opacity: 1, x: 0 }}
+                              initial={{ opacity: 0, y: -20 }}
+                              animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, x: 50 }}
-                              transition={{ duration: 0.2 }}
+                              transition={{ duration: 0.15 }}
                               className="mb-2"
                             >
                               <Card className={`backdrop-blur transition-all ${
@@ -3735,26 +3677,6 @@ export default function POSPage() {
                       )
                     })()}
                     </ScrollArea>
-                    
-                    {/* Indicador elegante de mais itens */}
-                    {cart.length > 8 && scrollPosition !== 'bottom' && (
-                      <div className="absolute bottom-0 left-0 right-4 h-16 pointer-events-none z-10">
-                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent"></div>
-                        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 pointer-events-auto text-orange-400 hover:text-orange-300 transition-all duration-300 flex items-center gap-2 cursor-pointer"
-                             onClick={() => {
-                               const scrollContainer = cartScrollRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-                               if (scrollContainer) {
-                                 scrollContainer.scrollTo({
-                                   top: scrollContainer.scrollHeight,
-                                   behavior: 'smooth'
-                                 });
-                               }
-                             }}>
-                          <ChevronDown className="h-5 w-5 animate-pulse" />
-                          <span className="text-[10px] uppercase tracking-wider font-medium">mais itens</span>
-                        </div>
-                      </div>
-                    )}
                   </div>
                   </CardContent>
                 </Card>
