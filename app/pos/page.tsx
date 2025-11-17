@@ -2930,18 +2930,18 @@ export default function POSPage() {
                                       )}
                                     </div>
                                     
-                                    {/* Nome e preço - largura fixa */}
-                                    <div className="w-48 min-w-0">
+                                    {/* Nome e preço - flex como era antes */}
+                                    <div className="flex-1">
                                       <div className="font-medium flex items-center">
                                         <span className={`${
                                           item.status === 'cancelled' 
                                             ? 'text-red-500 line-through decoration-red-600 decoration-2' 
                                             : 'text-white'
-                                        } truncate`}>
+                                        }`}>
                                           {item.item?.name || `Produto ${item.item_id}`}
                                         </span>
                                         {item.status === 'cancelled' && (
-                                          <span className="text-xs text-red-600 font-bold ml-2 uppercase flex-shrink-0">
+                                          <span className="text-xs text-red-600 font-bold ml-2 uppercase">
                                             CANCELADO
                                           </span>
                                         )}
@@ -2960,7 +2960,7 @@ export default function POSPage() {
                                     </div>
                                     
                                     {/* Horário - largura fixa, sempre na mesma posição */}
-                                    <div className="w-24 flex items-center justify-center flex-shrink-0">
+                                    <div className="w-20 flex items-center justify-center flex-shrink-0">
                                       {(item.status === 'delivered' || item.status === 'cancelled') ? (
                                         <div className={`${item.status === 'delivered' ? 'text-green-400' : 'text-red-400'} flex flex-col items-center justify-center`}>
                                           <Clock className="h-3 w-3 mb-1" />
@@ -2980,7 +2980,7 @@ export default function POSPage() {
                                           </div>
                                         </div>
                                       ) : (
-                                        <div className="w-full"></div>
+                                        <div className="w-20"></div>
                                       )}
                                     </div>
                                     
