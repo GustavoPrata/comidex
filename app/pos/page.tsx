@@ -2952,7 +2952,7 @@ export default function POSPage() {
                                       }`}>
                                         {formatCurrency(item.unit_price)} × {
                                           item.cancelledQuantity && item.cancelledQuantity > 0
-                                            ? `${item.quantity - item.cancelledQuantity} (${item.cancelledQuantity} cancelado)`
+                                            ? item.quantity - item.cancelledQuantity
                                             : item.quantity
                                         }
                                       </div>
@@ -3492,9 +3492,6 @@ export default function POSPage() {
                                     ? `${item.quantity - item.cancelledQuantity}`
                                     : item.quantity
                                 }
-                                {item.cancelledQuantity && item.cancelledQuantity > 0 && (
-                                  <span className="text-red-400"> ({item.cancelledQuantity} cancelado)</span>
-                                )}
                               </div>
                             </div>
                             <div className="text-right">
