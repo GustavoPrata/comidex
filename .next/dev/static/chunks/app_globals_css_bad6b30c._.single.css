@@ -748,6 +748,13 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   overflow: hidden;
 }
 
+.line-clamp-1 {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
 .block {
   display: block;
 }
@@ -930,6 +937,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-\[60px\] {
+  height: 60px;
 }
 
 .max-h-32 {
@@ -2592,6 +2603,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .pt-4 {
   padding-top: 1rem;
+}
+
+.pl-3 {
+  padding-left: .75rem;
 }
 
 .text-left {
