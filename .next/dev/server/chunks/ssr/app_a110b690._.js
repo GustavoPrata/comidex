@@ -14,7 +14,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/label.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/scroll-area.tsx [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/credit-card.js [app-ssr] (ecmascript) <export default as CreditCard>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$smartphone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Smartphone$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/smartphone.js [app-ssr] (ecmascript) <export default as Smartphone>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$check$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Check$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/check.js [app-ssr] (ecmascript) <export default as Check>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-ssr] (ecmascript) <export default as X>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$trash$2d$2$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Trash2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/trash-2.js [app-ssr] (ecmascript) <export default as Trash2>");
@@ -53,18 +52,34 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
     const perPersonAmount = totalWithDiscount / splitCount;
     // Função para processar entrada da calculadora
     const handleCalculatorInput = (value)=>{
-        if (value === 'C') {
+        if (value === 'C' || value === 'Escape') {
             setCalculatorDisplay('0');
-        } else if (value === '⌫') {
+        } else if (value === '⌫' || value === 'Backspace') {
             setCalculatorDisplay((prev)=>prev.length > 1 ? prev.slice(0, -1) : '0');
-        } else if (value === '.') {
+        } else if (value === '.' || value === ',') {
             if (!calculatorDisplay.includes('.')) {
                 setCalculatorDisplay((prev)=>prev + '.');
             }
-        } else {
+        } else if (value === 'Enter') {
+            handleAddPayment();
+        } else if (/^[0-9]$/.test(value)) {
             setCalculatorDisplay((prev)=>prev === '0' ? value : prev + value);
         }
     };
+    // Adicionar suporte ao teclado numpad
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
+        const handleKeyPress = (e)=>{
+            // Aceitar números do numpad e do teclado principal
+            if (e.key >= '0' && e.key <= '9' || e.key === '.' || e.key === ',' || e.key === 'Enter' || e.key === 'Escape' || e.key === 'Backspace') {
+                e.preventDefault();
+                handleCalculatorInput(e.key);
+            }
+        };
+        window.addEventListener('keydown', handleKeyPress);
+        return ()=>window.removeEventListener('keydown', handleKeyPress);
+    }, [
+        calculatorDisplay
+    ]);
     // Função para adicionar pagamento
     const handleAddPayment = ()=>{
         const amount = parseFloat(calculatorDisplay) || 0;
@@ -87,6 +102,46 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot$2d$toast$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"].success('Pagamento completo! Clique em Finalizar.');
         }
     };
+    // Componente do ícone PIX
+    const PixIcon = ({ className })=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+            className: className,
+            viewBox: "0 0 24 24",
+            fill: "currentColor",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                    d: "M7.06 2.82L2.82 7.06a1.7 1.7 0 0 0 0 2.4L7.06 13.7l1.69-1.68L6.58 9.85h3.85v-1.7H6.58l2.17-2.17L7.06 2.82z"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                    lineNumber: 160,
+                    columnNumber: 7
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                    d: "M16.94 10.3l-1.69 1.68 2.17 2.17h-3.85v1.7h3.85l-2.17 2.17 1.69 1.68 4.24-4.24a1.7 1.7 0 0 0 0-2.4L16.94 10.3z"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                    lineNumber: 161,
+                    columnNumber: 7
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                    d: "M13.7 7.06l1.68-1.69L13.21 3.2a1.7 1.7 0 0 0-2.4 0L8.64 5.37l1.69 1.69L12.5 4.89l2.17 2.17z"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                    lineNumber: 162,
+                    columnNumber: 7
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                    d: "M10.3 16.94l-1.68 1.69 2.17 2.17a1.7 1.7 0 0 0 2.4 0l2.17-2.17-1.69-1.69-2.17 2.17-2.17-2.17z"
+                }, void 0, false, {
+                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                    lineNumber: 163,
+                    columnNumber: 7
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+            lineNumber: 159,
+            columnNumber: 5
+        }, this);
     const paymentMethods = [
         {
             id: 'cash',
@@ -109,8 +164,8 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
         {
             id: 'pix',
             name: 'PIX',
-            icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$smartphone$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Smartphone$3e$__["Smartphone"],
-            color: 'bg-orange-500'
+            icon: PixIcon,
+            color: 'bg-cyan-500'
         }
     ];
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -128,7 +183,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                     className: "h-5 w-5 text-white"
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 151,
+                                    lineNumber: 180,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -139,13 +194,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 152,
+                                    lineNumber: 181,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                            lineNumber: 150,
+                            lineNumber: 179,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -159,7 +214,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: "Total"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 158,
+                                            lineNumber: 187,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -167,13 +222,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: formatCurrency(totalWithDiscount)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 159,
+                                            lineNumber: 188,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 157,
+                                    lineNumber: 186,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -184,7 +239,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: "Pago"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 162,
+                                            lineNumber: 191,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -192,13 +247,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: formatCurrency(totalPaid)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 163,
+                                            lineNumber: 192,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 161,
+                                    lineNumber: 190,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -209,7 +264,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: "Restante"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 166,
+                                            lineNumber: 195,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -217,30 +272,30 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: formatCurrency(remaining)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 167,
+                                            lineNumber: 196,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 165,
+                                    lineNumber: 194,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                            lineNumber: 156,
+                            lineNumber: 185,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                    lineNumber: 149,
+                    lineNumber: 178,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                lineNumber: 148,
+                lineNumber: 177,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -263,7 +318,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                 children: "Itens da Conta"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 181,
+                                                lineNumber: 210,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -274,18 +329,18 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 182,
+                                                lineNumber: 211,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 180,
+                                        lineNumber: 209,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 179,
+                                    lineNumber: 208,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -308,7 +363,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                     children: item.item?.name || 'Produto'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                    lineNumber: 198,
+                                                                    lineNumber: 227,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -322,19 +377,19 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                             children: "(Cancelado)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                            lineNumber: 206,
+                                                                            lineNumber: 235,
                                                                             columnNumber: 29
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                    lineNumber: 203,
+                                                                    lineNumber: 232,
                                                                     columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                            lineNumber: 197,
+                                                            lineNumber: 226,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -345,7 +400,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                     children: formatCurrency(item.total_price, true)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                    lineNumber: 211,
+                                                                    lineNumber: 240,
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 item.launched_at && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -359,45 +414,45 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                     })()
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                    lineNumber: 217,
+                                                                    lineNumber: 246,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                            lineNumber: 210,
+                                                            lineNumber: 239,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, idx, true, {
                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                    lineNumber: 189,
+                                                    lineNumber: 218,
                                                     columnNumber: 21
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 187,
+                                            lineNumber: 216,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 186,
+                                        lineNumber: 215,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 185,
+                                    lineNumber: 214,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                            lineNumber: 178,
+                            lineNumber: 207,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                        lineNumber: 177,
+                        lineNumber: 206,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -417,7 +472,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: "Desconto"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 244,
+                                                        lineNumber: 273,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -430,7 +485,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                 children: "%"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 246,
+                                                                lineNumber: 275,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -440,7 +495,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                 children: "R$"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 256,
+                                                                lineNumber: 285,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -451,13 +506,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                 placeholder: "0"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 266,
+                                                                lineNumber: 295,
                                                                 columnNumber: 21
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 245,
+                                                        lineNumber: 274,
                                                         columnNumber: 19
                                                     }, this),
                                                     discountValue > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -468,13 +523,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 275,
+                                                        lineNumber: 304,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 243,
+                                                lineNumber: 272,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -484,7 +539,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: "Dividir em"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 287,
+                                                        lineNumber: 316,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -498,7 +553,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                 className: "h-7 w-20 bg-gray-700 border-gray-600 text-white text-sm"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 289,
+                                                                lineNumber: 318,
                                                                 columnNumber: 21
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -506,7 +561,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                 children: "pessoas"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 296,
+                                                                lineNumber: 325,
                                                                 columnNumber: 21
                                                             }, this),
                                                             splitCount > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -517,35 +572,35 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 298,
+                                                                lineNumber: 327,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 288,
+                                                        lineNumber: 317,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 286,
+                                                lineNumber: 315,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 241,
+                                        lineNumber: 270,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 240,
+                                    lineNumber: 269,
                                     columnNumber: 13
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                lineNumber: 239,
+                                lineNumber: 268,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -558,12 +613,12 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: "Calculadora"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 311,
+                                            lineNumber: 340,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 310,
+                                        lineNumber: 339,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -579,52 +634,23 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                    lineNumber: 316,
+                                                    lineNumber: 345,
                                                     columnNumber: 17
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 315,
+                                                lineNumber: 344,
                                                 columnNumber: 15
                                             }, this),
-                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "grid grid-cols-3 gap-1 mb-2",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                                        size: "sm",
-                                                        onClick: ()=>setCalculatorDisplay(remaining.toFixed(2)),
-                                                        className: "h-7 text-xs bg-gray-700 hover:bg-gray-600",
-                                                        disabled: remaining <= 0,
-                                                        children: "Restante"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 323,
-                                                        columnNumber: 17
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                                        size: "sm",
-                                                        onClick: ()=>setCalculatorDisplay('50.00'),
-                                                        className: "h-7 text-xs bg-gray-700 hover:bg-gray-600",
-                                                        children: "R$ 50"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 331,
-                                                        columnNumber: 17
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
-                                                        size: "sm",
-                                                        onClick: ()=>setCalculatorDisplay('100.00'),
-                                                        className: "h-7 text-xs bg-gray-700 hover:bg-gray-600",
-                                                        children: "R$ 100"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 338,
-                                                        columnNumber: 17
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
+                                                size: "sm",
+                                                onClick: ()=>setCalculatorDisplay(remaining.toFixed(2)),
+                                                className: "w-full h-8 mb-2 text-xs bg-orange-600 hover:bg-orange-700",
+                                                disabled: remaining <= 0,
+                                                children: "Preencher Valor Restante"
+                                            }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 322,
+                                                lineNumber: 351,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -649,12 +675,12 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: btn
                                                     }, btn, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 350,
+                                                        lineNumber: 363,
                                                         columnNumber: 19
                                                     }, this))
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 348,
+                                                lineNumber: 361,
                                                 columnNumber: 15
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -664,19 +690,19 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                 children: "Limpar"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 365,
+                                                lineNumber: 378,
                                                 columnNumber: 15
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 313,
+                                        lineNumber: 342,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                lineNumber: 309,
+                                lineNumber: 338,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -692,7 +718,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 391,
+                                                lineNumber: 404,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -700,19 +726,19 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                 children: method.name
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 392,
+                                                lineNumber: 405,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, method.id, true, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 380,
+                                        lineNumber: 393,
                                         columnNumber: 17
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                lineNumber: 376,
+                                lineNumber: 389,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -724,20 +750,20 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                         className: "h-4 w-4 mr-1"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 404,
+                                        lineNumber: 417,
                                         columnNumber: 13
                                     }, this),
                                     "Adicionar Pagamento"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                lineNumber: 399,
+                                lineNumber: 412,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                        lineNumber: 237,
+                        lineNumber: 266,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -753,12 +779,12 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             children: "Pagamentos"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 414,
+                                            lineNumber: 427,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 413,
+                                        lineNumber: 426,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -774,7 +800,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                             className: "h-8 w-8 mx-auto mb-2 text-gray-600"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                            lineNumber: 421,
+                                                            lineNumber: 434,
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -782,13 +808,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                             children: "Nenhum pagamento"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                            lineNumber: 422,
+                                                            lineNumber: 435,
                                                             columnNumber: 23
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                    lineNumber: 420,
+                                                    lineNumber: 433,
                                                     columnNumber: 21
                                                 }, this) : payments.map((payment)=>{
                                                     const method = paymentMethods.find((m)=>m.id === payment.method);
@@ -805,12 +831,12 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                             className: "h-3 w-3 text-white"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                            lineNumber: 436,
+                                                                            lineNumber: 449,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                        lineNumber: 435,
+                                                                        lineNumber: 448,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -820,7 +846,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                                 children: method?.name
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                                lineNumber: 439,
+                                                                                lineNumber: 452,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -828,19 +854,19 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                                 children: formatCurrency(payment.amount)
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                                lineNumber: 440,
+                                                                                lineNumber: 453,
                                                                                 columnNumber: 31
                                                                             }, this)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                        lineNumber: 438,
+                                                                        lineNumber: 451,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 434,
+                                                                lineNumber: 447,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -852,40 +878,40 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                    lineNumber: 451,
+                                                                    lineNumber: 464,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                lineNumber: 445,
+                                                                lineNumber: 458,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, payment.id, true, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 430,
+                                                        lineNumber: 443,
                                                         columnNumber: 25
                                                     }, this);
                                                 })
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 418,
+                                                lineNumber: 431,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 417,
+                                            lineNumber: 430,
                                             columnNumber: 15
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 416,
+                                        lineNumber: 429,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                lineNumber: 412,
+                                lineNumber: 425,
                                 columnNumber: 11
                             }, this),
                             payments.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
@@ -903,7 +929,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: "Total Pago"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 468,
+                                                        lineNumber: 481,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -911,13 +937,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: formatCurrency(totalPaid)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 469,
+                                                        lineNumber: 482,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 467,
+                                                lineNumber: 480,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -928,7 +954,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: "Restante"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 472,
+                                                        lineNumber: 485,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -936,13 +962,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: formatCurrency(remaining)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 473,
+                                                        lineNumber: 486,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 471,
+                                                lineNumber: 484,
                                                 columnNumber: 19
                                             }, this),
                                             remaining <= 0 && totalPaid > totalWithDiscount && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -953,7 +979,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: "Troco"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 482,
+                                                        lineNumber: 495,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -961,29 +987,29 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         children: formatCurrency(totalPaid - totalWithDiscount)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                        lineNumber: 483,
+                                                        lineNumber: 496,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                lineNumber: 481,
+                                                lineNumber: 494,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                        lineNumber: 466,
+                                        lineNumber: 479,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                    lineNumber: 465,
+                                    lineNumber: 478,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                lineNumber: 464,
+                                lineNumber: 477,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -998,7 +1024,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 508,
+                                            lineNumber: 521,
                                             columnNumber: 17
                                         }, this),
                                         "Falta ",
@@ -1010,7 +1036,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                             className: "h-5 w-5 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                            lineNumber: 513,
+                                            lineNumber: 526,
                                             columnNumber: 17
                                         }, this),
                                         "Finalizar Conta"
@@ -1018,25 +1044,25 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                 }, void 0, true)
                             }, void 0, false, {
                                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                lineNumber: 494,
+                                lineNumber: 507,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                        lineNumber: 410,
+                        lineNumber: 423,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                lineNumber: 174,
+                lineNumber: 203,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/PaymentWorkspace.tsx",
-        lineNumber: 146,
+        lineNumber: 175,
         columnNumber: 5
     }, this);
 }

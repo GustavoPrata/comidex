@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -95,18 +95,37 @@ export default function PaymentWorkspace({
 
   // Função para processar entrada da calculadora
   const handleCalculatorInput = (value: string) => {
-    if (value === 'C') {
+    if (value === 'C' || value === 'Escape') {
       setCalculatorDisplay('0');
-    } else if (value === '⌫') {
+    } else if (value === '⌫' || value === 'Backspace') {
       setCalculatorDisplay(prev => prev.length > 1 ? prev.slice(0, -1) : '0');
-    } else if (value === '.') {
+    } else if (value === '.' || value === ',') {
       if (!calculatorDisplay.includes('.')) {
         setCalculatorDisplay(prev => prev + '.');
       }
-    } else {
+    } else if (value === 'Enter') {
+      handleAddPayment();
+    } else if (/^[0-9]$/.test(value)) {
       setCalculatorDisplay(prev => prev === '0' ? value : prev + value);
     }
   };
+
+  // Adicionar suporte ao teclado numpad
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Aceitar números do numpad e do teclado principal
+      if ((e.key >= '0' && e.key <= '9') || 
+          e.key === '.' || e.key === ',' || 
+          e.key === 'Enter' || e.key === 'Escape' || 
+          e.key === 'Backspace') {
+        e.preventDefault();
+        handleCalculatorInput(e.key);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [calculatorDisplay]);
 
   // Função para adicionar pagamento
   const handleAddPayment = () => {
@@ -135,11 +154,21 @@ export default function PaymentWorkspace({
     }
   };
 
+  // Componente do ícone PIX
+  const PixIcon = ({ className }: { className?: string }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M7.06 2.82L2.82 7.06a1.7 1.7 0 0 0 0 2.4L7.06 13.7l1.69-1.68L6.58 9.85h3.85v-1.7H6.58l2.17-2.17L7.06 2.82z"/>
+      <path d="M16.94 10.3l-1.69 1.68 2.17 2.17h-3.85v1.7h3.85l-2.17 2.17 1.69 1.68 4.24-4.24a1.7 1.7 0 0 0 0-2.4L16.94 10.3z"/>
+      <path d="M13.7 7.06l1.68-1.69L13.21 3.2a1.7 1.7 0 0 0-2.4 0L8.64 5.37l1.69 1.69L12.5 4.89l2.17 2.17z"/>
+      <path d="M10.3 16.94l-1.68 1.69 2.17 2.17a1.7 1.7 0 0 0 2.4 0l2.17-2.17-1.69-1.69-2.17 2.17-2.17-2.17z"/>
+    </svg>
+  );
+
   const paymentMethods = [
     { id: 'cash', name: 'Dinheiro', icon: Banknote, color: 'bg-green-500' },
     { id: 'credit', name: 'Crédito', icon: CreditCard, color: 'bg-blue-500' },
     { id: 'debit', name: 'Débito', icon: CreditCard, color: 'bg-purple-500' },
-    { id: 'pix', name: 'PIX', icon: Smartphone, color: 'bg-orange-500' }
+    { id: 'pix', name: 'PIX', icon: PixIcon, color: 'bg-cyan-500' }
   ];
 
   return (
@@ -318,31 +347,15 @@ export default function PaymentWorkspace({
                 </p>
               </div>
 
-              {/* Valores Rápidos */}
-              <div className="grid grid-cols-3 gap-1 mb-2">
-                <Button
-                  size="sm"
-                  onClick={() => setCalculatorDisplay(remaining.toFixed(2))}
-                  className="h-7 text-xs bg-gray-700 hover:bg-gray-600"
-                  disabled={remaining <= 0}
-                >
-                  Restante
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setCalculatorDisplay('50.00')}
-                  className="h-7 text-xs bg-gray-700 hover:bg-gray-600"
-                >
-                  R$ 50
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => setCalculatorDisplay('100.00')}
-                  className="h-7 text-xs bg-gray-700 hover:bg-gray-600"
-                >
-                  R$ 100
-                </Button>
-              </div>
+              {/* Valor Restante */}
+              <Button
+                size="sm"
+                onClick={() => setCalculatorDisplay(remaining.toFixed(2))}
+                className="w-full h-8 mb-2 text-xs bg-orange-600 hover:bg-orange-700"
+                disabled={remaining <= 0}
+              >
+                Preencher Valor Restante
+              </Button>
 
               {/* Teclado Numérico */}
               <div className="grid grid-cols-3 gap-1">

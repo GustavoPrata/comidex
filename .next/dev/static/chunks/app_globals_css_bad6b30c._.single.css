@@ -1919,6 +1919,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: currentColor;
 }
 
+.bg-cyan-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(6 182 212 / var(--tw-bg-opacity, 1));
+}
+
 .bg-cyan-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(8 145 178 / var(--tw-bg-opacity, 1));
