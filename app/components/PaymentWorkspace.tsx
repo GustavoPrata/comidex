@@ -110,16 +110,27 @@ export default function PaymentWorkspace({
     }
   };
 
-  // Adicionar suporte ao teclado numpad
+  // Adicionar suporte ao teclado numpad - apenas quando não há input focado
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
-      // Aceitar números do numpad e do teclado principal
-      if ((e.key >= '0' && e.key <= '9') || 
-          e.key === '.' || e.key === ',' || 
-          e.key === 'Enter' || e.key === 'Escape' || 
-          e.key === 'Backspace') {
-        e.preventDefault();
-        handleCalculatorInput(e.key);
+      // Verificar se o elemento ativo é um input, textarea ou contenteditable
+      const activeElement = document.activeElement as HTMLElement;
+      const isInputFocused = activeElement && (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.contentEditable === 'true'
+      );
+      
+      // Só processar teclas se não houver input focado
+      if (!isInputFocused) {
+        // Aceitar números do numpad e do teclado principal
+        if ((e.key >= '0' && e.key <= '9') || 
+            e.key === '.' || e.key === ',' || 
+            e.key === 'Enter' || e.key === 'Escape' || 
+            e.key === 'Backspace') {
+          e.preventDefault();
+          handleCalculatorInput(e.key);
+        }
       }
     };
 
@@ -156,11 +167,8 @@ export default function PaymentWorkspace({
 
   // Componente do ícone PIX
   const PixIcon = ({ className }: { className?: string }) => (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M7.06 2.82L2.82 7.06a1.7 1.7 0 0 0 0 2.4L7.06 13.7l1.69-1.68L6.58 9.85h3.85v-1.7H6.58l2.17-2.17L7.06 2.82z"/>
-      <path d="M16.94 10.3l-1.69 1.68 2.17 2.17h-3.85v1.7h3.85l-2.17 2.17 1.69 1.68 4.24-4.24a1.7 1.7 0 0 0 0-2.4L16.94 10.3z"/>
-      <path d="M13.7 7.06l1.68-1.69L13.21 3.2a1.7 1.7 0 0 0-2.4 0L8.64 5.37l1.69 1.69L12.5 4.89l2.17 2.17z"/>
-      <path d="M10.3 16.94l-1.68 1.69 2.17 2.17a1.7 1.7 0 0 0 2.4 0l2.17-2.17-1.69-1.69-2.17 2.17-2.17-2.17z"/>
+    <svg className={className} viewBox="0 0 512 512" fill="currentColor">
+      <path d="M242.4 292.5C247.8 287.1 257.1 287.1 262.5 292.5L339.5 369.5C353.7 383.7 372.6 391.5 392.6 391.5H407.7L310.6 488.6C280.3 518.9 231.1 518.9 200.8 488.6L103.3 391.1H112.6C132.6 391.1 151.5 383.3 165.7 369.1L242.4 292.5zM262.5 218.9C256.1 224.4 247.9 224.5 242.4 218.9L165.7 142.2C151.5 127.1 132.6 120.2 112.6 120.2H103.3L200.7 22.76C231.1 -7.586 280.3 -7.586 310.6 22.76L407.8 119.9H392.6C372.6 119.9 353.7 127.7 339.5 141.9L262.5 218.9zM112.6 142.7C126.4 142.7 139.1 148.3 149.7 158.1L226.4 234.8C233.6 241.1 243 245.6 252.5 245.6C261.9 245.6 271.3 241.1 278.5 234.8L355.5 157.8C365.3 148.1 378.2 142.5 392 142.5H430.3L488.6 200.8C518.9 231.1 518.9 280.3 488.6 310.6L430.3 368.9H392C378.2 368.9 365.3 363.3 355.5 353.5L278.5 276.5C264.6 262.6 240.3 262.6 226.4 276.6L149.7 353.2C139.1 363 126.4 368.6 112.6 368.6H80.78L22.76 310.6C-7.586 280.3 -7.586 231.1 22.76 200.8L80.78 142.7H112.6z"/>
     </svg>
   );
 
@@ -395,14 +403,14 @@ export default function PaymentWorkspace({
                   size="sm"
                   onClick={() => setSelectedPaymentMethod(method.id)}
                   className={cn(
-                    "h-10 flex flex-col gap-0 py-1",
+                    "h-12 flex items-center justify-start gap-2 px-3",
                     selectedPaymentMethod === method.id
                       ? method.color
                       : "bg-gray-700 hover:bg-gray-600"
                   )}
                 >
-                  <Icon className="h-4 w-4" />
-                  <span className="text-xs">{method.name}</span>
+                  <Icon className="h-6 w-6" />
+                  <span className="text-sm font-medium">{method.name}</span>
                 </Button>
               );
             })}
