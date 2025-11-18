@@ -353,13 +353,26 @@ export default function PaymentWorkspace({
                   ).map((item, idx) => (
                     <div 
                       key={idx} 
-                      className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
+                      className={`flex items-center p-2 rounded-lg transition-colors ${
                         item.quantity === 0 && item.cancelledQuantity > 0
                           ? 'bg-gray-700/50 hover:bg-gray-700/70 opacity-75' 
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
-                      <div className="flex-1 px-2">
+                      {/* Foto do produto */}
+                      <div className="w-10 h-10 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
+                        <img
+                          src={item.item?.image || '/fotos/placeholder/placeholder.png'}
+                          alt={item.item?.name || ''}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.src = '/fotos/placeholder/placeholder.png';
+                          }}
+                        />
+                      </div>
+                      
+                      <div className="flex-1">
                         <div className={`font-medium text-sm ${
                           item.quantity === 0 && item.cancelledQuantity > 0 ? 'text-red-400 line-through' : 'text-white'
                         }`}>
