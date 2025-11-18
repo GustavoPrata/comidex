@@ -81,7 +81,8 @@ import {
   Send,
   CheckCircle2,
   XCircle,
-  ArrowRight
+  ArrowRight,
+  RotateCw
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -4988,6 +4989,35 @@ export default function POSPage() {
                     </>
                   )}
                 </Button>
+                
+                {/* Botões de Ação */}
+                <div className="space-y-2">
+                  {/* Botão Reabrir Conta */}
+                  <Button
+                    onClick={reopenTable}
+                    disabled={loading}
+                    className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                  >
+                    <RotateCw className="mr-2 h-4 w-4" />
+                    Reabrir Conta
+                  </Button>
+                  
+                  {/* Botão Voltar para Mesas */}
+                  <Button
+                    onClick={() => {
+                      setSelectedTable(null);
+                      setCart([]);
+                      setPayments([]);
+                      setDiscountValue(0);
+                      setSplitCount(1);
+                      setPaymentAmount(0);
+                    }}
+                    className="w-full h-12 bg-gray-700 hover:bg-gray-600 text-white font-semibold"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Voltar para Mesas
+                  </Button>
+                </div>
               </div>
             </div>
           </DialogContent>
