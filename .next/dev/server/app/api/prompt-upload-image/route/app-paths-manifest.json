@@ -1,0 +1,3 @@
+{
+  "/api/prompt-upload-image/route": "app/api/prompt-upload-image/route.js"
+}

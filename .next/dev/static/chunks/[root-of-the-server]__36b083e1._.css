@@ -866,6 +866,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   display: none;
 }
 
+.aspect-square {
+  aspect-ratio: 1;
+}
+
 .h-0 {
   height: 0;
 }
@@ -2835,6 +2839,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   font-weight: 700;
 }
 
+.font-light {
+  font-weight: 300;
+}
+
 .font-medium {
   font-weight: 500;
 }
@@ -3677,6 +3685,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .hover\:bg-orange-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(255 237 213 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-orange-400:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(251 146 60 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-orange-50:hover {

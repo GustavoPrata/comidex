@@ -359,54 +359,162 @@ export default function PaymentWorkspace({
             </CardContent>
           </Card>
 
-          {/* Calculadora */}
-          <Card className="bg-gray-800 border-gray-700 flex-1">
-            <CardHeader className="py-2">
-              <CardTitle className="text-sm">Calculadora</CardTitle>
-            </CardHeader>
-            <CardContent className="py-2">
+          {/* Calculadora estilo Apple */}
+          <Card className="bg-black border-gray-800 flex-1 p-3">
+            <CardContent className="p-0">
               {/* Display */}
-              <div className="bg-black rounded p-2 mb-2">
-                <p className="text-xl font-mono text-green-400 text-right">
-                  R$ {calculatorDisplay}
-                </p>
+              <div className="bg-black rounded-lg p-4 mb-3">
+                <div className="text-right">
+                  <p className="text-gray-400 text-xs font-mono h-4">
+                    {/* Linha para mostrar cálculo se houver */}
+                  </p>
+                  <p className="text-white text-3xl font-light tracking-wide">
+                    {calculatorDisplay === '0' ? '0' : calculatorDisplay.replace('.', ',')}
+                  </p>
+                </div>
               </div>
 
-              {/* Valor Restante */}
-              <Button
-                size="sm"
-                onClick={() => setCalculatorDisplay(remaining.toFixed(2))}
-                className="w-full h-8 mb-2 text-xs bg-orange-600 hover:bg-orange-700"
-                disabled={remaining <= 0}
-              >
-                Preencher Valor Restante
-              </Button>
+              {/* Grid 5x4 de botões estilo Apple */}
+              <div className="grid grid-cols-4 gap-2">
+                {/* Primeira linha - Funções especiais e divisão */}
+                <Button
+                  onClick={() => handleCalculatorInput('Backspace')}
+                  className="aspect-square rounded-full bg-gray-600 hover:bg-gray-500 text-white text-lg font-light p-0"
+                >
+                  ⌫
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('C')}
+                  className="aspect-square rounded-full bg-gray-600 hover:bg-gray-500 text-white text-lg font-light p-0"
+                >
+                  AC
+                </Button>
+                <Button
+                  onClick={() => {/* Implementar porcentagem se necessário */}}
+                  className="aspect-square rounded-full bg-gray-600 hover:bg-gray-500 text-white text-lg font-light p-0"
+                  disabled
+                >
+                  %
+                </Button>
+                <Button
+                  onClick={() => {/* Implementar divisão se necessário */}}
+                  className="aspect-square rounded-full bg-orange-500 hover:bg-orange-400 text-white text-2xl font-light p-0"
+                  disabled
+                >
+                  ÷
+                </Button>
 
-              {/* Teclado Numérico */}
-              <div className="grid grid-cols-3 gap-1">
-                {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.', '⌫'].map((btn) => (
-                  <Button
-                    key={btn}
-                    size="sm"
-                    onClick={() => handleCalculatorInput(btn)}
-                    className={cn(
-                      "h-8 text-sm font-bold",
-                      btn === '⌫' ? "bg-red-600 hover:bg-red-700" : "bg-gray-700 hover:bg-gray-600"
-                    )}
-                  >
-                    {btn}
-                  </Button>
-                ))}
+                {/* Segunda linha - 7, 8, 9, × */}
+                <Button
+                  onClick={() => handleCalculatorInput('7')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  7
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('8')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  8
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('9')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  9
+                </Button>
+                <Button
+                  onClick={() => {/* Implementar multiplicação se necessário */}}
+                  className="aspect-square rounded-full bg-orange-500 hover:bg-orange-400 text-white text-2xl font-light p-0"
+                  disabled
+                >
+                  ×
+                </Button>
+
+                {/* Terceira linha - 4, 5, 6, - */}
+                <Button
+                  onClick={() => handleCalculatorInput('4')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  4
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('5')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  5
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('6')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  6
+                </Button>
+                <Button
+                  onClick={() => {/* Implementar subtração se necessário */}}
+                  className="aspect-square rounded-full bg-orange-500 hover:bg-orange-400 text-white text-2xl font-light p-0"
+                  disabled
+                >
+                  −
+                </Button>
+
+                {/* Quarta linha - 1, 2, 3, + */}
+                <Button
+                  onClick={() => handleCalculatorInput('1')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  1
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('2')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  2
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('3')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  3
+                </Button>
+                <Button
+                  onClick={() => setCalculatorDisplay(remaining.toFixed(2))}
+                  className="aspect-square rounded-full bg-orange-500 hover:bg-orange-400 text-white text-2xl font-light p-0"
+                  title="Preencher valor restante"
+                  disabled={remaining <= 0}
+                >
+                  +
+                </Button>
+
+                {/* Quinta linha - sinal, 0, vírgula, = */}
+                <Button
+                  onClick={() => {/* Implementar +/- se necessário */}}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                  disabled
+                >
+                  +/-
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput('0')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  0
+                </Button>
+                <Button
+                  onClick={() => handleCalculatorInput(',')}
+                  className="aspect-square rounded-full bg-gray-700 hover:bg-gray-600 text-white text-xl font-light p-0"
+                >
+                  ,
+                </Button>
+                <Button
+                  onClick={handleAddPayment}
+                  className="aspect-square rounded-full bg-orange-500 hover:bg-orange-400 text-white text-2xl font-light p-0"
+                  disabled={parseFloat(calculatorDisplay) <= 0 || remaining <= 0}
+                  title="Adicionar pagamento"
+                >
+                  =
+                </Button>
               </div>
-
-              {/* Limpar */}
-              <Button
-                size="sm"
-                onClick={() => handleCalculatorInput('C')}
-                className="w-full h-7 mt-1 bg-gray-700 hover:bg-gray-600 text-xs"
-              >
-                Limpar
-              </Button>
             </CardContent>
           </Card>
 
@@ -450,16 +558,6 @@ export default function PaymentWorkspace({
               );
             })}
           </div>
-
-          {/* Botão Adicionar Pagamento */}
-          <Button
-            onClick={handleAddPayment}
-            disabled={parseFloat(calculatorDisplay) <= 0 || remaining <= 0}
-            className="h-10 bg-green-600 hover:bg-green-700 font-bold"
-          >
-            <Check className="h-4 w-4 mr-1" />
-            Adicionar Pagamento
-          </Button>
         </div>
 
         {/* Coluna Direita - Histórico e Finalizar */}
