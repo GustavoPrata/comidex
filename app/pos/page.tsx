@@ -36,19 +36,16 @@ import {
 import { toast } from "sonner";
 import { 
   Home,
-  ShoppingCart,
   X,
   Check,
   ArrowLeft,
   CreditCard,
   DollarSign,
   Smartphone,
-  Users,
   User,
   Plus,
   Minus,
   Receipt,
-  Clock,
   AlertCircle,
   RefreshCw,
   Search,
@@ -1387,7 +1384,7 @@ export default function POSPage() {
           animate={{ rotate: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <ShoppingCart className="h-5 w-5 text-green-500" />
+          <ShoppingBag className="h-5 w-5 text-green-500" />
         </motion.div>
         <div>
           <div className="font-semibold">{message}</div>
@@ -2963,10 +2960,10 @@ export default function POSPage() {
           {/* Estatísticas Animadas */}
           <div className="grid grid-cols-4 gap-4 mb-8">
             {[
-              { label: 'Mesas Abertas', value: tables.filter(t => t.current_session).length, icon: Users, color: 'blue' },
+              { label: 'Mesas Abertas', value: tables.filter(t => t.current_session).length, icon: User, color: 'blue' },
               { label: 'Mesas Livres', value: tables.filter(t => !t.current_session).length, icon: UtensilsCrossed, color: 'green' },
               { label: 'Total de Mesas', value: tables.length, icon: Receipt, color: 'orange' },
-              { label: 'Hora Atual', value: format(new Date(), 'HH:mm'), icon: Clock, color: 'pink' }
+              { label: 'Hora Atual', value: format(new Date(), 'HH:mm'), icon: History, color: 'pink' }
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -3060,7 +3057,7 @@ export default function POSPage() {
                             <div className="text-xs text-gray-300 mt-1 space-y-1">
                               {table.current_session && (
                                 <div className="flex items-center justify-center gap-1">
-                                  <Users className="h-3 w-3" />
+                                  <User className="h-3 w-3" />
                                   <span>{table.current_session.customer_count} {table.current_session.customer_count === 1 ? 'pessoa' : 'pessoas'}</span>
                                 </div>
                               )}
@@ -3073,7 +3070,7 @@ export default function POSPage() {
                             </Badge>
                             <div className="text-xs text-gray-300 mt-1 space-y-1">
                               <div className="flex items-center justify-center gap-1">
-                                <Users className="h-3 w-3" />
+                                <User className="h-3 w-3" />
                                 <span>{table.current_session.customer_count} {table.current_session.customer_count === 1 ? 'pessoa' : 'pessoas'}</span>
                               </div>
                             </div>
@@ -3490,7 +3487,7 @@ export default function POSPage() {
                 {/* Pessoas */}
                 <div className="flex items-center gap-3">
                   <div className="bg-blue-600 p-3 rounded-lg">
-                    <Users className="h-6 w-6 text-white" />
+                    <User className="h-6 w-6 text-white" />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-white">
@@ -3506,7 +3503,7 @@ export default function POSPage() {
                 {/* Horário */}
                 <div className="flex items-center gap-3">
                   <div className="bg-green-600 p-3 rounded-lg">
-                    <Clock className="h-6 w-6 text-white" />
+                    <History className="h-6 w-6 text-white" />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-white">
@@ -3620,7 +3617,7 @@ export default function POSPage() {
                     </div>
                     <TabsList className="bg-gray-800 border-gray-700 h-10">
                       <TabsTrigger value="cart" className="data-[state=active]:bg-orange-600 h-full px-3">
-                        <ShoppingCart className="mr-2 h-4 w-4" />
+                        <ShoppingBag className="mr-2 h-4 w-4" />
                         Carrinho
                       </TabsTrigger>
                       <TabsTrigger value="categories" className="data-[state=active]:bg-orange-600 h-full px-3">
@@ -3727,7 +3724,7 @@ export default function POSPage() {
                       >
                         {filterMode === 'all' ? (
                           <span className="flex items-center gap-1">
-                            <ShoppingCart className="h-4 w-4" />
+                            <ShoppingBag className="h-4 w-4" />
                             Todos
                           </span>
                         ) : filterMode === 'delivered' ? (
@@ -3771,7 +3768,7 @@ export default function POSPage() {
                                   </>
                                 ) : (
                                   <>
-                                    <ShoppingCart className="h-16 w-16 mx-auto mb-4 opacity-50" />
+                                    <ShoppingBag className="h-16 w-16 mx-auto mb-4 opacity-50" />
                                     <p>Carrinho vazio</p>
                                     <p className="text-sm mt-2">Adicione produtos usando o código ou busca</p>
                                   </>
@@ -3801,7 +3798,7 @@ export default function POSPage() {
                                   {(item.status === 'delivered' || item.status === 'cancelled') && item.launched_at && (
                                     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
                                       <div className={`${item.status === 'delivered' ? 'text-green-400' : 'text-red-400'} flex flex-col items-center justify-center`}>
-                                        <Clock className="h-3 w-3 mb-1" />
+                                        <History className="h-3 w-3 mb-1" />
                                         <div className="flex items-center">
                                           {(() => {
                                             const date = new Date(item.launched_at);
@@ -4330,31 +4327,6 @@ export default function POSPage() {
                     <div className="flex justify-between text-lg font-bold pt-3 border-t border-gray-600">
                       <span>Total Final:</span>
                       <span className="text-orange-400">{formatCurrency(calculateTotalWithDiscount())}</span>
-                    </div>
-                  </div>
-                  
-                  {/* Informações da Sessão */}
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-gray-400" />
-                      <span className="text-gray-400">Pessoas:</span>
-                      <span className="font-medium">{currentSession?.customer_count || 0}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-gray-400" />
-                      <span className="text-gray-400">Mesa aberta:</span>
-                      <span className="font-medium">
-                        {currentSession?.opened_at 
-                          ? format(new Date(currentSession.opened_at), 'HH:mm', { locale: ptBR })
-                          : '-'}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <ShoppingCart className="h-4 w-4 text-gray-400" />
-                      <span className="text-gray-400">Total de Itens:</span>
-                      <span className="font-medium">
-                        {cart.filter(item => item.status !== 'cancelled').length}
-                      </span>
                     </div>
                   </div>
                   
