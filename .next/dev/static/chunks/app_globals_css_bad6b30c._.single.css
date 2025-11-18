@@ -2626,6 +2626,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   padding-bottom: 0;
 }
 
+.pb-14 {
+  padding-bottom: 3.5rem;
+}
+
 .pb-2 {
   padding-bottom: .5rem;
 }
@@ -2688,10 +2692,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .pt-4 {
   padding-top: 1rem;
-}
-
-.pb-14 {
-  padding-bottom: 3.5rem;
 }
 
 .text-left {

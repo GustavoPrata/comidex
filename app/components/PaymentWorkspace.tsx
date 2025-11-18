@@ -290,7 +290,7 @@ export default function PaymentWorkspace({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Receipt className="h-5 w-5 text-white" />
-            <h2 className="text-lg font-bold text-white">Mesa {selectedTable?.number}</h2>
+            <h2 className="text-lg font-bold text-white">Fechamento de Conta</h2>
           </div>
           
           {/* Totais principais */}
