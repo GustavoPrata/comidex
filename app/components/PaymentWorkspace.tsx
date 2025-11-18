@@ -279,7 +279,7 @@ export default function PaymentWorkspace({
                 {/* Desconto */}
                 <div>
                   <Label className="text-xs text-gray-400">Desconto</Label>
-                  <div className="flex gap-1 mt-1">
+                  <div className="flex gap-1 mt-1 items-center">
                     <Button
                       size="sm"
                       onClick={() => setDiscountType('value')}
@@ -304,19 +304,20 @@ export default function PaymentWorkspace({
                       type="number"
                       value={discountValue || ''}
                       onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
-                      className="h-7 flex-1 bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      maxLength={6}
+                      className="h-7 w-20 bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       placeholder=""
                     />
+                    {discountValue > 0 && (
+                      <span className="text-xs text-green-400 ml-auto">
+                        -{formatCurrency(
+                          discountType === 'percentage'
+                            ? (calculateTotal() * discountValue / 100)
+                            : discountValue
+                        )}
+                      </span>
+                    )}
                   </div>
-                  {discountValue > 0 && (
-                    <p className="text-xs text-green-400 mt-1">
-                      Desconto: {formatCurrency(
-                        discountType === 'percentage'
-                          ? (calculateTotal() * discountValue / 100)
-                          : discountValue
-                      )}
-                    </p>
-                  )}
                 </div>
 
                 {/* Divisão */}
