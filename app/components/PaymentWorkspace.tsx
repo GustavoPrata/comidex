@@ -755,6 +755,26 @@ export default function PaymentWorkspace({
               </>
             )}
           </Button>
+
+          {/* Botões de Voltar e Reabrir */}
+          <div className="flex gap-2">
+            <Button
+              onClick={() => window.location.href = '/pos'}
+              className="flex-1 h-10 bg-gray-700 hover:bg-gray-600"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Voltar para Mesas
+            </Button>
+            {reopenTable && (
+              <Button
+                onClick={reopenTable}
+                className="flex-1 h-10 bg-orange-600 hover:bg-orange-700"
+              >
+                <Receipt className="h-4 w-4 mr-2" />
+                Reabrir Mesa
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
