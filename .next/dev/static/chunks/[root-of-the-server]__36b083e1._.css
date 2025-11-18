@@ -1214,6 +1214,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   min-width: 0;
 }
 
+.min-w-\[60px\] {
+  min-width: 60px;
+}
+
 .min-w-\[8rem\] {
   min-width: 8rem;
 }
@@ -1474,10 +1478,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .items-start {
   align-items: flex-start;
-}
-
-.items-end {
-  align-items: flex-end;
 }
 
 .items-center {
