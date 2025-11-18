@@ -875,7 +875,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                     className: "h-10 rounded-full bg-gray-700 hover:bg-gray-600 text-white text-[10px] p-0",
                                                     disabled: remaining <= 0,
                                                     title: "Preencher valor restante",
-                                                    children: "R$"
+                                                    children: "Total"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
                                                     lineNumber: 551,

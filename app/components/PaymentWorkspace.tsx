@@ -554,7 +554,7 @@ export default function PaymentWorkspace({
                   disabled={remaining <= 0}
                   title="Preencher valor restante"
                 >
-                  R$
+                  Total
                 </Button>
                 <Button
                   onClick={() => handleCalculatorInput('0')}
