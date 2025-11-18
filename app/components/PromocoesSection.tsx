@@ -26,7 +26,6 @@ const supabase = createClient();
 interface Promotion {
   id: number;
   name: string;
-  description: string;
   type: 'free_item' | 'group_discount' | 'buy_x_get_y' | 'item_discount';
   weekdays: number[];
   start_time?: string;
@@ -54,7 +53,6 @@ interface PromotionApplication {
   promotionId: number;
   discount: number;
   affectedItems: number[];
-  description: string;
 }
 
 interface PromocoesSectionProps {
@@ -75,6 +73,9 @@ export default function PromocoesSection({
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [loading, setLoading] = useState(true);
   const [applyingPromotion, setApplyingPromotion] = useState<number | null>(null);
+  
+  // Filter for rodizio groups only
+  const rodizioGroups = groups.filter(g => g.type === 'rodizio');
 
   // Load promotions
   const loadPromotions = async () => {
@@ -111,8 +112,10 @@ export default function PromocoesSection({
         );
         
       case 'group_discount':
-        // Check if there are items from the specified group
+        // Check if there are items from the specified group AND group is rodizio
         if (!promotion.config.groupId) return false;
+        const group = rodizioGroups.find(g => g.id === promotion.config.groupId);
+        if (!group) return false; // Not a rodizio group
         return cart.some(item => 
           item.item?.group_id === promotion.config.groupId && 
           item.status === 'delivered'
@@ -168,8 +171,11 @@ export default function PromocoesSection({
         break;
         
       case 'group_discount':
-        // Calculate discount on group items
+        // Calculate discount on group items (only for rodizio groups)
         if (promotion.config.groupId) {
+          const group = rodizioGroups.find(g => g.id === promotion.config.groupId);
+          if (!group) break; // Not a rodizio group, no discount
+          
           const groupItems = cart.filter(item => 
             item.item?.group_id === promotion.config.groupId && 
             item.status === 'delivered'
@@ -251,8 +257,7 @@ export default function PromocoesSection({
         const newApplication: PromotionApplication = {
           promotionId: promotion.id,
           discount,
-          affectedItems,
-          description: promotion.name
+          affectedItems
         };
         
         setAppliedPromotions([...appliedPromotions, newApplication]);
@@ -397,14 +402,46 @@ export default function PromocoesSection({
                         </Badge>
                       )}
                     </div>
-                    {promotion.description && (
-                      <p className="text-xs text-gray-400 mt-0.5">
-                        {promotion.description}
-                      </p>
+                    
+                    {/* Show original and discounted values for group discount */}
+                    {promotion.type === 'group_discount' && promotion.config.groupId && (
+                      <div className="mt-2">
+                        {(() => {
+                          const group = rodizioGroups.find(g => g.id === promotion.config.groupId);
+                          if (group && group.price) {
+                            const originalPrice = group.price;
+                            let finalPrice = originalPrice;
+                            
+                            if (promotion.config.discountType === 'percentage') {
+                              finalPrice = originalPrice - (originalPrice * (promotion.config.discountValue || 0) / 100);
+                            } else {
+                              finalPrice = promotion.config.discountValue || originalPrice;
+                            }
+                            
+                            return (
+                              <div className="flex items-center gap-2 text-xs">
+                                <span className="text-gray-400 line-through">
+                                  De: {formatCurrency(originalPrice)}
+                                </span>
+                                <span className="text-green-400 font-semibold">
+                                  Por: {formatCurrency(finalPrice)}
+                                </span>
+                                <Badge className="bg-green-900/50 text-green-400 text-xs">
+                                  -{promotion.config.discountType === 'percentage' 
+                                    ? `${promotion.config.discountValue}%`
+                                    : formatCurrency(originalPrice - finalPrice)}
+                                </Badge>
+                              </div>
+                            );
+                          }
+                          return null;
+                        })()}
+                      </div>
                     )}
+                    
                     <div className="flex items-center gap-3 mt-1">
                       <span className="text-xs text-orange-400 font-medium">
-                        Desconto: {formatCurrency(discount)}
+                        Desconto Total: {formatCurrency(discount)}
                       </span>
                       {promotion.weekdays && promotion.weekdays.length > 0 && (
                         <span className="text-xs text-gray-500 flex items-center gap-1">

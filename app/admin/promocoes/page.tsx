@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { 
   Search, 
@@ -26,7 +25,9 @@ import {
   Users,
   Package,
   X,
-  Check
+  Check,
+  Filter,
+  Image as ImageIcon
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -62,6 +63,7 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 const supabase = createClient();
 
@@ -84,7 +86,6 @@ interface PromotionConfig {
 interface Promotion {
   id: number;
   name: string;
-  description: string;
   type: PromotionType;
   weekdays: number[];
   start_time?: string;
@@ -110,7 +111,7 @@ const weekDays = [
 
 const promotionTypes = [
   { value: 'free_item', label: 'Item Grátis', icon: Gift, color: 'bg-green-500' },
-  { value: 'group_discount', label: 'Desconto no Grupo', icon: Tag, color: 'bg-blue-500' },
+  { value: 'group_discount', label: 'Desconto em Rodízio', icon: Tag, color: 'bg-blue-500' },
   { value: 'buy_x_get_y', label: 'Compre X Leve Y', icon: ShoppingBag, color: 'bg-purple-500' },
   { value: 'item_discount', label: 'Desconto em Item', icon: Percent, color: 'bg-orange-500' }
 ];
@@ -120,19 +121,22 @@ export default function PromocoesPage() {
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [items, setItems] = useState<any[]>([]);
   const [groups, setGroups] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isItemSelectorOpen, setIsItemSelectorOpen] = useState(false);
   const [editingPromotion, setEditingPromotion] = useState<Promotion | null>(null);
   const [deletePromotion, setDeletePromotion] = useState<Promotion | null>(null);
   const [saving, setSaving] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [itemSearch, setItemSearch] = useState("");
+  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   
   // Form state
   const [formData, setFormData] = useState({
     name: "",
-    description: "",
     type: "free_item" as PromotionType,
     weekdays: [] as number[],
     start_time: "",
@@ -156,16 +160,16 @@ export default function PromocoesPage() {
 
       if (promotionsError) throw promotionsError;
 
-      // Load items for selection
+      // Load items for selection with images
       const { data: itemsData, error: itemsError } = await supabase
         .from('items')
-        .select('id, name, price, image, group_id, category_id')
+        .select('id, name, price, image, group_id, category_id, active')
         .eq('active', true)
         .order('name');
 
       if (itemsError) throw itemsError;
 
-      // Load groups
+      // Load groups (only rodizio type for group discount)
       const { data: groupsData, error: groupsError } = await supabase
         .from('groups')
         .select('*')
@@ -173,9 +177,19 @@ export default function PromocoesPage() {
 
       if (groupsError) throw groupsError;
 
+      // Load categories
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('active', true)
+        .order('sort_order');
+
+      if (categoriesError) throw categoriesError;
+
       setPromotions(promotionsData || []);
       setItems(itemsData || []);
       setGroups(groupsData || []);
+      setCategories(categoriesData || []);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
       toast.error('Erro ao carregar promoções');
@@ -192,7 +206,6 @@ export default function PromocoesPage() {
   const resetForm = () => {
     setFormData({
       name: "",
-      description: "",
       type: "free_item",
       weekdays: [],
       start_time: "",
@@ -205,6 +218,8 @@ export default function PromocoesPage() {
     });
     setSelectedItems([]);
     setEditingPromotion(null);
+    setSelectedGroup(null);
+    setSelectedCategory(null);
   };
 
   // Open modal
@@ -213,7 +228,6 @@ export default function PromocoesPage() {
       setEditingPromotion(promotion);
       setFormData({
         name: promotion.name,
-        description: promotion.description || "",
         type: promotion.type,
         weekdays: promotion.weekdays || [],
         start_time: promotion.start_time || "",
@@ -225,12 +239,12 @@ export default function PromocoesPage() {
         valid_until: promotion.valid_until || ""
       });
       
-      // Set selected items based on promotion type
-      if (promotion.config.freeItems) {
+      // Set selected items based on type
+      if (promotion.type === 'free_item' && promotion.config.freeItems) {
         setSelectedItems(promotion.config.freeItems);
-      } else if (promotion.config.itemIds) {
+      } else if (promotion.type === 'item_discount' && promotion.config.itemIds) {
         setSelectedItems(promotion.config.itemIds);
-      } else if (promotion.config.itemId) {
+      } else if (promotion.type === 'buy_x_get_y' && promotion.config.itemId) {
         setSelectedItems([promotion.config.itemId]);
       }
     } else {
@@ -241,14 +255,14 @@ export default function PromocoesPage() {
 
   // Save promotion
   const handleSave = async () => {
-    if (!formData.name.trim()) {
-      toast.error("Nome é obrigatório");
+    if (!formData.name) {
+      toast.error("Nome é obrigatório!");
       return;
     }
 
     setSaving(true);
     try {
-      // Prepare config based on promotion type
+      // Build config based on type
       let config: PromotionConfig = {};
       
       switch (formData.type) {
@@ -281,7 +295,6 @@ export default function PromocoesPage() {
 
       const promotionData = {
         name: formData.name,
-        description: formData.description,
         type: formData.type,
         weekdays: formData.weekdays,
         start_time: formData.start_time || null,
@@ -332,6 +345,7 @@ export default function PromocoesPage() {
         .eq('id', deletePromotion.id);
 
       if (error) throw error;
+      
       toast.success("Promoção excluída!");
       setIsDeleteModalOpen(false);
       setDeletePromotion(null);
@@ -342,18 +356,86 @@ export default function PromocoesPage() {
     }
   };
 
+  // Toggle active status
+  const toggleActive = async (promotion: Promotion) => {
+    try {
+      const { error } = await supabase
+        .from('promotions')
+        .update({ active: !promotion.active })
+        .eq('id', promotion.id);
+
+      if (error) throw error;
+      
+      toast.success(promotion.active ? "Promoção desativada" : "Promoção ativada");
+      await loadData();
+    } catch (error) {
+      console.error('Erro ao atualizar status:', error);
+      toast.error("Erro ao atualizar status");
+    }
+  };
+
+  // Toggle weekday selection
+  const toggleWeekday = (day: number) => {
+    setFormData(prev => ({
+      ...prev,
+      weekdays: prev.weekdays.includes(day)
+        ? prev.weekdays.filter(d => d !== day)
+        : [...prev.weekdays, day]
+    }));
+  };
+
   // Toggle item selection
   const toggleItemSelection = (itemId: number) => {
     setSelectedItems(prev => 
-      prev.includes(itemId) 
+      prev.includes(itemId)
         ? prev.filter(id => id !== itemId)
         : [...prev, itemId]
     );
   };
 
-  // Get promotion type info
-  const getPromotionTypeInfo = (type: PromotionType) => {
-    return promotionTypes.find(pt => pt.value === type);
+  // Filter items based on search, group and category
+  const getFilteredItemsForSelector = () => {
+    return items.filter(item => {
+      const matchesSearch = item.name.toLowerCase().includes(itemSearch.toLowerCase());
+      const matchesGroup = !selectedGroup || item.group_id === selectedGroup;
+      const matchesCategory = !selectedCategory || item.category_id === selectedCategory;
+      return matchesSearch && matchesGroup && matchesCategory;
+    });
+  };
+
+  // Filter promotions
+  const filteredPromotions = promotions.filter(promo =>
+    promo.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Calculate discount display
+  const getDiscountDisplay = (promotion: Promotion) => {
+    if (promotion.type === 'group_discount' && promotion.config.groupId) {
+      const group = groups.find(g => g.id === promotion.config.groupId);
+      if (group && group.type === 'rodizio' && group.price) {
+        const originalPrice = group.price;
+        let finalPrice = originalPrice;
+        
+        if (promotion.config.discountType === 'percentage') {
+          finalPrice = originalPrice - (originalPrice * (promotion.config.discountValue || 0) / 100);
+        } else {
+          finalPrice = promotion.config.discountValue || originalPrice;
+        }
+        
+        return (
+          <div className="flex items-center gap-2 text-sm">
+            <span className="line-through text-gray-400">R$ {originalPrice.toFixed(2)}</span>
+            <span className="text-green-600 font-semibold">R$ {finalPrice.toFixed(2)}</span>
+            <Badge className="bg-green-100 text-green-600">
+              {promotion.config.discountType === 'percentage' 
+                ? `-${promotion.config.discountValue}%`
+                : `Valor fixo`}
+            </Badge>
+          </div>
+        );
+      }
+    }
+    return null;
   };
 
   // Check if promotion is valid today
@@ -361,25 +443,16 @@ export default function PromocoesPage() {
     const today = new Date();
     const dayOfWeek = today.getDay();
     
-    // Check weekdays
     if (promotion.weekdays && promotion.weekdays.length > 0) {
       if (!promotion.weekdays.includes(dayOfWeek)) {
         return false;
       }
     }
     
-    // Check time
-    if (promotion.start_time && promotion.end_time) {
-      const now = today.toTimeString().slice(0, 5);
-      if (now < promotion.start_time || now > promotion.end_time) {
-        return false;
-      }
-    }
-    
-    // Check date range
     if (promotion.valid_from && new Date(promotion.valid_from) > today) {
       return false;
     }
+    
     if (promotion.valid_until && new Date(promotion.valid_until) < today) {
       return false;
     }
@@ -387,80 +460,63 @@ export default function PromocoesPage() {
     return true;
   };
 
-  // Filter promotions based on search
-  const filteredPromotions = promotions.filter(promo =>
-    promo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    promo.description?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Filter items based on search
-  const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(itemSearch.toLowerCase())
-  );
+  // Get rodizio groups only
+  const rodizioGroups = groups.filter(g => g.type === 'rodizio');
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div>
-        <h2 className="text-3xl font-bold tracking-tight">Promoções</h2>
-        <p className="text-muted-foreground">
-          Gerencie as promoções e descontos do restaurante
-        </p>
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold">Promoções</h1>
+          <p className="text-muted-foreground">Gerencie as promoções do restaurante</p>
+        </div>
+        <Button onClick={() => openModal()} className="bg-orange-500 hover:bg-orange-600">
+          <Plus className="mr-2 h-4 w-4" />
+          Nova Promoção
+        </Button>
       </div>
 
-      {/* Toolbar */}
+      {/* Search */}
       <Card>
-        <CardContent className="p-6">
-          <div className="flex items-center justify-between gap-4">
-            <div className="flex-1 flex items-center gap-4">
-              <div className="relative flex-1 max-w-sm">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  type="text"
-                  placeholder="Buscar promoções..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            <Button onClick={() => openModal()} className="gap-2">
-              <Plus className="h-4 w-4" />
-              Nova Promoção
-            </Button>
+        <CardContent className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+            <Input
+              placeholder="Buscar promoção..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
           </div>
         </CardContent>
       </Card>
 
-      {/* Promotions List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      {/* Promotions Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredPromotions.map((promotion) => {
-          const typeInfo = getPromotionTypeInfo(promotion.type);
+          const typeInfo = promotionTypes.find(t => t.value === promotion.type);
+          const Icon = typeInfo?.icon || Gift;
           const validToday = isValidToday(promotion);
           
           return (
-            <Card key={promotion.id} className={`${!promotion.active && 'opacity-50'}`}>
+            <Card key={promotion.id} className={!promotion.active ? 'opacity-60' : ''}>
               <CardContent className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    {typeInfo && (
-                      <div className={`p-2 rounded-lg ${typeInfo.color}`}>
-                        <typeInfo.icon className="h-4 w-4 text-white" />
-                      </div>
-                    )}
+                    <div className={`p-2 rounded-lg ${typeInfo?.color || 'bg-gray-500'} bg-opacity-20`}>
+                      <Icon className={`h-4 w-4 ${typeInfo?.color?.replace('bg-', 'text-') || 'text-gray-500'}`} />
+                    </div>
                     <div>
                       <h3 className="font-semibold">{promotion.name}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {typeInfo?.label}
-                      </p>
+                      <p className="text-xs text-muted-foreground">{typeInfo?.label}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -493,10 +549,33 @@ export default function PromocoesPage() {
                   </div>
                 </div>
 
-                {promotion.description && (
-                  <p className="text-sm text-muted-foreground mb-3">
-                    {promotion.description}
-                  </p>
+                {/* Show discount calculation for rodizio */}
+                {getDiscountDisplay(promotion)}
+
+                {/* Show selected items with images */}
+                {promotion.type === 'free_item' && promotion.config.freeItems && (
+                  <div className="flex gap-2 mb-3 flex-wrap">
+                    {promotion.config.freeItems.slice(0, 3).map(itemId => {
+                      const item = items.find(i => i.id === itemId);
+                      return item ? (
+                        <div key={itemId} className="relative group">
+                          <img 
+                            src={item.image || '/placeholder-food.jpg'}
+                            alt={item.name}
+                            className="w-12 h-12 rounded object-cover border"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-60 rounded opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span className="text-white text-xs text-center px-1">{item.name}</span>
+                          </div>
+                        </div>
+                      ) : null;
+                    })}
+                    {promotion.config.freeItems.length > 3 && (
+                      <div className="w-12 h-12 rounded border flex items-center justify-center bg-gray-100 text-sm">
+                        +{promotion.config.freeItems.length - 3}
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 {/* Weekdays */}
@@ -524,9 +603,10 @@ export default function PromocoesPage() {
 
                 {/* Status */}
                 <div className="flex items-center justify-between">
-                  <Badge variant={promotion.active ? "default" : "secondary"}>
-                    {promotion.active ? 'Ativa' : 'Inativa'}
-                  </Badge>
+                  <Switch
+                    checked={promotion.active}
+                    onCheckedChange={() => toggleActive(promotion)}
+                  />
                   <span className="text-xs text-muted-foreground">
                     Prioridade: {promotion.priority}
                   </span>
@@ -542,34 +622,25 @@ export default function PromocoesPage() {
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Gift className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="font-semibold text-lg mb-1">
-              Nenhuma promoção encontrada
-            </h3>
+            <h3 className="text-lg font-semibold mb-2">Nenhuma promoção encontrada</h3>
             <p className="text-muted-foreground text-center mb-4">
-              {searchTerm
-                ? "Tente ajustar sua busca"
-                : "Comece criando sua primeira promoção"}
+              Crie sua primeira promoção para atrair mais clientes
             </p>
-            {!searchTerm && (
-              <Button onClick={() => openModal()}>
-                <Plus className="mr-2 h-4 w-4" />
-                Criar Promoção
-              </Button>
-            )}
+            <Button onClick={() => openModal()} className="bg-orange-500 hover:bg-orange-600">
+              <Plus className="mr-2 h-4 w-4" />
+              Criar Promoção
+            </Button>
           </CardContent>
         </Card>
       )}
 
       {/* Create/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
-              {editingPromotion ? "Editar Promoção" : "Nova Promoção"}
+              {editingPromotion ? 'Editar Promoção' : 'Nova Promoção'}
             </DialogTitle>
-            <DialogDescription>
-              Configure os detalhes da promoção
-            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
@@ -603,101 +674,68 @@ export default function PromocoesPage() {
               </div>
             </div>
 
-            <div>
-              <Label>Descrição</Label>
-              <Textarea
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Descreva a promoção..."
-                rows={3}
-              />
-            </div>
-
             {/* Type-specific configuration */}
             {formData.type === 'free_item' && (
               <div>
                 <Label>Itens Grátis</Label>
-                <ScrollArea className="h-48 border rounded-lg p-2 mt-2">
-                  <Input
-                    placeholder="Buscar itens..."
-                    value={itemSearch}
-                    onChange={(e) => setItemSearch(e.target.value)}
-                    className="mb-2"
-                  />
-                  <div className="space-y-2">
-                    {filteredItems.map(item => (
-                      <div
-                        key={item.id}
-                        className={`flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 ${
-                          selectedItems.includes(item.id) ? 'bg-orange-50 border-orange-300 border' : ''
-                        }`}
-                        onClick={() => toggleItemSelection(item.id)}
-                      >
-                        <img
-                          src={item.image || '/placeholder.png'}
-                          alt={item.name}
-                          className="w-10 h-10 rounded object-cover"
-                        />
-                        <div className="flex-1">
-                          <p className="font-medium text-sm">{item.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            R$ {item.price?.toFixed(2)}
-                          </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full mt-2 justify-start"
+                  onClick={() => setIsItemSelectorOpen(true)}
+                >
+                  <Package className="mr-2 h-4 w-4" />
+                  Selecionar Itens ({selectedItems.length} selecionados)
+                </Button>
+                {selectedItems.length > 0 && (
+                  <div className="flex gap-2 mt-2 flex-wrap">
+                    {selectedItems.map(itemId => {
+                      const item = items.find(i => i.id === itemId);
+                      return item ? (
+                        <div key={itemId} className="relative group">
+                          <img 
+                            src={item.image || '/placeholder-food.jpg'}
+                            alt={item.name}
+                            className="w-16 h-16 rounded object-cover border"
+                          />
+                          <button
+                            onClick={() => toggleItemSelection(itemId)}
+                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
                         </div>
-                        {selectedItems.includes(item.id) && (
-                          <Check className="h-4 w-4 text-orange-500" />
-                        )}
-                      </div>
-                    ))}
+                      ) : null;
+                    })}
                   </div>
-                </ScrollArea>
+                )}
               </div>
             )}
 
             {formData.type === 'group_discount' && (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label>Grupo</Label>
-                    <Select
-                      value={formData.config.groupId?.toString()}
-                      onValueChange={(value) => setFormData({
-                        ...formData,
-                        config: { ...formData.config, groupId: parseInt(value) }
-                      })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione o grupo" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {groups.map(group => (
-                          <SelectItem key={group.id} value={group.id.toString()}>
-                            {group.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label>Gênero Alvo</Label>
-                    <Select
-                      value={formData.config.targetGender || 'all'}
-                      onValueChange={(value) => setFormData({
-                        ...formData,
-                        config: { ...formData.config, targetGender: value as any }
-                      })}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Todos</SelectItem>
-                        <SelectItem value="male">Masculino</SelectItem>
-                        <SelectItem value="female">Feminino</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                <div>
+                  <Label>Grupo de Rodízio</Label>
+                  <Select 
+                    value={formData.config.groupId?.toString() || ''}
+                    onValueChange={(value) => setFormData({ 
+                      ...formData, 
+                      config: { ...formData.config, groupId: parseInt(value) } 
+                    })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o rodízio" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {rodizioGroups.map(group => (
+                        <SelectItem key={group.id} value={group.id.toString()}>
+                          {group.name} - R$ {group.price?.toFixed(2) || '0.00'}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label>Tipo de Desconto</Label>
@@ -705,7 +743,7 @@ export default function PromocoesPage() {
                       value={formData.config.discountType || 'percentage'}
                       onValueChange={(value) => setFormData({
                         ...formData,
-                        config: { ...formData.config, discountType: value as any }
+                        config: { ...formData.config, discountType: value as 'percentage' | 'fixed' }
                       })}
                     >
                       <SelectTrigger>
@@ -717,9 +755,10 @@ export default function PromocoesPage() {
                       </SelectContent>
                     </Select>
                   </div>
+
                   <div>
                     <Label>
-                      {formData.config.discountType === 'percentage' ? 'Desconto (%)' : 'Preço Final (R$)'}
+                      {formData.config.discountType === 'percentage' ? 'Desconto (%)' : 'Valor (R$)'}
                     </Label>
                     <Input
                       type="number"
@@ -728,18 +767,91 @@ export default function PromocoesPage() {
                         ...formData,
                         config: { ...formData.config, discountValue: parseFloat(e.target.value) || 0 }
                       })}
-                      placeholder="0"
+                      placeholder={formData.config.discountType === 'percentage' ? '20' : '50.00'}
                     />
                   </div>
+                </div>
+
+                {/* Show price preview */}
+                {formData.config.groupId && (
+                  <div className="p-3 bg-gray-50 rounded-lg">
+                    <Label>Prévia do Desconto</Label>
+                    {(() => {
+                      const group = rodizioGroups.find(g => g.id === formData.config.groupId);
+                      if (group && group.price) {
+                        const originalPrice = group.price;
+                        let finalPrice = originalPrice;
+                        
+                        if (formData.config.discountType === 'percentage') {
+                          finalPrice = originalPrice - (originalPrice * (formData.config.discountValue || 0) / 100);
+                        } else {
+                          finalPrice = formData.config.discountValue || originalPrice;
+                        }
+                        
+                        return (
+                          <div className="mt-2">
+                            <div className="flex items-center gap-3">
+                              <span className="text-gray-500 line-through">
+                                De: R$ {originalPrice.toFixed(2)}
+                              </span>
+                              <span className="text-green-600 font-semibold text-lg">
+                                Por: R$ {finalPrice.toFixed(2)}
+                              </span>
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-1">
+                              Economia de R$ {(originalPrice - finalPrice).toFixed(2)} 
+                              ({((originalPrice - finalPrice) / originalPrice * 100).toFixed(1)}%)
+                            </p>
+                          </div>
+                        );
+                      }
+                      return null;
+                    })()}
+                  </div>
+                )}
+
+                <div>
+                  <Label>Aplicar para</Label>
+                  <Select
+                    value={formData.config.targetGender || 'all'}
+                    onValueChange={(value) => setFormData({
+                      ...formData,
+                      config: { ...formData.config, targetGender: value as 'all' | 'male' | 'female' }
+                    })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Todos</SelectItem>
+                      <SelectItem value="male">Apenas Homens</SelectItem>
+                      <SelectItem value="female">Apenas Mulheres</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             )}
 
             {formData.type === 'buy_x_get_y' && (
               <div className="space-y-4">
+                <div>
+                  <Label>Item da Promoção</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full mt-2 justify-start"
+                    onClick={() => setIsItemSelectorOpen(true)}
+                  >
+                    <Package className="mr-2 h-4 w-4" />
+                    {selectedItems.length > 0
+                      ? `Item selecionado: ${items.find(i => i.id === selectedItems[0])?.name}`
+                      : 'Selecionar Item'}
+                  </Button>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label>Comprar Quantidade</Label>
+                    <Label>Compre (quantidade)</Label>
                     <Input
                       type="number"
                       value={formData.config.buyQuantity || 1}
@@ -751,7 +863,7 @@ export default function PromocoesPage() {
                     />
                   </div>
                   <div>
-                    <Label>Ganhar Quantidade</Label>
+                    <Label>Leve (quantidade)</Label>
                     <Input
                       type="number"
                       value={formData.config.getQuantity || 1}
@@ -763,67 +875,46 @@ export default function PromocoesPage() {
                     />
                   </div>
                 </div>
-                <div>
-                  <Label>Item Específico (opcional)</Label>
-                  <ScrollArea className="h-48 border rounded-lg p-2 mt-2">
-                    <Input
-                      placeholder="Buscar itens..."
-                      value={itemSearch}
-                      onChange={(e) => setItemSearch(e.target.value)}
-                      className="mb-2"
-                    />
-                    <div className="space-y-2">
-                      <div
-                        className={`flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 ${
-                          selectedItems.length === 0 ? 'bg-orange-50 border-orange-300 border' : ''
-                        }`}
-                        onClick={() => setSelectedItems([])}
-                      >
-                        <div className="w-10 h-10 bg-gray-200 rounded flex items-center justify-center">
-                          <Package className="h-5 w-5 text-gray-500" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-medium text-sm">Qualquer Item</p>
-                          <p className="text-xs text-muted-foreground">
-                            Aplica para qualquer produto
-                          </p>
-                        </div>
-                        {selectedItems.length === 0 && (
-                          <Check className="h-4 w-4 text-orange-500" />
-                        )}
-                      </div>
-                      {filteredItems.map(item => (
-                        <div
-                          key={item.id}
-                          className={`flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 ${
-                            selectedItems.includes(item.id) ? 'bg-orange-50 border-orange-300 border' : ''
-                          }`}
-                          onClick={() => setSelectedItems([item.id])}
-                        >
-                          <img
-                            src={item.image || '/placeholder.png'}
-                            alt={item.name}
-                            className="w-10 h-10 rounded object-cover"
-                          />
-                          <div className="flex-1">
-                            <p className="font-medium text-sm">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              R$ {item.price?.toFixed(2)}
-                            </p>
-                          </div>
-                          {selectedItems.includes(item.id) && (
-                            <Check className="h-4 w-4 text-orange-500" />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </div>
               </div>
             )}
 
             {formData.type === 'item_discount' && (
               <div className="space-y-4">
+                <div>
+                  <Label>Itens com Desconto</Label>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full mt-2 justify-start"
+                    onClick={() => setIsItemSelectorOpen(true)}
+                  >
+                    <Package className="mr-2 h-4 w-4" />
+                    Selecionar Itens ({selectedItems.length} selecionados)
+                  </Button>
+                  {selectedItems.length > 0 && (
+                    <div className="flex gap-2 mt-2 flex-wrap">
+                      {selectedItems.map(itemId => {
+                        const item = items.find(i => i.id === itemId);
+                        return item ? (
+                          <div key={itemId} className="relative group">
+                            <img 
+                              src={item.image || '/placeholder-food.jpg'}
+                              alt={item.name}
+                              className="w-16 h-16 rounded object-cover border"
+                            />
+                            <button
+                              onClick={() => toggleItemSelection(itemId)}
+                              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                        ) : null;
+                      })}
+                    </div>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <Label>Desconto (%)</Label>
@@ -834,16 +925,15 @@ export default function PromocoesPage() {
                         ...formData,
                         config: { 
                           ...formData.config, 
-                          discountPercentage: parseFloat(e.target.value) || 0,
-                          fixedPrice: undefined
+                          discountPercentage: parseFloat(e.target.value) || undefined,
+                          fixedPrice: undefined 
                         }
                       })}
                       placeholder="Ex: 20"
-                      disabled={!!formData.config.fixedPrice}
                     />
                   </div>
                   <div>
-                    <Label>Ou Preço Fixo (R$)</Label>
+                    <Label>OU Preço Fixo (R$)</Label>
                     <Input
                       type="number"
                       value={formData.config.fixedPrice || ''}
@@ -851,51 +941,13 @@ export default function PromocoesPage() {
                         ...formData,
                         config: { 
                           ...formData.config, 
-                          fixedPrice: parseFloat(e.target.value) || 0,
-                          discountPercentage: undefined
+                          fixedPrice: parseFloat(e.target.value) || undefined,
+                          discountPercentage: undefined 
                         }
                       })}
-                      placeholder="Ex: 99.00"
-                      disabled={!!formData.config.discountPercentage}
+                      placeholder="Ex: 15.90"
                     />
                   </div>
-                </div>
-                <div>
-                  <Label>Itens com Desconto</Label>
-                  <ScrollArea className="h-48 border rounded-lg p-2 mt-2">
-                    <Input
-                      placeholder="Buscar itens..."
-                      value={itemSearch}
-                      onChange={(e) => setItemSearch(e.target.value)}
-                      className="mb-2"
-                    />
-                    <div className="space-y-2">
-                      {filteredItems.map(item => (
-                        <div
-                          key={item.id}
-                          className={`flex items-center gap-2 p-2 rounded cursor-pointer hover:bg-gray-100 ${
-                            selectedItems.includes(item.id) ? 'bg-orange-50 border-orange-300 border' : ''
-                          }`}
-                          onClick={() => toggleItemSelection(item.id)}
-                        >
-                          <img
-                            src={item.image || '/placeholder.png'}
-                            alt={item.name}
-                            className="w-10 h-10 rounded object-cover"
-                          />
-                          <div className="flex-1">
-                            <p className="font-medium text-sm">{item.name}</p>
-                            <p className="text-xs text-muted-foreground">
-                              R$ {item.price?.toFixed(2)}
-                            </p>
-                          </div>
-                          {selectedItems.includes(item.id) && (
-                            <Check className="h-4 w-4 text-orange-500" />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
                 </div>
               </div>
             )}
@@ -905,19 +957,15 @@ export default function PromocoesPage() {
               <Label>Dias da Semana</Label>
               <div className="flex gap-2 mt-2">
                 {weekDays.map(day => (
-                  <Badge
+                  <Button
                     key={day.value}
+                    type="button"
                     variant={formData.weekdays.includes(day.value) ? "default" : "outline"}
-                    className="cursor-pointer"
-                    onClick={() => {
-                      const newWeekdays = formData.weekdays.includes(day.value)
-                        ? formData.weekdays.filter(d => d !== day.value)
-                        : [...formData.weekdays, day.value];
-                      setFormData({ ...formData, weekdays: newWeekdays });
-                    }}
+                    size="sm"
+                    onClick={() => toggleWeekday(day.value)}
                   >
-                    {day.label}
-                  </Badge>
+                    {day.short}
+                  </Button>
                 ))}
               </div>
             </div>
@@ -941,7 +989,25 @@ export default function PromocoesPage() {
               </div>
             </div>
 
-            {/* Additional Settings */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Válida de</Label>
+                <Input
+                  type="date"
+                  value={formData.valid_from}
+                  onChange={(e) => setFormData({ ...formData, valid_from: e.target.value })}
+                />
+              </div>
+              <div>
+                <Label>Válida até</Label>
+                <Input
+                  type="date"
+                  value={formData.valid_until}
+                  onChange={(e) => setFormData({ ...formData, valid_until: e.target.value })}
+                />
+              </div>
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <Label>Prioridade</Label>
@@ -949,15 +1015,17 @@ export default function PromocoesPage() {
                   type="number"
                   value={formData.priority}
                   onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
-                  placeholder="0"
+                  min="0"
                 />
               </div>
-              <div className="flex items-center space-x-2">
-                <Switch
-                  checked={formData.active}
-                  onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
-                />
-                <Label>Promoção Ativa</Label>
+              <div className="flex items-end">
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    checked={formData.active}
+                    onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
+                  />
+                  <Label>Ativa</Label>
+                </div>
               </div>
             </div>
           </div>
@@ -966,24 +1034,136 @@ export default function PromocoesPage() {
             <Button variant="outline" onClick={() => setIsModalOpen(false)}>
               Cancelar
             </Button>
-            <Button onClick={handleSave} disabled={saving}>
-              {saving ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Salvando...
-                </>
-              ) : (
-                <>
-                  <Save className="mr-2 h-4 w-4" />
-                  Salvar
-                </>
-              )}
+            <Button onClick={handleSave} disabled={saving} className="bg-orange-500 hover:bg-orange-600">
+              {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {editingPromotion ? 'Atualizar' : 'Criar'}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Item Selector Modal */}
+      <Dialog open={isItemSelectorOpen} onOpenChange={setIsItemSelectorOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Selecionar Itens</DialogTitle>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-hidden flex flex-col">
+            {/* Filters */}
+            <div className="grid grid-cols-3 gap-4 mb-4">
+              <div>
+                <Label>Grupo</Label>
+                <Select 
+                  value={selectedGroup?.toString() || ''}
+                  onValueChange={(value) => setSelectedGroup(value ? parseInt(value) : null)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Todos os grupos" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Todos os grupos</SelectItem>
+                    {groups.map(group => (
+                      <SelectItem key={group.id} value={group.id.toString()}>
+                        {group.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Categoria</Label>
+                <Select 
+                  value={selectedCategory?.toString() || ''}
+                  onValueChange={(value) => setSelectedCategory(value ? parseInt(value) : null)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Todas as categorias" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Todas as categorias</SelectItem>
+                    {categories.map(category => (
+                      <SelectItem key={category.id} value={category.id.toString()}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label>Buscar</Label>
+                <Input
+                  placeholder="Nome do item..."
+                  value={itemSearch}
+                  onChange={(e) => setItemSearch(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {/* Items Grid */}
+            <ScrollArea className="flex-1 border rounded-lg p-4">
+              <div className="grid grid-cols-4 gap-3">
+                {getFilteredItemsForSelector().map(item => (
+                  <button
+                    key={item.id}
+                    className={`p-3 rounded-lg border transition-all hover:shadow-md ${
+                      selectedItems.includes(item.id) 
+                        ? 'border-orange-500 bg-orange-50' 
+                        : 'border-gray-200 hover:border-orange-300'
+                    }`}
+                    onClick={() => toggleItemSelection(item.id)}
+                  >
+                    <div className="relative">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-full h-20 object-cover rounded mb-2"
+                        />
+                      ) : (
+                        <div className="w-full h-20 bg-gray-100 rounded mb-2 flex items-center justify-center">
+                          <ImageIcon className="h-8 w-8 text-gray-400" />
+                        </div>
+                      )}
+                      {selectedItems.includes(item.id) && (
+                        <div className="absolute top-1 right-1 bg-orange-500 text-white rounded-full p-1">
+                          <Check className="h-3 w-3" />
+                        </div>
+                      )}
+                    </div>
+                    <p className="font-medium text-sm text-left line-clamp-2">{item.name}</p>
+                    <p className="text-xs text-muted-foreground text-left">
+                      R$ {item.price?.toFixed(2) || '0.00'}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </ScrollArea>
+
+            {/* Selected count */}
+            <div className="mt-4 flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">
+                {selectedItems.length} {selectedItems.length === 1 ? 'item selecionado' : 'itens selecionados'}
+              </span>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setIsItemSelectorOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button 
+                  onClick={() => setIsItemSelectorOpen(false)}
+                  className="bg-orange-500 hover:bg-orange-600"
+                >
+                  Confirmar Seleção
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Modal */}
       <AlertDialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -995,7 +1175,10 @@ export default function PromocoesPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete}>
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-red-500 hover:bg-red-600"
+            >
               Excluir
             </AlertDialogAction>
           </AlertDialogFooter>

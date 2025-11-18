@@ -1514,6 +1514,8 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
     const [promotions, setPromotions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     const [applyingPromotion, setApplyingPromotion] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    // Filter for rodizio groups only
+    const rodizioGroups = groups.filter((g)=>g.type === 'rodizio');
     // Load promotions
     const loadPromotions = async ()=>{
         try {
@@ -1544,8 +1546,10 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                 if (!promotion.config.freeItems) return false;
                 return cart.some((item)=>promotion.config.freeItems?.includes(item.item_id) && item.status === 'delivered');
             case 'group_discount':
-                // Check if there are items from the specified group
+                // Check if there are items from the specified group AND group is rodizio
                 if (!promotion.config.groupId) return false;
+                const group = rodizioGroups.find((g)=>g.id === promotion.config.groupId);
+                if (!group) return false; // Not a rodizio group
                 return cart.some((item)=>item.item?.group_id === promotion.config.groupId && item.status === 'delivered');
             case 'buy_x_get_y':
                 // Check if the specific item or any item meets the quantity
@@ -1583,8 +1587,10 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                 }
                 break;
             case 'group_discount':
-                // Calculate discount on group items
+                // Calculate discount on group items (only for rodizio groups)
                 if (promotion.config.groupId) {
+                    const group = rodizioGroups.find((g)=>g.id === promotion.config.groupId);
+                    if (!group) break; // Not a rodizio group, no discount
                     const groupItems = cart.filter((item)=>item.item?.group_id === promotion.config.groupId && item.status === 'delivered');
                     const groupTotal = groupItems.reduce((sum, item)=>sum + item.total_price, 0);
                     if (promotion.config.discountType === 'percentage') {
@@ -1645,8 +1651,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                 const newApplication = {
                     promotionId: promotion.id,
                     discount,
-                    affectedItems,
-                    description: promotion.name
+                    affectedItems
                 };
                 setAppliedPromotions([
                     ...appliedPromotions,
@@ -1727,12 +1732,12 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                 className: "h-5 w-5 animate-spin text-gray-400"
             }, void 0, false, {
                 fileName: "[project]/app/components/PromocoesSection.tsx",
-                lineNumber: 346,
+                lineNumber: 351,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/PromocoesSection.tsx",
-            lineNumber: 345,
+            lineNumber: 350,
             columnNumber: 7
         }, this);
     }
@@ -1745,12 +1750,12 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                 children: "Nenhuma promoção disponível para esta conta"
             }, void 0, false, {
                 fileName: "[project]/app/components/PromocoesSection.tsx",
-                lineNumber: 356,
+                lineNumber: 361,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/components/PromocoesSection.tsx",
-            lineNumber: 355,
+            lineNumber: 360,
             columnNumber: 7
         }, this);
     }
@@ -1778,12 +1783,12 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                 className: "h-4 w-4 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                lineNumber: 386,
+                                                lineNumber: 391,
                                                 columnNumber: 21
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                                            lineNumber: 383,
+                                            lineNumber: 388,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1797,7 +1802,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                             children: promotion.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                            lineNumber: 390,
+                                                            lineNumber: 395,
                                                             columnNumber: 23
                                                         }, this),
                                                         recommended && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1807,29 +1812,21 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                                     className: "h-3 w-3 mr-1"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                                    lineNumber: 395,
+                                                                    lineNumber: 400,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 "Indicado"
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                            lineNumber: 394,
+                                                            lineNumber: 399,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                    lineNumber: 389,
+                                                    lineNumber: 394,
                                                     columnNumber: 21
-                                                }, this),
-                                                promotion.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-xs text-gray-400 mt-0.5",
-                                                    children: promotion.description
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                    lineNumber: 401,
-                                                    columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex items-center gap-3 mt-1",
@@ -1898,13 +1895,13 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                                            lineNumber: 388,
+                                            lineNumber: 393,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                                    lineNumber: 382,
+                                    lineNumber: 387,
                                     columnNumber: 17
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1932,17 +1929,17 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                            lineNumber: 381,
+                            lineNumber: 386,
                             columnNumber: 15
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/components/PromocoesSection.tsx",
-                        lineNumber: 380,
+                        lineNumber: 385,
                         columnNumber: 13
                     }, this)
                 }, promotion.id, false, {
                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                    lineNumber: 374,
+                    lineNumber: 379,
                     columnNumber: 11
                 }, this);
             }),
@@ -1991,7 +1988,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
         ]
     }, void 0, true, {
         fileName: "[project]/app/components/PromocoesSection.tsx",
-        lineNumber: 364,
+        lineNumber: 369,
         columnNumber: 5
     }, this);
 }

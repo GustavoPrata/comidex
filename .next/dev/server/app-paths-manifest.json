@@ -1,6 +1,3 @@
 {
-  "/admin/orders/page": "app/admin/orders/page.js",
-  "/admin/promocoes/page": "app/admin/promocoes/page.js",
-  "/api/notifications/route": "app/api/notifications/route.js",
   "/page": "app/page.js"
 }
