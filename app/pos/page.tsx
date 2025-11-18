@@ -3048,10 +3048,12 @@ export default function POSPage() {
                               FECHADA
                             </Badge>
                             <div className="text-xs text-gray-300 mt-1 space-y-1">
-                              <div className="flex items-center justify-center gap-1">
-                                <CreditCard className="h-3 w-3" />
-                                <span>Aguardando pagamento</span>
-                              </div>
+                              {table.current_session && (
+                                <div className="flex items-center justify-center gap-1">
+                                  <Users className="h-3 w-3" />
+                                  <span>{table.current_session.customer_count} {table.current_session.customer_count === 1 ? 'pessoa' : 'pessoas'}</span>
+                                </div>
+                              )}
                             </div>
                           </>
                         ) : table.current_session ? (
@@ -4284,7 +4286,11 @@ export default function POSPage() {
                       <CreditCard className="h-6 w-6 text-red-400" />
                       <div>
                         <p className="text-lg font-semibold text-red-300">Mesa {selectedTable.number} Fechada</p>
-                        <p className="text-sm text-gray-400">Aguardando pagamento</p>
+                        {currentSession?.customer_count > 0 && (
+                          <p className="text-sm text-gray-400">
+                            {currentSession.customer_count} {currentSession.customer_count === 1 ? 'pessoa' : 'pessoas'}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -4342,18 +4348,6 @@ export default function POSPage() {
                     </div>
                   </div>
                   
-                  {/* Status de Pagamento */}
-                  <div className="mt-4 p-4 bg-yellow-900/30 border border-yellow-600 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <AlertCircle className="h-5 w-5 text-yellow-400" />
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-yellow-300">Aguardando Pagamento</p>
-                        <p className="text-xs text-gray-400 mt-1">
-                          Use a área de pagamento ao lado para processar
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                 </CardContent>
               </Card>
             ) : (
