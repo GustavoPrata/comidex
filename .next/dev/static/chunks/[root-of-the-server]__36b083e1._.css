@@ -1886,6 +1886,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(153 27 27 / var(--tw-border-opacity, 1));
 }
 
+.border-red-800\/50 {
+  border-color: #991b1b80;
+}
+
 .border-transparent {
   border-color: #0000;
 }

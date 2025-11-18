@@ -193,14 +193,30 @@ export default function PaymentWorkspace({
               <ScrollArea className="h-full pr-3">
                 <div className="space-y-2">
                   {groupedItems.map((item, idx) => (
-                    <div key={idx} className="flex justify-between items-center p-2 bg-gray-700/50 rounded hover:bg-gray-700/70 transition-colors">
+                    <div 
+                      key={idx} 
+                      className={`flex justify-between items-center p-2 rounded transition-colors ${
+                        item.status === 'cancelled' 
+                          ? 'bg-red-900/30 border border-red-800/50 opacity-75' 
+                          : 'bg-gray-700/50 hover:bg-gray-700/70'
+                      }`}
+                    >
                       <div className="flex-1">
-                        <div className="font-medium text-white text-sm">{item.item?.name || 'Produto'}</div>
+                        <div className={`font-medium text-sm ${
+                          item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'
+                        }`}>
+                          {item.item?.name || 'Produto'}
+                        </div>
                         <div className="text-xs text-gray-400">
                           {formatCurrency(item.unit_price)} × {item.quantity}
+                          {item.status === 'cancelled' && (
+                            <span className="ml-2 text-red-400">(Cancelado)</span>
+                          )}
                         </div>
                       </div>
-                      <div className="text-orange-400 font-bold text-sm">
+                      <div className={`font-bold text-sm ${
+                        item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
+                      }`}>
                         {formatCurrency(item.total_price)}
                       </div>
                     </div>

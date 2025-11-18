@@ -327,22 +327,21 @@ export default function POSPage() {
     const grouped = new Map();
     
     items.forEach(item => {
-      // Só agrupa itens não cancelados
-      if (item.status !== 'cancelled') {
-        const key = `${item.item_id}_${item.unit_price}`;
-        
-        if (grouped.has(key)) {
-          const existing = grouped.get(key);
-          existing.quantity += item.quantity;
-          existing.total_price = existing.quantity * existing.unit_price;
-        } else {
-          grouped.set(key, {
-            item: item.item,
-            unit_price: item.unit_price,
-            quantity: item.quantity,
-            total_price: item.quantity * item.unit_price
-          });
-        }
+      // Incluir todos os itens, inclusive cancelados
+      const key = `${item.item_id}_${item.unit_price}_${item.status}`;
+      
+      if (grouped.has(key)) {
+        const existing = grouped.get(key);
+        existing.quantity += item.quantity;
+        existing.total_price = existing.quantity * existing.unit_price;
+      } else {
+        grouped.set(key, {
+          item: item.item,
+          unit_price: item.unit_price,
+          quantity: item.quantity,
+          total_price: item.quantity * item.unit_price,
+          status: item.status // Adicionar status para identificar cancelados
+        });
       }
     });
     
