@@ -496,27 +496,25 @@ export default function PaymentWorkspace({
                       +
                     </Button>
                     <span className="text-xs text-gray-400">pessoas</span>
-                    {splitCount > 1 && (
-                      <div className="flex items-center gap-2 ml-auto">
-                        <span className="text-xs text-orange-400">
-                          {formatCurrency(perPersonAmount)} cada
-                        </span>
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            setCalculatorDisplay(perPersonAmount.toFixed(2));
-                            setCalcMemory(0);
-                            setCalcOperation('');
-                            setWaitingForOperand(false);
-                            setLastOperation('');
-                          }}
-                          className="h-5 w-5 p-0 bg-gray-700 hover:bg-gray-600"
-                          title="Copiar valor para calculadora"
-                        >
-                          <Calculator className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    )}
+                    <div className="flex items-center gap-2 ml-auto">
+                      <span className="text-xs text-orange-400">
+                        {formatCurrency(perPersonAmount)} {splitCount > 1 ? 'cada' : 'total'}
+                      </span>
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          setCalculatorDisplay(perPersonAmount.toFixed(2));
+                          setCalcMemory(0);
+                          setCalcOperation('');
+                          setWaitingForOperand(false);
+                          setLastOperation('');
+                        }}
+                        className="h-5 w-5 p-0 bg-gray-700 hover:bg-gray-600"
+                        title="Copiar valor para calculadora"
+                      >
+                        <Calculator className="h-3 w-3" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>

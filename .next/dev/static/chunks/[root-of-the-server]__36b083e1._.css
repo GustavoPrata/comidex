@@ -2768,6 +2768,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   padding-top: 1rem;
 }
 
+.pb-14 {
+  padding-bottom: 3.5rem;
+}
+
 .text-left {
   text-align: left;
 }
