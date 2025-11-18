@@ -4305,22 +4305,72 @@ export default function POSPage() {
                       <span className="text-gray-400">Subtotal:</span>
                       <span className="font-medium">{formatCurrency(calculateSubtotal())}</span>
                     </div>
-                    {serviceTaxPercentage > 0 && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Taxa de Serviço ({serviceTaxPercentage}%):</span>
-                        <span className="font-medium text-yellow-400">+{formatCurrency(calculateServiceTax())}</span>
-                      </div>
-                    )}
-                    {discountValue > 0 && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">Desconto:</span>
-                        <span className="font-medium text-green-400">
-                          -{discountType === 'percentage' 
-                            ? `${discountValue}%` 
-                            : formatCurrency(discountValue)}
+                    
+                    {/* Taxa de Serviço com botão para remover/restaurar */}
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-gray-400">Taxa de Serviço (10%):</span>
+                      <div className="flex items-center gap-2">
+                        <span className={`font-medium ${serviceTaxPercentage > 0 ? 'text-yellow-400' : 'text-gray-500 line-through'}`}>
+                          {serviceTaxPercentage > 0 ? '+' : ''}{formatCurrency(calculateServiceTax())}
                         </span>
+                        <Button
+                          size="sm"
+                          onClick={() => setServiceTaxPercentage(serviceTaxPercentage > 0 ? 0 : 10)}
+                          className="h-6 w-6 p-0 bg-gray-700 hover:bg-gray-600"
+                          title={serviceTaxPercentage > 0 ? "Remover taxa de serviço" : "Restaurar taxa de serviço"}
+                        >
+                          {serviceTaxPercentage > 0 ? <X className="h-3 w-3" /> : <RefreshCw className="h-3 w-3" />}
+                        </Button>
                       </div>
-                    )}
+                    </div>
+                    
+                    {/* Controles de Desconto */}
+                    <div className="pt-2 border-t border-gray-600">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs text-gray-400">Desconto:</span>
+                        <div className="flex gap-1">
+                          <Button
+                            size="sm"
+                            onClick={() => setDiscountType('value')}
+                            className={`h-6 px-2 text-xs ${
+                              discountType === 'value' ? "bg-orange-600" : "bg-gray-700"
+                            }`}
+                          >
+                            R$
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() => setDiscountType('percentage')}
+                            className={`h-6 px-2 text-xs ${
+                              discountType === 'percentage' ? "bg-orange-600" : "bg-gray-700"
+                            }`}
+                          >
+                            %
+                          </Button>
+                          <Input
+                            type="number"
+                            value={discountValue || ''}
+                            onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
+                            maxLength={6}
+                            className="h-6 w-16 bg-gray-700 border-gray-600 text-white text-xs px-2"
+                            placeholder="0"
+                          />
+                        </div>
+                      </div>
+                      {discountValue > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-400">Desconto aplicado:</span>
+                          <span className="font-medium text-green-400">
+                            -{formatCurrency(
+                              discountType === 'percentage'
+                                ? (calculateTotal() * discountValue / 100)
+                                : discountValue
+                            )}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="flex justify-between text-sm font-bold pt-2 border-t border-gray-600">
                       <span>Total:</span>
                       <span className="text-orange-400">{formatCurrency(calculateTotalWithDiscount())}</span>
