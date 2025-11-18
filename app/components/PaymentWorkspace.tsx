@@ -373,7 +373,6 @@ export default function PaymentWorkspace({
                                   {item.cancelledQuantity > 0 && (
                                     <span className="text-red-400">{item.cancelledQuantity}</span>
                                   )}
-                                  <span className="text-orange-400">x</span>
                                 </span>
                               ) : (
                                 <span className="text-orange-400">{item.quantity}x</span>
