@@ -171,11 +171,11 @@ export default function PaymentWorkspace({
       </div>
 
       {/* Grid de 3 colunas */}
-      <div className="flex-1 grid grid-cols-[1.4fr_0.8fr_0.8fr] gap-4 p-4 overflow-hidden">
+      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 overflow-hidden">
         
         {/* Coluna Esquerda - Resumo dos Itens */}
         <div className="flex flex-col h-full">
-          <Card className="bg-gray-800 border-gray-700 flex flex-col rounded-lg" style={{ maxHeight: 'calc(100vh - 250px)' }}>
+          <Card className="bg-gray-800 border-gray-700 flex flex-col" style={{ maxHeight: 'calc(100vh - 250px)' }}>
             <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-sm flex items-center justify-between">
                 <span>Itens da Conta</span>
@@ -184,17 +184,40 @@ export default function PaymentWorkspace({
             </CardHeader>
             <CardContent className="py-2 overflow-hidden" style={{ height: 'calc(100vh - 320px)' }}>
               <ScrollArea className="h-full pr-2">
-                <div className="space-y-1 pr-1">
+                <div className="space-y-2 pr-1">
                   {groupedItems.map((item, idx) => (
                     <div 
                       key={idx} 
-                      className={`flex justify-between items-center py-1 px-2 rounded transition-colors ${
+                      className={`relative flex justify-between items-center p-2 rounded-lg transition-colors ${
                         item.status === 'cancelled' 
                           ? 'bg-red-900/30 border border-red-800/50 opacity-75' 
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
-                      <div className="flex-1">
+                      {/* Horário - centralizado */}
+                      {item.launched_at && (
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
+                          <div className={`${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} flex flex-col items-center justify-center opacity-60`}>
+                            <Clock className="h-2 w-2 mb-0.5" />
+                            <div className="flex items-center">
+                              {(() => {
+                                const date = new Date(item.launched_at);
+                                const hours = date.getHours().toString().padStart(2, '0');
+                                const minutes = date.getMinutes().toString().padStart(2, '0');
+                                const seconds = date.getSeconds().toString().padStart(2, '0');
+                                return (
+                                  <>
+                                    <span className="text-[10px] font-medium">{hours}:{minutes}</span>
+                                    <span className="text-[8px] font-normal opacity-80">:{seconds}</span>
+                                  </>
+                                );
+                              })()}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="flex-1 px-2">
                         <div className={`font-medium text-sm ${
                           item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'
                         }`}>
@@ -207,25 +230,10 @@ export default function PaymentWorkspace({
                           )}
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className={`font-bold text-sm ${
-                          item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
-                        }`}>
-                          {formatCurrency(item.total_price, true)}
-                        </div>
-                        {item.launched_at && (
-                          <div className={`text-[10px] ${
-                            item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'
-                          } opacity-70`}>
-                            {(() => {
-                              const date = new Date(item.launched_at);
-                              const hours = date.getHours().toString().padStart(2, '0');
-                              const minutes = date.getMinutes().toString().padStart(2, '0');
-                              const seconds = date.getSeconds().toString().padStart(2, '0');
-                              return `${hours}:${minutes}:${seconds}`;
-                            })()}
-                          </div>
-                        )}
+                      <div className={`font-bold text-sm px-2 ${
+                        item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
+                      }`}>
+                        {formatCurrency(item.total_price, true)}
                       </div>
                     </div>
                   ))}
@@ -238,7 +246,7 @@ export default function PaymentWorkspace({
         {/* Coluna Central - Ajustes e Calculadora */}
         <div className="flex flex-col gap-3">
           {/* Desconto e Divisão */}
-          <Card className="bg-gray-800 border-gray-700 rounded-lg">
+          <Card className="bg-gray-800 border-gray-700">
             <CardContent className="py-3">
               <div className="space-y-3">
                 {/* Desconto */}
@@ -463,7 +471,7 @@ export default function PaymentWorkspace({
 
           {/* Resumo Final */}
           {payments.length > 0 && (
-            <Card className="bg-gray-800 border-gray-700 rounded-lg">
+            <Card className="bg-gray-800 border-gray-700">
               <CardContent className="py-3">
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">

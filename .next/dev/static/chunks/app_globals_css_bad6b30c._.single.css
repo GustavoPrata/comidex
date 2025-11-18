@@ -645,6 +645,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-top: -.375rem;
 }
 
+.mb-0\.5 {
+  margin-bottom: .125rem;
+}
+
 .mb-1 {
   margin-bottom: .25rem;
 }
@@ -1374,8 +1378,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   grid-template-columns: repeat(8, minmax(0, 1fr));
 }
 
-.grid-cols-\[1\.4fr_0\.8fr_0\.8fr\] {
-  grid-template-columns: 1.4fr .8fr .8fr;
+.grid-cols-\[1\.2fr_1fr_0\.8fr\] {
+  grid-template-columns: 1.2fr 1fr .8fr;
 }
 
 .flex-col {
@@ -2708,6 +2712,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .text-\[11px\] {
   font-size: 11px;
+}
+
+.text-\[8px\] {
+  font-size: 8px;
 }
 
 .text-base {
