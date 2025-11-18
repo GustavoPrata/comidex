@@ -1713,6 +1713,12 @@ export default function POSPage() {
       
       if (sessionError) throw sessionError;
       
+      // Atualizar o status da mesa localmente
+      setSelectedTable((prev: any) => ({
+        ...prev,
+        status: 'occupied'
+      }));
+      
       toast.success("Mesa reaberta com sucesso!");
       
       // Recarregar dados da mesa
@@ -2515,19 +2521,30 @@ export default function POSPage() {
         </div>
       );
       
-      // Reset everything and go back to tables
-      setCart([]);
-      setCurrentOrder(null);
-      setCurrentSession(null);
-      setSelectedTable(null);
+      // Atualizar o status da mesa localmente para 'available'
+      setSelectedTable((prev: any) => ({
+        ...prev,
+        status: 'available'
+      }));
+      
+      // Limpar pagamentos mas manter a visualização
       setPayments([]);
       setDiscountValue(0);
       setDiscountType('percentage');
       setSplitCount(1);
-      setScreen('tables');
       
+      // Recarregar tabelas em background
       await loadTables();
       await loadTodayOrders();
+      
+      // Aguardar um pouco antes de voltar automaticamente
+      setTimeout(() => {
+        setCart([]);
+        setCurrentOrder(null);
+        setCurrentSession(null);
+        setSelectedTable(null);
+        setScreen('tables');
+      }, 3000); // Volta automaticamente após 3 segundos
     } catch (error) {
       console.error('Erro ao processar pagamento:', error);
       toast.error('Erro ao processar pagamento');
