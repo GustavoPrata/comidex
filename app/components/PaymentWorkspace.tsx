@@ -388,9 +388,22 @@ export default function PaymentWorkspace({
                           ) : (
                             <>
                               {formatCurrency(item.unit_price, true)}
-                              {(item.quantity + item.cancelledQuantity) > 1 && 
-                                ` × ${item.quantity + item.cancelledQuantity}`
-                              }
+                              {(item.quantity + item.cancelledQuantity) > 1 && (
+                                <>
+                                  {' × '}
+                                  {item.cancelledQuantity > 0 ? (
+                                    <>
+                                      <span className="text-gray-300">{item.quantity}</span>
+                                      {item.quantity > 0 && item.cancelledQuantity > 0 && '/'}
+                                      {item.cancelledQuantity > 0 && (
+                                        <span className="text-red-400">{item.cancelledQuantity}</span>
+                                      )}
+                                    </>
+                                  ) : (
+                                    <span>{item.quantity}</span>
+                                  )}
+                                </>
+                              )}
                             </>
                           )}
                         </div>
