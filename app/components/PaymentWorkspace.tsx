@@ -214,28 +214,6 @@ export default function PaymentWorkspace({
               </ScrollArea>
             </CardContent>
           </Card>
-
-          {/* Subtotais */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="py-3">
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-gray-300">
-                  <span>Subtotal</span>
-                  <span>{formatCurrency(calculateSubtotal())}</span>
-                </div>
-                {serviceTaxPercentage > 0 && (
-                  <div className="flex justify-between text-yellow-400">
-                    <span>Taxa de Serviço ({serviceTaxPercentage}%)</span>
-                    <span>+{formatCurrency(serviceTaxValue)}</span>
-                  </div>
-                )}
-                <div className="pt-2 border-t border-gray-600 flex justify-between text-white font-bold">
-                  <span>Total</span>
-                  <span className="text-orange-400">{formatCurrency(calculateTotal())}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Coluna Central - Ajustes e Calculadora */}
