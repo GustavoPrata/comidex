@@ -95,25 +95,47 @@ export default function PaymentWorkspace({
     }).format(value);
   };
 
-  // Agrupar itens iguais
+  // Agrupar itens iguais (incluindo cancelados)
   const consolidateItems = (items: any[]) => {
     const consolidated: any[] = [];
     const itemMap = new Map();
 
     items.forEach(item => {
-      // Criar chave única baseada no nome e preço unitário
-      const key = `${item.item?.name || 'Produto'}_${item.unit_price}_${item.status}`;
+      // Criar chave única baseada apenas no nome e preço unitário (sem status)
+      const key = `${item.item?.name || 'Produto'}_${item.unit_price}`;
       
       if (itemMap.has(key)) {
         const existing = itemMap.get(key);
-        existing.quantity += item.quantity;
-        existing.total_price += item.total_price;
+        
+        // Atualizar quantidades
+        if (item.status === 'cancelled') {
+          existing.cancelledQuantity = (existing.cancelledQuantity || 0) + item.quantity;
+        } else {
+          existing.quantity = (existing.quantity || 0) + item.quantity;
+          existing.total_price = (existing.total_price || 0) + item.total_price;
+        }
+        
         // Manter o launched_at mais recente
         if (item.launched_at && (!existing.launched_at || new Date(item.launched_at) > new Date(existing.launched_at))) {
           existing.launched_at = item.launched_at;
         }
+        
+        // Se tem cancelados, marcar como parcialmente cancelado
+        if (existing.cancelledQuantity > 0) {
+          existing.hasCancelled = true;
+        }
       } else {
-        itemMap.set(key, { ...item });
+        const newItem = { ...item };
+        if (item.status === 'cancelled') {
+          newItem.cancelledQuantity = item.quantity;
+          newItem.quantity = 0;
+          newItem.total_price = 0;
+          newItem.hasCancelled = true;
+        } else {
+          newItem.cancelledQuantity = 0;
+          newItem.hasCancelled = false;
+        }
+        itemMap.set(key, newItem);
       }
     });
 
@@ -332,41 +354,62 @@ export default function PaymentWorkspace({
                     <div 
                       key={idx} 
                       className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
-                        item.status === 'cancelled' 
+                        item.quantity === 0 && item.cancelledQuantity > 0
                           ? 'bg-red-900/30 border border-red-800/50 opacity-75' 
+                          : item.hasCancelled
+                          ? 'bg-yellow-900/20 border border-yellow-800/30'
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
                       <div className="flex-1 px-2">
                         <div className={`font-medium text-sm ${
-                          item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'
+                          item.quantity === 0 && item.cancelledQuantity > 0 ? 'text-red-400 line-through' : 'text-white'
                         }`}>
-                          {item.quantity > 1 && (
-                            <span className="text-orange-400 font-bold mr-1">{item.quantity}x</span>
+                          {/* Mostrar quantidade total ou proporção cancelada */}
+                          {(item.quantity > 1 || item.cancelledQuantity > 0) && (
+                            <span className="font-bold mr-1">
+                              {item.cancelledQuantity > 0 ? (
+                                <span>
+                                  <span className="text-orange-400">{item.quantity}</span>
+                                  {item.quantity > 0 && item.cancelledQuantity > 0 && '/'}
+                                  {item.cancelledQuantity > 0 && (
+                                    <span className="text-red-400">{item.cancelledQuantity}</span>
+                                  )}
+                                  <span className="text-orange-400">x</span>
+                                </span>
+                              ) : (
+                                <span className="text-orange-400">{item.quantity}x</span>
+                              )}
+                            </span>
                           )}
                           {item.item?.name || 'Produto'}
                         </div>
                         <div className="text-xs text-gray-400">
-                          {item.total_price === 0 ? (
+                          {item.total_price === 0 && item.unit_price === 0 ? (
                             <span className="text-green-400">Incluso no rodízio</span>
                           ) : (
                             <>
-                              {formatCurrency(item.unit_price, true)} {item.quantity > 1 && `× ${item.quantity}`}
+                              {formatCurrency(item.unit_price, true)}
+                              {(item.quantity + item.cancelledQuantity) > 1 && 
+                                ` × ${item.quantity + item.cancelledQuantity}`
+                              }
                             </>
                           )}
-                          {item.status === 'cancelled' && (
-                            <span className="ml-2 text-red-400">(Cancelado)</span>
+                          {item.hasCancelled && item.cancelledQuantity > 0 && (
+                            <span className="ml-2 text-red-400">
+                              ({item.cancelledQuantity} cancelado{item.cancelledQuantity > 1 ? 's' : ''})
+                            </span>
                           )}
                         </div>
                       </div>
                       <div className="flex flex-col items-end px-2">
                         <div className={`font-bold text-sm ${
-                          item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
+                          item.quantity === 0 && item.cancelledQuantity > 0 ? 'text-red-400 line-through' : 'text-orange-400'
                         }`}>
                           {formatCurrency(item.total_price, true)}
                         </div>
                         {item.launched_at && (
-                          <div className={`text-[10px] ${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} opacity-60`}>
+                          <div className={`text-[10px] ${item.quantity === 0 && item.cancelledQuantity > 0 ? 'text-red-400' : 'text-green-400'} opacity-60`}>
                             {(() => {
                               const date = new Date(item.launched_at);
                               const hours = date.getHours().toString().padStart(2, '0');
