@@ -171,14 +171,14 @@ export default function PaymentWorkspace({
         
         {/* Coluna Esquerda - Resumo dos Itens */}
         <div className="flex flex-col h-full">
-          <Card className="bg-gray-800 border-gray-700 flex-1 flex flex-col min-h-0">
+          <Card className="bg-gray-800 border-gray-700 flex flex-col" style={{ maxHeight: 'calc(100vh - 250px)' }}>
             <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-sm flex items-center justify-between">
                 <span>Itens da Conta</span>
                 <span className="text-orange-400">{groupedItems.length} itens</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 py-2 overflow-hidden min-h-0">
+            <CardContent className="py-2 overflow-hidden" style={{ height: 'calc(100vh - 320px)' }}>
               <ScrollArea className="h-full pr-2">
                 <div className="space-y-2 pr-1">
                   {groupedItems.map((item, idx) => (
