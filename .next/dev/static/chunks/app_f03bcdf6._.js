@@ -340,10 +340,18 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex items-center justify-end gap-3 px-2",
+                                                            className: "flex flex-col items-end px-2",
                                                             children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: `font-bold text-sm ${item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'}`,
+                                                                    children: formatCurrency(item.total_price, true)
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                    lineNumber: 211,
+                                                                    columnNumber: 25
+                                                                }, this),
                                                                 item.launched_at && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: `text-[10px] min-w-[60px] text-right ${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} opacity-60`,
+                                                                    className: `text-[10px] ${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} opacity-60`,
                                                                     children: (()=>{
                                                                         const date = new Date(item.launched_at);
                                                                         const hours = date.getHours().toString().padStart(2, '0');
@@ -353,16 +361,8 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                     })()
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                    lineNumber: 212,
+                                                                    lineNumber: 217,
                                                                     columnNumber: 27
-                                                                }, this),
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: `font-bold text-sm ${item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'}`,
-                                                                    children: formatCurrency(item.total_price, true)
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
-                                                                    lineNumber: 222,
-                                                                    columnNumber: 25
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
