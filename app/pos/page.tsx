@@ -3365,9 +3365,23 @@ export default function POSPage() {
                               }
                             }
                           }}
-                          className="bg-gray-800 border-gray-600 text-white text-lg h-10 pl-9"
+                          className="bg-gray-800 border-gray-600 text-white text-lg h-10 pl-9 pr-10"
                           placeholder="Buscar produto..."
                         />
+                        {inputValue && (
+                          <button
+                            onClick={() => {
+                              setInputValue("");
+                              setSearchQuery("");
+                              codeInputRef.current?.focus();
+                            }}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                            type="button"
+                            data-testid="clear-search"
+                          >
+                            <X className="h-3 w-3 text-gray-300" />
+                          </button>
+                        )}
                       </div>
                     </div>
                     <TabsList className="bg-gray-800 border-gray-700 h-10">
