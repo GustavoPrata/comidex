@@ -22,10 +22,12 @@ import {
   Banknote,
   Wallet,
   Clock,
-  RefreshCw
+  RefreshCw,
+  Package
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import { getIconByName } from '@/lib/menu-icons-library';
 
 interface PaymentWorkspaceProps {
   mode?: 'embedded' | 'modal';
@@ -359,17 +361,28 @@ export default function PaymentWorkspace({
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
-                      {/* Foto do produto */}
+                      {/* Foto ou Ícone do produto */}
                       <div className="w-10 h-10 bg-gray-700 rounded-lg mr-3 flex-shrink-0 overflow-hidden">
-                        <img
-                          src={item.item?.image || '/fotos/placeholder/placeholder.png'}
-                          alt={item.item?.name || ''}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.src = '/fotos/placeholder/placeholder.png';
-                          }}
-                        />
+                        {/* Verificar se é rodízio (tem icon) ou outros (tem image) */}
+                        {(item as any).icon || item.item?.icon ? (
+                          <div className="w-full h-full flex items-center justify-center text-orange-400">
+                            {(() => {
+                              const iconName = (item as any).icon || item.item?.icon;
+                              const IconComponent = getIconByName(iconName);
+                              return IconComponent ? <IconComponent className="h-5 w-5" /> : <Package className="h-5 w-5" />;
+                            })()}
+                          </div>
+                        ) : (
+                          <img
+                            src={item.item?.image || '/fotos/placeholder/placeholder.png'}
+                            alt={item.item?.name || ''}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/fotos/placeholder/placeholder.png';
+                            }}
+                          />
+                        )}
                       </div>
                       
                       <div className="flex-1">
