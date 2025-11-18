@@ -363,20 +363,10 @@ export default function PaymentWorkspace({
                         <div className={`font-medium text-sm ${
                           item.quantity === 0 && item.cancelledQuantity > 0 ? 'text-red-400 line-through' : 'text-white'
                         }`}>
-                          {/* Mostrar quantidade total ou proporção cancelada */}
-                          {(item.quantity > 1 || item.cancelledQuantity > 0) && (
-                            <span className="font-bold mr-1">
-                              {item.cancelledQuantity > 0 ? (
-                                <span>
-                                  <span className="text-orange-400">{item.quantity}</span>
-                                  {item.quantity > 0 && item.cancelledQuantity > 0 && '/'}
-                                  {item.cancelledQuantity > 0 && (
-                                    <span className="text-red-400">{item.cancelledQuantity}</span>
-                                  )}
-                                </span>
-                              ) : (
-                                <span className="text-orange-400">{item.quantity}x</span>
-                              )}
+                          {/* Mostrar quantidade total */}
+                          {(item.quantity + item.cancelledQuantity) > 1 && (
+                            <span className="text-orange-400 font-bold mr-1">
+                              {item.quantity + item.cancelledQuantity}x
                             </span>
                           )}
                           {item.item?.name || 'Produto'}
@@ -390,18 +380,13 @@ export default function PaymentWorkspace({
                               {(item.quantity + item.cancelledQuantity) > 1 && (
                                 <>
                                   {' × '}
-                                  {item.cancelledQuantity > 0 ? (
-                                    <>
-                                      <span className="text-gray-300">{item.quantity}</span>
-                                      {item.quantity > 0 && item.cancelledQuantity > 0 && '/'}
-                                      {item.cancelledQuantity > 0 && (
-                                        <span className="text-red-400">{item.cancelledQuantity}</span>
-                                      )}
-                                    </>
-                                  ) : (
-                                    <span>{item.quantity}</span>
-                                  )}
+                                  {item.quantity > 0 ? item.quantity : '0'}
                                 </>
+                              )}
+                              {item.cancelledQuantity > 0 && (
+                                <span className="text-red-400 ml-1">
+                                  + {item.cancelledQuantity} Cancelado{item.cancelledQuantity > 1 ? 's' : ''}
+                                </span>
                               )}
                             </>
                           )}
