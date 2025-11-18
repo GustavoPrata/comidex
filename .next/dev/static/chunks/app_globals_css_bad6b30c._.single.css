@@ -2100,6 +2100,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(234 88 12 / var(--tw-bg-opacity, 1));
 }
 
+.bg-orange-900\/20 {
+  background-color: #7c2d1233;
+}
+
 .bg-orange-900\/30 {
   background-color: #7c2d124d;
 }

@@ -78,12 +78,14 @@ import {
   Send,
   CheckCircle2,
   XCircle,
-  ArrowRight
+  ArrowRight,
+  Gift
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
 import PaymentWorkspace from "@/app/components/PaymentWorkspace";
+import PromocoesSection from "@/app/components/PromocoesSection";
 
 const supabase = createClient();
 
@@ -318,6 +320,16 @@ export default function POSPage() {
   const [calculatorValue, setCalculatorValue] = useState('');
   const [calculatorDisplay, setCalculatorDisplay] = useState('0');
   const [activePaymentInput, setActivePaymentInput] = useState<number | null>(null);
+  
+  // Estado para promoções aplicadas
+  const [appliedPromotions, setAppliedPromotions] = useState<any[]>([]);
+  
+  // Handler para quando uma promoção é ativada/desativada
+  const handlePromotionToggle = (promotion: any, applied: boolean) => {
+    // A atualização do estado já é feita pelo componente PromocoesSection
+    // Aqui podemos fazer qualquer lógica adicional necessária
+    console.log(`Promoção ${promotion.name} ${applied ? 'aplicada' : 'removida'}`);
+  };
   
   // Função para agrupar itens do carrinho
   const groupCartItems = (items: any[]) => {
@@ -1605,16 +1617,25 @@ export default function POSPage() {
     const serviceTax = calculateServiceTax();
     const totalWithTax = subtotal + serviceTax;
     
+    // Calcular desconto das promoções
+    const promotionsDiscount = appliedPromotions.reduce((sum, p) => sum + (p.discount || 0), 0);
+    
+    // Aplicar desconto manual (do usuário)
+    let manualDiscount = 0;
     if (discountType === 'percentage') {
       // Aplicar desconto no subtotal (antes da taxa)
       const discountAmount = subtotal * discountValue / 100;
       const subtotalAfterDiscount = subtotal - discountAmount;
       const serviceTaxAfterDiscount = serviceTaxPercentage > 0 ? (subtotalAfterDiscount * serviceTaxPercentage / 100) : 0;
-      return subtotalAfterDiscount + serviceTaxAfterDiscount;
+      manualDiscount = discountAmount;
     } else {
       // Desconto fixo aplicado no total (após taxa)
-      return Math.max(0, totalWithTax - discountValue);
+      manualDiscount = discountValue;
     }
+    
+    // Total com todos os descontos aplicados
+    const totalWithAllDiscounts = totalWithTax - manualDiscount - promotionsDiscount;
+    return Math.max(0, totalWithAllDiscounts);
   };
 
   // Calcular valor restante a pagar
@@ -4304,11 +4325,7 @@ export default function POSPage() {
                     
                     {/* Taxa de Serviço com botão para remover/restaurar */}
                     <div className="flex justify-between items-center text-sm pt-2 border-t border-gray-600">
-                      <span className="text-gray-400">Taxa de Serviço (10%):</span>
                       <div className="flex items-center gap-2">
-                        <span className={`font-medium ${serviceTaxPercentage > 0 ? 'text-yellow-400' : 'text-gray-500'}`}>
-                          {serviceTaxPercentage > 0 ? `+${formatCurrency(calculateServiceTax())}` : 'removida'}
-                        </span>
                         <Button
                           size="sm"
                           onClick={() => setServiceTaxPercentage(serviceTaxPercentage > 0 ? 0 : 10)}
@@ -4317,7 +4334,11 @@ export default function POSPage() {
                         >
                           {serviceTaxPercentage > 0 ? <X className="h-3 w-3" /> : <RefreshCw className="h-3 w-3" />}
                         </Button>
+                        <span className="text-gray-400">Taxa de Serviço (10%):</span>
                       </div>
+                      <span className={`font-medium ${serviceTaxPercentage > 0 ? 'text-yellow-400' : 'text-gray-500'}`}>
+                        {serviceTaxPercentage > 0 ? `+${formatCurrency(calculateServiceTax())}` : 'removida'}
+                      </span>
                     </div>
                     
                     {/* Controles de Desconto */}
@@ -4348,7 +4369,7 @@ export default function POSPage() {
                             value={discountValue || ''}
                             onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
                             maxLength={6}
-                            className="h-6 w-16 bg-gray-700 border-gray-600 text-white text-xs px-2"
+                            className="h-6 w-16 bg-gray-700 border-gray-600 text-white text-xs px-2 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                             placeholder="0"
                           />
                         </div>
@@ -4365,12 +4386,39 @@ export default function POSPage() {
                           </span>
                         </div>
                       )}
+                      
+                      {/* Desconto de promoções */}
+                      {appliedPromotions.length > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-purple-400">Promoções ativas ({appliedPromotions.length}):</span>
+                          <span className="font-medium text-purple-400">
+                            -{formatCurrency(
+                              appliedPromotions.reduce((sum, p) => sum + (p.discount || 0), 0)
+                            )}
+                          </span>
+                        </div>
+                      )}
                     </div>
                     
                     <div className="flex justify-between text-sm font-bold pt-2 border-t border-gray-600">
                       <span>Total:</span>
                       <span className="text-orange-400">{formatCurrency(calculateTotalWithDiscount())}</span>
                     </div>
+                  </div>
+                  
+                  {/* Seção de Promoções */}
+                  <div className="mt-4 space-y-3">
+                    <h3 className="text-sm font-semibold text-gray-400 flex items-center gap-2">
+                      <Gift className="h-4 w-4 text-orange-400" />
+                      Promoções Disponíveis
+                    </h3>
+                    <PromocoesSection 
+                      cart={cart}
+                      groups={groups}
+                      onPromotionToggle={handlePromotionToggle}
+                      appliedPromotions={appliedPromotions}
+                      setAppliedPromotions={setAppliedPromotions}
+                    />
                   </div>
                   
                 </CardContent>

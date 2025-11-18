@@ -33,7 +33,8 @@ import {
   Monitor,
   SlidersHorizontal,
   Link2,
-  Bell
+  Bell,
+  Gift
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -85,6 +86,7 @@ const menuItems: MenuItem[] = [
     submenu: [
       { label: 'Mesas', href: '/admin/tables', icon: Square },
       { label: 'Pedidos', href: '/admin/orders', icon: ShoppingCart },
+      { label: 'Promoções', href: '/admin/promocoes', icon: Gift },
       { label: 'Sessões', href: '/admin/tablet-sessions', icon: Tablet }
     ]
   },
