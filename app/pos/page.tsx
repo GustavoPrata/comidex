@@ -318,8 +318,7 @@ export default function POSPage() {
   const [discountValue, setDiscountValue] = useState(0);
   const [splitCount, setSplitCount] = useState(1);
   const [payments, setPayments] = useState<any[]>([]);
-  const [calculatorValue, setCalculatorValue] = useState('');
-  const [calculatorDisplay, setCalculatorDisplay] = useState('0');
+  const [paymentAmount, setPaymentAmount] = useState(0);
   const [activePaymentInput, setActivePaymentInput] = useState<number | null>(null);
   
   // Função para agrupar itens do carrinho
@@ -1642,11 +1641,15 @@ export default function POSPage() {
       return;
     }
     
-    const paymentAmount = Math.min(payment.amount, remaining);
+    const actualPaymentAmount = Math.min(payment.amount, remaining);
     setPayments([...payments, {
       ...payment,
-      amount: paymentAmount
+      amount: actualPaymentAmount
     }]);
+    
+    // Atualizar o valor do input para o restante
+    const newRemaining = remaining - actualPaymentAmount;
+    setPaymentAmount(newRemaining > 0 ? newRemaining : 0);
     
     if (calculateRemaining() - paymentAmount <= 0) {
       toast.success("Pagamento completo!");
@@ -1697,6 +1700,9 @@ export default function POSPage() {
         ...prev,
         status: 'closed'
       }));
+      
+      // Definir o valor inicial do pagamento como o total restante
+      setPaymentAmount(total);
       
       toast.success("Conta fechada com sucesso!");
       setConfirmCloseTableDialog(false);
@@ -4744,134 +4750,150 @@ export default function POSPage() {
                 </Card>
               </div>
               
-              {/* Coluna 2: Calculadora e Pagamento */}
+              {/* Coluna 2: Valor e Métodos de Pagamento */}
               <div className="space-y-4">
-                {/* Display da Calculadora */}
+                {/* Card de Pagamento */}
                 <Card className="bg-gray-800 border-gray-700">
-                  <CardContent className="p-4">
-                    <div className="bg-black rounded p-3 text-right text-3xl font-mono text-green-400">
-                      {calculatorDisplay}
-                    </div>
-                    
-                    {/* Teclado da Calculadora */}
-                    <div className="grid grid-cols-3 gap-2 mt-4">
-                      {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', 'C'].map((key) => (
+                  <CardHeader>
+                    <CardTitle className="text-lg">Adicionar Pagamento</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* Input de Valor Inteligente */}
+                    <div className="space-y-2">
+                      <label className="text-sm text-gray-400">Valor do Pagamento</label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-gray-500">R$</span>
+                        <input
+                          type="number"
+                          value={paymentAmount}
+                          onChange={(e) => setPaymentAmount(parseFloat(e.target.value) || 0)}
+                          onFocus={(e) => e.target.select()}
+                          className="w-full h-16 pl-16 pr-4 text-3xl font-bold text-white bg-gray-900 border-2 border-gray-700 rounded-lg focus:border-orange-500 focus:outline-none transition-all"
+                          placeholder="0,00"
+                          step="0.01"
+                          min="0"
+                        />
+                      </div>
+                      
+                      {/* Botões de Valor Rápido */}
+                      <div className="flex gap-2 pt-2">
                         <Button
-                          key={key}
-                          onClick={() => {
-                            if (key === 'C') {
-                              setCalculatorDisplay('0');
-                            } else if (calculatorDisplay === '0') {
-                              setCalculatorDisplay(key);
-                            } else {
-                              setCalculatorDisplay(calculatorDisplay + key);
-                            }
-                          }}
-                          className={`h-14 text-xl font-bold ${
-                            key === 'C' ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
-                          }`}
+                          size="sm"
+                          onClick={() => setPaymentAmount(calculateRemaining())}
+                          className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-semibold"
                         >
-                          {key}
+                          Total Restante
                         </Button>
-                      ))}
-                    </div>
-                    
-                    {/* Botões de Valor Rápido */}
-                    <div className="grid grid-cols-4 gap-2 mt-4">
-                      {[10, 20, 50, 100].map((value) => (
                         <Button
-                          key={value}
-                          onClick={() => setCalculatorDisplay(value.toString())}
+                          size="sm"
+                          onClick={() => setPaymentAmount(50)}
                           className="bg-gray-700 hover:bg-gray-600"
                         >
-                          R$ {value}
+                          R$ 50
                         </Button>
-                      ))}
+                        <Button
+                          size="sm"
+                          onClick={() => setPaymentAmount(100)}
+                          className="bg-gray-700 hover:bg-gray-600"
+                        >
+                          R$ 100
+                        </Button>
+                      </div>
                     </div>
                     
-                    {/* Botões de Pagamento */}
-                    <div className="grid grid-cols-2 gap-2 mt-4">
-                      <Button
-                        onClick={() => {
-                          const amount = parseFloat(calculatorDisplay) || 0;
-                          if (amount > 0) {
-                            addPayment({
-                              id: Date.now().toString(),
-                              method: 'cash',
-                              amount: amount,
-                              timestamp: new Date()
-                            });
-                            setCalculatorDisplay('0');
-                          }
-                        }}
-                        className="bg-green-600 hover:bg-green-700 h-12"
-                      >
-                        <DollarSign className="mr-2 h-5 w-5" />
-                        Dinheiro
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          const amount = parseFloat(calculatorDisplay) || 0;
-                          if (amount > 0) {
-                            addPayment({
-                              id: Date.now().toString(),
-                              method: 'credit',
-                              amount: amount,
-                              timestamp: new Date()
-                            });
-                            setCalculatorDisplay('0');
-                          }
-                        }}
-                        className="bg-blue-600 hover:bg-blue-700 h-12"
-                      >
-                        <CreditCard className="mr-2 h-5 w-5" />
-                        Crédito
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          const amount = parseFloat(calculatorDisplay) || 0;
-                          if (amount > 0) {
-                            addPayment({
-                              id: Date.now().toString(),
-                              method: 'debit',
-                              amount: amount,
-                              timestamp: new Date()
-                            });
-                            setCalculatorDisplay('0');
-                          }
-                        }}
-                        className="bg-purple-600 hover:bg-purple-700 h-12"
-                      >
-                        <CreditCard className="mr-2 h-5 w-5" />
-                        Débito
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          const amount = parseFloat(calculatorDisplay) || 0;
-                          if (amount > 0) {
-                            addPayment({
-                              id: Date.now().toString(),
-                              method: 'pix',
-                              amount: amount,
-                              timestamp: new Date()
-                            });
-                            setCalculatorDisplay('0');
-                          }
-                        }}
-                        className="bg-cyan-600 hover:bg-cyan-700 h-12"
-                      >
-                        <Smartphone className="mr-2 h-5 w-5" />
-                        PIX
-                      </Button>
+                    {/* Métodos de Pagamento */}
+                    <div className="space-y-2">
+                      <label className="text-sm text-gray-400">Método de Pagamento</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <Button
+                          onClick={() => {
+                            if (paymentAmount > 0) {
+                              addPayment({
+                                id: Date.now().toString(),
+                                method: 'cash',
+                                amount: paymentAmount,
+                                timestamp: new Date()
+                              });
+                              setPaymentAmount(calculateRemaining());
+                            }
+                          }}
+                          disabled={paymentAmount <= 0}
+                          className="h-14 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                        >
+                          <DollarSign className="mr-2 h-6 w-6" />
+                          <span className="text-base font-semibold">Dinheiro</span>
+                        </Button>
+                        
+                        <Button
+                          onClick={() => {
+                            if (paymentAmount > 0) {
+                              addPayment({
+                                id: Date.now().toString(),
+                                method: 'credit',
+                                amount: paymentAmount,
+                                timestamp: new Date()
+                              });
+                              setPaymentAmount(calculateRemaining());
+                            }
+                          }}
+                          disabled={paymentAmount <= 0}
+                          className="h-14 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                        >
+                          <CreditCard className="mr-2 h-6 w-6" />
+                          <span className="text-base font-semibold">Crédito</span>
+                        </Button>
+                        
+                        <Button
+                          onClick={() => {
+                            if (paymentAmount > 0) {
+                              addPayment({
+                                id: Date.now().toString(),
+                                method: 'debit',
+                                amount: paymentAmount,
+                                timestamp: new Date()
+                              });
+                              setPaymentAmount(calculateRemaining());
+                            }
+                          }}
+                          disabled={paymentAmount <= 0}
+                          className="h-14 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                        >
+                          <CreditCard className="mr-2 h-6 w-6" />
+                          <span className="text-base font-semibold">Débito</span>
+                        </Button>
+                        
+                        <Button
+                          onClick={() => {
+                            if (paymentAmount > 0) {
+                              addPayment({
+                                id: Date.now().toString(),
+                                method: 'pix',
+                                amount: paymentAmount,
+                                timestamp: new Date()
+                              });
+                              setPaymentAmount(calculateRemaining());
+                            }
+                          }}
+                          disabled={paymentAmount <= 0}
+                          className="h-14 bg-cyan-600 hover:bg-cyan-500 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                        >
+                          <Smartphone className="mr-2 h-6 w-6" />
+                          <span className="text-base font-semibold">PIX</span>
+                        </Button>
+                      </div>
                     </div>
                     
-                    {/* Botão Total Restante */}
-                    <Button
-                      onClick={() => setCalculatorDisplay(calculateRemaining().toString())}
-                      className="w-full mt-2 bg-orange-600 hover:bg-orange-700 h-12 text-lg"
-                    >
-                      Valor Restante: {formatCurrency(calculateRemaining())}
-                    </Button>
+                    {/* Informação de Valor Restante */}
+                    {calculateRemaining() > 0 && (
+                      <div className="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
+                        <div className="flex justify-between items-center">
+                          <span className="text-gray-400">Valor Restante:</span>
+                          <span className="text-xl font-bold text-orange-400">
+                            {formatCurrency(calculateRemaining())}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
