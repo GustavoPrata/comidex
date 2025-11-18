@@ -208,11 +208,6 @@ export default function PaymentWorkspace({
                         </div>
                       </div>
                       <div className="flex items-center justify-end gap-3 px-2">
-                        <div className={`font-bold text-sm ${
-                          item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
-                        }`}>
-                          {formatCurrency(item.total_price, true)}
-                        </div>
                         {item.launched_at && (
                           <div className={`text-[10px] min-w-[60px] text-right ${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} opacity-60`}>
                             {(() => {
@@ -224,6 +219,11 @@ export default function PaymentWorkspace({
                             })()}
                           </div>
                         )}
+                        <div className={`font-bold text-sm ${
+                          item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
+                        }`}>
+                          {formatCurrency(item.total_price, true)}
+                        </div>
                       </div>
                     </div>
                   ))}
