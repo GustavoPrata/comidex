@@ -3386,12 +3386,11 @@ export default function POSPage() {
               <TabsContent value="cart" className="flex-1 flex flex-col overflow-hidden min-h-0">
                 {/* Portal para Resultados da Busca em Tempo Real */}
                 {searchQuery.length > 0 && typeof document !== 'undefined' && createPortal(
-                        <div className="fixed z-[99999] bg-gray-900 rounded-lg border-2 border-orange-500 shadow-2xl overflow-hidden"
+                        <div className="fixed z-[99999] bg-gray-900 rounded-lg border-2 border-orange-500 shadow-2xl"
                              style={{ 
                                top: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().bottom + 8 : '50%',
                                left: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().left : '50%',
                                width: codeInputRef.current ? codeInputRef.current.getBoundingClientRect().width : '400px',
-                               maxHeight: '400px',
                                transform: codeInputRef.current ? 'none' : 'translate(-50%, -50%)'
                              }}>
                           {filteredItems.length === 0 ? (
@@ -3399,7 +3398,7 @@ export default function POSPage() {
                               Nenhum produto encontrado para "{searchQuery}"
                             </div>
                           ) : (
-                            <ScrollArea className="h-full max-h-[400px]">
+                            <ScrollArea className="h-[400px] w-full">
                               <div className="p-2">
                                 {filteredItems.map((item) => (
                                   <button
