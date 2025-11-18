@@ -3564,8 +3564,6 @@ export default function POSPage() {
                   setDiscountValue={setDiscountValue}
                   splitCount={splitCount}
                   setSplitCount={setSplitCount}
-                  calculatorDisplay={calculatorDisplay}
-                  setCalculatorDisplay={setCalculatorDisplay}
                   payments={payments}
                   addPayment={addPayment}
                   removePayment={removePayment}
