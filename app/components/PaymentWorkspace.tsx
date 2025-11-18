@@ -184,13 +184,13 @@ export default function PaymentWorkspace({
                   {groupedItems.map((item, idx) => (
                     <div 
                       key={idx} 
-                      className={`flex justify-between items-center p-4 rounded-lg transition-colors ${
+                      className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
                         item.status === 'cancelled' 
                           ? 'bg-red-900/30 border border-red-800/50 opacity-75' 
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
-                      <div className="flex-1">
+                      <div className="flex-1 px-2">
                         <div className={`font-medium text-sm ${
                           item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'
                         }`}>
@@ -203,7 +203,7 @@ export default function PaymentWorkspace({
                           )}
                         </div>
                       </div>
-                      <div className={`font-bold text-sm ${
+                      <div className={`font-bold text-sm px-2 ${
                         item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
                       }`}>
                         {formatCurrency(item.total_price)}
