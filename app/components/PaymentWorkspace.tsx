@@ -322,28 +322,22 @@ export default function PaymentWorkspace({
             <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-sm flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <span>Itens da Conta</span>
-                  <span className="text-orange-400">
-                    {consolidateItems(groupedItems.filter(item => showRodizioItems || item.total_price > 0)).length} itens
-                  </span>
-                </div>
-                {/* Toggle para mostrar itens do rodízio */}
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowRodizioItems(!showRodizioItems)}
-                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                      showRodizioItems ? 'bg-orange-500' : 'bg-gray-600'
-                    }`}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        showRodizioItems ? 'translate-x-5' : 'translate-x-1'
+                  <span>Produtos da Conta</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-400">Rodízio</span>
+                    <button
+                      onClick={() => setShowRodizioItems(!showRodizioItems)}
+                      className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors ${
+                        showRodizioItems ? 'bg-orange-600' : 'bg-gray-700'
                       }`}
-                    />
-                  </button>
-                  <span className="text-xs text-gray-400">
-                    Mostrar itens inclusos (rodízio)
-                  </span>
+                    >
+                      <span
+                        className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                          showRodizioItems ? 'translate-x-5' : 'translate-x-1'
+                        }`}
+                      />
+                    </button>
+                  </div>
                 </div>
               </CardTitle>
             </CardHeader>
