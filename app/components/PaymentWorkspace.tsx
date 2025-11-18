@@ -21,7 +21,8 @@ import {
   Receipt,
   Banknote,
   Wallet,
-  Clock
+  Clock,
+  RefreshCw
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -774,7 +775,7 @@ export default function PaymentWorkspace({
               onClick={reopenTable}
               className="h-10 px-6 bg-orange-600 hover:bg-orange-500 text-white font-medium"
             >
-              <Receipt className="h-4 w-4 mr-2" />
+              <RefreshCw className="h-4 w-4 mr-2" />
               Reabrir Mesa
             </Button>
           )}
