@@ -763,15 +763,15 @@ export default function PaymentWorkspace({
         <div className="flex gap-2">
           <Button
             onClick={() => window.location.href = '/pos'}
-            className="flex-1 h-12 bg-gray-700 hover:bg-gray-600"
+            className="h-10 px-6 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar para Mesas
+            Voltar
           </Button>
           {reopenTable && (
             <Button
               onClick={reopenTable}
-              className="flex-1 h-12 bg-orange-600 hover:bg-orange-700"
+              className="h-10 px-6 bg-orange-600 hover:bg-orange-500 text-white font-medium"
             >
               <Receipt className="h-4 w-4 mr-2" />
               Reabrir Mesa
