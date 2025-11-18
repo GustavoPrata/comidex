@@ -363,10 +363,10 @@ export default function PaymentWorkspace({
                         <div className={`font-medium text-sm ${
                           item.quantity === 0 && item.cancelledQuantity > 0 ? 'text-red-400 line-through' : 'text-white'
                         }`}>
-                          {/* Mostrar quantidade total */}
-                          {(item.quantity + item.cancelledQuantity) > 1 && (
+                          {/* Mostrar quantidade não cancelada */}
+                          {item.quantity > 1 && (
                             <span className="text-orange-400 font-bold mr-1">
-                              {item.quantity + item.cancelledQuantity}x
+                              {item.quantity}x
                             </span>
                           )}
                           {item.item?.name || 'Produto'}
