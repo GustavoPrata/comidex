@@ -130,7 +130,7 @@ interface RestaurantTable {
   number: string;
   capacity: number;
   type: 'table' | 'counter';
-  status: 'available' | 'occupied' | 'reserved' | 'cleaning';
+  status: 'available' | 'occupied' | 'reserved' | 'cleaning' | 'closed';
   active: boolean;
   current_session?: TableSession;
 }
@@ -244,6 +244,7 @@ export default function POSPage() {
   const [transferTableDialog, setTransferTableDialog] = useState(false);
   const [targetTableNumber, setTargetTableNumber] = useState('');
   const [cancelTableDialog, setCancelTableDialog] = useState(false);
+  const [confirmCloseTableDialog, setConfirmCloseTableDialog] = useState(false);
   
   // Estados do modal de cancelamento parcial
   const [cancelQuantityDialog, setCancelQuantityDialog] = useState(false);
@@ -1640,15 +1641,91 @@ export default function POSPage() {
     setPayments(payments.filter(p => p.id !== paymentId));
   };
 
-  // Iniciar checkout
+  // Iniciar processo de fechar conta
   const startCheckout = () => {
-    const grouped = groupCartItems();
-    setGroupedItems(grouped);
-    setCheckoutDialog(true);
-    setPayments([]);
-    setDiscountValue(0);
-    setSplitCount(1);
-    setCalculatorDisplay('0');
+    // Abrir modal de confirmação ao invés de ir direto para checkout
+    setConfirmCloseTableDialog(true);
+  };
+  
+  // Confirmar fechamento da conta
+  const confirmCloseTable = async () => {
+    if (!currentSession || !selectedTable) return;
+    
+    setLoading(true);
+    try {
+      // Calcular total da mesa
+      const total = calculateTotal();
+      
+      // Atualizar status da mesa para 'closed'
+      const { error: tableError } = await supabase
+        .from('restaurant_tables')
+        .update({ status: 'closed' })
+        .eq('id', selectedTable.id);
+      
+      if (tableError) throw tableError;
+      
+      // Atualizar sessão para indicar que está fechada mas não encerrada
+      const { error: sessionError } = await supabase
+        .from('table_sessions')
+        .update({
+          final_total: total,
+          notes: 'Conta fechada - aguardando pagamento'
+        })
+        .eq('id', currentSession.id);
+      
+      if (sessionError) throw sessionError;
+      
+      toast.success("Conta fechada com sucesso!");
+      setConfirmCloseTableDialog(false);
+      
+      // Recarregar dados da mesa
+      await loadSessionDetails(selectedTable.id);
+      
+    } catch (error: any) {
+      console.error('Erro ao fechar conta:', error);
+      toast.error(`Erro ao fechar conta: ${error.message || 'Erro desconhecido'}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // Reabrir mesa fechada
+  const reopenTable = async () => {
+    if (!currentSession || !selectedTable) return;
+    
+    setLoading(true);
+    try {
+      // Voltar status da mesa para 'occupied'
+      const { error: tableError } = await supabase
+        .from('restaurant_tables')
+        .update({ status: 'occupied' })
+        .eq('id', selectedTable.id);
+      
+      if (tableError) throw tableError;
+      
+      // Limpar notas da sessão
+      const { error: sessionError } = await supabase
+        .from('table_sessions')
+        .update({
+          notes: null,
+          final_total: null
+        })
+        .eq('id', currentSession.id);
+      
+      if (sessionError) throw sessionError;
+      
+      toast.success("Mesa reaberta com sucesso!");
+      
+      // Recarregar dados da mesa
+      await loadSessionDetails(selectedTable.id);
+      await loadTables();
+      
+    } catch (error: any) {
+      console.error('Erro ao reabrir mesa:', error);
+      toast.error(`Erro ao reabrir mesa: ${error.message || 'Erro desconhecido'}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Finalizar checkout e processar pagamento
@@ -1766,16 +1843,6 @@ export default function POSPage() {
     }
   };
 
-  // Reabrir mesa (cancelar checkout)
-  const reopenTable = () => {
-    if (confirm("Deseja reabrir a mesa e cancelar o fechamento?")) {
-      setCheckoutDialog(false);
-      setPayments([]);
-      setDiscountValue(0);
-      setSplitCount(1);
-      toast.success("Mesa reaberta!");
-    }
-  };
 
   const handleLaunchOrder = async () => {
     // Filtrar itens por status
@@ -2818,7 +2885,9 @@ export default function POSPage() {
                   <Card
                     className={`
                       cursor-pointer transition-all h-[160px]
-                      ${table.current_session 
+                      ${table.status === 'closed'
+                        ? 'bg-gradient-to-br from-red-900/40 to-red-800/30 border-red-600 shadow-red-600/20'
+                        : table.current_session 
                         ? 'bg-gradient-to-br from-orange-900/40 to-orange-800/30 border-orange-600 shadow-orange-600/20' 
                         : 'bg-gray-800/50 backdrop-blur border-gray-700 hover:bg-gray-700/50'}
                       shadow-lg hover:shadow-xl
@@ -2861,7 +2930,19 @@ export default function POSPage() {
                       </div>
                       
                       <div>
-                        {table.current_session ? (
+                        {table.status === 'closed' ? (
+                          <>
+                            <Badge className="bg-red-600 text-white text-xs py-0.5 mb-1">
+                              FECHADA
+                            </Badge>
+                            <div className="text-xs text-gray-300 mt-1 space-y-1">
+                              <div className="flex items-center justify-center gap-1">
+                                <CreditCard className="h-3 w-3" />
+                                <span>Aguardando pagamento</span>
+                              </div>
+                            </div>
+                          </>
+                        ) : table.current_session ? (
                           <>
                             <Badge className="bg-orange-600 text-white text-xs py-0.5 mb-1">
                               OCUPADA
@@ -3972,8 +4053,28 @@ export default function POSPage() {
                   Voltar
                 </Button>
                 
-                {/* Botões Cancelar/Lançar - Lado Direito (unidos) */}
-                {(() => {
+                {/* Botões Cancelar/Lançar ou Info de Mesa Fechada */}
+                {selectedTable?.status === 'closed' ? (
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1 bg-red-900/30 border border-red-600 rounded-lg px-4 py-2">
+                      <div className="flex items-center gap-3">
+                        <CreditCard className="h-5 w-5 text-red-400" />
+                        <div>
+                          <p className="text-sm font-semibold text-red-300">Conta Fechada</p>
+                          <p className="text-xs text-gray-400">Total: {formatCurrency(calculateTotal())}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <Button
+                      onClick={reopenTable}
+                      disabled={loading}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                      Reabrir Mesa
+                    </Button>
+                  </div>
+                ) : (() => {
                   // Verifica se há alterações pendentes
                   const hasPendingItems = cart.some(item => 
                     item.status === 'pending' || !item.status
@@ -4038,15 +4139,15 @@ export default function POSPage() {
                   {/* Botão Fechar Conta - Principal em laranja */}
                   <Button
                     onClick={startCheckout}
-                    disabled={loading || cart.length === 0}
+                    disabled={loading || cart.length === 0 || selectedTable?.status === 'closed'}
                     className={`w-full h-11 text-sm font-semibold transition-all ${
-                      cart.length === 0 
+                      cart.length === 0 || selectedTable?.status === 'closed'
                         ? "bg-gray-700 text-gray-400 cursor-not-allowed" 
                         : "bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20"
                     }`}
                   >
                     <CreditCard className="mr-2 h-4 w-4" />
-                    Fechar Conta
+                    {selectedTable?.status === 'closed' ? 'Conta Fechada' : 'Fechar Conta'}
                   </Button>
                   
                   {/* Botão Imprimir - Secundário */}
@@ -4856,6 +4957,74 @@ export default function POSPage() {
                   <>
                     <ArrowRight className="mr-2 h-4 w-4" />
                     Transferir
+                  </>
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        
+        {/* Dialog Confirmar Fechamento de Conta */}
+        <Dialog open={confirmCloseTableDialog} onOpenChange={setConfirmCloseTableDialog}>
+          <DialogContent className="bg-gray-800 text-white border-gray-700">
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2 text-orange-400">
+                <CreditCard className="h-5 w-5" />
+                Confirmar Fechamento da Conta
+              </DialogTitle>
+              <DialogDescription className="text-gray-400">
+                Mesa {selectedTable?.number} - Total: {formatCurrency(calculateTotal())}
+              </DialogDescription>
+            </DialogHeader>
+            
+            <div className="py-4 space-y-4">
+              <div className="bg-orange-900/30 border border-orange-600 rounded-lg p-4">
+                <p className="text-sm text-gray-300">
+                  Deseja realmente fechar a conta da mesa {selectedTable?.number}?
+                </p>
+                <p className="text-xs text-gray-400 mt-2">
+                  A mesa ficará marcada como "Fechada" até o pagamento ser processado.
+                </p>
+              </div>
+              
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="text-gray-400">Subtotal:</div>
+                  <div className="text-right font-medium">{formatCurrency(calculateSubtotal())}</div>
+                  {serviceTaxPercentage > 0 && (
+                    <>
+                      <div className="text-gray-400">Taxa de Serviço ({serviceTaxPercentage}%):</div>
+                      <div className="text-right font-medium">{formatCurrency(calculateServiceTax())}</div>
+                    </>
+                  )}
+                  <div className="text-orange-400 font-bold">Total:</div>
+                  <div className="text-right text-orange-400 font-bold">{formatCurrency(calculateTotal())}</div>
+                </div>
+              </div>
+            </div>
+            
+            <DialogFooter>
+              <Button 
+                variant="outline" 
+                onClick={() => setConfirmCloseTableDialog(false)}
+                className="bg-gray-700 hover:bg-gray-600 border-gray-600"
+              >
+                Cancelar
+              </Button>
+              <Button 
+                onClick={confirmCloseTable}
+                disabled={loading}
+                className="bg-orange-600 hover:bg-orange-700"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                    Fechando...
+                  </>
+                ) : (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
+                    Confirmar Fechamento
                   </>
                 )}
               </Button>

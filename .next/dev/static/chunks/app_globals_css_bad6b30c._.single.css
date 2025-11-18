@@ -2068,6 +2068,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(234 88 12 / var(--tw-bg-opacity, 1));
 }
 
+.bg-orange-900\/30 {
+  background-color: #7c2d124d;
+}
+
 .bg-popover {
   background-color: hsl(var(--popover));
 }
@@ -2320,6 +2324,12 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
+.from-red-900\/40 {
+  --tw-gradient-from: #7f1d1d66 var(--tw-gradient-from-position);
+  --tw-gradient-to: #7f1d1d00 var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
 .from-transparent {
   --tw-gradient-from: transparent var(--tw-gradient-from-position);
   --tw-gradient-to: #0000 var(--tw-gradient-to-position);
@@ -2399,6 +2409,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .to-red-600 {
   --tw-gradient-to: #dc2626 var(--tw-gradient-to-position);
+}
+
+.to-red-800\/30 {
+  --tw-gradient-to: #991b1b4d var(--tw-gradient-to-position);
 }
 
 .to-transparent {
@@ -3101,6 +3115,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .shadow-orange-600\/20 {
   --tw-shadow-color: #ea580c33;
+  --tw-shadow: var(--tw-shadow-colored);
+}
+
+.shadow-red-600\/20 {
+  --tw-shadow-color: #dc262633;
   --tw-shadow: var(--tw-shadow-colored);
 }
 
