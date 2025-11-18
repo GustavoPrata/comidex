@@ -468,7 +468,7 @@ export default function PaymentWorkspace({
                       return (
                         <div
                           key={payment.id}
-                          className="flex items-center justify-between p-2 bg-gray-700 rounded"
+                          className="flex items-center justify-between p-2 bg-gray-700 rounded-lg"
                         >
                           <div className="flex items-center gap-2">
                             <div className={cn("p-1.5 rounded", method?.color || 'bg-gray-600')}>
