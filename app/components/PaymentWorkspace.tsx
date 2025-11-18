@@ -76,6 +76,7 @@ export default function PaymentWorkspace({
   selectedTable,
   loading = false
 }: PaymentWorkspaceProps) {
+  const [showRodizioItems, setShowRodizioItems] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash');
   const [calcMemory, setCalcMemory] = useState<number>(0);
   const [calcOperation, setCalcOperation] = useState<string>('');
@@ -92,6 +93,32 @@ export default function PaymentWorkspace({
       style: 'currency',
       currency: 'BRL'
     }).format(value);
+  };
+
+  // Agrupar itens iguais
+  const consolidateItems = (items: any[]) => {
+    const consolidated: any[] = [];
+    const itemMap = new Map();
+
+    items.forEach(item => {
+      // Criar chave única baseada no nome e preço unitário
+      const key = `${item.item?.name || 'Produto'}_${item.unit_price}_${item.status}`;
+      
+      if (itemMap.has(key)) {
+        const existing = itemMap.get(key);
+        existing.quantity += item.quantity;
+        existing.total_price += item.total_price;
+        // Manter o launched_at mais recente
+        if (item.launched_at && (!existing.launched_at || new Date(item.launched_at) > new Date(existing.launched_at))) {
+          existing.launched_at = item.launched_at;
+        }
+      } else {
+        itemMap.set(key, { ...item });
+      }
+    });
+
+    itemMap.forEach(item => consolidated.push(item));
+    return consolidated;
   };
   
   const totalWithDiscount = calculateTotalWithDiscount();
@@ -269,19 +296,39 @@ export default function PaymentWorkspace({
         <div className="flex flex-col h-full">
           <Card className="bg-gray-800 border-gray-700 flex flex-col" style={{ maxHeight: 'calc(100vh - 250px)' }}>
             <CardHeader className="py-3 flex-shrink-0">
-              <CardTitle className="text-sm flex items-center justify-between">
-                <span>Itens da Conta</span>
-                <span className="text-orange-400">
-                  {groupedItems.filter(item => item.total_price > 0).length} itens
-                </span>
+              <CardTitle className="text-sm flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span>Itens da Conta</span>
+                  <span className="text-orange-400">
+                    {consolidateItems(groupedItems.filter(item => showRodizioItems || item.total_price > 0)).length} itens
+                  </span>
+                </div>
+                {/* Toggle para mostrar itens do rodízio */}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowRodizioItems(!showRodizioItems)}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                      showRodizioItems ? 'bg-orange-500' : 'bg-gray-600'
+                    }`}
+                  >
+                    <span
+                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                        showRodizioItems ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                    />
+                  </button>
+                  <span className="text-xs text-gray-400">
+                    Mostrar itens inclusos (rodízio)
+                  </span>
+                </div>
               </CardTitle>
             </CardHeader>
             <CardContent className="py-2 overflow-hidden" style={{ height: 'calc(100vh - 320px)' }}>
               <ScrollArea className="h-full pr-2">
                 <div className="space-y-2 pr-1">
-                  {groupedItems
-                    .filter(item => item.total_price > 0) // Não mostrar itens sem valor (rodízio)
-                    .map((item, idx) => (
+                  {consolidateItems(
+                    groupedItems.filter(item => showRodizioItems || item.total_price > 0)
+                  ).map((item, idx) => (
                     <div 
                       key={idx} 
                       className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
@@ -294,10 +341,19 @@ export default function PaymentWorkspace({
                         <div className={`font-medium text-sm ${
                           item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'
                         }`}>
+                          {item.quantity > 1 && (
+                            <span className="text-orange-400 font-bold mr-1">{item.quantity}x</span>
+                          )}
                           {item.item?.name || 'Produto'}
                         </div>
                         <div className="text-xs text-gray-400">
-                          {formatCurrency(item.unit_price, true)} × {item.quantity}
+                          {item.total_price === 0 ? (
+                            <span className="text-green-400">Incluso no rodízio</span>
+                          ) : (
+                            <>
+                              {formatCurrency(item.unit_price, true)} {item.quantity > 1 && `× ${item.quantity}`}
+                            </>
+                          )}
                           {item.status === 'cancelled' && (
                             <span className="ml-2 text-red-400">(Cancelado)</span>
                           )}
