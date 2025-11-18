@@ -695,10 +695,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   grid-column: span 2 / span 2;
 }
 
-.col-span-4 {
-  grid-column: span 4 / span 4;
-}
-
 .m-4 {
   margin: 1rem;
 }
@@ -716,6 +712,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .my-1 {
   margin-top: .25rem;
   margin-bottom: .25rem;
+}
+
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 .my-8 {
@@ -988,10 +989,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .h-\[300px\] {
   height: 300px;
-}
-
-.h-\[320px\] {
-  height: 320px;
 }
 
 .h-\[400px\] {
@@ -1440,10 +1437,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
-.grid-cols-12 {
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
 .grid-cols-2 {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -1868,6 +1861,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .border-orange-600\/30 {
   border-color: #ea580c4d;
+}
+
+.border-orange-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(194 65 12 / var(--tw-border-opacity, 1));
 }
 
 .border-primary {

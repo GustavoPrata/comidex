@@ -1617,19 +1617,17 @@ export default function POSPage() {
   };
 
   // Adicionar pagamento
-  const addPayment = (amount: number, method: string) => {
+  const addPayment = (payment: any) => {
     const remaining = calculateRemaining();
     if (remaining <= 0) {
       toast.error("Conta já está totalmente paga!");
       return;
     }
     
-    const paymentAmount = Math.min(amount, remaining);
+    const paymentAmount = Math.min(payment.amount, remaining);
     setPayments([...payments, {
-      id: Date.now(),
-      amount: paymentAmount,
-      method: method,
-      timestamp: new Date()
+      ...payment,
+      amount: paymentAmount
     }]);
     
     if (calculateRemaining() - paymentAmount <= 0) {
@@ -1638,7 +1636,7 @@ export default function POSPage() {
   };
 
   // Remover pagamento
-  const removePayment = (paymentId: number) => {
+  const removePayment = (paymentId: string) => {
     setPayments(payments.filter(p => p.id !== paymentId));
   };
 

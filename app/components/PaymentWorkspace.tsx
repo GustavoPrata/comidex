@@ -1,23 +1,32 @@
-'use client'
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { 
-  CreditCard, 
-  DollarSign, 
-  Smartphone, 
-  X, 
-  Minus, 
-  Plus,
-  Percent,
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  CreditCard,
+  DollarSign,
+  Smartphone,
+  Wallet,
   Calculator,
+  Check,
+  X,
+  Percent,
+  Hash,
+  Users,
   ArrowLeft,
-  CheckCircle
+  Trash2,
+  CheckCircle2,
+  Receipt,
+  Home,
+  Banknote
 } from 'lucide-react';
-import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import toast from 'react-hot-toast';
 
 interface PaymentWorkspaceProps {
   mode?: 'embedded' | 'modal';
@@ -34,18 +43,18 @@ interface PaymentWorkspaceProps {
   splitCount: number;
   setSplitCount: (count: number) => void;
   calculatorDisplay: string;
-  setCalculatorDisplay: (display: string) => void;
+  setCalculatorDisplay: (value: string) => void;
   payments: any[];
-  addPayment: (amount: number, method: string) => void;
+  addPayment: (payment: any) => void;
   removePayment: (id: string) => void;
   handleCompletePayment: () => void;
   reopenTable?: () => void;
-  selectedTable: any;
-  loading: boolean;
+  selectedTable?: any;
+  loading?: boolean;
 }
 
 export default function PaymentWorkspace({
-  mode = 'modal',
+  mode = 'embedded',
   groupedItems,
   calculateSubtotal,
   calculateTotal,
@@ -66,366 +75,528 @@ export default function PaymentWorkspace({
   handleCompletePayment,
   reopenTable,
   selectedTable,
-  loading
+  loading = false
 }: PaymentWorkspaceProps) {
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
+  const [step, setStep] = useState<'summary' | 'payment'>('summary');
+  
+  // Função para formatar valores monetários
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     }).format(value);
   };
+  
+  const totalWithDiscount = calculateTotalWithDiscount();
+  const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+  const remaining = Math.max(0, totalWithDiscount - totalPaid);
+  const perPersonAmount = totalWithDiscount / splitCount;
 
-  const remaining = calculateTotalWithDiscount() - payments.reduce((sum, p) => sum + p.amount, 0);
-  const isFullyPaid = remaining <= 0.01;
+  // Função para processar entrada da calculadora
+  const handleCalculatorInput = (value: string) => {
+    if (value === 'C') {
+      setCalculatorDisplay('0');
+    } else if (value === '⌫') {
+      setCalculatorDisplay(prev => prev.length > 1 ? prev.slice(0, -1) : '0');
+    } else if (value === '.') {
+      if (!calculatorDisplay.includes('.')) {
+        setCalculatorDisplay(prev => prev + '.');
+      }
+    } else {
+      setCalculatorDisplay(prev => prev === '0' ? value : prev + value);
+    }
+  };
 
-  // Layout horizontal para modo embedded (70% da tela)
-  if (mode === 'embedded') {
-    return (
-      <div className="grid grid-cols-12 gap-4 h-full">
-        {/* Coluna Esquerda - Resumo e Descontos (4 colunas) */}
-        <div className="col-span-4 flex flex-col gap-3">
-          <Card className="bg-gray-800 border-gray-700 flex-1">
-            <CardHeader className="py-3">
-              <CardTitle className="text-base flex items-center justify-between">
-                <span>Resumo da Conta</span>
-                <span className="text-orange-400">{formatCurrency(calculateSubtotal())}</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="py-2">
-              <ScrollArea className="h-[280px]">
-                <div className="space-y-1">
-                  {groupedItems.map((item, idx) => (
-                    <div key={idx} className="flex justify-between items-center p-2 bg-gray-700/50 rounded text-sm">
-                      <div className="flex-1">
-                        <div className="font-medium">{item.item?.name || 'Produto'}</div>
-                        <div className="text-xs text-gray-400">
-                          {formatCurrency(item.unit_price)} × {
-                            item.cancelledQuantity && item.cancelledQuantity > 0
-                              ? `${item.quantity - item.cancelledQuantity}`
-                              : item.quantity
-                          }
+  // Função para adicionar pagamento
+  const handleAddPayment = () => {
+    if (!selectedPaymentMethod) {
+      toast.error('Selecione um método de pagamento');
+      return;
+    }
+
+    const amount = parseFloat(calculatorDisplay) || 0;
+    if (amount <= 0) {
+      toast.error('Digite um valor válido');
+      return;
+    }
+
+    if (amount > remaining + 0.01) {
+      toast.error('Valor excede o restante a pagar');
+      return;
+    }
+
+    addPayment({
+      id: Date.now().toString(),
+      method: selectedPaymentMethod,
+      amount: amount,
+      timestamp: new Date()
+    });
+
+    // Limpar para próximo pagamento
+    setCalculatorDisplay('0');
+    setSelectedPaymentMethod('');
+    
+    // Se pagou tudo, avança automaticamente
+    if (amount >= remaining - 0.01) {
+      toast.success('Pagamento completo! Finalize a conta.');
+    }
+  };
+
+  // Função para adicionar valor rápido
+  const handleQuickAmount = (value: number) => {
+    setCalculatorDisplay(value.toFixed(2));
+  };
+
+  const paymentMethods = [
+    { id: 'cash', name: 'Dinheiro', icon: Banknote, color: 'bg-green-500' },
+    { id: 'credit', name: 'Crédito', icon: CreditCard, color: 'bg-blue-500' },
+    { id: 'debit', name: 'Débito', icon: CreditCard, color: 'bg-purple-500' },
+    { id: 'pix', name: 'PIX', icon: Smartphone, color: 'bg-orange-500' }
+  ];
+
+  return (
+    <div className="h-full flex flex-col bg-gray-900 rounded-lg">
+      {/* Header com Status */}
+      <div className="bg-orange-600 p-4 rounded-t-lg">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Receipt className="h-6 w-6 text-white" />
+            <h2 className="text-xl font-bold text-white">
+              Fechamento - Mesa {selectedTable?.number}
+            </h2>
+          </div>
+          {reopenTable && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={reopenTable}
+              className="text-white hover:bg-orange-700"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Reabrir Mesa
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Conteúdo Principal */}
+      <div className="flex-1 p-6 overflow-auto">
+        {step === 'summary' ? (
+          /* Etapa 1: Resumo e Ajustes */
+          <div className="space-y-6">
+            {/* Resumo da Conta */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Calculator className="h-5 w-5" />
+                  Resumo da Conta
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Lista de itens */}
+                <ScrollArea className="h-48 pr-4">
+                  <div className="space-y-2">
+                    {groupedItems.map((item, idx) => (
+                      <div key={idx} className="flex justify-between items-center p-2 bg-gray-700/50 rounded">
+                        <div className="flex-1">
+                          <div className="font-medium text-white">{item.item?.name || 'Produto'}</div>
+                          <div className="text-xs text-gray-400">
+                            {formatCurrency(item.unit_price)} × {item.quantity}
+                          </div>
+                        </div>
+                        <div className="text-orange-400 font-bold">
+                          {formatCurrency(item.total_price)}
                         </div>
                       </div>
-                      <div className="text-orange-400 font-bold">
-                        {formatCurrency(
-                          item.cancelledQuantity && item.cancelledQuantity > 0
-                            ? item.unit_price * (item.quantity - item.cancelledQuantity)
-                            : item.total_price
-                        )}
-                      </div>
+                    ))}
+                  </div>
+                </ScrollArea>
+                
+                <div className="my-4 border-t border-gray-600" />
+                
+                {/* Totais */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-gray-300">
+                    <span>Subtotal</span>
+                    <span className="font-mono">{formatCurrency(calculateSubtotal())}</span>
+                  </div>
+                  {serviceTaxPercentage > 0 && (
+                    <div className="flex justify-between text-gray-300">
+                      <span>Taxa de Serviço ({serviceTaxPercentage}%)</span>
+                      <span className="font-mono">{formatCurrency(serviceTaxValue)}</span>
                     </div>
-                  ))}
+                  )}
+                  <div className="flex justify-between text-xl font-bold text-white">
+                    <span>Total</span>
+                    <span className="font-mono text-orange-400">
+                      {formatCurrency(calculateTotal())}
+                    </span>
+                  </div>
                 </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          {/* Card de Descontos e Totais */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="py-3">
-              <div className="space-y-3">
-                {/* Desconto */}
-                <div>
-                  <Label className="text-xs">Desconto</Label>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Button
-                      size="sm"
-                      onClick={() => setDiscountType('percentage')}
-                      className={`h-7 ${discountType === 'percentage' ? 'bg-orange-600' : 'bg-gray-700'}`}
-                    >
-                      <Percent className="h-3 w-3" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => setDiscountType('value')}
-                      className={`h-7 ${discountType === 'value' ? 'bg-orange-600' : 'bg-gray-700'}`}
-                    >
-                      R$
-                    </Button>
-                    <input
+            {/* Desconto e Divisão lado a lado */}
+            <div className="grid grid-cols-2 gap-4">
+              {/* Desconto */}
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-white text-sm flex items-center gap-2">
+                    <Percent className="h-4 w-4" />
+                    Desconto
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant={discountType === 'percentage' ? 'default' : 'outline'}
+                        onClick={() => setDiscountType('percentage')}
+                        className={cn(
+                          "flex-1",
+                          discountType === 'percentage' 
+                            ? "bg-orange-600 hover:bg-orange-700" 
+                            : "border-gray-600 text-gray-300"
+                        )}
+                      >
+                        %
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant={discountType === 'value' ? 'default' : 'outline'}
+                        onClick={() => setDiscountType('value')}
+                        className={cn(
+                          "flex-1",
+                          discountType === 'value' 
+                            ? "bg-orange-600 hover:bg-orange-700" 
+                            : "border-gray-600 text-gray-300"
+                        )}
+                      >
+                        R$
+                      </Button>
+                    </div>
+                    
+                    <Input
                       type="number"
                       value={discountValue}
                       onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
-                      className="flex-1 h-7 px-2 bg-gray-700 border border-gray-600 rounded text-sm"
-                      placeholder={discountType === 'percentage' ? '0%' : 'R$ 0,00'}
+                      className="bg-gray-700 border-gray-600 text-white"
+                      placeholder="0"
                     />
-                  </div>
-                </div>
 
-                {/* Totais */}
-                <div className="space-y-1 text-sm">
-                  {serviceTaxPercentage > 0 && (
-                    <div className="flex justify-between text-yellow-400">
-                      <span>Taxa ({serviceTaxPercentage}%):</span>
-                      <span>+{formatCurrency(serviceTaxValue)}</span>
-                    </div>
-                  )}
-                  {discountValue > 0 && (
-                    <div className="flex justify-between text-green-400">
-                      <span>Desconto:</span>
-                      <span>
-                        -{discountType === 'percentage' 
-                          ? `${discountValue}%` 
-                          : formatCurrency(discountValue)}
-                      </span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-600">
-                    <span>Total:</span>
-                    <span className="text-orange-400">{formatCurrency(calculateTotalWithDiscount())}</span>
-                  </div>
-                </div>
-
-                {/* Divisão */}
-                <div className="flex items-center gap-2">
-                  <span className="text-sm">Dividir:</span>
-                  <div className="flex items-center gap-1">
-                    <Button
-                      size="sm"
-                      onClick={() => setSplitCount(Math.max(1, splitCount - 1))}
-                      className="h-6 w-6 p-0 bg-gray-700"
-                    >
-                      <Minus className="h-3 w-3" />
-                    </Button>
-                    <span className="w-8 text-center text-sm font-bold">{splitCount}</span>
-                    <Button
-                      size="sm"
-                      onClick={() => setSplitCount(splitCount + 1)}
-                      className="h-6 w-6 p-0 bg-gray-700"
-                    >
-                      <Plus className="h-3 w-3" />
-                    </Button>
-                  </div>
-                  {splitCount > 1 && (
-                    <span className="text-xs text-gray-400">
-                      {formatCurrency(calculateTotalWithDiscount() / splitCount)} cada
-                    </span>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Coluna Central - Calculadora (4 colunas) */}
-        <div className="col-span-4">
-          <Card className="bg-gray-800 border-gray-700 h-full">
-            <CardHeader className="py-3">
-              <CardTitle className="text-base">Calculadora</CardTitle>
-            </CardHeader>
-            <CardContent className="py-2">
-              <div className="bg-black rounded p-2 text-right text-2xl font-mono text-green-400">
-                {calculatorDisplay}
-              </div>
-              
-              {/* Teclado */}
-              <div className="grid grid-cols-3 gap-1 mt-3">
-                {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '00', 'C'].map((key) => (
-                  <Button
-                    key={key}
-                    onClick={() => {
-                      if (key === 'C') {
-                        setCalculatorDisplay('0');
-                      } else if (calculatorDisplay === '0') {
-                        setCalculatorDisplay(key);
-                      } else {
-                        setCalculatorDisplay(calculatorDisplay + key);
-                      }
-                    }}
-                    className={`h-10 text-lg font-bold ${
-                      key === 'C' ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
-                    }`}
-                  >
-                    {key}
-                  </Button>
-                ))}
-              </div>
-              
-              {/* Valores Rápidos */}
-              <div className="grid grid-cols-4 gap-1 mt-3">
-                {[10, 20, 50, 100].map((value) => (
-                  <Button
-                    key={value}
-                    onClick={() => setCalculatorDisplay(value.toString())}
-                    className="h-8 text-xs bg-gray-700 hover:bg-gray-600"
-                  >
-                    R${value}
-                  </Button>
-                ))}
-              </div>
-              
-              {/* Métodos de Pagamento */}
-              <div className="grid grid-cols-2 gap-2 mt-3">
-                <Button
-                  onClick={() => {
-                    const amount = parseFloat(calculatorDisplay) || 0;
-                    if (amount > 0) {
-                      addPayment(amount, 'cash');
-                      setCalculatorDisplay('0');
-                    }
-                  }}
-                  className="bg-green-600 hover:bg-green-700 h-10"
-                >
-                  <DollarSign className="h-4 w-4 mr-1" />
-                  Dinheiro
-                </Button>
-                <Button
-                  onClick={() => {
-                    const amount = parseFloat(calculatorDisplay) || 0;
-                    if (amount > 0) {
-                      addPayment(amount, 'credit');
-                      setCalculatorDisplay('0');
-                    }
-                  }}
-                  className="bg-blue-600 hover:bg-blue-700 h-10"
-                >
-                  <CreditCard className="h-4 w-4 mr-1" />
-                  Crédito
-                </Button>
-                <Button
-                  onClick={() => {
-                    const amount = parseFloat(calculatorDisplay) || 0;
-                    if (amount > 0) {
-                      addPayment(amount, 'debit');
-                      setCalculatorDisplay('0');
-                    }
-                  }}
-                  className="bg-purple-600 hover:bg-purple-700 h-10"
-                >
-                  <CreditCard className="h-4 w-4 mr-1" />
-                  Débito
-                </Button>
-                <Button
-                  onClick={() => {
-                    const amount = parseFloat(calculatorDisplay) || 0;
-                    if (amount > 0) {
-                      addPayment(amount, 'pix');
-                      setCalculatorDisplay('0');
-                    }
-                  }}
-                  className="bg-cyan-600 hover:bg-cyan-700 h-10"
-                >
-                  <Smartphone className="h-4 w-4 mr-1" />
-                  PIX
-                </Button>
-              </div>
-
-              {/* Botão Valor Total */}
-              <Button
-                onClick={() => setCalculatorDisplay(Math.ceil(remaining).toString())}
-                className="w-full mt-2 bg-orange-600 hover:bg-orange-700 h-10"
-                disabled={remaining <= 0}
-              >
-                Valor Restante: {formatCurrency(remaining)}
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Coluna Direita - Pagamentos e Ações (4 colunas) */}
-        <div className="col-span-4 flex flex-col gap-3">
-          <Card className="bg-gray-800 border-gray-700 flex-1">
-            <CardHeader className="py-3">
-              <CardTitle className="text-base">Pagamentos Realizados</CardTitle>
-            </CardHeader>
-            <CardContent className="py-2">
-              <ScrollArea className="h-[320px]">
-                <div className="space-y-2">
-                  {payments.length === 0 ? (
-                    <div className="text-center text-gray-500 py-8">
-                      <CreditCard className="h-10 w-10 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">Nenhum pagamento</p>
-                    </div>
-                  ) : (
-                    payments.map((payment) => (
-                      <div key={payment.id} className="flex justify-between items-center p-2 bg-gray-700/50 rounded">
-                        <div>
-                          <div className="text-sm font-medium">
-                            {payment.method === 'cash' && 'Dinheiro'}
-                            {payment.method === 'credit' && 'Crédito'}
-                            {payment.method === 'debit' && 'Débito'}
-                            {payment.method === 'pix' && 'PIX'}
-                          </div>
-                          <div className="text-xs text-gray-400">
-                            {format(payment.timestamp, 'HH:mm:ss')}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-bold text-green-400">
-                            {formatCurrency(payment.amount)}
-                          </span>
-                          <Button
-                            size="sm"
-                            onClick={() => removePayment(payment.id)}
-                            className="h-6 w-6 p-0 bg-red-600 hover:bg-red-700"
-                          >
-                            <X className="h-3 w-3" />
-                          </Button>
-                        </div>
+                    {discountValue > 0 && (
+                      <div className="text-sm text-green-400">
+                        Desconto: {formatCurrency(
+                          discountType === 'percentage'
+                            ? (calculateTotal() * discountValue / 100)
+                            : discountValue
+                        )}
                       </div>
-                    ))
-                  )}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
 
-          {/* Resumo e Ações */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardContent className="py-3">
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Total Pago:</span>
-                    <span className="font-bold text-green-400">
-                      {formatCurrency(payments.reduce((sum, p) => sum + p.amount, 0))}
+              {/* Divisão da Conta */}
+              <Card className="bg-gray-800 border-gray-700">
+                <CardHeader>
+                  <CardTitle className="text-white text-sm flex items-center gap-2">
+                    <Users className="h-4 w-4" />
+                    Dividir
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <Input
+                      type="number"
+                      min="1"
+                      value={splitCount}
+                      onChange={(e) => setSplitCount(Math.max(1, parseInt(e.target.value) || 1))}
+                      className="bg-gray-700 border-gray-600 text-white"
+                    />
+                    
+                    {splitCount > 1 && (
+                      <div className="p-2 bg-gray-700 rounded text-center">
+                        <p className="text-xs text-gray-400">Por pessoa</p>
+                        <p className="text-lg font-bold text-orange-400">
+                          {formatCurrency(perPersonAmount)}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Total Final */}
+            {(discountValue > 0 || splitCount > 1) && (
+              <Card className="bg-orange-900/30 border-orange-700">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg text-white">Total Final</span>
+                    <span className="text-2xl font-bold text-orange-400">
+                      {formatCurrency(totalWithDiscount)}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Restante:</span>
-                    <span className={`font-bold ${remaining > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                      {formatCurrency(Math.max(0, remaining))}
-                    </span>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Botão para Avançar */}
+            <Button
+              onClick={() => setStep('payment')}
+              className="w-full h-14 text-lg bg-orange-600 hover:bg-orange-700"
+            >
+              Avançar para Pagamento
+              <CheckCircle2 className="ml-2 h-5 w-5" />
+            </Button>
+          </div>
+        ) : (
+          /* Etapa 2: Pagamento */
+          <div className="space-y-6">
+            {/* Resumo Compacto */}
+            <Card className="bg-gray-800 border-gray-700">
+              <CardContent className="p-4">
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <p className="text-xs text-gray-400">Total</p>
+                    <p className="text-lg font-bold text-white">
+                      {formatCurrency(totalWithDiscount)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400">Pago</p>
+                    <p className="text-lg font-bold text-green-400">
+                      {formatCurrency(totalPaid)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-400">Restante</p>
+                    <p className="text-lg font-bold text-orange-400">
+                      {formatCurrency(remaining)}
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Layout em duas colunas */}
+            <div className="grid grid-cols-2 gap-6">
+              {/* Coluna Esquerda - Métodos e Calculadora */}
+              <div className="space-y-4">
+                {/* Métodos de Pagamento */}
+                <div>
+                  <Label className="text-gray-300 mb-3 block">
+                    Método de Pagamento
+                  </Label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {paymentMethods.map((method) => {
+                      const Icon = method.icon;
+                      return (
+                        <Button
+                          key={method.id}
+                          variant={selectedPaymentMethod === method.id ? 'default' : 'outline'}
+                          onClick={() => setSelectedPaymentMethod(method.id)}
+                          className={cn(
+                            "h-16 flex flex-col gap-1",
+                            selectedPaymentMethod === method.id
+                              ? method.color
+                              : "border-gray-600 text-gray-300 hover:bg-gray-800"
+                          )}
+                        >
+                          <Icon className="h-5 w-5" />
+                          <span className="text-xs">{method.name}</span>
+                        </Button>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* Botões de Ação */}
-                <div className="flex gap-2">
-                  {reopenTable && (
-                    <Button
-                      onClick={reopenTable}
-                      variant="outline"
-                      className="flex-1 text-yellow-400 border-yellow-400 hover:bg-yellow-400/10"
-                    >
-                      <ArrowLeft className="h-4 w-4 mr-1" />
-                      Reabrir
-                    </Button>
-                  )}
-                  <Button
-                    onClick={handleCompletePayment}
-                    disabled={!isFullyPaid || loading}
-                    className={`flex-1 ${
-                      isFullyPaid 
-                        ? 'bg-green-600 hover:bg-green-700' 
-                        : 'bg-gray-700 text-gray-400 cursor-not-allowed'
-                    }`}
-                  >
-                    <CheckCircle className="h-4 w-4 mr-1" />
-                    Finalizar
-                  </Button>
-                </div>
+                {/* Valores Rápidos */}
+                {remaining > 0 && (
+                  <div>
+                    <Label className="text-gray-300 mb-2 block text-sm">
+                      Valores Rápidos
+                    </Label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleQuickAmount(remaining)}
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                      >
+                        Restante
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleQuickAmount(perPersonAmount)}
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                      >
+                        1 Pessoa
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleQuickAmount(50)}
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                      >
+                        R$ 50
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleQuickAmount(100)}
+                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
+                      >
+                        R$ 100
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Calculadora */}
+                <Card className="bg-gray-800 border-gray-700">
+                  <CardContent className="p-3">
+                    <div className="space-y-3">
+                      {/* Display */}
+                      <div className="bg-gray-900 p-3 rounded">
+                        <p className="text-2xl font-mono text-white text-right">
+                          R$ {calculatorDisplay}
+                        </p>
+                      </div>
+
+                      {/* Teclado Numérico */}
+                      <div className="grid grid-cols-3 gap-1">
+                        {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.', '⌫'].map((btn) => (
+                          <Button
+                            key={btn}
+                            variant="outline"
+                            onClick={() => handleCalculatorInput(btn)}
+                            className="h-10 text-sm border-gray-600 text-white hover:bg-gray-700"
+                          >
+                            {btn}
+                          </Button>
+                        ))}
+                      </div>
+
+                      {/* Botões de Ação */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <Button
+                          variant="outline"
+                          onClick={() => handleCalculatorInput('C')}
+                          className="h-10 border-gray-600 text-gray-300 hover:bg-gray-800"
+                        >
+                          Limpar
+                        </Button>
+                        <Button
+                          onClick={handleAddPayment}
+                          disabled={!selectedPaymentMethod || parseFloat(calculatorDisplay) <= 0}
+                          className="h-10 bg-green-600 hover:bg-green-700"
+                        >
+                          <Check className="h-4 w-4 mr-1" />
+                          Adicionar
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
-  // Layout vertical original para modo modal
-  return (
-    <div className="grid grid-cols-3 gap-6">
-      {/* Implementação do modal original aqui se necessário */}
+              {/* Coluna Direita - Histórico de Pagamentos */}
+              <div className="space-y-4">
+                <Card className="bg-gray-800 border-gray-700">
+                  <CardHeader>
+                    <CardTitle className="text-white text-sm">
+                      Pagamentos Registrados
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ScrollArea className="h-64">
+                      <div className="space-y-2 pr-4">
+                        {payments.length === 0 ? (
+                          <div className="text-center py-8">
+                            <Wallet className="h-12 w-12 mx-auto mb-2 text-gray-600" />
+                            <p className="text-gray-400">Nenhum pagamento registrado</p>
+                          </div>
+                        ) : (
+                          payments.map((payment) => {
+                            const method = paymentMethods.find(m => m.id === payment.method);
+                            const Icon = method?.icon || Wallet;
+                            
+                            return (
+                              <div
+                                key={payment.id}
+                                className="flex items-center justify-between p-3 bg-gray-700 rounded-lg"
+                              >
+                                <div className="flex items-center gap-3">
+                                  <div className={cn("p-2 rounded", method?.color || 'bg-gray-600')}>
+                                    <Icon className="h-4 w-4 text-white" />
+                                  </div>
+                                  <div>
+                                    <p className="text-white font-medium">{method?.name}</p>
+                                    <p className="text-xs text-gray-400">
+                                      {formatCurrency(payment.amount)}
+                                    </p>
+                                  </div>
+                                </div>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => removePayment(payment.id)}
+                                  className="text-red-400 hover:bg-red-900/20"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    </ScrollArea>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            {/* Botões de Ação */}
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={() => setStep('summary')}
+                className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800"
+              >
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar
+              </Button>
+              
+              <Button
+                onClick={handleCompletePayment}
+                disabled={remaining > 0.01 || loading}
+                className={cn(
+                  "flex-1",
+                  remaining > 0.01 
+                    ? "bg-gray-600 cursor-not-allowed" 
+                    : "bg-green-600 hover:bg-green-700"
+                )}
+              >
+                {loading ? (
+                  <>Processando...</>
+                ) : remaining > 0.01 ? (
+                  <>Pagar Restante: {formatCurrency(remaining)}</>
+                ) : (
+                  <>
+                    <CheckCircle2 className="h-4 w-4 mr-2" />
+                    Finalizar Conta
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
