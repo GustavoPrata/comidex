@@ -4287,24 +4287,21 @@ export default function POSPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {/* Status da Mesa */}
-                  <div className="bg-red-900/30 border border-red-600 rounded-lg p-4">
-                    <div className="flex items-center gap-3">
-                      <CreditCard className="h-6 w-6 text-red-400" />
-                      <div>
-                        <p className="text-lg font-semibold text-red-300">Mesa {selectedTable.number} Fechada</p>
-                        {currentSession?.customer_count > 0 && (
-                          <p className="text-sm text-gray-400">
-                            {currentSession.customer_count} {currentSession.customer_count === 1 ? 'pessoa' : 'pessoas'}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                  
                   {/* Resumo de Valores */}
                   <div className="space-y-3 p-4 bg-gray-800 rounded-lg">
                     <div className="flex justify-between text-sm">
+                      <span className="text-gray-400">Lançados:</span>
+                      <span className="font-medium">{formatCurrency(
+                        cart.filter(item => item.status === 'delivered').reduce((sum, item) => sum + item.total_price, 0)
+                      )}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-400">Cancelados:</span>
+                      <span className="font-medium text-red-400">{formatCurrency(
+                        cart.filter(item => item.status === 'cancelled').reduce((sum, item) => sum + item.total_price, 0)
+                      )}</span>
+                    </div>
+                    <div className="flex justify-between text-sm pt-2 border-t border-gray-600">
                       <span className="text-gray-400">Subtotal:</span>
                       <span className="font-medium">{formatCurrency(calculateSubtotal())}</span>
                     </div>
@@ -4324,8 +4321,8 @@ export default function POSPage() {
                         </span>
                       </div>
                     )}
-                    <div className="flex justify-between text-lg font-bold pt-3 border-t border-gray-600">
-                      <span>Total Final:</span>
+                    <div className="flex justify-between text-sm font-bold pt-2 border-t border-gray-600">
+                      <span>Total:</span>
                       <span className="text-orange-400">{formatCurrency(calculateTotalWithDiscount())}</span>
                     </div>
                   </div>
