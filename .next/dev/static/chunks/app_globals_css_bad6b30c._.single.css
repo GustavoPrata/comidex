@@ -617,6 +617,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   grid-column: span 2 / span 2;
 }
 
+.col-span-4 {
+  grid-column: span 4 / span 4;
+}
+
 .m-4 {
   margin: 1rem;
 }
@@ -906,6 +910,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .h-\[300px\] {
   height: 300px;
+}
+
+.h-\[320px\] {
+  height: 320px;
 }
 
 .h-\[400px\] {
@@ -1352,6 +1360,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
 .grid-cols-2 {
@@ -2980,6 +2992,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-yellow-300 {
+  --tw-text-opacity: 1;
+  color: rgb(253 224 71 / var(--tw-text-opacity, 1));
 }
 
 .text-yellow-400 {

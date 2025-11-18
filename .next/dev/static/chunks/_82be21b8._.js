@@ -2152,6 +2152,980 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
+"[project]/components/ui/label.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "Label",
+    ()=>Label
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$label$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@radix-ui/react-label/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$class$2d$variance$2d$authority$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/class-variance-authority/dist/index.mjs [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/utils.ts [app-client] (ecmascript)");
+"use client";
+;
+;
+;
+;
+;
+const labelVariants = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$class$2d$variance$2d$authority$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cva"])("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70");
+const Label = /*#__PURE__*/ __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["forwardRef"](_c = ({ className, ...props }, ref)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$label$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"], {
+        ref: ref,
+        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])(labelVariants(), className),
+        ...props
+    }, void 0, false, {
+        fileName: "[project]/components/ui/label.tsx",
+        lineNumber: 18,
+        columnNumber: 3
+    }, ("TURBOPACK compile-time value", void 0)));
+_c1 = Label;
+Label.displayName = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$radix$2d$ui$2f$react$2d$label$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Root"].displayName;
+;
+var _c, _c1;
+__turbopack_context__.k.register(_c, "Label$React.forwardRef");
+__turbopack_context__.k.register(_c1, "Label");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
+"[project]/app/components/PaymentWorkspace.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "default",
+    ()=>PaymentWorkspace
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/card.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/button.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/scroll-area.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/components/ui/label.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/credit-card.js [app-client] (ecmascript) <export default as CreditCard>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/dollar-sign.js [app-client] (ecmascript) <export default as DollarSign>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$smartphone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Smartphone$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/smartphone.js [app-client] (ecmascript) <export default as Smartphone>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$minus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Minus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/minus.js [app-client] (ecmascript) <export default as Minus>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/plus.js [app-client] (ecmascript) <export default as Plus>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$percent$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Percent$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/percent.js [app-client] (ecmascript) <export default as Percent>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/arrow-left.js [app-client] (ecmascript) <export default as ArrowLeft>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check-big.js [app-client] (ecmascript) <export default as CheckCircle>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/date-fns/format.mjs [app-client] (ecmascript) <locals>");
+'use client';
+;
+;
+;
+;
+;
+;
+;
+function PaymentWorkspace({ mode = 'modal', groupedItems, calculateSubtotal, calculateTotal, calculateTotalWithDiscount, serviceTaxPercentage, serviceTaxValue, discountType, setDiscountType, discountValue, setDiscountValue, splitCount, setSplitCount, calculatorDisplay, setCalculatorDisplay, payments, addPayment, removePayment, handleCompletePayment, reopenTable, selectedTable, loading }) {
+    const formatCurrency = (value)=>{
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(value);
+    };
+    const remaining = calculateTotalWithDiscount() - payments.reduce((sum, p)=>sum + p.amount, 0);
+    const isFullyPaid = remaining <= 0.01;
+    // Layout horizontal para modo embedded (70% da tela)
+    if (mode === 'embedded') {
+        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: "grid grid-cols-12 gap-4 h-full",
+            children: [
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "col-span-4 flex flex-col gap-3",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                            className: "bg-gray-800 border-gray-700 flex-1",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                                    className: "py-3",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                        className: "text-base flex items-center justify-between",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                children: "Resumo da Conta"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 90,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "text-orange-400",
+                                                children: formatCurrency(calculateSubtotal())
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 91,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 89,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                    lineNumber: 88,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                    className: "py-2",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollArea"], {
+                                        className: "h-[280px]",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-1",
+                                            children: groupedItems.map((item, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between items-center p-2 bg-gray-700/50 rounded text-sm",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex-1",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "font-medium",
+                                                                    children: item.item?.name || 'Produto'
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                    lineNumber: 100,
+                                                                    columnNumber: 25
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "text-xs text-gray-400",
+                                                                    children: [
+                                                                        formatCurrency(item.unit_price),
+                                                                        " × ",
+                                                                        item.cancelledQuantity && item.cancelledQuantity > 0 ? `${item.quantity - item.cancelledQuantity}` : item.quantity
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                    lineNumber: 101,
+                                                                    columnNumber: 25
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 99,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "text-orange-400 font-bold",
+                                                            children: formatCurrency(item.cancelledQuantity && item.cancelledQuantity > 0 ? item.unit_price * (item.quantity - item.cancelledQuantity) : item.total_price)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 109,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, idx, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 98,
+                                                    columnNumber: 21
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                            lineNumber: 96,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 95,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                    lineNumber: 94,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                            lineNumber: 87,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                            className: "bg-gray-800 border-gray-700",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                className: "py-3",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "space-y-3",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
+                                                    className: "text-xs",
+                                                    children: "Desconto"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 129,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-2 mt-1",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            size: "sm",
+                                                            onClick: ()=>setDiscountType('percentage'),
+                                                            className: `h-7 ${discountType === 'percentage' ? 'bg-orange-600' : 'bg-gray-700'}`,
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$percent$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Percent$3e$__["Percent"], {
+                                                                className: "h-3 w-3"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                lineNumber: 136,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 131,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            size: "sm",
+                                                            onClick: ()=>setDiscountType('value'),
+                                                            className: `h-7 ${discountType === 'value' ? 'bg-orange-600' : 'bg-gray-700'}`,
+                                                            children: "R$"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 138,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                                            type: "number",
+                                                            value: discountValue,
+                                                            onChange: (e)=>setDiscountValue(parseFloat(e.target.value) || 0),
+                                                            className: "flex-1 h-7 px-2 bg-gray-700 border border-gray-600 rounded text-sm",
+                                                            placeholder: discountType === 'percentage' ? '0%' : 'R$ 0,00'
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 145,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 130,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                            lineNumber: 128,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-1 text-sm",
+                                            children: [
+                                                serviceTaxPercentage > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between text-yellow-400",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: [
+                                                                "Taxa (",
+                                                                serviceTaxPercentage,
+                                                                "%):"
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 159,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: [
+                                                                "+",
+                                                                formatCurrency(serviceTaxValue)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 160,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 158,
+                                                    columnNumber: 21
+                                                }, this),
+                                                discountValue > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between text-green-400",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: "Desconto:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 165,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: [
+                                                                "-",
+                                                                discountType === 'percentage' ? `${discountValue}%` : formatCurrency(discountValue)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 166,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 164,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between text-lg font-bold pt-2 border-t border-gray-600",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: "Total:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 174,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-orange-400",
+                                                            children: formatCurrency(calculateTotalWithDiscount())
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 175,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 173,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                            lineNumber: 156,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex items-center gap-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-sm",
+                                                    children: "Dividir:"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 181,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex items-center gap-1",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            size: "sm",
+                                                            onClick: ()=>setSplitCount(Math.max(1, splitCount - 1)),
+                                                            className: "h-6 w-6 p-0 bg-gray-700",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$minus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Minus$3e$__["Minus"], {
+                                                                className: "h-3 w-3"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                lineNumber: 188,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 183,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "w-8 text-center text-sm font-bold",
+                                                            children: splitCount
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 190,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                            size: "sm",
+                                                            onClick: ()=>setSplitCount(splitCount + 1),
+                                                            className: "h-6 w-6 p-0 bg-gray-700",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
+                                                                className: "h-3 w-3"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                lineNumber: 196,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 191,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 182,
+                                                    columnNumber: 19
+                                                }, this),
+                                                splitCount > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-xs text-gray-400",
+                                                    children: [
+                                                        formatCurrency(calculateTotalWithDiscount() / splitCount),
+                                                        " cada"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 200,
+                                                    columnNumber: 21
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                            lineNumber: 180,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                    lineNumber: 126,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                lineNumber: 125,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                            lineNumber: 124,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                    lineNumber: 86,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "col-span-4",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                        className: "bg-gray-800 border-gray-700 h-full",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                                className: "py-3",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                    className: "text-base",
+                                    children: "Calculadora"
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                    lineNumber: 214,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                lineNumber: 213,
+                                columnNumber: 13
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                className: "py-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "bg-black rounded p-2 text-right text-2xl font-mono text-green-400",
+                                        children: calculatorDisplay
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 217,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "grid grid-cols-3 gap-1 mt-3",
+                                        children: [
+                                            '7',
+                                            '8',
+                                            '9',
+                                            '4',
+                                            '5',
+                                            '6',
+                                            '1',
+                                            '2',
+                                            '3',
+                                            '0',
+                                            '00',
+                                            'C'
+                                        ].map((key)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                onClick: ()=>{
+                                                    if (key === 'C') {
+                                                        setCalculatorDisplay('0');
+                                                    } else if (calculatorDisplay === '0') {
+                                                        setCalculatorDisplay(key);
+                                                    } else {
+                                                        setCalculatorDisplay(calculatorDisplay + key);
+                                                    }
+                                                },
+                                                className: `h-10 text-lg font-bold ${key === 'C' ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'}`,
+                                                children: key
+                                            }, key, false, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 224,
+                                                columnNumber: 19
+                                            }, this))
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 222,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "grid grid-cols-4 gap-1 mt-3",
+                                        children: [
+                                            10,
+                                            20,
+                                            50,
+                                            100
+                                        ].map((value)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                onClick: ()=>setCalculatorDisplay(value.toString()),
+                                                className: "h-8 text-xs bg-gray-700 hover:bg-gray-600",
+                                                children: [
+                                                    "R$",
+                                                    value
+                                                ]
+                                            }, value, true, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 247,
+                                                columnNumber: 19
+                                            }, this))
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 245,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "grid grid-cols-2 gap-2 mt-3",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                onClick: ()=>{
+                                                    const amount = parseFloat(calculatorDisplay) || 0;
+                                                    if (amount > 0) {
+                                                        addPayment(amount, 'cash');
+                                                        setCalculatorDisplay('0');
+                                                    }
+                                                },
+                                                className: "bg-green-600 hover:bg-green-700 h-10",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$dollar$2d$sign$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__DollarSign$3e$__["DollarSign"], {
+                                                        className: "h-4 w-4 mr-1"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                        lineNumber: 269,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    "Dinheiro"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 259,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                onClick: ()=>{
+                                                    const amount = parseFloat(calculatorDisplay) || 0;
+                                                    if (amount > 0) {
+                                                        addPayment(amount, 'credit');
+                                                        setCalculatorDisplay('0');
+                                                    }
+                                                },
+                                                className: "bg-blue-600 hover:bg-blue-700 h-10",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__["CreditCard"], {
+                                                        className: "h-4 w-4 mr-1"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                        lineNumber: 282,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    "Crédito"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 272,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                onClick: ()=>{
+                                                    const amount = parseFloat(calculatorDisplay) || 0;
+                                                    if (amount > 0) {
+                                                        addPayment(amount, 'debit');
+                                                        setCalculatorDisplay('0');
+                                                    }
+                                                },
+                                                className: "bg-purple-600 hover:bg-purple-700 h-10",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__["CreditCard"], {
+                                                        className: "h-4 w-4 mr-1"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                        lineNumber: 295,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    "Débito"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 285,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                onClick: ()=>{
+                                                    const amount = parseFloat(calculatorDisplay) || 0;
+                                                    if (amount > 0) {
+                                                        addPayment(amount, 'pix');
+                                                        setCalculatorDisplay('0');
+                                                    }
+                                                },
+                                                className: "bg-cyan-600 hover:bg-cyan-700 h-10",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$smartphone$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Smartphone$3e$__["Smartphone"], {
+                                                        className: "h-4 w-4 mr-1"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                        lineNumber: 308,
+                                                        columnNumber: 19
+                                                    }, this),
+                                                    "PIX"
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 298,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 258,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                        onClick: ()=>setCalculatorDisplay(Math.ceil(remaining).toString()),
+                                        className: "w-full mt-2 bg-orange-600 hover:bg-orange-700 h-10",
+                                        disabled: remaining <= 0,
+                                        children: [
+                                            "Valor Restante: ",
+                                            formatCurrency(remaining)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 314,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                lineNumber: 216,
+                                columnNumber: 13
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                        lineNumber: 212,
+                        columnNumber: 11
+                    }, this)
+                }, void 0, false, {
+                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                    lineNumber: 211,
+                    columnNumber: 9
+                }, this),
+                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                    className: "col-span-4 flex flex-col gap-3",
+                    children: [
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                            className: "bg-gray-800 border-gray-700 flex-1",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardHeader"], {
+                                    className: "py-3",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardTitle"], {
+                                        className: "text-base",
+                                        children: "Pagamentos Realizados"
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 329,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                    lineNumber: 328,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                    className: "py-2",
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollArea"], {
+                                        className: "h-[320px]",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-2",
+                                            children: payments.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "text-center text-gray-500 py-8",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__["CreditCard"], {
+                                                        className: "h-10 w-10 mx-auto mb-2 opacity-50"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                        lineNumber: 336,
+                                                        columnNumber: 23
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                        className: "text-sm",
+                                                        children: "Nenhum pagamento"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                        lineNumber: 337,
+                                                        columnNumber: 23
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                lineNumber: 335,
+                                                columnNumber: 21
+                                            }, this) : payments.map((payment)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between items-center p-2 bg-gray-700/50 rounded",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "text-sm font-medium",
+                                                                    children: [
+                                                                        payment.method === 'cash' && 'Dinheiro',
+                                                                        payment.method === 'credit' && 'Crédito',
+                                                                        payment.method === 'debit' && 'Débito',
+                                                                        payment.method === 'pix' && 'PIX'
+                                                                    ]
+                                                                }, void 0, true, {
+                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                    lineNumber: 343,
+                                                                    columnNumber: 27
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "text-xs text-gray-400",
+                                                                    children: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$date$2d$fns$2f$format$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["format"])(payment.timestamp, 'HH:mm:ss')
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                    lineNumber: 349,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 342,
+                                                            columnNumber: 25
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "flex items-center gap-2",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "text-sm font-bold text-green-400",
+                                                                    children: formatCurrency(payment.amount)
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                    lineNumber: 354,
+                                                                    columnNumber: 27
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                                    size: "sm",
+                                                                    onClick: ()=>removePayment(payment.id),
+                                                                    className: "h-6 w-6 p-0 bg-red-600 hover:bg-red-700",
+                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                                                        className: "h-3 w-3"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                        lineNumber: 362,
+                                                                        columnNumber: 29
+                                                                    }, this)
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                                    lineNumber: 357,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 353,
+                                                            columnNumber: 25
+                                                        }, this)
+                                                    ]
+                                                }, payment.id, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 341,
+                                                    columnNumber: 23
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                            lineNumber: 333,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                        lineNumber: 332,
+                                        columnNumber: 15
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                    lineNumber: 331,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                            lineNumber: 327,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
+                            className: "bg-gray-800 border-gray-700",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
+                                className: "py-3",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "space-y-3",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-2",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between text-sm",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: "Total Pago:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 379,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "font-bold text-green-400",
+                                                            children: formatCurrency(payments.reduce((sum, p)=>sum + p.amount, 0))
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 380,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 378,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex justify-between text-sm",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            children: "Restante:"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 385,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: `font-bold ${remaining > 0 ? 'text-red-400' : 'text-green-400'}`,
+                                                            children: formatCurrency(Math.max(0, remaining))
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 386,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 384,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                            lineNumber: 377,
+                                            columnNumber: 17
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "flex gap-2",
+                                            children: [
+                                                reopenTable && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                    onClick: reopenTable,
+                                                    variant: "outline",
+                                                    className: "flex-1 text-yellow-400 border-yellow-400 hover:bg-yellow-400/10",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$arrow$2d$left$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ArrowLeft$3e$__["ArrowLeft"], {
+                                                            className: "h-4 w-4 mr-1"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 400,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        "Reabrir"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 395,
+                                                    columnNumber: 21
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                    onClick: handleCompletePayment,
+                                                    disabled: !isFullyPaid || loading,
+                                                    className: `flex-1 ${isFullyPaid ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-700 text-gray-400 cursor-not-allowed'}`,
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2d$big$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle$3e$__["CheckCircle"], {
+                                                            className: "h-4 w-4 mr-1"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                            lineNumber: 413,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        "Finalizar"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                                    lineNumber: 404,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                            lineNumber: 393,
+                                            columnNumber: 17
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                    lineNumber: 376,
+                                    columnNumber: 15
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                                lineNumber: 375,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
+                            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                            lineNumber: 374,
+                            columnNumber: 11
+                        }, this)
+                    ]
+                }, void 0, true, {
+                    fileName: "[project]/app/components/PaymentWorkspace.tsx",
+                    lineNumber: 326,
+                    columnNumber: 9
+                }, this)
+            ]
+        }, void 0, true, {
+            fileName: "[project]/app/components/PaymentWorkspace.tsx",
+            lineNumber: 84,
+            columnNumber: 7
+        }, this);
+    }
+    // Layout vertical original para modo modal
+    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        className: "grid grid-cols-3 gap-6"
+    }, void 0, false, {
+        fileName: "[project]/app/components/PaymentWorkspace.tsx",
+        lineNumber: 427,
+        columnNumber: 5
+    }, this);
+}
+_c = PaymentWorkspace;
+var _c;
+__turbopack_context__.k.register(_c, "PaymentWorkspace");
+if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
+    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
+}
+}),
 "[project]/app/pos/page.tsx [app-client] (ecmascript)", ((__turbopack_context__, module, exports) => {
 
 const e = new Error("Could not parse module '[project]/app/pos/page.tsx'\n\nExpected '</', got '{'");
@@ -2160,4 +3134,4 @@ throw e;
 }),
 ]);
 
-//# sourceMappingURL=_d9b0c418._.js.map
+//# sourceMappingURL=_82be21b8._.js.map

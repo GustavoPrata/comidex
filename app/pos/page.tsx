@@ -86,6 +86,7 @@ import {
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
+import PaymentWorkspace from "@/app/components/PaymentWorkspace";
 
 const supabase = createClient();
 
@@ -3415,9 +3416,38 @@ export default function POSPage() {
 
         {/* Main Content com Layout 70/30 */}
         <div className="flex flex-1 overflow-hidden">
-          {/* Left Panel 70% - Carrinho e Categorias */}
+          {/* Left Panel 70% - Carrinho e Categorias ou Interface de Pagamento */}
           <div className="w-[70%] flex flex-col border-r border-gray-700 overflow-hidden">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col p-4 pb-0 overflow-hidden">
+            {/* Se a mesa está fechada, mostra interface de pagamento */}
+            {selectedTable?.status === 'closed' ? (
+              <div className="flex-1 p-4">
+                <PaymentWorkspace
+                  mode="embedded"
+                  groupedItems={groupedItems}
+                  calculateSubtotal={calculateSubtotal}
+                  calculateTotal={calculateTotal}
+                  calculateTotalWithDiscount={calculateTotalWithDiscount}
+                  serviceTaxPercentage={serviceTaxPercentage}
+                  serviceTaxValue={serviceTaxValue}
+                  discountType={discountType}
+                  setDiscountType={setDiscountType}
+                  discountValue={discountValue}
+                  setDiscountValue={setDiscountValue}
+                  splitCount={splitCount}
+                  setSplitCount={setSplitCount}
+                  calculatorDisplay={calculatorDisplay}
+                  setCalculatorDisplay={setCalculatorDisplay}
+                  payments={payments}
+                  addPayment={addPayment}
+                  removePayment={removePayment}
+                  handleCompletePayment={handleCompletePayment}
+                  reopenTable={reopenTable}
+                  selectedTable={selectedTable}
+                  loading={loading}
+                />
+              </div>
+            ) : (
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col p-4 pb-0 overflow-hidden">
               {/* Input Section com Tabs */}
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4 overflow-visible">
                 <CardContent className="p-3 overflow-visible">
@@ -4039,6 +4069,7 @@ export default function POSPage() {
                 </Card>
               </TabsContent>
             </Tabs>
+            )}
             
             {/* Botões de Ação na parte inferior do painel esquerdo */}
             <div className="p-4 pt-2 bg-gray-900/50 border-t border-gray-700">
@@ -4126,8 +4157,97 @@ export default function POSPage() {
           
           {/* Right Panel 30% - Menu Lateral Compacto */}
           <div className="w-[30%] flex flex-col p-4 bg-gray-900/50">
-            {/* Card de Ações com Título */}
-            <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4">
+            {/* Se a mesa está fechada, mostra apenas resumo */}
+            {selectedTable?.status === 'closed' ? (
+              <Card className="bg-gray-900/50 backdrop-blur border-gray-700">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Receipt className="h-5 w-5 text-orange-400" />
+                    Resumo da Conta Fechada
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Status da Mesa */}
+                  <div className="bg-red-900/30 border border-red-600 rounded-lg p-4">
+                    <div className="flex items-center gap-3">
+                      <CreditCard className="h-6 w-6 text-red-400" />
+                      <div>
+                        <p className="text-lg font-semibold text-red-300">Mesa {selectedTable.number} Fechada</p>
+                        <p className="text-sm text-gray-400">Aguardando pagamento</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Resumo de Valores */}
+                  <div className="space-y-3 p-4 bg-gray-800 rounded-lg">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-400">Subtotal:</span>
+                      <span className="font-medium">{formatCurrency(calculateSubtotal())}</span>
+                    </div>
+                    {serviceTaxPercentage > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400">Taxa de Serviço ({serviceTaxPercentage}%):</span>
+                        <span className="font-medium text-yellow-400">+{formatCurrency(serviceTaxValue)}</span>
+                      </div>
+                    )}
+                    {discountValue > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400">Desconto:</span>
+                        <span className="font-medium text-green-400">
+                          -{discountType === 'percentage' 
+                            ? `${discountValue}%` 
+                            : formatCurrency(discountValue)}
+                        </span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-lg font-bold pt-3 border-t border-gray-600">
+                      <span>Total Final:</span>
+                      <span className="text-orange-400">{formatCurrency(calculateTotalWithDiscount())}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Informações da Sessão */}
+                  <div className="space-y-2 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Users className="h-4 w-4 text-gray-400" />
+                      <span className="text-gray-400">Pessoas:</span>
+                      <span className="font-medium">{currentSession?.customer_count || 0}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-gray-400" />
+                      <span className="text-gray-400">Mesa aberta:</span>
+                      <span className="font-medium">
+                        {currentSession?.opened_at 
+                          ? format(new Date(currentSession.opened_at), 'HH:mm', { locale: ptBR })
+                          : '-'}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <ShoppingCart className="h-4 w-4 text-gray-400" />
+                      <span className="text-gray-400">Total de Itens:</span>
+                      <span className="font-medium">
+                        {cart.filter(item => item.status !== 'cancelled').length}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* Status de Pagamento */}
+                  <div className="mt-4 p-4 bg-yellow-900/30 border border-yellow-600 rounded-lg">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle className="h-5 w-5 text-yellow-400" />
+                      <div className="flex-1">
+                        <p className="text-sm font-semibold text-yellow-300">Aguardando Pagamento</p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          Use a área de pagamento ao lado para processar
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              /* Card de Ações Normal - quando mesa não está fechada */
+              <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
                   <Settings className="h-4 w-4 text-orange-400" />
@@ -4252,6 +4372,7 @@ export default function POSPage() {
                 </div>
               </div>
             </div>
+            )}
             
           </div>
         </div>
