@@ -549,6 +549,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   left: 50%;
 }
 
+.right-0 {
+  right: 0;
+}
+
 .right-1\/4 {
   right: 25%;
 }

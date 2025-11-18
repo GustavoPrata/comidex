@@ -261,8 +261,8 @@ export default function PaymentWorkspace({
         </div>
       </div>
 
-      {/* Grid de 3 colunas */}
-      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 overflow-hidden">
+      {/* Grid de 3 colunas - com padding-bottom para o rodapé */}
+      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 pb-20 overflow-hidden">
         
         {/* Coluna Esquerda - Resumo dos Itens */}
         <div className="flex flex-col h-full">
@@ -755,26 +755,28 @@ export default function PaymentWorkspace({
               </>
             )}
           </Button>
-
-          {/* Botões de Voltar e Reabrir */}
-          <div className="flex gap-2">
+        </div>
+      </div>
+      
+      {/* Rodapé com botões - Fora da estrutura 70/30 */}
+      <div className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4">
+        <div className="flex gap-2">
+          <Button
+            onClick={() => window.location.href = '/pos'}
+            className="flex-1 h-12 bg-gray-700 hover:bg-gray-600"
+          >
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Voltar para Mesas
+          </Button>
+          {reopenTable && (
             <Button
-              onClick={() => window.location.href = '/pos'}
-              className="flex-1 h-10 bg-gray-700 hover:bg-gray-600"
+              onClick={reopenTable}
+              className="flex-1 h-12 bg-orange-600 hover:bg-orange-700"
             >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Voltar para Mesas
+              <Receipt className="h-4 w-4 mr-2" />
+              Reabrir Mesa
             </Button>
-            {reopenTable && (
-              <Button
-                onClick={reopenTable}
-                className="flex-1 h-10 bg-orange-600 hover:bg-orange-700"
-              >
-                <Receipt className="h-4 w-4 mr-2" />
-                Reabrir Mesa
-              </Button>
-            )}
-          </div>
+          )}
         </div>
       </div>
     </div>
