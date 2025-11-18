@@ -788,10 +788,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   display: none;
 }
 
-.aspect-square {
-  aspect-ratio: 1;
-}
-
 .h-0 {
   height: 0;
 }
