@@ -1,9 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -11,19 +10,17 @@ import {
   CreditCard,
   DollarSign,
   Smartphone,
-  Wallet,
   Calculator,
   Check,
   X,
   Percent,
-  Hash,
   Users,
   ArrowLeft,
   Trash2,
   CheckCircle2,
   Receipt,
-  Home,
-  Banknote
+  Banknote,
+  Wallet
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -77,8 +74,7 @@ export default function PaymentWorkspace({
   selectedTable,
   loading = false
 }: PaymentWorkspaceProps) {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
-  const [step, setStep] = useState<'summary' | 'payment'>('summary');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash');
   
   // Função para formatar valores monetários
   const formatCurrency = (value: number) => {
@@ -110,11 +106,6 @@ export default function PaymentWorkspace({
 
   // Função para adicionar pagamento
   const handleAddPayment = () => {
-    if (!selectedPaymentMethod) {
-      toast.error('Selecione um método de pagamento');
-      return;
-    }
-
     const amount = parseFloat(calculatorDisplay) || 0;
     if (amount <= 0) {
       toast.error('Digite um valor válido');
@@ -133,19 +124,11 @@ export default function PaymentWorkspace({
       timestamp: new Date()
     });
 
-    // Limpar para próximo pagamento
     setCalculatorDisplay('0');
-    setSelectedPaymentMethod('');
     
-    // Se pagou tudo, avança automaticamente
     if (amount >= remaining - 0.01) {
-      toast.success('Pagamento completo! Finalize a conta.');
+      toast.success('Pagamento completo! Clique em Finalizar.');
     }
-  };
-
-  // Função para adicionar valor rápido
-  const handleQuickAmount = (value: number) => {
-    setCalculatorDisplay(value.toFixed(2));
   };
 
   const paymentMethods = [
@@ -156,446 +139,383 @@ export default function PaymentWorkspace({
   ];
 
   return (
-    <div className="h-full flex flex-col bg-gray-900 rounded-lg">
-      {/* Header com Status */}
-      <div className="bg-orange-600 p-4 rounded-t-lg">
+    <div className="h-full flex flex-col bg-gray-900">
+      {/* Header com Totais - Fixo no topo */}
+      <div className="bg-gradient-to-r from-orange-600 to-orange-500 p-3 rounded-t-lg">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Receipt className="h-6 w-6 text-white" />
-            <h2 className="text-xl font-bold text-white">
-              Fechamento - Mesa {selectedTable?.number}
-            </h2>
+            <Receipt className="h-5 w-5 text-white" />
+            <h2 className="text-lg font-bold text-white">Mesa {selectedTable?.number}</h2>
+            {reopenTable && (
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={reopenTable}
+                className="text-white hover:bg-orange-700 h-7 px-2"
+              >
+                <ArrowLeft className="h-3 w-3 mr-1" />
+                Reabrir
+              </Button>
+            )}
           </div>
-          {reopenTable && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={reopenTable}
-              className="text-white hover:bg-orange-700"
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Reabrir Mesa
-            </Button>
-          )}
+          
+          {/* Totais principais */}
+          <div className="flex items-center gap-6 text-white">
+            <div className="text-right">
+              <p className="text-xs opacity-80">Total</p>
+              <p className="font-bold">{formatCurrency(totalWithDiscount)}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs opacity-80">Pago</p>
+              <p className="font-bold text-green-300">{formatCurrency(totalPaid)}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-xs opacity-80">Restante</p>
+              <p className="font-bold text-yellow-300">{formatCurrency(remaining)}</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Conteúdo Principal */}
-      <div className="flex-1 p-6 overflow-auto">
-        {step === 'summary' ? (
-          /* Etapa 1: Resumo e Ajustes */
-          <div className="space-y-6">
-            {/* Resumo da Conta */}
-            <Card className="bg-gray-800 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Calculator className="h-5 w-5" />
-                  Resumo da Conta
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {/* Lista de itens */}
-                <ScrollArea className="h-48 pr-4">
-                  <div className="space-y-2">
-                    {groupedItems.map((item, idx) => (
-                      <div key={idx} className="flex justify-between items-center p-2 bg-gray-700/50 rounded">
-                        <div className="flex-1">
-                          <div className="font-medium text-white">{item.item?.name || 'Produto'}</div>
-                          <div className="text-xs text-gray-400">
-                            {formatCurrency(item.unit_price)} × {item.quantity}
-                          </div>
-                        </div>
-                        <div className="text-orange-400 font-bold">
-                          {formatCurrency(item.total_price)}
+      {/* Grid de 3 colunas */}
+      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 overflow-hidden">
+        
+        {/* Coluna Esquerda - Resumo dos Itens */}
+        <div className="flex flex-col gap-3">
+          <Card className="bg-gray-800 border-gray-700 flex-1 flex flex-col">
+            <CardHeader className="py-3">
+              <CardTitle className="text-sm flex items-center justify-between">
+                <span>Itens da Conta</span>
+                <span className="text-orange-400">{groupedItems.length} itens</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 py-2 overflow-hidden">
+              <ScrollArea className="h-full pr-3">
+                <div className="space-y-2">
+                  {groupedItems.map((item, idx) => (
+                    <div key={idx} className="flex justify-between items-center p-2 bg-gray-700/50 rounded hover:bg-gray-700/70 transition-colors">
+                      <div className="flex-1">
+                        <div className="font-medium text-white text-sm">{item.item?.name || 'Produto'}</div>
+                        <div className="text-xs text-gray-400">
+                          {formatCurrency(item.unit_price)} × {item.quantity}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </ScrollArea>
-                
-                <div className="my-4 border-t border-gray-600" />
-                
-                {/* Totais */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-gray-300">
-                    <span>Subtotal</span>
-                    <span className="font-mono">{formatCurrency(calculateSubtotal())}</span>
-                  </div>
-                  {serviceTaxPercentage > 0 && (
-                    <div className="flex justify-between text-gray-300">
-                      <span>Taxa de Serviço ({serviceTaxPercentage}%)</span>
-                      <span className="font-mono">{formatCurrency(serviceTaxValue)}</span>
+                      <div className="text-orange-400 font-bold text-sm">
+                        {formatCurrency(item.total_price)}
+                      </div>
                     </div>
-                  )}
-                  <div className="flex justify-between text-xl font-bold text-white">
-                    <span>Total</span>
-                    <span className="font-mono text-orange-400">
-                      {formatCurrency(calculateTotal())}
-                    </span>
-                  </div>
+                  ))}
                 </div>
-              </CardContent>
-            </Card>
+              </ScrollArea>
+            </CardContent>
+          </Card>
 
-            {/* Desconto e Divisão lado a lado */}
-            <div className="grid grid-cols-2 gap-4">
-              {/* Desconto */}
-              <Card className="bg-gray-800 border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-white text-sm flex items-center gap-2">
-                    <Percent className="h-4 w-4" />
-                    Desconto
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
-                        variant={discountType === 'percentage' ? 'default' : 'outline'}
-                        onClick={() => setDiscountType('percentage')}
-                        className={cn(
-                          "flex-1",
-                          discountType === 'percentage' 
-                            ? "bg-orange-600 hover:bg-orange-700" 
-                            : "border-gray-600 text-gray-300"
-                        )}
-                      >
-                        %
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant={discountType === 'value' ? 'default' : 'outline'}
-                        onClick={() => setDiscountType('value')}
-                        className={cn(
-                          "flex-1",
-                          discountType === 'value' 
-                            ? "bg-orange-600 hover:bg-orange-700" 
-                            : "border-gray-600 text-gray-300"
-                        )}
-                      >
-                        R$
-                      </Button>
-                    </div>
-                    
+          {/* Subtotais */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardContent className="py-3">
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between text-gray-300">
+                  <span>Subtotal</span>
+                  <span>{formatCurrency(calculateSubtotal())}</span>
+                </div>
+                {serviceTaxPercentage > 0 && (
+                  <div className="flex justify-between text-yellow-400">
+                    <span>Taxa de Serviço ({serviceTaxPercentage}%)</span>
+                    <span>+{formatCurrency(serviceTaxValue)}</span>
+                  </div>
+                )}
+                <div className="pt-2 border-t border-gray-600 flex justify-between text-white font-bold">
+                  <span>Total</span>
+                  <span className="text-orange-400">{formatCurrency(calculateTotal())}</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Coluna Central - Ajustes e Calculadora */}
+        <div className="flex flex-col gap-3">
+          {/* Desconto e Divisão */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardContent className="py-3">
+              <div className="space-y-3">
+                {/* Desconto */}
+                <div>
+                  <Label className="text-xs text-gray-400">Desconto</Label>
+                  <div className="flex gap-1 mt-1">
+                    <Button
+                      size="sm"
+                      onClick={() => setDiscountType('percentage')}
+                      className={cn(
+                        "h-7 px-2",
+                        discountType === 'percentage' ? "bg-orange-600" : "bg-gray-700"
+                      )}
+                    >
+                      %
+                    </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => setDiscountType('value')}
+                      className={cn(
+                        "h-7 px-2",
+                        discountType === 'value' ? "bg-orange-600" : "bg-gray-700"
+                      )}
+                    >
+                      R$
+                    </Button>
                     <Input
                       type="number"
                       value={discountValue}
                       onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
-                      className="bg-gray-700 border-gray-600 text-white"
+                      className="h-7 flex-1 bg-gray-700 border-gray-600 text-white text-sm"
                       placeholder="0"
                     />
-
-                    {discountValue > 0 && (
-                      <div className="text-sm text-green-400">
-                        Desconto: {formatCurrency(
-                          discountType === 'percentage'
-                            ? (calculateTotal() * discountValue / 100)
-                            : discountValue
-                        )}
-                      </div>
-                    )}
                   </div>
-                </CardContent>
-              </Card>
+                  {discountValue > 0 && (
+                    <p className="text-xs text-green-400 mt-1">
+                      Desconto: {formatCurrency(
+                        discountType === 'percentage'
+                          ? (calculateTotal() * discountValue / 100)
+                          : discountValue
+                      )}
+                    </p>
+                  )}
+                </div>
 
-              {/* Divisão da Conta */}
-              <Card className="bg-gray-800 border-gray-700">
-                <CardHeader>
-                  <CardTitle className="text-white text-sm flex items-center gap-2">
-                    <Users className="h-4 w-4" />
-                    Dividir
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
+                {/* Divisão */}
+                <div>
+                  <Label className="text-xs text-gray-400">Dividir em</Label>
+                  <div className="flex items-center gap-2 mt-1">
                     <Input
                       type="number"
                       min="1"
                       value={splitCount}
                       onChange={(e) => setSplitCount(Math.max(1, parseInt(e.target.value) || 1))}
-                      className="bg-gray-700 border-gray-600 text-white"
+                      className="h-7 w-20 bg-gray-700 border-gray-600 text-white text-sm"
                     />
-                    
+                    <span className="text-xs text-gray-400">pessoas</span>
                     {splitCount > 1 && (
-                      <div className="p-2 bg-gray-700 rounded text-center">
-                        <p className="text-xs text-gray-400">Por pessoa</p>
-                        <p className="text-lg font-bold text-orange-400">
-                          {formatCurrency(perPersonAmount)}
-                        </p>
-                      </div>
+                      <span className="text-xs text-orange-400 ml-auto">
+                        {formatCurrency(perPersonAmount)} cada
+                      </span>
                     )}
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
 
-            {/* Total Final */}
-            {(discountValue > 0 || splitCount > 1) && (
-              <Card className="bg-orange-900/30 border-orange-700">
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-lg text-white">Total Final</span>
-                    <span className="text-2xl font-bold text-orange-400">
-                      {formatCurrency(totalWithDiscount)}
+          {/* Calculadora */}
+          <Card className="bg-gray-800 border-gray-700 flex-1">
+            <CardHeader className="py-2">
+              <CardTitle className="text-sm">Calculadora</CardTitle>
+            </CardHeader>
+            <CardContent className="py-2">
+              {/* Display */}
+              <div className="bg-black rounded p-2 mb-2">
+                <p className="text-xl font-mono text-green-400 text-right">
+                  R$ {calculatorDisplay}
+                </p>
+              </div>
+
+              {/* Valores Rápidos */}
+              <div className="grid grid-cols-3 gap-1 mb-2">
+                <Button
+                  size="sm"
+                  onClick={() => setCalculatorDisplay(remaining.toFixed(2))}
+                  className="h-7 text-xs bg-gray-700 hover:bg-gray-600"
+                  disabled={remaining <= 0}
+                >
+                  Restante
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => setCalculatorDisplay('50.00')}
+                  className="h-7 text-xs bg-gray-700 hover:bg-gray-600"
+                >
+                  R$ 50
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => setCalculatorDisplay('100.00')}
+                  className="h-7 text-xs bg-gray-700 hover:bg-gray-600"
+                >
+                  R$ 100
+                </Button>
+              </div>
+
+              {/* Teclado Numérico */}
+              <div className="grid grid-cols-3 gap-1">
+                {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.', '⌫'].map((btn) => (
+                  <Button
+                    key={btn}
+                    size="sm"
+                    onClick={() => handleCalculatorInput(btn)}
+                    className={cn(
+                      "h-8 text-sm font-bold",
+                      btn === '⌫' ? "bg-red-600 hover:bg-red-700" : "bg-gray-700 hover:bg-gray-600"
+                    )}
+                  >
+                    {btn}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Limpar */}
+              <Button
+                size="sm"
+                onClick={() => handleCalculatorInput('C')}
+                className="w-full h-7 mt-1 bg-gray-700 hover:bg-gray-600 text-xs"
+              >
+                Limpar
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Métodos de Pagamento */}
+          <div className="grid grid-cols-2 gap-1">
+            {paymentMethods.map((method) => {
+              const Icon = method.icon;
+              return (
+                <Button
+                  key={method.id}
+                  size="sm"
+                  onClick={() => setSelectedPaymentMethod(method.id)}
+                  className={cn(
+                    "h-10 flex flex-col gap-0 py-1",
+                    selectedPaymentMethod === method.id
+                      ? method.color
+                      : "bg-gray-700 hover:bg-gray-600"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  <span className="text-xs">{method.name}</span>
+                </Button>
+              );
+            })}
+          </div>
+
+          {/* Botão Adicionar Pagamento */}
+          <Button
+            onClick={handleAddPayment}
+            disabled={parseFloat(calculatorDisplay) <= 0 || remaining <= 0}
+            className="h-10 bg-green-600 hover:bg-green-700 font-bold"
+          >
+            <Check className="h-4 w-4 mr-1" />
+            Adicionar Pagamento
+          </Button>
+        </div>
+
+        {/* Coluna Direita - Histórico e Finalizar */}
+        <div className="flex flex-col gap-3">
+          {/* Histórico de Pagamentos */}
+          <Card className="bg-gray-800 border-gray-700 flex-1 flex flex-col">
+            <CardHeader className="py-3">
+              <CardTitle className="text-sm">Pagamentos</CardTitle>
+            </CardHeader>
+            <CardContent className="flex-1 py-2 overflow-hidden">
+              <ScrollArea className="h-full pr-2">
+                <div className="space-y-2">
+                  {payments.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Wallet className="h-8 w-8 mx-auto mb-2 text-gray-600" />
+                      <p className="text-xs text-gray-400">Nenhum pagamento</p>
+                    </div>
+                  ) : (
+                    payments.map((payment) => {
+                      const method = paymentMethods.find(m => m.id === payment.method);
+                      const Icon = method?.icon || Wallet;
+                      
+                      return (
+                        <div
+                          key={payment.id}
+                          className="flex items-center justify-between p-2 bg-gray-700 rounded"
+                        >
+                          <div className="flex items-center gap-2">
+                            <div className={cn("p-1.5 rounded", method?.color || 'bg-gray-600')}>
+                              <Icon className="h-3 w-3 text-white" />
+                            </div>
+                            <div>
+                              <p className="text-xs text-white">{method?.name}</p>
+                              <p className="text-xs text-gray-400">
+                                {formatCurrency(payment.amount)}
+                              </p>
+                            </div>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => removePayment(payment.id)}
+                            className="h-6 w-6 p-0 text-red-400 hover:bg-red-900/20"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+
+          {/* Resumo Final */}
+          {payments.length > 0 && (
+            <Card className="bg-gray-800 border-gray-700">
+              <CardContent className="py-3">
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Total Pago</span>
+                    <span className="font-bold text-green-400">{formatCurrency(totalPaid)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Restante</span>
+                    <span className={cn(
+                      "font-bold",
+                      remaining > 0 ? "text-red-400" : "text-green-400"
+                    )}>
+                      {formatCurrency(remaining)}
                     </span>
                   </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Botão para Avançar */}
-            <Button
-              onClick={() => setStep('payment')}
-              className="w-full h-14 text-lg bg-orange-600 hover:bg-orange-700"
-            >
-              Avançar para Pagamento
-              <CheckCircle2 className="ml-2 h-5 w-5" />
-            </Button>
-          </div>
-        ) : (
-          /* Etapa 2: Pagamento */
-          <div className="space-y-6">
-            {/* Resumo Compacto */}
-            <Card className="bg-gray-800 border-gray-700">
-              <CardContent className="p-4">
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <p className="text-xs text-gray-400">Total</p>
-                    <p className="text-lg font-bold text-white">
-                      {formatCurrency(totalWithDiscount)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400">Pago</p>
-                    <p className="text-lg font-bold text-green-400">
-                      {formatCurrency(totalPaid)}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-400">Restante</p>
-                    <p className="text-lg font-bold text-orange-400">
-                      {formatCurrency(remaining)}
-                    </p>
-                  </div>
+                  {remaining <= 0 && totalPaid > totalWithDiscount && (
+                    <div className="flex justify-between pt-2 border-t border-gray-600">
+                      <span className="text-gray-400">Troco</span>
+                      <span className="font-bold text-yellow-400">
+                        {formatCurrency(totalPaid - totalWithDiscount)}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
+          )}
 
-            {/* Layout em duas colunas */}
-            <div className="grid grid-cols-2 gap-6">
-              {/* Coluna Esquerda - Métodos e Calculadora */}
-              <div className="space-y-4">
-                {/* Métodos de Pagamento */}
-                <div>
-                  <Label className="text-gray-300 mb-3 block">
-                    Método de Pagamento
-                  </Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {paymentMethods.map((method) => {
-                      const Icon = method.icon;
-                      return (
-                        <Button
-                          key={method.id}
-                          variant={selectedPaymentMethod === method.id ? 'default' : 'outline'}
-                          onClick={() => setSelectedPaymentMethod(method.id)}
-                          className={cn(
-                            "h-16 flex flex-col gap-1",
-                            selectedPaymentMethod === method.id
-                              ? method.color
-                              : "border-gray-600 text-gray-300 hover:bg-gray-800"
-                          )}
-                        >
-                          <Icon className="h-5 w-5" />
-                          <span className="text-xs">{method.name}</span>
-                        </Button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Valores Rápidos */}
-                {remaining > 0 && (
-                  <div>
-                    <Label className="text-gray-300 mb-2 block text-sm">
-                      Valores Rápidos
-                    </Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleQuickAmount(remaining)}
-                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
-                      >
-                        Restante
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleQuickAmount(perPersonAmount)}
-                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
-                      >
-                        1 Pessoa
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleQuickAmount(50)}
-                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
-                      >
-                        R$ 50
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleQuickAmount(100)}
-                        className="border-gray-600 text-gray-300 hover:bg-gray-800"
-                      >
-                        R$ 100
-                      </Button>
-                    </div>
-                  </div>
-                )}
-
-                {/* Calculadora */}
-                <Card className="bg-gray-800 border-gray-700">
-                  <CardContent className="p-3">
-                    <div className="space-y-3">
-                      {/* Display */}
-                      <div className="bg-gray-900 p-3 rounded">
-                        <p className="text-2xl font-mono text-white text-right">
-                          R$ {calculatorDisplay}
-                        </p>
-                      </div>
-
-                      {/* Teclado Numérico */}
-                      <div className="grid grid-cols-3 gap-1">
-                        {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.', '⌫'].map((btn) => (
-                          <Button
-                            key={btn}
-                            variant="outline"
-                            onClick={() => handleCalculatorInput(btn)}
-                            className="h-10 text-sm border-gray-600 text-white hover:bg-gray-700"
-                          >
-                            {btn}
-                          </Button>
-                        ))}
-                      </div>
-
-                      {/* Botões de Ação */}
-                      <div className="grid grid-cols-2 gap-2">
-                        <Button
-                          variant="outline"
-                          onClick={() => handleCalculatorInput('C')}
-                          className="h-10 border-gray-600 text-gray-300 hover:bg-gray-800"
-                        >
-                          Limpar
-                        </Button>
-                        <Button
-                          onClick={handleAddPayment}
-                          disabled={!selectedPaymentMethod || parseFloat(calculatorDisplay) <= 0}
-                          className="h-10 bg-green-600 hover:bg-green-700"
-                        >
-                          <Check className="h-4 w-4 mr-1" />
-                          Adicionar
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Coluna Direita - Histórico de Pagamentos */}
-              <div className="space-y-4">
-                <Card className="bg-gray-800 border-gray-700">
-                  <CardHeader>
-                    <CardTitle className="text-white text-sm">
-                      Pagamentos Registrados
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ScrollArea className="h-64">
-                      <div className="space-y-2 pr-4">
-                        {payments.length === 0 ? (
-                          <div className="text-center py-8">
-                            <Wallet className="h-12 w-12 mx-auto mb-2 text-gray-600" />
-                            <p className="text-gray-400">Nenhum pagamento registrado</p>
-                          </div>
-                        ) : (
-                          payments.map((payment) => {
-                            const method = paymentMethods.find(m => m.id === payment.method);
-                            const Icon = method?.icon || Wallet;
-                            
-                            return (
-                              <div
-                                key={payment.id}
-                                className="flex items-center justify-between p-3 bg-gray-700 rounded-lg"
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div className={cn("p-2 rounded", method?.color || 'bg-gray-600')}>
-                                    <Icon className="h-4 w-4 text-white" />
-                                  </div>
-                                  <div>
-                                    <p className="text-white font-medium">{method?.name}</p>
-                                    <p className="text-xs text-gray-400">
-                                      {formatCurrency(payment.amount)}
-                                    </p>
-                                  </div>
-                                </div>
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  onClick={() => removePayment(payment.id)}
-                                  className="text-red-400 hover:bg-red-900/20"
-                                >
-                                  <Trash2 className="h-4 w-4" />
-                                </Button>
-                              </div>
-                            );
-                          })
-                        )}
-                      </div>
-                    </ScrollArea>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
-            {/* Botões de Ação */}
-            <div className="flex gap-3">
-              <Button
-                variant="outline"
-                onClick={() => setStep('summary')}
-                className="flex-1 border-gray-600 text-gray-300 hover:bg-gray-800"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Voltar
-              </Button>
-              
-              <Button
-                onClick={handleCompletePayment}
-                disabled={remaining > 0.01 || loading}
-                className={cn(
-                  "flex-1",
-                  remaining > 0.01 
-                    ? "bg-gray-600 cursor-not-allowed" 
-                    : "bg-green-600 hover:bg-green-700"
-                )}
-              >
-                {loading ? (
-                  <>Processando...</>
-                ) : remaining > 0.01 ? (
-                  <>Pagar Restante: {formatCurrency(remaining)}</>
-                ) : (
-                  <>
-                    <CheckCircle2 className="h-4 w-4 mr-2" />
-                    Finalizar Conta
-                  </>
-                )}
-              </Button>
-            </div>
-          </div>
-        )}
+          {/* Botão Finalizar - Sempre visível no final */}
+          <Button
+            onClick={handleCompletePayment}
+            disabled={remaining > 0.01 || loading}
+            className={cn(
+              "h-12 font-bold text-base",
+              remaining > 0.01 
+                ? "bg-gray-600 cursor-not-allowed" 
+                : "bg-green-600 hover:bg-green-700 animate-pulse"
+            )}
+          >
+            {loading ? (
+              <>Processando...</>
+            ) : remaining > 0.01 ? (
+              <>
+                <X className="h-4 w-4 mr-2" />
+                Falta {formatCurrency(remaining)}
+              </>
+            ) : (
+              <>
+                <CheckCircle2 className="h-5 w-5 mr-2" />
+                Finalizar Conta
+              </>
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );
