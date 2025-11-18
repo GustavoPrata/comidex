@@ -184,39 +184,39 @@ export default function PaymentWorkspace({
             </CardHeader>
             <CardContent className="py-2 overflow-hidden" style={{ height: 'calc(100vh - 320px)' }}>
               <ScrollArea className="h-full pr-2">
-                <div className="space-y-2 pr-1">
+                <div className="space-y-1 pr-1">
                   {groupedItems.map((item, idx) => (
                     <div 
                       key={idx} 
-                      className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
+                      className={`flex justify-between items-center p-1 rounded transition-colors ${
                         item.status === 'cancelled' 
                           ? 'bg-red-900/30 border border-red-800/50 opacity-75' 
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
-                      <div className="flex-1 px-2">
-                        <div className={`font-medium text-sm ${
+                      <div className="flex-1 px-1">
+                        <div className={`font-medium text-xs ${
                           item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'
                         }`}>
                           {item.item?.name || 'Produto'}
                         </div>
-                        <div className="text-xs text-gray-400">
+                        <div className="text-[10px] text-gray-400">
                           {formatCurrency(item.unit_price, true)} × {item.quantity}
                           {item.status === 'cancelled' && (
-                            <span className="ml-2 text-red-400">(Cancelado)</span>
+                            <span className="ml-1 text-red-400">(Cancelado)</span>
                           )}
                         </div>
                       </div>
-                      <div className="px-2 text-right">
-                        <div className={`font-bold text-sm ${
+                      <div className="px-1 text-right">
+                        <div className={`font-bold text-xs ${
                           item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
                         }`}>
                           {formatCurrency(item.total_price, true)}
                         </div>
                         {item.launched_at && (
-                          <div className={`text-[10px] ${
+                          <div className={`text-[9px] ${
                             item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'
-                          } opacity-70`}>
+                          } opacity-60`}>
                             {(() => {
                               const date = new Date(item.launched_at);
                               const hours = date.getHours().toString().padStart(2, '0');

@@ -296,15 +296,15 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollArea"], {
                                         className: "h-full pr-2",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-2 pr-1",
+                                            className: "space-y-1 pr-1",
                                             children: groupedItems.map((item, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: `flex justify-between items-center p-2 rounded-lg transition-colors ${item.status === 'cancelled' ? 'bg-red-900/30 border border-red-800/50 opacity-75' : 'bg-gray-700/50 hover:bg-gray-700/70'}`,
+                                                    className: `flex justify-between items-center p-1 rounded transition-colors ${item.status === 'cancelled' ? 'bg-red-900/30 border border-red-800/50 opacity-75' : 'bg-gray-700/50 hover:bg-gray-700/70'}`,
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex-1 px-2",
+                                                            className: "flex-1 px-1",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: `font-medium text-sm ${item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'}`,
+                                                                    className: `font-medium text-xs ${item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'}`,
                                                                     children: item.item?.name || 'Produto'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
@@ -312,13 +312,13 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: "text-xs text-gray-400",
+                                                                    className: "text-[10px] text-gray-400",
                                                                     children: [
                                                                         formatCurrency(item.unit_price, true),
                                                                         " × ",
                                                                         item.quantity,
                                                                         item.status === 'cancelled' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                            className: "ml-2 text-red-400",
+                                                                            className: "ml-1 text-red-400",
                                                                             children: "(Cancelado)"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
@@ -338,10 +338,10 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                             columnNumber: 23
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "px-2 text-right",
+                                                            className: "px-1 text-right",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: `font-bold text-sm ${item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'}`,
+                                                                    className: `font-bold text-xs ${item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'}`,
                                                                     children: formatCurrency(item.total_price, true)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PaymentWorkspace.tsx",
@@ -349,7 +349,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 item.launched_at && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                    className: `text-[10px] ${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} opacity-70`,
+                                                                    className: `text-[9px] ${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} opacity-60`,
                                                                     children: (()=>{
                                                                         const date = new Date(item.launched_at);
                                                                         const hours = date.getHours().toString().padStart(2, '0');
