@@ -78,8 +78,8 @@ export default function PaymentWorkspace({
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash');
   
   // Função para formatar valores monetários
-  const formatCurrency = (value: number) => {
-    if (value === 0) {
+  const formatCurrency = (value: number, isRodizioItem: boolean = false) => {
+    if (value === 0 && isRodizioItem) {
       return 'Incluso';
     }
     return new Intl.NumberFormat('pt-BR', {
@@ -224,7 +224,7 @@ export default function PaymentWorkspace({
                           {item.item?.name || 'Produto'}
                         </div>
                         <div className="text-xs text-gray-400">
-                          {formatCurrency(item.unit_price)} × {item.quantity}
+                          {formatCurrency(item.unit_price, true)} × {item.quantity}
                           {item.status === 'cancelled' && (
                             <span className="ml-2 text-red-400">(Cancelado)</span>
                           )}
@@ -233,7 +233,7 @@ export default function PaymentWorkspace({
                       <div className={`font-bold text-sm px-2 ${
                         item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'
                       }`}>
-                        {formatCurrency(item.total_price)}
+                        {formatCurrency(item.total_price, true)}
                       </div>
                     </div>
                   ))}

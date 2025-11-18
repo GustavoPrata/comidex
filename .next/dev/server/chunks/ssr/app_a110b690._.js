@@ -39,8 +39,8 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hot
 function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, calculateTotal, calculateTotalWithDiscount, serviceTaxPercentage, serviceTaxValue, discountType, setDiscountType, discountValue, setDiscountValue, splitCount, setSplitCount, calculatorDisplay, setCalculatorDisplay, payments, addPayment, removePayment, handleCompletePayment, reopenTable, selectedTable, loading = false }) {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])('cash');
     // Função para formatar valores monetários
-    const formatCurrency = (value)=>{
-        if (value === 0) {
+    const formatCurrency = (value, isRodizioItem = false)=>{
+        if (value === 0 && isRodizioItem) {
             return 'Incluso';
         }
         return new Intl.NumberFormat('pt-BR', {
@@ -378,7 +378,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                     className: "text-xs text-gray-400",
                                                                     children: [
-                                                                        formatCurrency(item.unit_price),
+                                                                        formatCurrency(item.unit_price, true),
                                                                         " × ",
                                                                         item.quantity,
                                                                         item.status === 'cancelled' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -403,7 +403,7 @@ function PaymentWorkspace({ mode = 'embedded', groupedItems, calculateSubtotal, 
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                             className: `font-bold text-sm px-2 ${item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-orange-400'}`,
-                                                            children: formatCurrency(item.total_price)
+                                                            children: formatCurrency(item.total_price, true)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/components/PaymentWorkspace.tsx",
                                                             lineNumber: 233,
