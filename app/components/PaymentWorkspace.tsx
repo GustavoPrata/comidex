@@ -173,7 +173,7 @@ export default function PaymentWorkspace({
   );
 
   const paymentMethods = [
-    { id: 'cash', name: 'Dinheiro', icon: Banknote, color: 'bg-green-500' },
+    { id: 'cash', name: 'Dinheiro', icon: Banknote, color: 'bg-green-700' },
     { id: 'credit', name: 'Crédito', icon: CreditCard, color: 'bg-blue-500' },
     { id: 'debit', name: 'Débito', icon: CreditCard, color: 'bg-purple-500' },
     { id: 'pix', name: 'PIX', icon: PixIcon, color: 'bg-cyan-500' }
@@ -405,7 +405,7 @@ export default function PaymentWorkspace({
                 
                 switch(method.id) {
                   case 'cash':
-                    return "bg-green-500 hover:bg-green-500 ring-2 ring-white/30";
+                    return "bg-green-700 hover:bg-green-700 ring-2 ring-white/30";
                   case 'credit':
                     return "bg-blue-500 hover:bg-blue-500 ring-2 ring-white/30";
                   case 'debit':

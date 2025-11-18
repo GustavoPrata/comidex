@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///home/runner/workspace/app/pos/layout.tsx"],"sourcesContent":["export default function POSLayout({\n  children,\n}: {\n  children: React.ReactNode\n}) {\n  return (\n    <div className=\"min-h-screen bg-gray-100\">\n      {children}\n    </div>\n  )\n}"],"names":[],"mappings":";;;;;;AAAe,SAAS,UAAU,EAChC,QAAQ,EAGT;IACC,qBACE,8OAAC;QAAI,WAAU;kBACZ;;;;;;AAGP","debugId":null}}]
-}
