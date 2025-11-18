@@ -3310,7 +3310,7 @@ export default function POSPage() {
                     <p className="text-sm text-gray-400">
                       Aberta há {currentSession && (() => {
                         const diff = new Date().getTime() - new Date(currentSession.opened_at).getTime();
-                        const minutes = Math.floor(diff / 60000);
+                        const minutes = Math.abs(Math.floor(diff / 60000));
                         const hours = Math.floor(minutes / 60);
                         const mins = minutes % 60;
                         return hours > 0 ? `${hours}h ${mins}min` : `${mins} minutos`;
