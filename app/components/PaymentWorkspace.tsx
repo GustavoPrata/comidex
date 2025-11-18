@@ -20,7 +20,8 @@ import {
   CheckCircle2,
   Receipt,
   Banknote,
-  Wallet
+  Wallet,
+  Clock
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
@@ -187,12 +188,35 @@ export default function PaymentWorkspace({
                   {groupedItems.map((item, idx) => (
                     <div 
                       key={idx} 
-                      className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
+                      className={`relative flex justify-between items-center p-2 rounded-lg transition-colors ${
                         item.status === 'cancelled' 
                           ? 'bg-red-900/30 border border-red-800/50 opacity-75' 
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
+                      {/* Horário - centralizado */}
+                      {item.launched_at && (
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-10">
+                          <div className={`${item.status === 'cancelled' ? 'text-red-400' : 'text-green-400'} flex flex-col items-center justify-center opacity-60`}>
+                            <Clock className="h-2 w-2 mb-0.5" />
+                            <div className="flex items-center">
+                              {(() => {
+                                const date = new Date(item.launched_at);
+                                const hours = date.getHours().toString().padStart(2, '0');
+                                const minutes = date.getMinutes().toString().padStart(2, '0');
+                                const seconds = date.getSeconds().toString().padStart(2, '0');
+                                return (
+                                  <>
+                                    <span className="text-[10px] font-medium">{hours}:{minutes}</span>
+                                    <span className="text-[8px] font-normal opacity-80">:{seconds}</span>
+                                  </>
+                                );
+                              })()}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      
                       <div className="flex-1 px-2">
                         <div className={`font-medium text-sm ${
                           item.status === 'cancelled' ? 'text-red-400 line-through' : 'text-white'

@@ -334,18 +334,28 @@ export default function POSPage() {
         const existing = grouped.get(key);
         existing.quantity += item.quantity;
         existing.total_price = existing.quantity * existing.unit_price;
+        // Manter o launched_at mais recente
+        if (item.launched_at && (!existing.launched_at || new Date(item.launched_at) > new Date(existing.launched_at))) {
+          existing.launched_at = item.launched_at;
+        }
       } else {
         grouped.set(key, {
           item: item.item,
           unit_price: item.unit_price,
           quantity: item.quantity,
           total_price: item.quantity * item.unit_price,
-          status: item.status // Adicionar status para identificar cancelados
+          status: item.status, // Adicionar status para identificar cancelados
+          launched_at: item.launched_at // Adicionar horário de lançamento
         });
       }
     });
     
-    return Array.from(grouped.values());
+    // Ordenar por launched_at, mais recentes primeiro
+    return Array.from(grouped.values()).sort((a, b) => {
+      if (!a.launched_at) return 1;
+      if (!b.launched_at) return -1;
+      return new Date(b.launched_at).getTime() - new Date(a.launched_at).getTime();
+    });
   };
   
   // Atualizar groupedItems sempre que o carrinho mudar ou a mesa estiver fechada
