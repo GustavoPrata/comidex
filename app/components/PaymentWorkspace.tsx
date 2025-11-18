@@ -271,13 +271,17 @@ export default function PaymentWorkspace({
             <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-sm flex items-center justify-between">
                 <span>Itens da Conta</span>
-                <span className="text-orange-400">{groupedItems.length} itens</span>
+                <span className="text-orange-400">
+                  {groupedItems.filter(item => item.total_price > 0).length} itens
+                </span>
               </CardTitle>
             </CardHeader>
             <CardContent className="py-2 overflow-hidden" style={{ height: 'calc(100vh - 320px)' }}>
               <ScrollArea className="h-full pr-2">
                 <div className="space-y-2 pr-1">
-                  {groupedItems.map((item, idx) => (
+                  {groupedItems
+                    .filter(item => item.total_price > 0) // Não mostrar itens sem valor (rodízio)
+                    .map((item, idx) => (
                     <div 
                       key={idx} 
                       className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
