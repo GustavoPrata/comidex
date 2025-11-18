@@ -40,6 +40,8 @@ interface PaymentWorkspaceProps {
   setDiscountValue: (value: number) => void;
   splitCount: number;
   setSplitCount: (count: number) => void;
+  calculatorDisplay: string;
+  setCalculatorDisplay: (value: string | ((prev: string) => string)) => void;
   payments: any[];
   addPayment: (payment: any) => void;
   removePayment: (id: string) => void;
@@ -63,6 +65,8 @@ export default function PaymentWorkspace({
   setDiscountValue,
   splitCount,
   setSplitCount,
+  calculatorDisplay,
+  setCalculatorDisplay,
   payments,
   addPayment,
   removePayment,
@@ -89,12 +93,54 @@ export default function PaymentWorkspace({
   const remaining = Math.max(0, totalWithDiscount - totalPaid);
   const perPersonAmount = totalWithDiscount / splitCount;
 
-  // Removido: Função de calculadora e suporte ao teclado numpad
-  // Não é mais necessária sem a calculadora
+  // Função para processar entrada da calculadora
+  const handleCalculatorInput = (value: string) => {
+    if (value === 'C' || value === 'Escape') {
+      setCalculatorDisplay('0');
+    } else if (value === '⌫' || value === 'Backspace') {
+      setCalculatorDisplay(prev => prev.length > 1 ? prev.slice(0, -1) : '0');
+    } else if (value === '.' || value === ',') {
+      if (!calculatorDisplay.includes('.')) {
+        setCalculatorDisplay(prev => prev + '.');
+      }
+    } else if (value === 'Enter') {
+      handleAddPayment();
+    } else if (/^[0-9]$/.test(value)) {
+      setCalculatorDisplay(prev => prev === '0' ? value : prev + value);
+    }
+  };
 
-  // Função para adicionar pagamento (mantida para compatibilidade)
+  // Adicionar suporte ao teclado numpad - apenas quando não há input focado
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      // Verificar se o elemento ativo é um input, textarea ou contenteditable
+      const activeElement = document.activeElement as HTMLElement;
+      const isInputFocused = activeElement && (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.contentEditable === 'true'
+      );
+      
+      // Só processar teclas se não houver input focado
+      if (!isInputFocused) {
+        // Aceitar números do numpad e do teclado principal
+        if ((e.key >= '0' && e.key <= '9') || 
+            e.key === '.' || e.key === ',' || 
+            e.key === 'Enter' || e.key === 'Escape' || 
+            e.key === 'Backspace') {
+          e.preventDefault();
+          handleCalculatorInput(e.key);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [calculatorDisplay]);
+
+  // Função para adicionar pagamento
   const handleAddPayment = () => {
-    const amount = 0; // Agora o valor vem do input direto no POS
+    const amount = parseFloat(calculatorDisplay) || 0;
     if (amount <= 0) {
       toast.error('Digite um valor válido');
       return;
@@ -112,7 +158,7 @@ export default function PaymentWorkspace({
       timestamp: new Date()
     });
 
-    // Resetar valor do input agora é feito no componente pai
+    setCalculatorDisplay('0');
     
     if (amount >= remaining - 0.01) {
       toast.success('Pagamento completo! Clique em Finalizar.');
@@ -313,7 +359,56 @@ export default function PaymentWorkspace({
             </CardContent>
           </Card>
 
-          {/* Removido: Card da Calculadora - não é mais necessário */}
+          {/* Calculadora */}
+          <Card className="bg-gray-800 border-gray-700 flex-1">
+            <CardHeader className="py-2">
+              <CardTitle className="text-sm">Calculadora</CardTitle>
+            </CardHeader>
+            <CardContent className="py-2">
+              {/* Display */}
+              <div className="bg-black rounded p-2 mb-2">
+                <p className="text-xl font-mono text-green-400 text-right">
+                  R$ {calculatorDisplay}
+                </p>
+              </div>
+
+              {/* Valor Restante */}
+              <Button
+                size="sm"
+                onClick={() => setCalculatorDisplay(remaining.toFixed(2))}
+                className="w-full h-8 mb-2 text-xs bg-orange-600 hover:bg-orange-700"
+                disabled={remaining <= 0}
+              >
+                Preencher Valor Restante
+              </Button>
+
+              {/* Teclado Numérico */}
+              <div className="grid grid-cols-3 gap-1">
+                {['7', '8', '9', '4', '5', '6', '1', '2', '3', '0', '.', '⌫'].map((btn) => (
+                  <Button
+                    key={btn}
+                    size="sm"
+                    onClick={() => handleCalculatorInput(btn)}
+                    className={cn(
+                      "h-8 text-sm font-bold",
+                      btn === '⌫' ? "bg-red-600 hover:bg-red-700" : "bg-gray-700 hover:bg-gray-600"
+                    )}
+                  >
+                    {btn}
+                  </Button>
+                ))}
+              </div>
+
+              {/* Limpar */}
+              <Button
+                size="sm"
+                onClick={() => handleCalculatorInput('C')}
+                className="w-full h-7 mt-1 bg-gray-700 hover:bg-gray-600 text-xs"
+              >
+                Limpar
+              </Button>
+            </CardContent>
+          </Card>
 
           {/* Métodos de Pagamento */}
           <div className="grid grid-cols-2 gap-1">
@@ -356,7 +451,15 @@ export default function PaymentWorkspace({
             })}
           </div>
 
-          {/* Botão Adicionar Pagamento - Agora controlado pelo componente pai */}
+          {/* Botão Adicionar Pagamento */}
+          <Button
+            onClick={handleAddPayment}
+            disabled={parseFloat(calculatorDisplay) <= 0 || remaining <= 0}
+            className="h-10 bg-green-600 hover:bg-green-700 font-bold"
+          >
+            <Check className="h-4 w-4 mr-1" />
+            Adicionar Pagamento
+          </Button>
         </div>
 
         {/* Coluna Direita - Histórico e Finalizar */}
