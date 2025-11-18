@@ -3543,7 +3543,7 @@ export default function POSPage() {
           <div className="w-[70%] flex flex-col border-r border-gray-700 overflow-hidden">
             {/* Se a mesa está fechada, mostra interface de pagamento */}
             {selectedTable?.status === 'closed' ? (
-              <div className="flex-1 p-4">
+              <div className="flex-1 p-4 pb-20">
                 <PaymentWorkspace
                   mode="embedded"
                   groupedItems={groupedItems}
