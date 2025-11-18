@@ -3700,45 +3700,92 @@ export default function POSPage() {
                     <CardTitle className="text-lg flex items-center justify-between">
                       <span className="flex items-center gap-2">
                         <ShoppingBag className="h-5 w-5 text-orange-400" />
-                        Itens do Pedido
+                        Produtos da Conta
                       </span>
-                      <button
-                        onClick={() => {
-                          // Ciclar entre os modos: all -> delivered -> cancelled -> all
-                          if (filterMode === 'all') {
-                            setFilterMode('delivered');
-                          } else if (filterMode === 'delivered') {
-                            setFilterMode('cancelled');
-                          } else {
-                            setFilterMode('all');
-                          }
-                        }}
-                        className={`px-4 py-1 rounded-md text-sm font-medium transition-all ${
-                          filterMode === 'all' 
-                            ? 'bg-orange-600 text-white' 
-                            : filterMode === 'delivered'
-                            ? 'bg-green-600 text-white'
-                            : 'bg-red-600 text-white'
-                        }`}
-                        data-testid="filter-toggle"
-                      >
-                        {filterMode === 'all' ? (
-                          <span className="flex items-center gap-1">
-                            <ShoppingBag className="h-4 w-4" />
-                            Todos
-                          </span>
-                        ) : filterMode === 'delivered' ? (
-                          <span className="flex items-center gap-1">
-                            <CheckCircle2 className="h-4 w-4" />
-                            Lançados
-                          </span>
-                        ) : (
-                          <span className="flex items-center gap-1">
-                            <XCircle className="h-4 w-4" />
-                            Cancelados
-                          </span>
-                        )}
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {/* Botão Toggle Rodízio */}
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm text-gray-400">Rodízio</span>
+                          <button
+                            onClick={() => {
+                              const rodizioGroup = groups.find(g => g.type === 'rodizio' && g.active);
+                              if (!rodizioGroup) {
+                                toast.error('Nenhum rodízio disponível');
+                                return;
+                              }
+                              
+                              const hasRodizio = cart.some(item => {
+                                const isRodizioItem = item.item?.group?.type === 'rodizio';
+                                return isRodizioItem;
+                              });
+                              
+                              if (hasRodizio) {
+                                // Remove todos os rodízios do carrinho
+                                setCart(prev => prev.filter(item => item.item?.group?.type !== 'rodizio'));
+                                toast.success('Rodízio removido');
+                              } else {
+                                // Abre modal para adicionar rodízio
+                                setSelectedRodizioGroup(rodizioGroup);
+                                setRodizioInteiro(1);
+                                setRodizioMeio(0);
+                                setRodizioModal(true);
+                              }
+                            }}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                              cart.some(item => item.item?.group?.type === 'rodizio')
+                                ? 'bg-orange-600'
+                                : 'bg-gray-700'
+                            }`}
+                          >
+                            <span
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                                cart.some(item => item.item?.group?.type === 'rodizio')
+                                  ? 'translate-x-6'
+                                  : 'translate-x-1'
+                              }`}
+                            />
+                          </button>
+                        </div>
+                        
+                        {/* Botão de Filtro */}
+                        <button
+                          onClick={() => {
+                            // Ciclar entre os modos: all -> delivered -> cancelled -> all
+                            if (filterMode === 'all') {
+                              setFilterMode('delivered');
+                            } else if (filterMode === 'delivered') {
+                              setFilterMode('cancelled');
+                            } else {
+                              setFilterMode('all');
+                            }
+                          }}
+                          className={`px-4 py-1 rounded-md text-sm font-medium transition-all ${
+                            filterMode === 'all' 
+                              ? 'bg-orange-600 text-white' 
+                              : filterMode === 'delivered'
+                              ? 'bg-green-600 text-white'
+                              : 'bg-red-600 text-white'
+                          }`}
+                          data-testid="filter-toggle"
+                        >
+                          {filterMode === 'all' ? (
+                            <span className="flex items-center gap-1">
+                              <ShoppingBag className="h-4 w-4" />
+                              Todos
+                            </span>
+                          ) : filterMode === 'delivered' ? (
+                            <span className="flex items-center gap-1">
+                              <CheckCircle2 className="h-4 w-4" />
+                              Lançados
+                            </span>
+                          ) : (
+                            <span className="flex items-center gap-1">
+                              <XCircle className="h-4 w-4" />
+                              Cancelados
+                            </span>
+                          )}
+                        </button>
+                      </div>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 pt-0 flex-1 overflow-hidden">
