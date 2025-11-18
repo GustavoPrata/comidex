@@ -406,15 +406,13 @@ export default function PaymentWorkspace({
           {/* Calculadora funcional estilo Apple */}
           <Card className="bg-black border-gray-800 flex-1 overflow-hidden">
             <CardContent className="p-2">
-              {/* Display compacto */}
-              <div className="bg-black p-2 mb-2">
+              {/* Display estilo iPhone */}
+              <div className="bg-black p-3 mb-2">
                 <div className="text-right">
-                  {calcOperation && (
-                    <p className="text-gray-500 text-[10px] h-4">
-                      {calcMemory} {calcOperation}
-                    </p>
-                  )}
-                  <p className="text-white text-2xl font-light">
+                  <p className="text-gray-400 text-sm h-5 font-light">
+                    {calcOperation ? `${calcMemory.toString().replace('.', ',')} ${calcOperation}` : ' '}
+                  </p>
+                  <p className="text-white text-3xl font-light">
                     {calculatorDisplay === '0' ? '0' : calculatorDisplay.replace('.', ',')}
                   </p>
                 </div>
@@ -566,16 +564,6 @@ export default function PaymentWorkspace({
                   =
                 </Button>
               </div>
-              
-              {/* Botão Adicionar Pagamento */}
-              <Button
-                onClick={handleAddPayment}
-                disabled={parseFloat(calculatorDisplay) <= 0 || remaining <= 0}
-                className="w-full h-10 mt-3 bg-green-600 hover:bg-green-700 font-bold"
-              >
-                <Check className="h-4 w-4 mr-1" />
-                Adicionar Pagamento
-              </Button>
             </CardContent>
           </Card>
 
@@ -619,6 +607,16 @@ export default function PaymentWorkspace({
               );
             })}
           </div>
+
+          {/* Botão Adicionar Pagamento */}
+          <Button
+            onClick={handleAddPayment}
+            disabled={parseFloat(calculatorDisplay) <= 0 || remaining <= 0}
+            className="w-full h-12 mt-2 bg-green-600 hover:bg-green-700 font-bold"
+          >
+            <Check className="h-5 w-5 mr-2" />
+            Adicionar Pagamento
+          </Button>
         </div>
 
         {/* Coluna Direita - Histórico e Finalizar */}
