@@ -302,10 +302,10 @@ export default function PaymentWorkspace({
                     </Button>
                     <Input
                       type="number"
-                      value={discountValue}
+                      value={discountValue || ''}
                       onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
                       className="h-7 flex-1 bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                      placeholder="0"
+                      placeholder=""
                     />
                   </div>
                   {discountValue > 0 && (
