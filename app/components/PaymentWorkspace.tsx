@@ -355,9 +355,7 @@ export default function PaymentWorkspace({
                       key={idx} 
                       className={`flex justify-between items-center p-2 rounded-lg transition-colors ${
                         item.quantity === 0 && item.cancelledQuantity > 0
-                          ? 'bg-red-900/30 border border-red-800/50 opacity-75' 
-                          : item.hasCancelled
-                          ? 'bg-yellow-900/20 border border-yellow-800/30'
+                          ? 'bg-gray-700/50 hover:bg-gray-700/70 opacity-75' 
                           : 'bg-gray-700/50 hover:bg-gray-700/70'
                       }`}
                     >
@@ -394,11 +392,6 @@ export default function PaymentWorkspace({
                                 ` × ${item.quantity + item.cancelledQuantity}`
                               }
                             </>
-                          )}
-                          {item.hasCancelled && item.cancelledQuantity > 0 && (
-                            <span className="ml-2 text-red-400">
-                              ({item.cancelledQuantity} cancelado{item.cancelledQuantity > 1 ? 's' : ''})
-                            </span>
                           )}
                         </div>
                       </div>
