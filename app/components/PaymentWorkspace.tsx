@@ -397,20 +397,38 @@ export default function PaymentWorkspace({
           <div className="grid grid-cols-2 gap-1">
             {paymentMethods.map((method) => {
               const Icon = method.icon;
+              const isSelected = selectedPaymentMethod === method.id;
+              
+              // Classes específicas para cada método com hover mantendo a mesma cor
+              const getButtonClass = () => {
+                if (!isSelected) return "bg-gray-700 hover:bg-gray-600";
+                
+                switch(method.id) {
+                  case 'cash':
+                    return "bg-green-500 hover:bg-green-500 ring-2 ring-white/30";
+                  case 'credit':
+                    return "bg-blue-500 hover:bg-blue-500 ring-2 ring-white/30";
+                  case 'debit':
+                    return "bg-purple-500 hover:bg-purple-500 ring-2 ring-white/30";
+                  case 'pix':
+                    return "bg-cyan-500 hover:bg-cyan-500 ring-2 ring-white/30";
+                  default:
+                    return "bg-gray-700 hover:bg-gray-600";
+                }
+              };
+              
               return (
                 <Button
                   key={method.id}
                   size="sm"
                   onClick={() => setSelectedPaymentMethod(method.id)}
                   className={cn(
-                    "h-12 flex items-center justify-start gap-2 px-3",
-                    selectedPaymentMethod === method.id
-                      ? method.color
-                      : "bg-gray-700 hover:bg-gray-600"
+                    "h-12 flex items-center justify-start gap-3 px-3 transition-all",
+                    getButtonClass()
                   )}
                 >
-                  <Icon className="h-6 w-6" />
-                  <span className="text-sm font-medium">{method.name}</span>
+                  <Icon className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm font-medium text-left">{method.name}</span>
                 </Button>
               );
             })}
