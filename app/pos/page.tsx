@@ -4681,8 +4681,8 @@ export default function POSPage() {
                           </Button>
                           <Button
                             size="sm"
-                            onClick={() => setDiscountType('fixed')}
-                            className={discountType === 'fixed' ? 'bg-orange-600' : 'bg-gray-700'}
+                            onClick={() => setDiscountType('value')}
+                            className={discountType === 'value' ? 'bg-orange-600' : 'bg-gray-700'}
                           >
                             R$
                           </Button>
@@ -4795,7 +4795,12 @@ export default function POSPage() {
                         onClick={() => {
                           const amount = parseFloat(calculatorDisplay) || 0;
                           if (amount > 0) {
-                            addPayment(amount, 'cash');
+                            addPayment({
+                              id: Date.now().toString(),
+                              method: 'cash',
+                              amount: amount,
+                              timestamp: new Date()
+                            });
                             setCalculatorDisplay('0');
                           }
                         }}
@@ -4808,7 +4813,12 @@ export default function POSPage() {
                         onClick={() => {
                           const amount = parseFloat(calculatorDisplay) || 0;
                           if (amount > 0) {
-                            addPayment(amount, 'credit');
+                            addPayment({
+                              id: Date.now().toString(),
+                              method: 'credit',
+                              amount: amount,
+                              timestamp: new Date()
+                            });
                             setCalculatorDisplay('0');
                           }
                         }}
@@ -4821,7 +4831,12 @@ export default function POSPage() {
                         onClick={() => {
                           const amount = parseFloat(calculatorDisplay) || 0;
                           if (amount > 0) {
-                            addPayment(amount, 'debit');
+                            addPayment({
+                              id: Date.now().toString(),
+                              method: 'debit',
+                              amount: amount,
+                              timestamp: new Date()
+                            });
                             setCalculatorDisplay('0');
                           }
                         }}
@@ -4834,7 +4849,12 @@ export default function POSPage() {
                         onClick={() => {
                           const amount = parseFloat(calculatorDisplay) || 0;
                           if (amount > 0) {
-                            addPayment(amount, 'pix');
+                            addPayment({
+                              id: Date.now().toString(),
+                              method: 'pix',
+                              amount: amount,
+                              timestamp: new Date()
+                            });
                             setCalculatorDisplay('0');
                           }
                         }}
