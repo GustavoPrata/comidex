@@ -79,6 +79,8 @@ export default function PaymentWorkspace({
   const [calcMemory, setCalcMemory] = useState<number>(0);
   const [calcOperation, setCalcOperation] = useState<string>('');
   const [waitingForOperand, setWaitingForOperand] = useState<boolean>(false);
+  const [lastOperation, setLastOperation] = useState<string>('');
+  const [operand2, setOperand2] = useState<number>(0);
   
   // Função para formatar valores monetários
   const formatCurrency = (value: number, isRodizioItem: boolean = false) => {
@@ -128,6 +130,8 @@ export default function PaymentWorkspace({
       setCalcMemory(0);
       setCalcOperation('');
       setWaitingForOperand(false);
+      setLastOperation('');
+      setOperand2(0);
     } else if (value === '⌫' || value === 'Backspace') {
       if (!waitingForOperand) {
         setCalculatorDisplay(prev => prev.length > 1 ? prev.slice(0, -1) : '0');
@@ -139,10 +143,16 @@ export default function PaymentWorkspace({
     } else if (['+', '-', '*', '/'].includes(value)) {
       performOperation();
       setCalcOperation(value);
+      setLastOperation('');
     } else if (value === '=' || value === 'Enter') {
-      performOperation();
-      setCalcOperation('');
-      setWaitingForOperand(false);
+      if (calcOperation) {
+        const inputValue = parseFloat(calculatorDisplay);
+        setOperand2(inputValue);
+        performOperation();
+        setLastOperation(`${calcMemory} ${calcOperation} ${inputValue}`);
+        setCalcOperation('');
+        setWaitingForOperand(false);
+      }
     } else if (/^[0-9]$/.test(value)) {
       if (waitingForOperand) {
         setCalculatorDisplay(value);
@@ -180,7 +190,7 @@ export default function PaymentWorkspace({
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [calculatorDisplay, waitingForOperand, calcOperation, calcMemory]);
+  }, [calculatorDisplay, waitingForOperand, calcOperation, calcMemory, lastOperation, operand2]);
 
   // Função para adicionar pagamento
   const handleAddPayment = () => {
@@ -410,7 +420,8 @@ export default function PaymentWorkspace({
               <div className="bg-black p-3 mb-2">
                 <div className="text-right">
                   <p className="text-gray-400 text-sm h-5 font-light">
-                    {calcOperation ? `${calcMemory.toString().replace('.', ',')} ${calcOperation}` : ' '}
+                    {lastOperation ? lastOperation.replace(/\./g, ',').replace('*', '×').replace('/', '÷') : 
+                     calcOperation ? `${calcMemory.toString().replace('.', ',')} ${calcOperation.replace('*', '×').replace('/', '÷')}` : ' '}
                   </p>
                   <p className="text-white text-3xl font-light">
                     {calculatorDisplay === '0' ? '0' : calculatorDisplay.replace('.', ',')}
