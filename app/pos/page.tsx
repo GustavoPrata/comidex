@@ -322,6 +322,41 @@ export default function POSPage() {
   const [calculatorDisplay, setCalculatorDisplay] = useState('0');
   const [activePaymentInput, setActivePaymentInput] = useState<number | null>(null);
   
+  // Função para agrupar itens do carrinho
+  const groupCartItems = (items: any[]) => {
+    const grouped = new Map();
+    
+    items.forEach(item => {
+      // Só agrupa itens não cancelados
+      if (item.status !== 'cancelled') {
+        const key = `${item.item_id}_${item.unit_price}`;
+        
+        if (grouped.has(key)) {
+          const existing = grouped.get(key);
+          existing.quantity += item.quantity;
+          existing.total_price = existing.quantity * existing.unit_price;
+        } else {
+          grouped.set(key, {
+            item: item.item,
+            unit_price: item.unit_price,
+            quantity: item.quantity,
+            total_price: item.quantity * item.unit_price
+          });
+        }
+      }
+    });
+    
+    return Array.from(grouped.values());
+  };
+  
+  // Atualizar groupedItems sempre que o carrinho mudar ou a mesa estiver fechada
+  useEffect(() => {
+    if (selectedTable?.status === 'closed' && cart.length > 0) {
+      const grouped = groupCartItems(cart);
+      setGroupedItems(grouped);
+    }
+  }, [cart, selectedTable?.status]);
+  
   // Estado da aba ativa
   const [activeTab, setActiveTab] = useState<string>('cart');
   
@@ -1557,32 +1592,6 @@ export default function POSPage() {
     toast.success("Alterações canceladas");
   };
 
-  // Função para agrupar itens duplicados
-  const groupCartItems = () => {
-    const grouped: any[] = [];
-    cart.forEach(item => {
-      if (item.status === 'cancelled') return; // Ignorar itens cancelados
-      
-      const existing = grouped.find(g => 
-        g.item_id === item.item_id && 
-        g.unit_price === item.unit_price &&
-        g.notes === item.notes
-      );
-      
-      if (existing) {
-        existing.quantity += item.quantity;
-        existing.total_price += item.total_price;
-        existing.items.push(item);
-      } else {
-        grouped.push({
-          ...item,
-          items: [item],
-          grouped_quantity: item.quantity
-        });
-      }
-    });
-    return grouped;
-  };
 
   // Calcular total com desconto
   const calculateTotalWithDiscount = () => {
