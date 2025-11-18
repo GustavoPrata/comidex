@@ -282,16 +282,6 @@ export default function PaymentWorkspace({
                   <div className="flex gap-1 mt-1">
                     <Button
                       size="sm"
-                      onClick={() => setDiscountType('percentage')}
-                      className={cn(
-                        "h-7 px-2",
-                        discountType === 'percentage' ? "bg-orange-600" : "bg-gray-700"
-                      )}
-                    >
-                      %
-                    </Button>
-                    <Button
-                      size="sm"
                       onClick={() => setDiscountType('value')}
                       className={cn(
                         "h-7 px-2",
@@ -300,11 +290,21 @@ export default function PaymentWorkspace({
                     >
                       R$
                     </Button>
+                    <Button
+                      size="sm"
+                      onClick={() => setDiscountType('percentage')}
+                      className={cn(
+                        "h-7 px-2",
+                        discountType === 'percentage' ? "bg-orange-600" : "bg-gray-700"
+                      )}
+                    >
+                      %
+                    </Button>
                     <Input
                       type="number"
                       value={discountValue}
                       onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
-                      className="h-7 flex-1 bg-gray-700 border-gray-600 text-white text-sm"
+                      className="h-7 flex-1 bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       placeholder="0"
                     />
                   </div>
@@ -328,7 +328,7 @@ export default function PaymentWorkspace({
                       min="1"
                       value={splitCount}
                       onChange={(e) => setSplitCount(Math.max(1, parseInt(e.target.value) || 1))}
-                      className="h-7 w-20 bg-gray-700 border-gray-600 text-white text-sm"
+                      className="h-7 w-20 bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                     <span className="text-xs text-gray-400">pessoas</span>
                     {splitCount > 1 && (

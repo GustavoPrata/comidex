@@ -314,7 +314,7 @@ export default function POSPage() {
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
   const [groupedItems, setGroupedItems] = useState<any[]>([]);
-  const [discountType, setDiscountType] = useState<'percentage' | 'value'>('percentage');
+  const [discountType, setDiscountType] = useState<'percentage' | 'value'>('value');
   const [discountValue, setDiscountValue] = useState(0);
   const [splitCount, setSplitCount] = useState(1);
   const [payments, setPayments] = useState<any[]>([]);
