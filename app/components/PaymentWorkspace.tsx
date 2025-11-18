@@ -171,11 +171,11 @@ export default function PaymentWorkspace({
       </div>
 
       {/* Grid de 3 colunas */}
-      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 overflow-hidden">
+      <div className="flex-1 grid grid-cols-[1.4fr_0.8fr_0.8fr] gap-4 p-4 overflow-hidden">
         
         {/* Coluna Esquerda - Resumo dos Itens */}
         <div className="flex flex-col h-full">
-          <Card className="bg-gray-800 border-gray-700 flex flex-col" style={{ maxHeight: 'calc(100vh - 250px)' }}>
+          <Card className="bg-gray-800 border-gray-700 flex flex-col rounded-lg" style={{ maxHeight: 'calc(100vh - 250px)' }}>
             <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-sm flex items-center justify-between">
                 <span>Itens da Conta</span>
@@ -238,7 +238,7 @@ export default function PaymentWorkspace({
         {/* Coluna Central - Ajustes e Calculadora */}
         <div className="flex flex-col gap-3">
           {/* Desconto e Divisão */}
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-gray-800 border-gray-700 rounded-lg">
             <CardContent className="py-3">
               <div className="space-y-3">
                 {/* Desconto */}
@@ -463,7 +463,7 @@ export default function PaymentWorkspace({
 
           {/* Resumo Final */}
           {payments.length > 0 && (
-            <Card className="bg-gray-800 border-gray-700">
+            <Card className="bg-gray-800 border-gray-700 rounded-lg">
               <CardContent className="py-3">
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
