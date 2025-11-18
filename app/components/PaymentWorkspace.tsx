@@ -312,7 +312,7 @@ export default function PaymentWorkspace({
       </div>
 
       {/* Grid de 3 colunas - com padding-bottom para o rodapé */}
-      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 pb-20 overflow-hidden">
+      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 pb-14 overflow-hidden">
         
         {/* Coluna Esquerda - Resumo dos Itens */}
         <div className="flex flex-col h-full">
@@ -853,22 +853,22 @@ export default function PaymentWorkspace({
       </div>
       
       {/* Rodapé com botões - Fora da estrutura 70/30 */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700 p-2">
         <div className="flex gap-2">
           <Button
             onClick={() => window.location.href = '/pos'}
             variant="outline"
-            className="h-10 px-6 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
+            className="h-8 px-4 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium text-sm"
           >
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowLeft className="h-3 w-3 mr-2" />
             Voltar
           </Button>
           {reopenTable && (
             <Button
               onClick={reopenTable}
-              className="h-10 px-6 bg-orange-600 hover:bg-orange-500 text-white font-medium"
+              className="h-8 px-4 bg-orange-600 hover:bg-orange-500 text-white font-medium text-sm"
             >
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <RefreshCw className="h-3 w-3 mr-2" />
               Reabrir Mesa
             </Button>
           )}
