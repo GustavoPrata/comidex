@@ -4246,7 +4246,8 @@ export default function POSPage() {
                 </CardContent>
               </Card>
             ) : (
-              /* Card de Ações Normal - quando mesa não está fechada */
+              <>
+              {/* Card de Ações Normal - quando mesa não está fechada */}
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mb-4">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
@@ -4372,7 +4373,7 @@ export default function POSPage() {
                 </div>
               </div>
             </div>
-            )}
+            </>)}
             
           </div>
         </div>
