@@ -314,7 +314,7 @@ export default function POSPage() {
   // Estados do checkout completo
   const [checkoutDialog, setCheckoutDialog] = useState(false);
   const [groupedItems, setGroupedItems] = useState<any[]>([]);
-  const [discountType, setDiscountType] = useState<'percentage' | 'fixed'>('percentage');
+  const [discountType, setDiscountType] = useState<'percentage' | 'value'>('percentage');
   const [discountValue, setDiscountValue] = useState(0);
   const [splitCount, setSplitCount] = useState(1);
   const [payments, setPayments] = useState<any[]>([]);
@@ -2447,6 +2447,96 @@ export default function POSPage() {
     }
   };
   */
+
+  const handleCompletePayment = async () => {
+    if (!currentOrder || !currentSession || !selectedTable) return;
+    
+    const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
+    const totalDue = calculateTotalWithDiscount();
+    
+    if (totalPaid < totalDue - 0.01) {
+      toast.error('Valor pago insuficiente');
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      // Save all payments to database
+      for (const payment of payments) {
+        const { error: paymentError } = await supabase
+          .from('payments')
+          .insert({
+            order_id: currentOrder.id,
+            amount: payment.amount,
+            payment_method: payment.method,
+            status: 'completed',
+            paid_at: new Date().toISOString()
+          });
+
+        if (paymentError) throw paymentError;
+      }
+
+      // Update order status
+      const { error: orderError } = await supabase
+        .from('orders')
+        .update({
+          status: 'completed',
+          discount_type: discountType,
+          discount_value: discountValue,
+          final_total: totalDue,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', currentOrder.id);
+
+      if (orderError) throw orderError;
+
+      // Update session
+      const { error: sessionError } = await supabase
+        .from('table_sessions')
+        .update({
+          status: 'closed',
+          closed_at: new Date().toISOString(),
+          final_total: totalDue
+        })
+        .eq('id', currentSession.id);
+
+      if (sessionError) throw sessionError;
+
+      // Update table status
+      const { error: tableError } = await supabase
+        .from('restaurant_tables')
+        .update({ status: 'available' })
+        .eq('id', selectedTable.id);
+
+      if (tableError) throw tableError;
+
+      toast.success(
+        <div className="flex items-center gap-2">
+          <Check className="h-4 w-4" />
+          <span>Pagamento finalizado! Mesa liberada.</span>
+        </div>
+      );
+      
+      // Reset everything and go back to tables
+      setCart([]);
+      setCurrentOrder(null);
+      setCurrentSession(null);
+      setSelectedTable(null);
+      setPayments([]);
+      setDiscountValue(0);
+      setDiscountType('percentage');
+      setSplitCount(1);
+      setScreen('tables');
+      
+      await loadTables();
+      await loadTodayOrders();
+    } catch (error) {
+      console.error('Erro ao processar pagamento:', error);
+      toast.error('Erro ao processar pagamento');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePayment = async () => {
     if (!currentOrder || !currentSession || !selectedTable) return;
