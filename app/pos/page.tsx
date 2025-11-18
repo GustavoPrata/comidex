@@ -1674,11 +1674,18 @@ export default function POSPage() {
       
       if (sessionError) throw sessionError;
       
+      // Atualizar o status da mesa localmente IMEDIATAMENTE
+      setSelectedTable((prev: any) => ({
+        ...prev,
+        status: 'closed'
+      }));
+      
       toast.success("Conta fechada com sucesso!");
       setConfirmCloseTableDialog(false);
       
       // Recarregar dados da mesa
       await loadSessionDetails(selectedTable.id);
+      await loadTables();
       
     } catch (error: any) {
       console.error('Erro ao fechar conta:', error);
