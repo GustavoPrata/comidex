@@ -323,13 +323,29 @@ export default function PaymentWorkspace({
                 <div>
                   <Label className="text-xs text-gray-400">Dividir em</Label>
                   <div className="flex items-center gap-2 mt-1">
+                    <Button
+                      size="sm"
+                      onClick={() => setSplitCount(Math.max(1, splitCount - 1))}
+                      className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
+                      disabled={splitCount <= 1}
+                    >
+                      -
+                    </Button>
                     <Input
                       type="number"
                       min="1"
+                      max="99"
                       value={splitCount}
-                      onChange={(e) => setSplitCount(Math.max(1, parseInt(e.target.value) || 1))}
-                      className="h-7 w-20 bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                      onChange={(e) => setSplitCount(Math.max(1, Math.min(99, parseInt(e.target.value) || 1)))}
+                      className="h-7 w-12 text-center bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
+                    <Button
+                      size="sm"
+                      onClick={() => setSplitCount(Math.min(99, splitCount + 1))}
+                      className="h-7 w-7 p-0 bg-gray-700 hover:bg-gray-600"
+                    >
+                      +
+                    </Button>
                     <span className="text-xs text-gray-400">pessoas</span>
                     {splitCount > 1 && (
                       <span className="text-xs text-orange-400 ml-auto">
