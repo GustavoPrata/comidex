@@ -40,7 +40,7 @@ interface PaymentWorkspaceProps {
   splitCount: number;
   setSplitCount: (count: number) => void;
   calculatorDisplay: string;
-  setCalculatorDisplay: (value: string) => void;
+  setCalculatorDisplay: (value: string | ((prev: string) => string)) => void;
   payments: any[];
   addPayment: (payment: any) => void;
   removePayment: (id: string) => void;
@@ -170,17 +170,17 @@ export default function PaymentWorkspace({
       <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 overflow-hidden">
         
         {/* Coluna Esquerda - Resumo dos Itens */}
-        <div className="flex flex-col gap-3">
-          <Card className="bg-gray-800 border-gray-700 flex-1 flex flex-col">
-            <CardHeader className="py-3">
+        <div className="flex flex-col h-full">
+          <Card className="bg-gray-800 border-gray-700 flex-1 flex flex-col min-h-0">
+            <CardHeader className="py-3 flex-shrink-0">
               <CardTitle className="text-sm flex items-center justify-between">
                 <span>Itens da Conta</span>
                 <span className="text-orange-400">{groupedItems.length} itens</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 py-2 overflow-hidden">
-              <ScrollArea className="h-full pr-3">
-                <div className="space-y-2">
+            <CardContent className="flex-1 py-2 overflow-hidden min-h-0">
+              <ScrollArea className="h-full pr-2">
+                <div className="space-y-2 pr-1">
                   {groupedItems.map((item, idx) => (
                     <div 
                       key={idx} 

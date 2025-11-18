@@ -2638,10 +2638,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   padding-right: .5rem;
 }
 
-.pr-3 {
-  padding-right: .75rem;
-}
-
 .pr-4 {
   padding-right: 1rem;
 }
