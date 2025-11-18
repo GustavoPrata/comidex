@@ -763,6 +763,7 @@ export default function PaymentWorkspace({
         <div className="flex gap-2">
           <Button
             onClick={() => window.location.href = '/pos'}
+            variant="outline"
             className="h-10 px-6 text-gray-300 border-gray-600 hover:bg-gray-800 font-medium"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
