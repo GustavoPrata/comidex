@@ -78,6 +78,9 @@ export default function PaymentWorkspace({
   
   // Função para formatar valores monetários
   const formatCurrency = (value: number) => {
+    if (value === 0) {
+      return 'Incluso';
+    }
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
