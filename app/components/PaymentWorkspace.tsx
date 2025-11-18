@@ -171,7 +171,7 @@ export default function PaymentWorkspace({
       </div>
 
       {/* Grid de 3 colunas */}
-      <div className="flex-1 grid grid-cols-[1.2fr_1fr_0.8fr] gap-4 p-4 overflow-hidden">
+      <div className="flex-1 grid grid-cols-[1.5fr_1fr_0.5fr] gap-4 p-4 overflow-hidden">
         
         {/* Coluna Esquerda - Resumo dos Itens */}
         <div className="flex flex-col h-full">

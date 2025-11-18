@@ -1378,8 +1378,8 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   grid-template-columns: repeat(8, minmax(0, 1fr));
 }
 
-.grid-cols-\[1\.2fr_1fr_0\.8fr\] {
-  grid-template-columns: 1.2fr 1fr .8fr;
+.grid-cols-\[1\.5fr_1fr_0\.5fr\] {
+  grid-template-columns: 1.5fr 1fr .5fr;
 }
 
 .flex-col {
