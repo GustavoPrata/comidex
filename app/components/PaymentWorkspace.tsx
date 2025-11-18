@@ -440,54 +440,10 @@ export default function PaymentWorkspace({
 
         {/* Coluna Central - Ajustes e Calculadora */}
         <div className="flex flex-col gap-3">
-          {/* Desconto e Divisão */}
+          {/* Divisão */}
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="py-3">
               <div className="space-y-3">
-                {/* Desconto */}
-                <div>
-                  <Label className="text-xs text-gray-400">Desconto</Label>
-                  <div className="flex gap-1 mt-1 items-center">
-                    <Button
-                      size="sm"
-                      onClick={() => setDiscountType('value')}
-                      className={cn(
-                        "h-7 px-2",
-                        discountType === 'value' ? "bg-orange-600" : "bg-gray-700"
-                      )}
-                    >
-                      R$
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => setDiscountType('percentage')}
-                      className={cn(
-                        "h-7 px-2",
-                        discountType === 'percentage' ? "bg-orange-600" : "bg-gray-700"
-                      )}
-                    >
-                      %
-                    </Button>
-                    <Input
-                      type="number"
-                      value={discountValue || ''}
-                      onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
-                      maxLength={6}
-                      className="h-7 w-20 bg-gray-700 border-gray-600 text-white text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                      placeholder=""
-                    />
-                    {discountValue > 0 && (
-                      <span className="text-xs text-green-400 ml-auto">
-                        -{formatCurrency(
-                          discountType === 'percentage'
-                            ? (calculateTotal() * discountValue / 100)
-                            : discountValue
-                        )}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
                 {/* Divisão */}
                 <div>
                   <Label className="text-xs text-gray-400">Dividir em</Label>
