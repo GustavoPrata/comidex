@@ -3550,29 +3550,398 @@ export default function POSPage() {
           <div className="w-[70%] flex flex-col border-r border-gray-700 overflow-hidden">
             {/* Se a mesa está fechada, mostra interface de pagamento */}
             {selectedTable?.status === 'closed' ? (
-              <div className="flex-1 p-4 pb-20">
-                <PaymentWorkspace
-                  mode="embedded"
-                  groupedItems={groupedItems}
-                  calculateSubtotal={calculateSubtotal}
-                  calculateTotal={calculateTotal}
-                  calculateTotalWithDiscount={calculateTotalWithDiscount}
-                  serviceTaxPercentage={serviceTaxPercentage}
-                  serviceTaxValue={calculateServiceTax()}
-                  discountType={discountType}
-                  setDiscountType={setDiscountType}
-                  discountValue={discountValue}
-                  setDiscountValue={setDiscountValue}
-                  splitCount={splitCount}
-                  setSplitCount={setSplitCount}
-                  payments={payments}
-                  addPayment={addPayment}
-                  removePayment={removePayment}
-                  handleCompletePayment={handleCompletePayment}
-                  reopenTable={reopenTable}
-                  selectedTable={selectedTable}
-                  loading={loading}
-                />
+              <div className="flex-1 p-4 overflow-hidden">
+                <div className="grid grid-cols-3 gap-4 h-full">
+                  {/* Coluna 1: Resumo e Configurações */}
+                  <div className="space-y-4">
+                    {/* Itens Agrupados */}
+                    <Card className="bg-gray-800 border-gray-700">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Resumo da Conta</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ScrollArea className="h-[250px]">
+                          <div className="space-y-2">
+                            {groupedItems.map((item, idx) => (
+                              <div key={idx} className="flex justify-between items-center p-2 bg-gray-700/50 rounded">
+                                <div className="flex-1">
+                                  <div className="font-medium">{item.item?.name || 'Produto'}</div>
+                                  <div className="text-sm text-gray-400">
+                                    {formatCurrency(item.unit_price)} × {item.quantity}
+                                  </div>
+                                </div>
+                                <div className="text-right">
+                                  <div className="font-bold text-orange-400">
+                                    {formatCurrency(item.total_price)}
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </ScrollArea>
+                        
+                        {/* Totais */}
+                        <div className="mt-4 pt-4 border-t border-gray-600 space-y-2">
+                          <div className="flex justify-between">
+                            <span>Subtotal:</span>
+                            <span className="font-bold">{formatCurrency(calculateSubtotal())}</span>
+                          </div>
+                          
+                          {serviceTaxPercentage > 0 && (
+                            <div className="flex justify-between text-yellow-400">
+                              <span>Taxa de Serviço ({serviceTaxPercentage}%):</span>
+                              <span className="font-bold">+{formatCurrency(calculateServiceTax())}</span>
+                            </div>
+                          )}
+                          
+                          {/* Desconto */}
+                          <div className="flex items-center justify-between">
+                            <span>Desconto:</span>
+                            <div className="flex items-center gap-2">
+                              <div className="flex">
+                                <Button
+                                  size="sm"
+                                  onClick={() => setDiscountType('percentage')}
+                                  className={discountType === 'percentage' ? 'bg-orange-600' : 'bg-gray-700'}
+                                >
+                                  %
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  onClick={() => setDiscountType('value')}
+                                  className={discountType === 'value' ? 'bg-orange-600' : 'bg-gray-700'}
+                                >
+                                  R$
+                                </Button>
+                              </div>
+                              <Input
+                                type="number"
+                                value={discountValue}
+                                onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
+                                className="w-20 h-8 bg-gray-700 border-gray-600 text-white"
+                                min="0"
+                              />
+                              {discountValue > 0 && (
+                                <span className="text-red-400">
+                                  -{formatCurrency(
+                                    discountType === 'percentage' 
+                                      ? calculateTotal() * discountValue / 100 
+                                      : discountValue
+                                  )}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          
+                          {/* Total com Desconto */}
+                          <div className="flex justify-between text-xl font-bold">
+                            <span>Total:</span>
+                            <span className="text-orange-400">
+                              {formatCurrency(calculateTotalWithDiscount())}
+                            </span>
+                          </div>
+                          
+                          {/* Divisão */}
+                          <div className="flex items-center gap-2">
+                            <span>Dividir em:</span>
+                            <div className="flex items-center gap-1">
+                              <Button
+                                size="sm"
+                                onClick={() => setSplitCount(Math.max(1, splitCount - 1))}
+                                className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600"
+                              >
+                                <Minus className="h-3 w-3" />
+                              </Button>
+                              <span className="w-12 text-center font-bold">{splitCount}</span>
+                              <Button
+                                size="sm"
+                                onClick={() => setSplitCount(splitCount + 1)}
+                                className="h-8 w-8 p-0 bg-gray-700 hover:bg-gray-600"
+                              >
+                                <Plus className="h-3 w-3" />
+                              </Button>
+                            </div>
+                            {splitCount > 1 && (
+                              <span className="text-sm text-gray-400">
+                                ({formatCurrency(calculateTotalWithDiscount() / splitCount)} cada)
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  
+                  {/* Coluna 2: Valor e Métodos de Pagamento */}
+                  <div className="space-y-4">
+                    <Card className="bg-gray-800 border-gray-700">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Adicionar Pagamento</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        {/* Input de Valor */}
+                        <div className="space-y-2">
+                          <label className="text-sm text-gray-400">Valor do Pagamento</label>
+                          <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-2xl text-gray-500">R$</span>
+                            <input
+                              type="number"
+                              value={paymentAmount}
+                              onChange={(e) => setPaymentAmount(parseFloat(e.target.value) || 0)}
+                              onFocus={(e) => e.target.select()}
+                              className="w-full h-16 pl-16 pr-4 text-3xl font-bold text-white bg-gray-900 border-2 border-gray-700 rounded-lg focus:border-orange-500 focus:outline-none transition-all"
+                              placeholder="0,00"
+                              step="0.01"
+                              min="0"
+                            />
+                          </div>
+                          
+                          {/* Botões de Valor Rápido */}
+                          <div className="flex gap-2 pt-2">
+                            <Button
+                              size="sm"
+                              onClick={() => setPaymentAmount(calculateRemaining())}
+                              className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-semibold"
+                            >
+                              Total Restante
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() => setPaymentAmount(50)}
+                              className="bg-gray-700 hover:bg-gray-600"
+                            >
+                              R$ 50
+                            </Button>
+                            <Button
+                              size="sm"
+                              onClick={() => setPaymentAmount(100)}
+                              className="bg-gray-700 hover:bg-gray-600"
+                            >
+                              R$ 100
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* Métodos de Pagamento */}
+                        <div className="space-y-2">
+                          <label className="text-sm text-gray-400">Método de Pagamento</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <Button
+                              onClick={() => {
+                                if (paymentAmount > 0) {
+                                  addPayment({
+                                    id: Date.now().toString(),
+                                    method: 'cash',
+                                    amount: paymentAmount,
+                                    timestamp: new Date()
+                                  });
+                                  setPaymentAmount(calculateRemaining());
+                                }
+                              }}
+                              disabled={paymentAmount <= 0}
+                              className="h-14 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                            >
+                              <DollarSign className="mr-2 h-6 w-6" />
+                              <span className="text-base font-semibold">Dinheiro</span>
+                            </Button>
+                            
+                            <Button
+                              onClick={() => {
+                                if (paymentAmount > 0) {
+                                  addPayment({
+                                    id: Date.now().toString(),
+                                    method: 'credit',
+                                    amount: paymentAmount,
+                                    timestamp: new Date()
+                                  });
+                                  setPaymentAmount(calculateRemaining());
+                                }
+                              }}
+                              disabled={paymentAmount <= 0}
+                              className="h-14 bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                            >
+                              <CreditCard className="mr-2 h-6 w-6" />
+                              <span className="text-base font-semibold">Crédito</span>
+                            </Button>
+                            
+                            <Button
+                              onClick={() => {
+                                if (paymentAmount > 0) {
+                                  addPayment({
+                                    id: Date.now().toString(),
+                                    method: 'debit',
+                                    amount: paymentAmount,
+                                    timestamp: new Date()
+                                  });
+                                  setPaymentAmount(calculateRemaining());
+                                }
+                              }}
+                              disabled={paymentAmount <= 0}
+                              className="h-14 bg-purple-600 hover:bg-purple-500 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                            >
+                              <CreditCard className="mr-2 h-6 w-6" />
+                              <span className="text-base font-semibold">Débito</span>
+                            </Button>
+                            
+                            <Button
+                              onClick={() => {
+                                if (paymentAmount > 0) {
+                                  addPayment({
+                                    id: Date.now().toString(),
+                                    method: 'pix',
+                                    amount: paymentAmount,
+                                    timestamp: new Date()
+                                  });
+                                  setPaymentAmount(calculateRemaining());
+                                }
+                              }}
+                              disabled={paymentAmount <= 0}
+                              className="h-14 bg-cyan-600 hover:bg-cyan-500 disabled:bg-gray-700 disabled:opacity-50 transition-all"
+                            >
+                              <Smartphone className="mr-2 h-6 w-6" />
+                              <span className="text-base font-semibold">PIX</span>
+                            </Button>
+                          </div>
+                        </div>
+                        
+                        {/* Informação de Valor Restante */}
+                        {calculateRemaining() > 0 && (
+                          <div className="p-3 bg-gray-900/50 rounded-lg border border-gray-700">
+                            <div className="flex justify-between items-center">
+                              <span className="text-gray-400">Valor Restante:</span>
+                              <span className="text-xl font-bold text-orange-400">
+                                {formatCurrency(calculateRemaining())}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </div>
+                  
+                  {/* Coluna 3: Pagamentos Realizados e Ações */}
+                  <div className="space-y-4">
+                    <Card className="bg-gray-800 border-gray-700">
+                      <CardHeader>
+                        <CardTitle className="text-lg">Pagamentos Realizados</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <ScrollArea className="h-[200px]">
+                          <div className="space-y-2">
+                            {payments.length === 0 ? (
+                              <div className="text-center text-gray-500 py-8">
+                                <CreditCard className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                                <p>Nenhum pagamento registrado</p>
+                              </div>
+                            ) : (
+                              payments.map((payment) => (
+                                <div key={payment.id} className="flex justify-between items-center p-3 bg-gray-700/50 rounded">
+                                  <div>
+                                    <div className="font-medium">
+                                      {payment.method === 'cash' && 'Dinheiro'}
+                                      {payment.method === 'credit' && 'Crédito'}
+                                      {payment.method === 'debit' && 'Débito'}
+                                      {payment.method === 'pix' && 'PIX'}
+                                    </div>
+                                    <div className="text-sm text-gray-400">
+                                      {format(payment.timestamp, 'HH:mm:ss')}
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-bold text-green-400">
+                                      {formatCurrency(payment.amount)}
+                                    </span>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => removePayment(payment.id)}
+                                      className="h-8 w-8 p-0 bg-red-600 hover:bg-red-700"
+                                    >
+                                      <X className="h-4 w-4" />
+                                    </Button>
+                                  </div>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        </ScrollArea>
+                        
+                        {/* Resumo de Pagamentos */}
+                        <div className="mt-4 pt-4 border-t border-gray-600 space-y-2">
+                          <div className="flex justify-between">
+                            <span>Total Pago:</span>
+                            <span className="font-bold text-green-400">
+                              {formatCurrency(payments.reduce((sum, p) => sum + p.amount, 0))}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Restante:</span>
+                            <span className={`font-bold ${calculateRemaining() > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                              {formatCurrency(calculateRemaining())}
+                            </span>
+                          </div>
+                          {calculateChange() > 0 && (
+                            <div className="flex justify-between">
+                              <span>Troco:</span>
+                              <span className="font-bold text-yellow-400">
+                                {formatCurrency(calculateChange())}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    {/* Botões de Ação */}
+                    <div className="space-y-2">
+                      {/* Botão Finalizar */}
+                      <Button
+                        onClick={finishCheckout}
+                        disabled={calculateRemaining() > 0 || loading}
+                        className="w-full h-14 text-lg font-bold bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {loading ? (
+                          <RefreshCw className="h-5 w-5 animate-spin" />
+                        ) : calculateRemaining() > 0 ? (
+                          <>
+                            <AlertCircle className="mr-2 h-5 w-5" />
+                            Faltam {formatCurrency(calculateRemaining())}
+                          </>
+                        ) : (
+                          <>
+                            <Check className="mr-2 h-5 w-5" />
+                            Finalizar Pagamento
+                          </>
+                        )}
+                      </Button>
+                      
+                      {/* Botão Reabrir Conta */}
+                      <Button
+                        onClick={reopenTable}
+                        disabled={loading}
+                        className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                      >
+                        <RotateCw className="mr-2 h-4 w-4" />
+                        Reabrir Conta
+                      </Button>
+                      
+                      {/* Botão Voltar para Mesas */}
+                      <Button
+                        onClick={() => {
+                          setSelectedTable(null);
+                          setCart([]);
+                          setPayments([]);
+                          setDiscountValue(0);
+                          setSplitCount(1);
+                          setPaymentAmount(0);
+                        }}
+                        className="w-full h-12 bg-gray-700 hover:bg-gray-600 text-white font-semibold"
+                      >
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Voltar para Mesas
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
             ) : (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col p-4 pb-0 overflow-hidden">
