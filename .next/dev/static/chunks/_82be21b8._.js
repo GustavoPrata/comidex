@@ -7389,7 +7389,7 @@ function POSPage() {
                                         calculateTotal: calculateTotal,
                                         calculateTotalWithDiscount: calculateTotalWithDiscount,
                                         serviceTaxPercentage: serviceTaxPercentage,
-                                        serviceTaxValue: serviceTaxValue,
+                                        serviceTaxValue: calculateServiceTax(),
                                         discountType: discountType,
                                         setDiscountType: setDiscountType,
                                         discountValue: discountValue,
@@ -8995,7 +8995,7 @@ function POSPage() {
                                                                 className: "font-medium text-yellow-400",
                                                                 children: [
                                                                     "+",
-                                                                    formatCurrency(serviceTaxValue)
+                                                                    formatCurrency(calculateServiceTax())
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/pos/page.tsx",

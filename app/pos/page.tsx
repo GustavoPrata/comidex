@@ -3428,7 +3428,7 @@ export default function POSPage() {
                   calculateTotal={calculateTotal}
                   calculateTotalWithDiscount={calculateTotalWithDiscount}
                   serviceTaxPercentage={serviceTaxPercentage}
-                  serviceTaxValue={serviceTaxValue}
+                  serviceTaxValue={calculateServiceTax()}
                   discountType={discountType}
                   setDiscountType={setDiscountType}
                   discountValue={discountValue}
@@ -4187,7 +4187,7 @@ export default function POSPage() {
                     {serviceTaxPercentage > 0 && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-400">Taxa de Serviço ({serviceTaxPercentage}%):</span>
-                        <span className="font-medium text-yellow-400">+{formatCurrency(serviceTaxValue)}</span>
+                        <span className="font-medium text-yellow-400">+{formatCurrency(calculateServiceTax())}</span>
                       </div>
                     )}
                     {discountValue > 0 && (
