@@ -4301,13 +4301,9 @@ export default function POSPage() {
                         cart.filter(item => item.status === 'cancelled').reduce((sum, item) => sum + item.total_price, 0)
                       )}</span>
                     </div>
-                    <div className="flex justify-between text-sm pt-2 border-t border-gray-600">
-                      <span className="text-gray-400">Subtotal:</span>
-                      <span className="font-medium">{formatCurrency(calculateSubtotal())}</span>
-                    </div>
                     
                     {/* Taxa de Serviço com botão para remover/restaurar */}
-                    <div className="flex justify-between items-center text-sm">
+                    <div className="flex justify-between items-center text-sm pt-2 border-t border-gray-600">
                       <span className="text-gray-400">Taxa de Serviço (10%):</span>
                       <div className="flex items-center gap-2">
                         <span className={`font-medium ${serviceTaxPercentage > 0 ? 'text-yellow-400' : 'text-gray-500 line-through'}`}>
@@ -4674,11 +4670,6 @@ export default function POSPage() {
                     
                     {/* Totais */}
                     <div className="mt-4 pt-4 border-t border-gray-600 space-y-2">
-                      <div className="flex justify-between">
-                        <span>Subtotal:</span>
-                        <span className="font-bold">{formatCurrency(calculateSubtotal())}</span>
-                      </div>
-                      
                       {/* Taxa de Serviço - só mostra se > 0 */}
                       {serviceTaxPercentage > 0 && (
                         <div className="flex justify-between text-yellow-400">
@@ -5265,8 +5256,6 @@ export default function POSPage() {
               
               <div className="bg-gray-700/50 rounded-lg p-4">
                 <div className="grid grid-cols-2 gap-2 text-sm">
-                  <div className="text-gray-400">Subtotal:</div>
-                  <div className="text-right font-medium">{formatCurrency(calculateSubtotal())}</div>
                   {serviceTaxPercentage > 0 && (
                     <>
                       <div className="text-gray-400">Taxa de Serviço ({serviceTaxPercentage}%):</div>
