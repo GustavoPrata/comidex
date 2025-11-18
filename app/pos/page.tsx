@@ -4306,8 +4306,8 @@ export default function POSPage() {
                     <div className="flex justify-between items-center text-sm pt-2 border-t border-gray-600">
                       <span className="text-gray-400">Taxa de Serviço (10%):</span>
                       <div className="flex items-center gap-2">
-                        <span className={`font-medium ${serviceTaxPercentage > 0 ? 'text-yellow-400' : 'text-gray-500 line-through'}`}>
-                          {serviceTaxPercentage > 0 ? '+' : ''}{formatCurrency(calculateServiceTax())}
+                        <span className={`font-medium ${serviceTaxPercentage > 0 ? 'text-yellow-400' : 'text-gray-500'}`}>
+                          {serviceTaxPercentage > 0 ? `+${formatCurrency(calculateServiceTax())}` : 'removida'}
                         </span>
                         <Button
                           size="sm"
@@ -4677,43 +4677,6 @@ export default function POSPage() {
                           <span className="font-bold">+{formatCurrency(calculateServiceTax())}</span>
                         </div>
                       )}
-                      
-                      {/* Desconto */}
-                      <div className="flex items-center gap-2">
-                        <span>Desconto:</span>
-                        <div className="flex gap-1">
-                          <Button
-                            size="sm"
-                            onClick={() => setDiscountType('percentage')}
-                            className={discountType === 'percentage' ? 'bg-orange-600' : 'bg-gray-700'}
-                          >
-                            %
-                          </Button>
-                          <Button
-                            size="sm"
-                            onClick={() => setDiscountType('value')}
-                            className={discountType === 'value' ? 'bg-orange-600' : 'bg-gray-700'}
-                          >
-                            R$
-                          </Button>
-                        </div>
-                        <Input
-                          type="number"
-                          value={discountValue}
-                          onChange={(e) => setDiscountValue(parseFloat(e.target.value) || 0)}
-                          className="w-20 h-8 bg-gray-700 border-gray-600 text-white"
-                          min="0"
-                        />
-                        {discountValue > 0 && (
-                          <span className="text-red-400">
-                            -{formatCurrency(
-                              discountType === 'percentage' 
-                                ? calculateTotal() * discountValue / 100 
-                                : discountValue
-                            )}
-                          </span>
-                        )}
-                      </div>
                       
                       {/* Total com Desconto */}
                       <div className="flex justify-between text-xl font-bold">
