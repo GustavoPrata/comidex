@@ -146,17 +146,6 @@ export default function PaymentWorkspace({
           <div className="flex items-center gap-3">
             <Receipt className="h-5 w-5 text-white" />
             <h2 className="text-lg font-bold text-white">Mesa {selectedTable?.number}</h2>
-            {reopenTable && (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={reopenTable}
-                className="text-white hover:bg-orange-700 h-7 px-2"
-              >
-                <ArrowLeft className="h-3 w-3 mr-1" />
-                Reabrir
-              </Button>
-            )}
           </div>
           
           {/* Totais principais */}
