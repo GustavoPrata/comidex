@@ -423,12 +423,12 @@ export default function PaymentWorkspace({
                   size="sm"
                   onClick={() => setSelectedPaymentMethod(method.id)}
                   className={cn(
-                    "h-12 flex items-center justify-start gap-3 px-3 transition-all",
+                    "h-12 w-full flex items-center justify-between px-3 transition-all",
                     getButtonClass()
                   )}
                 >
                   <Icon className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm font-medium text-left">{method.name}</span>
+                  <span className="text-sm font-medium text-right">{method.name}</span>
                 </Button>
               );
             })}
