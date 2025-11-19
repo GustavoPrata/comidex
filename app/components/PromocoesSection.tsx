@@ -353,13 +353,12 @@ export default function PromocoesSection({
     );
   }
 
-  const applicablePromotions = promotions.filter(isPromotionApplicable);
-  
-  if (applicablePromotions.length === 0) {
+  // Mostra todas as promoções ativas, não apenas as aplicáveis ao carrinho
+  if (promotions.length === 0) {
     return (
       <Card className="bg-gray-800/50 border-gray-700">
         <div className="p-4 text-center text-gray-500 text-sm">
-          Nenhuma promoção disponível para esta conta
+          Nenhuma promoção disponível
         </div>
       </Card>
     );
@@ -367,7 +366,7 @@ export default function PromocoesSection({
 
   return (
     <div className="space-y-2">
-      {applicablePromotions.map(promotion => {
+      {promotions.map(promotion => {
         const Icon = getPromotionIcon(promotion.type);
         const isApplied = appliedPromotions.some(p => p.promotionId === promotion.id);
         const discount = isApplied 
