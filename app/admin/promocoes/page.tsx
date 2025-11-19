@@ -606,26 +606,17 @@ export default function PromocoesPage() {
                           const item = items.find(i => i.id === itemId);
                           if (!item) return null;
                           
-                          const itemGroup = groups.find(g => g.id === item.group_id);
-                          const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
-                          
                           return (
                             <div key={itemId} className="relative group">
-                              {item.image ? (
-                                <img 
-                                  src={item.image}
-                                  alt={item.name}
-                                  className="w-14 h-14 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm"
-                                />
-                              ) : (
-                                <div className="w-14 h-14 rounded-lg border-2 border-white dark:border-gray-800 shadow-sm bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
-                                  {GroupIcon ? (
-                                    <GroupIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
-                                  ) : (
-                                    <Package className="h-6 w-6 text-green-600 dark:text-green-400" />
-                                  )}
-                                </div>
-                              )}
+                              <img 
+                                src={item.image || '/fotos/placeholder/placeholder.png'}
+                                alt={item.name}
+                                className={`w-14 h-14 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm ${!item.image ? 'opacity-50' : ''}`}
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = '/fotos/placeholder/placeholder.png';
+                                }}
+                              />
                               <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <span className="text-white text-xs text-center px-1">{item.name}</span>
                               </div>
@@ -841,26 +832,17 @@ export default function PromocoesPage() {
                       const item = items.find(i => i.id === itemId);
                       if (!item) return null;
                       
-                      const itemGroup = groups.find(g => g.id === item.group_id);
-                      const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
-                      
                       return (
                         <div key={itemId} className="relative group">
-                          {item.image ? (
-                            <img 
-                              src={item.image}
-                              alt={item.name}
-                              className="w-16 h-16 rounded object-cover border"
-                            />
-                          ) : (
-                            <div className="w-16 h-16 rounded border bg-orange-50 dark:bg-orange-950/20 flex items-center justify-center">
-                              {GroupIcon ? (
-                                <GroupIcon className="h-8 w-8 text-orange-500 dark:text-orange-400" />
-                              ) : (
-                                <Package className="h-8 w-8 text-orange-500 dark:text-orange-400" />
-                              )}
-                            </div>
-                          )}
+                          <img 
+                            src={item.image || '/fotos/placeholder/placeholder.png'}
+                            alt={item.name}
+                            className={`w-16 h-16 rounded object-cover border ${!item.image ? 'opacity-50' : ''}`}
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/fotos/placeholder/placeholder.png';
+                            }}
+                          />
                           <button
                             onClick={() => toggleItemSelection(itemId)}
                             className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
@@ -1208,14 +1190,13 @@ export default function PromocoesPage() {
               <div>
                 <Label className="text-gray-700 dark:text-gray-300">Grupo</Label>
                 <Select 
-                  value={selectedGroup?.toString() || 'all'}
-                  onValueChange={(value) => setSelectedGroup(value === 'all' ? null : parseInt(value))}
+                  value={selectedGroup?.toString() || ''}
+                  onValueChange={(value) => setSelectedGroup(value ? parseInt(value) : null)}
                 >
                   <SelectTrigger className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700">
-                    <SelectValue placeholder="Todos os grupos" />
+                    <SelectValue placeholder="Selecione um grupo" />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-                    <SelectItem value="all">Todos os grupos</SelectItem>
                     {groups.map(group => (
                       <SelectItem key={group.id} value={group.id.toString()}>
                         {group.name}
@@ -1260,10 +1241,6 @@ export default function PromocoesPage() {
             <ScrollArea className="flex-1 border rounded-lg">
               <div className="space-y-2 p-3">
                 {getFilteredItemsForSelector().map(item => {
-                  // Get the group for icon rendering
-                  const itemGroup = groups.find(g => g.id === item.group_id);
-                  const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
-                  
                   return (
                     <button
                       key={item.id}
@@ -1283,31 +1260,17 @@ export default function PromocoesPage() {
                             className="w-full h-full object-cover"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
-                              const parent = target.parentElement;
-                              if (parent && GroupIcon) {
-                                parent.innerHTML = '';
-                                const iconContainer = document.createElement('div');
-                                iconContainer.className = 'w-full h-full flex items-center justify-center bg-orange-50 dark:bg-orange-950/20';
-                                parent.appendChild(iconContainer);
-                              }
+                              target.src = '/fotos/placeholder/placeholder.png';
                             }}
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-orange-50 dark:bg-orange-950/20">
-                            {GroupIcon ? (
-                              <GroupIcon className="h-10 w-10 text-orange-500 dark:text-orange-400" />
-                            ) : (
-                              <Package className="h-10 w-10 text-orange-500 dark:text-orange-400" />
-                            )}
-                          </div>
+                          <img
+                            src="/fotos/placeholder/placeholder.png"
+                            alt="Placeholder"
+                            className="w-full h-full object-cover opacity-50"
+                          />
                         )}
-                      {selectedItems.includes(item.id) && (
-                        <div className="absolute top-2 right-2 bg-orange-500 text-white rounded-full p-1.5 shadow-lg">
-                          <Check className="h-4 w-4" />
-                        </div>
-                      )}
-                    </div>
+                      </div>
                     
                     {/* Item details */}
                     <div className="flex-1 text-left">
