@@ -1819,7 +1819,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                                 lineNumber: 403,
                                                                 columnNumber: 27
                                                             }, this),
-                                                            "Hoje"
+                                                            "Indicado"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/PromocoesSection.tsx",

@@ -401,7 +401,7 @@ export default function PromocoesSection({
                       {validToday && (
                         <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs px-1 py-0">
                           <Star className="h-3 w-3 mr-1" />
-                          Hoje
+                          Indicado
                         </Badge>
                       )}
                     </div>
