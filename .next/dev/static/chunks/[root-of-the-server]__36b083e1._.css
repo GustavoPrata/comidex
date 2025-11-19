@@ -1823,6 +1823,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(37 99 235 / var(--tw-border-opacity, 1));
 }
 
+.border-blue-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(29 78 216 / var(--tw-border-opacity, 1));
+}
+
 .border-gray-100 {
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity, 1));
@@ -1870,6 +1875,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .border-green-500 {
   --tw-border-opacity: 1;
   border-color: rgb(34 197 94 / var(--tw-border-opacity, 1));
+}
+
+.border-green-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(21 128 61 / var(--tw-border-opacity, 1));
 }
 
 .border-green-700\/50 {
@@ -1933,6 +1943,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: rgb(220 38 38 / var(--tw-border-opacity, 1));
 }
 
+.border-red-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(185 28 28 / var(--tw-border-opacity, 1));
+}
+
 .border-red-800 {
   --tw-border-opacity: 1;
   border-color: rgb(153 27 27 / var(--tw-border-opacity, 1));
@@ -1974,6 +1989,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .border-yellow-600 {
   --tw-border-opacity: 1;
   border-color: rgb(202 138 4 / var(--tw-border-opacity, 1));
+}
+
+.border-yellow-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(161 98 7 / var(--tw-border-opacity, 1));
 }
 
 .border-b-gray-900 {
@@ -2036,6 +2056,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .bg-blue-900\/30 {
   background-color: #1e3a8a4d;
+}
+
+.bg-blue-900\/50 {
+  background-color: #1e3a8a80;
 }
 
 .bg-card {
@@ -2294,6 +2318,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #7f1d1d4d;
 }
 
+.bg-red-900\/50 {
+  background-color: #7f1d1d80;
+}
+
 .bg-secondary {
   background-color: hsl(var(--secondary));
 }
@@ -2366,6 +2394,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .bg-yellow-900\/30 {
   background-color: #713f124d;
+}
+
+.bg-yellow-900\/50 {
+  background-color: #713f1280;
 }
 
 .bg-opacity-10 {
@@ -2966,6 +2998,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity, 1));
+}
+
+.text-blue-300 {
+  --tw-text-opacity: 1;
+  color: rgb(147 197 253 / var(--tw-text-opacity, 1));
 }
 
 .text-blue-400 {

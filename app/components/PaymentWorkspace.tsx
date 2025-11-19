@@ -45,6 +45,8 @@ interface PaymentWorkspaceProps {
   setSplitCount: (count: number) => void;
   calculatorDisplay: string;
   setCalculatorDisplay: (value: string | ((prev: string) => string)) => void;
+  selectedPaymentMethod?: string;
+  setSelectedPaymentMethod?: (method: string) => void;
   payments: any[];
   addPayment: (payment: any) => void;
   removePayment: (id: string) => void;
@@ -52,6 +54,10 @@ interface PaymentWorkspaceProps {
   reopenTable?: () => void;
   selectedTable?: any;
   loading?: boolean;
+  paymentMessage?: {
+    text: string;
+    type: 'info' | 'warning' | 'error' | 'success';
+  } | null;
 }
 
 export default function PaymentWorkspace({
@@ -70,16 +76,23 @@ export default function PaymentWorkspace({
   setSplitCount,
   calculatorDisplay,
   setCalculatorDisplay,
+  selectedPaymentMethod: propSelectedPaymentMethod,
+  setSelectedPaymentMethod: propSetSelectedPaymentMethod,
   payments,
   addPayment,
   removePayment,
   handleCompletePayment,
   reopenTable,
   selectedTable,
-  loading = false
+  loading = false,
+  paymentMessage
 }: PaymentWorkspaceProps) {
   const [showRodizioItems, setShowRodizioItems] = useState(false);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash');
+  const [internalSelectedPaymentMethod, setInternalSelectedPaymentMethod] = useState<string>('cash');
+  
+  // Use props se disponíveis ou estado interno
+  const selectedPaymentMethod = propSelectedPaymentMethod || internalSelectedPaymentMethod;
+  const setSelectedPaymentMethod = propSetSelectedPaymentMethod || setInternalSelectedPaymentMethod;
   const [calcMemory, setCalcMemory] = useState<number>(0);
   const [calcOperation, setCalcOperation] = useState<string>('');
   const [waitingForOperand, setWaitingForOperand] = useState<boolean>(false);
@@ -798,6 +811,19 @@ export default function PaymentWorkspace({
             </Card>
           )}
 
+          {/* Área de Mensagens Temporárias */}
+          {paymentMessage && (
+            <div className={cn(
+              "px-3 py-2 rounded-lg text-sm font-medium transition-all animate-in fade-in duration-300",
+              paymentMessage.type === 'success' && "bg-green-900/50 text-green-300 border border-green-700",
+              paymentMessage.type === 'warning' && "bg-yellow-900/50 text-yellow-300 border border-yellow-700",
+              paymentMessage.type === 'error' && "bg-red-900/50 text-red-300 border border-red-700",
+              paymentMessage.type === 'info' && "bg-blue-900/50 text-blue-300 border border-blue-700"
+            )}>
+              {paymentMessage.text}
+            </div>
+          )}
+          
           {/* Botão Finalizar - Sempre visível no final */}
           <Button
             onClick={handleCompletePayment}
