@@ -2024,8 +2024,7 @@ export default function POSPage() {
             name: item.item?.name || 'Item',
             additionals_price: 0
           })),
-          notes: '',
-          priority: 'high'
+          notes: ''
         };
 
         // Enviar para API que já integra com fila de impressão

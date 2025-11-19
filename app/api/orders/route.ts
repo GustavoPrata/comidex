@@ -58,7 +58,6 @@ export async function POST(request: NextRequest) {
         session_id: body.session_id,
         total: body.total,
         status: 'pending',
-        priority: body.priority || 'normal',
         notes: body.notes
       })
       .select()
