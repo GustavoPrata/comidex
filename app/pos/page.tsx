@@ -4336,7 +4336,7 @@ export default function POSPage() {
                         <span className="text-gray-400">Taxa de Serviço (10%):</span>
                       </div>
                       <span className={`font-medium ${serviceTaxPercentage > 0 ? 'text-yellow-400' : 'text-gray-500'}`}>
-                        {serviceTaxPercentage > 0 ? `+${formatCurrency(calculateServiceTax())}` : 'removida'}
+                        {serviceTaxPercentage > 0 ? `+${formatCurrency(calculateServiceTax())}` : 'Removida'}
                       </span>
                     </div>
                     
