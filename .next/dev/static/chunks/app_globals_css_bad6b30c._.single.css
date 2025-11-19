@@ -3559,6 +3559,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(107 114 128 / var(--tw-text-opacity, 1));
 }
 
+.placeholder\:text-gray-600::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
+}
+
 .placeholder\:text-muted-foreground::placeholder {
   color: hsl(var(--muted-foreground));
 }

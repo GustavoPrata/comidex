@@ -2982,21 +2982,25 @@ export default function POSPage() {
           >
             <Card className="bg-gray-800/50 backdrop-blur border-gray-700">
               <CardContent className="p-4">
-                <div className="flex items-center gap-4">
-                  <div className="flex-1 relative">
-                    <Label htmlFor="table-number" className="text-gray-400 text-sm mb-1 block">
-                      Digite o número da mesa e pressione ENTER
+                <div className="flex items-center justify-center">
+                  <div className="w-48 relative">
+                    <Label htmlFor="table-number" className="text-gray-400 text-sm mb-2 block text-center">
+                      Número da Mesa
                     </Label>
-                    <Input
+                    <input
                       id="table-number"
                       ref={(el) => { 
                         if (el && screen === 'tables') {
                           setTimeout(() => el.focus(), 100);
                         }
                       }}
-                      type="number"
-                      placeholder="Ex: 5"
-                      className="text-2xl font-bold text-center bg-gray-900 border-gray-600 text-white placeholder:text-gray-500"
+                      type="text"
+                      pattern="[0-9]*"
+                      inputMode="numeric"
+                      maxLength={4}
+                      placeholder="0"
+                      className="text-5xl font-bold text-center bg-gray-900 border-2 border-gray-600 text-white placeholder:text-gray-600 rounded-lg px-4 py-3 w-full focus:border-orange-500 focus:outline-none"
+                      style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           const value = (e.target as HTMLInputElement).value;
@@ -3014,13 +3018,6 @@ export default function POSPage() {
                       }}
                       autoComplete="off"
                     />
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 mt-3">
-                      <kbd className="px-2 py-1 bg-gray-700 rounded text-xs text-gray-400">ENTER</kbd>
-                    </div>
-                  </div>
-                  <div className="text-gray-400 text-sm">
-                    <p>Use o teclado numérico para</p>
-                    <p>acessar rapidamente uma mesa</p>
                   </div>
                 </div>
               </CardContent>
