@@ -2025,8 +2025,7 @@ export default function POSPage() {
             additionals_price: 0
           })),
           notes: '',
-          priority: 'high',
-          added_by: 'pos'
+          priority: 'high'
         };
 
         // Enviar para API que já integra com fila de impressão

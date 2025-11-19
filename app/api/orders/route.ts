@@ -59,8 +59,7 @@ export async function POST(request: NextRequest) {
         total: body.total,
         status: 'pending',
         priority: body.priority || 'normal',
-        notes: body.notes,
-        added_by: body.added_by || 'customer'
+        notes: body.notes
       })
       .select()
       .single()
