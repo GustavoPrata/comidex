@@ -279,7 +279,7 @@ export default function PromocoesPage() {
           break;
         case 'buy_x_get_y':
           config = {
-            itemId: selectedItems[0] || null,
+            itemId: selectedItems[0] || undefined,
             buyQuantity: formData.config.buyQuantity || 1,
             getQuantity: formData.config.getQuantity || 1
           };
@@ -1055,14 +1055,14 @@ export default function PromocoesPage() {
               <div>
                 <Label>Grupo</Label>
                 <Select 
-                  value={selectedGroup?.toString() || ''}
-                  onValueChange={(value) => setSelectedGroup(value ? parseInt(value) : null)}
+                  value={selectedGroup?.toString() || 'all'}
+                  onValueChange={(value) => setSelectedGroup(value === 'all' ? null : parseInt(value))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Todos os grupos" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos os grupos</SelectItem>
+                    <SelectItem value="all">Todos os grupos</SelectItem>
                     {groups.map(group => (
                       <SelectItem key={group.id} value={group.id.toString()}>
                         {group.name}
@@ -1075,14 +1075,14 @@ export default function PromocoesPage() {
               <div>
                 <Label>Categoria</Label>
                 <Select 
-                  value={selectedCategory?.toString() || ''}
-                  onValueChange={(value) => setSelectedCategory(value ? parseInt(value) : null)}
+                  value={selectedCategory?.toString() || 'all'}
+                  onValueChange={(value) => setSelectedCategory(value === 'all' ? null : parseInt(value))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Todas as categorias" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todas as categorias</SelectItem>
+                    <SelectItem value="all">Todas as categorias</SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category.id} value={category.id.toString()}>
                         {category.name}
