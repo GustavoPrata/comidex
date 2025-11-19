@@ -79,7 +79,8 @@ import {
   CheckCircle2,
   XCircle,
   ArrowRight,
-  Gift
+  Gift,
+  Clock
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -2935,80 +2936,96 @@ export default function POSPage() {
                   Caixa ComideX
                 </h1>
               </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => {
-                    // Se houver itens no carrinho, confirmar antes de sair
-                    if (cart.length > 0) {
-                      const action = confirm("Você tem itens não lançados no carrinho.\n\nDeseja lançar o pedido antes de sair?\n\nOK = Lançar e Sair\nCancelar = Cancelar itens e Sair");
-                      
-                      if (action) {
-                        // Lançar pedido antes de sair
-                        handleLaunchOrder().then(() => {
-                          window.location.href = '/';
-                        });
-                      } else {
-                        // Cancelar itens e sair
-                        setCart([]);
-                        window.location.href = '/';
-                      }
-                    } else {
-                      window.location.href = '/';
-                    }
-                  }}
-                  className="bg-red-600 hover:bg-red-700"
-                >
-                  <Home className="mr-2 h-4 w-4" />
-                  Voltar (ESC)
-                </Button>
+              <div className="flex gap-2 items-center">
+                {/* Estatísticas Compactas */}
+                <div className="flex gap-2 mr-4">
+                  <Badge className="bg-blue-600/20 text-blue-400 border-blue-600/30 px-3 py-1">
+                    <User className="h-3 w-3 mr-1" />
+                    {tables.filter(t => t.current_session).length} Abertas
+                  </Badge>
+                  <Badge className="bg-green-600/20 text-green-400 border-green-600/30 px-3 py-1">
+                    <CheckCircle2 className="h-3 w-3 mr-1" />
+                    {tables.filter(t => !t.current_session).length} Livres
+                  </Badge>
+                  <Badge className="bg-orange-600/20 text-orange-400 border-orange-600/30 px-3 py-1">
+                    <UtensilsCrossed className="h-3 w-3 mr-1" />
+                    {tables.length} Total
+                  </Badge>
+                  <Badge className="bg-pink-600/20 text-pink-400 border-pink-600/30 px-3 py-1">
+                    <Clock className="h-3 w-3 mr-1" />
+                    {format(new Date(), 'HH:mm')}
+                  </Badge>
+                </div>
                 <Button
                   onClick={() => setScreen('history')}
                   className="bg-gray-800 hover:bg-gray-700"
                 >
                   <History className="mr-2 h-4 w-4" />
-                  Histórico (F9)
+                  Histórico
                 </Button>
                 <Button
                   onClick={loadInitialData}
                   className="bg-gray-800 hover:bg-gray-700"
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
-                  Atualizar (F5)
+                  Atualizar
                 </Button>
               </div>
             </div>
           </motion.div>
 
-          {/* Estatísticas Animadas */}
-          <div className="grid grid-cols-4 gap-4 mb-8">
-            {[
-              { label: 'Mesas Abertas', value: tables.filter(t => t.current_session).length, icon: User, color: 'blue' },
-              { label: 'Mesas Livres', value: tables.filter(t => !t.current_session).length, icon: UtensilsCrossed, color: 'green' },
-              { label: 'Total de Mesas', value: tables.length, icon: Receipt, color: 'orange' },
-              { label: 'Hora Atual', value: format(new Date(), 'HH:mm'), icon: History, color: 'pink' }
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="bg-gray-800/50 backdrop-blur border-gray-700 hover:bg-gray-800/70 transition-all">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm text-gray-400">{stat.label}</p>
-                        <p className="text-2xl font-bold text-white">
-                          {stat.value}
-                        </p>
-                      </div>
-                      <stat.icon className={`h-8 w-8 text-${stat.color}-400`} />
+          {/* Input para Número da Mesa */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <Card className="bg-gray-800/50 backdrop-blur border-gray-700">
+              <CardContent className="p-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex-1 relative">
+                    <Label htmlFor="table-number" className="text-gray-400 text-sm mb-1 block">
+                      Digite o número da mesa e pressione ENTER
+                    </Label>
+                    <Input
+                      id="table-number"
+                      ref={(el) => { 
+                        if (el && screen === 'tables') {
+                          setTimeout(() => el.focus(), 100);
+                        }
+                      }}
+                      type="number"
+                      placeholder="Ex: 5"
+                      className="text-2xl font-bold text-center bg-gray-900 border-gray-600 text-white placeholder:text-gray-500"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          const value = (e.target as HTMLInputElement).value;
+                          const tableNumber = parseInt(value);
+                          if (!isNaN(tableNumber) && tableNumber > 0) {
+                            const table = tables.find(t => t.number === tableNumber.toString());
+                            if (table) {
+                              handleSelectTable(table);
+                              (e.target as HTMLInputElement).value = '';
+                            } else {
+                              toast.error(`Mesa ${tableNumber} não encontrada`);
+                            }
+                          }
+                        }
+                      }}
+                      autoComplete="off"
+                    />
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2 mt-3">
+                      <kbd className="px-2 py-1 bg-gray-700 rounded text-xs text-gray-400">ENTER</kbd>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
+                  </div>
+                  <div className="text-gray-400 text-sm">
+                    <p>Use o teclado numérico para</p>
+                    <p>acessar rapidamente uma mesa</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
           {/* Grid de Mesas com Animação */}
           <div className="grid grid-cols-8 gap-3">
@@ -3115,30 +3132,6 @@ export default function POSPage() {
             </AnimatePresence>
           </div>
 
-          {/* Atalhos de Teclado */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-8 flex justify-center"
-          >
-            <Card className="bg-gray-800/50 backdrop-blur border-gray-700">
-              <CardContent className="p-4">
-                <div className="flex items-center gap-6 text-sm text-gray-400">
-                  <span className="flex items-center gap-2">
-                    <Keyboard className="h-4 w-4" />
-                    Atalhos:
-                  </span>
-                  <span><kbd className="px-2 py-1 bg-gray-700 rounded">F1</kbd> Mesas</span>
-                  <span><kbd className="px-2 py-1 bg-gray-700 rounded">F3</kbd> Pagar</span>
-                  <span><kbd className="px-2 py-1 bg-gray-700 rounded">F4</kbd> Imprimir</span>
-                  <span><kbd className="px-2 py-1 bg-gray-700 rounded">F5</kbd> Atualizar</span>
-                  <span><kbd className="px-2 py-1 bg-gray-700 rounded">F9</kbd> Histórico</span>
-                  <span><kbd className="px-2 py-1 bg-gray-700 rounded">ESC</kbd> Fechar</span>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
         </div>
 
         {/* Dialog Rodízio */}
