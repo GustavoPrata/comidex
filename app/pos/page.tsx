@@ -4491,6 +4491,25 @@ export default function POSPage() {
               </CardContent>
             </Card>
             
+            {/* Seção de Promoções Disponíveis */}
+            <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mt-4">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Gift className="h-4 w-4 text-orange-400" />
+                  Promoções Disponíveis
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-3 pt-0">
+                <PromocoesSection 
+                  cart={cart}
+                  groups={groups}
+                  onPromotionToggle={handlePromotionToggle}
+                  appliedPromotions={appliedPromotions}
+                  setAppliedPromotions={setAppliedPromotions}
+                />
+              </CardContent>
+            </Card>
+            
             {/* Resumo Financeiro Compacto */}
             <div className="mt-auto pt-3">
               <div className="bg-gray-800/40 rounded-lg p-3 border border-gray-700">
