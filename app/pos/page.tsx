@@ -1884,7 +1884,8 @@ export default function POSPage() {
       
     } catch (error: any) {
       console.error('Erro ao fechar conta:', error);
-      toast.error("Erro ao processar pagamento!");
+      const errorMessage = error?.message || error?.error || 'Erro desconhecido ao processar pagamento';
+      toast.error(`Erro ao processar pagamento: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -2577,9 +2578,10 @@ export default function POSPage() {
       // Recarregar tabelas para mostrar o novo status
       await loadTables();
       await loadTodayOrders();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao processar pagamento:', error);
-      toast.error('Erro ao processar pagamento');
+      const errorMessage = error?.message || error?.error || 'Erro desconhecido';
+      toast.error(`Erro ao processar pagamento: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
@@ -2648,9 +2650,10 @@ export default function POSPage() {
       
       await loadTables();
       await loadTodayOrders();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao processar pagamento:', error);
-      toast.error('Erro ao processar pagamento');
+      const errorMessage = error?.message || error?.error || 'Erro desconhecido';
+      toast.error(`Erro ao processar pagamento: ${errorMessage}`);
     } finally {
       setLoading(false);
     }
