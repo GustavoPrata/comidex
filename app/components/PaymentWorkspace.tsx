@@ -305,10 +305,22 @@ export default function PaymentWorkspace({
               <p className="text-xs opacity-80">Pago</p>
               <p className="font-bold text-green-300">{formatCurrency(totalPaid)}</p>
             </div>
-            <div className="text-right">
-              <p className="text-xs opacity-80">Restante</p>
-              <p className="font-bold text-yellow-300">{formatCurrency(remaining)}</p>
-            </div>
+            {remaining > 0 ? (
+              <div className="text-right">
+                <p className="text-xs opacity-80">Restante</p>
+                <p className="font-bold text-yellow-300">{formatCurrency(remaining)}</p>
+              </div>
+            ) : (
+              <div className="text-right">
+                <p className="text-xs opacity-80">Status</p>
+                <div className="flex items-center justify-end gap-1">
+                  <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
+                    <Check className="h-3 w-3 text-white" />
+                  </div>
+                  <p className="font-bold text-green-400">Paga</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -776,15 +788,21 @@ export default function PaymentWorkspace({
                     <span className="text-gray-400">Total Pago</span>
                     <span className="font-bold text-green-400">{formatCurrency(totalPaid)}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Restante</span>
-                    <span className={cn(
-                      "font-bold",
-                      remaining > 0 ? "text-red-400" : "text-green-400"
-                    )}>
-                      {formatCurrency(remaining)}
-                    </span>
-                  </div>
+                  {remaining > 0 ? (
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Restante</span>
+                      <span className="font-bold text-red-400">
+                        {formatCurrency(remaining)}
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-center">
+                      <span className="text-green-400 font-semibold">Conta Paga</span>
+                      <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                        <Check className="h-4 w-4 text-white" />
+                      </div>
+                    </div>
+                  )}
                   {remaining <= 0 && totalPaid > totalWithDiscount && (
                     <div className="flex justify-between pt-2 border-t border-gray-600">
                       <span className="text-gray-400">Troco</span>

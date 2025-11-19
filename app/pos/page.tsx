@@ -4888,12 +4888,23 @@ export default function POSPage() {
                     </div>
                     
                     {/* Botão Total Restante */}
-                    <Button
-                      onClick={() => setCalculatorDisplay(calculateRemaining().toString())}
-                      className="w-full mt-2 bg-orange-600 hover:bg-orange-700 h-12 text-lg"
-                    >
-                      Valor Restante: {formatCurrency(calculateRemaining())}
-                    </Button>
+                    {calculateRemaining() > 0 ? (
+                      <Button
+                        onClick={() => setCalculatorDisplay(calculateRemaining().toString())}
+                        className="w-full mt-2 bg-orange-600 hover:bg-orange-700 h-12 text-lg"
+                      >
+                        Valor Restante: {formatCurrency(calculateRemaining())}
+                      </Button>
+                    ) : (
+                      <div className="w-full mt-2 bg-green-600 h-12 flex items-center justify-center rounded-md">
+                        <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                            <Check className="h-5 w-5 text-white" />
+                          </div>
+                          <span className="text-white font-semibold text-lg">Conta Paga</span>
+                        </div>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </div>
@@ -4952,12 +4963,23 @@ export default function POSPage() {
                           {formatCurrency(payments.reduce((sum, p) => sum + p.amount, 0))}
                         </span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Restante:</span>
-                        <span className={`font-bold ${calculateRemaining() > 0 ? 'text-red-400' : 'text-green-400'}`}>
-                          {formatCurrency(calculateRemaining())}
-                        </span>
-                      </div>
+                      {calculateRemaining() > 0 ? (
+                        <div className="flex justify-between">
+                          <span>Restante:</span>
+                          <span className="font-bold text-red-400">
+                            {formatCurrency(calculateRemaining())}
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="flex justify-between items-center">
+                          <span className="text-green-400 font-semibold">Conta Paga</span>
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                              <Check className="h-4 w-4 text-white" />
+                            </div>
+                          </div>
+                        </div>
+                      )}
                       {calculateChange() > 0 && (
                         <div className="flex justify-between">
                           <span>Troco:</span>
