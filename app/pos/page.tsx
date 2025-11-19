@@ -2022,8 +2022,7 @@ export default function POSPage() {
             unit_price: item.unit_price,
             total_price: item.total_price,
             notes: item.notes,
-            name: item.item?.name || 'Item',
-            additionals_price: 0
+            name: item.item?.name || 'Item'
           })),
           notes: ''
         };

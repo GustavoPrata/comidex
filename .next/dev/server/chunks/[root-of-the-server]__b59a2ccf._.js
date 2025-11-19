@@ -752,8 +752,11 @@ async function POST(request) {
             const { data: session } = await supabase.from('table_sessions').select('table_id').eq('id', body.session_id).single();
             tableId = session?.table_id;
         }
+        // Gerar número do pedido (baseado em timestamp para ser único)
+        const orderNumber = Date.now().toString();
         // Create order
         const { data: order, error: orderError } = await supabase.from('orders').insert({
+            order_number: orderNumber,
             table_id: tableId,
             total: body.total,
             status: 'pending',

@@ -89,7 +89,6 @@ export async function POST(request: NextRequest) {
         item_id: item.item_id,
         quantity: item.quantity,
         unit_price: item.unit_price,
-        additionals_price: item.additionals_price || 0,
         total_price: item.total_price,
         notes: item.notes,
         status: 'pending'
