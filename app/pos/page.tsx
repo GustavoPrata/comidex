@@ -85,7 +85,6 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
 import PaymentWorkspace from "@/app/components/PaymentWorkspace";
-import PromocoesSection from "@/app/components/PromocoesSection";
 
 const supabase = createClient();
 
@@ -320,16 +319,6 @@ export default function POSPage() {
   const [calculatorValue, setCalculatorValue] = useState('');
   const [calculatorDisplay, setCalculatorDisplay] = useState('0');
   const [activePaymentInput, setActivePaymentInput] = useState<number | null>(null);
-  
-  // Estado para promoções aplicadas
-  const [appliedPromotions, setAppliedPromotions] = useState<any[]>([]);
-  
-  // Handler para quando uma promoção é ativada/desativada
-  const handlePromotionToggle = (promotion: any, applied: boolean) => {
-    // A atualização do estado já é feita pelo componente PromocoesSection
-    // Aqui podemos fazer qualquer lógica adicional necessária
-    console.log(`Promoção ${promotion.name} ${applied ? 'aplicada' : 'removida'}`);
-  };
   
   // Função para agrupar itens do carrinho
   const groupCartItems = (items: any[]) => {
@@ -1617,9 +1606,6 @@ export default function POSPage() {
     const serviceTax = calculateServiceTax();
     const totalWithTax = subtotal + serviceTax;
     
-    // Calcular desconto das promoções
-    const promotionsDiscount = appliedPromotions.reduce((sum, p) => sum + (p.discount || 0), 0);
-    
     // Aplicar desconto manual (do usuário)
     let manualDiscount = 0;
     if (discountType === 'percentage') {
@@ -1633,8 +1619,8 @@ export default function POSPage() {
       manualDiscount = discountValue;
     }
     
-    // Total com todos os descontos aplicados
-    const totalWithAllDiscounts = totalWithTax - manualDiscount - promotionsDiscount;
+    // Total com desconto manual apenas
+    const totalWithAllDiscounts = totalWithTax - manualDiscount;
     return Math.max(0, totalWithAllDiscounts);
   };
 
@@ -4386,18 +4372,6 @@ export default function POSPage() {
                           </span>
                         </div>
                       )}
-                      
-                      {/* Desconto de promoções */}
-                      {appliedPromotions.length > 0 && (
-                        <div className="flex justify-between text-sm">
-                          <span className="text-purple-400">Promoções ativas ({appliedPromotions.length}):</span>
-                          <span className="font-medium text-purple-400">
-                            -{formatCurrency(
-                              appliedPromotions.reduce((sum, p) => sum + (p.discount || 0), 0)
-                            )}
-                          </span>
-                        </div>
-                      )}
                     </div>
                     
                     <div className="flex justify-between text-sm font-bold pt-2 border-t border-gray-600">
@@ -4405,28 +4379,6 @@ export default function POSPage() {
                       <span className="text-orange-400">{formatCurrency(calculateTotalWithDiscount())}</span>
                     </div>
                   </div>
-                  
-                  {/* Seção de Promoções */}
-                  {appliedPromotions.length > 0 && (
-                    <div className="mt-4 space-y-3">
-                      <h3 className="text-sm font-semibold text-gray-400 flex items-center gap-2">
-                        <Gift className="h-4 w-4 text-orange-400" />
-                        Promoções Aplicadas
-                      </h3>
-                      <div className="space-y-2">
-                        {appliedPromotions.map(promo => (
-                          <div key={promo.promotionId} className="bg-purple-900/20 border border-purple-700 rounded-lg p-2">
-                            <div className="flex justify-between items-center">
-                              <span className="text-sm text-purple-300">{promo.promotionName}</span>
-                              <span className="text-sm font-medium text-purple-400">
-                                -{formatCurrency(promo.discount || 0)}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                   
                 </CardContent>
               </Card>
@@ -4488,25 +4440,6 @@ export default function POSPage() {
                     Cancelar Mesa
                   </Button>
                 </div>
-              </CardContent>
-            </Card>
-            
-            {/* Seção de Promoções Disponíveis */}
-            <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mt-4">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base flex items-center gap-2">
-                  <Gift className="h-4 w-4 text-orange-400" />
-                  Promoções Disponíveis
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-3 pt-0">
-                <PromocoesSection 
-                  cart={cart}
-                  groups={groups}
-                  onPromotionToggle={handlePromotionToggle}
-                  appliedPromotions={appliedPromotions}
-                  setAppliedPromotions={setAppliedPromotions}
-                />
               </CardContent>
             </Card>
             
