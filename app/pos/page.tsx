@@ -1628,8 +1628,11 @@ export default function POSPage() {
       manualDiscount = discountValue;
     }
     
-    // Total com desconto manual apenas
-    const totalWithAllDiscounts = totalWithTax - manualDiscount;
+    // Calcular desconto das promoções aplicadas
+    const promotionDiscount = appliedPromotions.reduce((total, promo) => total + promo.discount, 0);
+    
+    // Total com todos os descontos (manual + promoções)
+    const totalWithAllDiscounts = totalWithTax - manualDiscount - promotionDiscount;
     return Math.max(0, totalWithAllDiscounts);
   };
 
@@ -4372,13 +4375,22 @@ export default function POSPage() {
                       </div>
                       {discountValue > 0 && (
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-400">Desconto aplicado:</span>
+                          <span className="text-gray-400">Desconto manual:</span>
                           <span className="font-medium text-green-400">
                             -{formatCurrency(
                               discountType === 'percentage'
                                 ? (calculateTotal() * discountValue / 100)
                                 : discountValue
                             )}
+                          </span>
+                        </div>
+                      )}
+                      
+                      {appliedPromotions.length > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-400">Desconto promoções:</span>
+                          <span className="font-medium text-purple-400">
+                            -{formatCurrency(appliedPromotions.reduce((total, promo) => total + promo.discount, 0))}
                           </span>
                         </div>
                       )}

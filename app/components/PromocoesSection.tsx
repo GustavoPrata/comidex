@@ -181,13 +181,17 @@ export default function PromocoesSection({
             item.status === 'delivered'
           );
           
-          const groupTotal = groupItems.reduce((sum, item) => sum + item.total_price, 0);
-          
           if (promotion.config.discountType === 'percentage') {
+            const groupTotal = groupItems.reduce((sum, item) => sum + item.total_price, 0);
             discount = groupTotal * (promotion.config.discountValue || 0) / 100;
           } else {
-            // Fixed price means the total should be this value
-            discount = Math.max(0, groupTotal - (promotion.config.discountValue || 0));
+            // Fixed price means each item in the group costs this fixed price
+            const fixedPrice = promotion.config.discountValue || 0;
+            groupItems.forEach(item => {
+              const normalPrice = item.unit_price * item.quantity;
+              const promotionalPrice = fixedPrice * item.quantity;
+              discount += Math.max(0, normalPrice - promotionalPrice);
+            });
           }
         }
         break;
