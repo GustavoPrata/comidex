@@ -1054,41 +1054,62 @@ export default function PromocoesPage() {
               </div>
             </div>
 
-            {/* Items Grid */}
-            <ScrollArea className="flex-1 border rounded-lg p-4">
-              <div className="grid grid-cols-4 gap-3">
+            {/* Items List */}
+            <ScrollArea className="flex-1 border rounded-lg">
+              <div className="space-y-2 p-3">
                 {getFilteredItemsForSelector().map(item => (
                   <button
                     key={item.id}
-                    className={`p-3 rounded-lg border transition-all hover:shadow-md ${
+                    className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-sm ${
                       selectedItems.includes(item.id) 
-                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-600' 
-                        : 'border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600 bg-white dark:bg-gray-800'
+                        ? 'bg-orange-50 dark:bg-orange-950/20 border-2 border-orange-500 dark:border-orange-600' 
+                        : 'bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600'
                     }`}
                     onClick={() => toggleItemSelection(item.id)}
                   >
-                    <div className="relative">
+                    {/* Image with 16:9 aspect ratio */}
+                    <div className="relative w-32 h-18 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
                       {item.image ? (
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="w-full h-20 object-cover rounded mb-2"
+                          className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-20 bg-gray-100 dark:bg-gray-700 rounded mb-2 flex items-center justify-center">
+                        <div className="w-full h-full flex items-center justify-center">
                           <ImageIcon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                         </div>
                       )}
                       {selectedItems.includes(item.id) && (
-                        <div className="absolute top-1 right-1 bg-orange-500 text-white rounded-full p-1">
-                          <Check className="h-3 w-3" />
+                        <div className="absolute top-2 right-2 bg-orange-500 text-white rounded-full p-1.5 shadow-lg">
+                          <Check className="h-4 w-4" />
                         </div>
                       )}
                     </div>
-                    <p className="font-medium text-sm text-left line-clamp-2 text-gray-900 dark:text-gray-100">{item.name}</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400 text-left">
-                      R$ {item.price?.toFixed(2) || '0.00'}
-                    </p>
+                    
+                    {/* Item details */}
+                    <div className="flex-1 text-left">
+                      <p className="font-semibold text-gray-900 dark:text-gray-100">{item.name}</p>
+                      {item.description && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-1">{item.description}</p>
+                      )}
+                      <p className="text-sm font-medium text-orange-600 dark:text-orange-400 mt-1">
+                        R$ {item.price?.toFixed(2).replace('.', ',') || '0,00'}
+                      </p>
+                    </div>
+                    
+                    {/* Selection indicator */}
+                    <div className="flex-shrink-0">
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                        selectedItems.includes(item.id)
+                          ? 'bg-orange-500 border-orange-500'
+                          : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600'
+                      }`}>
+                        {selectedItems.includes(item.id) && (
+                          <Check className="h-4 w-4 text-white" />
+                        )}
+                      </div>
+                    </div>
                   </button>
                 ))}
               </div>
