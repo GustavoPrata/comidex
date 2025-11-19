@@ -672,6 +672,21 @@ export default function PromocoesPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* Validity Period */}
+                  {(promotion.valid_from || promotion.valid_until) && (
+                    <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-xl border border-yellow-200 dark:border-yellow-800">
+                      <p className="text-xs text-yellow-600 dark:text-yellow-400 mb-2">Período de validade</p>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4 text-yellow-500" />
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {promotion.valid_from ? new Date(promotion.valid_from).toLocaleDateString('pt-BR') : 'Início imediato'} 
+                          {' - '}
+                          {promotion.valid_until ? new Date(promotion.valid_until).toLocaleDateString('pt-BR') : 'Sem data fim'}
+                        </span>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
 
