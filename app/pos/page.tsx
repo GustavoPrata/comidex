@@ -3584,6 +3584,7 @@ export default function POSPage() {
                   removePayment={removePayment}
                   handleCompletePayment={handleCompletePayment}
                   reopenTable={reopenTable}
+                  setPrintDialog={setPrintDialog}
                   selectedTable={selectedTable}
                   loading={loading}
                 />
