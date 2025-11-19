@@ -85,6 +85,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { motion, AnimatePresence } from "framer-motion";
 import PaymentWorkspace from "@/app/components/PaymentWorkspace";
+import PromocoesSection from "@/app/components/PromocoesSection";
 
 const supabase = createClient();
 
@@ -319,6 +320,14 @@ export default function POSPage() {
   const [calculatorValue, setCalculatorValue] = useState('');
   const [calculatorDisplay, setCalculatorDisplay] = useState('0');
   const [activePaymentInput, setActivePaymentInput] = useState<number | null>(null);
+  
+  // Estados para promoções
+  const [appliedPromotions, setAppliedPromotions] = useState<any[]>([]);
+  
+  // Handler para quando uma promoção é ativada/desativada
+  const handlePromotionToggle = (promotion: any, applied: boolean) => {
+    console.log(`Promoção ${promotion.name} ${applied ? 'aplicada' : 'removida'}`);
+  };
   
   // Função para agrupar itens do carrinho
   const groupCartItems = (items: any[]) => {
@@ -3571,8 +3580,6 @@ export default function POSPage() {
                   reopenTable={reopenTable}
                   selectedTable={selectedTable}
                   loading={loading}
-                  cart={cart}
-                  groups={groups}
                 />
               </div>
             ) : (
@@ -4288,6 +4295,7 @@ export default function POSPage() {
           <div className="w-[30%] flex flex-col p-4 bg-gray-900/50">
             {/* Se a mesa está fechada, mostra apenas resumo */}
             {selectedTable?.status === 'closed' ? (
+              <>
               <Card className="bg-gray-900/50 backdrop-blur border-gray-700">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -4384,6 +4392,26 @@ export default function POSPage() {
                   
                 </CardContent>
               </Card>
+
+              {/* Seção de Promoções - Abaixo do Resumo da Conta Fechada */}
+              <Card className="bg-gray-900/50 backdrop-blur border-gray-700 mt-4">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <Gift className="h-4 w-4 text-orange-400" />
+                    Promoções Disponíveis
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-3 pt-0">
+                  <PromocoesSection 
+                    cart={cart}
+                    groups={groups}
+                    onPromotionToggle={handlePromotionToggle}
+                    appliedPromotions={appliedPromotions}
+                    setAppliedPromotions={setAppliedPromotions}
+                  />
+                </CardContent>
+              </Card>
+              </>
             ) : (
               <>
               {/* Card de Ações Normal - quando mesa não está fechada */}
