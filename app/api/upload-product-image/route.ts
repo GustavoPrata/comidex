@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, unlink, access } from 'fs/promises';
-import path from 'path';
+import { createClient } from '@/lib/supabase/server';
 
 export async function POST(req: NextRequest) {
   try {
+    const supabase = await createClient();
     const formData = await req.formData();
     const file = formData.get('file') as File;
     const productName = formData.get('productName') as string;
@@ -20,6 +20,14 @@ export async function POST(req: NextRequest) {
     if (!file.type.startsWith('image/')) {
       return NextResponse.json(
         { error: 'Por favor, envie uma imagem' },
+        { status: 400 }
+      );
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: 'Imagem muito grande. Máximo 5MB.' },
         { status: 400 }
       );
     }
@@ -43,39 +51,62 @@ export async function POST(req: NextRequest) {
     }
 
     const fileExtension = file.name.split('.').pop() || 'jpg';
-    let fileName = `${baseName}.${fileExtension}`;
-    
-    // If file exists, add a number suffix to make it unique
-    const uploadDir = path.join(process.cwd(), 'public', 'fotos', 'produtos');
-    let filePath = path.join(uploadDir, fileName);
-    let counter = 1;
-    
-    // Check if file exists and create unique name if needed
-    while (true) {
-      try {
-        await access(filePath);
-        // File exists, create new name
-        fileName = `${baseName}_${counter}.${fileExtension}`;
-        filePath = path.join(uploadDir, fileName);
-        counter++;
-      } catch {
-        // File doesn't exist, we can use this name
-        break;
-      }
-    }
+    const fileName = `products/${baseName}_${Date.now()}.${fileExtension}`;
 
     // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Save to public/fotos/produtos
-    await writeFile(filePath, buffer);
+    // Upload to Supabase Storage - use 'restaurant' bucket with 'products/' prefix
+    const { data, error } = await supabase.storage
+      .from('restaurant')
+      .upload(fileName, buffer, {
+        contentType: file.type || 'image/jpeg',
+        cacheControl: '3600',
+        upsert: false
+      });
 
-    // Return the public URL path
-    const publicPath = `/fotos/produtos/${fileName}`;
+    if (error) {
+      console.error('Supabase storage error:', error);
+      
+      // If bucket doesn't exist, try to create it
+      if (error.message && (error.message.includes('bucket') || error.message.includes('not found'))) {
+        const { error: bucketError } = await supabase.storage.createBucket('restaurant', {
+          public: true,
+          allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+        });
+        
+        if (bucketError && !bucketError.message.includes('already exists')) {
+          console.error('Failed to create bucket:', bucketError);
+          return NextResponse.json({ 
+            error: 'Armazenamento não configurado. Verifique as configurações do Supabase.' 
+          }, { status: 500 });
+        }
+        
+        // Retry upload after creating bucket
+        const { data: retryData, error: retryError } = await supabase.storage
+          .from('restaurant')
+          .upload(fileName, buffer, {
+            contentType: file.type || 'image/jpeg',
+            cacheControl: '3600',
+            upsert: false
+          });
+          
+        if (retryError) {
+          throw retryError;
+        }
+      } else {
+        throw error;
+      }
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('restaurant')
+      .getPublicUrl(fileName);
 
     return NextResponse.json({
-      url: publicPath,
+      url: publicUrl,
       fileName: fileName,
       message: 'Imagem salva com sucesso'
     });
@@ -91,23 +122,48 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
+    const supabase = await createClient();
     const { searchParams } = new URL(req.url);
     const imagePath = searchParams.get('path');
 
-    if (!imagePath || !imagePath.startsWith('/fotos/produtos/')) {
+    if (!imagePath) {
       return NextResponse.json(
-        { error: 'Caminho de imagem inválido' },
+        { error: 'Caminho de imagem não fornecido' },
         { status: 400 }
       );
     }
 
-    const filePath = path.join(process.cwd(), 'public', imagePath);
+    // Extract the file path from Supabase URL or use direct path
+    let filePath = imagePath;
+    
+    // If it's a full Supabase URL, extract the path
+    if (imagePath.includes('supabase')) {
+      const matches = imagePath.match(/restaurant\/(products\/[^?]+)/);
+      if (matches && matches[1]) {
+        filePath = matches[1];
+      } else {
+        return NextResponse.json(
+          { error: 'URL de imagem inválida' },
+          { status: 400 }
+        );
+      }
+    } else if (imagePath.startsWith('/fotos/produtos/')) {
+      // Legacy path format, convert to Supabase path
+      const fileName = imagePath.replace('/fotos/produtos/', '');
+      filePath = `products/${fileName}`;
+    }
 
-    try {
-      await access(filePath);
-      await unlink(filePath);
-    } catch {
-      // File doesn't exist, that's ok
+    // Remove from Supabase Storage
+    const { error } = await supabase.storage
+      .from('restaurant')
+      .remove([filePath]);
+
+    if (error) {
+      console.error('Erro ao remover imagem do Supabase:', error);
+      // Don't fail if image doesn't exist
+      if (!error.message.includes('not found')) {
+        throw error;
+      }
     }
 
     return NextResponse.json({
