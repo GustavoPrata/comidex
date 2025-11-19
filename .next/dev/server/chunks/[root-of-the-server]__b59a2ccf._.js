@@ -446,7 +446,8 @@ async function addPrintJob(params) {
         if (!printerId) {
             throw new Error(`Nenhuma impressora configurada para ${params.document_type}`);
         }
-        const response = await fetch('/api/printer-queue', {
+        const baseUrl = ("TURBOPACK compile-time falsy", 0) ? "TURBOPACK unreachable" : 'http://localhost:5000';
+        const response = await fetch(`${baseUrl}/api/printer-queue`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -476,37 +477,15 @@ async function addPrintJob(params) {
 }
 // Buscar mapeamento de impressoras padrão
 async function getDefaultPrintersMap() {
-    try {
-        const response = await fetch('/api/printer-profiles');
-        const profiles = await response.json();
-        // Mapear tipo de documento para impressora
-        const map = {
-            order: null,
-            receipt: null,
-            bill: null,
-            report: null,
-            test: null
-        };
-        // Buscar perfil ativo e mapear impressoras
-        const activeProfile = profiles.find((p)=>p.is_active);
-        if (activeProfile && activeProfile.settings) {
-            const settings = activeProfile.settings;
-            map.order = settings.kitchen_printer_id || null;
-            map.receipt = settings.receipt_printer_id || null;
-            map.bill = settings.bill_printer_id || null;
-            map.report = settings.report_printer_id || null;
-        }
-        return map;
-    } catch (error) {
-        console.error('Erro ao buscar impressoras padrão:', error);
-        return {
-            order: null,
-            receipt: null,
-            bill: null,
-            report: null,
-            test: null
-        };
-    }
+    // Por enquanto, usar impressora ID 1 como padrão para todos os tipos
+    // TODO: Implementar configuração de perfis de impressora quando necessário
+    return {
+        order: 1,
+        receipt: 1,
+        bill: 1,
+        report: 1,
+        test: 1 // Teste
+    };
 }
 async function printOrder(data) {
     return addPrintJob({

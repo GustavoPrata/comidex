@@ -2706,7 +2706,7 @@ function POSPage() {
                             quantity: orderItem.quantity,
                             unit_price: orderItem.unit_price,
                             total_price: orderItem.total_price,
-                            status: orderItem.status === 'cancelled' ? 'cancelled' : 'delivered',
+                            status: orderItem.status,
                             launched_at: orderItem.created_at,
                             icon: metadata.icon || null,
                             item: {

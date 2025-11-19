@@ -789,7 +789,7 @@ export default function POSPage() {
               quantity: orderItem.quantity,
               unit_price: orderItem.unit_price,
               total_price: orderItem.total_price,
-              status: orderItem.status === 'cancelled' ? 'cancelled' : 'delivered', // Preservar cancelamento ou marcar como lançado
+              status: orderItem.status, // Preservar status original do item
               launched_at: orderItem.created_at,
               icon: metadata.icon || null, // Recover icon from metadata
               item: {
