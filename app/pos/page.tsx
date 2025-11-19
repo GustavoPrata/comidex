@@ -3571,6 +3571,8 @@ export default function POSPage() {
                   reopenTable={reopenTable}
                   selectedTable={selectedTable}
                   loading={loading}
+                  cart={cart}
+                  groups={groups}
                 />
               </div>
             ) : (

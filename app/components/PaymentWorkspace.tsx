@@ -23,11 +23,13 @@ import {
   Wallet,
   Clock,
   RefreshCw,
-  Package
+  Package,
+  Gift
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { getIconByName } from '@/lib/menu-icons-library';
+import PromocoesSection from '@/app/components/PromocoesSection';
 
 interface PaymentWorkspaceProps {
   mode?: 'embedded' | 'modal';
@@ -52,6 +54,8 @@ interface PaymentWorkspaceProps {
   reopenTable?: () => void;
   selectedTable?: any;
   loading?: boolean;
+  cart?: any[];
+  groups?: any[];
 }
 
 export default function PaymentWorkspace({
@@ -76,7 +80,9 @@ export default function PaymentWorkspace({
   handleCompletePayment,
   reopenTable,
   selectedTable,
-  loading = false
+  loading = false,
+  cart = [],
+  groups = []
 }: PaymentWorkspaceProps) {
   const [showRodizioItems, setShowRodizioItems] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash');
@@ -85,6 +91,12 @@ export default function PaymentWorkspace({
   const [waitingForOperand, setWaitingForOperand] = useState<boolean>(false);
   const [lastOperation, setLastOperation] = useState<string>('');
   const [operand2, setOperand2] = useState<number>(0);
+  const [appliedPromotions, setAppliedPromotions] = useState<any[]>([]);
+  
+  // Handler para quando uma promoção é ativada/desativada
+  const handlePromotionToggle = (promotion: any, applied: boolean) => {
+    console.log(`Promoção ${promotion.name} ${applied ? 'aplicada' : 'removida'}`);
+  };
   
   // Função para formatar valores monetários
   const formatCurrency = (value: number, isRodizioItem: boolean = false) => {
@@ -494,6 +506,25 @@ export default function PaymentWorkspace({
                   </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Seção de Promoções */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader className="py-3">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Gift className="h-4 w-4 text-orange-400" />
+                Promoções Disponíveis
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="py-2">
+              <PromocoesSection 
+                cart={cart}
+                groups={groups}
+                onPromotionToggle={handlePromotionToggle}
+                appliedPromotions={appliedPromotions}
+                setAppliedPromotions={setAppliedPromotions}
+              />
             </CardContent>
           </Card>
 
