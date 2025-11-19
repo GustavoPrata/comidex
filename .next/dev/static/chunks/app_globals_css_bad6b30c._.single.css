@@ -711,6 +711,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   margin-left: 1.75rem;
 }
 
+.ml-8 {
+  margin-left: 2rem;
+}
+
 .ml-auto {
   margin-left: auto;
 }
@@ -1475,6 +1479,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .gap-1\.5 {
   gap: .375rem;
+}
+
+.gap-12 {
+  gap: 3rem;
 }
 
 .gap-2 {

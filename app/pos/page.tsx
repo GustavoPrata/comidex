@@ -2930,13 +2930,13 @@ export default function POSPage() {
             className="mb-6"
           >
             <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-12">
                 <h1 className="text-3xl font-bold text-white">
                   Caixa ComideX
                 </h1>
                 
                 {/* Input para Número da Mesa */}
-                <div className="relative">
+                <div className="relative ml-8">
                   <input
                     id="table-number"
                     ref={(el) => { 
