@@ -481,23 +481,6 @@ export default function PromocoesSection({
         );
       })}
       
-      {/* Total de descontos aplicados */}
-      {appliedPromotions.length > 0 && (
-        <Card className="bg-orange-900/30 border-orange-600">
-          <div className="p-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-orange-400">
-                Total em Promoções Aplicadas:
-              </span>
-              <span className="text-lg font-bold text-orange-400">
-                -{formatCurrency(
-                  appliedPromotions.reduce((sum, p) => sum + p.discount, 0)
-                )}
-              </span>
-            </div>
-          </div>
-        </Card>
-      )}
     </div>
   );
 }
