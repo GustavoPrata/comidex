@@ -57,6 +57,7 @@ import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { getIconByName } from "@/lib/menu-icons-library";
 
 const supabase = createClient();
 
@@ -216,8 +217,8 @@ export default function PromocoesPage() {
         weekdays: promotion.weekdays || [],
         config: promotion.config || {},
         active: promotion.active,
-        valid_from: promotion.valid_from || "",
-        valid_until: promotion.valid_until || ""
+        valid_from: promotion.valid_from ? promotion.valid_from.split('T')[0] : "",
+        valid_until: promotion.valid_until ? promotion.valid_until.split('T')[0] : ""
       });
       
       // Set selected items based on type
@@ -603,18 +604,33 @@ export default function PromocoesPage() {
                       <div className="flex gap-2 flex-wrap">
                         {promotion.config.freeItems.slice(0, 4).map(itemId => {
                           const item = items.find(i => i.id === itemId);
-                          return item ? (
+                          if (!item) return null;
+                          
+                          const itemGroup = groups.find(g => g.id === item.group_id);
+                          const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
+                          
+                          return (
                             <div key={itemId} className="relative group">
-                              <img 
-                                src={item.image || '/placeholder-food.jpg'}
-                                alt={item.name}
-                                className="w-14 h-14 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm"
-                              />
+                              {item.image ? (
+                                <img 
+                                  src={item.image}
+                                  alt={item.name}
+                                  className="w-14 h-14 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm"
+                                />
+                              ) : (
+                                <div className="w-14 h-14 rounded-lg border-2 border-white dark:border-gray-800 shadow-sm bg-green-100 dark:bg-green-900/50 flex items-center justify-center">
+                                  {GroupIcon ? (
+                                    <GroupIcon className="h-6 w-6 text-green-600 dark:text-green-400" />
+                                  ) : (
+                                    <Package className="h-6 w-6 text-green-600 dark:text-green-400" />
+                                  )}
+                                </div>
+                              )}
                               <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                 <span className="text-white text-xs text-center px-1">{item.name}</span>
                               </div>
                             </div>
-                          ) : null;
+                          );
                         })}
                         {promotion.config.freeItems.length > 4 && (
                           <div className="w-14 h-14 rounded-lg border-2 border-green-300 dark:border-green-700 flex items-center justify-center bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold">
@@ -823,13 +839,28 @@ export default function PromocoesPage() {
                   <div className="flex gap-2 mt-2 flex-wrap">
                     {selectedItems.map(itemId => {
                       const item = items.find(i => i.id === itemId);
-                      return item ? (
+                      if (!item) return null;
+                      
+                      const itemGroup = groups.find(g => g.id === item.group_id);
+                      const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
+                      
+                      return (
                         <div key={itemId} className="relative group">
-                          <img 
-                            src={item.image || '/placeholder-food.jpg'}
-                            alt={item.name}
-                            className="w-16 h-16 rounded object-cover border"
-                          />
+                          {item.image ? (
+                            <img 
+                              src={item.image}
+                              alt={item.name}
+                              className="w-16 h-16 rounded object-cover border"
+                            />
+                          ) : (
+                            <div className="w-16 h-16 rounded border bg-orange-50 dark:bg-orange-950/20 flex items-center justify-center">
+                              {GroupIcon ? (
+                                <GroupIcon className="h-8 w-8 text-orange-500 dark:text-orange-400" />
+                              ) : (
+                                <Package className="h-8 w-8 text-orange-500 dark:text-orange-400" />
+                              )}
+                            </div>
+                          )}
                           <button
                             onClick={() => toggleItemSelection(itemId)}
                             className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
@@ -837,7 +868,7 @@ export default function PromocoesPage() {
                             <X className="h-3 w-3" />
                           </button>
                         </div>
-                      ) : null;
+                      );
                     })}
                   </div>
                 )}
@@ -1028,13 +1059,28 @@ export default function PromocoesPage() {
                     <div className="flex gap-2 mt-2 flex-wrap">
                       {selectedItems.map(itemId => {
                         const item = items.find(i => i.id === itemId);
-                        return item ? (
+                        if (!item) return null;
+                        
+                        const itemGroup = groups.find(g => g.id === item.group_id);
+                        const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
+                        
+                        return (
                           <div key={itemId} className="relative group">
-                            <img 
-                              src={item.image || '/placeholder-food.jpg'}
-                              alt={item.name}
-                              className="w-16 h-16 rounded object-cover border"
-                            />
+                            {item.image ? (
+                              <img 
+                                src={item.image}
+                                alt={item.name}
+                                className="w-16 h-16 rounded object-cover border"
+                              />
+                            ) : (
+                              <div className="w-16 h-16 rounded border bg-blue-50 dark:bg-blue-950/20 flex items-center justify-center">
+                                {GroupIcon ? (
+                                  <GroupIcon className="h-8 w-8 text-blue-500 dark:text-blue-400" />
+                                ) : (
+                                  <Package className="h-8 w-8 text-blue-500 dark:text-blue-400" />
+                                )}
+                              </div>
+                            )}
                             <button
                               onClick={() => toggleItemSelection(itemId)}
                               className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
@@ -1042,7 +1088,7 @@ export default function PromocoesPage() {
                               <X className="h-3 w-3" />
                             </button>
                           </div>
-                        ) : null;
+                        );
                       })}
                     </div>
                   )}
@@ -1213,29 +1259,49 @@ export default function PromocoesPage() {
             {/* Items List */}
             <ScrollArea className="flex-1 border rounded-lg">
               <div className="space-y-2 p-3">
-                {getFilteredItemsForSelector().map(item => (
-                  <button
-                    key={item.id}
-                    className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-sm ${
-                      selectedItems.includes(item.id) 
-                        ? 'bg-orange-50 dark:bg-orange-950/20 border-2 border-orange-500 dark:border-orange-600' 
-                        : 'bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600'
-                    }`}
-                    onClick={() => toggleItemSelection(item.id)}
-                  >
-                    {/* Image with 16:9 aspect ratio */}
-                    <div className="relative w-32 h-18 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
-                      {item.image ? (
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <ImageIcon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
-                        </div>
-                      )}
+                {getFilteredItemsForSelector().map(item => {
+                  // Get the group for icon rendering
+                  const itemGroup = groups.find(g => g.id === item.group_id);
+                  const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
+                  
+                  return (
+                    <button
+                      key={item.id}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-sm ${
+                        selectedItems.includes(item.id) 
+                          ? 'bg-orange-50 dark:bg-orange-950/20 border-2 border-orange-500 dark:border-orange-600' 
+                          : 'bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600'
+                      }`}
+                      onClick={() => toggleItemSelection(item.id)}
+                    >
+                      {/* Image with 16:9 aspect ratio */}
+                      <div className="relative w-32 h-18 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                              const parent = target.parentElement;
+                              if (parent && GroupIcon) {
+                                parent.innerHTML = '';
+                                const iconContainer = document.createElement('div');
+                                iconContainer.className = 'w-full h-full flex items-center justify-center bg-orange-50 dark:bg-orange-950/20';
+                                parent.appendChild(iconContainer);
+                              }
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-orange-50 dark:bg-orange-950/20">
+                            {GroupIcon ? (
+                              <GroupIcon className="h-10 w-10 text-orange-500 dark:text-orange-400" />
+                            ) : (
+                              <Package className="h-10 w-10 text-orange-500 dark:text-orange-400" />
+                            )}
+                          </div>
+                        )}
                       {selectedItems.includes(item.id) && (
                         <div className="absolute top-2 right-2 bg-orange-500 text-white rounded-full p-1.5 shadow-lg">
                           <Check className="h-4 w-4" />
@@ -1267,7 +1333,8 @@ export default function PromocoesPage() {
                       </div>
                     </div>
                   </button>
-                ))}
+                  );
+                })}
               </div>
             </ScrollArea>
 

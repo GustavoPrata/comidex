@@ -4465,6 +4465,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(23 37 84 / var(--tw-bg-opacity, 1));
 }
 
+.dark\:bg-blue-950\/20:is(.dark *) {
+  background-color: #17255433;
+}
+
 .dark\:bg-gray-100:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
