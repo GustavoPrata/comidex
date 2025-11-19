@@ -751,7 +751,6 @@ async function POST(request) {
             session_id: body.session_id,
             total: body.total,
             status: 'pending',
-            priority: body.priority || 'normal',
             notes: body.notes
         }).select().single();
         if (orderError) throw orderError;

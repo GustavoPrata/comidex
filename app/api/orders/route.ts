@@ -51,11 +51,24 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
     const body = await request.json()
     
+    // Buscar table_id da sessão
+    let tableId = body.table_id;
+    
+    if (!tableId && body.session_id) {
+      const { data: session } = await supabase
+        .from('table_sessions')
+        .select('table_id')
+        .eq('id', body.session_id)
+        .single();
+      
+      tableId = session?.table_id;
+    }
+    
     // Create order
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({
-        session_id: body.session_id,
+        table_id: tableId,
         total: body.total,
         status: 'pending',
         notes: body.notes
