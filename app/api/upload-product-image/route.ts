@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { writeFile, mkdir } from 'fs/promises';
+import path from 'path';
+import { existsSync } from 'fs';
 
 export async function POST(req: NextRequest) {
   try {
-    const supabase = await createClient();
     const formData = await req.formData();
     const file = formData.get('file') as File;
     const productName = formData.get('productName') as string;
@@ -51,62 +52,28 @@ export async function POST(req: NextRequest) {
     }
 
     const fileExtension = file.name.split('.').pop() || 'jpg';
-    const fileName = `products/${baseName}_${Date.now()}.${fileExtension}`;
+    const fileName = `${baseName}_${Date.now()}.${fileExtension}`;
+    
+    // Ensure directory exists
+    const uploadDir = path.join(process.cwd(), 'public', 'fotos', 'produtos');
+    if (!existsSync(uploadDir)) {
+      await mkdir(uploadDir, { recursive: true });
+    }
+    
+    const filePath = path.join(uploadDir, fileName);
 
     // Convert file to buffer
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Upload to Supabase Storage - use 'restaurant' bucket with 'products/' prefix
-    const { data, error } = await supabase.storage
-      .from('restaurant')
-      .upload(fileName, buffer, {
-        contentType: file.type || 'image/jpeg',
-        cacheControl: '3600',
-        upsert: false
-      });
+    // Save to local filesystem
+    await writeFile(filePath, buffer);
 
-    if (error) {
-      console.error('Supabase storage error:', error);
-      
-      // If bucket doesn't exist, try to create it
-      if (error.message && (error.message.includes('bucket') || error.message.includes('not found'))) {
-        const { error: bucketError } = await supabase.storage.createBucket('restaurant', {
-          public: true,
-          allowedMimeTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
-        });
-        
-        if (bucketError && !bucketError.message.includes('already exists')) {
-          console.error('Failed to create bucket:', bucketError);
-          return NextResponse.json({ 
-            error: 'Armazenamento não configurado. Verifique as configurações do Supabase.' 
-          }, { status: 500 });
-        }
-        
-        // Retry upload after creating bucket
-        const { data: retryData, error: retryError } = await supabase.storage
-          .from('restaurant')
-          .upload(fileName, buffer, {
-            contentType: file.type || 'image/jpeg',
-            cacheControl: '3600',
-            upsert: false
-          });
-          
-        if (retryError) {
-          throw retryError;
-        }
-      } else {
-        throw error;
-      }
-    }
-
-    // Get public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('restaurant')
-      .getPublicUrl(fileName);
+    // Return the public URL path
+    const publicPath = `/fotos/produtos/${fileName}`;
 
     return NextResponse.json({
-      url: publicUrl,
+      url: publicPath,
       fileName: fileName,
       message: 'Imagem salva com sucesso'
     });
@@ -122,7 +89,6 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   try {
-    const supabase = await createClient();
     const { searchParams } = new URL(req.url);
     const imagePath = searchParams.get('path');
 
@@ -133,37 +99,22 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Extract the file path from Supabase URL or use direct path
-    let filePath = imagePath;
-    
-    // If it's a full Supabase URL, extract the path
-    if (imagePath.includes('supabase')) {
-      const matches = imagePath.match(/restaurant\/(products\/[^?]+)/);
-      if (matches && matches[1]) {
-        filePath = matches[1];
-      } else {
-        return NextResponse.json(
-          { error: 'URL de imagem inválida' },
-          { status: 400 }
-        );
-      }
-    } else if (imagePath.startsWith('/fotos/produtos/')) {
-      // Legacy path format, convert to Supabase path
-      const fileName = imagePath.replace('/fotos/produtos/', '');
-      filePath = `products/${fileName}`;
+    // Security check: only allow deletion from /fotos/produtos/
+    if (!imagePath.startsWith('/fotos/produtos/')) {
+      return NextResponse.json(
+        { error: 'Caminho de imagem inválido' },
+        { status: 400 }
+      );
     }
 
-    // Remove from Supabase Storage
-    const { error } = await supabase.storage
-      .from('restaurant')
-      .remove([filePath]);
+    const { unlink } = await import('fs/promises');
+    const filePath = path.join(process.cwd(), 'public', imagePath);
 
-    if (error) {
-      console.error('Erro ao remover imagem do Supabase:', error);
-      // Don't fail if image doesn't exist
-      if (!error.message.includes('not found')) {
-        throw error;
-      }
+    try {
+      await unlink(filePath);
+    } catch (error) {
+      // File doesn't exist, that's ok
+      console.log('File not found, may have been already deleted:', filePath);
     }
 
     return NextResponse.json({
