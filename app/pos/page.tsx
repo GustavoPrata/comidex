@@ -2742,8 +2742,8 @@ export default function POSPage() {
   }, [items, selectedGroup, selectedCategory, searchQuery, activeTab]);
 
   // Formatação
-  const formatCurrency = (value: number) => {
-    if (value === 0) {
+  const formatCurrency = (value: number, isRodizioItem: boolean = false) => {
+    if (value === 0 && isRodizioItem) {
       return 'Incluso';
     }
     return new Intl.NumberFormat('pt-BR', {
@@ -3701,7 +3701,7 @@ export default function POSPage() {
                                     {/* Valor */}
                                     <div className="text-right">
                                       <div className="font-bold text-orange-400">
-                                        {item.price ? formatCurrency(item.price) : 'Sem preço'}
+                                        {item.price ? formatCurrency(item.price, item.group?.type === 'rodizio') : 'Sem preço'}
                                       </div>
                                     </div>
                                   </button>
@@ -3893,7 +3893,7 @@ export default function POSPage() {
                                           ? 'text-red-400 line-through decoration-red-600' 
                                           : 'text-gray-400'
                                       }`}>
-                                        {formatCurrency(item.unit_price)} × {
+                                        {formatCurrency(item.unit_price, item.item?.group?.type === 'rodizio')} × {
                                           item.cancelledQuantity && item.cancelledQuantity > 0
                                             ? item.quantity - item.cancelledQuantity
                                             : item.quantity
@@ -4190,7 +4190,7 @@ export default function POSPage() {
                                           Cód: {item.id}
                                         </div>
                                         <div className="font-bold text-orange-400 text-sm mt-1">
-                                          {formatCurrency(item.price || 0)}
+                                          {formatCurrency(item.price || 0, item.group?.type === 'rodizio')}
                                         </div>
                                       </div>
                                     </CardContent>
@@ -4696,7 +4696,7 @@ export default function POSPage() {
                             <div className="flex-1">
                               <div className="font-medium">{item.item?.name || 'Produto'}</div>
                               <div className="text-sm text-gray-400">
-                                {formatCurrency(item.unit_price)} × {
+                                {formatCurrency(item.unit_price, item.item?.group?.type === 'rodizio')} × {
                                   item.cancelledQuantity && item.cancelledQuantity > 0
                                     ? `${item.quantity - item.cancelledQuantity}`
                                     : item.quantity
@@ -5022,7 +5022,7 @@ export default function POSPage() {
                     {cart.slice(0, 5).map((item, index) => (
                       <div key={index} className="flex justify-between text-sm py-1">
                         <span>{item.quantity}x {item.item?.name}</span>
-                        <span>{formatCurrency(item.total_price)}</span>
+                        <span>{formatCurrency(item.total_price, item.item?.group?.type === 'rodizio')}</span>
                       </div>
                     ))}
                     {cart.length > 5 && (

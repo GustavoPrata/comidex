@@ -4278,8 +4278,8 @@ function POSPage() {
         activeTab
     ]);
     // Formatação
-    const formatCurrency = (value)=>{
-        if (value === 0) {
+    const formatCurrency = (value, isRodizioItem = false)=>{
+        if (value === 0 && isRodizioItem) {
             return 'Incluso';
         }
         return new Intl.NumberFormat('pt-BR', {
@@ -6608,7 +6608,7 @@ function POSPage() {
                                                                             className: "text-right",
                                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                                 className: "font-bold text-orange-400",
-                                                                                children: item.price ? formatCurrency(item.price) : 'Sem preço'
+                                                                                children: item.price ? formatCurrency(item.price, item.group?.type === 'rodizio') : 'Sem preço'
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/pos/page.tsx",
                                                                                 lineNumber: 3703,
@@ -7026,7 +7026,7 @@ function POSPage() {
                                                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                                                                     className: `text-sm mt-1 ${item.status === 'cancelled' ? 'text-red-400 line-through decoration-red-600' : 'text-gray-400'}`,
                                                                                                                     children: [
-                                                                                                                        formatCurrency(item.unit_price),
+                                                                                                                        formatCurrency(item.unit_price, item.item?.group?.type === 'rodizio'),
                                                                                                                         " × ",
                                                                                                                         item.cancelledQuantity && item.cancelledQuantity > 0 ? item.quantity - item.cancelledQuantity : item.quantity
                                                                                                                     ]
@@ -7583,7 +7583,7 @@ function POSPage() {
                                                                                                         }, this),
                                                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                                                             className: "font-bold text-orange-400 text-sm mt-1",
-                                                                                                            children: formatCurrency(item.price || 0)
+                                                                                                            children: formatCurrency(item.price || 0, item.group?.type === 'rodizio')
                                                                                                         }, void 0, false, {
                                                                                                             fileName: "[project]/app/pos/page.tsx",
                                                                                                             lineNumber: 4192,
@@ -8900,7 +8900,7 @@ function POSPage() {
                                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                                         className: "text-sm text-gray-400",
                                                                                         children: [
-                                                                                            formatCurrency(item.unit_price),
+                                                                                            formatCurrency(item.unit_price, item.item?.group?.type === 'rodizio'),
                                                                                             " × ",
                                                                                             item.cancelledQuantity && item.cancelledQuantity > 0 ? `${item.quantity - item.cancelledQuantity}` : item.quantity
                                                                                         ]
@@ -9708,7 +9708,7 @@ function POSPage() {
                                                                     columnNumber: 25
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    children: formatCurrency(item.total_price)
+                                                                    children: formatCurrency(item.total_price, item.item?.group?.type === 'rodizio')
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/pos/page.tsx",
                                                                     lineNumber: 5025,
