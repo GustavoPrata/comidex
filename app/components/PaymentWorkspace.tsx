@@ -509,25 +509,6 @@ export default function PaymentWorkspace({
             </CardContent>
           </Card>
 
-          {/* Seção de Promoções */}
-          <Card className="bg-gray-800 border-gray-700">
-            <CardHeader className="py-3">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <Gift className="h-4 w-4 text-orange-400" />
-                Promoções Disponíveis
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="py-2">
-              <PromocoesSection 
-                cart={cart}
-                groups={groups}
-                onPromotionToggle={handlePromotionToggle}
-                appliedPromotions={appliedPromotions}
-                setAppliedPromotions={setAppliedPromotions}
-              />
-            </CardContent>
-          </Card>
-
           {/* Calculadora funcional estilo Apple */}
           <Card className="bg-black border-gray-800 flex-1 overflow-hidden">
             <CardContent className="p-2">
@@ -828,6 +809,25 @@ export default function PaymentWorkspace({
               </CardContent>
             </Card>
           )}
+
+          {/* Seção de Promoções */}
+          <Card className="bg-gray-800 border-gray-700">
+            <CardHeader className="py-3">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Gift className="h-4 w-4 text-orange-400" />
+                Promoções
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="py-2">
+              <PromocoesSection 
+                cart={cart}
+                groups={groups}
+                onPromotionToggle={handlePromotionToggle}
+                appliedPromotions={appliedPromotions}
+                setAppliedPromotions={setAppliedPromotions}
+              />
+            </CardContent>
+          </Card>
 
           {/* Botão Finalizar - Sempre visível no final */}
           <Button
