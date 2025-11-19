@@ -1519,7 +1519,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
     // Load promotions
     const loadPromotions = async ()=>{
         try {
-            const response = await fetch('/api/promocoes?active=true&today=true');
+            const response = await fetch('/api/promocoes?active=true');
             const data = await response.json();
             if (Array.isArray(data)) {
                 // Sort by priority

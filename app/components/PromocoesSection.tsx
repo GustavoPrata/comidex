@@ -80,7 +80,7 @@ export default function PromocoesSection({
   // Load promotions
   const loadPromotions = async () => {
     try {
-      const response = await fetch('/api/promocoes?active=true&today=true');
+      const response = await fetch('/api/promocoes?active=true');
       const data = await response.json();
       
       if (Array.isArray(data)) {
