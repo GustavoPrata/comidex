@@ -4238,14 +4238,24 @@ export default function POSPage() {
                         </div>
                       </div>
                     </div>
-                    <Button
-                      onClick={reopenTable}
-                      disabled={loading}
-                      className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                      <RefreshCw className="h-4 w-4 mr-2" />
-                      Reabrir Mesa
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={() => setPrintDialog(true)}
+                        disabled={loading}
+                        className="bg-gray-600 hover:bg-gray-700 text-white flex-1"
+                      >
+                        <Printer className="h-4 w-4 mr-2" />
+                        Imprimir Conta
+                      </Button>
+                      <Button
+                        onClick={reopenTable}
+                        disabled={loading}
+                        className="bg-blue-600 hover:bg-blue-700 text-white flex-1"
+                      >
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Reabrir Mesa
+                      </Button>
+                    </div>
                   </div>
                 ) : (() => {
                   // Verifica se há alterações pendentes
@@ -4672,14 +4682,24 @@ export default function POSPage() {
                   <Calculator className="h-7 w-7 text-orange-400" />
                   Fechamento de Conta - Mesa {selectedTable?.number}
                 </span>
-                <Button
-                  onClick={reopenTable}
-                  variant="outline"
-                  className="text-yellow-400 border-yellow-400 hover:bg-yellow-400/10"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Reabrir Mesa
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => setPrintDialog(true)}
+                    variant="outline"
+                    className="text-gray-400 border-gray-400 hover:bg-gray-400/10"
+                  >
+                    <Printer className="mr-2 h-4 w-4" />
+                    Imprimir Conta
+                  </Button>
+                  <Button
+                    onClick={reopenTable}
+                    variant="outline"
+                    className="text-yellow-400 border-yellow-400 hover:bg-yellow-400/10"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Reabrir Mesa
+                  </Button>
+                </div>
               </DialogTitle>
             </DialogHeader>
             
