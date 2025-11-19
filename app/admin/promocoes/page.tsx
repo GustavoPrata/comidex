@@ -10,7 +10,6 @@ import { Switch } from "@/components/ui/switch";
 import { 
   Search, 
   Plus, 
-  MoreVertical,
   Copy,
   Pencil,
   Trash2,
@@ -29,12 +28,6 @@ import {
   Filter,
   Image as ImageIcon
 } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Dialog,
   DialogContent,
@@ -359,6 +352,36 @@ export default function PromocoesPage() {
     }
   };
 
+  // Duplicate promotion
+  const handleDuplicate = async (promotion: Promotion) => {
+    try {
+      const duplicatedPromotion = {
+        name: `${promotion.name} (cópia)`,
+        type: promotion.type,
+        discount_percentage: promotion.discount_percentage,
+        min_value: promotion.min_value,
+        weekdays: promotion.weekdays,
+        conditions: promotion.conditions,
+        config: promotion.config,
+        item_groups: promotion.item_groups,
+        item_id: promotion.item_id,
+        active: false
+      };
+      
+      const { error } = await supabase
+        .from('promotions')
+        .insert([duplicatedPromotion]);
+
+      if (error) throw error;
+      
+      toast.success("Promoção duplicada com sucesso!");
+      await loadData();
+    } catch (error) {
+      console.error('Erro ao duplicar promoção:', error);
+      toast.error("Erro ao duplicar promoção");
+    }
+  };
+
   // Toggle weekday selection
   const toggleWeekday = (day: number) => {
     setFormData(prev => ({
@@ -508,102 +531,200 @@ export default function PromocoesPage() {
           const validToday = isValidToday(promotion);
           
           return (
-            <Card key={promotion.id} className={!promotion.active ? 'opacity-60' : ''}>
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className={`p-2 rounded-lg ${typeInfo?.color || 'bg-gray-500'} bg-opacity-20`}>
-                      <Icon className={`h-4 w-4 ${typeInfo?.color?.replace('bg-', 'text-') || 'text-gray-500'}`} />
+            <div 
+              key={promotion.id} 
+              className={`bg-white dark:bg-gray-950 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-md ${!promotion.active ? 'opacity-60' : ''}`}
+            >
+              <div className="p-5">
+                {/* Header with icon and title */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3 flex-1">
+                    <div className={`p-3 rounded-xl ${typeInfo?.color || 'bg-gray-500'} bg-opacity-10`}>
+                      <Icon className={`h-5 w-5 ${typeInfo?.color?.replace('bg-', 'text-') || 'text-gray-500'}`} />
                     </div>
-                    <div>
-                      <h3 className="font-semibold">{promotion.name}</h3>
-                      <p className="text-xs text-muted-foreground">{typeInfo?.label}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {validToday && promotion.active && (
-                      <Badge className="bg-green-500">Indicado</Badge>
-                    )}
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                          <MoreVertical className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => openModal(promotion)}>
-                          <Pencil className="mr-2 h-4 w-4" />
-                          Editar
-                        </DropdownMenuItem>
-                        <DropdownMenuItem 
-                          onClick={() => {
-                            setDeletePromotion(promotion);
-                            setIsDeleteModalOpen(true);
-                          }}
-                          className="text-red-600"
-                        >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Excluir
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-
-                {/* Show discount calculation for rodizio */}
-                {getDiscountDisplay(promotion)}
-
-                {/* Show selected items with images */}
-                {promotion.type === 'free_item' && promotion.config.freeItems && (
-                  <div className="flex gap-2 mb-3 flex-wrap">
-                    {promotion.config.freeItems.slice(0, 3).map(itemId => {
-                      const item = items.find(i => i.id === itemId);
-                      return item ? (
-                        <div key={itemId} className="relative group">
-                          <img 
-                            src={item.image || '/placeholder-food.jpg'}
-                            alt={item.name}
-                            className="w-12 h-12 rounded object-cover border"
-                          />
-                          <div className="absolute inset-0 bg-black bg-opacity-60 rounded opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span className="text-white text-xs text-center px-1">{item.name}</span>
-                          </div>
-                        </div>
-                      ) : null;
-                    })}
-                    {promotion.config.freeItems.length > 3 && (
-                      <div className="w-12 h-12 rounded border flex items-center justify-center bg-gray-100 text-sm">
-                        +{promotion.config.freeItems.length - 3}
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-gray-900 dark:text-white">{promotion.name}</h3>
+                      <div className="flex items-center gap-2 mt-1">
+                        <Badge variant="secondary" className="text-xs">
+                          {typeInfo?.label}
+                        </Badge>
+                        {validToday && promotion.active && (
+                          <Badge className="bg-green-500 text-white text-xs">
+                            Ativa Hoje
+                          </Badge>
+                        )}
                       </div>
-                    )}
+                    </div>
                   </div>
-                )}
-
-                {/* Weekdays */}
-                {promotion.weekdays && promotion.weekdays.length > 0 && (
-                  <div className="flex gap-1 mb-3">
-                    {weekDays.map(day => (
-                      <Badge 
-                        key={day.value}
-                        variant={promotion.weekdays.includes(day.value) ? "default" : "outline"}
-                        className="px-1.5 py-0.5 text-xs"
-                      >
-                        {day.short}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-
-
-                {/* Status */}
-                <div className="flex justify-center">
-                  <Switch
-                    checked={promotion.active}
-                    onCheckedChange={() => toggleActive(promotion)}
-                  />
                 </div>
-              </CardContent>
-            </Card>
+
+                {/* Info Cards */}
+                <div className="space-y-3">
+                  {/* Discount Display */}
+                  {promotion.discount_percentage > 0 && (
+                    <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 p-3 rounded-xl border border-orange-200 dark:border-orange-800">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">Desconto</span>
+                        <span className="text-xl font-bold text-orange-600 dark:text-orange-400">
+                          {promotion.discount_percentage}%
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Item Info for item_discount */}
+                  {promotion.type === 'item_discount' && promotion.item_id && (
+                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl border border-blue-200 dark:border-blue-800">
+                      <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">Item da promoção</p>
+                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                        {items.find(item => item.id === promotion.item_id)?.name || 'Item não encontrado'}
+                      </p>
+                    </div>
+                  )}
+                  
+                  {/* Groups for group_discount */}
+                  {promotion.type === 'group_discount' && promotion.item_groups && promotion.item_groups.length > 0 && (
+                    <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-xl border border-purple-200 dark:border-purple-800">
+                      <p className="text-xs text-purple-600 dark:text-purple-400 mb-2">Grupos aplicados</p>
+                      <div className="flex flex-wrap gap-1">
+                        {promotion.item_groups.map((group, idx) => (
+                          <span key={idx} className="px-2 py-1 bg-white dark:bg-gray-800 rounded-lg text-xs font-medium text-purple-700 dark:text-purple-300">
+                            {group}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Free items with images */}
+                  {promotion.type === 'free_item' && promotion.config.freeItems && promotion.config.freeItems.length > 0 && (
+                    <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-200 dark:border-green-800">
+                      <p className="text-xs text-green-600 dark:text-green-400 mb-2">Itens grátis</p>
+                      <div className="flex gap-2 flex-wrap">
+                        {promotion.config.freeItems.slice(0, 4).map(itemId => {
+                          const item = items.find(i => i.id === itemId);
+                          return item ? (
+                            <div key={itemId} className="relative group">
+                              <img 
+                                src={item.image || '/placeholder-food.jpg'}
+                                alt={item.name}
+                                className="w-14 h-14 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm"
+                              />
+                              <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span className="text-white text-xs text-center px-1">{item.name}</span>
+                              </div>
+                            </div>
+                          ) : null;
+                        })}
+                        {promotion.config.freeItems.length > 4 && (
+                          <div className="w-14 h-14 rounded-lg border-2 border-green-300 dark:border-green-700 flex items-center justify-center bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold">
+                            +{promotion.config.freeItems.length - 4}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Happy Hour times */}
+                  {promotion.type === 'happy_hour' && promotion.conditions?.happy_hour_start && (
+                    <div className="bg-indigo-50 dark:bg-indigo-900/20 p-3 rounded-xl border border-indigo-200 dark:border-indigo-800">
+                      <p className="text-xs text-indigo-600 dark:text-indigo-400 mb-1">Horário</p>
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-indigo-500" />
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {promotion.conditions.happy_hour_start} - {promotion.conditions.happy_hour_end}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Minimum value */}
+                  {promotion.min_value > 0 && (
+                    <div className="bg-gray-50 dark:bg-gray-900/50 p-3 rounded-xl border border-gray-300 dark:border-gray-700">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-600 dark:text-gray-400">Pedido mínimo</span>
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                          R$ {promotion.min_value.toFixed(2).replace('.', ',')}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Weekdays */}
+                  {promotion.weekdays && promotion.weekdays.length > 0 && (
+                    <div className="bg-sky-50 dark:bg-sky-900/20 p-3 rounded-xl border border-sky-200 dark:border-sky-800">
+                      <p className="text-xs text-sky-600 dark:text-sky-400 mb-2">Dias da semana</p>
+                      <div className="flex gap-1">
+                        {weekDays.map(day => (
+                          <div
+                            key={day.value}
+                            className={`
+                              px-2 py-1 rounded-lg text-xs font-medium
+                              ${promotion.weekdays.includes(day.value) 
+                                ? 'bg-sky-500 text-white' 
+                                : 'bg-white dark:bg-gray-800 text-gray-400 dark:text-gray-600 border border-gray-200 dark:border-gray-700'
+                              }
+                            `}
+                          >
+                            {day.short}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+
+                {/* Divider */}
+                <div className="h-px bg-gray-200 dark:bg-gray-800 -mx-5 my-4"></div>
+
+                {/* Actions */}
+                <div className="flex items-center justify-between">
+                  {/* Status Switch */}
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Status:</span>
+                    <Switch
+                      checked={promotion.active}
+                      onCheckedChange={() => toggleActive(promotion)}
+                    />
+                    <span className="text-sm font-medium">
+                      {promotion.active ? 
+                        <span className="text-green-600 dark:text-green-400">Ativa</span> : 
+                        <span className="text-red-600 dark:text-red-400">Inativa</span>
+                      }
+                    </span>
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => openModal(promotion)}
+                      className="h-8 w-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-orange-500 transition-colors inline-flex items-center justify-center"
+                      title="Editar"
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDuplicate(promotion)}
+                      className="h-8 w-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-500 transition-colors inline-flex items-center justify-center"
+                      title="Duplicar"
+                    >
+                      <Copy className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDeletePromotion(promotion);
+                        setIsDeleteModalOpen(true);
+                      }}
+                      className="h-8 w-8 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-red-500 transition-colors inline-flex items-center justify-center"
+                      title="Excluir"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
           );
         })}
         </div>
