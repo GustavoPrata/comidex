@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export async function GET(request: Request) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { searchParams } = new URL(request.url);
     const active = searchParams.get('active') === 'true';
     const today = searchParams.get('today') === 'true';
@@ -32,7 +32,7 @@ export async function GET(request: Request) {
       const dayOfWeek = todayDate.getDay();
       const currentTime = todayDate.toTimeString().slice(0, 5);
       
-      const filteredData = data.filter(promo => {
+      const filteredData = data.filter((promo: any) => {
         // Check weekdays
         if (promo.weekdays && promo.weekdays.length > 0) {
           if (!promo.weekdays.includes(dayOfWeek)) {
@@ -72,7 +72,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const body = await request.json();
 
     const { data, error } = await supabase
@@ -99,7 +99,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const body = await request.json();
     const { id, ...updateData } = body;
 
@@ -135,7 +135,7 @@ export async function PUT(request: Request) {
 
 export async function DELETE(request: Request) {
   try {
-    const supabase = createClient();
+    const supabase = await createClient();
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 
