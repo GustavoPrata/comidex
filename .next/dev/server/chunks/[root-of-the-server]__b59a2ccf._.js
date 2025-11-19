@@ -746,9 +746,15 @@ async function POST(request) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const body = await request.json();
+        // Buscar table_id da sessão
+        let tableId = body.table_id;
+        if (!tableId && body.session_id) {
+            const { data: session } = await supabase.from('table_sessions').select('table_id').eq('id', body.session_id).single();
+            tableId = session?.table_id;
+        }
         // Create order
         const { data: order, error: orderError } = await supabase.from('orders').insert({
-            session_id: body.session_id,
+            table_id: tableId,
             total: body.total,
             status: 'pending',
             notes: body.notes

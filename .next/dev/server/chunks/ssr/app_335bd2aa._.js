@@ -3734,7 +3734,7 @@ function POSPage() {
                 // Usar a API de orders que já integra com a fila de impressão
                 const orderPayload = {
                     session_id: currentSession?.id,
-                    table_id: selectedTable,
+                    table_id: selectedTable?.id || selectedTable,
                     total: calculateTotal(),
                     items: newItems.map((item)=>({
                             item_id: item.item_id < 0 ? null : item.item_id,
