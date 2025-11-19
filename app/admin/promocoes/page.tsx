@@ -88,11 +88,8 @@ interface Promotion {
   name: string;
   type: PromotionType;
   weekdays: number[];
-  start_time?: string;
-  end_time?: string;
   config: PromotionConfig;
   active: boolean;
-  priority: number;
   valid_from?: string;
   valid_until?: string;
   created_at: string;
@@ -139,11 +136,8 @@ export default function PromocoesPage() {
     name: "",
     type: "free_item" as PromotionType,
     weekdays: [] as number[],
-    start_time: "",
-    end_time: "",
     config: {} as PromotionConfig,
     active: true,
-    priority: 0,
     valid_from: "",
     valid_until: ""
   });
@@ -156,7 +150,7 @@ export default function PromocoesPage() {
       const { data: promotionsData, error: promotionsError } = await supabase
         .from('promotions')
         .select('*')
-        .order('priority', { ascending: false });
+        .order('created_at', { ascending: false });
 
       if (promotionsError) throw promotionsError;
 
@@ -208,11 +202,8 @@ export default function PromocoesPage() {
       name: "",
       type: "free_item",
       weekdays: [],
-      start_time: "",
-      end_time: "",
       config: {},
       active: true,
-      priority: 0,
       valid_from: "",
       valid_until: ""
     });
@@ -230,11 +221,8 @@ export default function PromocoesPage() {
         name: promotion.name,
         type: promotion.type,
         weekdays: promotion.weekdays || [],
-        start_time: promotion.start_time || "",
-        end_time: promotion.end_time || "",
         config: promotion.config || {},
         active: promotion.active,
-        priority: promotion.priority || 0,
         valid_from: promotion.valid_from || "",
         valid_until: promotion.valid_until || ""
       });
@@ -297,11 +285,8 @@ export default function PromocoesPage() {
         name: formData.name,
         type: formData.type,
         weekdays: formData.weekdays,
-        start_time: formData.start_time || null,
-        end_time: formData.end_time || null,
         config,
         active: formData.active,
-        priority: formData.priority,
         valid_from: formData.valid_from || null,
         valid_until: formData.valid_until || null
       };
@@ -593,13 +578,6 @@ export default function PromocoesPage() {
                   </div>
                 )}
 
-                {/* Time range */}
-                {(promotion.start_time || promotion.end_time) && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                    <Clock className="h-3 w-3" />
-                    {promotion.start_time || '00:00'} - {promotion.end_time || '23:59'}
-                  </div>
-                )}
 
                 {/* Status */}
                 <div className="flex items-center justify-between">
@@ -607,9 +585,6 @@ export default function PromocoesPage() {
                     checked={promotion.active}
                     onCheckedChange={() => toggleActive(promotion)}
                   />
-                  <span className="text-xs text-muted-foreground">
-                    Prioridade: {promotion.priority}
-                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -972,24 +947,6 @@ export default function PromocoesPage() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label>Horário Início</Label>
-                <Input
-                  type="time"
-                  value={formData.start_time}
-                  onChange={(e) => setFormData({ ...formData, start_time: e.target.value })}
-                />
-              </div>
-              <div>
-                <Label>Horário Fim</Label>
-                <Input
-                  type="time"
-                  value={formData.end_time}
-                  onChange={(e) => setFormData({ ...formData, end_time: e.target.value })}
-                />
-              </div>
-            </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -1011,16 +968,7 @@ export default function PromocoesPage() {
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label className="text-gray-700 dark:text-gray-300">Prioridade</Label>
-                <Input
-                  type="number"
-                  value={formData.priority}
-                  onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
-                  min="0"
-                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
-                />
-              </div>
+              <div></div>
               <div className="flex items-end">
                 <div className="flex items-center space-x-2">
                   <Switch
