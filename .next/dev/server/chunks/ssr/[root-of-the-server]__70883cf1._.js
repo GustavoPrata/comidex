@@ -3666,39 +3666,56 @@ function PromocoesPage() {
                                             columnNumber: 17
                                         }, this),
                                         selectedItems.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex gap-2 mt-2 flex-wrap",
+                                            className: "flex gap-3 mt-2 flex-wrap",
                                             children: selectedItems.map((itemId)=>{
                                                 const item = items.find((i)=>i.id === itemId);
                                                 if (!item) return null;
                                                 return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "relative group",
+                                                    className: "relative group flex flex-col",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                                                            src: item.image || '/fotos/placeholder/placeholder.png',
-                                                            alt: item.name,
-                                                            className: `w-16 h-16 rounded object-cover border ${!item.image ? 'opacity-50' : ''}`,
-                                                            onError: (e)=>{
-                                                                const target = e.target;
-                                                                target.src = '/fotos/placeholder/placeholder.png';
-                                                            }
-                                                        }, void 0, false, {
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "relative",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                                                    src: item.image || '/fotos/placeholder/placeholder.png',
+                                                                    alt: item.name,
+                                                                    className: `w-20 h-20 rounded-lg object-cover border-2 border-gray-200 dark:border-gray-700 ${!item.image ? 'opacity-50' : ''}`,
+                                                                    onError: (e)=>{
+                                                                        const target = e.target;
+                                                                        target.src = '/fotos/placeholder/placeholder.png';
+                                                                    }
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/promocoes/page.tsx",
+                                                                    lineNumber: 838,
+                                                                    columnNumber: 29
+                                                                }, this),
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                                                    onClick: ()=>toggleItemSelection(itemId),
+                                                                    className: "absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-md transition-colors",
+                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
+                                                                        className: "h-3 w-3"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/admin/promocoes/page.tsx",
+                                                                        lineNumber: 851,
+                                                                        columnNumber: 31
+                                                                    }, this)
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/promocoes/page.tsx",
+                                                                    lineNumber: 847,
+                                                                    columnNumber: 29
+                                                                }, this)
+                                                            ]
+                                                        }, void 0, true, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
                                                             lineNumber: 837,
                                                             columnNumber: 27
                                                         }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                                            onClick: ()=>toggleItemSelection(itemId),
-                                                            className: "absolute top-0 right-0 bg-red-500 text-white rounded-full p-1",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__["X"], {
-                                                                className: "h-3 w-3"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 850,
-                                                                columnNumber: 29
-                                                            }, this)
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-xs text-gray-700 dark:text-gray-300 mt-1 max-w-[80px] truncate text-center",
+                                                            children: item.name
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 846,
+                                                            lineNumber: 854,
                                                             columnNumber: 27
                                                         }, this)
                                                     ]
@@ -3729,7 +3746,7 @@ function PromocoesPage() {
                                                     children: "Grupo de Rodízio"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 863,
+                                                    lineNumber: 868,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -3748,12 +3765,12 @@ function PromocoesPage() {
                                                                 placeholder: "Selecione o rodízio"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 872,
+                                                                lineNumber: 877,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 871,
+                                                            lineNumber: 876,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3767,24 +3784,24 @@ function PromocoesPage() {
                                                                     ]
                                                                 }, group.id, true, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 876,
+                                                                    lineNumber: 881,
                                                                     columnNumber: 25
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 874,
+                                                            lineNumber: 879,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 864,
+                                                    lineNumber: 869,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 862,
+                                            lineNumber: 867,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3797,7 +3814,7 @@ function PromocoesPage() {
                                                             children: "Tipo de Desconto"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 886,
+                                                            lineNumber: 891,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -3814,12 +3831,12 @@ function PromocoesPage() {
                                                                     className: "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700",
                                                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                        lineNumber: 895,
+                                                                        lineNumber: 900,
                                                                         columnNumber: 25
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 894,
+                                                                    lineNumber: 899,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -3830,7 +3847,7 @@ function PromocoesPage() {
                                                                             children: "Porcentagem"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                            lineNumber: 898,
+                                                                            lineNumber: 903,
                                                                             columnNumber: 25
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -3838,25 +3855,25 @@ function PromocoesPage() {
                                                                             children: "Valor Fixo"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                            lineNumber: 899,
+                                                                            lineNumber: 904,
                                                                             columnNumber: 25
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 897,
+                                                                    lineNumber: 902,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 887,
+                                                            lineNumber: 892,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 885,
+                                                    lineNumber: 890,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3866,7 +3883,7 @@ function PromocoesPage() {
                                                             children: formData.config.discountType === 'percentage' ? 'Desconto (%)' : 'Valor (R$)'
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 905,
+                                                            lineNumber: 910,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -3883,19 +3900,19 @@ function PromocoesPage() {
                                                             className: "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 908,
+                                                            lineNumber: 913,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 904,
+                                                    lineNumber: 909,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 884,
+                                            lineNumber: 889,
                                             columnNumber: 17
                                         }, this),
                                         formData.config.groupId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3906,7 +3923,7 @@ function PromocoesPage() {
                                                     children: "Prévia do Desconto"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 924,
+                                                    lineNumber: 929,
                                                     columnNumber: 21
                                                 }, this),
                                                 (()=>{
@@ -3933,7 +3950,7 @@ function PromocoesPage() {
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                            lineNumber: 940,
+                                                                            lineNumber: 945,
                                                                             columnNumber: 31
                                                                         }, this),
                                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3944,13 +3961,13 @@ function PromocoesPage() {
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                            lineNumber: 943,
+                                                                            lineNumber: 948,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 939,
+                                                                    lineNumber: 944,
                                                                     columnNumber: 29
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -3964,13 +3981,13 @@ function PromocoesPage() {
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 947,
+                                                                    lineNumber: 952,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 938,
+                                                            lineNumber: 943,
                                                             columnNumber: 27
                                                         }, this);
                                                     }
@@ -3979,7 +3996,7 @@ function PromocoesPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 923,
+                                            lineNumber: 928,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3988,7 +4005,7 @@ function PromocoesPage() {
                                                     children: "Aplicar para"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 960,
+                                                    lineNumber: 965,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -4005,12 +4022,12 @@ function PromocoesPage() {
                                                             className: "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700",
                                                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 969,
+                                                                lineNumber: 974,
                                                                 columnNumber: 23
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 968,
+                                                            lineNumber: 973,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -4021,7 +4038,7 @@ function PromocoesPage() {
                                                                     children: "Todos"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 972,
+                                                                    lineNumber: 977,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -4029,7 +4046,7 @@ function PromocoesPage() {
                                                                     children: "Apenas Homens"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 973,
+                                                                    lineNumber: 978,
                                                                     columnNumber: 23
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -4037,31 +4054,31 @@ function PromocoesPage() {
                                                                     children: "Apenas Mulheres"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 974,
+                                                                    lineNumber: 979,
                                                                     columnNumber: 23
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 971,
+                                                            lineNumber: 976,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 961,
+                                                    lineNumber: 966,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 959,
+                                            lineNumber: 964,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 861,
+                                    lineNumber: 866,
                                     columnNumber: 15
                                 }, this),
                                 formData.type === 'buy_x_get_y' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4073,7 +4090,7 @@ function PromocoesPage() {
                                                     children: "Item da Promoção"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 984,
+                                                    lineNumber: 989,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4086,20 +4103,20 @@ function PromocoesPage() {
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 991,
+                                                            lineNumber: 996,
                                                             columnNumber: 21
                                                         }, this),
                                                         selectedItems.length > 0 ? `Item selecionado: ${items.find((i)=>i.id === selectedItems[0])?.name}` : 'Selecionar Item'
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 985,
+                                                    lineNumber: 990,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 983,
+                                            lineNumber: 988,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4111,7 +4128,7 @@ function PromocoesPage() {
                                                             children: "Compre (quantidade)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1000,
+                                                            lineNumber: 1005,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4127,13 +4144,13 @@ function PromocoesPage() {
                                                             min: "1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1001,
+                                                            lineNumber: 1006,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 999,
+                                                    lineNumber: 1004,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4142,7 +4159,7 @@ function PromocoesPage() {
                                                             children: "Leve (quantidade)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1012,
+                                                            lineNumber: 1017,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4158,25 +4175,25 @@ function PromocoesPage() {
                                                             min: "1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1013,
+                                                            lineNumber: 1018,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1011,
+                                                    lineNumber: 1016,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 998,
+                                            lineNumber: 1003,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 982,
+                                    lineNumber: 987,
                                     columnNumber: 15
                                 }, this),
                                 formData.type === 'item_discount' && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4188,7 +4205,7 @@ function PromocoesPage() {
                                                     children: "Itens com Desconto"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1030,
+                                                    lineNumber: 1035,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4201,7 +4218,7 @@ function PromocoesPage() {
                                                             className: "mr-2 h-4 w-4"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1037,
+                                                            lineNumber: 1042,
                                                             columnNumber: 21
                                                         }, this),
                                                         "Selecionar Itens (",
@@ -4210,7 +4227,7 @@ function PromocoesPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1031,
+                                                    lineNumber: 1036,
                                                     columnNumber: 19
                                                 }, this),
                                                 selectedItems.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4229,7 +4246,7 @@ function PromocoesPage() {
                                                                     className: "w-16 h-16 rounded object-cover border"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 1052,
+                                                                    lineNumber: 1057,
                                                                     columnNumber: 31
                                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                     className: "w-16 h-16 rounded border bg-blue-50 dark:bg-blue-950/20 flex items-center justify-center",
@@ -4237,18 +4254,18 @@ function PromocoesPage() {
                                                                         className: "h-8 w-8 text-blue-500 dark:text-blue-400"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                        lineNumber: 1060,
+                                                                        lineNumber: 1065,
                                                                         columnNumber: 35
                                                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"], {
                                                                         className: "h-8 w-8 text-blue-500 dark:text-blue-400"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                        lineNumber: 1062,
+                                                                        lineNumber: 1067,
                                                                         columnNumber: 35
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 1058,
+                                                                    lineNumber: 1063,
                                                                     columnNumber: 31
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -4258,30 +4275,30 @@ function PromocoesPage() {
                                                                         className: "h-3 w-3"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                        lineNumber: 1070,
+                                                                        lineNumber: 1075,
                                                                         columnNumber: 31
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 1066,
+                                                                    lineNumber: 1071,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, itemId, true, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1050,
+                                                            lineNumber: 1055,
                                                             columnNumber: 27
                                                         }, this);
                                                     })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1041,
+                                                    lineNumber: 1046,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1029,
+                                            lineNumber: 1034,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4293,7 +4310,7 @@ function PromocoesPage() {
                                                             children: "Desconto (%)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1081,
+                                                            lineNumber: 1086,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4310,13 +4327,13 @@ function PromocoesPage() {
                                                             placeholder: "Ex: 20"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1082,
+                                                            lineNumber: 1087,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1080,
+                                                    lineNumber: 1085,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4325,7 +4342,7 @@ function PromocoesPage() {
                                                             children: "OU Preço Fixo (R$)"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1097,
+                                                            lineNumber: 1102,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4342,25 +4359,25 @@ function PromocoesPage() {
                                                             placeholder: "Ex: 15.90"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1098,
+                                                            lineNumber: 1103,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1096,
+                                                    lineNumber: 1101,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1079,
+                                            lineNumber: 1084,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1028,
+                                    lineNumber: 1033,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4369,7 +4386,7 @@ function PromocoesPage() {
                                             children: "Dias da Semana"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1118,
+                                            lineNumber: 1123,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4382,18 +4399,18 @@ function PromocoesPage() {
                                                     children: day.short
                                                 }, day.value, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1121,
+                                                    lineNumber: 1126,
                                                     columnNumber: 19
                                                 }, this))
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1119,
+                                            lineNumber: 1124,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1117,
+                                    lineNumber: 1122,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4405,7 +4422,7 @@ function PromocoesPage() {
                                                     children: "Válida de"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1137,
+                                                    lineNumber: 1142,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4417,13 +4434,13 @@ function PromocoesPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1138,
+                                                    lineNumber: 1143,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1136,
+                                            lineNumber: 1141,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4432,7 +4449,7 @@ function PromocoesPage() {
                                                     children: "Válida até"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1145,
+                                                    lineNumber: 1150,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4444,19 +4461,19 @@ function PromocoesPage() {
                                                         })
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1146,
+                                                    lineNumber: 1151,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1144,
+                                            lineNumber: 1149,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1135,
+                                    lineNumber: 1140,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4464,7 +4481,7 @@ function PromocoesPage() {
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {}, void 0, false, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1155,
+                                            lineNumber: 1160,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4480,31 +4497,31 @@ function PromocoesPage() {
                                                             })
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                        lineNumber: 1158,
+                                                        lineNumber: 1163,
                                                         columnNumber: 19
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
                                                         children: "Ativa"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                        lineNumber: 1162,
+                                                        lineNumber: 1167,
                                                         columnNumber: 19
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                lineNumber: 1157,
+                                                lineNumber: 1162,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1156,
+                                            lineNumber: 1161,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1154,
+                                    lineNumber: 1159,
                                     columnNumber: 13
                                 }, this)
                             ]
@@ -4521,7 +4538,7 @@ function PromocoesPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1169,
+                                    lineNumber: 1174,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4533,20 +4550,20 @@ function PromocoesPage() {
                                             className: "mr-2 h-4 w-4 animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1173,
+                                            lineNumber: 1178,
                                             columnNumber: 26
                                         }, this),
                                         editingPromotion ? 'Atualizar' : 'Criar'
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1172,
+                                    lineNumber: 1177,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                            lineNumber: 1168,
+                            lineNumber: 1173,
                             columnNumber: 11
                         }, this)
                     ]
@@ -4564,7 +4581,7 @@ function PromocoesPage() {
                 open: isItemSelectorOpen,
                 onOpenChange: setIsItemSelectorOpen,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogContent"], {
-                    className: "max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100",
+                    className: "max-w-4xl h-[85vh] flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogHeader"], {
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogTitle"], {
@@ -4572,16 +4589,16 @@ function PromocoesPage() {
                                 children: "Selecionar Itens"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                lineNumber: 1184,
+                                lineNumber: 1189,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                            lineNumber: 1183,
+                            lineNumber: 1188,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "flex-1 overflow-hidden flex flex-col",
+                            className: "flex-1 min-h-0 flex flex-col",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "grid grid-cols-3 gap-4 mb-4",
@@ -4593,7 +4610,7 @@ function PromocoesPage() {
                                                     children: "Grupo"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1191,
+                                                    lineNumber: 1196,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -4606,12 +4623,12 @@ function PromocoesPage() {
                                                                 placeholder: "Selecione um grupo"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 1197,
+                                                                lineNumber: 1202,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1196,
+                                                            lineNumber: 1201,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -4621,24 +4638,24 @@ function PromocoesPage() {
                                                                     children: group.name
                                                                 }, group.id, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 1201,
+                                                                    lineNumber: 1206,
                                                                     columnNumber: 23
                                                                 }, this))
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1199,
+                                                            lineNumber: 1204,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1192,
+                                                    lineNumber: 1197,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1190,
+                                            lineNumber: 1195,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4648,7 +4665,7 @@ function PromocoesPage() {
                                                     children: "Categoria"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1210,
+                                                    lineNumber: 1215,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -4661,12 +4678,12 @@ function PromocoesPage() {
                                                                 placeholder: "Todas as categorias"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 1216,
+                                                                lineNumber: 1221,
                                                                 columnNumber: 21
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1215,
+                                                            lineNumber: 1220,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -4677,7 +4694,7 @@ function PromocoesPage() {
                                                                     children: "Todas as categorias"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                    lineNumber: 1219,
+                                                                    lineNumber: 1224,
                                                                     columnNumber: 21
                                                                 }, this),
                                                                 categories.map((category)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -4685,25 +4702,25 @@ function PromocoesPage() {
                                                                         children: category.name
                                                                     }, category.id, false, {
                                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                        lineNumber: 1221,
+                                                                        lineNumber: 1226,
                                                                         columnNumber: 23
                                                                     }, this))
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1218,
+                                                            lineNumber: 1223,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1211,
+                                                    lineNumber: 1216,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1209,
+                                            lineNumber: 1214,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4713,7 +4730,7 @@ function PromocoesPage() {
                                                     children: "Buscar"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1230,
+                                                    lineNumber: 1235,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -4723,25 +4740,25 @@ function PromocoesPage() {
                                                     className: "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1231,
+                                                    lineNumber: 1236,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1229,
+                                            lineNumber: 1234,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1189,
+                                    lineNumber: 1194,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$scroll$2d$area$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["ScrollArea"], {
-                                    className: "flex-1 border rounded-lg",
+                                    className: "flex-1 min-h-0 border rounded-lg overflow-auto",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "space-y-2 p-3",
+                                        className: "space-y-2 p-3 h-full",
                                         children: getFilteredItemsForSelector().map((item)=>{
                                             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                                 className: `w-full flex items-center gap-3 p-3 rounded-xl transition-all hover:shadow-sm ${selectedItems.includes(item.id) ? 'bg-orange-50 dark:bg-orange-950/20 border-2 border-orange-500 dark:border-orange-600' : 'bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600'}`,
@@ -4759,7 +4776,7 @@ function PromocoesPage() {
                                                             }
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1257,
+                                                            lineNumber: 1262,
                                                             columnNumber: 27
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
                                                             src: "/fotos/placeholder/placeholder.png",
@@ -4767,12 +4784,12 @@ function PromocoesPage() {
                                                             className: "w-full h-full object-cover opacity-50"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1267,
+                                                            lineNumber: 1272,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                        lineNumber: 1255,
+                                                        lineNumber: 1260,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4783,7 +4800,7 @@ function PromocoesPage() {
                                                                 children: item.name
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 1277,
+                                                                lineNumber: 1282,
                                                                 columnNumber: 23
                                                             }, this),
                                                             item.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4791,7 +4808,7 @@ function PromocoesPage() {
                                                                 children: item.description
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 1279,
+                                                                lineNumber: 1284,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -4802,13 +4819,13 @@ function PromocoesPage() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 1281,
+                                                                lineNumber: 1286,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                        lineNumber: 1276,
+                                                        lineNumber: 1281,
                                                         columnNumber: 21
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4819,34 +4836,34 @@ function PromocoesPage() {
                                                                 className: "h-4 w-4 text-white"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                                lineNumber: 1294,
+                                                                lineNumber: 1299,
                                                                 columnNumber: 27
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                            lineNumber: 1288,
+                                                            lineNumber: 1293,
                                                             columnNumber: 23
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                        lineNumber: 1287,
+                                                        lineNumber: 1292,
                                                         columnNumber: 21
                                                     }, this)
                                                 ]
                                             }, item.id, true, {
                                                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                lineNumber: 1245,
+                                                lineNumber: 1250,
                                                 columnNumber: 21
                                             }, this);
                                         })
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/promocoes/page.tsx",
-                                        lineNumber: 1242,
+                                        lineNumber: 1247,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1241,
+                                    lineNumber: 1246,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4861,7 +4878,7 @@ function PromocoesPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1306,
+                                            lineNumber: 1311,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -4873,7 +4890,7 @@ function PromocoesPage() {
                                                     children: "Cancelar"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1310,
+                                                    lineNumber: 1315,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -4882,36 +4899,36 @@ function PromocoesPage() {
                                                     children: "Confirmar Seleção"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                                    lineNumber: 1313,
+                                                    lineNumber: 1318,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                                            lineNumber: 1309,
+                                            lineNumber: 1314,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1305,
+                                    lineNumber: 1310,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                            lineNumber: 1187,
+                            lineNumber: 1192,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                    lineNumber: 1182,
+                    lineNumber: 1187,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                lineNumber: 1181,
+                lineNumber: 1186,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -4925,7 +4942,7 @@ function PromocoesPage() {
                                     children: "Confirmar exclusão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1329,
+                                    lineNumber: 1334,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -4936,13 +4953,13 @@ function PromocoesPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1330,
+                                    lineNumber: 1335,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                            lineNumber: 1328,
+                            lineNumber: 1333,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -4951,7 +4968,7 @@ function PromocoesPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1336,
+                                    lineNumber: 1341,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -4960,24 +4977,24 @@ function PromocoesPage() {
                                     children: "Excluir"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                                    lineNumber: 1337,
+                                    lineNumber: 1342,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/promocoes/page.tsx",
-                            lineNumber: 1335,
+                            lineNumber: 1340,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/promocoes/page.tsx",
-                    lineNumber: 1327,
+                    lineNumber: 1332,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/promocoes/page.tsx",
-                lineNumber: 1326,
+                lineNumber: 1331,
                 columnNumber: 7
             }, this)
         ]

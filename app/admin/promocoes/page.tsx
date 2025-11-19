@@ -607,25 +607,35 @@ export default function PromocoesPage() {
                           if (!item) return null;
                           
                           return (
-                            <div key={itemId} className="relative group">
-                              <img 
-                                src={item.image || '/fotos/placeholder/placeholder.png'}
-                                alt={item.name}
-                                className={`w-14 h-14 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm ${!item.image ? 'opacity-50' : ''}`}
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.src = '/fotos/placeholder/placeholder.png';
-                                }}
-                              />
-                              <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                <span className="text-white text-xs text-center px-1">{item.name}</span>
+                            <div key={itemId} className="flex flex-col items-center">
+                              <div className="relative group">
+                                <img 
+                                  src={item.image || '/fotos/placeholder/placeholder.png'}
+                                  alt={item.name}
+                                  className={`w-16 h-16 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm ${!item.image ? 'opacity-50' : ''}`}
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.src = '/fotos/placeholder/placeholder.png';
+                                  }}
+                                />
+                                <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                  <span className="text-white text-xs text-center px-1">{item.name}</span>
+                                </div>
                               </div>
+                              <span className="text-[10px] text-green-700 dark:text-green-300 mt-0.5 max-w-[64px] truncate">
+                                {item.name}
+                              </span>
                             </div>
                           );
                         })}
                         {promotion.config.freeItems.length > 4 && (
-                          <div className="w-14 h-14 rounded-lg border-2 border-green-300 dark:border-green-700 flex items-center justify-center bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold">
-                            +{promotion.config.freeItems.length - 4}
+                          <div className="flex flex-col items-center">
+                            <div className="w-16 h-16 rounded-lg border-2 border-green-300 dark:border-green-700 flex items-center justify-center bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold">
+                              +{promotion.config.freeItems.length - 4}
+                            </div>
+                            <span className="text-[10px] text-green-700 dark:text-green-300 mt-0.5">
+                              mais itens
+                            </span>
                           </div>
                         )}
                       </div>
@@ -827,28 +837,33 @@ export default function PromocoesPage() {
                   Selecionar Itens ({selectedItems.length} selecionados)
                 </Button>
                 {selectedItems.length > 0 && (
-                  <div className="flex gap-2 mt-2 flex-wrap">
+                  <div className="flex gap-3 mt-2 flex-wrap">
                     {selectedItems.map(itemId => {
                       const item = items.find(i => i.id === itemId);
                       if (!item) return null;
                       
                       return (
-                        <div key={itemId} className="relative group">
-                          <img 
-                            src={item.image || '/fotos/placeholder/placeholder.png'}
-                            alt={item.name}
-                            className={`w-16 h-16 rounded object-cover border ${!item.image ? 'opacity-50' : ''}`}
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.src = '/fotos/placeholder/placeholder.png';
-                            }}
-                          />
-                          <button
-                            onClick={() => toggleItemSelection(itemId)}
-                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                          >
-                            <X className="h-3 w-3" />
-                          </button>
+                        <div key={itemId} className="relative group flex flex-col">
+                          <div className="relative">
+                            <img 
+                              src={item.image || '/fotos/placeholder/placeholder.png'}
+                              alt={item.name}
+                              className={`w-20 h-20 rounded-lg object-cover border-2 border-gray-200 dark:border-gray-700 ${!item.image ? 'opacity-50' : ''}`}
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/fotos/placeholder/placeholder.png';
+                              }}
+                            />
+                            <button
+                              onClick={() => toggleItemSelection(itemId)}
+                              className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-md transition-colors"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                          <span className="text-xs text-gray-700 dark:text-gray-300 mt-1 max-w-[80px] truncate text-center">
+                            {item.name}
+                          </span>
                         </div>
                       );
                     })}
@@ -1038,37 +1053,33 @@ export default function PromocoesPage() {
                     Selecionar Itens ({selectedItems.length} selecionados)
                   </Button>
                   {selectedItems.length > 0 && (
-                    <div className="flex gap-2 mt-2 flex-wrap">
+                    <div className="flex gap-3 mt-2 flex-wrap">
                       {selectedItems.map(itemId => {
                         const item = items.find(i => i.id === itemId);
                         if (!item) return null;
                         
-                        const itemGroup = groups.find(g => g.id === item.group_id);
-                        const GroupIcon = itemGroup?.icon ? getIconByName(itemGroup.icon) : null;
-                        
                         return (
-                          <div key={itemId} className="relative group">
-                            {item.image ? (
+                          <div key={itemId} className="relative group flex flex-col">
+                            <div className="relative">
                               <img 
-                                src={item.image}
+                                src={item.image || '/fotos/placeholder/placeholder.png'}
                                 alt={item.name}
-                                className="w-16 h-16 rounded object-cover border"
+                                className={`w-20 h-20 rounded-lg object-cover border-2 border-gray-200 dark:border-gray-700 ${!item.image ? 'opacity-50' : ''}`}
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.src = '/fotos/placeholder/placeholder.png';
+                                }}
                               />
-                            ) : (
-                              <div className="w-16 h-16 rounded border bg-blue-50 dark:bg-blue-950/20 flex items-center justify-center">
-                                {GroupIcon ? (
-                                  <GroupIcon className="h-8 w-8 text-blue-500 dark:text-blue-400" />
-                                ) : (
-                                  <Package className="h-8 w-8 text-blue-500 dark:text-blue-400" />
-                                )}
-                              </div>
-                            )}
-                            <button
-                              onClick={() => toggleItemSelection(itemId)}
-                              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
+                              <button
+                                onClick={() => toggleItemSelection(itemId)}
+                                className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 shadow-md transition-colors"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                            <span className="text-xs text-gray-700 dark:text-gray-300 mt-1 max-w-[80px] truncate text-center">
+                              {item.name}
+                            </span>
                           </div>
                         );
                       })}
@@ -1179,12 +1190,12 @@ export default function PromocoesPage() {
 
       {/* Item Selector Modal */}
       <Dialog open={isItemSelectorOpen} onOpenChange={setIsItemSelectorOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+        <DialogContent className="max-w-4xl h-[85vh] flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
           <DialogHeader>
             <DialogTitle className="text-gray-900 dark:text-gray-100">Selecionar Itens</DialogTitle>
           </DialogHeader>
 
-          <div className="flex-1 overflow-hidden flex flex-col">
+          <div className="flex-1 min-h-0 flex flex-col">
             {/* Filters */}
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div>
@@ -1238,8 +1249,8 @@ export default function PromocoesPage() {
             </div>
 
             {/* Items List */}
-            <ScrollArea className="flex-1 border rounded-lg">
-              <div className="space-y-2 p-3">
+            <ScrollArea className="flex-1 min-h-0 border rounded-lg overflow-auto">
+              <div className="space-y-2 p-3 h-full">
                 {getFilteredItemsForSelector().map(item => {
                   return (
                     <button
