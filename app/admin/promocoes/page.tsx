@@ -457,35 +457,51 @@ export default function PromocoesPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Promoções</h1>
-          <p className="text-muted-foreground">Gerencie as promoções do restaurante</p>
+    <div className="min-h-screen relative">
+      {/* Header */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Tag className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Promoções</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
+              <Button 
+                onClick={() => openModal()}
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Nova Promoção
+              </Button>
+            </div>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Gerencie promoções e ofertas especiais do restaurante
+          </p>
         </div>
-        <Button onClick={() => openModal()} className="bg-orange-500 hover:bg-orange-600">
-          <Plus className="mr-2 h-4 w-4" />
-          Nova Promoção
-        </Button>
       </div>
 
-      {/* Search */}
-      <Card>
-        <CardContent className="p-4">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              placeholder="Buscar promoção..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Promotions Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {/* Content */}
+      <div className="p-4">
+        {/* Promotions Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredPromotions.map((promotion) => {
           const typeInfo = promotionTypes.find(t => t.value === promotion.type);
           const Icon = typeInfo?.icon || Gift;
@@ -580,7 +596,7 @@ export default function PromocoesPage() {
 
 
                 {/* Status */}
-                <div className="flex items-center justify-between">
+                <div className="flex justify-center">
                   <Switch
                     checked={promotion.active}
                     onCheckedChange={() => toggleActive(promotion)}
@@ -590,24 +606,28 @@ export default function PromocoesPage() {
             </Card>
           );
         })}
+        </div>
+
+        {/* Empty State */}
+        {filteredPromotions.length === 0 && (
+          <Card className="col-span-full">
+            <CardContent className="text-center py-12">
+              <Tag className="h-12 w-12 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400 mb-2">
+                {searchTerm 
+                  ? "Nenhuma promoção encontrada" 
+                  : "Nenhuma promoção cadastrada"}
+              </p>
+              <p className="text-sm text-gray-400 dark:text-gray-500">
+                {searchTerm
+                  ? "Tente ajustar o termo de busca" 
+                  : "Clique em 'Nova Promoção' para começar"}
+              </p>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
-      {/* Empty state */}
-      {filteredPromotions.length === 0 && (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Gift className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">Nenhuma promoção encontrada</h3>
-            <p className="text-muted-foreground text-center mb-4">
-              Crie sua primeira promoção para atrair mais clientes
-            </p>
-            <Button onClick={() => openModal()} className="bg-orange-500 hover:bg-orange-600">
-              <Plus className="mr-2 h-4 w-4" />
-              Criar Promoção
-            </Button>
-          </CardContent>
-        </Card>
-      )}
 
       {/* Create/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>

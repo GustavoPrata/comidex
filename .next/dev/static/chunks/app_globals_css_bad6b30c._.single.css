@@ -621,6 +621,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   grid-column: span 2 / span 2;
 }
 
+.col-span-full {
+  grid-column: 1 / -1;
+}
+
 .m-4 {
   margin: 1rem;
 }
