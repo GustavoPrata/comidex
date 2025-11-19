@@ -1937,48 +1937,6 @@ export default function POSPage() {
     try {
       console.log('Lançando pedido para mesa:', selectedTable.id);
 
-      // Verificar se já existe uma comanda aberta para esta mesa
-      const { data: existingOrders, error: checkError } = await supabase
-        .from('orders')
-        .select('id')
-        .eq('table_id', selectedTable.id)
-        .eq('status', 'open')
-        .single();
-
-      // Ignorar erro PGRST116 (nenhuma linha encontrada)
-      if (checkError && checkError.code !== 'PGRST116') {
-        console.error('Erro ao verificar pedidos existentes:', checkError);
-        throw checkError;
-      }
-
-      let orderId;
-
-      if (existingOrders?.id) {
-        orderId = existingOrders.id;
-        console.log('Usando comanda existente:', orderId);
-      } else {
-        // Criar nova comanda
-        const orderNumber = `${selectedTable.number}-${Date.now().toString().slice(-6)}`;
-        
-        const { data: newOrder, error: orderError } = await supabase
-          .from('orders')
-          .insert({
-            order_number: orderNumber,
-            table_id: selectedTable.id,
-            status: 'open',
-            total: calculateTotal()
-          })
-          .select()
-          .single();
-
-        if (orderError) {
-          console.error('Erro ao criar nova comanda:', orderError);
-          throw orderError;
-        }
-        orderId = newOrder.id;
-        console.log('Nova comanda criada:', orderId);
-      }
-
       // Processar itens cancelados que já foram lançados anteriormente
       const itemsToCancel = cart.filter(item => 
         (item.status === 'cancelled' || (item as any).wasCancelled === true) && 
@@ -2046,63 +2004,63 @@ export default function POSPage() {
       }
 
       // Adicionar apenas itens novos (não lançados) ao pedido
-      const orderItems = newItems.map(item => {
-        // Para rodízios (IDs negativos), adicionar metadata
-        if (item.item_id < 0) {
-          return {
-            order_id: orderId,
-            item_id: null, // Rodízio não tem item_id real
+      let insertedItems = null;
+      let orderId = currentOrder?.id; // Para usar depois no mapeamento do cart
+      
+      // Só inserir novos itens se houver algum
+      if (newItems.length > 0) {
+        console.log('Inserindo itens novos:', newItems);
+
+        // Usar a API de orders que já integra com a fila de impressão
+        const orderPayload = {
+          session_id: currentSession?.id,
+          total: calculateTotal(),
+          items: newItems.map(item => ({
+            item_id: item.item_id < 0 ? null : item.item_id,
             quantity: item.quantity,
             unit_price: item.unit_price,
             total_price: item.total_price,
-            status: 'pending',
-            metadata: {
-              type: 'rodizio',
-              icon: item.item?.icon || '',
-              group_id: item.item?.group_id || 0,
-              name: item.item?.name || '',
-              image: item.item?.image || ''
-            }
-          };
-        }
-        // Para itens normais
-        return {
-          order_id: orderId,
-          item_id: item.item_id,
-          quantity: item.quantity,
-          unit_price: item.unit_price,
-          total_price: item.total_price,
-          status: 'pending'
+            notes: item.notes,
+            name: item.item?.name || 'Item',
+            additionals_price: 0
+          })),
+          notes: '',
+          priority: 'high',
+          added_by: 'pos'
         };
-      });
 
-      let insertedItems = null;
-      
-      // Só inserir novos itens se houver algum
-      if (orderItems.length > 0) {
-        console.log('Inserindo itens novos:', orderItems);
+        // Enviar para API que já integra com fila de impressão
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(orderPayload)
+        });
 
-        // Inserir e retornar os itens com created_at
-        const { data: items, error: itemsError } = await supabase
-          .from('order_items')
-          .insert(orderItems)
-          .select('*, created_at'); // Retornar os itens inseridos com created_at
-
-        if (itemsError) {
-          console.error('Erro ao inserir itens:', itemsError);
-          throw itemsError;
+        if (!response.ok) {
+          const error = await response.json();
+          console.error('Erro ao criar pedido:', error);
+          throw new Error(error.error || 'Erro ao criar pedido');
         }
 
-        insertedItems = items;
-        console.log('Itens inseridos com sucesso:', insertedItems);
-      }
+        const newOrder = await response.json();
+        console.log('Pedido criado e adicionado à fila de impressão:', newOrder);
+        
+        // Atualizar orderId para usar no mapeamento
+        orderId = newOrder.id;
+        
+        // Atualizar currentOrder se for um novo pedido
+        if (!currentOrder || currentOrder.id !== newOrder.id) {
+          setCurrentOrder(newOrder);
+        }
 
-      // Processar impressão
-      try {
-        await processPrinting(orderId);
-      } catch (printError) {
-        console.error('Erro na impressão (continuando):', printError);
-        // Não vamos falhar o pedido por erro de impressão
+        // Para compatibilidade, criar array de items como se viesse do Supabase
+        insertedItems = newItems.map(item => ({
+          ...item,
+          order_id: newOrder.id,
+          created_at: new Date().toISOString()
+        }));
       }
 
       // Marcar apenas os itens recém-lançados como delivered e adicionar timestamp do banco

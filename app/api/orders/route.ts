@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { printOrder } from '@/lib/print-queue'
 
 export async function GET(request: NextRequest) {
   try {
@@ -84,6 +85,38 @@ export async function POST(request: NextRequest) {
         .insert(orderItems)
       
       if (itemsError) throw itemsError
+      
+      // Adicionar pedido à fila de impressão
+      try {
+        // Buscar informações da mesa
+        const { data: session } = await supabase
+          .from('table_sessions')
+          .select(`
+            restaurant_tables (name, number)
+          `)
+          .eq('id', body.session_id)
+          .single()
+        
+        const tableName = session?.restaurant_tables?.name || `Mesa ${session?.restaurant_tables?.number || 'Desconhecida'}`
+        
+        // Adicionar job de impressão para o pedido
+        await printOrder({
+          order_id: order.id,
+          items: body.items.map((item: any) => ({
+            name: item.name || 'Item',
+            quantity: item.quantity,
+            notes: item.notes
+          })),
+          table_name: tableName,
+          notes: body.notes,
+          priority: 'high'
+        })
+        
+        console.log('Pedido adicionado à fila de impressão:', order.id)
+      } catch (printError) {
+        console.error('Erro ao adicionar pedido à fila de impressão:', printError)
+        // Não falhar a criação do pedido se a impressão falhar
+      }
     }
     
     return NextResponse.json(order, { status: 201 })
