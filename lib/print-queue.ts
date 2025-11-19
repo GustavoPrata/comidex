@@ -47,7 +47,8 @@ export async function addPrintJob(params: AddPrintJobParams) {
       throw new Error(`Nenhuma impressora configurada para ${params.document_type}`);
     }
 
-    const response = await fetch('/api/printer-queue', {
+    const baseUrl = typeof window !== 'undefined' ? '' : 'http://localhost:5000';
+    const response = await fetch(`${baseUrl}/api/printer-queue`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -78,40 +79,15 @@ export async function addPrintJob(params: AddPrintJobParams) {
 
 // Buscar mapeamento de impressoras padrão
 async function getDefaultPrintersMap(): Promise<Record<DocumentType, number | null>> {
-  try {
-    const response = await fetch('/api/printer-profiles');
-    const profiles = await response.json();
-    
-    // Mapear tipo de documento para impressora
-    const map: Record<DocumentType, number | null> = {
-      order: null,
-      receipt: null,
-      bill: null,
-      report: null,
-      test: null
-    };
-
-    // Buscar perfil ativo e mapear impressoras
-    const activeProfile = profiles.find((p: any) => p.is_active);
-    if (activeProfile && activeProfile.settings) {
-      const settings = activeProfile.settings;
-      map.order = settings.kitchen_printer_id || null;
-      map.receipt = settings.receipt_printer_id || null;
-      map.bill = settings.bill_printer_id || null;
-      map.report = settings.report_printer_id || null;
-    }
-
-    return map;
-  } catch (error) {
-    console.error('Erro ao buscar impressoras padrão:', error);
-    return {
-      order: null,
-      receipt: null,
-      bill: null,
-      report: null,
-      test: null
-    };
-  }
+  // Por enquanto, usar impressora ID 1 como padrão para todos os tipos
+  // TODO: Implementar configuração de perfis de impressora quando necessário
+  return {
+    order: 1,    // Cozinha
+    receipt: 1,  // Caixa
+    bill: 1,     // Caixa
+    report: 1,   // Escritório
+    test: 1      // Teste
+  };
 }
 
 // Imprimir pedido
