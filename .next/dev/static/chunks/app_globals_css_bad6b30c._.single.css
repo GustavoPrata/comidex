@@ -2831,11 +2831,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   line-height: 2.25rem;
 }
 
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-}
-
 .text-5xl {
   font-size: 3rem;
   line-height: 1;
@@ -3557,11 +3552,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .placeholder\:text-gray-500::placeholder {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity, 1));
-}
-
-.placeholder\:text-gray-600::placeholder {
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity, 1));
 }
 
 .placeholder\:text-muted-foreground::placeholder {

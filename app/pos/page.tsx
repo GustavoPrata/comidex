@@ -2927,15 +2927,59 @@ export default function POSPage() {
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
+            className="mb-6"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-                  <Calculator className="h-10 w-10 text-orange-400" />
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-6">
+                <h1 className="text-3xl font-bold text-white">
                   Caixa ComideX
                 </h1>
+                
+                {/* Input para Número da Mesa */}
+                <div className="relative">
+                  <input
+                    id="table-number"
+                    ref={(el) => { 
+                      if (el && screen === 'tables') {
+                        setTimeout(() => el.focus(), 100);
+                      }
+                    }}
+                    type="text"
+                    pattern="[0-9]*"
+                    inputMode="numeric"
+                    maxLength={4}
+                    placeholder="Mesa"
+                    className="text-2xl font-bold text-center bg-gray-900 border-2 border-gray-600 text-white placeholder:text-gray-500 rounded-lg px-4 py-2 w-32 focus:border-orange-500 focus:outline-none"
+                    style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        const value = (e.target as HTMLInputElement).value;
+                        const tableNumber = parseInt(value);
+                        if (!isNaN(tableNumber) && tableNumber > 0) {
+                          const table = tables.find(t => t.number === tableNumber.toString());
+                          if (table) {
+                            handleSelectTable(table);
+                            (e.target as HTMLInputElement).value = '';
+                          } else {
+                            toast.error(`Mesa ${tableNumber} não encontrada`);
+                            (e.target as HTMLInputElement).value = '';
+                            setTimeout(() => (e.target as HTMLInputElement).focus(), 100);
+                          }
+                        }
+                      }
+                    }}
+                    onBlur={(e) => {
+                      // Manter o foco sempre no input quando estiver na tela de mesas
+                      if (screen === 'tables') {
+                        setTimeout(() => (e.target as HTMLInputElement).focus(), 50);
+                      }
+                    }}
+                    autoComplete="off"
+                    autoFocus
+                  />
+                </div>
               </div>
+              
               <div className="flex gap-2 items-center">
                 {/* Estatísticas Compactas */}
                 <div className="flex gap-2 mr-4">
@@ -2958,79 +3002,20 @@ export default function POSPage() {
                 </div>
                 <Button
                   onClick={() => setScreen('history')}
-                  className="bg-gray-800 hover:bg-gray-700"
+                  className="bg-gray-800 hover:bg-gray-700 h-9"
                 >
                   <History className="mr-2 h-4 w-4" />
                   Histórico
                 </Button>
                 <Button
                   onClick={loadInitialData}
-                  className="bg-gray-800 hover:bg-gray-700"
+                  className="bg-gray-800 hover:bg-gray-700 h-9"
                 >
                   <RefreshCw className="mr-2 h-4 w-4" />
                   Atualizar
                 </Button>
               </div>
             </div>
-          </motion.div>
-
-          {/* Input para Número da Mesa */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8"
-          >
-            <Card className="bg-gray-800/50 backdrop-blur border-gray-700">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-center">
-                  <div className="w-48 relative">
-                    <Label htmlFor="table-number" className="text-gray-400 text-sm mb-2 block text-center">
-                      Número da Mesa
-                    </Label>
-                    <input
-                      id="table-number"
-                      ref={(el) => { 
-                        if (el && screen === 'tables') {
-                          setTimeout(() => el.focus(), 100);
-                        }
-                      }}
-                      type="text"
-                      pattern="[0-9]*"
-                      inputMode="numeric"
-                      maxLength={4}
-                      placeholder="0"
-                      className="text-5xl font-bold text-center bg-gray-900 border-2 border-gray-600 text-white placeholder:text-gray-600 rounded-lg px-4 py-3 w-full focus:border-orange-500 focus:outline-none"
-                      style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          const value = (e.target as HTMLInputElement).value;
-                          const tableNumber = parseInt(value);
-                          if (!isNaN(tableNumber) && tableNumber > 0) {
-                            const table = tables.find(t => t.number === tableNumber.toString());
-                            if (table) {
-                              handleSelectTable(table);
-                              (e.target as HTMLInputElement).value = '';
-                            } else {
-                              toast.error(`Mesa ${tableNumber} não encontrada`);
-                              (e.target as HTMLInputElement).value = '';
-                              setTimeout(() => (e.target as HTMLInputElement).focus(), 100);
-                            }
-                          }
-                        }
-                      }}
-                      onBlur={(e) => {
-                        // Manter o foco sempre no input quando estiver na tela de mesas
-                        if (screen === 'tables') {
-                          setTimeout(() => (e.target as HTMLInputElement).focus(), 50);
-                        }
-                      }}
-                      autoComplete="off"
-                      autoFocus
-                    />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
           </motion.div>
 
           {/* Grid de Mesas com Animação */}
