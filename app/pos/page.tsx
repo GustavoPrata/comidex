@@ -4406,21 +4406,6 @@ export default function POSPage() {
                     </div>
                   </div>
                   
-                  {/* Seção de Promoções */}
-                  <div className="mt-4 space-y-3">
-                    <h3 className="text-sm font-semibold text-gray-400 flex items-center gap-2">
-                      <Gift className="h-4 w-4 text-orange-400" />
-                      Promoções Disponíveis
-                    </h3>
-                    <PromocoesSection 
-                      cart={cart}
-                      groups={groups}
-                      onPromotionToggle={handlePromotionToggle}
-                      appliedPromotions={appliedPromotions}
-                      setAppliedPromotions={setAppliedPromotions}
-                    />
-                  </div>
-                  
                 </CardContent>
               </Card>
             ) : (

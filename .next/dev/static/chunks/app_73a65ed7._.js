@@ -1828,18 +1828,80 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                     lineNumber: 394,
                                                     columnNumber: 21
                                                 }, this),
+                                                promotion.type === 'group_discount' && promotion.config.groupId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "mt-2",
+                                                    children: (()=>{
+                                                        const group = rodizioGroups.find((g)=>g.id === promotion.config.groupId);
+                                                        if (group && group.price) {
+                                                            const originalPrice = group.price;
+                                                            let finalPrice = originalPrice;
+                                                            if (promotion.config.discountType === 'percentage') {
+                                                                finalPrice = originalPrice - originalPrice * (promotion.config.discountValue || 0) / 100;
+                                                            } else {
+                                                                finalPrice = promotion.config.discountValue || originalPrice;
+                                                            }
+                                                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "flex items-center gap-2 text-xs",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        className: "text-gray-400 line-through",
+                                                                        children: [
+                                                                            "De: ",
+                                                                            formatCurrency(originalPrice)
+                                                                        ]
+                                                                    }, void 0, true, {
+                                                                        fileName: "[project]/app/components/PromocoesSection.tsx",
+                                                                        lineNumber: 423,
+                                                                        columnNumber: 33
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        className: "text-green-400 font-semibold",
+                                                                        children: [
+                                                                            "Por: ",
+                                                                            formatCurrency(finalPrice)
+                                                                        ]
+                                                                    }, void 0, true, {
+                                                                        fileName: "[project]/app/components/PromocoesSection.tsx",
+                                                                        lineNumber: 426,
+                                                                        columnNumber: 33
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
+                                                                        className: "bg-green-900/50 text-green-400 text-xs",
+                                                                        children: [
+                                                                            "-",
+                                                                            promotion.config.discountType === 'percentage' ? `${promotion.config.discountValue}%` : formatCurrency(originalPrice - finalPrice)
+                                                                        ]
+                                                                    }, void 0, true, {
+                                                                        fileName: "[project]/app/components/PromocoesSection.tsx",
+                                                                        lineNumber: 429,
+                                                                        columnNumber: 33
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/app/components/PromocoesSection.tsx",
+                                                                lineNumber: 422,
+                                                                columnNumber: 31
+                                                            }, this);
+                                                        }
+                                                        return null;
+                                                    })()
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/components/PromocoesSection.tsx",
+                                                    lineNumber: 408,
+                                                    columnNumber: 23
+                                                }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                     className: "flex items-center gap-3 mt-1",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                             className: "text-xs text-orange-400 font-medium",
                                                             children: [
-                                                                "Desconto: ",
+                                                                "Desconto Total: ",
                                                                 formatCurrency(discount)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                            lineNumber: 406,
+                                                            lineNumber: 443,
                                                             columnNumber: 23
                                                         }, this),
                                                         promotion.weekdays && promotion.weekdays.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1849,7 +1911,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                                    lineNumber: 411,
+                                                                    lineNumber: 448,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 promotion.weekdays.map((d)=>[
@@ -1864,7 +1926,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                            lineNumber: 410,
+                                                            lineNumber: 447,
                                                             columnNumber: 25
                                                         }, this),
                                                         promotion.start_time && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1874,7 +1936,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                                     className: "h-3 w-3"
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                                    lineNumber: 419,
+                                                                    lineNumber: 456,
                                                                     columnNumber: 27
                                                                 }, this),
                                                                 promotion.start_time,
@@ -1883,13 +1945,13 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                            lineNumber: 418,
+                                                            lineNumber: 455,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                                                    lineNumber: 405,
+                                                    lineNumber: 442,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
@@ -1910,7 +1972,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                         className: "h-4 w-4 animate-spin text-gray-400"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/PromocoesSection.tsx",
-                                        lineNumber: 429,
+                                        lineNumber: 466,
                                         columnNumber: 21
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
                                         checked: isApplied,
@@ -1918,12 +1980,12 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                         className: "data-[state=checked]:bg-orange-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/components/PromocoesSection.tsx",
-                                        lineNumber: 431,
+                                        lineNumber: 468,
                                         columnNumber: 21
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                                    lineNumber: 427,
+                                    lineNumber: 464,
                                     columnNumber: 17
                                 }, this)
                             ]
@@ -1955,7 +2017,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                 children: "Total em Promoções Aplicadas:"
                             }, void 0, false, {
                                 fileName: "[project]/app/components/PromocoesSection.tsx",
-                                lineNumber: 449,
+                                lineNumber: 486,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1966,23 +2028,23 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/components/PromocoesSection.tsx",
-                                lineNumber: 452,
+                                lineNumber: 489,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/components/PromocoesSection.tsx",
-                        lineNumber: 448,
+                        lineNumber: 485,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/components/PromocoesSection.tsx",
-                    lineNumber: 447,
+                    lineNumber: 484,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/components/PromocoesSection.tsx",
-                lineNumber: 446,
+                lineNumber: 483,
                 columnNumber: 9
             }, this)
         ]
