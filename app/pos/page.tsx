@@ -319,13 +319,7 @@ export default function POSPage() {
   const [payments, setPayments] = useState<any[]>([]);
   const [calculatorValue, setCalculatorValue] = useState('');
   const [calculatorDisplay, setCalculatorDisplay] = useState('0');
-  const [paymentMessage, setPaymentMessage] = useState<{
-    text: string;
-    type: 'info' | 'warning' | 'error' | 'success';
-  } | null>(null);
-  const [paymentMessageTimer, setPaymentMessageTimer] = useState<NodeJS.Timeout | null>(null);
   const [activePaymentInput, setActivePaymentInput] = useState<number | null>(null);
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('cash');
   
   // Estados para promoções
   const [appliedPromotions, setAppliedPromotions] = useState<any[]>([]);
@@ -1656,113 +1650,23 @@ export default function POSPage() {
     return Math.max(0, paid - total);
   };
 
-  // Função auxiliar para mostrar mensagem temporária de pagamento
-  const showPaymentMessage = (text: string, type: 'info' | 'warning' | 'error' | 'success' = 'info') => {
-    // Limpar timer anterior se existir
-    if (paymentMessageTimer) {
-      clearTimeout(paymentMessageTimer);
-    }
-    
-    // Definir nova mensagem
-    setPaymentMessage({ text, type });
-    
-    // Criar novo timer para limpar mensagem após 10 segundos
-    const timer = setTimeout(() => {
-      setPaymentMessage(null);
-      setPaymentMessageTimer(null);
-    }, 10000);
-    
-    setPaymentMessageTimer(timer);
-  };
-
-  // Adicionar pagamento com lógica melhorada
+  // Adicionar pagamento
   const addPayment = (payment: any) => {
-    const total = calculateTotalWithDiscount();
     const remaining = calculateRemaining();
-    const alreadyPaid = payments.reduce((sum, p) => sum + p.amount, 0);
-    
-    // Validação básica
-    if (!payment.amount || payment.amount <= 0) {
-      showPaymentMessage("Por favor, insira um valor válido para o pagamento.", 'error');
-      return;
-    }
-    
-    // Se conta já está paga
     if (remaining <= 0) {
-      showPaymentMessage("A conta já está totalmente paga. Não é possível adicionar mais pagamentos.", 'warning');
+      toast.error("Conta já está totalmente paga!");
       return;
     }
     
-    let paymentAmount = payment.amount;
-    let changeAmount = 0;
-    
-    // Lógica específica por método de pagamento
-    if (payment.method === 'cash') {
-      // Dinheiro pode ser maior que o valor restante (troco)
-      if (payment.amount > remaining) {
-        changeAmount = payment.amount - remaining;
-        showPaymentMessage(
-          `Pagamento em dinheiro de ${formatCurrency(payment.amount)}. Troco: ${formatCurrency(changeAmount)}`,
-          'success'
-        );
-      } else if (payment.amount === remaining) {
-        showPaymentMessage(
-          `Pagamento em dinheiro de ${formatCurrency(payment.amount)}. Conta totalmente paga!`,
-          'success'
-        );
-      } else {
-        const stillOwing = remaining - payment.amount;
-        showPaymentMessage(
-          `Pagamento em dinheiro de ${formatCurrency(payment.amount)}. Ainda falta: ${formatCurrency(stillOwing)}`,
-          'info'
-        );
-      }
-    } else {
-      // Para cartão, PIX, etc., limitar ao valor restante
-      if (payment.amount > remaining) {
-        paymentAmount = remaining;
-        const methodName = payment.method === 'credit' ? 'Cartão de Crédito' : 
-                          payment.method === 'debit' ? 'Cartão de Débito' : 
-                          payment.method === 'pix' ? 'PIX' : payment.method;
-        
-        showPaymentMessage(
-          `${methodName}: Valor ajustado para ${formatCurrency(remaining)} (máximo permitido para conta de ${formatCurrency(total)})`,
-          'warning'
-        );
-      } else if (payment.amount === remaining) {
-        const methodName = payment.method === 'credit' ? 'Cartão de Crédito' : 
-                          payment.method === 'debit' ? 'Cartão de Débito' : 
-                          payment.method === 'pix' ? 'PIX' : payment.method;
-        showPaymentMessage(
-          `Pagamento via ${methodName} de ${formatCurrency(payment.amount)}. Conta totalmente paga!`,
-          'success'
-        );
-      } else {
-        const stillOwing = remaining - payment.amount;
-        const methodName = payment.method === 'credit' ? 'Cartão de Crédito' : 
-                          payment.method === 'debit' ? 'Cartão de Débito' : 
-                          payment.method === 'pix' ? 'PIX' : payment.method;
-        showPaymentMessage(
-          `Pagamento via ${methodName} de ${formatCurrency(payment.amount)}. Ainda falta: ${formatCurrency(stillOwing)}`,
-          'info'
-        );
-      }
-    }
-    
-    // Adicionar o pagamento
-    const newPayment = {
+    const paymentAmount = Math.min(payment.amount, remaining);
+    setPayments([...payments, {
       ...payment,
-      id: Date.now().toString(),
-      amount: paymentAmount,
-      change: changeAmount,
-      timestamp: new Date().toISOString()
-    };
+      amount: paymentAmount
+    }]);
     
-    setPayments([...payments, newPayment]);
-    
-    // Limpar a calculadora
-    setCalculatorDisplay('0');
-    setCalculatorValue('');
+    if (calculateRemaining() - paymentAmount <= 0) {
+      toast.success("Pagamento completo!");
+    }
   };
 
   // Remover pagamento
@@ -3672,8 +3576,6 @@ export default function POSPage() {
                   setSplitCount={setSplitCount}
                   calculatorDisplay={calculatorDisplay}
                   setCalculatorDisplay={setCalculatorDisplay}
-                  selectedPaymentMethod={selectedPaymentMethod}
-                  setSelectedPaymentMethod={setSelectedPaymentMethod}
                   payments={payments}
                   addPayment={addPayment}
                   removePayment={removePayment}
@@ -3681,7 +3583,6 @@ export default function POSPage() {
                   reopenTable={reopenTable}
                   selectedTable={selectedTable}
                   loading={loading}
-                  paymentMessage={paymentMessage}
                 />
               </div>
             ) : (
