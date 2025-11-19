@@ -50,6 +50,7 @@ interface MenuItem {
     href: string;
     icon: any;
     badge?: string | number;
+    badgeColor?: string;
   }[];
 }
 
@@ -74,6 +75,7 @@ const menuItems: MenuItem[] = [
     label: 'Impressão',
     icon: Printer,
     submenu: [
+      { label: 'Fila', href: '/admin/printer-queue', icon: Layers, badge: 'Novo', badgeColor: 'orange' },
       { label: 'Impressoras', href: '/admin/printers', icon: Printer },
       { label: 'Templates', href: '/admin/templates', icon: FileText },
       { label: 'Perfils', href: '/admin/print-config', icon: SlidersHorizontal },
@@ -330,7 +332,14 @@ export default function AdminSidebar() {
                             </span>
                           </div>
                           {subItem.badge && (
-                            <Badge className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs px-1.5 py-0">
+                            <Badge 
+                              className={cn(
+                                "text-xs px-1.5 py-0",
+                                subItem.badgeColor === 'orange' 
+                                  ? "bg-orange-500/20 text-orange-600 dark:text-orange-400 border-orange-500/30" 
+                                  : "bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                              )}
+                            >
                               {subItem.badge}
                             </Badge>
                           )}

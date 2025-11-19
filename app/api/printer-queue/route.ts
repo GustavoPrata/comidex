@@ -62,9 +62,14 @@ export async function POST(request: NextRequest) {
       .insert({
         order_item_id: body.order_item_id,
         printer_id: body.printer_id,
+        document_type: body.document_type || 'order',
+        document_data: body.document_data || {},
         priority: body.priority || 'normal',
         copies: body.copies || 1,
-        status: 'pending'
+        status: 'pending',
+        retry_count: body.retry_count || 0,
+        max_retries: body.max_retries || 3,
+        template_id: body.template_id
       })
       .select()
       .single()
