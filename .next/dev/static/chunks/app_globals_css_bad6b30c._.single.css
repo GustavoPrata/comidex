@@ -1840,6 +1840,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-color: hsl(var(--primary));
 }
 
+.border-purple-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(126 34 206 / var(--tw-border-opacity, 1));
+}
+
 .border-red-200 {
   --tw-border-opacity: 1;
   border-color: rgb(254 202 202 / var(--tw-border-opacity, 1));
@@ -2182,6 +2187,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .bg-purple-600 {
   --tw-bg-opacity: 1;
   background-color: rgb(147 51 234 / var(--tw-bg-opacity, 1));
+}
+
+.bg-purple-900\/20 {
+  background-color: #581c8733;
 }
 
 .bg-red-100 {
@@ -3055,6 +3064,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .text-primary-foreground {
   color: hsl(var(--primary-foreground));
+}
+
+.text-purple-300 {
+  --tw-text-opacity: 1;
+  color: rgb(216 180 254 / var(--tw-text-opacity, 1));
 }
 
 .text-purple-400 {

@@ -4406,6 +4406,28 @@ export default function POSPage() {
                     </div>
                   </div>
                   
+                  {/* Seção de Promoções */}
+                  {appliedPromotions.length > 0 && (
+                    <div className="mt-4 space-y-3">
+                      <h3 className="text-sm font-semibold text-gray-400 flex items-center gap-2">
+                        <Gift className="h-4 w-4 text-orange-400" />
+                        Promoções Aplicadas
+                      </h3>
+                      <div className="space-y-2">
+                        {appliedPromotions.map(promo => (
+                          <div key={promo.promotionId} className="bg-purple-900/20 border border-purple-700 rounded-lg p-2">
+                            <div className="flex justify-between items-center">
+                              <span className="text-sm text-purple-300">{promo.promotionName}</span>
+                              <span className="text-sm font-medium text-purple-400">
+                                -{formatCurrency(promo.discount || 0)}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
                 </CardContent>
               </Card>
             ) : (
