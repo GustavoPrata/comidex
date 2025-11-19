@@ -3011,13 +3011,6 @@ export default function POSPage() {
                   </div>
                   <div className="bg-gray-800 rounded-lg px-4 py-2 border border-gray-700">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-gray-300">
-                        Total: {tables.length}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="bg-gray-800 rounded-lg px-4 py-2 border border-gray-700">
-                    <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 text-gray-400" />
                       <span className="text-sm font-bold text-white">
                         {format(currentTime, 'HH:mm')}
