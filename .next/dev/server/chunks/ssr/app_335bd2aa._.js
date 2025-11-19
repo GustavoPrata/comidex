@@ -1701,8 +1701,8 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                 return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$gift$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Gift$3e$__["Gift"];
         }
     };
-    // Check if promotion is recommended (valid today)
-    const isRecommended = (promotion)=>{
+    // Check if promotion is valid today
+    const isValidToday = (promotion)=>{
         const today = new Date();
         const dayOfWeek = today.getDay();
         // Check weekdays
@@ -1751,7 +1751,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
             const Icon = getPromotionIcon(promotion.type);
             const isApplied = appliedPromotions.some((p)=>p.promotionId === promotion.id);
             const discount = isApplied ? appliedPromotions.find((p)=>p.promotionId === promotion.id)?.discount || 0 : calculatePromotionDiscount(promotion);
-            const recommended = isRecommended(promotion);
+            const validToday = isValidToday(promotion);
             return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Card"], {
                 className: `bg-gray-800/50 border-gray-700 transition-all ${isApplied ? 'ring-2 ring-orange-500 bg-orange-900/20' : ''}`,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1790,8 +1790,8 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                         lineNumber: 398,
                                                         columnNumber: 23
                                                     }, this),
-                                                    recommended && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
-                                                        className: "bg-green-600 text-white text-xs px-1 py-0",
+                                                    validToday && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                        className: "bg-green-600 hover:bg-green-600 text-white text-xs px-1 py-0",
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$star$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Star$3e$__["Star"], {
                                                                 className: "h-3 w-3 mr-1"
@@ -1800,7 +1800,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                                 lineNumber: 403,
                                                                 columnNumber: 27
                                                             }, this),
-                                                            "Indicado"
+                                                            "Hoje"
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/components/PromocoesSection.tsx",
@@ -1851,7 +1851,7 @@ function PromocoesSection({ cart, groups, onPromotionToggle, appliedPromotions, 
                                                                     columnNumber: 33
                                                                 }, this),
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
-                                                                    className: "bg-green-900/50 text-green-400 text-xs",
+                                                                    className: "bg-green-900/50 hover:bg-green-900/50 text-green-400 text-xs",
                                                                     children: [
                                                                         "-",
                                                                         promotion.config.discountType === 'percentage' ? `${promotion.config.discountValue}%` : formatCurrency(originalPrice - finalPrice)

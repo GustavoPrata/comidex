@@ -336,8 +336,8 @@ export default function PromocoesSection({
     }
   };
 
-  // Check if promotion is recommended (valid today)
-  const isRecommended = (promotion: Promotion): boolean => {
+  // Check if promotion is valid today
+  const isValidToday = (promotion: Promotion): boolean => {
     const today = new Date();
     const dayOfWeek = today.getDay();
     
@@ -376,7 +376,7 @@ export default function PromocoesSection({
         const discount = isApplied 
           ? appliedPromotions.find(p => p.promotionId === promotion.id)?.discount || 0
           : calculatePromotionDiscount(promotion);
-        const recommended = isRecommended(promotion);
+        const validToday = isValidToday(promotion);
         
         return (
           <Card 
@@ -398,10 +398,10 @@ export default function PromocoesSection({
                       <h4 className="text-sm font-semibold text-white">
                         {promotion.name}
                       </h4>
-                      {recommended && (
-                        <Badge className="bg-green-600 text-white text-xs px-1 py-0">
+                      {validToday && (
+                        <Badge className="bg-green-600 hover:bg-green-600 text-white text-xs px-1 py-0">
                           <Star className="h-3 w-3 mr-1" />
-                          Indicado
+                          Hoje
                         </Badge>
                       )}
                     </div>
@@ -429,7 +429,7 @@ export default function PromocoesSection({
                                 <span className="text-green-400 font-semibold">
                                   Por: {formatCurrency(finalPrice)}
                                 </span>
-                                <Badge className="bg-green-900/50 text-green-400 text-xs">
+                                <Badge className="bg-green-900/50 hover:bg-green-900/50 text-green-400 text-xs">
                                   -{promotion.config.discountType === 'percentage' 
                                     ? `${promotion.config.discountValue}%`
                                     : formatCurrency(originalPrice - finalPrice)}
