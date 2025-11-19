@@ -1201,10 +1201,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-width: 80rem;
 }
 
-.max-w-\[64px\] {
-  max-width: 64px;
-}
-
 .max-w-\[80px\] {
   max-width: 80px;
 }
@@ -2301,10 +2297,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .bg-opacity-10 {
   --tw-bg-opacity: .1;
-}
-
-.bg-opacity-70 {
-  --tw-bg-opacity: .7;
 }
 
 .bg-gradient-to-b {
@@ -4462,10 +4454,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:bg-green-900\/30:is(.dark *) {
   background-color: #14532d4d;
-}
-
-.dark\:bg-green-900\/50:is(.dark *) {
-  background-color: #14532d80;
 }
 
 .dark\:bg-green-950:is(.dark *) {

@@ -597,48 +597,12 @@ export default function PromocoesPage() {
                     </div>
                   )}
 
-                  {/* Free items with images */}
+                  {/* Free items count */}
                   {promotion.type === 'free_item' && promotion.config.freeItems && promotion.config.freeItems.length > 0 && (
                     <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-200 dark:border-green-800">
-                      <p className="text-xs text-green-600 dark:text-green-400 mb-2">Itens grátis</p>
-                      <div className="flex gap-2 flex-wrap">
-                        {promotion.config.freeItems.slice(0, 4).map(itemId => {
-                          const item = items.find(i => i.id === itemId);
-                          if (!item) return null;
-                          
-                          return (
-                            <div key={itemId} className="flex flex-col items-center">
-                              <div className="relative group">
-                                <img 
-                                  src={item.image || '/fotos/placeholder/placeholder.png'}
-                                  alt={item.name}
-                                  className={`w-16 h-16 rounded-lg object-cover border-2 border-white dark:border-gray-800 shadow-sm ${!item.image ? 'opacity-50' : ''}`}
-                                  onError={(e) => {
-                                    const target = e.target as HTMLImageElement;
-                                    target.src = '/fotos/placeholder/placeholder.png';
-                                  }}
-                                />
-                                <div className="absolute inset-0 bg-black bg-opacity-70 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                  <span className="text-white text-xs text-center px-1">{item.name}</span>
-                                </div>
-                              </div>
-                              <span className="text-[10px] text-green-700 dark:text-green-300 mt-0.5 max-w-[64px] truncate">
-                                {item.name}
-                              </span>
-                            </div>
-                          );
-                        })}
-                        {promotion.config.freeItems.length > 4 && (
-                          <div className="flex flex-col items-center">
-                            <div className="w-16 h-16 rounded-lg border-2 border-green-300 dark:border-green-700 flex items-center justify-center bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 font-semibold">
-                              +{promotion.config.freeItems.length - 4}
-                            </div>
-                            <span className="text-[10px] text-green-700 dark:text-green-300 mt-0.5">
-                              mais itens
-                            </span>
-                          </div>
-                        )}
-                      </div>
+                      <p className="text-xs text-green-600 dark:text-green-400">
+                        {promotion.config.freeItems.length} {promotion.config.freeItems.length === 1 ? 'item grátis' : 'itens grátis'}
+                      </p>
                     </div>
                   )}
                   
@@ -690,16 +654,15 @@ export default function PromocoesPage() {
                     </div>
                   )}
 
-                  {/* Validity Period */}
+                  {/* Validity Period - compact */}
                   {(promotion.valid_from || promotion.valid_until) && (
-                    <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-xl border border-yellow-200 dark:border-yellow-800">
-                      <p className="text-xs text-yellow-600 dark:text-yellow-400 mb-2">Período de validade</p>
+                    <div className="bg-yellow-50 dark:bg-yellow-900/20 px-3 py-2 rounded-xl border border-yellow-200 dark:border-yellow-800">
                       <div className="flex items-center gap-2">
-                        <Calendar className="h-4 w-4 text-yellow-500" />
-                        <span className="text-sm font-semibold text-gray-900 dark:text-white">
-                          {promotion.valid_from ? new Date(promotion.valid_from).toLocaleDateString('pt-BR') : 'Início imediato'} 
+                        <Calendar className="h-3.5 w-3.5 text-yellow-500" />
+                        <span className="text-xs text-gray-700 dark:text-gray-300">
+                          {promotion.valid_from ? new Date(promotion.valid_from).toLocaleDateString('pt-BR') : 'Sempre'} 
                           {' - '}
-                          {promotion.valid_until ? new Date(promotion.valid_until).toLocaleDateString('pt-BR') : 'Sem data fim'}
+                          {promotion.valid_until ? new Date(promotion.valid_until).toLocaleDateString('pt-BR') : 'Sempre'}
                         </span>
                       </div>
                     </div>
