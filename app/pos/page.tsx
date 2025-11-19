@@ -221,6 +221,7 @@ export default function POSPage() {
     averageTicket: 0,
     topProducts: []
   });
+  const [currentTime, setCurrentTime] = useState(new Date());
   
   // Estado da mesa/sessão atual
   const [selectedTable, setSelectedTable] = useState<RestaurantTable | null>(null);
@@ -259,6 +260,15 @@ export default function POSPage() {
   
   
   // Removidas funções de scroll automático - os itens mais recentes aparecem em cima
+  
+  // Atualizar horário a cada minuto
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // Atualiza a cada 60 segundos
+
+    return () => clearInterval(timer);
+  }, []);
   
   // Buscar a taxa de serviço do restaurante
   useEffect(() => {
@@ -2981,25 +2991,41 @@ export default function POSPage() {
               </div>
               
               <div className="flex gap-2 items-center">
-                {/* Estatísticas Compactas */}
-                <div className="flex gap-2 mr-4">
-                  <Badge className="bg-blue-600/20 text-blue-400 border-blue-600/30 px-3 py-1">
-                    <User className="h-3 w-3 mr-1" />
-                    {tables.filter(t => t.current_session).length} Abertas
-                  </Badge>
-                  <Badge className="bg-green-600/20 text-green-400 border-green-600/30 px-3 py-1">
-                    <CheckCircle2 className="h-3 w-3 mr-1" />
-                    {tables.filter(t => !t.current_session).length} Livres
-                  </Badge>
-                  <Badge className="bg-orange-600/20 text-orange-400 border-orange-600/30 px-3 py-1">
-                    <UtensilsCrossed className="h-3 w-3 mr-1" />
-                    {tables.length} Total
-                  </Badge>
-                  <Badge className="bg-pink-600/20 text-pink-400 border-pink-600/30 px-3 py-1">
-                    <Clock className="h-3 w-3 mr-1" />
-                    {format(new Date(), 'HH:mm')}
-                  </Badge>
+                {/* Estatísticas Compactas - Design Minimalista */}
+                <div className="flex gap-3">
+                  <div className="bg-gray-800 rounded-lg px-4 py-2 border border-gray-700">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
+                      <span className="text-sm font-medium text-gray-300">
+                        {tables.filter(t => t.current_session).length} Abertas
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-gray-800 rounded-lg px-4 py-2 border border-gray-700">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                      <span className="text-sm font-medium text-gray-300">
+                        {tables.filter(t => !t.current_session).length} Livres
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-gray-800 rounded-lg px-4 py-2 border border-gray-700">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-300">
+                        Total: {tables.length}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-gray-800 rounded-lg px-4 py-2 border border-gray-700">
+                    <div className="flex items-center gap-2">
+                      <Clock className="h-4 w-4 text-gray-400" />
+                      <span className="text-sm font-bold text-white">
+                        {format(currentTime, 'HH:mm')}
+                      </span>
+                    </div>
+                  </div>
                 </div>
+                <div className="h-8 w-px bg-gray-700 mx-2"></div>
                 <Button
                   onClick={() => setScreen('history')}
                   className="bg-gray-800 hover:bg-gray-700 h-9"
