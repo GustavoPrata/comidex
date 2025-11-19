@@ -3012,11 +3012,20 @@ export default function POSPage() {
                               (e.target as HTMLInputElement).value = '';
                             } else {
                               toast.error(`Mesa ${tableNumber} não encontrada`);
+                              (e.target as HTMLInputElement).value = '';
+                              setTimeout(() => (e.target as HTMLInputElement).focus(), 100);
                             }
                           }
                         }
                       }}
+                      onBlur={(e) => {
+                        // Manter o foco sempre no input quando estiver na tela de mesas
+                        if (screen === 'tables') {
+                          setTimeout(() => (e.target as HTMLInputElement).focus(), 50);
+                        }
+                      }}
                       autoComplete="off"
+                      autoFocus
                     />
                   </div>
                 </div>
