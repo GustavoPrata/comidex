@@ -428,20 +428,7 @@ async function GET(request) {
         const { searchParams } = new URL(request.url);
         const printerId = searchParams.get('printer_id');
         const status = searchParams.get('status');
-        let query = supabase.from('printer_queue').select(`
-        *,
-        printers (name, location),
-        order_items (
-          quantity,
-          notes,
-          items (name, description)
-        ),
-        orders (
-          table_sessions (
-            restaurant_tables (name, number)
-          )
-        )
-      `).order('priority', {
+        let query = supabase.from('printer_queue').select('*').order('priority', {
             ascending: false
         }).order('created_at');
         if (printerId) {

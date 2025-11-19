@@ -10,20 +10,7 @@ export async function GET(request: NextRequest) {
     
     let query = supabase
       .from('printer_queue')
-      .select(`
-        *,
-        printers (name, location),
-        order_items (
-          quantity,
-          notes,
-          items (name, description)
-        ),
-        orders (
-          table_sessions (
-            restaurant_tables (name, number)
-          )
-        )
-      `)
+      .select('*')
       .order('priority', { ascending: false })
       .order('created_at')
     

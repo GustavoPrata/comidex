@@ -58,9 +58,7 @@ const menuItems: MenuItem[] = [
   {
     label: 'Dashboard',
     icon: BarChart3,
-    href: '/admin',
-    badge: 'Novo',
-    badgeColor: 'orange'
+    href: '/admin'
   },
   {
     label: 'Cardápio',
@@ -75,7 +73,7 @@ const menuItems: MenuItem[] = [
     label: 'Impressão',
     icon: Printer,
     submenu: [
-      { label: 'Fila', href: '/admin/printer-queue', icon: Layers, badge: 'Novo', badgeColor: 'orange' },
+      { label: 'Fila', href: '/admin/printer-queue', icon: Layers },
       { label: 'Impressoras', href: '/admin/printers', icon: Printer },
       { label: 'Templates', href: '/admin/templates', icon: FileText },
       { label: 'Perfils', href: '/admin/print-config', icon: SlidersHorizontal },

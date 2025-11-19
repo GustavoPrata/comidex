@@ -1,6 +1,4 @@
 {
-  "/admin/notifications/page": "app/admin/notifications/page.js",
-  "/admin/page": "app/admin/page.js",
   "/admin/printer-queue/page": "app/admin/printer-queue/page.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/printer-queue/route": "app/api/printer-queue/route.js",

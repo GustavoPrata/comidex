@@ -55,11 +55,6 @@ interface PrintJob {
   error_message?: string;
   created_at: string;
   printed_at?: string;
-  printers?: {
-    name: string;
-    location: string;
-    status: 'online' | 'offline' | 'error';
-  };
   order_items?: any;
   orders?: any;
 }
@@ -129,14 +124,35 @@ export default function PrinterQueuePage() {
 
       const response = await fetch(`/api/printer-queue?${params}`);
       const data = await response.json();
-      setJobs(data || []);
-
-      // Calcular estatísticas
-      const newStats = calculateStats(data || []);
-      setStats(newStats);
+      
+      // Verificar se retornou um erro ou um array
+      if (Array.isArray(data)) {
+        setJobs(data);
+        // Calcular estatísticas
+        const newStats = calculateStats(data);
+        setStats(newStats);
+      } else {
+        // Se não for array, setar array vazio
+        setJobs([]);
+        setStats({
+          total: 0,
+          pending: 0,
+          printing: 0,
+          printed: 0,
+          failed: 0,
+          cancelled: 0,
+          avgWaitTime: 0,
+          successRate: 0
+        });
+        
+        if (data.error) {
+          console.error('Erro da API:', data.error);
+        }
+      }
     } catch (error) {
       console.error('Erro ao carregar fila:', error);
       toast.error('Erro ao carregar fila de impressão');
+      setJobs([]);
     }
   }, [selectedPrinter, selectedStatus]);
 
@@ -330,11 +346,12 @@ export default function PrinterQueuePage() {
     // Filtro de busca
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
+      const printer = printers.find(p => p.id === job.printer_id);
       const matchesSearch = 
         job.id.toString().includes(search) ||
         job.document_type.includes(search) ||
-        job.printers?.name.toLowerCase().includes(search) ||
-        job.printers?.location.toLowerCase().includes(search);
+        printer?.name.toLowerCase().includes(search) ||
+        printer?.location.toLowerCase().includes(search);
       
       if (!matchesSearch) return false;
     }
@@ -454,7 +471,7 @@ export default function PrinterQueuePage() {
           <div className="flex items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <Printer className="h-3 w-3" />
-              {job.printers?.name || 'Impressora desconhecida'}
+              {printers.find(p => p.id === job.printer_id)?.name || `Impressora #${job.printer_id}`}
             </div>
             <div>
               {new Date(job.created_at).toLocaleString('pt-BR')}
