@@ -147,9 +147,9 @@ CREATE TABLE IF NOT EXISTS printers (
 
 -- Fila de impressão
 CREATE TABLE IF NOT EXISTS printer_queue (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  order_item_id UUID REFERENCES order_items(id) ON DELETE CASCADE,
-  printer_id UUID REFERENCES printers(id) ON DELETE SET NULL,
+  id SERIAL PRIMARY KEY,
+  order_item_id INTEGER REFERENCES order_items(id) ON DELETE CASCADE,
+  printer_id INTEGER REFERENCES printers(id) ON DELETE SET NULL,
   priority VARCHAR(50) DEFAULT 'normal' CHECK (priority IN ('low', 'normal', 'high', 'urgent')),
   copies INTEGER DEFAULT 1,
   status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'printing', 'printed', 'error')),

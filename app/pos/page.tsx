@@ -770,7 +770,7 @@ export default function POSPage() {
           )
         `)
         .eq('table_id', tableId)
-        .eq('status', 'open') // Buscar apenas orders abertos
+        .in('status', ['pending', 'confirmed', 'preparing']) // Buscar orders ativos (não finalizados)
         .single();
 
       if (!error && orderData) {
@@ -2048,9 +2048,12 @@ export default function POSPage() {
         // Atualizar orderId para usar no mapeamento
         orderId = newOrder.id;
         
-        // Atualizar currentOrder se for um novo pedido
-        if (!currentOrder || currentOrder.id !== newOrder.id) {
-          setCurrentOrder(newOrder);
+        // Sempre atualizar currentOrder com os dados mais recentes
+        setCurrentOrder(newOrder);
+        
+        // Recarregar detalhes da sessão para garantir sincronização completa
+        if (selectedTable) {
+          setTimeout(() => loadSessionDetails(selectedTable.id), 500);
         }
 
         // Para compatibilidade, criar array de items como se viesse do Supabase

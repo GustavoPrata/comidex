@@ -407,7 +407,7 @@ async function createClient() {
     }
 }
 }),
-"[project]/app/api/printer-queue/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"[project]/app/api/orders/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
@@ -426,30 +426,34 @@ async function GET(request) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const { searchParams } = new URL(request.url);
-        const printerId = searchParams.get('printer_id');
+        const sessionId = searchParams.get('session_id');
         const status = searchParams.get('status');
-        let query = supabase.from('printer_queue').select('*').order('priority', {
+        let query = supabase.from('orders').select(`
+        *,
+        order_items (
+          *,
+          items (name, description)
+        ),
+        table_sessions (
+          table_id,
+          restaurant_tables (name, number)
+        )
+      `).order('created_at', {
             ascending: false
-        }).order('created_at');
-        if (printerId) {
-            query = query.eq('printer_id', printerId);
+        });
+        if (sessionId) {
+            query = query.eq('session_id', sessionId);
         }
         if (status) {
             query = query.eq('status', status);
-        } else {
-            // Default to pending items
-            query = query.in('status', [
-                'pending',
-                'printing'
-            ]);
         }
         const { data, error } = await query;
         if (error) throw error;
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data || []);
     } catch (error) {
-        console.error('Error fetching printer queue:', error);
+        console.error('Error fetching orders:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: 'Failed to fetch printer queue'
+            error: 'Failed to fetch orders'
         }, {
             status: 500
         });
@@ -459,21 +463,47 @@ async function POST(request) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const body = await request.json();
-        const { data, error } = await supabase.from('printer_queue').insert({
-            order_item_id: body.order_item_id,
-            printer_id: body.printer_id,
-            priority: body.priority || 'normal',
-            copies: body.copies || 1,
-            status: 'pending'
+        // Buscar table_id da sessão
+        let tableId = body.table_id;
+        if (!tableId && body.session_id) {
+            const { data: session } = await supabase.from('table_sessions').select('table_id').eq('id', body.session_id).single();
+            tableId = session?.table_id;
+        }
+        // Gerar número do pedido (baseado em timestamp para ser único)
+        const orderNumber = Date.now().toString();
+        // Create order
+        const { data: order, error: orderError } = await supabase.from('orders').insert({
+            order_number: orderNumber,
+            table_id: tableId,
+            total: body.total,
+            status: 'pending',
+            notes: body.notes
         }).select().single();
-        if (error) throw error;
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data, {
+        if (orderError) throw orderError;
+        // Create order items
+        if (body.items && body.items.length > 0) {
+            const orderItems = body.items.map((item)=>({
+                    order_id: order.id,
+                    item_id: item.item_id,
+                    quantity: item.quantity,
+                    unit_price: item.unit_price,
+                    total_price: item.total_price,
+                    notes: item.notes,
+                    status: 'pending'
+                }));
+            const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
+            if (itemsError) throw itemsError;
+            // TODO: Adicionar items à fila de impressão após resolver incompatibilidade de tipos (UUID vs Integer)
+            // Por enquanto, apenas logar que o pedido foi criado
+            console.log('Pedido criado com sucesso:', order.id, 'Total de itens:', orderItems.length);
+        }
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(order, {
             status: 201
         });
     } catch (error) {
-        console.error('Error creating print job:', error);
+        console.error('Error creating order:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: 'Failed to create print job'
+            error: 'Failed to create order'
         }, {
             status: 500
         });
@@ -483,25 +513,22 @@ async function PATCH(request) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const { searchParams } = new URL(request.url);
-        const jobId = searchParams.get('id');
+        const orderId = searchParams.get('id');
         const body = await request.json();
-        if (!jobId) {
+        if (!orderId) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                error: 'Job ID is required'
+                error: 'Order ID is required'
             }, {
                 status: 400
             });
         }
-        const { data, error } = await supabase.from('printer_queue').update({
-            status: body.status,
-            printed_at: body.status === 'printed' ? new Date().toISOString() : null
-        }).eq('id', jobId).select().single();
+        const { data, error } = await supabase.from('orders').update(body).eq('id', orderId).select().single();
         if (error) throw error;
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data);
     } catch (error) {
-        console.error('Error updating print job:', error);
+        console.error('Error updating order:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            error: 'Failed to update print job'
+            error: 'Failed to update order'
         }, {
             status: 500
         });
@@ -510,4 +537,4 @@ async function PATCH(request) {
 }),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__c7832615._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__021bf166._.js.map

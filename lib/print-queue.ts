@@ -53,14 +53,9 @@ export async function addPrintJob(params: AddPrintJobParams) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         printer_id: printerId,
-        document_type: params.document_type,
-        document_data: params.document_data,
+        order_item_id: params.document_data.order_item_id, // Referência ao item do pedido
         priority: params.priority || 'normal',
-        copies: params.copies || 1,
-        template_id: params.template_id,
-        status: 'pending',
-        retry_count: 0,
-        max_retries: 3
+        copies: params.copies || 1
       })
     });
 
