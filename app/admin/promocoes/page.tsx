@@ -636,9 +636,9 @@ export default function PromocoesPage() {
 
       {/* Create/Edit Modal */}
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">
               {editingPromotion ? 'Editar Promoção' : 'Nova Promoção'}
             </DialogTitle>
           </DialogHeader>
@@ -647,23 +647,24 @@ export default function PromocoesPage() {
             {/* Basic Info */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Nome *</Label>
+                <Label className="text-gray-700 dark:text-gray-300">Nome *</Label>
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Ex: Refri Grátis às Segundas"
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                 />
               </div>
               <div>
-                <Label>Tipo de Promoção</Label>
+                <Label className="text-gray-700 dark:text-gray-300">Tipo de Promoção</Label>
                 <Select 
                   value={formData.type}
                   onValueChange={(value: PromotionType) => setFormData({ ...formData, type: value })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                     {promotionTypes.map(type => (
                       <SelectItem key={type.value} value={type.value}>
                         {type.label}
@@ -677,11 +678,11 @@ export default function PromocoesPage() {
             {/* Type-specific configuration */}
             {formData.type === 'free_item' && (
               <div>
-                <Label>Itens Grátis</Label>
+                <Label className="text-gray-700 dark:text-gray-300">Itens Grátis</Label>
                 <Button
                   type="button"
                   variant="outline"
-                  className="w-full mt-2 justify-start"
+                  className="w-full mt-2 justify-start dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700 dark:hover:bg-gray-700"
                   onClick={() => setIsItemSelectorOpen(true)}
                 >
                   <Package className="mr-2 h-4 w-4" />
@@ -715,7 +716,7 @@ export default function PromocoesPage() {
             {formData.type === 'group_discount' && (
               <div className="space-y-4">
                 <div>
-                  <Label>Grupo de Rodízio</Label>
+                  <Label className="text-gray-700 dark:text-gray-300">Grupo de Rodízio</Label>
                   <Select 
                     value={formData.config.groupId?.toString() || ''}
                     onValueChange={(value) => setFormData({ 
@@ -723,10 +724,10 @@ export default function PromocoesPage() {
                       config: { ...formData.config, groupId: parseInt(value) } 
                     })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700">
                       <SelectValue placeholder="Selecione o rodízio" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                       {rodizioGroups.map(group => (
                         <SelectItem key={group.id} value={group.id.toString()}>
                           {group.name} - R$ {group.price?.toFixed(2) || '0.00'}
@@ -738,7 +739,7 @@ export default function PromocoesPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label>Tipo de Desconto</Label>
+                    <Label className="text-gray-700 dark:text-gray-300">Tipo de Desconto</Label>
                     <Select
                       value={formData.config.discountType || 'percentage'}
                       onValueChange={(value) => setFormData({
@@ -746,10 +747,10 @@ export default function PromocoesPage() {
                         config: { ...formData.config, discountType: value as 'percentage' | 'fixed' }
                       })}
                     >
-                      <SelectTrigger>
+                      <SelectTrigger className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                         <SelectItem value="percentage">Porcentagem</SelectItem>
                         <SelectItem value="fixed">Valor Fixo</SelectItem>
                       </SelectContent>
@@ -757,7 +758,7 @@ export default function PromocoesPage() {
                   </div>
 
                   <div>
-                    <Label>
+                    <Label className="text-gray-700 dark:text-gray-300">
                       {formData.config.discountType === 'percentage' ? 'Desconto (%)' : 'Valor (R$)'}
                     </Label>
                     <Input
@@ -768,14 +769,15 @@ export default function PromocoesPage() {
                         config: { ...formData.config, discountValue: parseFloat(e.target.value) || 0 }
                       })}
                       placeholder={formData.config.discountType === 'percentage' ? '20' : '50.00'}
+                      className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                     />
                   </div>
                 </div>
 
                 {/* Show price preview */}
                 {formData.config.groupId && (
-                  <div className="p-3 bg-gray-50 rounded-lg">
-                    <Label>Prévia do Desconto</Label>
+                  <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <Label className="text-gray-700 dark:text-gray-300">Prévia do Desconto</Label>
                     {(() => {
                       const group = rodizioGroups.find(g => g.id === formData.config.groupId);
                       if (group && group.price) {
@@ -791,14 +793,14 @@ export default function PromocoesPage() {
                         return (
                           <div className="mt-2">
                             <div className="flex items-center gap-3">
-                              <span className="text-gray-500 line-through">
+                              <span className="text-gray-500 dark:text-gray-400 line-through">
                                 De: R$ {originalPrice.toFixed(2)}
                               </span>
-                              <span className="text-green-600 font-semibold text-lg">
+                              <span className="text-green-600 dark:text-green-400 font-semibold text-lg">
                                 Por: R$ {finalPrice.toFixed(2)}
                               </span>
                             </div>
-                            <p className="text-sm text-muted-foreground mt-1">
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                               Economia de R$ {(originalPrice - finalPrice).toFixed(2)} 
                               ({((originalPrice - finalPrice) / originalPrice * 100).toFixed(1)}%)
                             </p>
@@ -819,10 +821,10 @@ export default function PromocoesPage() {
                       config: { ...formData.config, targetGender: value as 'all' | 'male' | 'female' }
                     })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                       <SelectItem value="all">Todos</SelectItem>
                       <SelectItem value="male">Apenas Homens</SelectItem>
                       <SelectItem value="female">Apenas Mulheres</SelectItem>
@@ -1010,12 +1012,13 @@ export default function PromocoesPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label>Prioridade</Label>
+                <Label className="text-gray-700 dark:text-gray-300">Prioridade</Label>
                 <Input
                   type="number"
                   value={formData.priority}
                   onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
                   min="0"
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                 />
               </div>
               <div className="flex items-end">
@@ -1044,24 +1047,24 @@ export default function PromocoesPage() {
 
       {/* Item Selector Modal */}
       <Dialog open={isItemSelectorOpen} onOpenChange={setIsItemSelectorOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
           <DialogHeader>
-            <DialogTitle>Selecionar Itens</DialogTitle>
+            <DialogTitle className="text-gray-900 dark:text-gray-100">Selecionar Itens</DialogTitle>
           </DialogHeader>
 
           <div className="flex-1 overflow-hidden flex flex-col">
             {/* Filters */}
             <div className="grid grid-cols-3 gap-4 mb-4">
               <div>
-                <Label>Grupo</Label>
+                <Label className="text-gray-700 dark:text-gray-300">Grupo</Label>
                 <Select 
                   value={selectedGroup?.toString() || 'all'}
                   onValueChange={(value) => setSelectedGroup(value === 'all' ? null : parseInt(value))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700">
                     <SelectValue placeholder="Todos os grupos" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                     <SelectItem value="all">Todos os grupos</SelectItem>
                     {groups.map(group => (
                       <SelectItem key={group.id} value={group.id.toString()}>
@@ -1073,15 +1076,15 @@ export default function PromocoesPage() {
               </div>
 
               <div>
-                <Label>Categoria</Label>
+                <Label className="text-gray-700 dark:text-gray-300">Categoria</Label>
                 <Select 
                   value={selectedCategory?.toString() || 'all'}
                   onValueChange={(value) => setSelectedCategory(value === 'all' ? null : parseInt(value))}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700">
                     <SelectValue placeholder="Todas as categorias" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
                     <SelectItem value="all">Todas as categorias</SelectItem>
                     {categories.map(category => (
                       <SelectItem key={category.id} value={category.id.toString()}>
@@ -1093,11 +1096,12 @@ export default function PromocoesPage() {
               </div>
 
               <div>
-                <Label>Buscar</Label>
+                <Label className="text-gray-700 dark:text-gray-300">Buscar</Label>
                 <Input
                   placeholder="Nome do item..."
                   value={itemSearch}
                   onChange={(e) => setItemSearch(e.target.value)}
+                  className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-700"
                 />
               </div>
             </div>
@@ -1110,8 +1114,8 @@ export default function PromocoesPage() {
                     key={item.id}
                     className={`p-3 rounded-lg border transition-all hover:shadow-md ${
                       selectedItems.includes(item.id) 
-                        ? 'border-orange-500 bg-orange-50' 
-                        : 'border-gray-200 hover:border-orange-300'
+                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-950/20 dark:border-orange-600' 
+                        : 'border-gray-200 dark:border-gray-700 hover:border-orange-300 dark:hover:border-orange-600 bg-white dark:bg-gray-800'
                     }`}
                     onClick={() => toggleItemSelection(item.id)}
                   >
@@ -1123,8 +1127,8 @@ export default function PromocoesPage() {
                           className="w-full h-20 object-cover rounded mb-2"
                         />
                       ) : (
-                        <div className="w-full h-20 bg-gray-100 rounded mb-2 flex items-center justify-center">
-                          <ImageIcon className="h-8 w-8 text-gray-400" />
+                        <div className="w-full h-20 bg-gray-100 dark:bg-gray-700 rounded mb-2 flex items-center justify-center">
+                          <ImageIcon className="h-8 w-8 text-gray-400 dark:text-gray-500" />
                         </div>
                       )}
                       {selectedItems.includes(item.id) && (
@@ -1133,8 +1137,8 @@ export default function PromocoesPage() {
                         </div>
                       )}
                     </div>
-                    <p className="font-medium text-sm text-left line-clamp-2">{item.name}</p>
-                    <p className="text-xs text-muted-foreground text-left">
+                    <p className="font-medium text-sm text-left line-clamp-2 text-gray-900 dark:text-gray-100">{item.name}</p>
+                    <p className="text-xs text-gray-600 dark:text-gray-400 text-left">
                       R$ {item.price?.toFixed(2) || '0.00'}
                     </p>
                   </button>
@@ -1144,7 +1148,7 @@ export default function PromocoesPage() {
 
             {/* Selected count */}
             <div className="mt-4 flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-gray-600 dark:text-gray-400">
                 {selectedItems.length} {selectedItems.length === 1 ? 'item selecionado' : 'itens selecionados'}
               </span>
               <div className="flex gap-2">
