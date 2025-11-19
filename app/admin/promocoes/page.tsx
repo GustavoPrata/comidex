@@ -573,38 +573,6 @@ export default function PromocoesPage() {
                     </div>
                   )}
 
-                  {/* Item Info for item_discount */}
-                  {promotion.type === 'item_discount' && promotion.item_id && (
-                    <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-xl border border-blue-200 dark:border-blue-800">
-                      <p className="text-xs text-blue-600 dark:text-blue-400 mb-1">Item da promoção</p>
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                        {items.find(item => item.id === promotion.item_id)?.name || 'Item não encontrado'}
-                      </p>
-                    </div>
-                  )}
-                  
-                  {/* Groups for group_discount */}
-                  {promotion.type === 'group_discount' && promotion.item_groups && promotion.item_groups.length > 0 && (
-                    <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-xl border border-purple-200 dark:border-purple-800">
-                      <p className="text-xs text-purple-600 dark:text-purple-400 mb-2">Grupos aplicados</p>
-                      <div className="flex flex-wrap gap-1">
-                        {promotion.item_groups.map((group, idx) => (
-                          <span key={idx} className="px-2 py-1 bg-white dark:bg-gray-800 rounded-lg text-xs font-medium text-purple-700 dark:text-purple-300">
-                            {group}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Free items count */}
-                  {promotion.type === 'free_item' && promotion.config.freeItems && promotion.config.freeItems.length > 0 && (
-                    <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-xl border border-green-200 dark:border-green-800">
-                      <p className="text-xs text-green-600 dark:text-green-400">
-                        {promotion.config.freeItems.length} {promotion.config.freeItems.length === 1 ? 'item grátis' : 'itens grátis'}
-                      </p>
-                    </div>
-                  )}
                   
                   {/* Happy Hour times */}
                   {promotion.type === 'happy_hour' && promotion.conditions?.happy_hour_start && (
