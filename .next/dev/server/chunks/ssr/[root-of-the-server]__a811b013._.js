@@ -19,7 +19,7 @@ __turbopack_context__.n(__turbopack_context__.i("[project]/app/admin/loading.tsx
 }),
 "[project]/app/admin/printer-queue/page.tsx [app-rsc] (ecmascript)", ((__turbopack_context__, module, exports) => {
 
-const e = new Error("Could not parse module '[project]/app/admin/printer-queue/page.tsx'\n\nUnterminated regexp literal");
+const e = new Error("Could not parse module '[project]/app/admin/printer-queue/page.tsx'\n\nExpression expected");
 e.code = 'MODULE_UNPARSABLE';
 throw e;
 }),

@@ -1,0 +1,159 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@supabase/supabase-js';
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
+
+// Default templates
+const defaultTemplates: any = {
+  receipt: {
+    header: `{{company_name}}
+{{company_address}}
+Tel: {{company_phone}}
+--------------------------------
+       CUPOM FISCAL
+--------------------------------
+Data: {{date}}  Hora: {{time}}
+Pedido: #{{order_number}}
+Mesa: {{table_number}}
+--------------------------------`,
+    items: `QTD  DESCRIÇÃO         VALOR
+--------------------------------
+{{#each items}}
+{{quantity}}x   {{name}}
+                    R$ {{price}}
+{{/each}}`,
+    footer: `--------------------------------
+Subtotal:         R$ {{subtotal}}
+Desconto:         R$ {{discount}}
+--------------------------------
+TOTAL:            R$ {{total}}
+--------------------------------
+Pagamento: {{payment_method}}
+--------------------------------
+    Obrigado pela preferência!
+        Volte sempre!
+--------------------------------`
+  },
+  kitchen: {
+    header: `================================
+       PEDIDO COZINHA
+================================
+Mesa: {{table_number}}
+Pedido: #{{order_number}}
+Hora: {{time}}
+================================`,
+    items: `{{#each items}}
+{{quantity}}x {{name}}
+   {{#if observation}}
+   OBS: {{observation}}
+   {{/if}}
+--------------------------------
+{{/each}}`,
+    footer: `================================
+Atendente: {{customer_name}}
+================================`
+  },
+  bill: {
+    header: `{{company_name}}
+--------------------------------
+           CONTA
+--------------------------------
+Mesa: {{table_number}}
+Cliente: {{customer_name}}
+Data: {{date}}  Hora: {{time}}
+--------------------------------`,
+    items: `ITEM                     VALOR
+--------------------------------
+{{#each items}}
+{{quantity}}x {{name}}
+                    R$ {{price}}
+{{/each}}`,
+    footer: `--------------------------------
+SUBTOTAL:         R$ {{subtotal}}
+TAXA SERVIÇO:     R$ {{service_fee}}
+--------------------------------
+TOTAL A PAGAR:    R$ {{total}}
+--------------------------------
+        Obrigado!`
+  },
+  order: {
+    header: `================================
+         PEDIDO MESA
+================================
+Mesa: {{table_number}}
+Atendente: {{customer_name}}
+Pedido: #{{order_number}}
+--------------------------------`,
+    items: `{{#each items}}
+[ ] {{quantity}}x {{name}}
+    {{#if observation}}
+    OBS: {{observation}}
+    {{/if}}
+{{/each}}`,
+    footer: `--------------------------------
+Hora: {{time}}
+================================`
+  }
+};
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { type: string } }
+) {
+  console.log('✅ Getting template for type:', params.type);
+
+  try {
+    // Para itens de pedido, usar template kitchen
+    let templateType = params.type;
+    if (templateType === 'order' || templateType === 'items') {
+      templateType = 'kitchen';
+    }
+
+    // Buscar template do banco
+    const { data, error } = await supabase
+      .from('print_templates')
+      .select('*')
+      .eq('template_type', templateType)
+      .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+      console.error('Error fetching template:', error);
+      // Se houver erro, retornar template padrão
+      return NextResponse.json({
+        template: defaultTemplates[templateType] || defaultTemplates.kitchen,
+        isDefault: true
+      });
+    }
+
+    // Se encontrou template customizado
+    if (data) {
+      const template = {
+        header: data.custom_header || defaultTemplates[templateType]?.header || '',
+        items: data.items_content || defaultTemplates[templateType]?.items || '',
+        footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
+      };
+      
+      return NextResponse.json({
+        template,
+        isDefault: false
+      });
+    }
+
+    // Se não encontrou, retornar template padrão
+    return NextResponse.json({
+      template: defaultTemplates[templateType] || defaultTemplates.kitchen,
+      isDefault: true
+    });
+
+  } catch (error) {
+    console.error('Error in template route:', error);
+    // Em caso de erro, retornar template padrão
+    return NextResponse.json({
+      template: defaultTemplates.kitchen,
+      isDefault: true
+    });
+  }
+}

@@ -47,6 +47,7 @@ import {
   X,
   Package,
   ShoppingBag,
+  Loader2,
   Hash,
   CalendarDays,
   User,
@@ -122,6 +123,8 @@ export default function PrinterQueuePage() {
   const [clearQueueDialog, setClearQueueDialog] = useState(false);
   const [previewJob, setPreviewJob] = useState<PrintJob | null>(null);
   const [showPrintPreview, setShowPrintPreview] = useState(false);
+  const [printTemplate, setPrintTemplate] = useState<any>(null);
+  const [loadingTemplate, setLoadingTemplate] = useState(false);
 
   // Carregar dados da fila
   const loadQueue = useCallback(async () => {
@@ -641,9 +644,24 @@ export default function PrinterQueuePage() {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => {
+                onClick={async () => {
                   setPreviewJob(job);
-                  setShowPrintPreview(true);
+                  setLoadingTemplate(true);
+                  
+                  // Buscar template apropriado
+                  try {
+                    const templateType = job.document_type === 'order' ? 'kitchen' : job.document_type;
+                    const response = await fetch(`/api/templates/${templateType}`);
+                    if (response.ok) {
+                      const data = await response.json();
+                      setPrintTemplate(data.template);
+                    }
+                  } catch (error) {
+                    console.error('Erro ao buscar template:', error);
+                  } finally {
+                    setLoadingTemplate(false);
+                    setShowPrintPreview(true);
+                  }
                 }}
                 className="h-8 px-2 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/20"
                 title="Ver Impressão"
@@ -1123,8 +1141,117 @@ export default function PrinterQueuePage() {
             </AlertDialogTitle>
           </AlertDialogHeader>
           
-          <div className="mt-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 font-mono text-xs leading-5" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-            {previewJob && (() => {
+          <div className="mt-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 font-mono text-xs leading-5 whitespace-pre-wrap" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            {loadingTemplate ? (
+              <div className="text-center py-8">
+                <Loader2 className="h-8 w-8 animate-spin text-orange-500 mx-auto mb-2" />
+                <p className="text-sm text-gray-500">Carregando template...</p>
+              </div>
+            ) : previewJob && printTemplate ? (() => {
+              // Função para aplicar as variáveis do template
+              const applyTemplate = (template: string, data: any) => {
+                let result = template;
+                
+                // Substituir variáveis simples
+                Object.keys(data).forEach(key => {
+                  const regex = new RegExp(`{{${key}}}`, 'g');
+                  result = result.replace(regex, data[key] || '');
+                });
+                
+                // Processar loops {{#each items}}
+                const eachRegex = /{{#each items}}([\s\S]*?){{\/each}}/g;
+                result = result.replace(eachRegex, (match, itemTemplate) => {
+                  return data.items?.map((item: any) => {
+                    let itemResult = itemTemplate;
+                    
+                    // Substituir variáveis do item
+                    Object.keys(item).forEach(key => {
+                      const itemRegex = new RegExp(`{{${key}}}`, 'g');
+                      itemResult = itemResult.replace(itemRegex, item[key] || '');
+                    });
+                    
+                    // Processar condicionais {{#if observation}}
+                    const ifRegex = /{{#if (\w+)}}([\s\S]*?){{\/if}}/g;
+                    itemResult = itemResult.replace(ifRegex, (match: string, field: string, content: string) => {
+                      return item[field] ? content : '';
+                    });
+                    
+                    return itemResult.trim();
+                  }).join('\n') || '';
+                });
+                
+                return result;
+              };
+              
+              // Preparar dados do pedido
+              const getItemsInfo = () => {
+                if (previewJob.order_items) {
+                  const orderItem = previewJob.order_items;
+                  const item = orderItem.items;
+                  if (item) {
+                    return [{
+                      name: item.name || 'Item sem nome',
+                      quantity: orderItem.quantity || 1,
+                      price: item.price === 0 ? 'Incluso' : (item.price * (orderItem.quantity || 1)).toFixed(2),
+                      observation: orderItem.notes || '',
+                      tableId: orderItem.orders?.table_id || null
+                    }];
+                  }
+                }
+                if (previewJob.document_type === 'order' && previewJob.document_data) {
+                  const items = previewJob.document_data.items || [];
+                  return items.map((item: any) => ({
+                    name: item.name || item.item_name || 'Item',
+                    quantity: item.quantity || 1,
+                    price: item.price === 0 ? 'Incluso' : (item.price * (item.quantity || 1)).toFixed(2),
+                    observation: item.notes || '',
+                    tableId: null
+                  }));
+                }
+                return [];
+              };
+
+              const items = getItemsInfo();
+              const totalPrice = items.reduce((sum: number, item: any) => {
+                const price = item.price === 'Incluso' ? 0 : parseFloat(item.price);
+                return sum + price;
+              }, 0);
+              const printerInfo = printers.find(p => p.id === previewJob.printer_id);
+              const tableId = items[0]?.tableId || previewJob.document_data?.table_id;
+              
+              // Preparar dados para o template
+              const now = new Date();
+              const templateData = {
+                company_name: 'COMIDEX RESTAURANTE',
+                company_address: 'Rua Principal, 123 - Centro',
+                company_phone: '(11) 1234-5678',
+                order_number: previewJob.id.toString(),
+                table_number: tableId || 'N/A',
+                customer_name: previewJob.document_data?.customer_name || 'Cliente',
+                date: now.toLocaleDateString('pt-BR'),
+                time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                items: items,
+                subtotal: totalPrice.toFixed(2),
+                discount: '0.00',
+                service_fee: '0.00',
+                total: totalPrice.toFixed(2),
+                payment_method: 'A definir'
+              };
+              
+              // Aplicar template
+              const header = applyTemplate(printTemplate.header || '', templateData);
+              const itemsContent = applyTemplate(printTemplate.items || '', templateData);
+              const footer = applyTemplate(printTemplate.footer || '', templateData);
+              
+              return (
+                <div>
+                  {header}
+                  {itemsContent}
+                  {footer}
+                </div>
+              );
+            }) : previewJob && (() => {
+              // Fallback caso não tenha template - usar formato padrão
               const getItemsInfo = () => {
                 if (previewJob.order_items) {
                   const orderItem = previewJob.order_items;
@@ -1158,62 +1285,21 @@ export default function PrinterQueuePage() {
               const tableId = items[0]?.tableId;
               
               return (
-                <div className="space-y-2">
-                  <div className="text-center border-b pb-2">
-                    <div className="font-bold text-base">COMIDEX RESTAURANTE</div>
-                    <div className="text-xs">COMIDA JAPONESA</div>
-                    <div className="text-xs">Tel: (11) 1234-5678</div>
-                  </div>
-                  
-                  <div className="border-b pb-2">
-                    <div className="flex justify-between">
-                      <span>PEDIDO:</span>
-                      <span className="font-bold">#{previewJob.id}</span>
-                    </div>
-                    {tableId && (
-                      <div className="flex justify-between">
-                        <span>MESA:</span>
-                        <span className="font-bold">{tableId}</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between">
-                      <span>DATA:</span>
-                      <span>{new Date(previewJob.created_at).toLocaleString('pt-BR')}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="border-b pb-2">
-                    <div className="font-bold mb-1">ITENS DO PEDIDO:</div>
-                    {items.map((item: any, idx: number) => (
-                      <div key={idx} className="space-y-1">
-                        <div className="flex justify-between">
-                          <span>{item.quantity}x {item.name}</span>
-                          <span>{item.price === 0 ? 'Incluso' : `R$ ${(item.price * item.quantity).toFixed(2)}`}</span>
-                        </div>
-                        {item.notes && (
-                          <div className="pl-4 text-xs italic">Obs: {item.notes}</div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="border-b pb-2">
-                    <div className="flex justify-between font-bold text-base">
-                      <span>TOTAL:</span>
-                      <span>R$ {totalPrice.toFixed(2)}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="text-center text-xs pt-2">
-                    <div>Obrigado pela preferência!</div>
-                    <div>Volte sempre!</div>
-                  </div>
-                  
-                  <div className="border-t pt-2 mt-4 text-xs text-gray-500">
-                    <div>Impressora: {printerInfo?.name || 'Desconhecida'}</div>
-                    {printerInfo?.location && <div>Local: {printerInfo.location}</div>}
-                    <div>Status: {previewJob.status}</div>
-                  </div>
+                <div>
+================================
+       PEDIDO COZINHA
+================================
+Mesa: {tableId || 'N/A'}
+Pedido: #{previewJob.id}
+Hora: {new Date(previewJob.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+================================
+{items.map((item: any, idx: number) => `
+${item.quantity}x ${item.name}
+${item.notes ? `   OBS: ${item.notes}` : ''}
+--------------------------------`).join('')}
+================================
+Total: R$ {totalPrice.toFixed(2)}
+================================
                 </div>
               );
             })()}
