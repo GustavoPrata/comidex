@@ -505,7 +505,6 @@ export default function PrinterQueuePage() {
     };
 
     const items = getItemsInfo();
-    const totalPrice = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
     const printerInfo = printers.find(p => p.id === job.printer_id);
     const tableId = items[0]?.tableId;
     
@@ -592,31 +591,18 @@ export default function PrinterQueuePage() {
               <div className="space-y-2 pl-6">
                 {items.map((item: any, idx: number) => {
                   return (
-                    <div key={idx} className="flex items-center justify-between py-1">
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-gray-900 dark:text-white truncate">
-                          <span className="font-medium">{item.quantity}x</span> {item.name}
+                    <div key={idx} className="py-1">
+                      <p className="text-sm text-gray-900 dark:text-white">
+                        <span className="font-medium">{item.quantity}x</span> {item.name}
+                      </p>
+                      {item.notes && (
+                        <p className="text-xs text-orange-600 italic pl-4">
+                          Obs: {item.notes}
                         </p>
-                        {item.notes && (
-                          <p className="text-xs text-orange-600 italic truncate">
-                            Obs: {item.notes}
-                          </p>
-                        )}
-                      </div>
-                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-2 flex-shrink-0">
-                        {item.price === 0 ? 'Incluso' : `R$ ${(item.price * item.quantity).toFixed(2)}`}
-                      </span>
+                      )}
                     </div>
                   );
                 })}
-              </div>
-
-              {/* Total */}
-              <div className="flex items-center justify-between pt-2 border-t">
-                <span className="font-semibold text-gray-700 dark:text-gray-300">Total:</span>
-                <span className="text-lg font-bold text-orange-600">
-                  R$ {totalPrice.toFixed(2)}
-                </span>
               </div>
             </div>
           ) : (
