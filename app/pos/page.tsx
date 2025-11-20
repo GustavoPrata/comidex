@@ -146,6 +146,8 @@ interface TableSession {
   total: number;
   final_total?: number;
   notes?: string | null;
+  discount_amount?: number;
+  promotion_discount?: number;
 }
 
 interface Order {
@@ -2759,13 +2761,35 @@ export default function POSPage() {
         }))
         .sort((a, b) => a.price - b.price); // Ordenar por preço crescente
 
+      // Calcular valores
+      const subtotal = sortedItems.reduce((sum, item) => sum + item.total, 0);
+      const serviceFee = subtotal * 0.10; // 10% de taxa de serviço (padrão)
+      const totalWithService = subtotal + serviceFee;
+      
+      // Verificar se há desconto na sessão atual
+      let discount = 0;
+      if (currentSession) {
+        // Se tiver desconto manual
+        if (currentSession.discount_amount && currentSession.discount_amount > 0) {
+          discount = currentSession.discount_amount;
+        }
+        // Se tiver desconto de promoção
+        if (currentSession.promotion_discount && currentSession.promotion_discount > 0) {
+          discount = (discount || 0) + currentSession.promotion_discount;
+        }
+      }
+      
+      const total = totalWithService - discount;
+
       // Preparar dados da conta
       const billData = {
         table_id: selectedTable.id,
         table_number: selectedTable.number,
         items: sortedItems,
-        subtotal: sortedItems.reduce((sum, item) => sum + item.total, 0),
-        total: sortedItems.reduce((sum, item) => sum + item.total, 0),
+        subtotal: subtotal.toFixed(2),
+        service_fee: serviceFee.toFixed(2),
+        discount: discount > 0 ? discount.toFixed(2) : null,
+        total: total.toFixed(2),
         date: new Date().toLocaleDateString('pt-BR'),
         time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
       };

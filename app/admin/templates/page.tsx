@@ -154,6 +154,9 @@ Data: {{date}}  Hora: {{time}}
     footer: `--------------------------------
 SUBTOTAL:         R$ {{subtotal}}
 TAXA SERVIÇO:     R$ {{service_fee}}
+{{#if discount}}
+DESCONTO:         R$ {{discount}}
+{{/if}}
 --------------------------------
 TOTAL A PAGAR:    R$ {{total}}
 --------------------------------
@@ -621,8 +624,8 @@ export default function TemplatesPage() {
       time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       subtotal: '103,00',
       service_fee: '10,30',
-      discount: '0,00',
-      total: '113,30',
+      discount: '5,00', // Valor de desconto para exemplo
+      total: '108,30', // Total ajustado com desconto
       payment_method: 'Cartão Crédito'
     };
 
@@ -653,6 +656,17 @@ export default function TemplatesPage() {
         
         return itemStr;
       }).join('');
+    });
+    
+    // Handle global {{#if field}} conditionals (fora do loop de items)
+    const globalIfPattern = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
+    preview = preview.replace(globalIfPattern, (match: string, field: string, ifContent: string) => {
+      const fieldValue = sampleData[field];
+      // Só mostra o conteúdo se o campo existe e não é vazio/zero
+      if (fieldValue && fieldValue !== '' && fieldValue !== '0,00' && fieldValue !== null) {
+        return ifContent;
+      }
+      return '';
     });
     
     // Replace remaining variables
