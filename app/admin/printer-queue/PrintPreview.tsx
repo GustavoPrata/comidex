@@ -186,27 +186,64 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
     result = result.replace(eachRegex, (match, content) => {
       if (!data.items || data.items.length === 0) return '';
       
-      // Processar normalmente - item_group é tratado como variável normal
-      return data.items.map((item: any) => {
-        let itemContent = content;
+      // Agrupar itens por categoria/grupo se houver variáveis de agrupamento no template
+      const hasGroupVariable = content.includes('{{item_group}}') || content.includes('{{#if item_group}}');
+      
+      if (hasGroupVariable) {
+        // Agrupar itens por item_group
+        const grouped = data.items.reduce((acc: any, item: any) => {
+          const group = item.item_group || '';
+          if (!acc[group]) acc[group] = [];
+          acc[group].push(item);
+          return acc;
+        }, {});
         
-        // Substituir variáveis do item
-        Object.keys(item).forEach(key => {
-          const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-          itemContent = itemContent.replace(itemRegex, item[key] || '');
-        });
-        
-        // Processar condicionais {{#if field}}
-        const ifRegex = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
-        itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
-          // Verifica se o campo existe e não é uma string vazia
-          const fieldValue = item[field];
-          const shouldShow = fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
-          return shouldShow ? ifContent : '';
-        });
-        
-        return itemContent;
-      }).join('');
+        // Renderizar grupos
+        return Object.entries(grouped).map(([groupName, groupItems]: [string, any]) => {
+          return (groupItems as any[]).map((item: any) => {
+            let itemContent = content;
+            
+            // Substituir variáveis do item
+            Object.keys(item).forEach(key => {
+              const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+              itemContent = itemContent.replace(itemRegex, item[key] || '');
+            });
+            
+            // Processar condicionais {{#if field}}
+            const ifRegex = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
+            itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
+              // Verifica se o campo existe e não é uma string vazia
+              const fieldValue = item[field];
+              const shouldShow = fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
+              return shouldShow ? ifContent : '';
+            });
+            
+            return itemContent;
+          }).join('');
+        }).join('');
+      } else {
+        // Processar normalmente - item_group é tratado como variável normal
+        return data.items.map((item: any) => {
+          let itemContent = content;
+          
+          // Substituir variáveis do item
+          Object.keys(item).forEach(key => {
+            const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+            itemContent = itemContent.replace(itemRegex, item[key] || '');
+          });
+          
+          // Processar condicionais {{#if field}}
+          const ifRegex = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
+          itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
+            // Verifica se o campo existe e não é uma string vazia
+            const fieldValue = item[field];
+            const shouldShow = fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
+            return shouldShow ? ifContent : '';
+          });
+          
+          return itemContent;
+        }).join('');
+      }
     });
     
     return result;
