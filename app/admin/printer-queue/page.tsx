@@ -1119,21 +1119,54 @@ export default function PrinterQueuePage() {
 
       {/* Modal de Visualização da Impressão */}
       <AlertDialog open={showPrintPreview} onOpenChange={setShowPrintPreview}>
-        <AlertDialogContent className="max-w-md">
+        <AlertDialogContent className="max-w-lg">
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
               <Receipt className="h-5 w-5 text-orange-600" />
-              Visualização da Impressão
+              Preview - Impressora Térmica 80mm
             </AlertDialogTitle>
           </AlertDialogHeader>
           
-          <div className="mt-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 font-mono text-xs leading-5 whitespace-pre-wrap" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-            {loadingTemplate ? (
-              <div className="text-center py-8">
-                <Loader2 className="h-8 w-8 animate-spin text-orange-500 mx-auto mb-2" />
-                <p className="text-sm text-gray-500">Carregando template...</p>
+          {/* Container do Preview estilo Impressora Térmica */}
+          <div className="overflow-auto bg-gradient-to-br from-gray-900 to-gray-950 p-6 rounded-lg" style={{ maxHeight: '600px' }}>
+            {/* Frame da Impressora Térmica */}
+            <div className="relative mx-auto" style={{ width: '320px' }}>
+              {/* Rolo de Papel Superior */}
+              <div className="h-8 bg-gradient-to-b from-gray-300 to-gray-100 rounded-t-lg relative">
+                <div className="absolute inset-x-0 top-2 flex justify-center gap-1">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                  <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                  <div className="w-2 h-2 bg-gray-400 rounded-full" />
+                </div>
               </div>
-            ) : previewJob && printTemplate ? (() => {
+              
+              {/* Papel com Cupom */}
+              <div 
+                className="relative"
+                style={{
+                  background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 50%, #f5f5f0 100%)',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15), inset 0 1px 3px rgba(0,0,0,0.05)',
+                  padding: '16px',
+                  minHeight: '400px'
+                }}
+              >
+                {/* Textura do Papel */}
+                <div 
+                  className="absolute inset-0 opacity-[0.03]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect fill='%23000000' x='0' y='0' width='1' height='1' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E")`,
+                    backgroundSize: '2px 2px'
+                  }}
+                />
+                
+                {/* Conteúdo do Cupom */}
+                <div className="relative text-gray-900 font-mono text-xs leading-5 whitespace-pre-wrap" style={{ fontSize: '11px', letterSpacing: '0.5px', lineHeight: '1.3' }}>
+                  {loadingTemplate ? (
+                    <div className="text-center py-8">
+                      <Loader2 className="h-8 w-8 animate-spin text-gray-500 mx-auto mb-2" />
+                      <p className="text-sm text-gray-600">Carregando template...</p>
+                    </div>
+                  ) : previewJob && printTemplate ? (() => {
               // Função para aplicar as variáveis do template
               const applyTemplate = (template: string, data: any) => {
                 let result = template;
@@ -1288,7 +1321,20 @@ Total: R$ {totalPrice.toFixed(2)}
 ================================
                 </div>
               );
-            })()}
+                    })()}
+                </div>
+              </div>
+              
+              {/* Serrilha do papel */}
+              <div className="h-4 bg-gradient-to-b from-gray-100 to-gray-200 relative">
+                <div 
+                  className="absolute bottom-0 left-0 right-0 h-2"
+                  style={{
+                    background: 'repeating-linear-gradient(90deg, transparent, transparent 3px, #ccc 3px, #ccc 4px)',
+                  }}
+                />
+              </div>
+            </div>
           </div>
           
           <AlertDialogFooter>

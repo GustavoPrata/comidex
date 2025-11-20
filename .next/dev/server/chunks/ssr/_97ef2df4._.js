@@ -2656,7 +2656,7 @@ function PrinterQueuePage() {
                 open: showPrintPreview,
                 onOpenChange: setShowPrintPreview,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogContent"], {
-                    className: "max-w-md",
+                    className: "max-w-lg",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogHeader"], {
                             children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogTitle"], {
@@ -2669,7 +2669,7 @@ function PrinterQueuePage() {
                                         lineNumber: 1125,
                                         columnNumber: 15
                                     }, this),
-                                    "Visualização da Impressão"
+                                    "Preview - Impressora Térmica 80mm"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
@@ -2682,198 +2682,301 @@ function PrinterQueuePage() {
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "mt-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 font-mono text-xs leading-5 whitespace-pre-wrap",
+                            className: "overflow-auto bg-gradient-to-br from-gray-900 to-gray-950 p-6 rounded-lg",
                             style: {
-                                maxHeight: '500px',
-                                overflowY: 'auto'
+                                maxHeight: '600px'
                             },
-                            children: loadingTemplate ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "text-center py-8",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "relative mx-auto",
+                                style: {
+                                    width: '320px'
+                                },
                                 children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
-                                        className: "h-8 w-8 animate-spin text-orange-500 mx-auto mb-2"
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "h-8 bg-gradient-to-b from-gray-300 to-gray-100 rounded-t-lg relative",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute inset-x-0 top-2 flex justify-center gap-1",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-2 h-2 bg-gray-400 rounded-full"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                    lineNumber: 1137,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-2 h-2 bg-gray-400 rounded-full"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                    lineNumber: 1138,
+                                                    columnNumber: 19
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-2 h-2 bg-gray-400 rounded-full"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                    lineNumber: 1139,
+                                                    columnNumber: 19
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                            lineNumber: 1136,
+                                            columnNumber: 17
+                                        }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 1133,
-                                        columnNumber: 17
+                                        lineNumber: 1135,
+                                        columnNumber: 15
                                     }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                        className: "text-sm text-gray-500",
-                                        children: "Carregando template..."
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "relative",
+                                        style: {
+                                            background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 50%, #f5f5f0 100%)',
+                                            boxShadow: '0 4px 12px rgba(0,0,0,0.15), inset 0 1px 3px rgba(0,0,0,0.05)',
+                                            padding: '16px',
+                                            minHeight: '400px'
+                                        },
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "absolute inset-0 opacity-[0.03]",
+                                                style: {
+                                                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect fill='%23000000' x='0' y='0' width='1' height='1' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E")`,
+                                                    backgroundSize: '2px 2px'
+                                                }
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                lineNumber: 1154,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "relative text-gray-900 font-mono text-xs leading-5 whitespace-pre-wrap",
+                                                style: {
+                                                    fontSize: '11px',
+                                                    letterSpacing: '0.5px',
+                                                    lineHeight: '1.3'
+                                                },
+                                                children: loadingTemplate ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "text-center py-8",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                            className: "h-8 w-8 animate-spin text-gray-500 mx-auto mb-2"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                            lineNumber: 1166,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                            className: "text-sm text-gray-600",
+                                                            children: "Carregando template..."
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                            lineNumber: 1167,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                    lineNumber: 1165,
+                                                    columnNumber: 21
+                                                }, this) : previewJob && printTemplate ? ()=>{
+                                                    // Função para aplicar as variáveis do template
+                                                    const applyTemplate = (template, data)=>{
+                                                        let result = template;
+                                                        // Substituir variáveis simples
+                                                        Object.keys(data).forEach((key)=>{
+                                                            const regex = new RegExp(`{{${key}}}`, 'g');
+                                                            result = result.replace(regex, data[key] || '');
+                                                        });
+                                                        // Processar loops {{#each items}}
+                                                        const eachRegex = /{{#each items}}([\s\S]*?){{\/each}}/g;
+                                                        result = result.replace(eachRegex, (match, itemTemplate)=>{
+                                                            return data.items?.map((item)=>{
+                                                                let itemResult = itemTemplate;
+                                                                // Substituir variáveis do item
+                                                                Object.keys(item).forEach((key)=>{
+                                                                    const itemRegex = new RegExp(`{{${key}}}`, 'g');
+                                                                    itemResult = itemResult.replace(itemRegex, item[key] || '');
+                                                                });
+                                                                // Processar condicionais {{#if observation}}
+                                                                const ifRegex = /{{#if (\w+)}}([\s\S]*?){{\/if}}/g;
+                                                                itemResult = itemResult.replace(ifRegex, (match, field, content)=>{
+                                                                    return item[field] ? content : '';
+                                                                });
+                                                                return itemResult.trim();
+                                                            }).join('\n') || '';
+                                                        });
+                                                        return result;
+                                                    };
+                                                    // Preparar dados do pedido
+                                                    const getItemsInfo = ()=>{
+                                                        if (previewJob.order_items) {
+                                                            const orderItem = previewJob.order_items;
+                                                            const item = orderItem.items;
+                                                            if (item) {
+                                                                return [
+                                                                    {
+                                                                        name: item.name || 'Item sem nome',
+                                                                        quantity: orderItem.quantity || 1,
+                                                                        price: item.price === 0 ? 'Incluso' : (item.price * (orderItem.quantity || 1)).toFixed(2),
+                                                                        observation: orderItem.notes || '',
+                                                                        tableId: orderItem.orders?.table_id || null
+                                                                    }
+                                                                ];
+                                                            }
+                                                        }
+                                                        if (previewJob.document_type === 'order' && previewJob.document_data) {
+                                                            const items = previewJob.document_data.items || [];
+                                                            return items.map((item)=>({
+                                                                    name: item.name || item.item_name || 'Item',
+                                                                    quantity: item.quantity || 1,
+                                                                    price: item.price === 0 ? 'Incluso' : (item.price * (item.quantity || 1)).toFixed(2),
+                                                                    observation: item.notes || '',
+                                                                    tableId: null
+                                                                }));
+                                                        }
+                                                        return [];
+                                                    };
+                                                    const items = getItemsInfo();
+                                                    const totalPrice = items.reduce((sum, item)=>{
+                                                        const price = item.price === 'Incluso' ? 0 : parseFloat(item.price);
+                                                        return sum + price;
+                                                    }, 0);
+                                                    const printerInfo = printers.find((p)=>p.id === previewJob.printer_id);
+                                                    const tableId = items[0]?.tableId || previewJob.document_data?.table_id;
+                                                    // Preparar dados para o template
+                                                    const now = new Date();
+                                                    const templateData = {
+                                                        company_name: 'COMIDEX RESTAURANTE',
+                                                        company_address: 'Rua Principal, 123 - Centro',
+                                                        company_phone: '(11) 1234-5678',
+                                                        order_number: previewJob.id.toString(),
+                                                        table_number: tableId || 'N/A',
+                                                        customer_name: previewJob.document_data?.customer_name || 'Cliente',
+                                                        date: now.toLocaleDateString('pt-BR'),
+                                                        time: now.toLocaleTimeString('pt-BR', {
+                                                            hour: '2-digit',
+                                                            minute: '2-digit'
+                                                        }),
+                                                        items: items,
+                                                        subtotal: totalPrice.toFixed(2),
+                                                        discount: '0.00',
+                                                        service_fee: '0.00',
+                                                        total: totalPrice.toFixed(2),
+                                                        payment_method: 'A definir'
+                                                    };
+                                                    // Aplicar template
+                                                    const header = applyTemplate(printTemplate.header || '', templateData);
+                                                    const itemsContent = applyTemplate(printTemplate.items || '', templateData);
+                                                    const footer = applyTemplate(printTemplate.footer || '', templateData);
+                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            header,
+                                                            itemsContent,
+                                                            footer
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                        lineNumber: 1266,
+                                                        columnNumber: 17
+                                                    }, this);
+                                                } : previewJob && (()=>{
+                                                    // Fallback caso não tenha template - usar formato padrão
+                                                    const getItemsInfo = ()=>{
+                                                        if (previewJob.order_items) {
+                                                            const orderItem = previewJob.order_items;
+                                                            const item = orderItem.items;
+                                                            if (item) {
+                                                                return [
+                                                                    {
+                                                                        name: item.name || 'Item sem nome',
+                                                                        quantity: orderItem.quantity || 1,
+                                                                        price: orderItem.price || item.price || 0,
+                                                                        notes: orderItem.notes || '',
+                                                                        tableId: orderItem.orders?.table_id || null
+                                                                    }
+                                                                ];
+                                                            }
+                                                        }
+                                                        if (previewJob.document_type === 'order' && previewJob.document_data) {
+                                                            const items = previewJob.document_data.items || [];
+                                                            return items.map((item)=>({
+                                                                    name: item.name || item.item_name || 'Item',
+                                                                    quantity: item.quantity || 1,
+                                                                    price: item.price || 0,
+                                                                    notes: item.notes || '',
+                                                                    tableId: null
+                                                                }));
+                                                        }
+                                                        return [];
+                                                    };
+                                                    const items = getItemsInfo();
+                                                    const totalPrice = items.reduce((sum, item)=>sum + item.price * item.quantity, 0);
+                                                    const printerInfo = printers.find((p)=>p.id === previewJob.printer_id);
+                                                    const tableId = items[0]?.tableId;
+                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            "================================ PEDIDO COZINHA ================================ Mesa: ",
+                                                            tableId || 'N/A',
+                                                            "Pedido: #",
+                                                            previewJob.id,
+                                                            "Hora: ",
+                                                            new Date(previewJob.created_at).toLocaleTimeString('pt-BR', {
+                                                                hour: '2-digit',
+                                                                minute: '2-digit'
+                                                            }),
+                                                            "================================",
+                                                            items.map((item, idx)=>`
+${item.quantity}x ${item.name}
+${item.notes ? `   OBS: ${item.notes}` : ''}
+--------------------------------`).join(''),
+                                                            "================================ Total: R$ ",
+                                                            totalPrice.toFixed(2),
+                                                            "================================"
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                        lineNumber: 1307,
+                                                        columnNumber: 17
+                                                    }, this);
+                                                })()
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                lineNumber: 1163,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                        lineNumber: 1144,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "h-4 bg-gradient-to-b from-gray-100 to-gray-200 relative",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute bottom-0 left-0 right-0 h-2",
+                                            style: {
+                                                background: 'repeating-linear-gradient(90deg, transparent, transparent 3px, #ccc 3px, #ccc 4px)'
+                                            }
+                                        }, void 0, false, {
+                                            fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                            lineNumber: 1330,
+                                            columnNumber: 17
+                                        }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 1134,
-                                        columnNumber: 17
+                                        lineNumber: 1329,
+                                        columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1132,
-                                columnNumber: 15
-                            }, this) : previewJob && printTemplate ? ()=>{
-                                // Função para aplicar as variáveis do template
-                                const applyTemplate = (template, data)=>{
-                                    let result = template;
-                                    // Substituir variáveis simples
-                                    Object.keys(data).forEach((key)=>{
-                                        const regex = new RegExp(`{{${key}}}`, 'g');
-                                        result = result.replace(regex, data[key] || '');
-                                    });
-                                    // Processar loops {{#each items}}
-                                    const eachRegex = /{{#each items}}([\s\S]*?){{\/each}}/g;
-                                    result = result.replace(eachRegex, (match, itemTemplate)=>{
-                                        return data.items?.map((item)=>{
-                                            let itemResult = itemTemplate;
-                                            // Substituir variáveis do item
-                                            Object.keys(item).forEach((key)=>{
-                                                const itemRegex = new RegExp(`{{${key}}}`, 'g');
-                                                itemResult = itemResult.replace(itemRegex, item[key] || '');
-                                            });
-                                            // Processar condicionais {{#if observation}}
-                                            const ifRegex = /{{#if (\w+)}}([\s\S]*?){{\/if}}/g;
-                                            itemResult = itemResult.replace(ifRegex, (match, field, content)=>{
-                                                return item[field] ? content : '';
-                                            });
-                                            return itemResult.trim();
-                                        }).join('\n') || '';
-                                    });
-                                    return result;
-                                };
-                                // Preparar dados do pedido
-                                const getItemsInfo = ()=>{
-                                    if (previewJob.order_items) {
-                                        const orderItem = previewJob.order_items;
-                                        const item = orderItem.items;
-                                        if (item) {
-                                            return [
-                                                {
-                                                    name: item.name || 'Item sem nome',
-                                                    quantity: orderItem.quantity || 1,
-                                                    price: item.price === 0 ? 'Incluso' : (item.price * (orderItem.quantity || 1)).toFixed(2),
-                                                    observation: orderItem.notes || '',
-                                                    tableId: orderItem.orders?.table_id || null
-                                                }
-                                            ];
-                                        }
-                                    }
-                                    if (previewJob.document_type === 'order' && previewJob.document_data) {
-                                        const items = previewJob.document_data.items || [];
-                                        return items.map((item)=>({
-                                                name: item.name || item.item_name || 'Item',
-                                                quantity: item.quantity || 1,
-                                                price: item.price === 0 ? 'Incluso' : (item.price * (item.quantity || 1)).toFixed(2),
-                                                observation: item.notes || '',
-                                                tableId: null
-                                            }));
-                                    }
-                                    return [];
-                                };
-                                const items = getItemsInfo();
-                                const totalPrice = items.reduce((sum, item)=>{
-                                    const price = item.price === 'Incluso' ? 0 : parseFloat(item.price);
-                                    return sum + price;
-                                }, 0);
-                                const printerInfo = printers.find((p)=>p.id === previewJob.printer_id);
-                                const tableId = items[0]?.tableId || previewJob.document_data?.table_id;
-                                // Preparar dados para o template
-                                const now = new Date();
-                                const templateData = {
-                                    company_name: 'COMIDEX RESTAURANTE',
-                                    company_address: 'Rua Principal, 123 - Centro',
-                                    company_phone: '(11) 1234-5678',
-                                    order_number: previewJob.id.toString(),
-                                    table_number: tableId || 'N/A',
-                                    customer_name: previewJob.document_data?.customer_name || 'Cliente',
-                                    date: now.toLocaleDateString('pt-BR'),
-                                    time: now.toLocaleTimeString('pt-BR', {
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    }),
-                                    items: items,
-                                    subtotal: totalPrice.toFixed(2),
-                                    discount: '0.00',
-                                    service_fee: '0.00',
-                                    total: totalPrice.toFixed(2),
-                                    payment_method: 'A definir'
-                                };
-                                // Aplicar template
-                                const header = applyTemplate(printTemplate.header || '', templateData);
-                                const itemsContent = applyTemplate(printTemplate.items || '', templateData);
-                                const footer = applyTemplate(printTemplate.footer || '', templateData);
-                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    children: [
-                                        header,
-                                        itemsContent,
-                                        footer
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1233,
-                                    columnNumber: 17
-                                }, this);
-                            } : previewJob && (()=>{
-                                // Fallback caso não tenha template - usar formato padrão
-                                const getItemsInfo = ()=>{
-                                    if (previewJob.order_items) {
-                                        const orderItem = previewJob.order_items;
-                                        const item = orderItem.items;
-                                        if (item) {
-                                            return [
-                                                {
-                                                    name: item.name || 'Item sem nome',
-                                                    quantity: orderItem.quantity || 1,
-                                                    price: orderItem.price || item.price || 0,
-                                                    notes: orderItem.notes || '',
-                                                    tableId: orderItem.orders?.table_id || null
-                                                }
-                                            ];
-                                        }
-                                    }
-                                    if (previewJob.document_type === 'order' && previewJob.document_data) {
-                                        const items = previewJob.document_data.items || [];
-                                        return items.map((item)=>({
-                                                name: item.name || item.item_name || 'Item',
-                                                quantity: item.quantity || 1,
-                                                price: item.price || 0,
-                                                notes: item.notes || '',
-                                                tableId: null
-                                            }));
-                                    }
-                                    return [];
-                                };
-                                const items = getItemsInfo();
-                                const totalPrice = items.reduce((sum, item)=>sum + item.price * item.quantity, 0);
-                                const printerInfo = printers.find((p)=>p.id === previewJob.printer_id);
-                                const tableId = items[0]?.tableId;
-                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    children: [
-                                        "================================ PEDIDO COZINHA ================================ Mesa: ",
-                                        tableId || 'N/A',
-                                        "Pedido: #",
-                                        previewJob.id,
-                                        "Hora: ",
-                                        new Date(previewJob.created_at).toLocaleTimeString('pt-BR', {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        }),
-                                        "================================",
-                                        items.map((item, idx)=>`
-${item.quantity}x ${item.name}
-${item.notes ? `   OBS: ${item.notes}` : ''}
---------------------------------`).join(''),
-                                        "================================ Total: R$ ",
-                                        totalPrice.toFixed(2),
-                                        "================================"
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1274,
-                                    columnNumber: 17
-                                }, this);
-                            })()
+                                lineNumber: 1133,
+                                columnNumber: 13
+                            }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 1130,
+                            lineNumber: 1131,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -2881,12 +2984,12 @@ ${item.notes ? `   OBS: ${item.notes}` : ''}
                                 children: "Fechar"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1295,
+                                lineNumber: 1341,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 1294,
+                            lineNumber: 1340,
                             columnNumber: 11
                         }, this)
                     ]
