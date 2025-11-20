@@ -2718,7 +2718,8 @@ export default function POSPage() {
 
   // Formatação
   const formatCurrency = (value: number, isRodizioItem: boolean = false) => {
-    if (value === 0 && isRodizioItem) {
+    // Mostrar "Incluso" para qualquer item com valor 0 (que normalmente são itens de rodízio)
+    if (value === 0) {
       return 'Incluso';
     }
     return new Intl.NumberFormat('pt-BR', {
@@ -5162,7 +5163,7 @@ export default function POSPage() {
                     <div className="flex justify-between items-center">
                       <span className="text-gray-300">Valor a cancelar:</span>
                       <span className="text-red-400 font-bold text-xl">
-                        R$ {((itemToCancel.unit_price || itemToCancel.item?.price || 0) * cancelQuantity).toFixed(2).replace('.', ',')}
+                        {formatCurrency((itemToCancel.unit_price || itemToCancel.item?.price || 0) * cancelQuantity)}
                       </span>
                     </div>
                   </div>
