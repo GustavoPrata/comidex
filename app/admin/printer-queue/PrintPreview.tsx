@@ -21,6 +21,8 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
 
   useEffect(() => {
     if (open && job) {
+      // Limpar template anterior para forçar nova busca
+      setTemplate(null);
       fetchTemplate();
     }
   }, [open, job]);
@@ -28,9 +30,17 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   const fetchTemplate = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/templates/kitchen');
+      // Adicionar timestamp para evitar cache
+      const response = await fetch(`/api/templates/kitchen?t=${Date.now()}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
       if (response.ok) {
         const data = await response.json();
+        console.log('Template carregado:', data.template);
         setTemplate(data.template); // Acessar o template dentro do objeto
       }
     } catch (error) {
@@ -79,7 +89,11 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   };
 
   const getRenderedContent = () => {
-    if (!job || !template) return 'Carregando...';
+    if (!job) return 'Nenhum trabalho selecionado';
+    if (!template) return 'Template não carregado';
+
+    console.log('Renderizando com template:', template);
+    console.log('Dados do job:', job);
 
     // Preparar dados do pedido
     const items = [];
