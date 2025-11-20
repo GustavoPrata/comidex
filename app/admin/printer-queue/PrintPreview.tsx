@@ -57,6 +57,74 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
     }
   };
 
+  // Processar tags de formatação como [[size:18]], [[bold]], etc
+  const processFormatting = (text: string): React.ReactNode => {
+    const parts = [];
+    let lastIndex = 0;
+    
+    // Regex para capturar tags de formatação
+    const formatRegex = /\[\[(size|bold|italic|underline|align):?([^\]]*)\]\](.*?)\[\[\/\1\]\]/g;
+    const simpleFormatRegex = /\[\[(size|bold|italic|underline|align):(\d+|left|center|right)\]\]/g;
+    
+    // Processar tags com conteúdo [[tag:value]]content[[/tag]]
+    let processedText = text.replace(formatRegex, (match, tag, value, content) => {
+      const id = `format_${Math.random().toString(36).substr(2, 9)}`;
+      
+      let style: any = {};
+      let className = '';
+      
+      switch(tag) {
+        case 'size':
+          const size = parseInt(value);
+          if (size) {
+            style.fontSize = `${size}px`;
+            style.lineHeight = '1.2';
+          }
+          break;
+        case 'bold':
+          style.fontWeight = 'bold';
+          break;
+        case 'italic':
+          style.fontStyle = 'italic';
+          break;
+        case 'underline':
+          style.textDecoration = 'underline';
+          break;
+        case 'align':
+          style.textAlign = value;
+          style.display = 'block';
+          break;
+      }
+      
+      return `<span id="${id}" style="${Object.entries(style).map(([k, v]) => `${k}:${v}`).join(';')}">${content}</span>`;
+    });
+    
+    // Processar tags simples [[size:18]] que afetam o texto seguinte
+    processedText = processedText.replace(simpleFormatRegex, (match, tag, value) => {
+      let style = '';
+      
+      switch(tag) {
+        case 'size':
+          const size = parseInt(value);
+          if (size) {
+            style = `font-size:${size}px;line-height:1.2;`;
+          }
+          break;
+        case 'bold':
+          style = 'font-weight:bold;';
+          break;
+        case 'align':
+          style = `text-align:${value};display:block;`;
+          break;
+      }
+      
+      return style ? `<span style="${style}">` : '';
+    });
+    
+    // Converter para JSX seguro
+    return <div dangerouslySetInnerHTML={{ __html: processedText }} />;
+  };
+
   const applyTemplate = (templateStr: string, data: any): string => {
     let result = templateStr || '';
     
@@ -208,7 +276,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
               />
               
               {/* Conteúdo do Cupom */}
-              <div className="relative text-gray-900 font-mono text-xs leading-5 whitespace-pre-wrap" 
+              <div className="relative text-gray-900 font-mono text-xs leading-5" 
                 style={{ fontSize: '11px', letterSpacing: '0.5px', lineHeight: '1.3' }}>
                 {loading ? (
                   <div className="text-center py-8">
@@ -216,7 +284,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
                     <p className="text-sm text-gray-600">Carregando template...</p>
                   </div>
                 ) : (
-                  <div>{getRenderedContent()}</div>
+                  <div className="whitespace-pre-wrap">{processFormatting(getRenderedContent())}</div>
                 )}
               </div>
             </div>
