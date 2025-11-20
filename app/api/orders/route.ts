@@ -181,7 +181,6 @@ export async function POST(request: NextRequest) {
               const printJobs = itemsToPrint.map((item: any) => ({
                 order_item_id: item.id,
                 printer_id: printers.id,
-                priority: 'high',
                 copies: 1,
                 status: 'pending'
               }));

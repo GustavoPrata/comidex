@@ -35,9 +35,6 @@ import {
   Filter,
   ChevronRight,
   ChevronDown,
-  ShieldAlert,
-  Zap,
-  Timer,
   Activity,
   FileText,
   Receipt,
@@ -57,7 +54,6 @@ interface PrintJob {
   printer_id: number;
   document_type: 'order' | 'receipt' | 'report' | 'test' | 'bill';
   document_data: any;
-  priority: 'low' | 'normal' | 'high' | 'urgent';
   copies: number;
   status: 'pending' | 'printing' | 'printed' | 'failed' | 'cancelled';
   retry_count: number;
@@ -399,25 +395,6 @@ export default function PrinterQueuePage() {
     );
   };
 
-  // Renderizar badge de prioridade
-  const renderPriorityBadge = (priority: string) => {
-    const priorityConfig = {
-      urgent: { color: 'bg-red-500/20 text-red-600', icon: ShieldAlert, label: 'Urgente' },
-      high: { color: 'bg-orange-500/20 text-orange-600', icon: Zap, label: 'Alta' },
-      normal: { color: 'bg-blue-500/20 text-blue-600', icon: Activity, label: 'Normal' },
-      low: { color: 'bg-gray-500/20 text-gray-600', icon: Timer, label: 'Baixa' }
-    };
-
-    const config = priorityConfig[priority as keyof typeof priorityConfig] || priorityConfig.normal;
-    const Icon = config.icon;
-
-    return (
-      <Badge className={cn('gap-1', config.color)}>
-        <Icon className="h-3 w-3" />
-        {config.label}
-      </Badge>
-    );
-  };
 
   // Renderizar tipo de documento
   const renderDocumentType = (type: string) => {
@@ -499,7 +476,6 @@ export default function PrinterQueuePage() {
             <span className="text-sm font-mono text-gray-500">#{job.id}</span>
             {renderDocumentType(job.document_type)}
             {renderStatusBadge(job.status)}
-            {renderPriorityBadge(job.priority)}
             {job.copies > 1 && (
               <Badge variant="outline" className="gap-1">
                 <Download className="h-3 w-3" />

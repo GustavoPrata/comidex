@@ -428,9 +428,10 @@ async function GET(request) {
         const { searchParams } = new URL(request.url);
         const printerId = searchParams.get('printer_id');
         const status = searchParams.get('status');
-        let query = supabase.from('printer_queue').select('*').order('priority', {
-            ascending: false
-        }).order('created_at');
+        let query = supabase.from('printer_queue').select('*').order('created_at', {
+            ascending: true
+        }) // FIFO - primeiro a entrar, primeiro a sair
+        ;
         if (printerId) {
             query = query.eq('printer_id', printerId);
         }
@@ -462,7 +463,6 @@ async function POST(request) {
         const { data, error } = await supabase.from('printer_queue').insert({
             order_item_id: body.order_item_id,
             printer_id: body.printer_id,
-            priority: body.priority || 'normal',
             copies: body.copies || 1,
             status: 'pending'
         }).select().single();

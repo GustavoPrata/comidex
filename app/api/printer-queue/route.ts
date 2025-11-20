@@ -11,8 +11,7 @@ export async function GET(request: NextRequest) {
     let query = supabase
       .from('printer_queue')
       .select('*')
-      .order('priority', { ascending: false })
-      .order('created_at')
+      .order('created_at', { ascending: true }) // FIFO - primeiro a entrar, primeiro a sair
     
     if (printerId) {
       query = query.eq('printer_id', printerId)
@@ -49,7 +48,6 @@ export async function POST(request: NextRequest) {
       .insert({
         order_item_id: body.order_item_id,
         printer_id: body.printer_id,
-        priority: body.priority || 'normal',
         copies: body.copies || 1,
         status: 'pending'
       })
