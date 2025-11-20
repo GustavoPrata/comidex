@@ -643,9 +643,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$timer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Timer$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/timer.js [app-client] (ecmascript) <export default as Timer>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__X$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/x.js [app-client] (ecmascript) <export default as X>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/package.js [app-client] (ecmascript) <export default as Package>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/coffee.js [app-client] (ecmascript) <export default as Coffee>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/wine.js [app-client] (ecmascript) <export default as Wine>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/utensils-crossed.js [app-client] (ecmascript) <export default as UtensilsCrossed>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$map$2d$pin$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MapPin$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/map-pin.js [app-client] (ecmascript) <export default as MapPin>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sparkles.js [app-client] (ecmascript) <export default as Sparkles>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/sonner/dist/index.mjs [app-client] (ecmascript)");
@@ -991,14 +988,14 @@ function PrinterQueuePage() {
                     className: "h-3 w-3"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 404,
+                    lineNumber: 401,
                     columnNumber: 9
                 }, this),
                 config.label
             ]
         }, void 0, true, {
             fileName: "[project]/app/admin/printer-queue/page.tsx",
-            lineNumber: 403,
+            lineNumber: 400,
             columnNumber: 7
         }, this);
     };
@@ -1038,20 +1035,20 @@ function PrinterQueuePage() {
                     className: "h-4 w-4 text-gray-500"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 426,
+                    lineNumber: 423,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                     children: config.label
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 427,
+                    lineNumber: 424,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/admin/printer-queue/page.tsx",
-            lineNumber: 425,
+            lineNumber: 422,
             columnNumber: 7
         }, this);
     };
@@ -1123,20 +1120,6 @@ function PrinterQueuePage() {
         const totalPrice = items.reduce((sum, item)=>sum + item.price * item.quantity, 0);
         const printerInfo = printers.find((p)=>p.id === job.printer_id);
         const tableId = items[0]?.tableId;
-        // Ícone baseado no nome do item
-        const getItemIcon = (name)=>{
-            const lowerName = name?.toLowerCase() || '';
-            if (lowerName.includes('bebida') || lowerName.includes('refrigerante') || lowerName.includes('suco') || lowerName.includes('café')) {
-                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$coffee$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Coffee$3e$__["Coffee"];
-            }
-            if (lowerName.includes('vinho') || lowerName.includes('wine')) {
-                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wine$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Wine$3e$__["Wine"];
-            }
-            if (lowerName.includes('prato') || lowerName.includes('comida') || lowerName.includes('lanche')) {
-                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$utensils$2d$crossed$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UtensilsCrossed$3e$__["UtensilsCrossed"];
-            }
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$package$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Package$3e$__["Package"];
-        };
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
             className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("overflow-hidden transition-all duration-200", "hover:shadow-lg hover:-translate-y-1", selectedJobs.has(job.id) && "ring-2 ring-orange-500 bg-orange-50/50 dark:bg-orange-900/10"),
             children: [
@@ -1163,7 +1146,7 @@ function PrinterQueuePage() {
                                         className: "h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 544,
+                                        lineNumber: 527,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1173,7 +1156,7 @@ function PrinterQueuePage() {
                                                 className: "h-5 w-5 text-gray-600"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 560,
+                                                lineNumber: 543,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1184,7 +1167,7 @@ function PrinterQueuePage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 561,
+                                                lineNumber: 544,
                                                 columnNumber: 17
                                             }, this),
                                             tableId && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1195,7 +1178,7 @@ function PrinterQueuePage() {
                                                         className: "h-3 w-3 mr-1"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 566,
+                                                        lineNumber: 549,
                                                         columnNumber: 21
                                                     }, this),
                                                     "Mesa ",
@@ -1203,20 +1186,20 @@ function PrinterQueuePage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 565,
+                                                lineNumber: 548,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 559,
+                                        lineNumber: 542,
                                         columnNumber: 15
                                     }, this),
                                     renderStatusBadge(job.status)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 543,
+                                lineNumber: 526,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1229,7 +1212,7 @@ function PrinterQueuePage() {
                                                 className: "h-3 w-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 577,
+                                                lineNumber: 560,
                                                 columnNumber: 17
                                             }, this),
                                             new Date(job.created_at).toLocaleTimeString('pt-BR', {
@@ -1239,7 +1222,7 @@ function PrinterQueuePage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 576,
+                                        lineNumber: 559,
                                         columnNumber: 15
                                     }, this),
                                     job.copies > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -1250,7 +1233,7 @@ function PrinterQueuePage() {
                                                 className: "h-3 w-3"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 586,
+                                                lineNumber: 569,
                                                 columnNumber: 19
                                             }, this),
                                             job.copies,
@@ -1258,24 +1241,24 @@ function PrinterQueuePage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 585,
+                                        lineNumber: 568,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 575,
+                                lineNumber: 558,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 542,
+                        lineNumber: 525,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 535,
+                    lineNumber: 518,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1291,100 +1274,105 @@ function PrinterQueuePage() {
                                             className: "h-4 w-4 text-orange-500"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 600,
+                                            lineNumber: 583,
                                             columnNumber: 17
                                         }, this),
                                         "Itens para Impressão:"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 599,
+                                    lineNumber: 582,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "space-y-2 pl-6",
                                     children: items.map((item, idx)=>{
-                                        const Icon = getItemIcon(item.name);
                                         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800 last:border-0",
+                                            className: "flex items-center justify-between py-1",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "flex items-center gap-3",
+                                                    className: "flex items-center gap-2 flex-1",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                                            className: "h-5 w-5 text-gray-500"
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "h-3.5 w-3.5 rounded-full border-2 border-orange-600 bg-orange-600 flex items-center justify-center flex-shrink-0",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "h-1.5 w-1.5 rounded-full bg-white"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                                lineNumber: 595,
+                                                                columnNumber: 27
+                                                            }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 610,
+                                                            lineNumber: 592,
                                                             columnNumber: 25
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex-1",
+                                                            className: "flex-1 min-w-0",
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "font-medium text-gray-900 dark:text-white",
+                                                                    className: "text-sm text-gray-900 dark:text-white truncate",
                                                                     children: [
-                                                                        item.quantity,
-                                                                        "x ",
+                                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                            className: "font-medium",
+                                                                            children: [
+                                                                                item.quantity,
+                                                                                "x"
+                                                                            ]
+                                                                        }, void 0, true, {
+                                                                            fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                                            lineNumber: 599,
+                                                                            columnNumber: 29
+                                                                        }, this),
+                                                                        " ",
                                                                         item.name
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                                    lineNumber: 612,
+                                                                    lineNumber: 598,
                                                                     columnNumber: 27
                                                                 }, this),
-                                                                item.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-xs text-gray-500",
-                                                                    children: item.description
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                                    lineNumber: 616,
-                                                                    columnNumber: 29
-                                                                }, this),
                                                                 item.notes && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                    className: "text-xs text-orange-600 mt-1 italic",
+                                                                    className: "text-xs text-orange-600 italic truncate",
                                                                     children: [
                                                                         "Obs: ",
                                                                         item.notes
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                                    lineNumber: 621,
+                                                                    lineNumber: 602,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 611,
+                                                            lineNumber: 597,
                                                             columnNumber: 25
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 609,
+                                                    lineNumber: 591,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "font-semibold text-gray-700 dark:text-gray-300 ml-4",
-                                                    children: [
-                                                        "R$ ",
-                                                        (item.price * item.quantity).toFixed(2)
-                                                    ]
-                                                }, void 0, true, {
+                                                    className: "text-sm font-medium text-gray-700 dark:text-gray-300 ml-2 flex-shrink-0",
+                                                    children: item.price === 0 ? 'Incluso' : `R$ ${(item.price * item.quantity).toFixed(2)}`
+                                                }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 627,
+                                                    lineNumber: 608,
                                                     columnNumber: 23
                                                 }, this)
                                             ]
                                         }, idx, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 608,
+                                            lineNumber: 590,
                                             columnNumber: 21
                                         }, this);
                                     })
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 604,
+                                    lineNumber: 587,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1395,7 +1383,7 @@ function PrinterQueuePage() {
                                             children: "Total:"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 637,
+                                            lineNumber: 618,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1406,19 +1394,19 @@ function PrinterQueuePage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 638,
+                                            lineNumber: 619,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 636,
+                                    lineNumber: 617,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 598,
+                            lineNumber: 581,
                             columnNumber: 13
                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: "py-4 text-center text-gray-500",
@@ -1427,7 +1415,7 @@ function PrinterQueuePage() {
                                     className: "h-8 w-8 mx-auto mb-2 text-gray-400"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 645,
+                                    lineNumber: 626,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1435,13 +1423,13 @@ function PrinterQueuePage() {
                                     children: "Documento para impressão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 646,
+                                    lineNumber: 627,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 644,
+                            lineNumber: 625,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1454,14 +1442,14 @@ function PrinterQueuePage() {
                                             className: "h-4 w-4"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 653,
+                                            lineNumber: 634,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                             children: printerInfo?.name || 'Impressora'
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 654,
+                                            lineNumber: 635,
                                             columnNumber: 15
                                         }, this),
                                         printerInfo?.location && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -1470,14 +1458,14 @@ function PrinterQueuePage() {
                                                     className: "h-3 w-3 ml-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 657,
+                                                    lineNumber: 638,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                     children: printerInfo.location
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 658,
+                                                    lineNumber: 639,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
@@ -1485,7 +1473,7 @@ function PrinterQueuePage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 652,
+                                    lineNumber: 633,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1502,12 +1490,12 @@ function PrinterQueuePage() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 673,
+                                                        lineNumber: 654,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 667,
+                                                    lineNumber: 648,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1519,12 +1507,12 @@ function PrinterQueuePage() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 681,
+                                                        lineNumber: 662,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 675,
+                                                    lineNumber: 656,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
@@ -1538,12 +1526,12 @@ function PrinterQueuePage() {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 693,
+                                                lineNumber: 674,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 687,
+                                            lineNumber: 668,
                                             columnNumber: 17
                                         }, this),
                                         [
@@ -1559,24 +1547,24 @@ function PrinterQueuePage() {
                                                 className: "h-4 w-4"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 704,
+                                                lineNumber: 685,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 698,
+                                            lineNumber: 679,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 664,
+                                    lineNumber: 645,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 651,
+                            lineNumber: 632,
                             columnNumber: 11
                         }, this),
                         job.error_message && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1586,7 +1574,7 @@ function PrinterQueuePage() {
                                     className: "h-4 w-4 text-red-600 mt-0.5"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 713,
+                                    lineNumber: 694,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1594,13 +1582,13 @@ function PrinterQueuePage() {
                                     children: job.error_message
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 714,
+                                    lineNumber: 695,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 712,
+                            lineNumber: 693,
                             columnNumber: 13
                         }, this),
                         job.retry_count > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1613,19 +1601,19 @@ function PrinterQueuePage() {
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 720,
+                            lineNumber: 701,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 595,
+                    lineNumber: 578,
                     columnNumber: 9
                 }, this)
             ]
         }, job.id, true, {
             fileName: "[project]/app/admin/printer-queue/page.tsx",
-            lineNumber: 526,
+            lineNumber: 509,
             columnNumber: 7
         }, this);
     };
@@ -1642,7 +1630,7 @@ function PrinterQueuePage() {
                                 children: "Fila de Impressão"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 734,
+                                lineNumber: 715,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1650,13 +1638,13 @@ function PrinterQueuePage() {
                                 children: "Gerencie e monitore todos os trabalhos de impressão"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 737,
+                                lineNumber: 718,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 733,
+                        lineNumber: 714,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1671,7 +1659,7 @@ function PrinterQueuePage() {
                                         id: "auto-refresh"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 744,
+                                        lineNumber: 725,
                                         columnNumber: 13
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Label"], {
@@ -1680,13 +1668,13 @@ function PrinterQueuePage() {
                                         children: "Auto-atualizar"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 749,
+                                        lineNumber: 730,
                                         columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 743,
+                                lineNumber: 724,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1702,14 +1690,14 @@ function PrinterQueuePage() {
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 763,
+                                        lineNumber: 744,
                                         columnNumber: 13
                                     }, this),
                                     "Atualizar"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 754,
+                                lineNumber: 735,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1722,14 +1710,14 @@ function PrinterQueuePage() {
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 773,
+                                        lineNumber: 754,
                                         columnNumber: 13
                                     }, this),
                                     "Limpar Fila"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 767,
+                                lineNumber: 748,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -1741,26 +1729,26 @@ function PrinterQueuePage() {
                                         className: "h-4 w-4"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 782,
+                                        lineNumber: 763,
                                         columnNumber: 13
                                     }, this),
                                     "Configurações"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 777,
+                                lineNumber: 758,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 742,
+                        lineNumber: 723,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 732,
+                lineNumber: 713,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1780,7 +1768,7 @@ function PrinterQueuePage() {
                                                 children: "Pendentes"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 794,
+                                                lineNumber: 775,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1788,36 +1776,36 @@ function PrinterQueuePage() {
                                                 children: stats.pending
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 795,
+                                                lineNumber: 776,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 793,
+                                        lineNumber: 774,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$clock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Clock$3e$__["Clock"], {
                                         className: "h-8 w-8 text-yellow-500/30"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 797,
+                                        lineNumber: 778,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 792,
+                                lineNumber: 773,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 791,
+                            lineNumber: 772,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 790,
+                        lineNumber: 771,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1834,7 +1822,7 @@ function PrinterQueuePage() {
                                                 children: "Imprimindo"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 806,
+                                                lineNumber: 787,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1842,36 +1830,36 @@ function PrinterQueuePage() {
                                                 children: stats.printing
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 807,
+                                                lineNumber: 788,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 805,
+                                        lineNumber: 786,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$printer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Printer$3e$__["Printer"], {
                                         className: "h-8 w-8 text-blue-500/30"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 809,
+                                        lineNumber: 790,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 804,
+                                lineNumber: 785,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 803,
+                            lineNumber: 784,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 802,
+                        lineNumber: 783,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1888,7 +1876,7 @@ function PrinterQueuePage() {
                                                 children: "Taxa de Sucesso"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 818,
+                                                lineNumber: 799,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1899,36 +1887,36 @@ function PrinterQueuePage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 819,
+                                                lineNumber: 800,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 817,
+                                        lineNumber: 798,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
                                         className: "h-8 w-8 text-green-500/30"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 821,
+                                        lineNumber: 802,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 816,
+                                lineNumber: 797,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 815,
+                            lineNumber: 796,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 814,
+                        lineNumber: 795,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1945,7 +1933,7 @@ function PrinterQueuePage() {
                                                 children: "Tempo Médio"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 830,
+                                                lineNumber: 811,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1957,42 +1945,42 @@ function PrinterQueuePage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 831,
+                                                lineNumber: 812,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 829,
+                                        lineNumber: 810,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$timer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Timer$3e$__["Timer"], {
                                         className: "h-8 w-8 text-orange-500/30"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 835,
+                                        lineNumber: 816,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 828,
+                                lineNumber: 809,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 827,
+                            lineNumber: 808,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 826,
+                        lineNumber: 807,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 789,
+                lineNumber: 770,
                 columnNumber: 7
             }, this),
             showSettings && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2002,12 +1990,12 @@ function PrinterQueuePage() {
                             children: "Configurações de Retry Automático"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 845,
+                            lineNumber: 826,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 844,
+                        lineNumber: 825,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2023,7 +2011,7 @@ function PrinterQueuePage() {
                                                 children: "Retry Automático"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 850,
+                                                lineNumber: 831,
                                                 columnNumber: 17
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2031,13 +2019,13 @@ function PrinterQueuePage() {
                                                 children: "Reenviar automaticamente jobs com falha"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                lineNumber: 851,
+                                                lineNumber: 832,
                                                 columnNumber: 17
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 849,
+                                        lineNumber: 830,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$switch$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Switch"], {
@@ -2045,13 +2033,13 @@ function PrinterQueuePage() {
                                         onCheckedChange: setRetryEnabled
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 855,
+                                        lineNumber: 836,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 848,
+                                lineNumber: 829,
                                 columnNumber: 13
                             }, this),
                             retryEnabled && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2065,7 +2053,7 @@ function PrinterQueuePage() {
                                                     children: "Intervalo de Retry (segundos)"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 865,
+                                                    lineNumber: 846,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2076,13 +2064,13 @@ function PrinterQueuePage() {
                                                     max: "300"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 866,
+                                                    lineNumber: 847,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 864,
+                                            lineNumber: 845,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2092,7 +2080,7 @@ function PrinterQueuePage() {
                                                     children: "Máximo de Tentativas"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 876,
+                                                    lineNumber: 857,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2103,32 +2091,32 @@ function PrinterQueuePage() {
                                                     max: "10"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 877,
+                                                    lineNumber: 858,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 875,
+                                            lineNumber: 856,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 863,
+                                    lineNumber: 844,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 847,
+                        lineNumber: 828,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 843,
+                lineNumber: 824,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2149,7 +2137,7 @@ function PrinterQueuePage() {
                                                     className: "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 899,
+                                                    lineNumber: 880,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -2159,13 +2147,13 @@ function PrinterQueuePage() {
                                                     className: "pl-10"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 900,
+                                                    lineNumber: 881,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 898,
+                                            lineNumber: 879,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2178,12 +2166,12 @@ function PrinterQueuePage() {
                                                         placeholder: "Todas as impressoras"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 910,
+                                                        lineNumber: 891,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 909,
+                                                    lineNumber: 890,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2193,7 +2181,7 @@ function PrinterQueuePage() {
                                                             children: "Todas as impressoras"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 913,
+                                                            lineNumber: 894,
                                                             columnNumber: 21
                                                         }, this),
                                                         printers.map((printer)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2206,19 +2194,19 @@ function PrinterQueuePage() {
                                                                 ]
                                                             }, printer.id, true, {
                                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                                lineNumber: 915,
+                                                                lineNumber: 896,
                                                                 columnNumber: 23
                                                             }, this))
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 912,
+                                                    lineNumber: 893,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 908,
+                                            lineNumber: 889,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Select"], {
@@ -2231,12 +2219,12 @@ function PrinterQueuePage() {
                                                         placeholder: "Status"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 924,
+                                                        lineNumber: 905,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 923,
+                                                    lineNumber: 904,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -2246,7 +2234,7 @@ function PrinterQueuePage() {
                                                             children: "Todos"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 927,
+                                                            lineNumber: 908,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2254,7 +2242,7 @@ function PrinterQueuePage() {
                                                             children: "Ativos"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 928,
+                                                            lineNumber: 909,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2262,7 +2250,7 @@ function PrinterQueuePage() {
                                                             children: "Pendentes"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 929,
+                                                            lineNumber: 910,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2270,7 +2258,7 @@ function PrinterQueuePage() {
                                                             children: "Imprimindo"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 930,
+                                                            lineNumber: 911,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2278,7 +2266,7 @@ function PrinterQueuePage() {
                                                             children: "Impressos"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 931,
+                                                            lineNumber: 912,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2286,7 +2274,7 @@ function PrinterQueuePage() {
                                                             children: "Falhados"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 932,
+                                                            lineNumber: 913,
                                                             columnNumber: 21
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["SelectItem"], {
@@ -2294,19 +2282,19 @@ function PrinterQueuePage() {
                                                             children: "Cancelados"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 933,
+                                                            lineNumber: 914,
                                                             columnNumber: 21
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 926,
+                                                    lineNumber: 907,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 922,
+                                            lineNumber: 903,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2321,12 +2309,12 @@ function PrinterQueuePage() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 944,
+                                                        lineNumber: 925,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 938,
+                                                    lineNumber: 919,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2338,24 +2326,24 @@ function PrinterQueuePage() {
                                                         className: "h-4 w-4"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 952,
+                                                        lineNumber: 933,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 946,
+                                                    lineNumber: 927,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 937,
+                                            lineNumber: 918,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 897,
+                                    lineNumber: 878,
                                     columnNumber: 15
                                 }, this),
                                 selectedJobs.size > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2369,7 +2357,7 @@ function PrinterQueuePage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 959,
+                                            lineNumber: 940,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2382,14 +2370,14 @@ function PrinterQueuePage() {
                                                     className: "h-3 w-3 mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 968,
+                                                    lineNumber: 949,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Reenviar"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 962,
+                                            lineNumber: 943,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2402,14 +2390,14 @@ function PrinterQueuePage() {
                                                     className: "h-3 w-3 mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 977,
+                                                    lineNumber: 958,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Cancelar"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 971,
+                                            lineNumber: 952,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -2422,41 +2410,41 @@ function PrinterQueuePage() {
                                                     className: "h-3 w-3 mr-1"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 986,
+                                                    lineNumber: 967,
                                                     columnNumber: 21
                                                 }, this),
                                                 "Deletar"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 980,
+                                            lineNumber: 961,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 958,
+                                    lineNumber: 939,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 896,
+                            lineNumber: 877,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 895,
+                        lineNumber: 876,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 894,
+                    lineNumber: 875,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 893,
+                lineNumber: 874,
                 columnNumber: 7
             }, this),
             loading ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2468,7 +2456,7 @@ function PrinterQueuePage() {
                             className: "h-12 w-12 animate-spin text-orange-500 mx-auto mb-4"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 1000,
+                            lineNumber: 981,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2476,18 +2464,18 @@ function PrinterQueuePage() {
                             children: "Carregando fila de impressão..."
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 1001,
+                            lineNumber: 982,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 999,
+                    lineNumber: 980,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 998,
+                lineNumber: 979,
                 columnNumber: 9
             }, this) : filteredJobs.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
                 className: "border-2 border-dashed border-gray-300 dark:border-gray-700",
@@ -2502,12 +2490,12 @@ function PrinterQueuePage() {
                                     className: "h-10 w-10 text-gray-400"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1009,
+                                    lineNumber: 990,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1008,
+                                lineNumber: 989,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
@@ -2515,7 +2503,7 @@ function PrinterQueuePage() {
                                 children: "Fila de Impressão Vazia"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1011,
+                                lineNumber: 992,
                                 columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2523,30 +2511,30 @@ function PrinterQueuePage() {
                                 children: "Não há trabalhos aguardando impressão no momento. Novos pedidos aparecerão aqui automaticamente."
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1014,
+                                lineNumber: 995,
                                 columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 1007,
+                        lineNumber: 988,
                         columnNumber: 13
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 1006,
+                    lineNumber: 987,
                     columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 1005,
+                lineNumber: 986,
                 columnNumber: 9
             }, this) : viewMode === 'list' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4",
                 children: filteredJobs.map((job)=>renderJob(job))
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 1022,
+                lineNumber: 1003,
                 columnNumber: 9
             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "space-y-4",
@@ -2574,20 +2562,20 @@ function PrinterQueuePage() {
                                                     className: "h-5 w-5 text-gray-600"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1044,
+                                                    lineNumber: 1025,
                                                     columnNumber: 23
                                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$chevron$2d$right$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__ChevronRight$3e$__["ChevronRight"], {
                                                     className: "h-5 w-5 text-gray-600"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1046,
+                                                    lineNumber: 1027,
                                                     columnNumber: 23
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$printer$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Printer$3e$__["Printer"], {
                                                     className: "h-5 w-5 text-orange-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1048,
+                                                    lineNumber: 1029,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2595,7 +2583,7 @@ function PrinterQueuePage() {
                                                     children: group.printer.name
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1049,
+                                                    lineNumber: 1030,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2606,14 +2594,14 @@ function PrinterQueuePage() {
                                                             className: "h-3 w-3 mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 1053,
+                                                            lineNumber: 1034,
                                                             columnNumber: 23
                                                         }, this),
                                                         group.printer.location
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1052,
+                                                    lineNumber: 1033,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2623,26 +2611,26 @@ function PrinterQueuePage() {
                                                             className: "h-3 w-3"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 1067,
+                                                            lineNumber: 1048,
                                                             columnNumber: 25
                                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
                                                             className: "h-3 w-3"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 1069,
+                                                            lineNumber: 1050,
                                                             columnNumber: 25
                                                         }, this),
                                                         group.printer.status
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1056,
+                                                    lineNumber: 1037,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 1042,
+                                            lineNumber: 1023,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2655,7 +2643,7 @@ function PrinterQueuePage() {
                                                             className: "h-3 w-3 mr-1"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                            lineNumber: 1076,
+                                                            lineNumber: 1057,
                                                             columnNumber: 23
                                                         }, this),
                                                         group.jobs.length,
@@ -2663,31 +2651,31 @@ function PrinterQueuePage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1075,
+                                                    lineNumber: 1056,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"], {
                                                     className: "h-4 w-4 text-yellow-500"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                    lineNumber: 1079,
+                                                    lineNumber: 1060,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 1074,
+                                            lineNumber: 1055,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1041,
+                                    lineNumber: 1022,
                                     columnNumber: 17
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1029,
+                                lineNumber: 1010,
                                 columnNumber: 15
                             }, this),
                             expandedGroups.has(group.printer.id) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2699,7 +2687,7 @@ function PrinterQueuePage() {
                                             className: "h-8 w-8 text-gray-400 mx-auto mb-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 1088,
+                                            lineNumber: 1069,
                                             columnNumber: 23
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2707,36 +2695,36 @@ function PrinterQueuePage() {
                                             children: "Nenhum trabalho aguardando nesta impressora"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 1089,
+                                            lineNumber: 1070,
                                             columnNumber: 23
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1087,
+                                    lineNumber: 1068,
                                     columnNumber: 21
                                 }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "grid grid-cols-1 lg:grid-cols-2 gap-4",
                                     children: group.jobs.map((job)=>renderJob(job))
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1094,
+                                    lineNumber: 1075,
                                     columnNumber: 21
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1085,
+                                lineNumber: 1066,
                                 columnNumber: 17
                             }, this)
                         ]
                     }, group.printer.id, true, {
                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                        lineNumber: 1028,
+                        lineNumber: 1009,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 1026,
+                lineNumber: 1007,
                 columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -2750,7 +2738,7 @@ function PrinterQueuePage() {
                                     children: "Limpar Fila de Impressão"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1109,
+                                    lineNumber: 1090,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -2761,13 +2749,13 @@ function PrinterQueuePage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1110,
+                                    lineNumber: 1091,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 1108,
+                            lineNumber: 1089,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -2776,7 +2764,7 @@ function PrinterQueuePage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1117,
+                                    lineNumber: 1098,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -2785,30 +2773,30 @@ function PrinterQueuePage() {
                                     children: "Limpar Fila"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                    lineNumber: 1118,
+                                    lineNumber: 1099,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 1116,
+                            lineNumber: 1097,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printer-queue/page.tsx",
-                    lineNumber: 1107,
+                    lineNumber: 1088,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                lineNumber: 1106,
+                lineNumber: 1087,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/printer-queue/page.tsx",
-        lineNumber: 730,
+        lineNumber: 711,
         columnNumber: 5
     }, this);
 }

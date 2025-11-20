@@ -46,9 +46,6 @@ import {
   Timer,
   X,
   Package,
-  Coffee,
-  Wine,
-  UtensilsCrossed,
   ShoppingBag,
   Hash,
   CalendarDays,
@@ -507,20 +504,6 @@ export default function PrinterQueuePage() {
     const printerInfo = printers.find(p => p.id === job.printer_id);
     const tableId = items[0]?.tableId;
     
-    // Ícone baseado no nome do item
-    const getItemIcon = (name: string) => {
-      const lowerName = name?.toLowerCase() || '';
-      if (lowerName.includes('bebida') || lowerName.includes('refrigerante') || lowerName.includes('suco') || lowerName.includes('café')) {
-        return Coffee;
-      }
-      if (lowerName.includes('vinho') || lowerName.includes('wine')) {
-        return Wine;
-      }
-      if (lowerName.includes('prato') || lowerName.includes('comida') || lowerName.includes('lanche')) {
-        return UtensilsCrossed;
-      }
-      return Package;
-    };
 
     return (
       <Card
@@ -603,29 +586,27 @@ export default function PrinterQueuePage() {
               
               <div className="space-y-2 pl-6">
                 {items.map((item: any, idx: number) => {
-                  const Icon = getItemIcon(item.name);
                   return (
-                    <div key={idx} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
-                      <div className="flex items-center gap-3">
-                        <Icon className="h-5 w-5 text-gray-500" />
-                        <div className="flex-1">
-                          <p className="font-medium text-gray-900 dark:text-white">
-                            {item.quantity}x {item.name}
+                    <div key={idx} className="flex items-center justify-between py-1">
+                      <div className="flex items-center gap-2 flex-1">
+                        <div 
+                          className="h-3.5 w-3.5 rounded-full border-2 border-orange-600 bg-orange-600 flex items-center justify-center flex-shrink-0"
+                        >
+                          <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-gray-900 dark:text-white truncate">
+                            <span className="font-medium">{item.quantity}x</span> {item.name}
                           </p>
-                          {item.description && (
-                            <p className="text-xs text-gray-500">
-                              {item.description}
-                            </p>
-                          )}
                           {item.notes && (
-                            <p className="text-xs text-orange-600 mt-1 italic">
+                            <p className="text-xs text-orange-600 italic truncate">
                               Obs: {item.notes}
                             </p>
                           )}
                         </div>
                       </div>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300 ml-4">
-                        R$ {(item.price * item.quantity).toFixed(2)}
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-2 flex-shrink-0">
+                        {item.price === 0 ? 'Incluso' : `R$ ${(item.price * item.quantity).toFixed(2)}`}
                       </span>
                     </div>
                   );
