@@ -199,6 +199,7 @@ export async function GET(
       
       return NextResponse.json({
         template,
+        showItemGroup: data.show_item_group || false, // Incluir flag de mostrar grupo
         isDefault: false
       });
     }

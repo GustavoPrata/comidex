@@ -20,6 +20,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   const [template, setTemplate] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [sections, setSections] = useState<any[]>([]);
+  const [showItemGroup, setShowItemGroup] = useState(false);
 
   useEffect(() => {
     if (open && job) {
@@ -51,7 +52,9 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
         const data = await response.json();
         console.log('Template carregado:', data.template);
         console.log('Sections com formatação:', data.template.sections);
+        console.log('showItemGroup:', data.showItemGroup);
         setTemplate(data.template); // Acessar o template dentro do objeto
+        setShowItemGroup(data.showItemGroup || false); // Carregar configuração de mostrar grupo
         
         // Se houver sections com propriedades de formatação, salvar
         if (data.template.sections && Array.isArray(data.template.sections)) {
@@ -175,7 +178,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
     
     // Substituir variáveis simples
     Object.keys(data).forEach(key => {
-      if (key !== 'items') {
+      if (key !== 'items' && key !== 'itemsByGroup') {
         const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
         result = result.replace(regex, data[key] || '');
       }
@@ -186,23 +189,60 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
     result = result.replace(eachRegex, (match, content) => {
       if (!data.items || data.items.length === 0) return '';
       
-      return data.items.map((item: any) => {
-        let itemContent = content;
-        
-        // Substituir variáveis do item
-        Object.keys(item).forEach(key => {
-          const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-          itemContent = itemContent.replace(itemRegex, item[key] || '');
+      // Se showItemGroup está habilitado e temos grupos
+      if (showItemGroup && data.itemsByGroup && Object.keys(data.itemsByGroup).length > 0) {
+        // Processar itens por grupo
+        let groupedOutput = '';
+        Object.keys(data.itemsByGroup).forEach(group => {
+          // Adicionar cabeçalho do grupo
+          if (group) {
+            groupedOutput += `[[bold]]========= ${group.toUpperCase()} =========[[/bold]]\n`;
+          }
+          
+          // Processar itens do grupo
+          groupedOutput += data.itemsByGroup[group].map((item: any) => {
+            let itemContent = content;
+            
+            // Substituir variáveis do item
+            Object.keys(item).forEach(key => {
+              const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+              itemContent = itemContent.replace(itemRegex, item[key] || '');
+            });
+            
+            // Processar condicionais {{#if field}}
+            const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
+            itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
+              return item[field] ? ifContent : '';
+            });
+            
+            return itemContent;
+          }).join('');
+          
+          // Adicionar linha separadora após o grupo
+          groupedOutput += '--------------------------------\n';
         });
         
-        // Processar condicionais {{#if field}}
-        const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
-        itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
-          return item[field] ? ifContent : '';
-        });
-        
-        return itemContent;
-      }).join('');
+        return groupedOutput;
+      } else {
+        // Processar normalmente sem grupos
+        return data.items.map((item: any) => {
+          let itemContent = content;
+          
+          // Substituir variáveis do item
+          Object.keys(item).forEach(key => {
+            const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+            itemContent = itemContent.replace(itemRegex, item[key] || '');
+          });
+          
+          // Processar condicionais {{#if field}}
+          const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
+          itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
+            return item[field] ? ifContent : '';
+          });
+          
+          return itemContent;
+        }).join('');
+      }
     });
     
     return result;
@@ -283,27 +323,48 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
 
     // Preparar dados do pedido
     const items = [];
+    const itemsByGroup: Record<string, any[]> = {}; // Agrupar itens por categoria
     
     if (job.order_items) {
       const orderItem = job.order_items;
       const item = orderItem.items;
       if (item) {
-        items.push({
+        const itemData = {
           quantity: orderItem.quantity || 1,
           name: item.name || 'Item sem nome',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (orderItem.quantity || 1)).toFixed(2)}`,
           observation: orderItem.notes || '',
-        });
+          group: item.category || '',
+        };
+        items.push(itemData);
+        
+        // Agrupar por categoria se configurado
+        if (showItemGroup && item.category) {
+          if (!itemsByGroup[item.category]) {
+            itemsByGroup[item.category] = [];
+          }
+          itemsByGroup[item.category].push(itemData);
+        }
       }
     } else if (job.document_type === 'order' && job.document_data) {
       const orderItems = job.document_data.items || [];
       orderItems.forEach((item: any) => {
-        items.push({
+        const itemData = {
           quantity: item.quantity || 1,
           name: item.name || item.item_name || 'Item',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (item.quantity || 1)).toFixed(2)}`,
           observation: item.notes || '',
-        });
+          group: item.category || '',
+        };
+        items.push(itemData);
+        
+        // Agrupar por categoria se configurado
+        if (showItemGroup && item.category) {
+          if (!itemsByGroup[item.category]) {
+            itemsByGroup[item.category] = [];
+          }
+          itemsByGroup[item.category].push(itemData);
+        }
       });
     }
 
@@ -325,6 +386,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       date: now.toLocaleDateString('pt-BR'),
       time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       items: items,
+      itemsByGroup: itemsByGroup, // Adicionar itens agrupados por categoria
       subtotal: totalPrice.toFixed(2),
       discount: '0.00',
       service_fee: '0.00',

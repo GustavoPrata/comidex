@@ -201,6 +201,8 @@ export default function TemplatesPage() {
     { id: '3', name: 'Rodapé', content: '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
   ]);
   
+  const [showItemGroup, setShowItemGroup] = useState(false);
+  
   // Restaurant data state
   const [restaurantInfo, setRestaurantInfo] = useState({
     name: 'xxxxxx',
@@ -471,6 +473,7 @@ export default function TemplatesPage() {
         items_content: itemsSection?.content || '',
         custom_footer: footerSection?.content || sections[sections.length - 1]?.content || '',
         sections: validatedSections, // Enviar objeto validado para JSONB
+        show_item_group: showItemGroup, // Adicionar flag de mostrar grupo
         description: `Template para ${templateTypes.find(t => t.id === selectedType)?.label}`,
         header_enabled: true,
         footer_enabled: true,
@@ -862,6 +865,36 @@ export default function TemplatesPage() {
                   />
                 </Card>
               ))}
+
+              {/* Template Options */}
+              <Card className="p-4 mb-4">
+                <h4 className="text-sm font-semibold mb-3">Opções do Template</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <label className="text-sm font-medium">Mostrar Grupo/Categoria</label>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        Exibe o nome da categoria dos itens (ex: "RODIZIO PREMIUM")
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setShowItemGroup(!showItemGroup)}
+                      className={`
+                        relative inline-flex h-6 w-11 items-center rounded-full
+                        transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2
+                        ${showItemGroup ? 'bg-orange-500' : 'bg-gray-200 dark:bg-gray-700'}
+                      `}
+                    >
+                      <span
+                        className={`
+                          ${showItemGroup ? 'translate-x-6' : 'translate-x-1'}
+                          inline-block h-4 w-4 transform rounded-full bg-white transition-transform
+                        `}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </Card>
 
               {/* Variables Helper */}
               <Card className="p-4 bg-orange-50 dark:bg-orange-900/10 border-orange-200 dark:border-orange-800">
