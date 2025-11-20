@@ -457,7 +457,7 @@ export default function TemplatesPage() {
         custom_header: headerSection?.content || sections[0]?.content || '',
         items_content: itemsSection?.content || '',
         custom_footer: footerSection?.content || sections[sections.length - 1]?.content || '',
-        sections: JSON.stringify(sections), // Converter para JSON string
+        sections: sections, // Enviar como objeto JSONB diretamente, não como string
         description: `Template para ${templateTypes.find(t => t.id === selectedType)?.label}`,
         header_enabled: true,
         footer_enabled: true,
