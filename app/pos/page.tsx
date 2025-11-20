@@ -2725,19 +2725,47 @@ export default function POSPage() {
         return;
       }
 
+      // Agrupar produtos iguais (por ID do produto apenas)
+      const groupedItems = itemsForBill.reduce((acc, item) => {
+        const key = item.item_id; // Agrupar apenas por ID do produto
+        if (!acc[key]) {
+          acc[key] = {
+            name: item.item?.name || 'Item',
+            quantity: 0,
+            price: 0,
+            total: 0,
+            maxPrice: 0,
+            observation: item.notes || ''
+          };
+        }
+        acc[key].quantity += item.quantity;
+        acc[key].total += item.total_price;
+        // Sempre pegar o maior preço unitário
+        if (item.unit_price > acc[key].maxPrice) {
+          acc[key].maxPrice = item.unit_price;
+          acc[key].price = item.unit_price;
+        }
+        return acc;
+      }, {} as Record<string, any>);
+
+      // Converter para array e ordenar por valor crescente
+      const sortedItems = Object.values(groupedItems)
+        .map(item => ({
+          name: item.name,
+          quantity: 1, // Sempre mostrar quantidade 1
+          price: item.maxPrice, // Usar o maior valor
+          total: item.total,
+          observation: item.observation
+        }))
+        .sort((a, b) => a.price - b.price); // Ordenar por preço crescente
+
       // Preparar dados da conta
       const billData = {
         table_id: selectedTable.id,
         table_number: selectedTable.number,
-        items: itemsForBill.map(item => ({
-          name: item.item?.name || 'Item',
-          quantity: item.quantity,
-          price: item.unit_price,
-          total: item.total_price,
-          observation: item.notes || ''
-        })),
-        subtotal: itemsForBill.reduce((sum, item) => sum + item.total_price, 0),
-        total: itemsForBill.reduce((sum, item) => sum + item.total_price, 0),
+        items: sortedItems,
+        subtotal: sortedItems.reduce((sum, item) => sum + item.total, 0),
+        total: sortedItems.reduce((sum, item) => sum + item.total, 0),
         date: new Date().toLocaleDateString('pt-BR'),
         time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
       };
