@@ -112,12 +112,15 @@ export async function GET(
       templateType = 'kitchen';
     }
 
-    // Buscar template do banco
-    const { data, error } = await supabase
+    // Buscar template do banco - pegar o mais recente
+    const { data: templates, error } = await supabase
       .from('print_templates')
       .select('*')
       .eq('template_type', templateType)
-      .single();
+      .order('id', { ascending: false })
+      .limit(1);
+    
+    const data = templates?.[0] || null;
 
     if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
       console.error('Error fetching template:', error);

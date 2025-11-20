@@ -5,6 +5,7 @@
   "/api/printer-queue/route": "app/api/printer-queue/route.js",
   "/api/printers/route": "app/api/printers/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
+  "/api/templates/[type]/route": "app/api/templates/[type]/route.js",
   "/page": "app/page.js",
   "/pos/page": "app/pos/page.js",
   "/prompt/page": "app/prompt/page.js"
