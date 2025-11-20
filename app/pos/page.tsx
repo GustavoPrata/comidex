@@ -2676,15 +2676,81 @@ export default function POSPage() {
     }
   };
 
-  const handlePrintComanda = () => {
-    if (!currentOrder || cart.length === 0) {
-      toast.error("Nenhum pedido para imprimir");
+  const handlePrintComanda = async () => {
+    if (!selectedTable) {
+      toast.error("Mesa não selecionada");
       return;
     }
+
+    setLoading(true);
     
-    // Implementar impressão real aqui
-    toast.success("Comanda enviada para impressora");
-    setPrintDialog(false);
+    try {
+      // Buscar impressora principal
+      const { data: printers, error: printerError } = await supabase
+        .from('printers')
+        .select('id')
+        .eq('is_main', true)
+        .eq('active', true)
+        .single();
+
+      if (printerError || !printers) {
+        toast.error("Nenhuma impressora principal configurada");
+        return;
+      }
+
+      // Filtrar itens de rodízio (valor 0) para a conta
+      const itemsForBill = cart.filter(item => {
+        const price = item.unit_price || 0;
+        return price > 0; // Só inclui itens com valor maior que 0
+      });
+
+      if (itemsForBill.length === 0) {
+        toast.error("Nenhum item com valor para imprimir na conta");
+        return;
+      }
+
+      // Preparar dados da conta
+      const billData = {
+        table_id: selectedTable.id,
+        table_number: selectedTable.number,
+        items: itemsForBill.map(item => ({
+          name: item.item?.name || 'Item',
+          quantity: item.quantity,
+          price: item.unit_price,
+          total: item.total_price,
+          observation: item.notes || ''
+        })),
+        subtotal: itemsForBill.reduce((sum, item) => sum + item.total_price, 0),
+        total: itemsForBill.reduce((sum, item) => sum + item.total_price, 0),
+        date: new Date().toLocaleDateString('pt-BR'),
+        time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+      };
+
+      // Adicionar à fila de impressão
+      const { error: queueError } = await supabase
+        .from('printer_queue')
+        .insert({
+          printer_id: printers.id,
+          document_type: 'bill',
+          document_data: billData,
+          copies: 1,
+          status: 'pending'
+        });
+
+      if (queueError) {
+        console.error('Erro ao adicionar à fila:', queueError);
+        toast.error("Erro ao enviar para impressão");
+        return;
+      }
+
+      toast.success("Conta enviada para impressora");
+      setPrintDialog(false);
+    } catch (error) {
+      console.error('Erro ao imprimir conta:', error);
+      toast.error("Erro ao processar impressão");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Filtros e busca

@@ -33,11 +33,16 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   const fetchTemplate = async () => {
     setLoading(true);
     try {
-      // Usar o template "kitchen" para itens de pedido
-      // Os templates disponíveis no banco são: "receipt", "kitchen", e "bill"
-      const templateType = 'kitchen';
+      // Determinar o tipo de template baseado no tipo de documento
+      let templateType = 'kitchen';
       
-      console.log('Buscando template tipo:', templateType);
+      if (job?.document_type === 'bill') {
+        templateType = 'bill'; // Usar template de conta
+      } else if (job?.document_type === 'receipt') {
+        templateType = 'receipt';
+      }
+      
+      console.log('Buscando template tipo:', templateType, 'para documento:', job?.document_type);
       
       // Adicionar timestamp para evitar cache
       const response = await fetch(`/api/templates/${templateType}?t=${Date.now()}`, {
@@ -349,6 +354,21 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
           item_group: groupName || categoryName || '', // Usa grupo primeiro, depois categoria
         });
       }
+    } else if (job.document_type === 'bill' && job.document_data) {
+      // Para contas, processar os itens já filtrados (sem rodízios)
+      const billItems = job.document_data.items || [];
+      billItems.forEach((item: any) => {
+        // Só adiciona itens com valor > 0 (já filtrado no POS)
+        if (item.price > 0) {
+          items.push({
+            quantity: item.quantity || 1,
+            name: item.name || 'Item',
+            price: `${(item.total || item.price * (item.quantity || 1)).toFixed(2)}`,
+            observation: item.observation || '',
+            item_group: '', // Conta não mostra grupo/categoria
+          });
+        }
+      });
     } else if (job.document_type === 'order' && job.document_data) {
       const orderItems = job.document_data.items || [];
       orderItems.forEach((item: any) => {
@@ -375,15 +395,15 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       company_address: 'Rua Principal, 123 - Centro',
       company_phone: '(11) 1234-5678',
       order_number: job.id.toString(),
-      table_number: tableId,
+      table_number: job.document_type === 'bill' ? job.document_data?.table_number : tableId,
       customer_name: job.document_data?.customer_name || '',  // Deixar vazio para o template controlar
-      date: now.toLocaleDateString('pt-BR'),
-      time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+      date: job.document_data?.date || now.toLocaleDateString('pt-BR'),
+      time: job.document_data?.time || now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       items: items,
-      subtotal: totalPrice.toFixed(2),
+      subtotal: job.document_data?.subtotal?.toFixed(2) || totalPrice.toFixed(2),
       discount: '0.00',
       service_fee: '0.00',
-      total: totalPrice.toFixed(2),
+      total: job.document_data?.total?.toFixed(2) || totalPrice.toFixed(2),
       payment_method: 'A definir'
     };
 
