@@ -624,8 +624,8 @@ export default function TemplatesPage() {
       time: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       subtotal: '103,00',
       service_fee: '10,30',
-      discount: '5,00', // Valor de desconto para exemplo
-      total: '108,30', // Total ajustado com desconto
+      discount: '0,00', // Sem desconto por padrão
+      total: '113,30', // Total sem desconto
       payment_method: 'Cartão Crédito'
     };
 
@@ -663,7 +663,16 @@ export default function TemplatesPage() {
     preview = preview.replace(globalIfPattern, (match: string, field: string, ifContent: string) => {
       const fieldValue = sampleData[field];
       // Só mostra o conteúdo se o campo existe e não é vazio/zero
-      if (fieldValue && fieldValue !== '' && fieldValue !== '0,00' && fieldValue !== null) {
+      // Para o campo discount, verificar se é maior que 0
+      if (field === 'discount') {
+        const numValue = parseFloat(fieldValue?.replace(',', '.') || '0');
+        if (numValue > 0) {
+          return ifContent;
+        }
+        return '';
+      }
+      // Para outros campos
+      if (fieldValue && fieldValue !== '' && fieldValue !== '0,00' && fieldValue !== '0.00' && fieldValue !== null) {
         return ifContent;
       }
       return '';
