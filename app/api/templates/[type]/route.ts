@@ -130,11 +130,52 @@ export async function GET(
 
     // Se encontrou template customizado
     if (data) {
-      const template = {
-        header: data.custom_header || defaultTemplates[templateType]?.header || '',
-        items: data.items_content || defaultTemplates[templateType]?.items || '',
-        footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
-      };
+      let template;
+      
+      // PRIORIDADE 1: Usar sections se existir (novo formato)
+      if (data.sections) {
+        // O campo sections pode ser JSON string ou array
+        const sections = typeof data.sections === 'string' 
+          ? JSON.parse(data.sections) 
+          : data.sections;
+        
+        if (Array.isArray(sections) && sections.length > 0) {
+          // Extrair header, items, footer das sections
+          const headerSection = sections.find((s: any) => 
+            s.name && s.name.toLowerCase().includes('cabeça')
+          ) || sections[0];
+          
+          const itemsSection = sections.find((s: any) => 
+            s.type === 'items'
+          );
+          
+          const footerSection = sections.find((s: any) => 
+            s.name && s.name.toLowerCase().includes('rodap')
+          ) || sections[sections.length - 1];
+          
+          template = {
+            header: headerSection?.content || '',
+            items: itemsSection?.content || '',
+            footer: footerSection?.content || ''
+          };
+        } else {
+          // Fallback para campos individuais se sections não for um array válido
+          template = {
+            header: data.custom_header || defaultTemplates[templateType]?.header || '',
+            items: data.items_content || defaultTemplates[templateType]?.items || '',
+            footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
+          };
+        }
+      } else {
+        // PRIORIDADE 2: Usar campos individuais (formato antigo)
+        template = {
+          header: data.custom_header || defaultTemplates[templateType]?.header || '',
+          items: data.items_content || defaultTemplates[templateType]?.items || '',
+          footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
+        };
+      }
+      
+      console.log('Template carregado do banco:', template);
       
       return NextResponse.json({
         template,
