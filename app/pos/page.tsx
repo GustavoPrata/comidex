@@ -2686,17 +2686,30 @@ export default function POSPage() {
     setLoading(true);
     
     try {
-      // Buscar impressora principal
-      const { data: printers, error: printerError } = await supabase
-        .from('printers')
-        .select('id')
-        .eq('is_main', true)
-        .eq('active', true)
+      // Buscar template de conta (bill) com a impressora configurada
+      const { data: template, error: templateError } = await supabase
+        .from('print_templates')
+        .select('printer_id')
+        .eq('template_type', 'bill')
         .single();
 
-      if (printerError || !printers) {
-        toast.error("Nenhuma impressora principal configurada");
-        return;
+      if (templateError || !template?.printer_id) {
+        // Se não houver impressora configurada no template, buscar impressora principal
+        const { data: printer, error: printerError } = await supabase
+          .from('printers')
+          .select('id')
+          .eq('is_main', true)
+          .eq('active', true)
+          .single();
+
+        if (printerError || !printer) {
+          toast.error("Nenhuma impressora configurada para conta");
+          return;
+        }
+        
+        var printerId = printer.id;
+      } else {
+        var printerId = template.printer_id;
       }
 
       // Filtrar itens de rodízio (valor 0) para a conta
@@ -2731,7 +2744,7 @@ export default function POSPage() {
       const { error: queueError } = await supabase
         .from('printer_queue')
         .insert({
-          printer_id: printers.id,
+          printer_id: printerId,
           document_type: 'bill',
           document_data: billData,
           copies: 1,
