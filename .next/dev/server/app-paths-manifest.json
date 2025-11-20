@@ -1,6 +1,5 @@
 {
   "/admin/printer-queue/page": "app/admin/printer-queue/page.js",
-  "/admin/templates/page": "app/admin/templates/page.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/printer-queue/route": "app/api/printer-queue/route.js",
   "/api/printers/route": "app/api/printers/route.js",

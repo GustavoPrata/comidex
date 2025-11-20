@@ -96,14 +96,15 @@ Hora: {{time}}
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { type: string } }
+  { params }: { params: Promise<{ type: string }> }
 ) {
   const supabase = createClient();
-  console.log('✅ Getting template for type:', params.type);
+  const { type } = await params;
+  console.log('✅ Getting template for type:', type);
 
   try {
     // Para itens de pedido, usar template kitchen
-    let templateType = params.type;
+    let templateType = type;
     if (!templateType || templateType === 'undefined') {
       templateType = 'kitchen'; // Default para kitchen
     }
