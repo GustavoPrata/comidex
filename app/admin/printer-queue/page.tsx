@@ -545,7 +545,7 @@ export default function PrinterQueuePage() {
               <div className="flex items-center gap-2">
                 <Receipt className="h-5 w-5 text-gray-600" />
                 <span className="font-semibold text-gray-900 dark:text-white">
-                  Pedido #{job.id}
+                  Impressão #{job.id}
                 </span>
                 {tableId && (
                   <Badge variant="outline" className="ml-2">

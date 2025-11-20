@@ -2754,12 +2754,13 @@ export default function POSPage() {
       const sortedItems = Object.values(groupedItems)
         .map(item => ({
           name: item.name,
-          quantity: 1, // Sempre mostrar quantidade 1
-          price: item.maxPrice, // Usar o maior valor
+          quantity: item.quantity, // Mostrar quantidade total agrupada
+          price: item.maxPrice.toFixed(2), // Mostrar preço unitário (maior valor)
           total: item.total,
-          observation: item.observation
+          observation: item.observation,
+          unitPrice: item.maxPrice // Guardar valor numérico para ordenação
         }))
-        .sort((a, b) => a.price - b.price); // Ordenar por preço crescente
+        .sort((a, b) => a.unitPrice - b.unitPrice); // Ordenar por preço unitário crescente
 
       // Calcular valores
       const subtotal = sortedItems.reduce((sum, item) => sum + item.total, 0);
