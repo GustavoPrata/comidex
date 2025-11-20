@@ -588,22 +588,15 @@ export default function PrinterQueuePage() {
                 {items.map((item: any, idx: number) => {
                   return (
                     <div key={idx} className="flex items-center justify-between py-1">
-                      <div className="flex items-center gap-2 flex-1">
-                        <div 
-                          className="h-3.5 w-3.5 rounded-full border-2 border-orange-600 bg-orange-600 flex items-center justify-center flex-shrink-0"
-                        >
-                          <div className="h-1.5 w-1.5 rounded-full bg-white"></div>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm text-gray-900 dark:text-white truncate">
-                            <span className="font-medium">{item.quantity}x</span> {item.name}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-gray-900 dark:text-white truncate">
+                          <span className="font-medium">{item.quantity}x</span> {item.name}
+                        </p>
+                        {item.notes && (
+                          <p className="text-xs text-orange-600 italic truncate">
+                            Obs: {item.notes}
                           </p>
-                          {item.notes && (
-                            <p className="text-xs text-orange-600 italic truncate">
-                              Obs: {item.notes}
-                            </p>
-                          )}
-                        </div>
+                        )}
                       </div>
                       <span className="text-sm font-medium text-gray-700 dark:text-gray-300 ml-2 flex-shrink-0">
                         {item.price === 0 ? 'Incluso' : `R$ ${(item.price * item.quantity).toFixed(2)}`}
