@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -44,7 +44,18 @@ import {
   Download,
   Send,
   Timer,
-  X
+  X,
+  Package,
+  Coffee,
+  Wine,
+  UtensilsCrossed,
+  ShoppingBag,
+  Hash,
+  CalendarDays,
+  User,
+  MapPin,
+  ArrowRight,
+  Sparkles
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
@@ -447,114 +458,230 @@ export default function PrinterQueuePage() {
     }
   };
 
-  // Renderizar job individual
-  const renderJob = (job: PrintJob) => (
-    <div
-      key={job.id}
-      className={cn(
-        "flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors",
-        selectedJobs.has(job.id) && "bg-orange-50 dark:bg-orange-900/10 border-orange-300 dark:border-orange-700"
-      )}
-    >
-      <div className="flex items-center gap-4">
-        <input
-          type="checkbox"
-          checked={selectedJobs.has(job.id)}
-          onChange={(e) => {
-            const newSelected = new Set(selectedJobs);
-            if (e.target.checked) {
-              newSelected.add(job.id);
-            } else {
-              newSelected.delete(job.id);
-            }
-            setSelectedJobs(newSelected);
-          }}
-          className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
-        />
-        
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-mono text-gray-500">#{job.id}</span>
-            {renderDocumentType(job.document_type)}
-            {renderStatusBadge(job.status)}
-            {job.copies > 1 && (
-              <Badge variant="outline" className="gap-1">
-                <Download className="h-3 w-3" />
-                {job.copies} cópias
-              </Badge>
-            )}
-          </div>
-          
-          <div className="flex items-center gap-4 text-sm text-gray-600">
-            <div className="flex items-center gap-1">
-              <Printer className="h-3 w-3" />
-              {printers.find(p => p.id === job.printer_id)?.name || `Impressora #${job.printer_id}`}
-            </div>
-            <div>
-              {new Date(job.created_at).toLocaleString('pt-BR')}
-            </div>
-            {job.retry_count > 0 && (
-              <Badge variant="outline" className="text-xs">
-                {job.retry_count}/{maxRetries} tentativas
-              </Badge>
-            )}
-          </div>
+  // Renderizar job individual com visual melhorado
+  const renderJob = (job: PrintJob) => {
+    // Extrair informações do documento
+    const getItemsInfo = () => {
+      if (job.document_type === 'order' && job.document_data) {
+        const items = job.document_data.items || [];
+        return items.map((item: any) => ({
+          name: item.name || item.item_name || 'Item',
+          quantity: item.quantity || 1,
+          price: item.price || 0,
+          category: item.category || 'Geral'
+        }));
+      }
+      return [];
+    };
 
-          {job.error_message && (
-            <div className="text-sm text-red-600 flex items-center gap-1 mt-1">
-              <AlertCircle className="h-3 w-3" />
-              {job.error_message}
+    const items = getItemsInfo();
+    const totalPrice = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+    const printerInfo = printers.find(p => p.id === job.printer_id);
+    
+    // Ícone baseado na categoria ou tipo
+    const getCategoryIcon = (category: string) => {
+      const categoryIcons: { [key: string]: any } = {
+        'bebidas': Coffee,
+        'drinks': Coffee,
+        'vinhos': Wine,
+        'wines': Wine,
+        'pratos': UtensilsCrossed,
+        'dishes': UtensilsCrossed,
+        'default': Package
+      };
+      return categoryIcons[category?.toLowerCase()] || categoryIcons.default;
+    };
+
+    return (
+      <Card
+        key={job.id}
+        className={cn(
+          "overflow-hidden transition-all duration-200",
+          "hover:shadow-lg hover:-translate-y-1",
+          selectedJobs.has(job.id) && "ring-2 ring-orange-500 bg-orange-50/50 dark:bg-orange-900/10"
+        )}
+      >
+        {/* Header do Card */}
+        <div className={cn(
+          "px-4 py-3 border-b",
+          job.status === 'pending' && "bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20",
+          job.status === 'printing' && "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 animate-pulse",
+          job.status === 'printed' && "bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20",
+          job.status === 'failed' && "bg-gradient-to-r from-red-50 to-pink-50 dark:from-red-900/20 dark:to-pink-900/20"
+        )}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                checked={selectedJobs.has(job.id)}
+                onChange={(e) => {
+                  const newSelected = new Set(selectedJobs);
+                  if (e.target.checked) {
+                    newSelected.add(job.id);
+                  } else {
+                    newSelected.delete(job.id);
+                  }
+                  setSelectedJobs(newSelected);
+                }}
+                className="h-4 w-4 rounded border-gray-300 text-orange-600 focus:ring-orange-500"
+              />
+              
+              <div className="flex items-center gap-2">
+                <Receipt className="h-5 w-5 text-gray-600" />
+                <span className="font-semibold text-gray-900 dark:text-white">
+                  Pedido #{job.id}
+                </span>
+              </div>
+              
+              {renderStatusBadge(job.status)}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div className="text-sm text-gray-500 flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                {new Date(job.created_at).toLocaleTimeString('pt-BR', { 
+                  hour: '2-digit', 
+                  minute: '2-digit' 
+                })}
+              </div>
+              
+              {job.copies > 1 && (
+                <Badge variant="outline" className="gap-1">
+                  <Download className="h-3 w-3" />
+                  {job.copies}x
+                </Badge>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Conteúdo do Card */}
+        <CardContent className="p-4">
+          {/* Lista de Itens */}
+          {items.length > 0 ? (
+            <div className="space-y-3">
+              <div className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                <Package className="h-4 w-4 text-orange-500" />
+                Itens para Impressão:
+              </div>
+              
+              <div className="space-y-2 pl-6">
+                {items.map((item: any, idx: number) => {
+                  const Icon = getCategoryIcon(item.category);
+                  return (
+                    <div key={idx} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
+                      <div className="flex items-center gap-3">
+                        <Icon className="h-5 w-5 text-gray-500" />
+                        <div>
+                          <p className="font-medium text-gray-900 dark:text-white">
+                            {item.quantity}x {item.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {item.category}
+                          </p>
+                        </div>
+                      </div>
+                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                        R$ {(item.price * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Total */}
+              <div className="flex items-center justify-between pt-2 border-t">
+                <span className="font-semibold text-gray-700 dark:text-gray-300">Total:</span>
+                <span className="text-lg font-bold text-orange-600">
+                  R$ {totalPrice.toFixed(2)}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div className="py-4 text-center text-gray-500">
+              <FileText className="h-8 w-8 mx-auto mb-2 text-gray-400" />
+              <p className="text-sm">Documento para impressão</p>
             </div>
           )}
-        </div>
-      </div>
 
-      <div className="flex items-center gap-2">
-        {job.status === 'pending' && (
-          <>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => updateJobStatus(job.id, 'printing')}
-              className="h-8 px-2"
-            >
-              <Play className="h-4 w-4" />
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => cancelJob(job.id)}
-              className="h-8 px-2"
-            >
-              <Pause className="h-4 w-4" />
-            </Button>
-          </>
-        )}
-        
-        {job.status === 'failed' && (
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => retryJob(job.id)}
-            className="h-8 px-2"
-          >
-            <RotateCcw className="h-4 w-4" />
-          </Button>
-        )}
-        
-        {['printed', 'cancelled', 'failed'].includes(job.status) && (
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => deleteJob(job.id)}
-            className="h-8 px-2 text-red-600 hover:text-red-700"
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        )}
-      </div>
-    </div>
-  );
+          {/* Informações da Impressora */}
+          <div className="mt-4 pt-3 border-t flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm text-gray-600">
+              <Printer className="h-4 w-4" />
+              <span>{printerInfo?.name || 'Impressora'}</span>
+              {printerInfo?.location && (
+                <>
+                  <MapPin className="h-3 w-3 ml-2" />
+                  <span>{printerInfo.location}</span>
+                </>
+              )}
+            </div>
+
+            {/* Ações */}
+            <div className="flex items-center gap-1">
+              {job.status === 'pending' && (
+                <>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => updateJobStatus(job.id, 'printing')}
+                    className="h-8 px-2 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/20"
+                  >
+                    <Play className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => cancelJob(job.id)}
+                    className="h-8 px-2 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900/20"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </>
+              )}
+              
+              {job.status === 'failed' && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => retryJob(job.id)}
+                  className="h-8 px-2 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/20"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                </Button>
+              )}
+              
+              {['printed', 'cancelled', 'failed'].includes(job.status) && (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => deleteJob(job.id)}
+                  className="h-8 px-2 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900/20"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Mensagem de erro */}
+          {job.error_message && (
+            <div className="mt-3 p-2 bg-red-50 dark:bg-red-900/20 rounded-md flex items-start gap-2">
+              <AlertCircle className="h-4 w-4 text-red-600 mt-0.5" />
+              <p className="text-sm text-red-600">{job.error_message}</p>
+            </div>
+          )}
+
+          {/* Retry count */}
+          {job.retry_count > 0 && (
+            <div className="mt-2 text-xs text-gray-500 text-center">
+              Tentativa {job.retry_count} de {maxRetries}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <div className="space-y-6">
@@ -823,91 +950,114 @@ export default function PrinterQueuePage() {
         </CardContent>
       </Card>
 
-      {/* Lista de Jobs */}
-      <Card>
-        <CardContent className="p-0">
-          <ScrollArea className="h-[600px]">
-            <div className="p-4 space-y-2">
-              {loading ? (
-                <div className="flex items-center justify-center py-12">
-                  <RefreshCw className="h-8 w-8 animate-spin text-orange-500" />
-                </div>
-              ) : filteredJobs.length === 0 ? (
-                <div className="text-center py-12">
-                  <Printer className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Nenhum job na fila
-                  </p>
-                </div>
-              ) : viewMode === 'list' ? (
-                filteredJobs.map(job => renderJob(job))
-              ) : (
-                groupedJobs.map(group => (
-                  <div key={group.printer.id} className="space-y-2">
-                    <button
-                      onClick={() => {
-                        const newExpanded = new Set(expandedGroups);
-                        if (newExpanded.has(group.printer.id)) {
-                          newExpanded.delete(group.printer.id);
-                        } else {
-                          newExpanded.add(group.printer.id);
-                        }
-                        setExpandedGroups(newExpanded);
-                      }}
-                      className="flex items-center justify-between w-full p-3 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        {expandedGroups.has(group.printer.id) ? (
-                          <ChevronDown className="h-4 w-4" />
-                        ) : (
-                          <ChevronRight className="h-4 w-4" />
-                        )}
-                        <Printer className="h-4 w-4" />
-                        <span className="font-medium">{group.printer.name}</span>
-                        <Badge variant="outline">
-                          {group.printer.location}
-                        </Badge>
-                        <Badge 
-                          className={cn(
-                            "gap-1",
-                            group.printer.status === 'online' 
-                              ? "bg-green-500/20 text-green-600"
-                              : group.printer.status === 'offline'
-                              ? "bg-gray-500/20 text-gray-600"
-                              : "bg-red-500/20 text-red-600"
-                          )}
-                        >
-                          {group.printer.status === 'online' ? (
-                            <CheckCircle2 className="h-3 w-3" />
-                          ) : (
-                            <AlertCircle className="h-3 w-3" />
-                          )}
-                          {group.printer.status}
-                        </Badge>
-                      </div>
-                      <Badge>
-                        {group.jobs.length} jobs
-                      </Badge>
-                    </button>
-
-                    {expandedGroups.has(group.printer.id) && (
-                      <div className="pl-8 space-y-2">
-                        {group.jobs.length === 0 ? (
-                          <p className="text-sm text-gray-500 p-3">
-                            Nenhum job para esta impressora
-                          </p>
-                        ) : (
-                          group.jobs.map(job => renderJob(job))
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
+      {/* Lista de Jobs com Visual Melhorado */}
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <RefreshCw className="h-12 w-12 animate-spin text-orange-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">Carregando fila de impressão...</p>
+          </div>
+        </div>
+      ) : filteredJobs.length === 0 ? (
+        <Card className="border-2 border-dashed border-gray-300 dark:border-gray-700">
+          <CardContent className="py-16">
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-gray-100 dark:bg-gray-800 rounded-full mb-4">
+                <Printer className="h-10 w-10 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                Fila de Impressão Vazia
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 max-w-md mx-auto">
+                Não há trabalhos aguardando impressão no momento. 
+                Novos pedidos aparecerão aqui automaticamente.
+              </p>
             </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ) : viewMode === 'list' ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          {filteredJobs.map(job => renderJob(job))}
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {groupedJobs.map(group => (
+            <Card key={group.printer.id} className="overflow-hidden">
+              <button
+                onClick={() => {
+                  const newExpanded = new Set(expandedGroups);
+                  if (newExpanded.has(group.printer.id)) {
+                    newExpanded.delete(group.printer.id);
+                  } else {
+                    newExpanded.add(group.printer.id);
+                  }
+                  setExpandedGroups(newExpanded);
+                }}
+                className="w-full p-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 hover:from-gray-100 hover:to-gray-150 dark:hover:from-gray-700 dark:hover:to-gray-800 transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    {expandedGroups.has(group.printer.id) ? (
+                      <ChevronDown className="h-5 w-5 text-gray-600" />
+                    ) : (
+                      <ChevronRight className="h-5 w-5 text-gray-600" />
+                    )}
+                    <Printer className="h-5 w-5 text-orange-500" />
+                    <span className="font-semibold text-gray-900 dark:text-white">
+                      {group.printer.name}
+                    </span>
+                    <Badge variant="outline" className="ml-2">
+                      <MapPin className="h-3 w-3 mr-1" />
+                      {group.printer.location}
+                    </Badge>
+                    <Badge 
+                      className={cn(
+                        "gap-1 ml-2",
+                        group.printer.status === 'online' 
+                          ? "bg-green-500/20 text-green-600"
+                          : group.printer.status === 'offline'
+                          ? "bg-gray-500/20 text-gray-600"
+                          : "bg-red-500/20 text-red-600"
+                      )}
+                    >
+                      {group.printer.status === 'online' ? (
+                        <CheckCircle2 className="h-3 w-3" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3" />
+                      )}
+                      {group.printer.status}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge className="bg-orange-500/20 text-orange-600">
+                      <Package className="h-3 w-3 mr-1" />
+                      {group.jobs.length} trabalhos
+                    </Badge>
+                    <Sparkles className="h-4 w-4 text-yellow-500" />
+                  </div>
+                </div>
+              </button>
+
+              {expandedGroups.has(group.printer.id) && (
+                <CardContent className="p-4 border-t">
+                  {group.jobs.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Timer className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-500">
+                        Nenhum trabalho aguardando nesta impressora
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {group.jobs.map(job => renderJob(job))}
+                    </div>
+                  )}
+                </CardContent>
+              )}
+            </Card>
+          ))}
+        </div>
+      )}
 
       {/* Modal de Confirmação para Limpar Fila */}
       <AlertDialog open={clearQueueDialog} onOpenChange={setClearQueueDialog}>
