@@ -451,13 +451,25 @@ export default function TemplatesPage() {
         footerSection: footerSection?.content
       });
       
+      // Validar que sections é serializável como JSON
+      const validatedSections = sections.map(section => ({
+        id: section.id,
+        name: section.name,
+        content: section.content,
+        type: section.type,
+        fontSize: section.fontSize,
+        fontFamily: section.fontFamily,
+        align: section.align,
+        bold: section.bold
+      }));
+      
       const templateData = {
         name: `Template ${templateTypes.find(t => t.id === selectedType)?.label}`,
         template_type: selectedType,
         custom_header: headerSection?.content || sections[0]?.content || '',
         items_content: itemsSection?.content || '',
         custom_footer: footerSection?.content || sections[sections.length - 1]?.content || '',
-        sections: sections, // Enviar como objeto JSONB diretamente, não como string
+        sections: validatedSections, // Enviar objeto validado para JSONB
         description: `Template para ${templateTypes.find(t => t.id === selectedType)?.label}`,
         header_enabled: true,
         footer_enabled: true,

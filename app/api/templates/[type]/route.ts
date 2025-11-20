@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 
 // Default templates
 const defaultTemplates: any = {
@@ -98,7 +98,7 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ type: string }> }
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { type } = await params;
   console.log('✅ Getting template for type:', type);
 
