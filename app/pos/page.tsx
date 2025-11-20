@@ -2022,8 +2022,11 @@ export default function POSPage() {
             quantity: item.quantity,
             unit_price: item.unit_price,
             total_price: item.total_price,
-            notes: item.notes,
-            name: item.item?.name || 'Item'
+            notes: item.notes || (item.item_id < 0 ? item.item?.name : null),
+            name: item.item?.name || 'Item',
+            // Adicionar dados extras para rodízios
+            icon: item.item_id < 0 ? (item.item as any)?.icon || null : undefined,
+            group_id: item.item_id < 0 ? item.item?.group_id || null : undefined
           })),
           notes: ''
         };

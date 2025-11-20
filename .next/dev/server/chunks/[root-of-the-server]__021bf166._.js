@@ -504,15 +504,31 @@ async function POST(request) {
         }
         // Create order items
         if (body.items && body.items.length > 0) {
-            const orderItems = body.items.map((item)=>({
+            const orderItems = body.items.map((item)=>{
+                // Para rodízios (item_id null), salvar metadata
+                const baseItem = {
                     order_id: order.id,
                     item_id: item.item_id,
                     quantity: item.quantity,
                     unit_price: item.unit_price,
                     total_price: item.total_price,
-                    notes: item.notes,
+                    notes: item.notes || (item.item_id === null ? item.name : null),
                     status: 'pending'
-                }));
+                };
+                // Se é rodízio (item_id null), adicionar metadata
+                if (item.item_id === null && item.name) {
+                    return {
+                        ...baseItem,
+                        metadata: {
+                            type: 'rodizio',
+                            name: item.name,
+                            icon: item.icon || null,
+                            group_id: item.group_id || null
+                        }
+                    };
+                }
+                return baseItem;
+            });
             const { data: insertedItems, error: itemsError } = await supabase.from('order_items').insert(orderItems).select();
             if (itemsError) throw itemsError;
             // Adicionar items à fila de impressão

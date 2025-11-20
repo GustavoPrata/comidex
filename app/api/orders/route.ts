@@ -112,15 +112,33 @@ export async function POST(request: NextRequest) {
     
     // Create order items
     if (body.items && body.items.length > 0) {
-      const orderItems = body.items.map((item: any) => ({
-        order_id: order.id,
-        item_id: item.item_id,
-        quantity: item.quantity,
-        unit_price: item.unit_price,
-        total_price: item.total_price,
-        notes: item.notes,
-        status: 'pending'
-      }))
+      const orderItems = body.items.map((item: any) => {
+        // Para rodízios (item_id null), salvar metadata
+        const baseItem = {
+          order_id: order.id,
+          item_id: item.item_id,
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+          total_price: item.total_price,
+          notes: item.notes || (item.item_id === null ? item.name : null),
+          status: 'pending'
+        };
+        
+        // Se é rodízio (item_id null), adicionar metadata
+        if (item.item_id === null && item.name) {
+          return {
+            ...baseItem,
+            metadata: {
+              type: 'rodizio',
+              name: item.name,
+              icon: item.icon || null,
+              group_id: item.group_id || null
+            }
+          };
+        }
+        
+        return baseItem;
+      })
       
       const { data: insertedItems, error: itemsError } = await supabase
         .from('order_items')
@@ -129,34 +147,39 @@ export async function POST(request: NextRequest) {
       
       if (itemsError) throw itemsError
       
-      // Adicionar items à fila de impressão
+      // Adicionar items à fila de impressão (exceto rodízios)
       if (insertedItems && insertedItems.length > 0) {
-        // Buscar impressora principal para pedidos
-        const { data: printers } = await supabase
-          .from('printers')
-          .select('id')
-          .eq('is_main', true)
-          .eq('active', true)
-          .single();
+        // Filtrar apenas itens que têm item_id (não são rodízios)
+        const itemsToPrint = insertedItems.filter((item: any) => item.item_id !== null);
         
-        if (printers) {
-          // Adicionar cada item à fila de impressão
-          const printJobs = insertedItems.map(item => ({
-            order_item_id: item.id,
-            printer_id: printers.id,
-            priority: 'high',
-            copies: 1,
-            status: 'pending'
-          }));
+        if (itemsToPrint.length > 0) {
+          // Buscar impressora principal para pedidos
+          const { data: printers } = await supabase
+            .from('printers')
+            .select('id')
+            .eq('is_main', true)
+            .eq('active', true)
+            .single();
           
-          const { error: queueError } = await supabase
-            .from('printer_queue')
-            .insert(printJobs);
-          
-          if (queueError) {
-            console.error('Erro ao adicionar à fila de impressão:', queueError);
-          } else {
-            console.log('Itens adicionados à fila de impressão:', printJobs.length);
+          if (printers) {
+            // Adicionar cada item à fila de impressão
+            const printJobs = itemsToPrint.map((item: any) => ({
+              order_item_id: item.id,
+              printer_id: printers.id,
+              priority: 'high',
+              copies: 1,
+              status: 'pending'
+            }));
+            
+            const { error: queueError } = await supabase
+              .from('printer_queue')
+              .insert(printJobs);
+            
+            if (queueError) {
+              console.error('Erro ao adicionar à fila de impressão:', queueError);
+            } else {
+              console.log('Itens adicionados à fila de impressão:', printJobs.length);
+            }
           }
         }
       }
