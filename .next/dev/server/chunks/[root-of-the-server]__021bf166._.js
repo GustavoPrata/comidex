@@ -531,40 +531,23 @@ async function POST(request) {
             });
             const { data: insertedItems, error: itemsError } = await supabase.from('order_items').insert(orderItems).select();
             if (itemsError) throw itemsError;
-            // Adicionar items à fila de impressão (exceto rodízios e itens de grupos rodízio)
+            // Adicionar TODOS os items à fila de impressão (incluindo rodízios)
             if (insertedItems && insertedItems.length > 0) {
-                // Filtrar apenas itens que têm item_id (não são rodízios)
-                const itemsWithId = insertedItems.filter((item)=>item.item_id !== null);
-                if (itemsWithId.length > 0) {
-                    // Buscar informações dos itens para verificar se pertencem a grupos rodízio
-                    const itemIds = itemsWithId.map((item)=>item.item_id);
-                    const { data: itemsInfo } = await supabase.from('items').select('id, group_id, group:groups(type)').in('id', itemIds);
-                    // Filtrar itens que NÃO pertencem a grupos tipo 'rodizio'
-                    const itemsToPrint = itemsWithId.filter((item)=>{
-                        const itemInfo = itemsInfo?.find((info)=>info.id === item.item_id);
-                        // Se não encontrou info ou o grupo não é rodízio, pode imprimir
-                        return !itemInfo || itemInfo.group?.type !== 'rodizio';
-                    });
-                    if (itemsToPrint.length > 0) {
-                        // Buscar impressora principal para pedidos
-                        const { data: printers } = await supabase.from('printers').select('id').eq('is_main', true).eq('active', true).single();
-                        if (printers) {
-                            // Adicionar cada item à fila de impressão
-                            const printJobs = itemsToPrint.map((item)=>({
-                                    order_item_id: item.id,
-                                    printer_id: printers.id,
-                                    copies: 1,
-                                    status: 'pending'
-                                }));
-                            const { error: queueError } = await supabase.from('printer_queue').insert(printJobs);
-                            if (queueError) {
-                                console.error('Erro ao adicionar à fila de impressão:', queueError);
-                            } else {
-                                console.log('Itens adicionados à fila de impressão:', printJobs.length);
-                            }
-                        }
+                // Buscar impressora principal para pedidos
+                const { data: printers } = await supabase.from('printers').select('id').eq('is_main', true).eq('active', true).single();
+                if (printers) {
+                    // Adicionar cada item à fila de impressão (incluindo rodízios)
+                    const printJobs = insertedItems.map((item)=>({
+                            order_item_id: item.id,
+                            printer_id: printers.id,
+                            copies: 1,
+                            status: 'pending'
+                        }));
+                    const { error: queueError } = await supabase.from('printer_queue').insert(printJobs);
+                    if (queueError) {
+                        console.error('Erro ao adicionar à fila de impressão:', queueError);
                     } else {
-                        console.log('Nenhum item para impressão (todos são rodízio ou itens de rodízio)');
+                        console.log('Todos os itens adicionados à fila de impressão:', printJobs.length);
                     }
                 }
             }

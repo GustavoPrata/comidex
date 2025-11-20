@@ -586,6 +586,7 @@ async function GET(request, { params }) {
             console.log('✅ Template final que será retornado:', template);
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 template,
+                showItemGroup: data.show_item_group || false,
                 isDefault: false
             });
         }
