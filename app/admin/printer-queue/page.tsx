@@ -43,6 +43,7 @@ import {
   EyeOff,
   Download,
   Send,
+  Timer,
   X
 } from 'lucide-react';
 import { toast } from 'sonner';
