@@ -776,8 +776,11 @@ export default function POSPage() {
       if (!error && orderData) {
         setCurrentOrder(orderData as any);
         
+        // Preserve new items not yet saved to database
+        const newItems = cart.filter(item => !item.id || item.id < 0);
+        
         // Transform order items to cart format
-        const cartItems = orderData.items?.map((orderItem: any) => {
+        const savedItems = orderData.items?.map((orderItem: any) => {
           // Handle rodízio items (no item_id)
           if (!orderItem.item_id) {
             // Extract rodízio metadata if available
@@ -817,7 +820,8 @@ export default function POSPage() {
           };
         }) || [];
         
-        setCart(cartItems);
+        // Combine saved items with new items not yet in database
+        setCart([...savedItems, ...newItems]);
         // Removido scroll automático - itens recentes ficam no topo
       } else {
         setCart([]);
@@ -2050,11 +2054,6 @@ export default function POSPage() {
         
         // Sempre atualizar currentOrder com os dados mais recentes
         setCurrentOrder(newOrder);
-        
-        // Recarregar detalhes da sessão para garantir sincronização completa
-        if (selectedTable) {
-          setTimeout(() => loadSessionDetails(selectedTable.id), 500);
-        }
 
         // Para compatibilidade, criar array de items como se viesse do Supabase
         insertedItems = newItems.map(item => ({

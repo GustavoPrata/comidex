@@ -465,21 +465,43 @@ async function POST(request) {
         const body = await request.json();
         // Buscar table_id da sessão
         let tableId = body.table_id;
-        if (!tableId && body.session_id) {
-            const { data: session } = await supabase.from('table_sessions').select('table_id').eq('id', body.session_id).single();
+        let sessionId = body.session_id;
+        if (!tableId && sessionId) {
+            const { data: session } = await supabase.from('table_sessions').select('table_id').eq('id', sessionId).single();
             tableId = session?.table_id;
         }
-        // Gerar número do pedido (baseado em timestamp para ser único)
-        const orderNumber = Date.now().toString();
-        // Create order
-        const { data: order, error: orderError } = await supabase.from('orders').insert({
-            order_number: orderNumber,
-            table_id: tableId,
-            total: body.total,
-            status: 'pending',
-            notes: body.notes
-        }).select().single();
-        if (orderError) throw orderError;
+        // Verificar se já existe um order ativo para esta mesa
+        let order;
+        if (tableId) {
+            const { data: existingOrder } = await supabase.from('orders').select().eq('table_id', tableId).in('status', [
+                'pending',
+                'confirmed',
+                'preparing'
+            ]).single();
+            if (existingOrder) {
+                // Usar o order existente e atualizar o total
+                const { data: updatedOrder, error: updateError } = await supabase.from('orders').update({
+                    total: existingOrder.total + body.total,
+                    updated_at: new Date().toISOString()
+                }).eq('id', existingOrder.id).select().single();
+                if (updateError) throw updateError;
+                order = updatedOrder;
+            } else {
+                // Criar novo order se não existir um ativo
+                const orderNumber = Date.now().toString();
+                const { data: newOrder, error: orderError } = await supabase.from('orders').insert({
+                    order_number: orderNumber,
+                    table_id: tableId,
+                    total: body.total,
+                    status: 'pending',
+                    notes: body.notes
+                }).select().single();
+                if (orderError) throw orderError;
+                order = newOrder;
+            }
+        } else {
+            throw new Error('Mesa não especificada');
+        }
         // Create order items
         if (body.items && body.items.length > 0) {
             const orderItems = body.items.map((item)=>({
@@ -491,10 +513,29 @@ async function POST(request) {
                     notes: item.notes,
                     status: 'pending'
                 }));
-            const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
+            const { data: insertedItems, error: itemsError } = await supabase.from('order_items').insert(orderItems).select();
             if (itemsError) throw itemsError;
-            // TODO: Adicionar items à fila de impressão após resolver incompatibilidade de tipos (UUID vs Integer)
-            // Por enquanto, apenas logar que o pedido foi criado
+            // Adicionar items à fila de impressão
+            if (insertedItems && insertedItems.length > 0) {
+                // Buscar impressora principal para pedidos
+                const { data: printers } = await supabase.from('printers').select('id').eq('is_main', true).eq('active', true).single();
+                if (printers) {
+                    // Adicionar cada item à fila de impressão
+                    const printJobs = insertedItems.map((item)=>({
+                            order_item_id: item.id,
+                            printer_id: printers.id,
+                            priority: 'high',
+                            copies: 1,
+                            status: 'pending'
+                        }));
+                    const { error: queueError } = await supabase.from('printer_queue').insert(printJobs);
+                    if (queueError) {
+                        console.error('Erro ao adicionar à fila de impressão:', queueError);
+                    } else {
+                        console.log('Itens adicionados à fila de impressão:', printJobs.length);
+                    }
+                }
+            }
             console.log('Pedido criado com sucesso:', order.id, 'Total de itens:', orderItems.length);
         }
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(order, {
