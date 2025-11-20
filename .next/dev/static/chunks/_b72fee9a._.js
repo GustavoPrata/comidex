@@ -963,6 +963,13 @@ function PrintPreview({ open, onClose, job }) {
         }, 0);
         const now = new Date();
         const tableId = job.order_items?.orders?.table_id || job.document_data?.table_id || 'N/A';
+        // Helper function to format numbers properly
+        const formatValue = (value, fallback = '0.00')=>{
+            if (value === null || value === undefined) return fallback;
+            if (typeof value === 'string') return value;
+            if (typeof value === 'number') return value.toFixed(2);
+            return fallback;
+        };
         const templateData = {
             company_name: 'COMIDEX RESTAURANTE',
             company_address: 'Rua Principal, 123 - Centro',
@@ -976,10 +983,10 @@ function PrintPreview({ open, onClose, job }) {
                 minute: '2-digit'
             }),
             items: items,
-            subtotal: job.document_data?.subtotal?.toFixed(2) || totalPrice.toFixed(2),
-            discount: '0.00',
-            service_fee: '0.00',
-            total: job.document_data?.total?.toFixed(2) || totalPrice.toFixed(2),
+            subtotal: formatValue(job.document_data?.subtotal, totalPrice.toFixed(2)),
+            discount: formatValue(job.document_data?.discount, '0.00'),
+            service_fee: formatValue(job.document_data?.service_fee, '0.00'),
+            total: formatValue(job.document_data?.total, totalPrice.toFixed(2)),
             payment_method: 'A definir'
         };
         // Se temos sections com formatação, renderizar com as propriedades
@@ -994,12 +1001,12 @@ function PrintPreview({ open, onClose, job }) {
                         children: renderSection(section, templateData)
                     }, section.id || index, false, {
                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                        lineNumber: 416,
+                        lineNumber: 424,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                lineNumber: 414,
+                lineNumber: 422,
                 columnNumber: 9
             }, this);
         }
@@ -1019,7 +1026,7 @@ function PrintPreview({ open, onClose, job }) {
             children: processFormatting(fullContent)
         }, void 0, false, {
             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-            lineNumber: 432,
+            lineNumber: 440,
             columnNumber: 7
         }, this);
     };
@@ -1034,7 +1041,7 @@ function PrintPreview({ open, onClose, job }) {
                     children: "Visualização da Impressão"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 441,
+                    lineNumber: 449,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1054,17 +1061,17 @@ function PrintPreview({ open, onClose, job }) {
                                     d: "M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                    lineNumber: 445,
+                                    lineNumber: 453,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                lineNumber: 444,
+                                lineNumber: 452,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                            lineNumber: 443,
+                            lineNumber: 451,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -1072,13 +1079,13 @@ function PrintPreview({ open, onClose, job }) {
                             children: "Visualização da Impressão"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                            lineNumber: 448,
+                            lineNumber: 456,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 442,
+                    lineNumber: 450,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1096,32 +1103,32 @@ function PrintPreview({ open, onClose, job }) {
                                         className: "w-2 h-2 bg-gray-400 rounded-full"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                        lineNumber: 456,
+                                        lineNumber: 464,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "w-2 h-2 bg-gray-400 rounded-full"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                        lineNumber: 457,
+                                        lineNumber: 465,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: "w-2 h-2 bg-gray-400 rounded-full"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                        lineNumber: 458,
+                                        lineNumber: 466,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                lineNumber: 455,
+                                lineNumber: 463,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                            lineNumber: 454,
+                            lineNumber: 462,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1143,7 +1150,7 @@ function PrintPreview({ open, onClose, job }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                    lineNumber: 475,
+                                    lineNumber: 483,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1155,7 +1162,7 @@ function PrintPreview({ open, onClose, job }) {
                                                 className: "h-8 w-8 animate-spin text-gray-500 mx-auto mb-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                                lineNumber: 487,
+                                                lineNumber: 495,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1163,30 +1170,30 @@ function PrintPreview({ open, onClose, job }) {
                                                 children: "Carregando template..."
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                                lineNumber: 488,
+                                                lineNumber: 496,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                        lineNumber: 486,
+                                        lineNumber: 494,
                                         columnNumber: 17
                                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         children: getRenderedContent()
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                        lineNumber: 491,
+                                        lineNumber: 499,
                                         columnNumber: 17
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                    lineNumber: 484,
+                                    lineNumber: 492,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                            lineNumber: 463,
+                            lineNumber: 471,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1197,13 +1204,13 @@ function PrintPreview({ open, onClose, job }) {
                             }
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                            lineNumber: 499,
+                            lineNumber: 507,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 452,
+                    lineNumber: 460,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -1211,23 +1218,23 @@ function PrintPreview({ open, onClose, job }) {
                         children: "Fechar"
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                        lineNumber: 509,
+                        lineNumber: 517,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 508,
+                    lineNumber: 516,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-            lineNumber: 440,
+            lineNumber: 448,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-        lineNumber: 439,
+        lineNumber: 447,
         columnNumber: 5
     }, this);
 }

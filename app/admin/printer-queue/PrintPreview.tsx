@@ -390,6 +390,14 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
     const now = new Date();
     const tableId = job.order_items?.orders?.table_id || job.document_data?.table_id || 'N/A';
 
+    // Helper function to format numbers properly
+    const formatValue = (value: any, fallback: string = '0.00') => {
+      if (value === null || value === undefined) return fallback;
+      if (typeof value === 'string') return value;
+      if (typeof value === 'number') return value.toFixed(2);
+      return fallback;
+    };
+
     const templateData = {
       company_name: 'COMIDEX RESTAURANTE',
       company_address: 'Rua Principal, 123 - Centro',
@@ -400,10 +408,10 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       date: job.document_data?.date || now.toLocaleDateString('pt-BR'),
       time: job.document_data?.time || now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       items: items,
-      subtotal: job.document_data?.subtotal?.toFixed(2) || totalPrice.toFixed(2),
-      discount: '0.00',
-      service_fee: '0.00',
-      total: job.document_data?.total?.toFixed(2) || totalPrice.toFixed(2),
+      subtotal: formatValue(job.document_data?.subtotal, totalPrice.toFixed(2)),
+      discount: formatValue(job.document_data?.discount, '0.00'),
+      service_fee: formatValue(job.document_data?.service_fee, '0.00'),
+      total: formatValue(job.document_data?.total, totalPrice.toFixed(2)),
       payment_method: 'A definir'
     };
 
