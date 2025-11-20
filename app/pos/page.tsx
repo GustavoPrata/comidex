@@ -2693,6 +2693,8 @@ export default function POSPage() {
         .eq('template_type', 'bill')
         .single();
 
+      let printerId: number;
+      
       if (templateError || !template?.printer_id) {
         // Se não houver impressora configurada no template, buscar impressora principal
         const { data: printer, error: printerError } = await supabase
@@ -2707,9 +2709,9 @@ export default function POSPage() {
           return;
         }
         
-        var printerId = printer.id;
+        printerId = printer.id;
       } else {
-        var printerId = template.printer_id;
+        printerId = template.printer_id;
       }
 
       // Filtrar itens de rodízio (valor 0) para a conta
