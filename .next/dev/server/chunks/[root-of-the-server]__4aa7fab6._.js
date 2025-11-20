@@ -486,8 +486,11 @@ async function GET(request, { params }) {
         if (templateType === 'order' || templateType === 'items') {
             templateType = 'kitchen';
         }
-        // Buscar template do banco
-        const { data, error } = await supabase.from('print_templates').select('*').eq('template_type', templateType).single();
+        // Buscar template do banco - pegar o mais recente
+        const { data: templates, error } = await supabase.from('print_templates').select('*').eq('template_type', templateType).order('id', {
+            ascending: false
+        }).limit(1);
+        const data = templates?.[0] || null;
         if (error && error.code !== 'PGRST116') {
             console.error('Error fetching template:', error);
             // Se houver erro, retornar template padrão
