@@ -2534,6 +2534,9 @@ export default function POSPage() {
         </div>
       );
       
+      // Imprimir conta automaticamente ao finalizar
+      await handlePrintComanda();
+      
       // Limpar tudo imediatamente e voltar para as mesas
       setCart([]);
       setCurrentOrder(null);
@@ -3612,6 +3615,7 @@ export default function POSPage() {
                   removePayment={removePayment}
                   handleCompletePayment={handleCompletePayment}
                   reopenTable={reopenTable}
+                  handlePrintComanda={handlePrintComanda}
                   selectedTable={selectedTable}
                   loading={loading}
                 />

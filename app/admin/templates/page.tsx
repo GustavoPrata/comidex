@@ -206,6 +206,14 @@ export default function TemplatesPage() {
     { id: '3', name: 'Rodapé', content: '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
   ]);
   
+  // Printer state for templates
+  const [printers, setPrinters] = useState<any[]>([]);
+  const [selectedPrinters, setSelectedPrinters] = useState<any>({
+    receipt: null,  // Nota Fiscal
+    bill: null      // Conta Cliente
+    // kitchen (Pedido Produto) não precisa - usa configuração individual
+  });
+  
   // Restaurant data state
   const [restaurantInfo, setRestaurantInfo] = useState({
     name: 'xxxxxx',
@@ -244,7 +252,8 @@ export default function TemplatesPage() {
           header: template.custom_header || defaultTemplates[templateType]?.header || '',
           items: template.items_content || defaultTemplates[templateType]?.items || '',
           footer: template.custom_footer || defaultTemplates[templateType]?.footer || '',
-          sections: template.sections || null // Store sections config
+          sections: template.sections || null, // Store sections config
+          printer_id: template.printer_id || null // Store printer config
         };
       }
     });
@@ -253,10 +262,11 @@ export default function TemplatesPage() {
   });
 
   // Initialize templates with defaults if not in database
-  // Fetch restaurant data
+  // Fetch restaurant data and printers
   useEffect(() => {
-    const fetchRestaurantData = async () => {
+    const fetchData = async () => {
       try {
+        // Fetch restaurant data
         const response = await fetch('/api/restaurant');
         if (response.ok) {
           const data = await response.json();
@@ -266,26 +276,45 @@ export default function TemplatesPage() {
             phone: data.phone || 'xxxxxx'
           });
         }
+        
+        // Fetch printers
+        const { data: printersData, error: printersError } = await supabase
+          .from('printers')
+          .select('id, name, active')
+          .eq('active', true)
+          .order('name');
+        
+        if (!printersError && printersData) {
+          setPrinters(printersData);
+        }
       } catch (error) {
-        console.error('Failed to fetch restaurant data:', error);
+        console.error('Failed to fetch data:', error);
       }
     };
-    fetchRestaurantData();
+    fetchData();
   }, []);
 
   useEffect(() => {
     if (!isLoading && dbTemplates) {
       const mergedTemplates: any = {};
+      const printerConfig: any = {};
       
       templateTypes.forEach(type => {
         mergedTemplates[type.id] = dbTemplates[type.id] || {
           header: defaultTemplates[type.id].header,
           items: defaultTemplates[type.id].items,
-          footer: defaultTemplates[type.id].footer
+          footer: defaultTemplates[type.id].footer,
+          printer_id: null
         };
+        
+        // Load printer configuration for each template
+        if (type.id === 'receipt' || type.id === 'bill') {
+          printerConfig[type.id] = dbTemplates[type.id]?.printer_id || null;
+        }
       });
       
       setTemplates(mergedTemplates);
+      setSelectedPrinters(printerConfig);
       
       // Convert to sections format
       const template = mergedTemplates[selectedType] || defaultTemplates[selectedType];
@@ -481,7 +510,11 @@ export default function TemplatesPage() {
         footer_enabled: true,
         show_logo: false,
         cut_paper: true,
-        active: true
+        active: true,
+        // Adicionar impressora apenas para templates que precisam
+        ...(selectedType === 'receipt' || selectedType === 'bill' ? {
+          printer_id: selectedPrinters[selectedType] || null
+        } : {})
       };
       
       console.log('🔥 Template data para salvar:', templateData);
@@ -670,25 +703,57 @@ export default function TemplatesPage() {
       <div className="p-6">
         {/* Template Type Selector */}
         <div className="mb-6">
-          <div className="flex gap-3">
-            {templateTypes.map(type => {
-              const Icon = type.icon;
-              return (
-                <button
-                  key={type.id}
-                  onClick={() => handleTypeChange(type.id)}
-                  className={`
-                    flex items-center gap-2 px-4 py-3 rounded-xl border-2 transition-all
-                    ${selectedType === type.id 
-                      ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400' 
-                      : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
-                  `}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span className="font-medium">{type.label}</span>
-                </button>
-              );
-            })}
+          <div className="flex gap-3 items-end">
+            <div className="flex gap-3">
+              {templateTypes.map(type => {
+                const Icon = type.icon;
+                return (
+                  <button
+                    key={type.id}
+                    onClick={() => handleTypeChange(type.id)}
+                    className={`
+                      flex items-center gap-2 px-4 py-3 rounded-xl border-2 transition-all
+                      ${selectedType === type.id 
+                        ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400' 
+                        : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'}
+                    `}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span className="font-medium">{type.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+            
+            {/* Printer Selection for Receipt and Bill templates */}
+            {(selectedType === 'receipt' || selectedType === 'bill') && (
+              <div className="ml-auto">
+                <div className="flex items-center gap-3">
+                  <Label className="text-sm font-medium">Impressora:</Label>
+                  <Select
+                    value={selectedPrinters[selectedType] || ''}
+                    onValueChange={(value) => {
+                      setSelectedPrinters({
+                        ...selectedPrinters,
+                        [selectedType]: value || null
+                      });
+                    }}
+                  >
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Selecione a impressora" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="">Nenhuma</SelectItem>
+                      {printers.map((printer) => (
+                        <SelectItem key={printer.id} value={printer.id.toString()}>
+                          {printer.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
