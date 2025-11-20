@@ -142,7 +142,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       company_phone: '(11) 1234-5678',
       order_number: job.id.toString(),
       table_number: tableId,
-      customer_name: job.document_data?.customer_name || 'Cliente',
+      customer_name: job.document_data?.customer_name || '',  // Deixar vazio para o template controlar
       date: now.toLocaleDateString('pt-BR'),
       time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       items: items,

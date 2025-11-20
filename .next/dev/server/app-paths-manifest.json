@@ -1,9 +1,11 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/admin/printer-queue/page": "app/admin/printer-queue/page.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/printer-queue/route": "app/api/printer-queue/route.js",
   "/api/printers/route": "app/api/printers/route.js",
+  "/api/restaurant/route": "app/api/restaurant/route.js",
+  "/api/templates/[type]/route": "app/api/templates/[type]/route.js",
   "/page": "app/page.js",
+  "/pos/page": "app/pos/page.js",
   "/prompt/page": "app/prompt/page.js"
 }
