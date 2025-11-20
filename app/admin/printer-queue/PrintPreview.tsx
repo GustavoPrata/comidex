@@ -178,15 +178,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   const applyTemplate = (templateStr: string, data: any): string => {
     let result = templateStr || '';
     
-    // Substituir variáveis simples
-    Object.keys(data).forEach(key => {
-      if (key !== 'items') {
-        const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-        result = result.replace(regex, data[key] || '');
-      }
-    });
-    
-    // Processar loops {{#each items}}
+    // Processar loops {{#each items}} PRIMEIRO
     const eachRegex = /{{#each\s+items}}([\s\S]*?){{\/each}}/g;
     result = result.replace(eachRegex, (match, content) => {
       if (!data.items || data.items.length === 0) return '';
@@ -248,6 +240,41 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
           
           return itemContent;
         }).join('');
+      }
+    });
+    
+    // Processar condicionais globais {{#if field}} DEPOIS dos loops
+    const globalIfRegex = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
+    result = result.replace(globalIfRegex, (match: string, field: string, ifContent: string) => {
+      const fieldValue = data[field];
+      
+      // Para o campo discount, verificar se é maior que 0
+      if (field === 'discount') {
+        // Converter string para número se necessário
+        let numValue = 0;
+        if (typeof fieldValue === 'string') {
+          numValue = parseFloat(fieldValue.replace(',', '.') || '0');
+        } else if (typeof fieldValue === 'number') {
+          numValue = fieldValue;
+        }
+        
+        if (numValue > 0) {
+          return ifContent;
+        }
+        return '';
+      }
+      
+      // Para outros campos, verificar se existe e não é vazio
+      const shouldShow = fieldValue !== undefined && fieldValue !== null && 
+                        fieldValue !== '' && fieldValue !== '0.00' && fieldValue !== '0,00';
+      return shouldShow ? ifContent : '';
+    });
+    
+    // Substituir variáveis simples DEPOIS de processar condicionais
+    Object.keys(data).forEach(key => {
+      if (key !== 'items') {
+        const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+        result = result.replace(regex, data[key] || '');
       }
     });
     
