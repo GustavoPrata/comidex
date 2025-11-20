@@ -417,7 +417,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
 
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
-      <AlertDialogContent className="max-w-md">
+      <AlertDialogContent className="max-w-xl">
         <AlertDialogTitle className="sr-only">Visualização da Impressão</AlertDialogTitle>
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-orange-100 rounded-lg">
@@ -428,64 +428,61 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
           <h2 className="text-lg font-semibold">Visualização da Impressão</h2>
         </div>
 
-        {/* Container do Papel Térmico */}
-        <div className="flex justify-center">
+        {/* Thermal Printer Frame - Exatamente igual ao template */}
+        <div className="relative mx-auto" style={{ width: '320px' }}>
+          {/* Paper Roll Top */}
+          <div className="h-8 bg-gradient-to-b from-gray-300 to-gray-100 rounded-t-lg relative">
+            <div className="absolute inset-x-0 top-2 flex justify-center gap-1">
+              <div className="w-2 h-2 bg-gray-400 rounded-full" />
+              <div className="w-2 h-2 bg-gray-400 rounded-full" />
+              <div className="w-2 h-2 bg-gray-400 rounded-full" />
+            </div>
+          </div>
+          
+          {/* Paper with Receipt */}
           <div 
             className="relative"
             style={{
-              width: '320px',
-              boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+              background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 50%, #f5f5f0 100%)',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15), inset 0 1px 3px rgba(0,0,0,0.05)',
+              padding: '16px',
+              minHeight: '400px',
+              maxHeight: '600px',
+              overflowY: 'auto'
             }}
           >
-            {/* Rolo de papel superior */}
-            <div className="h-8 bg-gradient-to-b from-gray-300 to-gray-200 rounded-t-lg border-x-2 border-t-2 border-gray-400" />
-            
-            {/* Papel com Cupom */}
+            {/* Paper texture overlay */}
             <div 
-              className="relative"
+              className="absolute inset-0 opacity-[0.03]"
               style={{
-                background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 50%, #f5f5f0 100%)',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15), inset 0 1px 3px rgba(0,0,0,0.05)',
-                padding: '16px',
-                minHeight: '400px',
-                maxHeight: '600px',
-                overflowY: 'auto'
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect fill='%23000000' x='0' y='0' width='1' height='1' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E")`,
+                backgroundSize: '2px 2px'
               }}
-            >
-              {/* Textura do Papel */}
-              <div 
-                className="absolute inset-0 opacity-[0.03]"
-                style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect fill='%23000000' x='0' y='0' width='1' height='1' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E")`,
-                  backgroundSize: '2px 2px'
-                }}
-              />
-              
-              {/* Conteúdo do Cupom */}
-              <div className="relative text-gray-900">
-                {loading ? (
-                  <div className="text-center py-8">
-                    <Loader2 className="h-8 w-8 animate-spin text-gray-500 mx-auto mb-2" />
-                    <p className="text-sm text-gray-600">Carregando template...</p>
-                  </div>
-                ) : (
-                  <div>
-                    {getRenderedContent()}
-                  </div>
-                )}
-              </div>
-            </div>
+            />
             
-            {/* Serrilha do papel */}
-            <div className="h-4 bg-gradient-to-b from-gray-100 to-gray-200 relative">
-              <div 
-                className="absolute bottom-0 left-0 right-0 h-2"
-                style={{
-                  background: 'repeating-linear-gradient(90deg, transparent, transparent 3px, #ccc 3px, #ccc 4px)',
-                }}
-              />
+            {/* Receipt Content */}
+            <div className="relative text-gray-900">
+              {loading ? (
+                <div className="text-center py-8">
+                  <Loader2 className="h-8 w-8 animate-spin text-gray-500 mx-auto mb-2" />
+                  <p className="text-sm text-gray-600">Carregando template...</p>
+                </div>
+              ) : (
+                <div>
+                  {getRenderedContent()}
+                </div>
+              )}
             </div>
           </div>
+          
+          {/* Paper Tear Edge */}
+          <div 
+            className="h-4 relative"
+            style={{
+              background: 'linear-gradient(to bottom, #f5f5f0, #e8e8e8)',
+              clipPath: 'polygon(0% 0%, 5% 100%, 10% 0%, 15% 100%, 20% 0%, 25% 100%, 30% 0%, 35% 100%, 40% 0%, 45% 100%, 50% 0%, 55% 100%, 60% 0%, 65% 100%, 70% 0%, 75% 100%, 80% 0%, 85% 100%, 90% 0%, 95% 100%, 100% 0%)'
+            }}
+          />
         </div>
         
         <AlertDialogFooter>
