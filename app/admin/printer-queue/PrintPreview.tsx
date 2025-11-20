@@ -68,67 +68,103 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
 
   // Processar tags de formatação como [[size:18]], [[bold]], etc
   const processFormatting = (text: string): React.ReactNode => {
-    const parts = [];
-    let lastIndex = 0;
+    if (!text) return text;
     
-    // Regex para capturar tags de formatação
-    const formatRegex = /\[\[(size|bold|italic|underline|align):?([^\]]*)\]\](.*?)\[\[\/\1\]\]/g;
-    const simpleFormatRegex = /\[\[(size|bold|italic|underline|align):(\d+|left|center|right)\]\]/g;
+    // Processar todas as tags de formatação e converter para HTML
+    let processedText = text;
     
-    // Processar tags com conteúdo [[tag:value]]content[[/tag]]
-    let processedText = text.replace(formatRegex, (match, tag, value, content) => {
-      const id = `format_${Math.random().toString(36).substr(2, 9)}`;
-      
-      let style: any = {};
-      let className = '';
-      
-      switch(tag) {
-        case 'size':
-          const size = parseInt(value);
-          if (size) {
-            style.fontSize = `${size}px`;
-            style.lineHeight = '1.2';
-          }
-          break;
-        case 'bold':
-          style.fontWeight = 'bold';
-          break;
-        case 'italic':
-          style.fontStyle = 'italic';
-          break;
-        case 'underline':
-          style.textDecoration = 'underline';
-          break;
-        case 'align':
-          style.textAlign = value;
-          style.display = 'block';
-          break;
-      }
-      
-      return `<span id="${id}" style="${Object.entries(style).map(([k, v]) => `${k}:${v}`).join(';')}">${content}</span>`;
-    });
-    
-    // Processar tags simples [[size:18]] que afetam o texto seguinte
-    processedText = processedText.replace(simpleFormatRegex, (match, tag, value) => {
+    // 1. Processar tags com fechamento: [[tag:value]]content[[/tag]]
+    const formatWithCloseRegex = /\[\[(size|bold|italic|underline|align|big|small):?([^\]]*)\]\](.*?)\[\[\/\1\]\]/gs;
+    processedText = processedText.replace(formatWithCloseRegex, (match, tag, value, content) => {
       let style = '';
       
       switch(tag) {
         case 'size':
           const size = parseInt(value);
           if (size) {
-            style = `font-size:${size}px;line-height:1.2;`;
+            style = `font-size:${size}px;line-height:1.3;`;
           }
           break;
         case 'bold':
           style = 'font-weight:bold;';
           break;
+        case 'italic':
+          style = 'font-style:italic;';
+          break;
+        case 'underline':
+          style = 'text-decoration:underline;';
+          break;
         case 'align':
-          style = `text-align:${value};display:block;`;
+          style = `text-align:${value};display:block;width:100%;`;
+          break;
+        case 'big':
+          style = 'font-size:1.5em;';
+          break;
+        case 'small':
+          style = 'font-size:0.8em;';
           break;
       }
       
-      return style ? `<span style="${style}">` : '';
+      return style ? `<span style="${style}">${content}</span>` : content;
     });
+    
+    // 2. Processar tags simples sem fechamento: [[bold]], [[italic]], [[big]], [[small]]
+    const simpleTagsRegex = /\[\[(bold|italic|underline|big|small)\]\]/g;
+    processedText = processedText.replace(simpleTagsRegex, (match, tag) => {
+      let style = '';
+      
+      switch(tag) {
+        case 'bold':
+          style = 'font-weight:bold;';
+          break;
+        case 'italic':
+          style = 'font-style:italic;';
+          break;
+        case 'underline':
+          style = 'text-decoration:underline;';
+          break;
+        case 'big':
+          style = 'font-size:1.5em;';
+          break;
+        case 'small':
+          style = 'font-size:0.8em;';
+          break;
+      }
+      
+      // Aplicar estilo até o fim da linha ou próxima tag
+      return style ? `</span><span style="${style}">` : '';
+    });
+    
+    // 3. Processar tags com valor: [[size:20]], [[align:center]]
+    const valueTagsRegex = /\[\[(size|align):([^\]]+)\]\]/g;
+    processedText = processedText.replace(valueTagsRegex, (match, tag, value) => {
+      let style = '';
+      
+      switch(tag) {
+        case 'size':
+          const size = parseInt(value);
+          if (size) {
+            style = `font-size:${size}px;line-height:1.3;`;
+          }
+          break;
+        case 'align':
+          style = `text-align:${value};display:block;width:100%;`;
+          break;
+      }
+      
+      return style ? `</span><span style="${style}">` : '';
+    });
+    
+    // 4. Adicionar span inicial e fechar spans abertos
+    if (processedText.includes('</span>')) {
+      processedText = '<span>' + processedText + '</span>';
+    }
+    
+    // 5. Limpar spans vazios
+    processedText = processedText.replace(/<span><\/span>/g, '');
+    
+    console.log('Texto original:', text);
+    console.log('Texto processado:', processedText);
     
     // Converter para JSX seguro
     return <div dangerouslySetInnerHTML={{ __html: processedText }} />;
