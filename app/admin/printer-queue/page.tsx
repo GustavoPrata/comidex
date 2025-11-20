@@ -636,14 +636,56 @@ export default function PrinterQueuePage() {
                   
                   // Buscar template apropriado
                   try {
-                    const templateType = job.document_type === 'order' ? 'kitchen' : job.document_type;
+                    // Para pedidos de produtos sempre usar template kitchen
+                    const templateType = 'kitchen';
                     const response = await fetch(`/api/templates/${templateType}`);
                     if (response.ok) {
                       const data = await response.json();
                       setPrintTemplate(data.template);
+                    } else {
+                      // Se falhar, usar template padrão
+                      setPrintTemplate({
+                        header: `================================
+       PEDIDO COZINHA
+================================
+Mesa: {{table_number}}
+Pedido: #{{order_number}}
+Hora: {{time}}
+================================`,
+                        items: `{{#each items}}
+{{quantity}}x {{name}}
+   {{#if observation}}
+   OBS: {{observation}}
+   {{/if}}
+--------------------------------
+{{/each}}`,
+                        footer: `================================
+Atendente: {{customer_name}}
+================================`
+                      });
                     }
                   } catch (error) {
                     console.error('Erro ao buscar template:', error);
+                    // Usar template padrão em caso de erro
+                    setPrintTemplate({
+                      header: `================================
+       PEDIDO COZINHA
+================================
+Mesa: {{table_number}}
+Pedido: #{{order_number}}
+Hora: {{time}}
+================================`,
+                      items: `{{#each items}}
+{{quantity}}x {{name}}
+   {{#if observation}}
+   OBS: {{observation}}
+   {{/if}}
+--------------------------------
+{{/each}}`,
+                      footer: `================================
+Atendente: {{customer_name}}
+================================`
+                    });
                   } finally {
                     setLoadingTemplate(false);
                     setShowPrintPreview(true);

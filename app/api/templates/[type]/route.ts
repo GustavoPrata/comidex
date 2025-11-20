@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { createClient } from "@/lib/supabase/client";
 
 // Default templates
 const defaultTemplates: any = {
@@ -103,11 +98,15 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { type: string } }
 ) {
+  const supabase = createClient();
   console.log('✅ Getting template for type:', params.type);
 
   try {
     // Para itens de pedido, usar template kitchen
     let templateType = params.type;
+    if (!templateType || templateType === 'undefined') {
+      templateType = 'kitchen'; // Default para kitchen
+    }
     if (templateType === 'order' || templateType === 'items') {
       templateType = 'kitchen';
     }
