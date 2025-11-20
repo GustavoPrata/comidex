@@ -434,25 +434,32 @@ export default function PrinterQueuePage() {
     try {
       setLoading(true);
       
-      // Pegar todos os jobs pendentes
-      const pendingJobs = jobs.filter(j => j.status === 'pending');
+      // Limpar toda a fila de uma vez usando a rota específica
+      const response = await fetch('/api/printer-queue/clear', {
+        method: 'POST'
+      });
       
-      // Cancelar cada job pendente
-      for (const job of pendingJobs) {
-        await fetch(`/api/printer-queue/${job.id}`, {
-          method: 'DELETE'
-        });
+      if (!response.ok) {
+        throw new Error('Erro ao limpar fila');
       }
       
-      toast.success(`${pendingJobs.length} jobs removidos da fila`);
+      const result = await response.json();
+      
+      // Mostrar mensagem de sucesso
+      if (result.count > 0) {
+        toast.success(`${result.count} trabalho(s) removido(s) da fila`);
+      } else {
+        toast.info('Nenhum trabalho pendente para remover');
+      }
+      
       setClearQueueDialog(false);
       
-      // Recarregar fila
+      // Recarregar fila e impressoras
       await loadQueue();
       await loadPrinters();
     } catch (error) {
       console.error('Erro ao limpar fila:', error);
-      toast.error('Erro ao limpar fila');
+      toast.error('Erro ao limpar fila de impressão');
     } finally {
       setLoading(false);
     }

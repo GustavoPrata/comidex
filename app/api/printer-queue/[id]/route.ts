@@ -31,22 +31,19 @@ export async function DELETE(
       );
     }
 
-    // Se o job está pendente ou imprimindo, mudar para cancelado
+    // Se o job está pendente ou imprimindo, deletar diretamente
     if (['pending', 'printing'].includes(job.status)) {
-      const { error: updateError } = await supabase
+      const { error: deleteError } = await supabase
         .from('printer_queue')
-        .update({ 
-          status: 'cancelled',
-          error_message: 'Cancelado pelo usuário'
-        })
+        .delete()
         .eq('id', jobId);
 
-      if (updateError) {
-        throw updateError;
+      if (deleteError) {
+        throw deleteError;
       }
       
       return NextResponse.json(
-        { message: 'Job cancelado com sucesso' },
+        { message: 'Job removido da fila com sucesso' },
         { status: 200 }
       );
     }

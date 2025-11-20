@@ -398,6 +398,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/api/printer-queue/clear/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/printer-queue/clear">> = Specific
+  const handler = {} as typeof import("../../../app/api/printer-queue/clear/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/api/printer-queue/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/printer-queue">> = Specific
