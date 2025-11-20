@@ -314,7 +314,10 @@ export default function TemplatesPage() {
       });
       
       setTemplates(mergedTemplates);
-      setSelectedPrinters(printerConfig);
+      setSelectedPrinters({
+        receipt: dbTemplates.receipt?.printer_id?.toString() || 'none',
+        bill: dbTemplates.bill?.printer_id?.toString() || 'none'
+      });
       
       // Convert to sections format
       const template = mergedTemplates[selectedType] || defaultTemplates[selectedType];
@@ -349,6 +352,14 @@ export default function TemplatesPage() {
   const handleTypeChange = (type: string) => {
     setSelectedType(type);
     const template = templates[type] || defaultTemplates[type];
+    
+    // Update selected printer for the new template type
+    if (type === 'receipt' || type === 'bill') {
+      setSelectedPrinters((prev: any) => ({
+        ...prev,
+        [type]: template.printer_id?.toString() || 'none'
+      }));
+    }
     
     // Use saved sections if available, otherwise use defaults
     if (template.sections) {
@@ -513,7 +524,7 @@ export default function TemplatesPage() {
         active: true,
         // Adicionar impressora apenas para templates que precisam
         ...(selectedType === 'receipt' || selectedType === 'bill' ? {
-          printer_id: selectedPrinters[selectedType] || null
+          printer_id: selectedPrinters[selectedType] ? parseInt(selectedPrinters[selectedType]) : null
         } : {})
       };
       
@@ -536,7 +547,8 @@ export default function TemplatesPage() {
             header: templateData.custom_header,
             items: templateData.items_content,
             footer: templateData.custom_footer,
-            sections: sections // Save sections config
+            sections: sections, // Save sections config
+            printer_id: selectedPrinters[selectedType] || null // Save printer config
           }
         });
       } else {
@@ -558,7 +570,8 @@ export default function TemplatesPage() {
               header: templateData.custom_header,
               items: templateData.items_content,
               footer: templateData.custom_footer,
-              sections: sections // Save sections config
+              sections: sections, // Save sections config
+              printer_id: selectedPrinters[selectedType] || null // Save printer config
             }
           });
         }
