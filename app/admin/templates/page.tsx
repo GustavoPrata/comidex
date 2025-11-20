@@ -219,11 +219,21 @@ export default function TemplatesPage() {
       return {};
     }
     
+    console.log('🔥 Templates carregados do banco:', data);
+    
     // Convert array to object by type
     const templatesObj: any = {};
     data?.forEach((template: any) => {
       const templateType = template.template_type;
       if (templateType) {
+        console.log(`🔥 Template ${templateType}:`, {
+          id: template.id,
+          sections: template.sections,
+          custom_header: template.custom_header,
+          items_content: template.items_content,
+          custom_footer: template.custom_footer
+        });
+        
         templatesObj[templateType] = {
           id: template.id,
           header: template.custom_header || defaultTemplates[templateType]?.header || '',
@@ -433,6 +443,14 @@ export default function TemplatesPage() {
       const itemsSection = sections.find(s => s.type === 'items');
       const footerSection = sections.find(s => s.name.toLowerCase().includes('rodap'));
       
+      console.log('🔥 Salvando template:', {
+        selectedType,
+        sections: sections,
+        headerSection: headerSection?.content,
+        itemsSection: itemsSection?.content,
+        footerSection: footerSection?.content
+      });
+      
       const templateData = {
         name: `Template ${templateTypes.find(t => t.id === selectedType)?.label}`,
         template_type: selectedType,
@@ -447,6 +465,8 @@ export default function TemplatesPage() {
         cut_paper: true,
         active: true
       };
+      
+      console.log('🔥 Template data para salvar:', templateData);
 
       if (existingTemplates && existingTemplates.length > 0) {
         // Update existing
