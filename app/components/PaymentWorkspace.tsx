@@ -50,7 +50,6 @@ interface PaymentWorkspaceProps {
   removePayment: (id: string) => void;
   handleCompletePayment: () => void;
   reopenTable?: () => void;
-  setPrintDialog?: (value: boolean) => void;
   selectedTable?: any;
   loading?: boolean;
 }
@@ -76,7 +75,6 @@ export default function PaymentWorkspace({
   removePayment,
   handleCompletePayment,
   reopenTable,
-  setPrintDialog,
   selectedTable,
   loading = false
 }: PaymentWorkspaceProps) {
@@ -857,15 +855,6 @@ export default function PaymentWorkspace({
             <ArrowLeft className="h-3 w-3 mr-2" />
             Voltar
           </Button>
-          {setPrintDialog && (
-            <Button
-              onClick={() => setPrintDialog(true)}
-              className="h-8 px-4 bg-gray-600 hover:bg-gray-700 text-white font-medium text-sm"
-            >
-              <Receipt className="h-3 w-3 mr-2" />
-              Imprimir Conta
-            </Button>
-          )}
           {reopenTable && (
             <Button
               onClick={reopenTable}

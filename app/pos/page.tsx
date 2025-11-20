@@ -243,7 +243,6 @@ export default function POSPage() {
   const [paymentDialog, setPaymentDialog] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'card' | 'pix'>('cash');
   const [closeSessionDialog, setCloseSessionDialog] = useState(false);
-  const [printDialog, setPrintDialog] = useState(false);
   const [transferTableDialog, setTransferTableDialog] = useState(false);
   const [targetTableNumber, setTargetTableNumber] = useState('');
   const [cancelTableDialog, setCancelTableDialog] = useState(false);
@@ -421,7 +420,7 @@ export default function POSPage() {
         startCheckout();
       } else if (e.key === 'F4') {
         e.preventDefault();
-        setPrintDialog(true);
+        handlePrintComanda();
       } else if (e.key === 'F5') {
         e.preventDefault();
         loadInitialData();
@@ -432,7 +431,6 @@ export default function POSPage() {
       } else if (e.key === 'Escape') {
         setSearchOpen(false);
         setPaymentDialog(false);
-        setPrintDialog(false);
         setOpenTableDialog(false);
         setCloseSessionDialog(false);
         setCheckoutDialog(false);
@@ -2744,7 +2742,6 @@ export default function POSPage() {
       }
 
       toast.success("Conta enviada para impressora");
-      setPrintDialog(false);
     } catch (error) {
       console.error('Erro ao imprimir conta:', error);
       toast.error("Erro ao processar impressão");
@@ -3615,7 +3612,6 @@ export default function POSPage() {
                   removePayment={removePayment}
                   handleCompletePayment={handleCompletePayment}
                   reopenTable={reopenTable}
-                  setPrintDialog={setPrintDialog}
                   selectedTable={selectedTable}
                   loading={loading}
                 />
@@ -4272,7 +4268,7 @@ export default function POSPage() {
                     </div>
                     <div className="flex gap-2">
                       <Button
-                        onClick={() => setPrintDialog(true)}
+                        onClick={handlePrintComanda}
                         disabled={loading}
                         className="bg-gray-600 hover:bg-gray-700 text-white flex-1"
                       >
@@ -4497,7 +4493,7 @@ export default function POSPage() {
                   
                   {/* Botão Imprimir - Secundário */}
                   <Button
-                    onClick={() => setPrintDialog(true)}
+                    onClick={handlePrintComanda}
                     disabled={cart.length === 0}
                     className={`w-full h-11 text-sm font-semibold transition-all ${
                       cart.length === 0 
@@ -4716,7 +4712,7 @@ export default function POSPage() {
                 </span>
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => setPrintDialog(true)}
+                    onClick={handlePrintComanda}
                     variant="outline"
                     className="text-gray-400 border-gray-400 hover:bg-gray-400/10"
                   >
@@ -5072,72 +5068,6 @@ export default function POSPage() {
           </DialogContent>
         </Dialog>
 
-        {/* Dialog Imprimir Comanda */}
-        <Dialog open={printDialog} onOpenChange={setPrintDialog}>
-          <DialogContent className="bg-gray-800 text-white border-gray-700">
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <Printer className="h-5 w-5" />
-                Imprimir Comanda
-              </DialogTitle>
-            </DialogHeader>
-            
-            <div className="py-4">
-              <Card className="bg-gray-900 border-gray-700">
-                <CardContent className="p-4">
-                  <div className="text-center mb-4">
-                    <h3 className="font-bold">ComideX Restaurant</h3>
-                    <p className="text-sm text-gray-400">
-                      {selectedTable?.type === 'counter' ? 'Balcão' : 'Mesa'} {selectedTable?.number}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {format(new Date(), 'dd/MM/yyyy HH:mm')}
-                    </p>
-                  </div>
-                  
-                  <div className="border-t border-gray-700 pt-2">
-                    {cart.slice(0, 5).map((item, index) => (
-                      <div key={index} className="flex justify-between text-sm py-1">
-                        <span>{item.quantity}x {item.item?.name}</span>
-                        <span>{formatCurrency(item.total_price, item.item?.group?.type === 'rodizio')}</span>
-                      </div>
-                    ))}
-                    {cart.length > 5 && (
-                      <div className="text-sm text-gray-400 text-center py-1">
-                        ... e mais {cart.length - 5} itens
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="border-t border-gray-700 mt-2 pt-2">
-                    <div className="flex justify-between font-bold">
-                      <span>Total:</span>
-                      <span className="text-orange-400">
-                        {formatCurrency(calculateTotal())}
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            <DialogFooter>
-              <Button
-                onClick={() => setPrintDialog(false)}
-                className="bg-gray-700 hover:bg-gray-600"
-              >
-                Cancelar
-              </Button>
-              <Button
-                onClick={handlePrintComanda}
-                className="bg-purple-600 hover:bg-purple-700"
-              >
-                <Printer className="mr-2 h-4 w-4" />
-                Imprimir
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
 
         {/* Dialog Fechar Mesa Vazia */}
         <Dialog open={closeSessionDialog} onOpenChange={setCloseSessionDialog}>
