@@ -85,7 +85,8 @@ const menuItems: MenuItem[] = [
     icon: Receipt,
     submenu: [
       { label: 'Mesas', href: '/admin/tables', icon: Square },
-      { label: 'Promoções', href: '/admin/promocoes', icon: Gift }
+      { label: 'Promoções', href: '/admin/promocoes', icon: Gift },
+      { label: 'Tablet', href: '/admin/tablet', icon: Tablet }
     ]
   },
   {

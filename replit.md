@@ -1,7 +1,7 @@
 # ComideX Restaurant System
 
 ## Overview
-ComideX is a comprehensive management system for Japanese restaurants, designed to streamline operations from order placement to kitchen management. It features an administrative panel for full menu, table, and printer management, a Point of Sale (POS) system for waiters, and a robust REST API for integration with an Android tablet application. The system also includes an advanced printing management system with virtual printer capabilities and queue management. The project aims to provide an efficient and user-friendly solution for restaurant operations, leveraging modern web technologies. The MVP is already implemented and functional with real data.
+ComideX is a comprehensive management system for Japanese restaurants, designed to streamline operations from order placement to kitchen management. It features an administrative panel for full menu, table, and printer management, a Point of Sale (POS) system for waiters, and a robust REST API for integration with an Android tablet application. The system also includes an advanced printing management system with virtual printer capabilities and queue management. The project includes a fully integrated tablet app for customer self-service ordering (similar to Goomer), with kiosk mode, idle screen, and password protection. The project aims to provide an efficient and user-friendly solution for restaurant operations, leveraging modern web technologies. The MVP is already implemented and functional with real data.
 
 ## User Preferences
 I prefer detailed explanations.
@@ -30,7 +30,21 @@ The system is built with a modern web stack. The frontend utilizes **Next.js 15*
 - **Data Management:** Expanded database with item duplication for different service models (e.g., Premium, Traditional).
 - **Console Prompt System:** Integrated with a TypeScript server on port 3456.
 
+## Tablet App Features
+- **Self-Service Ordering:** Complete tablet interface similar to Goomer for customer self-ordering
+- **Mode Selection:** Support for both Rodízio and À La Carte modes
+- **Category Navigation:** Intuitive category-based menu navigation with visual indicators
+- **Shopping Cart:** Full cart management with quantity control and observations
+- **Order Submission:** Direct integration with kitchen printing system
+- **Kiosk Mode:** Password-protected lock screen to prevent unauthorized exit
+- **Idle Mode:** Automatic screen dimming after configurable inactivity period
+- **Configuration Panel:** Admin interface to control tablet behavior, theme, and features
+- **Responsive Design:** Optimized for tablet touch interfaces with large touch targets
+- **URL Access:** Direct browser access at `/tablet` with QR code generation
+- **Real-time Integration:** Orders sent directly to kitchen printers through existing queue system
+
 ## External Dependencies
 - **Supabase:** Used for PostgreSQL database and authentication.
 - **jsPDF:** Integrated for professional PDF generation, especially for virtual printer simulations.
+- **Framer Motion:** Used for smooth animations in the tablet interface.
 - **Android App (External):** Expected to consume the exposed REST APIs for tablet-based operations.

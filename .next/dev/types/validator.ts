@@ -236,6 +236,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/admin/tablet/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/admin/tablet">> = Specific
+  const handler = {} as typeof import("../../../app/admin/tablet/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/admin/tablets/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/admin/tablets">> = Specific
@@ -276,6 +285,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends AppPageConfig<"/prompt">> = Specific
   const handler = {} as typeof import("../../../app/prompt/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/tablet/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/tablet">> = Specific
+  const handler = {} as typeof import("../../../app/tablet/page.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
@@ -542,6 +560,24 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/api/tablet/config/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/tablet/config">> = Specific
+  const handler = {} as typeof import("../../../app/api/tablet/config/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/tablet/order/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/tablet/order">> = Specific
+  const handler = {} as typeof import("../../../app/api/tablet/order/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/api/templates/[type]/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/templates/[type]">> = Specific
@@ -613,6 +649,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends LayoutConfig<"/pos">> = Specific
   const handler = {} as typeof import("../../../app/pos/layout.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/tablet/layout.tsx
+{
+  type __IsExpected<Specific extends LayoutConfig<"/tablet">> = Specific
+  const handler = {} as typeof import("../../../app/tablet/layout.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
