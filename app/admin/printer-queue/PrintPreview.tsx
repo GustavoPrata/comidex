@@ -292,12 +292,24 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       const orderItem = job.order_items;
       const item = orderItem.items;
       if (item) {
+        // Pegar o nome da categoria ou grupo
+        const categoryName = item.categories?.name || '';
+        const groupName = item.groups?.name || '';
+        
+        console.log('Dados do item:', {
+          item,
+          categoryName,
+          groupName,
+          categories: item.categories,
+          groups: item.groups
+        });
+        
         items.push({
           quantity: orderItem.quantity || 1,
           name: item.name || 'Item sem nome',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (orderItem.quantity || 1)).toFixed(2)}`,
           observation: orderItem.notes || '',
-          item_group: item.category || '', // Disponível como {{item_group}} no template
+          item_group: groupName || categoryName || '', // Usa grupo primeiro, depois categoria
         });
       }
     } else if (job.document_type === 'order' && job.document_data) {
@@ -308,7 +320,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
           name: item.name || item.item_name || 'Item',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (item.quantity || 1)).toFixed(2)}`,
           observation: item.notes || '',
-          item_group: item.category || '', // Disponível como {{item_group}} no template
+          item_group: item.group_name || item.category_name || item.category || '', // Tenta vários campos possíveis
         });
       });
     }

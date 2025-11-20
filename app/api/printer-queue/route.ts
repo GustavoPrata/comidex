@@ -21,7 +21,17 @@ export async function GET(request: NextRequest) {
             id,
             name,
             price,
-            description
+            description,
+            category_id,
+            group_id,
+            categories (
+              id,
+              name
+            ),
+            groups (
+              id,
+              name
+            )
           ),
           orders (
             id,
