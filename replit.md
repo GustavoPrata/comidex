@@ -30,21 +30,17 @@ The system is built with a modern web stack. The frontend utilizes **Next.js 15*
 - **Data Management:** Expanded database with item duplication for different service models (e.g., Premium, Traditional).
 - **Console Prompt System:** Integrated with a TypeScript server on port 3456.
 
-## Tablet App Features
-- **Self-Service Ordering:** Complete tablet interface similar to Goomer for customer self-ordering
-- **Mode Selection:** Support for both Rodízio and À La Carte modes
-- **Category Navigation:** Intuitive category-based menu navigation with visual indicators
-- **Shopping Cart:** Full cart management with quantity control and observations
-- **Order Submission:** Direct integration with kitchen printing system
-- **Kiosk Mode:** Password-protected lock screen to prevent unauthorized exit
-- **Idle Mode:** Automatic screen dimming after configurable inactivity period
-- **Configuration Panel:** Admin interface to control tablet behavior, theme, and features
-- **Responsive Design:** Optimized for tablet touch interfaces with large touch targets
-- **URL Access:** Direct browser access at `/tablet` with QR code generation
+## Mobile App APIs
+- **Complete REST API:** Full set of endpoints for mobile app integration at `/api/mobile/`
+- **Configuration Endpoint:** Dynamic app configuration including features, themes, and settings
+- **Categories API:** Active categories with custom ordering and icons
+- **Products API:** Filtered products by category and mode (Rodízio/À La Carte)
+- **Order Management:** Create orders with automatic kitchen printing integration
+- **Session Control:** Table session management with bill tracking
 - **Real-time Integration:** Orders sent directly to kitchen printers through existing queue system
+- **Device Tracking:** Unique device ID support for order history
 
 ## External Dependencies
 - **Supabase:** Used for PostgreSQL database and authentication.
 - **jsPDF:** Integrated for professional PDF generation, especially for virtual printer simulations.
-- **Framer Motion:** Used for smooth animations in the tablet interface.
-- **Android App (External):** Expected to consume the exposed REST APIs for tablet-based operations.
+- **Mobile App (External):** React Native/Expo app will consume the REST APIs at `/api/mobile/` for tablet-based operations.

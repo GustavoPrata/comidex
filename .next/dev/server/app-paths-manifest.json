@@ -1,10 +1,4 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/admin/templates/page": "app/admin/templates/page.js",
-  "/api/notifications/route": "app/api/notifications/route.js",
-  "/api/restaurant/route": "app/api/restaurant/route.js",
-  "/api/tablet/config/route": "app/api/tablet/config/route.js",
-  "/page": "app/page.js",
-  "/pos/page": "app/pos/page.js",
-  "/tablet/page": "app/tablet/page.js"
+  "/page": "app/page.js"
 }
