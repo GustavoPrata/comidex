@@ -556,12 +556,12 @@ export default function TemplatesPage() {
 
   // Preview render
   const renderPreview = (content: string, section?: TemplateSection) => {
-    // Sample items data
+    // Sample items data com grupo/categoria
     const sampleItems = [
-      { quantity: '2', name: 'Sushi Especial', price: '45,00', observation: '' },
-      { quantity: '1', name: 'Temaki Salmão', price: '18,00', observation: 'Sem wasabi' },
-      { quantity: '3', name: 'Hot Roll', price: '32,00', observation: '' },
-      { quantity: '1', name: 'Coca-Cola 350ml', price: '8,00', observation: '' }
+      { quantity: '2', name: 'Sushi Especial', price: '45,00', observation: '', item_group: 'RODÍZIO PREMIUM' },
+      { quantity: '1', name: 'Temaki Salmão', price: '18,00', observation: 'Sem wasabi', item_group: 'RODÍZIO PREMIUM' },
+      { quantity: '3', name: 'Hot Roll', price: '32,00', observation: '', item_group: '' },
+      { quantity: '1', name: 'Coca-Cola 350ml', price: '8,00', observation: '', item_group: 'BEBIDAS' }
     ];
 
     // Replace variables with sample data
@@ -584,20 +584,26 @@ export default function TemplatesPage() {
     let preview = content;
     
     // Handle {{#each items}} loops
-    const eachPattern = /{{#each items}}([\s\S]*?){{\/each}}/g;
+    const eachPattern = /\{\{#each items\}\}([\s\S]*?)\{\{\/each\}\}/g;
     preview = preview.replace(eachPattern, (match, itemTemplate) => {
       return sampleItems.map(item => {
         let itemStr = itemTemplate;
         
-        // Handle {{#if observation}}
-        const ifPattern = /{{#if observation}}([\s\S]*?){{\/if}}/g;
-        itemStr = itemStr.replace(ifPattern, (ifMatch: string, ifContent: string) => {
-          return item.observation ? ifContent.replace('{{observation}}', item.observation) : '';
+        // Handle {{#if field}} condicionais genéricas
+        const ifPattern = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
+        itemStr = itemStr.replace(ifPattern, (ifMatch: string, field: string, ifContent: string) => {
+          const fieldValue = (item as any)[field];
+          // Só mostra o conteúdo se o campo existe e não é vazio
+          if (fieldValue && fieldValue !== '') {
+            return ifContent;
+          }
+          return '';
         });
         
         // Replace item variables
         Object.keys(item).forEach(key => {
-          itemStr = itemStr.replace(new RegExp(`{{${key}}}`, 'g'), (item as any)[key]);
+          const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+          itemStr = itemStr.replace(regex, (item as any)[key]);
         });
         
         return itemStr;
@@ -606,7 +612,8 @@ export default function TemplatesPage() {
     
     // Replace remaining variables
     Object.keys(sampleData).forEach(key => {
-      preview = preview.replace(new RegExp(`{{${key}}}`, 'g'), sampleData[key]);
+      const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+      preview = preview.replace(regex, sampleData[key]);
     });
     
     return preview;
