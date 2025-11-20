@@ -120,6 +120,8 @@ export default function PrinterQueuePage() {
   const [showSettings, setShowSettings] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'grouped'>('list');
   const [clearQueueDialog, setClearQueueDialog] = useState(false);
+  const [previewJob, setPreviewJob] = useState<PrintJob | null>(null);
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
 
   // Carregar dados da fila
   const loadQueue = useCallback(async () => {
@@ -636,6 +638,18 @@ export default function PrinterQueuePage() {
 
             {/* Ações */}
             <div className="flex items-center gap-1">
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => {
+                  setPreviewJob(job);
+                  setShowPrintPreview(true);
+                }}
+                className="h-8 px-2 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/20"
+                title="Ver Impressão"
+              >
+                <Eye className="h-4 w-4" />
+              </Button>
               {job.status === 'pending' && (
                 <>
                   <Button
@@ -1095,6 +1109,118 @@ export default function PrinterQueuePage() {
             >
               Limpar Fila
             </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Modal de Visualização da Impressão */}
+      <AlertDialog open={showPrintPreview} onOpenChange={setShowPrintPreview}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <Receipt className="h-5 w-5 text-orange-600" />
+              Visualização da Impressão
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          
+          <div className="mt-4 bg-white dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 font-mono text-xs leading-5" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            {previewJob && (() => {
+              const getItemsInfo = () => {
+                if (previewJob.order_items) {
+                  const orderItem = previewJob.order_items;
+                  const item = orderItem.items;
+                  if (item) {
+                    return [{
+                      name: item.name || 'Item sem nome',
+                      quantity: orderItem.quantity || 1,
+                      price: orderItem.price || item.price || 0,
+                      notes: orderItem.notes || '',
+                      tableId: orderItem.orders?.table_id || null
+                    }];
+                  }
+                }
+                if (previewJob.document_type === 'order' && previewJob.document_data) {
+                  const items = previewJob.document_data.items || [];
+                  return items.map((item: any) => ({
+                    name: item.name || item.item_name || 'Item',
+                    quantity: item.quantity || 1,
+                    price: item.price || 0,
+                    notes: item.notes || '',
+                    tableId: null
+                  }));
+                }
+                return [];
+              };
+
+              const items = getItemsInfo();
+              const totalPrice = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
+              const printerInfo = printers.find(p => p.id === previewJob.printer_id);
+              const tableId = items[0]?.tableId;
+              
+              return (
+                <div className="space-y-2">
+                  <div className="text-center border-b pb-2">
+                    <div className="font-bold text-base">COMIDEX RESTAURANTE</div>
+                    <div className="text-xs">COMIDA JAPONESA</div>
+                    <div className="text-xs">Tel: (11) 1234-5678</div>
+                  </div>
+                  
+                  <div className="border-b pb-2">
+                    <div className="flex justify-between">
+                      <span>PEDIDO:</span>
+                      <span className="font-bold">#{previewJob.id}</span>
+                    </div>
+                    {tableId && (
+                      <div className="flex justify-between">
+                        <span>MESA:</span>
+                        <span className="font-bold">{tableId}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span>DATA:</span>
+                      <span>{new Date(previewJob.created_at).toLocaleString('pt-BR')}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="border-b pb-2">
+                    <div className="font-bold mb-1">ITENS DO PEDIDO:</div>
+                    {items.map((item: any, idx: number) => (
+                      <div key={idx} className="space-y-1">
+                        <div className="flex justify-between">
+                          <span>{item.quantity}x {item.name}</span>
+                          <span>{item.price === 0 ? 'Incluso' : `R$ ${(item.price * item.quantity).toFixed(2)}`}</span>
+                        </div>
+                        {item.notes && (
+                          <div className="pl-4 text-xs italic">Obs: {item.notes}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="border-b pb-2">
+                    <div className="flex justify-between font-bold text-base">
+                      <span>TOTAL:</span>
+                      <span>R$ {totalPrice.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="text-center text-xs pt-2">
+                    <div>Obrigado pela preferência!</div>
+                    <div>Volte sempre!</div>
+                  </div>
+                  
+                  <div className="border-t pt-2 mt-4 text-xs text-gray-500">
+                    <div>Impressora: {printerInfo?.name || 'Desconhecida'}</div>
+                    {printerInfo?.location && <div>Local: {printerInfo.location}</div>}
+                    <div>Status: {previewJob.status}</div>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+          
+          <AlertDialogFooter>
+            <AlertDialogCancel>Fechar</AlertDialogCancel>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
