@@ -10,6 +10,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { 
   Printer, 
   RefreshCw, 
@@ -104,6 +114,7 @@ export default function PrinterQueuePage() {
   });
   const [showSettings, setShowSettings] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'grouped'>('list');
+  const [clearQueueDialog, setClearQueueDialog] = useState(false);
 
   // Carregar dados da fila
   const loadQueue = useCallback(async () => {
@@ -429,6 +440,35 @@ export default function PrinterQueuePage() {
     );
   };
 
+  // Função para limpar fila
+  const handleClearQueue = async () => {
+    try {
+      setLoading(true);
+      
+      // Pegar todos os jobs pendentes
+      const pendingJobs = jobs.filter(j => j.status === 'pending');
+      
+      // Cancelar cada job pendente
+      for (const job of pendingJobs) {
+        await fetch(`/api/printer-queue/${job.id}`, {
+          method: 'DELETE'
+        });
+      }
+      
+      toast.success(`${pendingJobs.length} jobs removidos da fila`);
+      setClearQueueDialog(false);
+      
+      // Recarregar fila
+      await loadQueue();
+      await loadPrinters();
+    } catch (error) {
+      console.error('Erro ao limpar fila:', error);
+      toast.error('Erro ao limpar fila');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Renderizar job individual
   const renderJob = (job: PrintJob) => (
     <div
@@ -575,6 +615,16 @@ export default function PrinterQueuePage() {
           >
             <RefreshCw className="h-4 w-4" />
             Atualizar
+          </Button>
+
+          <Button
+            onClick={() => setClearQueueDialog(true)}
+            disabled={loading || stats.pending === 0}
+            variant="destructive"
+            className="gap-2"
+          >
+            <Trash2 className="h-4 w-4" />
+            Limpar Fila
           </Button>
           
           <Button
@@ -881,6 +931,29 @@ export default function PrinterQueuePage() {
           </ScrollArea>
         </CardContent>
       </Card>
+
+      {/* Modal de Confirmação para Limpar Fila */}
+      <AlertDialog open={clearQueueDialog} onOpenChange={setClearQueueDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Limpar Fila de Impressão</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja limpar toda a fila de impressão? 
+              Esta ação irá cancelar {stats.pending} job(s) pendente(s).
+              Esta operação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleClearQueue}
+              className="bg-red-600 hover:bg-red-700"
+            >
+              Limpar Fila
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

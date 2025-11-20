@@ -31,15 +31,27 @@ export async function DELETE(
       );
     }
 
-    // Só permitir deletar jobs que não estão ativos
-    if (!['printed', 'cancelled', 'failed'].includes(job.status)) {
+    // Se o job está pendente ou imprimindo, mudar para cancelado
+    if (['pending', 'printing'].includes(job.status)) {
+      const { error: updateError } = await supabase
+        .from('printer_queue')
+        .update({ 
+          status: 'cancelled',
+          error_message: 'Cancelado pelo usuário'
+        })
+        .eq('id', jobId);
+
+      if (updateError) {
+        throw updateError;
+      }
+      
       return NextResponse.json(
-        { error: 'Apenas jobs impressos, cancelados ou falhados podem ser deletados' },
-        { status: 400 }
+        { message: 'Job cancelado com sucesso' },
+        { status: 200 }
       );
     }
-
-    // Deletar o job
+    
+    // Para jobs já finalizados, deletar da fila
     const { error: deleteError } = await supabase
       .from('printer_queue')
       .delete()
