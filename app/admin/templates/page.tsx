@@ -429,11 +429,12 @@ export default function TemplatesPage() {
   const saveTemplate = async () => {
     setSaving(true);
     try {
-      // Look for existing template in database for this type
+      // Look for existing template in database for this type - pegar o mais recente
       const { data: existingTemplates, error: fetchError } = await supabase
         .from('print_templates')
         .select('id')
         .eq('template_type', selectedType)
+        .order('id', { ascending: false })
         .limit(1);
 
       if (fetchError) throw fetchError;
