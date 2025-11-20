@@ -1,7 +1,13 @@
 {
+  "/admin/notifications/page": "app/admin/notifications/page.js",
+  "/admin/printer-queue/page": "app/admin/printer-queue/page.js",
+  "/admin/templates/page": "app/admin/templates/page.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/printer-queue/route": "app/api/printer-queue/route.js",
   "/api/printers/route": "app/api/printers/route.js",
+  "/api/prompt-message/route": "app/api/prompt-message/route.js",
+  "/api/restaurant/route": "app/api/restaurant/route.js",
   "/page": "app/page.js",
+  "/pos/page": "app/pos/page.js",
   "/prompt/page": "app/prompt/page.js"
 }
