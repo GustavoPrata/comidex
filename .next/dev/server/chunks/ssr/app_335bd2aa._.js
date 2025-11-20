@@ -8253,8 +8253,8 @@ function POSPage() {
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
                                                             onClick: startCheckout,
-                                                            disabled: loading || cart.length === 0 || selectedTable?.status === 'closed',
-                                                            className: `w-full h-11 text-sm font-semibold transition-all ${cart.length === 0 || selectedTable?.status === 'closed' ? "bg-gray-700 text-gray-400 cursor-not-allowed" : "bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20"}`,
+                                                            disabled: loading || cart.length === 0 || currentSession?.status === 'closed',
+                                                            className: `w-full h-11 text-sm font-semibold transition-all ${cart.length === 0 || currentSession?.status === 'closed' ? "bg-gray-700 text-gray-400 cursor-not-allowed" : "bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20"}`,
                                                             children: [
                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$credit$2d$card$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__CreditCard$3e$__["CreditCard"], {
                                                                     className: "mr-2 h-4 w-4"
@@ -8263,7 +8263,7 @@ function POSPage() {
                                                                     lineNumber: 4494,
                                                                     columnNumber: 21
                                                                 }, this),
-                                                                selectedTable?.status === 'closed' ? 'Conta Fechada' : 'Fechar Conta'
+                                                                currentSession?.status === 'closed' ? 'Conta Fechada' : 'Fechar Conta'
                                                             ]
                                                         }, void 0, true, {
                                                             fileName: "[project]/app/pos/page.tsx",

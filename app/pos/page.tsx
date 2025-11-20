@@ -4484,15 +4484,15 @@ export default function POSPage() {
                   {/* Botão Fechar Conta - Principal em laranja */}
                   <Button
                     onClick={startCheckout}
-                    disabled={loading || cart.length === 0 || selectedTable?.status === 'closed'}
+                    disabled={loading || cart.length === 0 || currentSession?.status === 'closed'}
                     className={`w-full h-11 text-sm font-semibold transition-all ${
-                      cart.length === 0 || selectedTable?.status === 'closed'
+                      cart.length === 0 || currentSession?.status === 'closed'
                         ? "bg-gray-700 text-gray-400 cursor-not-allowed" 
                         : "bg-orange-600 hover:bg-orange-500 text-white shadow-lg shadow-orange-600/20"
                     }`}
                   >
                     <CreditCard className="mr-2 h-4 w-4" />
-                    {selectedTable?.status === 'closed' ? 'Conta Fechada' : 'Fechar Conta'}
+                    {currentSession?.status === 'closed' ? 'Conta Fechada' : 'Fechar Conta'}
                   </Button>
                   
                   {/* Botão Imprimir - Secundário */}

@@ -731,11 +731,11 @@ export default function TemplatesPage() {
                 <div className="flex items-center gap-3">
                   <Label className="text-sm font-medium">Impressora:</Label>
                   <Select
-                    value={selectedPrinters[selectedType] || ''}
+                    value={selectedPrinters[selectedType] || 'none'}
                     onValueChange={(value) => {
                       setSelectedPrinters({
                         ...selectedPrinters,
-                        [selectedType]: value || null
+                        [selectedType]: value === 'none' ? null : value
                       });
                     }}
                   >
@@ -743,7 +743,7 @@ export default function TemplatesPage() {
                       <SelectValue placeholder="Selecione a impressora" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Nenhuma</SelectItem>
+                      <SelectItem value="none">Nenhuma</SelectItem>
                       {printers.map((printer) => (
                         <SelectItem key={printer.id} value={printer.id.toString()}>
                           {printer.name}
