@@ -776,8 +776,12 @@ export default function POSPage() {
       if (!error && orderData) {
         setCurrentOrder(orderData as any);
         
-        // Preserve new items not yet saved to database
-        const newItems = cart.filter(item => !item.id || item.id < 0);
+        // Preservar itens novos (não salvos no banco) antes de sobrescrever o cart
+        const currentNewItems = cart.filter(item => 
+          !item.id || // Item sem id do banco
+          item.id < 0 || // ID temporário negativo
+          item.status === 'pending' // Item ainda não lançado
+        );
         
         // Transform order items to cart format
         const savedItems = orderData.items?.map((orderItem: any) => {
@@ -820,8 +824,9 @@ export default function POSPage() {
           };
         }) || [];
         
-        // Combine saved items with new items not yet in database
-        setCart([...savedItems, ...newItems]);
+        // Combinar itens salvos com itens novos preservados
+        const allItems = [...savedItems, ...currentNewItems];
+        setCart(allItems);
         // Removido scroll automático - itens recentes ficam no topo
       } else {
         setCart([]);
@@ -844,8 +849,7 @@ export default function POSPage() {
       setCurrentSession(table.current_session);
       await loadSessionDetails(table.id);
       
-      // Carregar itens existentes do pedido
-      await loadExistingOrderItems(table.id.toString());
+      // loadExistingOrderItems removido - loadSessionDetails já faz esse trabalho
       
       setScreen('session');
       // Garante que a mesa está selecionada na sessão
