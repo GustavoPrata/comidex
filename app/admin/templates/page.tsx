@@ -276,8 +276,21 @@ export default function TemplatesPage() {
       const template = mergedTemplates[selectedType] || defaultTemplates[selectedType];
       
       // Use saved sections if available, otherwise use defaults
-      if (template.sections && Array.isArray(template.sections)) {
-        setSections(template.sections);
+      if (template.sections) {
+        // Parse sections if it's a string
+        const parsedSections = typeof template.sections === 'string' 
+          ? JSON.parse(template.sections) 
+          : template.sections;
+        
+        if (Array.isArray(parsedSections)) {
+          setSections(parsedSections);
+        } else {
+          setSections([
+            { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+            { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+            { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
+          ]);
+        }
       } else {
         setSections([
           { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
@@ -294,8 +307,21 @@ export default function TemplatesPage() {
     const template = templates[type] || defaultTemplates[type];
     
     // Use saved sections if available, otherwise use defaults
-    if (template.sections && Array.isArray(template.sections)) {
-      setSections(template.sections);
+    if (template.sections) {
+      // Parse sections if it's a string
+      const parsedSections = typeof template.sections === 'string' 
+        ? JSON.parse(template.sections) 
+        : template.sections;
+      
+      if (Array.isArray(parsedSections)) {
+        setSections(parsedSections);
+      } else {
+        setSections([
+          { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
+          { id: '2', name: 'Itens', content: template.items || '', type: 'items', fontSize: 11, fontFamily: 'mono', align: 'left', bold: false },
+          { id: '3', name: 'Rodapé', content: template.footer || '', type: 'text', fontSize: 10, fontFamily: 'mono', align: 'center', bold: false }
+        ]);
+      }
     } else {
       setSections([
         { id: '1', name: 'Cabeçalho', content: template.header || '', type: 'text', fontSize: 12, fontFamily: 'mono', align: 'center', bold: false },
@@ -413,7 +439,7 @@ export default function TemplatesPage() {
         custom_header: headerSection?.content || sections[0]?.content || '',
         items_content: itemsSection?.content || '',
         custom_footer: footerSection?.content || sections[sections.length - 1]?.content || '',
-        sections: sections,
+        sections: JSON.stringify(sections), // Converter para JSON string
         description: `Template para ${templateTypes.find(t => t.id === selectedType)?.label}`,
         header_enabled: true,
         footer_enabled: true,
