@@ -499,10 +499,19 @@ async function GET(request, { params }) {
         // Se encontrou template customizado
         if (data) {
             let template;
+            console.log('✅ Dados do template no banco:', {
+                id: data.id,
+                template_type: data.template_type,
+                sections: data.sections,
+                custom_header: data.custom_header,
+                items_content: data.items_content,
+                custom_footer: data.custom_footer
+            });
             // PRIORIDADE 1: Usar sections se existir (novo formato)
             if (data.sections) {
                 // O campo sections pode ser JSON string ou array
                 const sections = typeof data.sections === 'string' ? JSON.parse(data.sections) : data.sections;
+                console.log('✅ Sections parseado:', sections);
                 if (Array.isArray(sections) && sections.length > 0) {
                     // Extrair header, items, footer das sections
                     const headerSection = sections.find((s)=>s.name && s.name.toLowerCase().includes('cabeça')) || sections[0];
@@ -513,6 +522,7 @@ async function GET(request, { params }) {
                         items: itemsSection?.content || '',
                         footer: footerSection?.content || ''
                     };
+                    console.log('✅ Template extraído das sections:', template);
                 } else {
                     // Fallback para campos individuais se sections não for um array válido
                     template = {
@@ -520,6 +530,7 @@ async function GET(request, { params }) {
                         items: data.items_content || defaultTemplates[templateType]?.items || '',
                         footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
                     };
+                    console.log('⚠️ Sections inválido, usando campos individuais');
                 }
             } else {
                 // PRIORIDADE 2: Usar campos individuais (formato antigo)
@@ -528,8 +539,9 @@ async function GET(request, { params }) {
                     items: data.items_content || defaultTemplates[templateType]?.items || '',
                     footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
                 };
+                console.log('⚠️ Sem sections, usando campos individuais');
             }
-            console.log('Template carregado do banco:', template);
+            console.log('✅ Template final que será retornado:', template);
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 template,
                 isDefault: false

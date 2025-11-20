@@ -132,12 +132,23 @@ export async function GET(
     if (data) {
       let template;
       
+      console.log('✅ Dados do template no banco:', {
+        id: data.id,
+        template_type: data.template_type,
+        sections: data.sections,
+        custom_header: data.custom_header,
+        items_content: data.items_content,
+        custom_footer: data.custom_footer
+      });
+      
       // PRIORIDADE 1: Usar sections se existir (novo formato)
       if (data.sections) {
         // O campo sections pode ser JSON string ou array
         const sections = typeof data.sections === 'string' 
           ? JSON.parse(data.sections) 
           : data.sections;
+        
+        console.log('✅ Sections parseado:', sections);
         
         if (Array.isArray(sections) && sections.length > 0) {
           // Extrair header, items, footer das sections
@@ -158,6 +169,8 @@ export async function GET(
             items: itemsSection?.content || '',
             footer: footerSection?.content || ''
           };
+          
+          console.log('✅ Template extraído das sections:', template);
         } else {
           // Fallback para campos individuais se sections não for um array válido
           template = {
@@ -165,6 +178,7 @@ export async function GET(
             items: data.items_content || defaultTemplates[templateType]?.items || '',
             footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
           };
+          console.log('⚠️ Sections inválido, usando campos individuais');
         }
       } else {
         // PRIORIDADE 2: Usar campos individuais (formato antigo)
@@ -173,9 +187,10 @@ export async function GET(
           items: data.items_content || defaultTemplates[templateType]?.items || '',
           footer: data.custom_footer || defaultTemplates[templateType]?.footer || ''
         };
+        console.log('⚠️ Sem sections, usando campos individuais');
       }
       
-      console.log('Template carregado do banco:', template);
+      console.log('✅ Template final que será retornado:', template);
       
       return NextResponse.json({
         template,
