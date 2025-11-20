@@ -30,8 +30,14 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   const fetchTemplate = async () => {
     setLoading(true);
     try {
+      // Determinar o tipo de template baseado no trabalho
+      // Para produtos/itens de pedido, usar template "product"
+      const templateType = 'product';
+      
+      console.log('Buscando template tipo:', templateType);
+      
       // Adicionar timestamp para evitar cache
-      const response = await fetch(`/api/templates/kitchen?t=${Date.now()}`, {
+      const response = await fetch(`/api/templates/${templateType}?t=${Date.now()}`, {
         cache: 'no-store',
         headers: {
           'Cache-Control': 'no-cache',
