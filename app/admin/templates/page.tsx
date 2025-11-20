@@ -560,8 +560,7 @@ export default function TemplatesPage() {
     const sampleItems = [
       { quantity: '2', name: 'Sushi Especial', price: '45,00', observation: '', item_group: 'RODÍZIO PREMIUM' },
       { quantity: '1', name: 'Temaki Salmão', price: '18,00', observation: 'Sem wasabi', item_group: 'RODÍZIO PREMIUM' },
-      { quantity: '3', name: 'Hot Roll', price: '32,00', observation: '', item_group: '' },
-      { quantity: '1', name: 'Coca-Cola 350ml', price: '8,00', observation: '', item_group: 'BEBIDAS' }
+      { quantity: '2', name: 'Coca-Cola 350ml', price: '8,00', observation: '', item_group: 'BEBIDAS' }
     ];
 
     // Replace variables with sample data
