@@ -167,10 +167,12 @@ export async function GET(
             s.name && s.name.toLowerCase().includes('rodap')
           ) || sections[sections.length - 1];
           
+          // Retornar template com as sections completas (incluindo formatação)
           template = {
             header: headerSection?.content || '',
             items: itemsSection?.content || '',
-            footer: footerSection?.content || ''
+            footer: footerSection?.content || '',
+            sections: sections // Incluir sections completas com todas as propriedades
           };
           
           console.log('✅ Template extraído das sections:', template);

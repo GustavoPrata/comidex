@@ -19,11 +19,13 @@ interface PrintPreviewProps {
 export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   const [template, setTemplate] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [sections, setSections] = useState<any[]>([]);
 
   useEffect(() => {
     if (open && job) {
       // Limpar template anterior para forçar nova busca
       setTemplate(null);
+      setSections([]);
       fetchTemplate();
     }
   }, [open, job]);
@@ -49,6 +51,11 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
         const data = await response.json();
         console.log('Template carregado:', data.template);
         setTemplate(data.template); // Acessar o template dentro do objeto
+        
+        // Se houver sections com propriedades de formatação, salvar
+        if (data.template.sections) {
+          setSections(data.template.sections);
+        }
       }
     } catch (error) {
       console.error('Erro ao buscar template:', error);
@@ -163,12 +170,60 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
     return result;
   };
 
-  const getRenderedContent = () => {
+  // Renderizar seção com suas propriedades de formatação
+  const renderSection = (section: any, templateData: any): React.ReactNode => {
+    const content = applyTemplate(section.content || '', templateData);
+    
+    // Criar objeto de estilos baseado nas propriedades da section
+    const sectionStyles: any = {};
+    
+    if (section.fontSize) {
+      sectionStyles.fontSize = `${section.fontSize}px`;
+    }
+    
+    if (section.fontFamily) {
+      switch(section.fontFamily) {
+        case 'mono':
+          sectionStyles.fontFamily = 'monospace';
+          break;
+        case 'sans':
+          sectionStyles.fontFamily = 'sans-serif';
+          break;
+        case 'serif':
+          sectionStyles.fontFamily = 'serif';
+          break;
+        default:
+          sectionStyles.fontFamily = section.fontFamily;
+      }
+    }
+    
+    if (section.align) {
+      sectionStyles.textAlign = section.align;
+    }
+    
+    if (section.bold) {
+      sectionStyles.fontWeight = 'bold';
+    }
+    
+    if (section.lineSpacing) {
+      sectionStyles.lineHeight = section.lineSpacing;
+    }
+    
+    // Aplicar estilos da section e processar tags inline
+    return (
+      <div style={sectionStyles} className="mb-2">
+        {processFormatting(content)}
+      </div>
+    );
+  };
+
+  const getRenderedContent = (): React.ReactNode => {
     if (!job) return 'Nenhum trabalho selecionado';
     if (!template) return 'Template não carregado';
 
     console.log('Renderizando com template:', template);
     console.log('Dados do job:', job);
+    console.log('Sections:', sections);
 
     // Preparar dados do pedido
     const items = [];
@@ -221,12 +276,26 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       payment_method: 'A definir'
     };
 
-    // Aplicar template
+    // Se temos sections com formatação, renderizar com as propriedades
+    if (sections && sections.length > 0) {
+      return (
+        <div>
+          {sections.map((section, index) => (
+            <div key={section.id || index}>
+              {renderSection(section, templateData)}
+            </div>
+          ))}
+        </div>
+      );
+    }
+    
+    // Senão, usar o template simples
     const header = applyTemplate(template.header || '', templateData);
     const itemsContent = applyTemplate(template.items || '', templateData);
     const footer = applyTemplate(template.footer || '', templateData);
     
-    return `${header}\n${itemsContent}\n${footer}`;
+    const fullContent = `${header}\n${itemsContent}\n${footer}`;
+    return processFormatting(fullContent);
   };
 
   return (
@@ -284,7 +353,9 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
                     <p className="text-sm text-gray-600">Carregando template...</p>
                   </div>
                 ) : (
-                  <div className="whitespace-pre-wrap">{processFormatting(getRenderedContent())}</div>
+                  <div className="whitespace-pre-wrap">
+                    {getRenderedContent()}
+                  </div>
                 )}
               </div>
             </div>

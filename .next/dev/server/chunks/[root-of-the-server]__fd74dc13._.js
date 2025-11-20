@@ -557,10 +557,12 @@ async function GET(request, { params }) {
                     const headerSection = sections.find((s)=>s.name && s.name.toLowerCase().includes('cabeça')) || sections[0];
                     const itemsSection = sections.find((s)=>s.type === 'items');
                     const footerSection = sections.find((s)=>s.name && s.name.toLowerCase().includes('rodap')) || sections[sections.length - 1];
+                    // Retornar template com as sections completas (incluindo formatação)
                     template = {
                         header: headerSection?.content || '',
                         items: itemsSection?.content || '',
-                        footer: footerSection?.content || ''
+                        footer: footerSection?.content || '',
+                        sections: sections // Incluir sections completas com todas as propriedades
                     };
                     console.log('✅ Template extraído das sections:', template);
                 } else {
