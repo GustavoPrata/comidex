@@ -2779,7 +2779,7 @@ function POSPage() {
                             quantity: orderItem.quantity,
                             unit_price: orderItem.unit_price,
                             total_price: orderItem.total_price,
-                            status: orderItem.status,
+                            status: orderItem.status === 'cancelled' ? 'cancelled' : 'delivered',
                             launched_at: orderItem.created_at,
                             icon: metadata.icon || null,
                             item: {
@@ -3863,20 +3863,20 @@ function POSPage() {
                     return itemWithoutFlag;
                 }
                 // Se o item estava nos newItems (foi lançado agora), marca como delivered
-                const insertedItem = insertedItems?.find((inserted)=>{
+                const wasInNewItems = newItems.some((newItem)=>{
                     // Para rodízios
-                    if (item.item_id < 0 && !inserted.item_id) {
-                        return inserted.metadata?.name === item.item?.name;
+                    if (item.item_id < 0 && newItem.item_id < 0) {
+                        return newItem.item?.name === item.item?.name && newItem.quantity === item.quantity && newItem.status === item.status;
                     }
                     // Para itens normais
-                    return inserted.item_id === item.item_id;
+                    return newItem.item_id === item.item_id && newItem.quantity === item.quantity && newItem.status === item.status;
                 });
-                if (insertedItem && newItems.some((newItem)=>newItem.item_id === item.item_id && newItem.quantity === item.quantity && newItem.status === item.status)) {
+                if (wasInNewItems) {
                     return {
                         ...item,
                         status: 'delivered',
                         order_id: orderId,
-                        launched_at: insertedItem.created_at // Usar created_at do banco
+                        launched_at: new Date().toISOString() // Timestamp do lançamento
                     };
                 }
                 // Mantém itens já lançados como estão
