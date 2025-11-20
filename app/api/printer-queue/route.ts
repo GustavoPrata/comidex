@@ -10,7 +10,27 @@ export async function GET(request: NextRequest) {
     
     let query = supabase
       .from('printer_queue')
-      .select('*')
+      .select(`
+        *,
+        order_items (
+          id,
+          quantity,
+          price,
+          notes,
+          items (
+            id,
+            name,
+            price,
+            description
+          ),
+          orders (
+            id,
+            table_id,
+            total,
+            status
+          )
+        )
+      `)
       .order('created_at', { ascending: true }) // FIFO - primeiro a entrar, primeiro a sair
     
     if (printerId) {

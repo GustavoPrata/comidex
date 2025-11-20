@@ -553,7 +553,6 @@ async function POST(request) {
                             const printJobs = itemsToPrint.map((item)=>({
                                     order_item_id: item.id,
                                     printer_id: printers.id,
-                                    priority: 'high',
                                     copies: 1,
                                     status: 'pending'
                                 }));

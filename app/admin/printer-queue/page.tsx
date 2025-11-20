@@ -467,36 +467,59 @@ export default function PrinterQueuePage() {
 
   // Renderizar job individual com visual melhorado
   const renderJob = (job: PrintJob) => {
-    // Extrair informações do documento
+    // Extrair informações do pedido
     const getItemsInfo = () => {
+      // Se temos order_items com os dados relacionados
+      if (job.order_items) {
+        const orderItem = job.order_items;
+        const item = orderItem.items;
+        
+        if (item) {
+          return [{
+            name: item.name || 'Item sem nome',
+            quantity: orderItem.quantity || 1,
+            price: orderItem.price || item.price || 0,
+            description: item.description || '',
+            notes: orderItem.notes || '',
+            tableId: orderItem.orders?.table_id || null
+          }];
+        }
+      }
+      
+      // Fallback para document_data se existir
       if (job.document_type === 'order' && job.document_data) {
         const items = job.document_data.items || [];
         return items.map((item: any) => ({
           name: item.name || item.item_name || 'Item',
           quantity: item.quantity || 1,
           price: item.price || 0,
-          category: item.category || 'Geral'
+          description: item.description || '',
+          notes: item.notes || '',
+          tableId: null
         }));
       }
+      
       return [];
     };
 
     const items = getItemsInfo();
     const totalPrice = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
     const printerInfo = printers.find(p => p.id === job.printer_id);
+    const tableId = items[0]?.tableId;
     
-    // Ícone baseado na categoria ou tipo
-    const getCategoryIcon = (category: string) => {
-      const categoryIcons: { [key: string]: any } = {
-        'bebidas': Coffee,
-        'drinks': Coffee,
-        'vinhos': Wine,
-        'wines': Wine,
-        'pratos': UtensilsCrossed,
-        'dishes': UtensilsCrossed,
-        'default': Package
-      };
-      return categoryIcons[category?.toLowerCase()] || categoryIcons.default;
+    // Ícone baseado no nome do item
+    const getItemIcon = (name: string) => {
+      const lowerName = name?.toLowerCase() || '';
+      if (lowerName.includes('bebida') || lowerName.includes('refrigerante') || lowerName.includes('suco') || lowerName.includes('café')) {
+        return Coffee;
+      }
+      if (lowerName.includes('vinho') || lowerName.includes('wine')) {
+        return Wine;
+      }
+      if (lowerName.includes('prato') || lowerName.includes('comida') || lowerName.includes('lanche')) {
+        return UtensilsCrossed;
+      }
+      return Package;
     };
 
     return (
@@ -538,6 +561,12 @@ export default function PrinterQueuePage() {
                 <span className="font-semibold text-gray-900 dark:text-white">
                   Pedido #{job.id}
                 </span>
+                {tableId && (
+                  <Badge variant="outline" className="ml-2">
+                    <MapPin className="h-3 w-3 mr-1" />
+                    Mesa {tableId}
+                  </Badge>
+                )}
               </div>
               
               {renderStatusBadge(job.status)}
@@ -574,21 +603,28 @@ export default function PrinterQueuePage() {
               
               <div className="space-y-2 pl-6">
                 {items.map((item: any, idx: number) => {
-                  const Icon = getCategoryIcon(item.category);
+                  const Icon = getItemIcon(item.name);
                   return (
                     <div key={idx} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-800 last:border-0">
                       <div className="flex items-center gap-3">
                         <Icon className="h-5 w-5 text-gray-500" />
-                        <div>
+                        <div className="flex-1">
                           <p className="font-medium text-gray-900 dark:text-white">
                             {item.quantity}x {item.name}
                           </p>
-                          <p className="text-xs text-gray-500">
-                            {item.category}
-                          </p>
+                          {item.description && (
+                            <p className="text-xs text-gray-500">
+                              {item.description}
+                            </p>
+                          )}
+                          {item.notes && (
+                            <p className="text-xs text-orange-600 mt-1 italic">
+                              Obs: {item.notes}
+                            </p>
+                          )}
                         </div>
                       </div>
-                      <span className="font-semibold text-gray-700 dark:text-gray-300">
+                      <span className="font-semibold text-gray-700 dark:text-gray-300 ml-4">
                         R$ {(item.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
