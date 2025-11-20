@@ -547,7 +547,7 @@ function PrintPreview({ open, onClose, job }) {
             const response = await fetch('/api/templates/kitchen');
             if (response.ok) {
                 const data = await response.json();
-                setTemplate(data);
+                setTemplate(data.template); // Acessar o template dentro do objeto
             }
         } catch (error) {
             console.error('Erro ao buscar template:', error);
