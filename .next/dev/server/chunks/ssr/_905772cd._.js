@@ -534,7 +534,6 @@ function PrintPreview({ open, onClose, job }) {
     const [template, setTemplate] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(null);
     const [loading, setLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [sections, setSections] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
-    const [showItemGroup, setShowItemGroup] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         if (open && job) {
             // Limpar template anterior para forçar nova busca
@@ -565,9 +564,7 @@ function PrintPreview({ open, onClose, job }) {
                 const data = await response.json();
                 console.log('Template carregado:', data.template);
                 console.log('Sections com formatação:', data.template.sections);
-                console.log('showItemGroup:', data.showItemGroup);
                 setTemplate(data.template); // Acessar o template dentro do objeto
-                setShowItemGroup(data.showItemGroup || false); // Carregar configuração de mostrar grupo
                 // Se houver sections com propriedades de formatação, salvar
                 if (data.template.sections && Array.isArray(data.template.sections)) {
                     setSections(data.template.sections);
@@ -673,7 +670,7 @@ function PrintPreview({ open, onClose, job }) {
             }
         }, void 0, false, {
             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-            lineNumber: 173,
+            lineNumber: 170,
             columnNumber: 12
         }, this);
     };
@@ -681,7 +678,7 @@ function PrintPreview({ open, onClose, job }) {
         let result = templateStr || '';
         // Substituir variáveis simples
         Object.keys(data).forEach((key)=>{
-            if (key !== 'items' && key !== 'itemsByGroup') {
+            if (key !== 'items') {
                 const regex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
                 result = result.replace(regex, data[key] || '');
             }
@@ -690,51 +687,22 @@ function PrintPreview({ open, onClose, job }) {
         const eachRegex = /{{#each\s+items}}([\s\S]*?){{\/each}}/g;
         result = result.replace(eachRegex, (match, content)=>{
             if (!data.items || data.items.length === 0) return '';
-            // Se showItemGroup está habilitado e temos grupos
-            if (showItemGroup && data.itemsByGroup && Object.keys(data.itemsByGroup).length > 0) {
-                // Processar itens por grupo
-                let groupedOutput = '';
-                Object.keys(data.itemsByGroup).forEach((group)=>{
-                    // Adicionar cabeçalho do grupo
-                    if (group) {
-                        groupedOutput += `[[bold]]========= ${group.toUpperCase()} =========[[/bold]]\n`;
-                    }
-                    // Processar itens do grupo
-                    groupedOutput += data.itemsByGroup[group].map((item)=>{
-                        let itemContent = content;
-                        // Substituir variáveis do item
-                        Object.keys(item).forEach((key)=>{
-                            const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-                            itemContent = itemContent.replace(itemRegex, item[key] || '');
-                        });
-                        // Processar condicionais {{#if field}}
-                        const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
-                        itemContent = itemContent.replace(ifRegex, (match, field, ifContent)=>{
-                            return item[field] ? ifContent : '';
-                        });
-                        return itemContent;
-                    }).join('');
-                    // Adicionar linha separadora após o grupo
-                    groupedOutput += '--------------------------------\n';
+            // Processar normalmente - item_group é tratado como variável normal
+            return data.items.map((item)=>{
+                let itemContent = content;
+                // Substituir variáveis do item
+                Object.keys(item).forEach((key)=>{
+                    const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
+                    itemContent = itemContent.replace(itemRegex, item[key] || '');
                 });
-                return groupedOutput;
-            } else {
-                // Processar normalmente sem grupos
-                return data.items.map((item)=>{
-                    let itemContent = content;
-                    // Substituir variáveis do item
-                    Object.keys(item).forEach((key)=>{
-                        const itemRegex = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
-                        itemContent = itemContent.replace(itemRegex, item[key] || '');
-                    });
-                    // Processar condicionais {{#if field}}
-                    const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
-                    itemContent = itemContent.replace(ifRegex, (match, field, ifContent)=>{
-                        return item[field] ? ifContent : '';
-                    });
-                    return itemContent;
-                }).join('');
-            }
+                // Processar condicionais {{#if field}}
+                const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
+                itemContent = itemContent.replace(ifRegex, (match, field, ifContent)=>{
+                    // Verifica se o campo existe e não é uma string vazia
+                    return item[field] && item[field].toString().trim() !== '' ? ifContent : '';
+                });
+                return itemContent;
+            }).join('');
         });
         return result;
     };
@@ -795,7 +763,7 @@ function PrintPreview({ open, onClose, job }) {
             children: processFormatting(content)
         }, void 0, false, {
             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-            lineNumber: 310,
+            lineNumber: 272,
             columnNumber: 7
         }, this);
     };
@@ -807,45 +775,28 @@ function PrintPreview({ open, onClose, job }) {
         console.log('Sections:', sections);
         // Preparar dados do pedido
         const items = [];
-        const itemsByGroup = {}; // Agrupar itens por categoria
         if (job.order_items) {
             const orderItem = job.order_items;
             const item = orderItem.items;
             if (item) {
-                const itemData = {
+                items.push({
                     quantity: orderItem.quantity || 1,
                     name: item.name || 'Item sem nome',
                     price: item.price === 0 ? 'Incluso' : `${(item.price * (orderItem.quantity || 1)).toFixed(2)}`,
                     observation: orderItem.notes || '',
-                    group: item.category || ''
-                };
-                items.push(itemData);
-                // Agrupar por categoria se configurado
-                if (showItemGroup && item.category) {
-                    if (!itemsByGroup[item.category]) {
-                        itemsByGroup[item.category] = [];
-                    }
-                    itemsByGroup[item.category].push(itemData);
-                }
+                    item_group: item.category || ''
+                });
             }
         } else if (job.document_type === 'order' && job.document_data) {
             const orderItems = job.document_data.items || [];
             orderItems.forEach((item)=>{
-                const itemData = {
+                items.push({
                     quantity: item.quantity || 1,
                     name: item.name || item.item_name || 'Item',
                     price: item.price === 0 ? 'Incluso' : `${(item.price * (item.quantity || 1)).toFixed(2)}`,
                     observation: item.notes || '',
-                    group: item.category || ''
-                };
-                items.push(itemData);
-                // Agrupar por categoria se configurado
-                if (showItemGroup && item.category) {
-                    if (!itemsByGroup[item.category]) {
-                        itemsByGroup[item.category] = [];
-                    }
-                    itemsByGroup[item.category].push(itemData);
-                }
+                    item_group: item.category || ''
+                });
             });
         }
         const totalPrice = items.reduce((sum, item)=>{
@@ -867,7 +818,6 @@ function PrintPreview({ open, onClose, job }) {
                 minute: '2-digit'
             }),
             items: items,
-            itemsByGroup: itemsByGroup,
             subtotal: totalPrice.toFixed(2),
             discount: '0.00',
             service_fee: '0.00',
@@ -886,12 +836,12 @@ function PrintPreview({ open, onClose, job }) {
                         children: renderSection(section, templateData)
                     }, section.id || index, false, {
                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                        lineNumber: 403,
+                        lineNumber: 345,
                         columnNumber: 13
                     }, this))
             }, void 0, false, {
                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                lineNumber: 401,
+                lineNumber: 343,
                 columnNumber: 9
             }, this);
         }
@@ -911,7 +861,7 @@ function PrintPreview({ open, onClose, job }) {
             children: processFormatting(fullContent)
         }, void 0, false, {
             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-            lineNumber: 419,
+            lineNumber: 361,
             columnNumber: 7
         }, this);
     };
@@ -926,7 +876,7 @@ function PrintPreview({ open, onClose, job }) {
                     children: "Visualização da Impressão"
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 428,
+                    lineNumber: 370,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -946,17 +896,17 @@ function PrintPreview({ open, onClose, job }) {
                                     d: "M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                    lineNumber: 432,
+                                    lineNumber: 374,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                lineNumber: 431,
+                                lineNumber: 373,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                            lineNumber: 430,
+                            lineNumber: 372,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
@@ -964,13 +914,13 @@ function PrintPreview({ open, onClose, job }) {
                             children: "Visualização da Impressão"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                            lineNumber: 435,
+                            lineNumber: 377,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 429,
+                    lineNumber: 371,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -986,7 +936,7 @@ function PrintPreview({ open, onClose, job }) {
                                 className: "h-8 bg-gradient-to-b from-gray-300 to-gray-200 rounded-t-lg border-x-2 border-t-2 border-gray-400"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                lineNumber: 448,
+                                lineNumber: 390,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1008,7 +958,7 @@ function PrintPreview({ open, onClose, job }) {
                                         }
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                        lineNumber: 463,
+                                        lineNumber: 405,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1020,7 +970,7 @@ function PrintPreview({ open, onClose, job }) {
                                                     className: "h-8 w-8 animate-spin text-gray-500 mx-auto mb-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                                    lineNumber: 475,
+                                                    lineNumber: 417,
                                                     columnNumber: 21
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1028,30 +978,30 @@ function PrintPreview({ open, onClose, job }) {
                                                     children: "Carregando template..."
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                                    lineNumber: 476,
+                                                    lineNumber: 418,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                            lineNumber: 474,
+                                            lineNumber: 416,
                                             columnNumber: 19
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             children: getRenderedContent()
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                            lineNumber: 479,
+                                            lineNumber: 421,
                                             columnNumber: 19
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                        lineNumber: 472,
+                                        lineNumber: 414,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                lineNumber: 451,
+                                lineNumber: 393,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1063,23 +1013,23 @@ function PrintPreview({ open, onClose, job }) {
                                     }
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                    lineNumber: 488,
+                                    lineNumber: 430,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                                lineNumber: 487,
+                                lineNumber: 429,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                        lineNumber: 440,
+                        lineNumber: 382,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 439,
+                    lineNumber: 381,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -1087,23 +1037,23 @@ function PrintPreview({ open, onClose, job }) {
                         children: "Fechar"
                     }, void 0, false, {
                         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                        lineNumber: 499,
+                        lineNumber: 441,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-                    lineNumber: 498,
+                    lineNumber: 440,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-            lineNumber: 427,
+            lineNumber: 369,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/admin/printer-queue/PrintPreview.tsx",
-        lineNumber: 426,
+        lineNumber: 368,
         columnNumber: 5
     }, this);
 }

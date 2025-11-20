@@ -199,7 +199,8 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
         // Processar condicionais {{#if field}}
         const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
         itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
-          return item[field] ? ifContent : '';
+          // Verifica se o campo existe e não é uma string vazia
+          return item[field] && item[field].toString().trim() !== '' ? ifContent : '';
         });
         
         return itemContent;
