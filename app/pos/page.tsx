@@ -227,43 +227,8 @@ export default function POSPage() {
   const [selectedTable, setSelectedTable] = useState<RestaurantTable | null>(null);
   const [currentSession, setCurrentSession] = useState<TableSession | null>(null);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
-  // Separar itens salvos de rascunhos para evitar sobrescrita
-  const [persistedItems, setPersistedItems] = useState<OrderItem[]>([]);
-  const [draftItems, setDraftItems] = useState<OrderItem[]>([]);
-  
-  // Cart combinado para exibição - SEMPRE usar isso na UI
-  const cart = useMemo(() => [...persistedItems, ...draftItems], [persistedItems, draftItems]);
-  
-  // Função auxiliar para adicionar item ao carrinho
-  const setCart = (items: OrderItem[] | ((prev: OrderItem[]) => OrderItem[])) => {
-    // Esta função existe para compatibilidade com código existente
-    // Determinar se são itens persistidos ou rascunhos
-    if (typeof items === 'function') {
-      // Se é uma função updater, aplicar em ambos
-      setPersistedItems(prev => {
-        const newPersisted = items([...prev, ...draftItems]).filter(item => 
-          item.id && item.id > 0 && item.status === 'delivered'
-        );
-        return newPersisted;
-      });
-      setDraftItems(prev => {
-        const newDrafts = items([...persistedItems, ...prev]).filter(item => 
-          !item.id || item.id < 0 || item.status === 'pending'
-        );
-        return newDrafts;
-      });
-    } else {
-      // Se é um array direto, separar por tipo
-      const persisted = items.filter(item => 
-        item.id && item.id > 0 && (item.status === 'delivered' || item.status === 'cancelled')
-      );
-      const drafts = items.filter(item => 
-        !item.id || item.id < 0 || item.status === 'pending'
-      );
-      setPersistedItems(persisted);
-      setDraftItems(drafts);
-    }
-  };
+  // Estado do carrinho - simples e funcional
+  const [cart, setCart] = useState<OrderItem[]>([]);
   const [serviceTaxPercentage, setServiceTaxPercentage] = useState<number>(0);
   const [filterMode, setFilterMode] = useState<'all' | 'delivered' | 'cancelled'>('all');
   
@@ -853,16 +818,16 @@ export default function POSPage() {
           };
         }) || [];
         
-        // Atualizar APENAS itens persistidos - NÃO tocar nos drafts!
-        setPersistedItems(savedItems);
+        // Atualizar o carrinho com os itens salvos
+        setCart(savedItems);
         // Removido scroll automático - itens recentes ficam no topo
       } else {
-        setPersistedItems([]);
+        setCart([]);
         setCurrentOrder(null);
       }
     } catch (error) {
       console.error('Erro ao carregar detalhes da sessão:', error);
-      setPersistedItems([]);
+      setCart([]);
       setCurrentOrder(null);
     }
   };
@@ -876,7 +841,7 @@ export default function POSPage() {
     if (table.current_session) {
       setCurrentSession(table.current_session);
       
-      // Carregar apenas itens salvos - drafts são mantidos automaticamente
+      // Carregar itens salvos da sessão
       await loadSessionDetails(table.id);
       
       setScreen('session');
@@ -2087,14 +2052,15 @@ export default function POSPage() {
         // Sempre atualizar currentOrder com os dados mais recentes
         setCurrentOrder(newOrder);
         
-        // NÃO recarregar loadSessionDetails - manter os itens locais intactos
-
         // Para compatibilidade, criar array de items como se viesse do Supabase
         insertedItems = newItems.map(item => ({
           ...item,
           order_id: newOrder.id,
           created_at: new Date().toISOString()
         }));
+        
+        // Importante: NÃO recarregar loadSessionDetails aqui
+        // Manter os itens locais e apenas atualizar seus status
       }
 
       // Marcar apenas os itens recém-lançados como delivered e adicionar timestamp do banco
