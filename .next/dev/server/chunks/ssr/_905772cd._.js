@@ -546,9 +546,9 @@ function PrintPreview({ open, onClose, job }) {
     const fetchTemplate = async ()=>{
         setLoading(true);
         try {
-            // Determinar o tipo de template baseado no trabalho
-            // Para produtos/itens de pedido, usar template "product"
-            const templateType = 'product';
+            // Usar o template "kitchen" para itens de pedido
+            // Os templates disponíveis no banco são: "receipt", "kitchen", e "bill"
+            const templateType = 'kitchen';
             console.log('Buscando template tipo:', templateType);
             // Adicionar timestamp para evitar cache
             const response = await fetch(`/api/templates/${templateType}?t=${Date.now()}`, {
