@@ -227,7 +227,43 @@ export default function POSPage() {
   const [selectedTable, setSelectedTable] = useState<RestaurantTable | null>(null);
   const [currentSession, setCurrentSession] = useState<TableSession | null>(null);
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null);
-  const [cart, setCart] = useState<OrderItem[]>([]);
+  // Separar itens salvos de rascunhos para evitar sobrescrita
+  const [persistedItems, setPersistedItems] = useState<OrderItem[]>([]);
+  const [draftItems, setDraftItems] = useState<OrderItem[]>([]);
+  
+  // Cart combinado para exibição - SEMPRE usar isso na UI
+  const cart = useMemo(() => [...persistedItems, ...draftItems], [persistedItems, draftItems]);
+  
+  // Função auxiliar para adicionar item ao carrinho
+  const setCart = (items: OrderItem[] | ((prev: OrderItem[]) => OrderItem[])) => {
+    // Esta função existe para compatibilidade com código existente
+    // Determinar se são itens persistidos ou rascunhos
+    if (typeof items === 'function') {
+      // Se é uma função updater, aplicar em ambos
+      setPersistedItems(prev => {
+        const newPersisted = items([...prev, ...draftItems]).filter(item => 
+          item.id && item.id > 0 && item.status === 'delivered'
+        );
+        return newPersisted;
+      });
+      setDraftItems(prev => {
+        const newDrafts = items([...persistedItems, ...prev]).filter(item => 
+          !item.id || item.id < 0 || item.status === 'pending'
+        );
+        return newDrafts;
+      });
+    } else {
+      // Se é um array direto, separar por tipo
+      const persisted = items.filter(item => 
+        item.id && item.id > 0 && (item.status === 'delivered' || item.status === 'cancelled')
+      );
+      const drafts = items.filter(item => 
+        !item.id || item.id < 0 || item.status === 'pending'
+      );
+      setPersistedItems(persisted);
+      setDraftItems(drafts);
+    }
+  };
   const [serviceTaxPercentage, setServiceTaxPercentage] = useState<number>(0);
   const [filterMode, setFilterMode] = useState<'all' | 'delivered' | 'cancelled'>('all');
   
@@ -776,14 +812,7 @@ export default function POSPage() {
       if (!error && orderData) {
         setCurrentOrder(orderData as any);
         
-        // Preservar itens novos (não salvos no banco) antes de sobrescrever o cart
-        const currentNewItems = cart.filter(item => 
-          !item.id || // Item sem id do banco
-          item.id < 0 || // ID temporário negativo
-          item.status === 'pending' // Item ainda não lançado
-        );
-        
-        // Transform order items to cart format
+        // Transform order items to cart format - atualizar APENAS persistedItems
         const savedItems = orderData.items?.map((orderItem: any) => {
           // Handle rodízio items (no item_id)
           if (!orderItem.item_id) {
@@ -824,17 +853,16 @@ export default function POSPage() {
           };
         }) || [];
         
-        // Combinar itens salvos com itens novos preservados
-        const allItems = [...savedItems, ...currentNewItems];
-        setCart(allItems);
+        // Atualizar APENAS itens persistidos - NÃO tocar nos drafts!
+        setPersistedItems(savedItems);
         // Removido scroll automático - itens recentes ficam no topo
       } else {
-        setCart([]);
+        setPersistedItems([]);
         setCurrentOrder(null);
       }
     } catch (error) {
       console.error('Erro ao carregar detalhes da sessão:', error);
-      setCart([]);
+      setPersistedItems([]);
       setCurrentOrder(null);
     }
   };
@@ -847,9 +875,9 @@ export default function POSPage() {
     
     if (table.current_session) {
       setCurrentSession(table.current_session);
-      await loadSessionDetails(table.id);
       
-      // loadExistingOrderItems removido - loadSessionDetails já faz esse trabalho
+      // Carregar apenas itens salvos - drafts são mantidos automaticamente
+      await loadSessionDetails(table.id);
       
       setScreen('session');
       // Garante que a mesa está selecionada na sessão
@@ -2058,6 +2086,8 @@ export default function POSPage() {
         
         // Sempre atualizar currentOrder com os dados mais recentes
         setCurrentOrder(newOrder);
+        
+        // NÃO recarregar loadSessionDetails - manter os itens locais intactos
 
         // Para compatibilidade, criar array de items como se viesse do Supabase
         insertedItems = newItems.map(item => ({
