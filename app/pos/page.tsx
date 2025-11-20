@@ -2679,6 +2679,50 @@ export default function POSPage() {
     }
   };
 
+  // Função para salvar desconto na sessão
+  const saveDiscountToSession = async () => {
+    if (!currentSession) return;
+    
+    try {
+      // Calcular o valor do desconto em reais
+      const subtotal = calculateSubtotal();
+      let discountAmount = 0;
+      
+      if (discountType === 'percentage') {
+        discountAmount = subtotal * discountValue / 100;
+      } else {
+        discountAmount = discountValue;
+      }
+      
+      // Salvar na table_sessions
+      const { error } = await supabase
+        .from('table_sessions')
+        .update({
+          discount_type: discountType,
+          discount_value: discountValue,
+          discount_amount: discountAmount
+        })
+        .eq('id', currentSession.id);
+        
+      if (!error) {
+        // Atualizar estado local
+        setCurrentSession({
+          ...currentSession,
+          discount_amount: discountAmount
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao salvar desconto:', error);
+    }
+  };
+  
+  // Aplicar desconto quando o valor mudar
+  useEffect(() => {
+    if (currentSession && discountValue > 0) {
+      saveDiscountToSession();
+    }
+  }, [discountValue, discountType]);
+
   const handlePrintComanda = async () => {
     if (!selectedTable) {
       toast.error("Mesa não selecionada");
@@ -2767,16 +2811,30 @@ export default function POSPage() {
       const serviceFee = subtotal * 0.10; // 10% de taxa de serviço (padrão)
       const totalWithService = subtotal + serviceFee;
       
-      // Verificar se há desconto na sessão atual
+      // Buscar sessão atualizada do banco para ter os valores de desconto mais recentes
+      const { data: updatedSession } = await supabase
+        .from('table_sessions')
+        .select('discount_amount, promotion_discount, discount_value, discount_type')
+        .eq('id', currentSession?.id)
+        .single();
+      
+      // Verificar se há desconto na sessão
       let discount = 0;
-      if (currentSession) {
+      if (updatedSession) {
         // Se tiver desconto manual
-        if (currentSession.discount_amount && currentSession.discount_amount > 0) {
-          discount = currentSession.discount_amount;
+        if (updatedSession.discount_amount && updatedSession.discount_amount > 0) {
+          discount = updatedSession.discount_amount;
         }
         // Se tiver desconto de promoção
-        if (currentSession.promotion_discount && currentSession.promotion_discount > 0) {
-          discount = (discount || 0) + currentSession.promotion_discount;
+        if (updatedSession.promotion_discount && updatedSession.promotion_discount > 0) {
+          discount = (discount || 0) + updatedSession.promotion_discount;
+        }
+      } else if (discountValue > 0) {
+        // Usar o desconto atual se não conseguir buscar da sessão
+        if (discountType === 'percentage') {
+          discount = subtotal * discountValue / 100;
+        } else {
+          discount = discountValue;
         }
       }
       
