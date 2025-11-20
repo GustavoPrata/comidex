@@ -1790,6 +1790,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   border-width: 2px;
 }
 
+.border-x-2 {
+  border-left-width: 2px;
+  border-right-width: 2px;
+}
+
 .border-b {
   border-bottom-width: 1px;
 }
@@ -1820,6 +1825,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .border-t {
   border-top-width: 1px;
+}
+
+.border-t-2 {
+  border-top-width: 2px;
 }
 
 .border-dashed {

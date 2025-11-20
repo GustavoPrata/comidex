@@ -20,6 +20,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import { PrintPreview } from './PrintPreview';
 import { 
   Printer, 
   RefreshCw, 
@@ -123,8 +124,6 @@ export default function PrinterQueuePage() {
   const [clearQueueDialog, setClearQueueDialog] = useState(false);
   const [previewJob, setPreviewJob] = useState<PrintJob | null>(null);
   const [showPrintPreview, setShowPrintPreview] = useState(false);
-  const [printTemplate, setPrintTemplate] = useState<any>(null);
-  const [loadingTemplate, setLoadingTemplate] = useState(false);
 
   // Carregar dados da fila
   const loadQueue = useCallback(async () => {
@@ -630,66 +629,9 @@ export default function PrinterQueuePage() {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={async () => {
+                onClick={() => {
                   setPreviewJob(job);
-                  setLoadingTemplate(true);
-                  
-                  // Buscar template apropriado
-                  try {
-                    // Para pedidos de produtos sempre usar template kitchen
-                    const templateType = 'kitchen';
-                    const response = await fetch(`/api/templates/${templateType}`);
-                    if (response.ok) {
-                      const data = await response.json();
-                      setPrintTemplate(data.template);
-                    } else {
-                      // Se falhar, usar template padrão
-                      setPrintTemplate({
-                        header: `================================
-       PEDIDO COZINHA
-================================
-Mesa: {{table_number}}
-Pedido: #{{order_number}}
-Hora: {{time}}
-================================`,
-                        items: `{{#each items}}
-{{quantity}}x {{name}}
-   {{#if observation}}
-   OBS: {{observation}}
-   {{/if}}
---------------------------------
-{{/each}}`,
-                        footer: `================================
-Atendente: {{customer_name}}
-================================`
-                      });
-                    }
-                  } catch (error) {
-                    console.error('Erro ao buscar template:', error);
-                    // Usar template padrão em caso de erro
-                    setPrintTemplate({
-                      header: `================================
-       PEDIDO COZINHA
-================================
-Mesa: {{table_number}}
-Pedido: #{{order_number}}
-Hora: {{time}}
-================================`,
-                      items: `{{#each items}}
-{{quantity}}x {{name}}
-   {{#if observation}}
-   OBS: {{observation}}
-   {{/if}}
---------------------------------
-{{/each}}`,
-                      footer: `================================
-Atendente: {{customer_name}}
-================================`
-                    });
-                  } finally {
-                    setLoadingTemplate(false);
-                    setShowPrintPreview(true);
-                  }
+                  setShowPrintPreview(true);
                 }}
                 className="h-8 px-2 hover:bg-blue-100 hover:text-blue-700 dark:hover:bg-blue-900/20"
                 title="Ver Impressão"
@@ -1160,202 +1102,11 @@ Atendente: {{customer_name}}
       </AlertDialog>
 
       {/* Modal de Visualização da Impressão */}
-      <AlertDialog open={showPrintPreview} onOpenChange={setShowPrintPreview}>
-        <AlertDialogContent className="max-w-lg">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <Receipt className="h-5 w-5 text-orange-600" />
-              Preview - Impressora Térmica 80mm
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          
-          {/* Container do Preview estilo Impressora Térmica */}
-          <div className="overflow-auto bg-gradient-to-br from-gray-900 to-gray-950 p-6 rounded-lg" style={{ maxHeight: '600px' }}>
-            {/* Frame da Impressora Térmica */}
-            <div className="relative mx-auto" style={{ width: '320px' }}>
-              {/* Rolo de Papel Superior */}
-              <div className="h-8 bg-gradient-to-b from-gray-300 to-gray-100 rounded-t-lg relative">
-                <div className="absolute inset-x-0 top-2 flex justify-center gap-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                  <div className="w-2 h-2 bg-gray-400 rounded-full" />
-                </div>
-              </div>
-              
-              {/* Papel com Cupom */}
-              <div 
-                className="relative"
-                style={{
-                  background: 'linear-gradient(to bottom, #ffffff 0%, #fafafa 50%, #f5f5f0 100%)',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.15), inset 0 1px 3px rgba(0,0,0,0.05)',
-                  padding: '16px',
-                  minHeight: '400px'
-                }}
-              >
-                {/* Textura do Papel */}
-                <div 
-                  className="absolute inset-0 opacity-[0.03]"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect fill='%23000000' x='0' y='0' width='1' height='1' opacity='0.5'/%3E%3C/g%3E%3C/svg%3E")`,
-                    backgroundSize: '2px 2px'
-                  }}
-                />
-                
-                {/* Conteúdo do Cupom */}
-                <div className="relative text-gray-900 font-mono text-xs leading-5 whitespace-pre-wrap" style={{ fontSize: '11px', letterSpacing: '0.5px', lineHeight: '1.3' }}>
-                  {loadingTemplate ? (
-                    <div className="text-center py-8">
-                      <Loader2 className="h-8 w-8 animate-spin text-gray-500 mx-auto mb-2" />
-                      <p className="text-sm text-gray-600">Carregando template...</p>
-                    </div>
-                  ) : previewJob ? (
-                    (() => {
-                      // Função para aplicar as variáveis do template
-                      const applyTemplate = (template: string, data: any) => {
-                        let result = template;
-                
-                        // Substituir variáveis simples
-                        Object.keys(data).forEach(key => {
-                          const regex = new RegExp(`{{${key}}}`, 'g');
-                          result = result.replace(regex, data[key] || '');
-                        });
-                        
-                        // Processar loops {{#each items}}
-                        const eachRegex = /{{#each items}}([\s\S]*?){{\/each}}/g;
-                        result = result.replace(eachRegex, (match, itemTemplate) => {
-                          return data.items?.map((item: any) => {
-                            let itemResult = itemTemplate;
-                            
-                            // Substituir variáveis do item
-                            Object.keys(item).forEach(key => {
-                              const itemRegex = new RegExp(`{{${key}}}`, 'g');
-                              itemResult = itemResult.replace(itemRegex, item[key] || '');
-                            });
-                            
-                            // Processar condicionais {{#if observation}}
-                            const ifRegex = /{{#if (\w+)}}([\s\S]*?){{\/if}}/g;
-                            itemResult = itemResult.replace(ifRegex, (match: string, field: string, content: string) => {
-                              return item[field] ? content : '';
-                            });
-                            
-                            return itemResult.trim();
-                          }).join('\n') || '';
-                        });
-                        
-                        return result;
-                      };
-              
-                      // Preparar dados do pedido
-                      const getItemsInfo = () => {
-                        if (previewJob.order_items) {
-                          const orderItem = previewJob.order_items;
-                          const item = orderItem.items;
-                          if (item) {
-                            return [{
-                              name: item.name || 'Item sem nome',
-                              quantity: orderItem.quantity || 1,
-                              price: item.price === 0 ? 'Incluso' : (item.price * (orderItem.quantity || 1)).toFixed(2),
-                              observation: orderItem.notes || '',
-                              tableId: orderItem.orders?.table_id || null
-                            }];
-                          }
-                        }
-                        if (previewJob.document_type === 'order' && previewJob.document_data) {
-                          const items = previewJob.document_data.items || [];
-                          return items.map((item: any) => ({
-                            name: item.name || item.item_name || 'Item',
-                            quantity: item.quantity || 1,
-                            price: item.price === 0 ? 'Incluso' : (item.price * (item.quantity || 1)).toFixed(2),
-                            observation: item.notes || '',
-                            tableId: null
-                          }));
-                        }
-                        return [];
-                      };
-
-                      const items = getItemsInfo();
-                      const totalPrice = items.reduce((sum: number, item: any) => {
-                        const price = item.price === 'Incluso' ? 0 : parseFloat(item.price);
-                        return sum + price;
-                      }, 0);
-                      const printerInfo = printers.find(p => p.id === previewJob.printer_id);
-                      const tableId = items[0]?.tableId || previewJob.document_data?.table_id;
-                      
-                      // Preparar dados para o template
-                      const now = new Date();
-                      const templateData = {
-                        company_name: 'COMIDEX RESTAURANTE',
-                        company_address: 'Rua Principal, 123 - Centro',
-                        company_phone: '(11) 1234-5678',
-                        order_number: previewJob.id.toString(),
-                        table_number: tableId || 'N/A',
-                        customer_name: previewJob.document_data?.customer_name || 'Cliente',
-                        date: now.toLocaleDateString('pt-BR'),
-                        time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-                        items: items,
-                        subtotal: totalPrice.toFixed(2),
-                        discount: '0.00',
-                        service_fee: '0.00',
-                        total: totalPrice.toFixed(2),
-                        payment_method: 'A definir'
-                      };
-                      
-                      // Aplicar template - Se tiver template, usar ele
-                      if (printTemplate) {
-                        const header = applyTemplate(printTemplate.header || '', templateData);
-                        const itemsContent = applyTemplate(printTemplate.items || '', templateData);
-                        const footer = applyTemplate(printTemplate.footer || '', templateData);
-                        
-                        return (
-                          <div>
-                            {header}
-                            {itemsContent}
-                            {footer}
-                          </div>
-                        );
-                      }
-                      
-                      // Fallback - formato padrão
-                      return (
-                        <div>
-================================
-       PEDIDO COZINHA
-================================
-Mesa: {tableId || 'N/A'}
-Pedido: #{previewJob.id}
-Hora: {now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-================================
-{items.map((item: any, idx: number) => `
-${item.quantity}x ${item.name}
-${item.observation ? `   OBS: ${item.observation}` : ''}
---------------------------------`).join('')}
-================================
-Total: R$ {totalPrice.toFixed(2)}
-================================
-                        </div>
-                      );
-                    })()
-                  ) : null}
-                </div>
-              </div>
-              
-              {/* Serrilha do papel */}
-              <div className="h-4 bg-gradient-to-b from-gray-100 to-gray-200 relative">
-                <div 
-                  className="absolute bottom-0 left-0 right-0 h-2"
-                  style={{
-                    background: 'repeating-linear-gradient(90deg, transparent, transparent 3px, #ccc 3px, #ccc 4px)',
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-          
-          <AlertDialogFooter>
-            <AlertDialogCancel>Fechar</AlertDialogCancel>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <PrintPreview 
+        open={showPrintPreview} 
+        onClose={() => setShowPrintPreview(false)}
+        job={previewJob}
+      />
     </div>
   );
 }

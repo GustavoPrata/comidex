@@ -438,20 +438,17 @@ async function DELETE(request, { params }) {
                 status: 404
             });
         }
-        // Se o job está pendente ou imprimindo, mudar para cancelado
+        // Se o job está pendente ou imprimindo, deletar diretamente
         if ([
             'pending',
             'printing'
         ].includes(job.status)) {
-            const { error: updateError } = await supabase.from('printer_queue').update({
-                status: 'cancelled',
-                error_message: 'Cancelado pelo usuário'
-            }).eq('id', jobId);
-            if (updateError) {
-                throw updateError;
+            const { error: deleteError } = await supabase.from('printer_queue').delete().eq('id', jobId);
+            if (deleteError) {
+                throw deleteError;
             }
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                message: 'Job cancelado com sucesso'
+                message: 'Job removido da fila com sucesso'
             }, {
                 status: 200
             });
