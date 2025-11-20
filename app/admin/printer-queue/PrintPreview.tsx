@@ -199,8 +199,17 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
         // Processar condicionais {{#if field}}
         const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
         itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
+          console.log(`Processando {{#if ${field}}}:`, {
+            field,
+            value: item[field],
+            hasValue: !!item[field],
+            isEmpty: item[field] === '',
+            content: ifContent
+          });
           // Verifica se o campo existe e não é uma string vazia
-          return item[field] && item[field].toString().trim() !== '' ? ifContent : '';
+          const shouldShow = item[field] && item[field].toString().trim() !== '';
+          console.log(`Resultado: ${shouldShow ? 'MOSTRAR' : 'ESCONDER'}`);
+          return shouldShow ? ifContent : '';
         });
         
         return itemContent;
@@ -290,24 +299,28 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       const orderItem = job.order_items;
       const item = orderItem.items;
       if (item) {
-        items.push({
+        const itemData = {
           quantity: orderItem.quantity || 1,
           name: item.name || 'Item sem nome',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (orderItem.quantity || 1)).toFixed(2)}`,
           observation: orderItem.notes || '',
           item_group: item.category || '', // Disponível como {{item_group}} no template
-        });
+        };
+        console.log('Item criado:', itemData);
+        items.push(itemData);
       }
     } else if (job.document_type === 'order' && job.document_data) {
       const orderItems = job.document_data.items || [];
       orderItems.forEach((item: any) => {
-        items.push({
+        const itemData = {
           quantity: item.quantity || 1,
           name: item.name || item.item_name || 'Item',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (item.quantity || 1)).toFixed(2)}`,
           observation: item.notes || '',
           item_group: item.category || '', // Disponível como {{item_group}} no template
-        });
+        };
+        console.log('Item criado:', itemData);
+        items.push(itemData);
       });
     }
 
