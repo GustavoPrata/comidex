@@ -197,18 +197,11 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
         });
         
         // Processar condicionais {{#if field}}
-        const ifRegex = /{{#if\s+(\w+)}}([\s\S]*?){{\/if}}/g;
+        const ifRegex = /\{\{#if\s+(\w+)\}\}([\s\S]*?)\{\{\/if\}\}/g;
         itemContent = itemContent.replace(ifRegex, (match: string, field: string, ifContent: string) => {
-          console.log(`Processando {{#if ${field}}}:`, {
-            field,
-            value: item[field],
-            hasValue: !!item[field],
-            isEmpty: item[field] === '',
-            content: ifContent
-          });
           // Verifica se o campo existe e não é uma string vazia
-          const shouldShow = item[field] && item[field].toString().trim() !== '';
-          console.log(`Resultado: ${shouldShow ? 'MOSTRAR' : 'ESCONDER'}`);
+          const fieldValue = item[field];
+          const shouldShow = fieldValue !== undefined && fieldValue !== null && fieldValue !== '';
           return shouldShow ? ifContent : '';
         });
         
@@ -299,28 +292,24 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       const orderItem = job.order_items;
       const item = orderItem.items;
       if (item) {
-        const itemData = {
+        items.push({
           quantity: orderItem.quantity || 1,
           name: item.name || 'Item sem nome',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (orderItem.quantity || 1)).toFixed(2)}`,
           observation: orderItem.notes || '',
           item_group: item.category || '', // Disponível como {{item_group}} no template
-        };
-        console.log('Item criado:', itemData);
-        items.push(itemData);
+        });
       }
     } else if (job.document_type === 'order' && job.document_data) {
       const orderItems = job.document_data.items || [];
       orderItems.forEach((item: any) => {
-        const itemData = {
+        items.push({
           quantity: item.quantity || 1,
           name: item.name || item.item_name || 'Item',
           price: item.price === 0 ? 'Incluso' : `${(item.price * (item.quantity || 1)).toFixed(2)}`,
           observation: item.notes || '',
           item_group: item.category || '', // Disponível como {{item_group}} no template
-        };
-        console.log('Item criado:', itemData);
-        items.push(itemData);
+        });
       });
     }
 

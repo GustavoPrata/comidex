@@ -944,7 +944,7 @@ Hora: {{time}}
 ================================`,
         items: `{{#each items}}
 {{#if item_group}}
-[[bold]]--- {{item_group}} ---[[/bold]]
+--- CATEGORIA: {{item_group}} ---
 {{/if}}
 {{quantity}}x {{name}}
    {{#if observation}}
