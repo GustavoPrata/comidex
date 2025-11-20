@@ -6,6 +6,7 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogCancel,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Loader2 } from "lucide-react";
 
@@ -163,6 +164,7 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
       <AlertDialogContent className="max-w-md">
+        <AlertDialogTitle className="sr-only">Visualização da Impressão</AlertDialogTitle>
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2 bg-orange-100 rounded-lg">
             <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
