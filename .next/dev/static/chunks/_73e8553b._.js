@@ -2934,7 +2934,7 @@ Atendente: {{customer_name}}
                                                     fileName: "[project]/app/admin/printer-queue/page.tsx",
                                                     lineNumber: 1207,
                                                     columnNumber: 21
-                                                }, this) : previewJob && printTemplate ? ()=>{
+                                                }, this) : previewJob ? (()=>{
                                                     // Função para aplicar as variáveis do template
                                                     const applyTemplate = (template, data)=>{
                                                         let result = template;
@@ -3020,55 +3020,24 @@ Atendente: {{customer_name}}
                                                         total: totalPrice.toFixed(2),
                                                         payment_method: 'A definir'
                                                     };
-                                                    // Aplicar template
-                                                    const header = applyTemplate(printTemplate.header || '', templateData);
-                                                    const itemsContent = applyTemplate(printTemplate.items || '', templateData);
-                                                    const footer = applyTemplate(printTemplate.footer || '', templateData);
-                                                    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        children: [
-                                                            header,
-                                                            itemsContent,
-                                                            footer
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 1308,
-                                                        columnNumber: 17
-                                                    }, this);
-                                                } : previewJob && (()=>{
-                                                    // Fallback caso não tenha template - usar formato padrão
-                                                    const getItemsInfo = ()=>{
-                                                        if (previewJob.order_items) {
-                                                            const orderItem = previewJob.order_items;
-                                                            const item = orderItem.items;
-                                                            if (item) {
-                                                                return [
-                                                                    {
-                                                                        name: item.name || 'Item sem nome',
-                                                                        quantity: orderItem.quantity || 1,
-                                                                        price: orderItem.price || item.price || 0,
-                                                                        notes: orderItem.notes || '',
-                                                                        tableId: orderItem.orders?.table_id || null
-                                                                    }
-                                                                ];
-                                                            }
-                                                        }
-                                                        if (previewJob.document_type === 'order' && previewJob.document_data) {
-                                                            const items = previewJob.document_data.items || [];
-                                                            return items.map((item)=>({
-                                                                    name: item.name || item.item_name || 'Item',
-                                                                    quantity: item.quantity || 1,
-                                                                    price: item.price || 0,
-                                                                    notes: item.notes || '',
-                                                                    tableId: null
-                                                                }));
-                                                        }
-                                                        return [];
-                                                    };
-                                                    const items = getItemsInfo();
-                                                    const totalPrice = items.reduce((sum, item)=>sum + item.price * item.quantity, 0);
-                                                    const printerInfo = printers.find((p)=>p.id === previewJob.printer_id);
-                                                    const tableId = items[0]?.tableId;
+                                                    // Aplicar template - Se tiver template, usar ele
+                                                    if (printTemplate) {
+                                                        const header = applyTemplate(printTemplate.header || '', templateData);
+                                                        const itemsContent = applyTemplate(printTemplate.items || '', templateData);
+                                                        const footer = applyTemplate(printTemplate.footer || '', templateData);
+                                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            children: [
+                                                                header,
+                                                                itemsContent,
+                                                                footer
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/app/admin/printer-queue/page.tsx",
+                                                            lineNumber: 1310,
+                                                            columnNumber: 27
+                                                        }, this);
+                                                    }
+                                                    // Fallback - formato padrão
                                                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         children: [
                                                             "================================ PEDIDO COZINHA ================================ Mesa: ",
@@ -3076,14 +3045,14 @@ Atendente: {{customer_name}}
                                                             "Pedido: #",
                                                             previewJob.id,
                                                             "Hora: ",
-                                                            new Date(previewJob.created_at).toLocaleTimeString('pt-BR', {
+                                                            now.toLocaleTimeString('pt-BR', {
                                                                 hour: '2-digit',
                                                                 minute: '2-digit'
                                                             }),
                                                             "================================",
                                                             items.map((item, idx)=>`
 ${item.quantity}x ${item.name}
-${item.notes ? `   OBS: ${item.notes}` : ''}
+${item.observation ? `   OBS: ${item.observation}` : ''}
 --------------------------------`).join(''),
                                                             "================================ Total: R$ ",
                                                             totalPrice.toFixed(2),
@@ -3091,10 +3060,10 @@ ${item.notes ? `   OBS: ${item.notes}` : ''}
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                                        lineNumber: 1349,
-                                                        columnNumber: 17
+                                                        lineNumber: 1320,
+                                                        columnNumber: 25
                                                     }, this);
-                                                })()
+                                                })() : null
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
                                                 lineNumber: 1205,
@@ -3115,12 +3084,12 @@ ${item.notes ? `   OBS: ${item.notes}` : ''}
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                            lineNumber: 1372,
+                                            lineNumber: 1344,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                        lineNumber: 1371,
+                                        lineNumber: 1343,
                                         columnNumber: 15
                                     }, this)
                                 ]
@@ -3139,12 +3108,12 @@ ${item.notes ? `   OBS: ${item.notes}` : ''}
                                 children: "Fechar"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/printer-queue/page.tsx",
-                                lineNumber: 1383,
+                                lineNumber: 1355,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/printer-queue/page.tsx",
-                            lineNumber: 1382,
+                            lineNumber: 1354,
                             columnNumber: 11
                         }, this)
                     ]

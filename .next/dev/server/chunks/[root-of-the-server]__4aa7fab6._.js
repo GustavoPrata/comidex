@@ -475,10 +475,11 @@ Hora: {{time}}
 };
 async function GET(request, { params }) {
     const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
-    console.log('✅ Getting template for type:', params.type);
+    const { type } = await params;
+    console.log('✅ Getting template for type:', type);
     try {
         // Para itens de pedido, usar template kitchen
-        let templateType = params.type;
+        let templateType = type;
         if (!templateType || templateType === 'undefined') {
             templateType = 'kitchen'; // Default para kitchen
         }

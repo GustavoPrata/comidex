@@ -1208,162 +1208,134 @@ Atendente: {{customer_name}}
                       <Loader2 className="h-8 w-8 animate-spin text-gray-500 mx-auto mb-2" />
                       <p className="text-sm text-gray-600">Carregando template...</p>
                     </div>
-                  ) : previewJob && printTemplate ? (() => {
-              // Função para aplicar as variáveis do template
-              const applyTemplate = (template: string, data: any) => {
-                let result = template;
+                  ) : previewJob ? (
+                    (() => {
+                      // Função para aplicar as variáveis do template
+                      const applyTemplate = (template: string, data: any) => {
+                        let result = template;
                 
-                // Substituir variáveis simples
-                Object.keys(data).forEach(key => {
-                  const regex = new RegExp(`{{${key}}}`, 'g');
-                  result = result.replace(regex, data[key] || '');
-                });
-                
-                // Processar loops {{#each items}}
-                const eachRegex = /{{#each items}}([\s\S]*?){{\/each}}/g;
-                result = result.replace(eachRegex, (match, itemTemplate) => {
-                  return data.items?.map((item: any) => {
-                    let itemResult = itemTemplate;
-                    
-                    // Substituir variáveis do item
-                    Object.keys(item).forEach(key => {
-                      const itemRegex = new RegExp(`{{${key}}}`, 'g');
-                      itemResult = itemResult.replace(itemRegex, item[key] || '');
-                    });
-                    
-                    // Processar condicionais {{#if observation}}
-                    const ifRegex = /{{#if (\w+)}}([\s\S]*?){{\/if}}/g;
-                    itemResult = itemResult.replace(ifRegex, (match: string, field: string, content: string) => {
-                      return item[field] ? content : '';
-                    });
-                    
-                    return itemResult.trim();
-                  }).join('\n') || '';
-                });
-                
-                return result;
-              };
+                        // Substituir variáveis simples
+                        Object.keys(data).forEach(key => {
+                          const regex = new RegExp(`{{${key}}}`, 'g');
+                          result = result.replace(regex, data[key] || '');
+                        });
+                        
+                        // Processar loops {{#each items}}
+                        const eachRegex = /{{#each items}}([\s\S]*?){{\/each}}/g;
+                        result = result.replace(eachRegex, (match, itemTemplate) => {
+                          return data.items?.map((item: any) => {
+                            let itemResult = itemTemplate;
+                            
+                            // Substituir variáveis do item
+                            Object.keys(item).forEach(key => {
+                              const itemRegex = new RegExp(`{{${key}}}`, 'g');
+                              itemResult = itemResult.replace(itemRegex, item[key] || '');
+                            });
+                            
+                            // Processar condicionais {{#if observation}}
+                            const ifRegex = /{{#if (\w+)}}([\s\S]*?){{\/if}}/g;
+                            itemResult = itemResult.replace(ifRegex, (match: string, field: string, content: string) => {
+                              return item[field] ? content : '';
+                            });
+                            
+                            return itemResult.trim();
+                          }).join('\n') || '';
+                        });
+                        
+                        return result;
+                      };
               
-              // Preparar dados do pedido
-              const getItemsInfo = () => {
-                if (previewJob.order_items) {
-                  const orderItem = previewJob.order_items;
-                  const item = orderItem.items;
-                  if (item) {
-                    return [{
-                      name: item.name || 'Item sem nome',
-                      quantity: orderItem.quantity || 1,
-                      price: item.price === 0 ? 'Incluso' : (item.price * (orderItem.quantity || 1)).toFixed(2),
-                      observation: orderItem.notes || '',
-                      tableId: orderItem.orders?.table_id || null
-                    }];
-                  }
-                }
-                if (previewJob.document_type === 'order' && previewJob.document_data) {
-                  const items = previewJob.document_data.items || [];
-                  return items.map((item: any) => ({
-                    name: item.name || item.item_name || 'Item',
-                    quantity: item.quantity || 1,
-                    price: item.price === 0 ? 'Incluso' : (item.price * (item.quantity || 1)).toFixed(2),
-                    observation: item.notes || '',
-                    tableId: null
-                  }));
-                }
-                return [];
-              };
+                      // Preparar dados do pedido
+                      const getItemsInfo = () => {
+                        if (previewJob.order_items) {
+                          const orderItem = previewJob.order_items;
+                          const item = orderItem.items;
+                          if (item) {
+                            return [{
+                              name: item.name || 'Item sem nome',
+                              quantity: orderItem.quantity || 1,
+                              price: item.price === 0 ? 'Incluso' : (item.price * (orderItem.quantity || 1)).toFixed(2),
+                              observation: orderItem.notes || '',
+                              tableId: orderItem.orders?.table_id || null
+                            }];
+                          }
+                        }
+                        if (previewJob.document_type === 'order' && previewJob.document_data) {
+                          const items = previewJob.document_data.items || [];
+                          return items.map((item: any) => ({
+                            name: item.name || item.item_name || 'Item',
+                            quantity: item.quantity || 1,
+                            price: item.price === 0 ? 'Incluso' : (item.price * (item.quantity || 1)).toFixed(2),
+                            observation: item.notes || '',
+                            tableId: null
+                          }));
+                        }
+                        return [];
+                      };
 
-              const items = getItemsInfo();
-              const totalPrice = items.reduce((sum: number, item: any) => {
-                const price = item.price === 'Incluso' ? 0 : parseFloat(item.price);
-                return sum + price;
-              }, 0);
-              const printerInfo = printers.find(p => p.id === previewJob.printer_id);
-              const tableId = items[0]?.tableId || previewJob.document_data?.table_id;
-              
-              // Preparar dados para o template
-              const now = new Date();
-              const templateData = {
-                company_name: 'COMIDEX RESTAURANTE',
-                company_address: 'Rua Principal, 123 - Centro',
-                company_phone: '(11) 1234-5678',
-                order_number: previewJob.id.toString(),
-                table_number: tableId || 'N/A',
-                customer_name: previewJob.document_data?.customer_name || 'Cliente',
-                date: now.toLocaleDateString('pt-BR'),
-                time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
-                items: items,
-                subtotal: totalPrice.toFixed(2),
-                discount: '0.00',
-                service_fee: '0.00',
-                total: totalPrice.toFixed(2),
-                payment_method: 'A definir'
-              };
-              
-              // Aplicar template
-              const header = applyTemplate(printTemplate.header || '', templateData);
-              const itemsContent = applyTemplate(printTemplate.items || '', templateData);
-              const footer = applyTemplate(printTemplate.footer || '', templateData);
-              
-              return (
-                <div>
-                  {header}
-                  {itemsContent}
-                  {footer}
-                </div>
-              );
-            }) : previewJob && (() => {
-              // Fallback caso não tenha template - usar formato padrão
-              const getItemsInfo = () => {
-                if (previewJob.order_items) {
-                  const orderItem = previewJob.order_items;
-                  const item = orderItem.items;
-                  if (item) {
-                    return [{
-                      name: item.name || 'Item sem nome',
-                      quantity: orderItem.quantity || 1,
-                      price: orderItem.price || item.price || 0,
-                      notes: orderItem.notes || '',
-                      tableId: orderItem.orders?.table_id || null
-                    }];
-                  }
-                }
-                if (previewJob.document_type === 'order' && previewJob.document_data) {
-                  const items = previewJob.document_data.items || [];
-                  return items.map((item: any) => ({
-                    name: item.name || item.item_name || 'Item',
-                    quantity: item.quantity || 1,
-                    price: item.price || 0,
-                    notes: item.notes || '',
-                    tableId: null
-                  }));
-                }
-                return [];
-              };
-
-              const items = getItemsInfo();
-              const totalPrice = items.reduce((sum: number, item: any) => sum + (item.price * item.quantity), 0);
-              const printerInfo = printers.find(p => p.id === previewJob.printer_id);
-              const tableId = items[0]?.tableId;
-              
-              return (
-                <div>
+                      const items = getItemsInfo();
+                      const totalPrice = items.reduce((sum: number, item: any) => {
+                        const price = item.price === 'Incluso' ? 0 : parseFloat(item.price);
+                        return sum + price;
+                      }, 0);
+                      const printerInfo = printers.find(p => p.id === previewJob.printer_id);
+                      const tableId = items[0]?.tableId || previewJob.document_data?.table_id;
+                      
+                      // Preparar dados para o template
+                      const now = new Date();
+                      const templateData = {
+                        company_name: 'COMIDEX RESTAURANTE',
+                        company_address: 'Rua Principal, 123 - Centro',
+                        company_phone: '(11) 1234-5678',
+                        order_number: previewJob.id.toString(),
+                        table_number: tableId || 'N/A',
+                        customer_name: previewJob.document_data?.customer_name || 'Cliente',
+                        date: now.toLocaleDateString('pt-BR'),
+                        time: now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+                        items: items,
+                        subtotal: totalPrice.toFixed(2),
+                        discount: '0.00',
+                        service_fee: '0.00',
+                        total: totalPrice.toFixed(2),
+                        payment_method: 'A definir'
+                      };
+                      
+                      // Aplicar template - Se tiver template, usar ele
+                      if (printTemplate) {
+                        const header = applyTemplate(printTemplate.header || '', templateData);
+                        const itemsContent = applyTemplate(printTemplate.items || '', templateData);
+                        const footer = applyTemplate(printTemplate.footer || '', templateData);
+                        
+                        return (
+                          <div>
+                            {header}
+                            {itemsContent}
+                            {footer}
+                          </div>
+                        );
+                      }
+                      
+                      // Fallback - formato padrão
+                      return (
+                        <div>
 ================================
        PEDIDO COZINHA
 ================================
 Mesa: {tableId || 'N/A'}
 Pedido: #{previewJob.id}
-Hora: {new Date(previewJob.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+Hora: {now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
 ================================
 {items.map((item: any, idx: number) => `
 ${item.quantity}x ${item.name}
-${item.notes ? `   OBS: ${item.notes}` : ''}
+${item.observation ? `   OBS: ${item.observation}` : ''}
 --------------------------------`).join('')}
 ================================
 Total: R$ {totalPrice.toFixed(2)}
 ================================
-                </div>
-              );
-                    })()}
+                        </div>
+                      );
+                    })()
+                  ) : null}
                 </div>
               </div>
               
