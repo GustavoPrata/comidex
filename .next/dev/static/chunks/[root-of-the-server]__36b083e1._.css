@@ -3117,10 +3117,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   font-style: italic;
 }
 
-.leading-5 {
-  line-height: 1.25rem;
-}
-
 .leading-none {
   line-height: 1;
 }

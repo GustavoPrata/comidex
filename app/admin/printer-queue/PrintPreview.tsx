@@ -50,11 +50,13 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
       if (response.ok) {
         const data = await response.json();
         console.log('Template carregado:', data.template);
+        console.log('Sections com formatação:', data.template.sections);
         setTemplate(data.template); // Acessar o template dentro do objeto
         
         // Se houver sections com propriedades de formatação, salvar
-        if (data.template.sections) {
+        if (data.template.sections && Array.isArray(data.template.sections)) {
           setSections(data.template.sections);
+          console.log('Sections salvas no state:', data.template.sections);
         }
       }
     } catch (error) {
@@ -174,44 +176,62 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
   const renderSection = (section: any, templateData: any): React.ReactNode => {
     const content = applyTemplate(section.content || '', templateData);
     
+    console.log('Renderizando section:', section.name, 'com propriedades:', {
+      fontSize: section.fontSize,
+      fontFamily: section.fontFamily,
+      align: section.align,
+      bold: section.bold
+    });
+    
     // Criar objeto de estilos baseado nas propriedades da section
     const sectionStyles: any = {};
     
+    // Aplicar tamanho da fonte
     if (section.fontSize) {
       sectionStyles.fontSize = `${section.fontSize}px`;
+      sectionStyles.lineHeight = '1.4';
     }
     
+    // Aplicar família da fonte
     if (section.fontFamily) {
       switch(section.fontFamily) {
         case 'mono':
-          sectionStyles.fontFamily = 'monospace';
+          sectionStyles.fontFamily = 'monospace, "Courier New", Courier';
           break;
         case 'sans':
-          sectionStyles.fontFamily = 'sans-serif';
+          sectionStyles.fontFamily = 'sans-serif, Arial, Helvetica';
           break;
         case 'serif':
-          sectionStyles.fontFamily = 'serif';
+          sectionStyles.fontFamily = 'serif, "Times New Roman", Times';
           break;
         default:
           sectionStyles.fontFamily = section.fontFamily;
       }
     }
     
+    // Aplicar alinhamento
     if (section.align) {
       sectionStyles.textAlign = section.align;
+      sectionStyles.width = '100%';
     }
     
-    if (section.bold) {
+    // Aplicar negrito
+    if (section.bold === true || section.bold === 'true') {
       sectionStyles.fontWeight = 'bold';
     }
     
+    // Aplicar espaçamento entre linhas
     if (section.lineSpacing) {
       sectionStyles.lineHeight = section.lineSpacing;
     }
     
+    console.log('Estilos aplicados:', sectionStyles);
+    
     // Aplicar estilos da section e processar tags inline
+    // Se o conteúdo tem tags de formatação, processar
+    // Senão, aplicar whitespace-pre-wrap diretamente
     return (
-      <div style={sectionStyles} className="mb-2">
+      <div style={{ ...sectionStyles, whiteSpace: 'pre-wrap' }}>
         {processFormatting(content)}
       </div>
     );
@@ -278,8 +298,9 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
 
     // Se temos sections com formatação, renderizar com as propriedades
     if (sections && sections.length > 0) {
+      console.log('Renderizando com sections:', sections.length);
       return (
-        <div>
+        <div className="font-mono text-xs whitespace-pre-wrap" style={{ letterSpacing: '0.5px' }}>
           {sections.map((section, index) => (
             <div key={section.id || index}>
               {renderSection(section, templateData)}
@@ -290,12 +311,17 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
     }
     
     // Senão, usar o template simples
+    console.log('Renderizando sem sections (template simples)');
     const header = applyTemplate(template.header || '', templateData);
     const itemsContent = applyTemplate(template.items || '', templateData);
     const footer = applyTemplate(template.footer || '', templateData);
     
     const fullContent = `${header}\n${itemsContent}\n${footer}`;
-    return processFormatting(fullContent);
+    return (
+      <div className="font-mono text-xs whitespace-pre-wrap" style={{ fontSize: '11px', letterSpacing: '0.5px', lineHeight: '1.3' }}>
+        {processFormatting(fullContent)}
+      </div>
+    );
   };
 
   return (
@@ -345,15 +371,14 @@ export function PrintPreview({ open, onClose, job }: PrintPreviewProps) {
               />
               
               {/* Conteúdo do Cupom */}
-              <div className="relative text-gray-900 font-mono text-xs leading-5" 
-                style={{ fontSize: '11px', letterSpacing: '0.5px', lineHeight: '1.3' }}>
+              <div className="relative text-gray-900">
                 {loading ? (
                   <div className="text-center py-8">
                     <Loader2 className="h-8 w-8 animate-spin text-gray-500 mx-auto mb-2" />
                     <p className="text-sm text-gray-600">Carregando template...</p>
                   </div>
                 ) : (
-                  <div className="whitespace-pre-wrap">
+                  <div>
                     {getRenderedContent()}
                   </div>
                 )}
