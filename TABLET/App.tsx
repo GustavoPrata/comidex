@@ -258,6 +258,11 @@ export default function App() {
     lastReset: new Date().toISOString(),
   });
 
+  // Tables States (for proper selection)
+  const [availableTables, setAvailableTables] = useState<any[]>([]);
+  const [tablesLoading, setTablesLoading] = useState(true);
+  const [tablesError, setTablesError] = useState("");
+
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -362,6 +367,7 @@ export default function App() {
   useEffect(() => {
     loadCategories();
     loadProducts();
+    loadTables(); // Load available tables on startup
     
     // Initialize idle timer
     resetIdleTimer();
@@ -617,6 +623,26 @@ export default function App() {
       Alert.alert("Erro", "Não foi possível carregar os produtos");
     } finally {
       setLoadingProducts(false);
+    }
+  };
+
+  const loadTables = async () => {
+    setTablesLoading(true);
+    setTablesError("");
+    try {
+      const response = await fetch(`${config.API_URL}/tables`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setAvailableTables(data.tables);
+      } else {
+        setTablesError("Erro ao carregar mesas");
+      }
+    } catch (error) {
+      console.error("Erro ao carregar mesas:", error);
+      setTablesError("Não foi possível carregar as mesas disponíveis");
+    } finally {
+      setTablesLoading(false);
     }
   };
 
@@ -1208,35 +1234,102 @@ export default function App() {
               <Text style={styles.welcomeSubtitle}>Sistema de Pedidos</Text>
             </View>
             
-            <View style={styles.tableInputCard}>
-              <Text style={styles.tableInputLabel}>Qual o número da sua mesa?</Text>
-              <TextInput
-                style={styles.tableInput}
-                value={tableNumber}
-                onChangeText={(text) => {
-                  setTableNumber(text);
-                  resetIdleTimer();
-                }}
-                placeholder="00"
-                placeholderTextColor={config.colors.textTertiary}
-                keyboardType="numeric"
-                maxLength={3}
-              />
-              {tableNumber.length > 0 && (
-                <TouchableOpacity
-                  style={styles.continueButton}
-                  onPress={() => {
-                    if (tableNumber) {
+            <View style={styles.tableSelectionCard}>
+              <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
+              
+              {tablesLoading ? (
+                <View style={styles.tablesLoadingContainer}>
+                  <ActivityIndicator size="large" color={config.colors.primary} />
+                  <Text style={styles.tablesLoadingText}>Carregando mesas...</Text>
+                </View>
+              ) : tablesError ? (
+                <View style={styles.tablesErrorContainer}>
+                  <Text style={styles.tablesErrorText}>{tablesError}</Text>
+                  <TouchableOpacity 
+                    style={styles.retryButton}
+                    onPress={() => {
+                      loadTables();
                       resetIdleTimer();
-                      Animated.timing(fadeAnim, {
-                        toValue: 0,
-                        duration: config.animations.fast,
-                        useNativeDriver: true,
-                      }).start();
-                    }
+                    }}
+                  >
+                    <IconComponent name="refresh" size={20} color="#FFF" />
+                    <Text style={styles.retryButtonText}>Tentar Novamente</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View style={styles.tablesGrid}>
+                  {availableTables.map((table) => (
+                    <TouchableOpacity
+                      key={table.id}
+                      style={[
+                        styles.tableCard,
+                        table.status === 'occupied' && styles.tableCardOccupied,
+                      ]}
+                      onPress={() => {
+                        if (table.status === 'available') {
+                          setTableNumber(table.number.toString());
+                          resetIdleTimer();
+                          Animated.timing(fadeAnim, {
+                            toValue: 0,
+                            duration: config.animations.fast,
+                            useNativeDriver: true,
+                          }).start();
+                        } else {
+                          Alert.alert(
+                            "Mesa Ocupada",
+                            `A mesa ${table.number} já está em uso.\n${table.session_total > 0 ? `Conta atual: R$ ${table.session_total.toFixed(2)}` : ''}`,
+                            [{ text: "OK" }]
+                          );
+                        }
+                      }}
+                      disabled={table.status === 'occupied'}
+                      activeOpacity={table.status === 'occupied' ? 1 : 0.8}
+                    >
+                      <View style={styles.tableCardContent}>
+                        <Text style={[
+                          styles.tableNumber,
+                          table.status === 'occupied' && styles.tableNumberOccupied
+                        ]}>
+                          {table.number}
+                        </Text>
+                        <Text style={[
+                          styles.tableName,
+                          table.status === 'occupied' && styles.tableNameOccupied
+                        ]}>
+                          {table.name || `Mesa ${table.number}`}
+                        </Text>
+                        {table.capacity && (
+                          <View style={styles.tableCapacity}>
+                            <Text style={[
+                              styles.tableCapacityText,
+                              table.status === 'occupied' && styles.tableCapacityTextOccupied
+                            ]}>
+                              👥 {table.capacity}
+                            </Text>
+                          </View>
+                        )}
+                        {table.status === 'occupied' && (
+                          <View style={styles.occupiedBadge}>
+                            <Text style={styles.occupiedBadgeText}>OCUPADA</Text>
+                          </View>
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+
+              {/* Refresh button */}
+              {!tablesLoading && !tablesError && (
+                <TouchableOpacity 
+                  style={styles.refreshTablesButton}
+                  onPress={() => {
+                    loadTables();
+                    resetIdleTimer();
                   }}
                 >
-                  <Text style={styles.continueButtonText}>Continuar</Text>
+                  <IconComponent name="refresh" size={16} color={config.colors.primary} />
+                  <Text style={styles.refreshTablesText}>Atualizar mesas</Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -2114,6 +2207,146 @@ const styles = StyleSheet.create({
     color: config.colors.textTertiary,
     fontSize: 14,
     textDecorationLine: "underline",
+  },
+  // New Table Selection Styles
+  tableSelectionCard: {
+    backgroundColor: config.colors.card,
+    borderRadius: 20,
+    padding: 20,
+    width: "100%",
+    marginVertical: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  tableSelectionTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  tablesLoadingContainer: {
+    padding: 40,
+    alignItems: "center",
+  },
+  tablesLoadingText: {
+    marginTop: 15,
+    fontSize: 16,
+    color: config.colors.textSecondary,
+  },
+  tablesErrorContainer: {
+    padding: 40,
+    alignItems: "center",
+  },
+  tablesErrorText: {
+    fontSize: 16,
+    color: config.colors.error,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  retryButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: config.colors.primary,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 20,
+    gap: 8,
+  },
+  retryButtonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  tablesGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 15,
+    justifyContent: "center",
+    paddingVertical: 10,
+  },
+  tableCard: {
+    backgroundColor: config.colors.surface,
+    borderRadius: 15,
+    width: 110,
+    height: 110,
+    padding: 12,
+    borderWidth: 2,
+    borderColor: config.colors.primary,
+    shadowColor: config.colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  tableCardOccupied: {
+    backgroundColor: "#F5F5F5",
+    borderColor: "#CCCCCC",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    opacity: 0.7,
+  },
+  tableCardContent: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  tableNumber: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: config.colors.primary,
+    marginBottom: 4,
+  },
+  tableNumberOccupied: {
+    color: "#999999",
+  },
+  tableName: {
+    fontSize: 12,
+    color: config.colors.textSecondary,
+    textAlign: "center",
+  },
+  tableNameOccupied: {
+    color: "#AAAAAA",
+  },
+  tableCapacity: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+  },
+  tableCapacityText: {
+    fontSize: 11,
+    color: config.colors.textTertiary,
+  },
+  tableCapacityTextOccupied: {
+    color: "#CCCCCC",
+  },
+  occupiedBadge: {
+    position: "absolute",
+    bottom: 2,
+    backgroundColor: "#FF6B6B",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 8,
+  },
+  occupiedBadgeText: {
+    fontSize: 10,
+    color: "#FFF",
+    fontWeight: "bold",
+  },
+  refreshTablesButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    marginTop: 15,
+    padding: 10,
+  },
+  refreshTablesText: {
+    fontSize: 14,
+    color: config.colors.primary,
   },
   modeContainer: {
     flex: 1,
