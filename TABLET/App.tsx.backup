@@ -1,0 +1,919 @@
+import React, { useState, useEffect, useRef } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+  Modal,
+  Alert,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+  FlatList,
+  Animated,
+  Platform,
+  KeyboardAvoidingView,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import Svg, { Path, Circle, Rect } from 'react-native-svg';
+import { config } from './config';
+
+// Tipos
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: string;
+  image_url: string | null;
+  category: string;
+  category_id: number;
+  is_premium?: boolean;
+}
+
+interface Category {
+  id: number;
+  name: string;
+  description?: string;
+  icon?: string;
+  color?: string;
+}
+
+interface CartItem extends Product {
+  quantity: number;
+  observation?: string;
+}
+
+const { width, height } = Dimensions.get("window");
+
+// Icon Components
+const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size?: number, color?: string }) => {
+  switch(name) {
+    case 'sushi':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle cx="12" cy="12" r="9" stroke={color} strokeWidth="2"/>
+          <Circle cx="12" cy="12" r="4" fill={color}/>
+        </Svg>
+      );
+    case 'drink':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M5 12V7a1 1 0 011-1h12a1 1 0 011 1v5M5 12l2 7h10l2-7M5 12h14M12 6v7" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'rice':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Rect x="6" y="10" width="12" height="8" rx="2" stroke={color} strokeWidth="2"/>
+          <Path d="M8 10V8a4 4 0 018 0v2" stroke={color} strokeWidth="2"/>
+        </Svg>
+      );
+    case 'fish':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 5C16 5 19 8 19 12C19 16 16 19 12 19C8 19 5 16 5 12C5 8 8 5 12 5Z" stroke={color} strokeWidth="2"/>
+          <Circle cx="10" cy="11" r="1" fill={color}/>
+        </Svg>
+      );
+    case 'dessert':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 2L15 10H9L12 2Z" fill={color}/>
+          <Rect x="8" y="12" width="8" height="8" rx="1" stroke={color} strokeWidth="2"/>
+        </Svg>
+      );
+    case 'fire':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 2C12 2 17 7 17 13C17 17 14.5 20 12 20C9.5 20 7 17 7 13C7 7 12 2 12 2Z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.3"/>
+        </Svg>
+      );
+    default:
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle cx="12" cy="12" r="10" stroke={color} strokeWidth="2"/>
+        </Svg>
+      );
+  }
+};
+
+export default function App() {
+  // Estados principais
+  const [isLocked, setIsLocked] = useState(false);
+  const [password, setPassword] = useState("");
+  const [tableNumber, setTableNumber] = useState("");
+  const [selectedMode, setSelectedMode] = useState<"rodizio" | "carte" | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [showCart, setShowCart] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [deviceId] = useState<string>(
+    "tablet_" + Math.random().toString(36).substring(7)
+  );
+  const [searchText, setSearchText] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // Animations
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(height)).current;
+  const scaleAnim = useRef(new Animated.Value(0)).current;
+  const cartBounceAnim = useRef(new Animated.Value(1)).current;
+
+  // Inicializar
+  useEffect(() => {
+    loadCategories();
+    loadProducts();
+    
+    // Fade in animation
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: config.animations.slow,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
+  const loadCategories = async () => {
+    setLoadingCategories(true);
+    try {
+      const response = await fetch(`${config.API_URL}/categories`);
+      const data = await response.json();
+      if (data.success) {
+        // Add colors to categories
+        const categoriesWithColors = data.categories.map((cat: Category, index: number) => ({
+          ...cat,
+          color: config.colors.categoryColors[index % config.colors.categoryColors.length]
+        }));
+        setCategories(categoriesWithColors);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar categorias:", error);
+      Alert.alert("Erro", "Não foi possível carregar as categorias");
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
+
+  const loadProducts = async () => {
+    setLoadingProducts(true);
+    try {
+      const response = await fetch(`${config.API_URL}/products`);
+      const data = await response.json();
+      if (data.success) {
+        setProducts(data.products);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar produtos:", error);
+      Alert.alert("Erro", "Não foi possível carregar os produtos");
+    } finally {
+      setLoadingProducts(false);
+    }
+  };
+
+  const getFilteredProducts = () => {
+    let filtered = products;
+
+    // Filter by search
+    if (searchText) {
+      filtered = filtered.filter(p => 
+        p.name.toLowerCase().includes(searchText.toLowerCase()) ||
+        p.description?.toLowerCase().includes(searchText.toLowerCase())
+      );
+    }
+
+    // Filter by mode
+    if (selectedMode === "rodizio") {
+      filtered = filtered.filter((p) => parseFloat(p.price) === 0);
+    } else if (selectedMode === "carte") {
+      filtered = filtered.filter((p) => parseFloat(p.price) > 0);
+    }
+
+    // Filter by category
+    if (selectedCategory) {
+      if (selectedCategory === 999) {
+        // Bebidas
+        filtered = filtered.filter(
+          (p) =>
+            p.category?.toLowerCase().includes("bebida") ||
+            p.category?.toLowerCase().includes("drink") ||
+            p.name.toLowerCase().includes("suco") ||
+            p.name.toLowerCase().includes("refrigerante") ||
+            p.name.toLowerCase().includes("água")
+        );
+      } else {
+        filtered = filtered.filter((p) => p.category_id === selectedCategory);
+      }
+    }
+
+    return filtered;
+  };
+
+  const addToCart = (product: Product) => {
+    // Bounce animation
+    Animated.sequence([
+      Animated.spring(cartBounceAnim, {
+        toValue: 1.2,
+        useNativeDriver: true,
+      }),
+      Animated.spring(cartBounceAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    const existingItem = cart.find((item) => item.id === product.id);
+
+    if (existingItem) {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      );
+    } else {
+      setCart([...cart, { ...product, quantity: 1 }]);
+    }
+  };
+
+  const updateQuantity = (productId: number, quantity: number) => {
+    if (quantity === 0) {
+      setCart(cart.filter((item) => item.id !== productId));
+    } else {
+      setCart(
+        cart.map((item) =>
+          item.id === productId ? { ...item, quantity } : item
+        )
+      );
+    }
+  };
+
+  const getCartTotal = () => {
+    return cart.reduce((total, item) => {
+      return total + parseFloat(item.price) * item.quantity;
+    }, 0);
+  };
+
+  const sendOrder = async () => {
+    if (cart.length === 0) return;
+
+    setLoading(true);
+    try {
+      const orderData = {
+        table_number: parseInt(tableNumber) || 0,
+        mode: selectedMode,
+        device_id: deviceId,
+        items: cart.map((item) => ({
+          product_id: item.id,
+          quantity: item.quantity,
+          price: item.price,
+          observation: item.observation || "",
+        })),
+      };
+
+      const response = await fetch(`${config.API_URL}/order`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setCart([]);
+        setShowCart(false);
+        setShowSuccess(true);
+        
+        // Success animation
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          friction: 3,
+          tension: 40,
+          useNativeDriver: true,
+        }).start();
+
+        setTimeout(() => {
+          setShowSuccess(false);
+          scaleAnim.setValue(0);
+        }, 3000);
+      } else {
+        Alert.alert("Erro", "Erro ao enviar pedido");
+      }
+    } catch (error) {
+      console.error("Erro ao enviar pedido:", error);
+      Alert.alert("Erro", "Erro ao enviar pedido. Verifique sua conexão.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUnlock = () => {
+    if (password === config.ADMIN_PASSWORD) {
+      setIsLocked(false);
+      setPassword("");
+    } else {
+      Alert.alert("Erro", "Senha incorreta");
+      setPassword("");
+    }
+  };
+
+  // Tela de bloqueio
+  if (isLocked) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.lockContainer}>
+          <Text style={styles.lockTitle}>Tablet Bloqueado</Text>
+          <TextInput
+            style={styles.passwordInput}
+            value={password}
+            onChangeText={setPassword}
+            placeholder="Digite a senha"
+            placeholderTextColor="#666"
+            secureTextEntry
+            keyboardType="numeric"
+          />
+          <TouchableOpacity style={styles.unlockButton} onPress={handleUnlock}>
+            <Text style={styles.unlockButtonText}>Desbloquear</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Seleção de mesa e modo
+  if (!tableNumber || !selectedMode) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.welcomeTitle}>Bem-vindo ao ComideX</Text>
+          <Text style={styles.welcomeSubtitle}>
+            Faça seu pedido de forma rápida e prática
+          </Text>
+
+          {!tableNumber ? (
+            <View style={styles.tableInputContainer}>
+              <Text style={styles.label}>Número da Mesa:</Text>
+              <TextInput
+                style={styles.tableInput}
+                value={tableNumber}
+                onChangeText={setTableNumber}
+                placeholder="Digite o número"
+                placeholderTextColor="#666"
+                keyboardType="numeric"
+              />
+            </View>
+          ) : (
+            <View style={styles.modeSelection}>
+              <TouchableOpacity
+                style={[styles.modeButton, { backgroundColor: "#FF6B00" }]}
+                onPress={() => setSelectedMode("rodizio")}
+              >
+                <Text style={styles.modeButtonTitle}>Rodízio</Text>
+                <Text style={styles.modeButtonSubtitle}>Coma à vontade</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.modeButton, { backgroundColor: "#3B82F6" }]}
+                onPress={() => setSelectedMode("carte")}
+              >
+                <Text style={styles.modeButtonTitle}>À La Carte</Text>
+                <Text style={styles.modeButtonSubtitle}>
+                  Escolha seus pratos
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          <TouchableOpacity
+            style={styles.lockButton}
+            onPress={() => setIsLocked(true)}
+          >
+            <Text style={styles.lockButtonText}>Bloquear Tablet</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Interface principal
+  return (
+    <SafeAreaView style={styles.container}>
+      <StatusBar style="light" />
+
+      <View style={styles.mainContainer}>
+        {/* Sidebar de categorias */}
+        <View style={styles.sidebar}>
+          <View style={styles.tableInfo}>
+            <Text style={styles.tableLabel}>Mesa {tableNumber}</Text>
+            <Text style={styles.modeLabel}>
+              {selectedMode === "rodizio" ? "Rodízio" : "À La Carte"}
+            </Text>
+          </View>
+
+          <ScrollView style={styles.categoriesList}>
+            <TouchableOpacity
+              style={[
+                styles.categoryButton,
+                !selectedCategory && styles.categoryButtonActive,
+              ]}
+              onPress={() => setSelectedCategory(null)}
+            >
+              <Text
+                style={[
+                  styles.categoryButtonText,
+                  !selectedCategory && styles.categoryButtonTextActive,
+                ]}
+              >
+                Todos
+              </Text>
+            </TouchableOpacity>
+
+            {categories.map((category) => (
+              <TouchableOpacity
+                key={category.id}
+                style={[
+                  styles.categoryButton,
+                  selectedCategory === category.id &&
+                    styles.categoryButtonActive,
+                ]}
+                onPress={() => setSelectedCategory(category.id)}
+              >
+                <Text
+                  style={[
+                    styles.categoryButtonText,
+                    selectedCategory === category.id &&
+                      styles.categoryButtonTextActive,
+                  ]}
+                >
+                  {category.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+
+        {/* Área de produtos */}
+        <ScrollView style={styles.productsArea}>
+          <View style={styles.productsGrid}>
+            {getFilteredProducts().map((product) => (
+              <TouchableOpacity
+                key={product.id}
+                style={styles.productCard}
+                onPress={() => addToCart(product)}
+              >
+                {product.image_url ? (
+                  <Image
+                    source={{ uri: product.image_url }}
+                    style={styles.productImage}
+                  />
+                ) : (
+                  <View style={[styles.productImage, styles.placeholderImage]}>
+                    <Text style={styles.placeholderText}>🍽️</Text>
+                  </View>
+                )}
+                <View style={styles.productInfo}>
+                  <Text style={styles.productName} numberOfLines={1}>
+                    {product.name}
+                  </Text>
+                  {product.description && (
+                    <Text style={styles.productDescription} numberOfLines={2}>
+                      {product.description}
+                    </Text>
+                  )}
+                  <Text style={styles.productPrice}>
+                    {parseFloat(product.price) === 0
+                      ? "Incluso"
+                      : `R$ ${product.price}`}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+
+        {/* Botão do carrinho */}
+        {cart.length > 0 && (
+          <TouchableOpacity
+            style={styles.cartButton}
+            onPress={() => setShowCart(true)}
+          >
+            <Text style={styles.cartButtonText}>
+              🛒 {cart.reduce((sum, item) => sum + item.quantity, 0)} itens • R${" "}
+              {getCartTotal().toFixed(2)}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {/* Modal do Carrinho */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showCart}
+        onRequestClose={() => setShowCart(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <Text style={styles.modalTitle}>Carrinho</Text>
+              <TouchableOpacity onPress={() => setShowCart(false)}>
+                <Text style={styles.closeButton}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            <ScrollView style={styles.cartItems}>
+              {cart.map((item) => (
+                <View key={item.id} style={styles.cartItem}>
+                  <View style={styles.cartItemInfo}>
+                    <Text style={styles.cartItemName}>{item.name}</Text>
+                    <Text style={styles.cartItemPrice}>
+                      {parseFloat(item.price) === 0
+                        ? "Incluso"
+                        : `R$ ${item.price}`}
+                    </Text>
+                  </View>
+                  <View style={styles.cartItemControls}>
+                    <TouchableOpacity
+                      onPress={() =>
+                        updateQuantity(item.id, Math.max(0, item.quantity - 1))
+                      }
+                      style={styles.quantityButton}
+                    >
+                      <Text style={styles.quantityButtonText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.quantityText}>{item.quantity}</Text>
+                    <TouchableOpacity
+                      onPress={() => updateQuantity(item.id, item.quantity + 1)}
+                      style={styles.quantityButton}
+                    >
+                      <Text style={styles.quantityButtonText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+
+            <View style={styles.cartFooter}>
+              <Text style={styles.cartTotal}>
+                Total: R$ {getCartTotal().toFixed(2)}
+              </Text>
+              <TouchableOpacity
+                style={[
+                  styles.sendOrderButton,
+                  loading && styles.buttonDisabled,
+                ]}
+                onPress={sendOrder}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#FFF" />
+                ) : (
+                  <Text style={styles.sendOrderButtonText}>Enviar Pedido</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#030712",
+  },
+
+  // Tela de bloqueio
+  lockContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  lockTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#FFF",
+    marginBottom: 30,
+  },
+  passwordInput: {
+    width: 300,
+    height: 50,
+    backgroundColor: "#1F2937",
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    color: "#FFF",
+    fontSize: 18,
+    marginBottom: 20,
+  },
+  unlockButton: {
+    width: 300,
+    height: 50,
+    backgroundColor: "#FF6B00",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  unlockButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  // Tela de boas-vindas
+  welcomeContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  welcomeTitle: {
+    fontSize: 48,
+    fontWeight: "bold",
+    color: "#FFF",
+    marginBottom: 10,
+  },
+  welcomeSubtitle: {
+    fontSize: 20,
+    color: "#9CA3AF",
+    marginBottom: 50,
+  },
+  tableInputContainer: {
+    width: "100%",
+    maxWidth: 400,
+  },
+  label: {
+    color: "#FFF",
+    fontSize: 18,
+    marginBottom: 10,
+  },
+  tableInput: {
+    height: 60,
+    backgroundColor: "#1F2937",
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    color: "#FFF",
+    fontSize: 24,
+  },
+  modeSelection: {
+    flexDirection: "row",
+    gap: 20,
+  },
+  modeButton: {
+    width: 200,
+    height: 150,
+    borderRadius: 15,
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modeButtonTitle: {
+    color: "#FFF",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modeButtonSubtitle: {
+    color: "#FFF",
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  lockButton: {
+    marginTop: 50,
+    padding: 10,
+  },
+  lockButtonText: {
+    color: "#6B7280",
+    fontSize: 14,
+  },
+
+  // Interface principal
+  mainContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  sidebar: {
+    width: 280,
+    backgroundColor: "#111827",
+    padding: 15,
+  },
+  tableInfo: {
+    backgroundColor: "#1F2937",
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  tableLabel: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  modeLabel: {
+    color: "#FF6B00",
+    fontSize: 14,
+    marginTop: 5,
+  },
+  categoriesList: {
+    flex: 1,
+  },
+  categoryButton: {
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 10,
+    backgroundColor: "#1F2937",
+  },
+  categoryButtonActive: {
+    backgroundColor: "#FF6B00",
+  },
+  categoryButtonText: {
+    color: "#9CA3AF",
+    fontSize: 16,
+  },
+  categoryButtonTextActive: {
+    color: "#FFF",
+    fontWeight: "bold",
+  },
+
+  // Área de produtos
+  productsArea: {
+    flex: 1,
+    padding: 15,
+  },
+  productsGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 15,
+  },
+  productCard: {
+    width: (width - 280 - 60) / 3 - 10,
+    backgroundColor: "#111827",
+    borderRadius: 10,
+    overflow: "hidden",
+    marginBottom: 15,
+  },
+  productImage: {
+    width: "100%",
+    height: 120,
+    backgroundColor: "#1F2937",
+  },
+  placeholderImage: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  placeholderText: {
+    fontSize: 40,
+  },
+  productInfo: {
+    padding: 10,
+  },
+  productName: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  productDescription: {
+    color: "#9CA3AF",
+    fontSize: 12,
+    marginBottom: 8,
+  },
+  productPrice: {
+    color: "#FF6B00",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+
+  // Botão do carrinho
+  cartButton: {
+    position: "absolute",
+    bottom: 30,
+    right: 30,
+    backgroundColor: "#FF6B00",
+    paddingVertical: 15,
+    paddingHorizontal: 25,
+    borderRadius: 30,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    elevation: 8,
+  },
+  cartButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  // Modal do carrinho
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    justifyContent: "flex-end",
+  },
+  modalContent: {
+    backgroundColor: "#111827",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: height * 0.8,
+    paddingBottom: 20,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#1F2937",
+  },
+  modalTitle: {
+    color: "#FFF",
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  closeButton: {
+    color: "#FFF",
+    fontSize: 24,
+  },
+  cartItems: {
+    maxHeight: height * 0.5,
+    paddingHorizontal: 20,
+  },
+  cartItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#1F2937",
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 5,
+  },
+  cartItemInfo: {
+    flex: 1,
+  },
+  cartItemName: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  cartItemPrice: {
+    color: "#FF6B00",
+    fontSize: 14,
+    marginTop: 5,
+  },
+  cartItemControls: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 15,
+  },
+  quantityButton: {
+    width: 30,
+    height: 30,
+    backgroundColor: "#374151",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  quantityButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  quantityText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  cartFooter: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: "#1F2937",
+  },
+  cartTotal: {
+    color: "#FFF",
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 15,
+  },
+  sendOrderButton: {
+    backgroundColor: "#FF6B00",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  sendOrderButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+});
