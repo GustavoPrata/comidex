@@ -53,6 +53,7 @@ The system is built with a modern web stack. The frontend utilizes **Next.js 15*
 - **Seleção de Mesa:** Tela inicial para escolher mesa disponível
 - **Modo Rodízio/À La Carte:** Escolha do tipo de atendimento
 - **Modal Rodízio Glassmorphic:** Seleção de adultos e crianças com preços automáticos do banco
+- **Lançamento Automático no Caixa:** Rodízio é lançado automaticamente no POS ao confirmar
 - **Catálogo de Produtos:** Grid de categorias e lista de produtos
 - **Carrinho de Compras:** Modal deslizante com controle de quantidade
 - **Observações em Produtos:** Campo opcional para personalização
