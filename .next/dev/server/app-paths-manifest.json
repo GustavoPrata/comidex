@@ -1,6 +1,5 @@
 {
-  "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
-  "/api/mobile/products/route": "app/api/mobile/products/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/api/mobile/tables/route": "app/api/mobile/tables/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
   "/page": "app/page.js",

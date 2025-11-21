@@ -20,17 +20,17 @@ export async function GET() {
     
     if (error) throw error
 
-    // Buscar sessões ativas separadamente
+    // Buscar sessões ativas separadamente - usar table_sessions do POS
     const { data: sessions } = await supabase
-      .from('tablet_sessoes')
+      .from('table_sessions')
       .select('*')
-      .eq('status', 'ativa')
+      .eq('status', 'open')
 
     // Formatar resposta com status das mesas
     const formattedTables = (tables || []).map(table => {
       // Verificar se há sessão ativa para esta mesa
       const activeSession = sessions?.find(
-        (session: any) => session.mesa_id === table.id
+        (session: any) => session.table_id === table.id
       )
       
       // Determinar se é Mesa ou Balcão baseado no número
@@ -46,8 +46,8 @@ export async function GET() {
         capacity: table.capacity || 4,
         status: activeSession ? 'occupied' : 'available',
         session_id: activeSession?.id || null,
-        session_total: activeSession?.valor_total || 0,
-        occupied_since: activeSession?.inicio_atendimento || null,
+        session_total: activeSession?.total || 0,
+        occupied_since: activeSession?.opened_at || null,
         isCounter: tableNumber > 100  // Flag para identificar balcões
       }
     })
@@ -104,12 +104,12 @@ export async function POST(request: NextRequest) {
 
     // Executar ação baseada no comando
     if (action === 'open') {
-      // Abrir mesa (criar sessão)
+      // Abrir mesa (criar sessão) - usar table_sessions do POS
       const { data: existingSession } = await supabase
-        .from('tablet_sessoes')
+        .from('table_sessions')
         .select('*')
-        .eq('mesa_id', table.id)
-        .eq('status', 'ativa')
+        .eq('table_id', table.id)
+        .eq('status', 'open')
         .single()
 
       if (existingSession) {
@@ -120,15 +120,15 @@ export async function POST(request: NextRequest) {
         })
       }
 
-      // Criar nova sessão
+      // Criar nova sessão na tabela do POS
       const { data: newSession, error: sessionError } = await supabase
-        .from('tablet_sessoes')
+        .from('table_sessions')
         .insert({
-          mesa_id: table.id,
-          status: 'ativa',
-          inicio_atendimento: new Date().toISOString(),
-          valor_total: 0,
-          valor_desconto: 0
+          table_id: table.id,
+          status: 'open',
+          opened_at: new Date().toISOString(),
+          customer_count: 1,
+          total: 0
         })
         .select()
         .single()
@@ -141,15 +141,15 @@ export async function POST(request: NextRequest) {
         session_id: newSession.id
       })
     } else if (action === 'close') {
-      // Fechar mesa (encerrar sessão)
+      // Fechar mesa (encerrar sessão) - usar table_sessions do POS
       const { data: session, error: sessionError } = await supabase
-        .from('tablet_sessoes')
+        .from('table_sessions')
         .update({
-          status: 'finalizada',
-          fim_atendimento: new Date().toISOString()
+          status: 'closed',
+          closed_at: new Date().toISOString()
         })
-        .eq('mesa_id', table.id)
-        .eq('status', 'ativa')
+        .eq('table_id', table.id)
+        .eq('status', 'open')
         .select()
         .single()
 

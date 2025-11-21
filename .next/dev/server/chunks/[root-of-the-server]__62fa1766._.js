@@ -465,12 +465,12 @@ async function GET() {
         // Buscar todas as mesas ativas
         const { data: tables, error } = await supabase.from('restaurant_tables').select('*').eq('active', true);
         if (error) throw error;
-        // Buscar sessões ativas separadamente
-        const { data: sessions } = await supabase.from('tablet_sessoes').select('*').eq('status', 'ativa');
+        // Buscar sessões ativas separadamente - usar table_sessions do POS
+        const { data: sessions } = await supabase.from('table_sessions').select('*').eq('status', 'open');
         // Formatar resposta com status das mesas
         const formattedTables = (tables || []).map((table)=>{
             // Verificar se há sessão ativa para esta mesa
-            const activeSession = sessions?.find((session)=>session.mesa_id === table.id);
+            const activeSession = sessions?.find((session)=>session.table_id === table.id);
             // Determinar se é Mesa ou Balcão baseado no número
             const tableNumber = parseInt(table.number);
             const displayName = tableNumber > 100 ? `Balcão ${table.number}` : table.name || `Mesa ${table.number}`;
@@ -481,8 +481,8 @@ async function GET() {
                 capacity: table.capacity || 4,
                 status: activeSession ? 'occupied' : 'available',
                 session_id: activeSession?.id || null,
-                session_total: activeSession?.valor_total || 0,
-                occupied_since: activeSession?.inicio_atendimento || null,
+                session_total: activeSession?.total || 0,
+                occupied_since: activeSession?.opened_at || null,
                 isCounter: tableNumber > 100 // Flag para identificar balcões
             };
         });
@@ -530,8 +530,8 @@ async function POST(request) {
         }
         // Executar ação baseada no comando
         if (action === 'open') {
-            // Abrir mesa (criar sessão)
-            const { data: existingSession } = await supabase.from('tablet_sessoes').select('*').eq('mesa_id', table.id).eq('status', 'ativa').single();
+            // Abrir mesa (criar sessão) - usar table_sessions do POS
+            const { data: existingSession } = await supabase.from('table_sessions').select('*').eq('table_id', table.id).eq('status', 'open').single();
             if (existingSession) {
                 return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                     success: true,
@@ -539,13 +539,13 @@ async function POST(request) {
                     session_id: existingSession.id
                 });
             }
-            // Criar nova sessão
-            const { data: newSession, error: sessionError } = await supabase.from('tablet_sessoes').insert({
-                mesa_id: table.id,
-                status: 'ativa',
-                inicio_atendimento: new Date().toISOString(),
-                valor_total: 0,
-                valor_desconto: 0
+            // Criar nova sessão na tabela do POS
+            const { data: newSession, error: sessionError } = await supabase.from('table_sessions').insert({
+                table_id: table.id,
+                status: 'open',
+                opened_at: new Date().toISOString(),
+                customer_count: 1,
+                total: 0
             }).select().single();
             if (sessionError) throw sessionError;
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
@@ -554,11 +554,11 @@ async function POST(request) {
                 session_id: newSession.id
             });
         } else if (action === 'close') {
-            // Fechar mesa (encerrar sessão)
-            const { data: session, error: sessionError } = await supabase.from('tablet_sessoes').update({
-                status: 'finalizada',
-                fim_atendimento: new Date().toISOString()
-            }).eq('mesa_id', table.id).eq('status', 'ativa').select().single();
+            // Fechar mesa (encerrar sessão) - usar table_sessions do POS
+            const { data: session, error: sessionError } = await supabase.from('table_sessions').update({
+                status: 'closed',
+                closed_at: new Date().toISOString()
+            }).eq('table_id', table.id).eq('status', 'open').select().single();
             if (sessionError) {
                 return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                     success: false,
