@@ -1554,15 +1554,12 @@ function MainApp() {
         <IdleScreen />
         <AdminPanel />
         
-        {/* Beautiful Light Gradient Background */}
-        <LinearGradient
-          colors={['#F5F5F7', '#E5E5EA', '#D1D1D6']}
-          style={StyleSheet.absoluteFillObject}
-        />
+        {/* Dark Background - Same as Table Selection */}
+        <View style={[StyleSheet.absoluteFillObject, { backgroundColor: '#1C1C1E' }]} />
         
         <View style={styles.modeContainer} {...panResponderRef.current?.panHandlers}>
           {/* Glass Header with Blur */}
-          <BlurView intensity={80} tint="light" style={styles.glassHeader}>
+          <BlurView intensity={80} tint="dark" style={styles.glassHeader}>
             <Pressable
               onLongPress={handleLongPressStart}
               onPressOut={handleLongPressEnd}
@@ -1616,7 +1613,7 @@ function MainApp() {
                   }}
                   activeOpacity={0.7}
                 >
-                  <BlurView intensity={60} tint="light" style={styles.serviceCardGlass}>
+                  <BlurView intensity={60} tint="dark" style={styles.serviceCardGlass}>
                     {/* Icon Circle */}
                     <View style={[styles.iconCircleGlass, {
                       backgroundColor: '#FF704315',
@@ -1687,7 +1684,7 @@ function MainApp() {
               }}
               activeOpacity={0.7}
             >
-              <BlurView intensity={50} tint="light" style={styles.changeMesaBlurGlass}>
+              <BlurView intensity={50} tint="dark" style={styles.changeMesaBlurGlass}>
                 <IconComponent name="refresh" size={16} color="#FF7043" />
                 <Text style={styles.changeMesaTextGlass}>Trocar Mesa</Text>
               </BlurView>
@@ -3200,9 +3197,9 @@ const styles = StyleSheet.create({
   glassHeader: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
+    borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   headerContentGlass: {
     flexDirection: 'row',
@@ -3227,11 +3224,11 @@ const styles = StyleSheet.create({
   tableNumberGlass: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#2C2C2E',
+    color: '#FFFFFF',
   },
   tableSubtitleGlass: {
     fontSize: 13,
-    color: 'rgba(0,0,0,0.6)',
+    color: 'rgba(255,255,255,0.6)',
     marginTop: 2,
   },
   sessionBadgeGlass: {
@@ -3265,11 +3262,11 @@ const styles = StyleSheet.create({
     width: '48%',
   },
   serviceCardGlass: {
-    backgroundColor: 'rgba(255,255,255,0.8)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
+    borderColor: 'rgba(255,255,255,0.15)',
     height: 280, // Fixed height for all cards
     justifyContent: 'space-between',
   },
@@ -3309,25 +3306,25 @@ const styles = StyleSheet.create({
   cardTitleGlass: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#2C2C2E',
+    color: '#FFFFFF',
     marginBottom: 6,
   },
   cardDescGlass: {
     fontSize: 12,
-    color: 'rgba(0,0,0,0.6)',
+    color: 'rgba(255,255,255,0.6)',
     textAlign: 'center',
     lineHeight: 16,
   },
   priceContainerGlass: {
     borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.1)',
+    borderTopColor: 'rgba(255,255,255,0.1)',
     paddingTop: 12,
     alignItems: 'center',
     minHeight: 50, // Fixed height for price section
   },
   priceLabelGlass: {
     fontSize: 10,
-    color: 'rgba(0,0,0,0.5)',
+    color: 'rgba(255,255,255,0.5)',
     marginBottom: 4,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -3372,9 +3369,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.9)',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.1)',
+    borderColor: 'rgba(255,255,255,0.15)',
   },
   changeMesaTextGlass: {
     color: '#FF7043',
