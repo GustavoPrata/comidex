@@ -93,6 +93,10 @@ author = "agent"
 task = "workflow.run"
 args = "Start application"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Tablet Expo App"
+
 [[workflows.workflow]]
 name = "Start application"
 author = "agent"
@@ -131,6 +135,18 @@ author = 49976001
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "./start-tablet-app.sh"
+
+[[workflows.workflow]]
+name = "Tablet Expo App"
+author = "agent"
+
+[workflows.workflow.metadata]
+outputType = "console"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd TABLET && npx expo start --tunnel --web --port 8000"
+waitForPort = 8000
 
 [agent]
 expertMode = true
