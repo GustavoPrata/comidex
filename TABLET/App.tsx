@@ -551,7 +551,7 @@ function MainApp() {
   // Check or create session when table is selected and mode is chosen
   useEffect(() => {
     if (tableNumber && selectedMode) {
-      checkOrCreateSession();
+      checkSessionFromPOS();
       // Show waiter button animation
       Animated.spring(waiterButtonAnim, {
         toValue: 1,
@@ -653,38 +653,28 @@ function MainApp() {
     );
   };
 
-  const checkOrCreateSession = async () => {
+  const checkSessionFromPOS = async () => {
     setSessionLoading(true);
     try {
-      // Check for existing session
+      // APENAS verificar se existe sessão aberta no POS - NUNCA criar!
       const checkResponse = await fetch(`${config.API_URL}/session?table_number=${tableNumber}`);
       const checkData = await checkResponse.json();
       
       if (checkData.success && checkData.session) {
-        // Existing session found
+        // Sessão encontrada - mesa foi aberta pelo POS
         setSession(checkData.session);
         setSessionTotal(checkData.session.total || 0);
-        Alert.alert(
-          "Mesa Ocupada", 
-          `Esta mesa já tem uma conta aberta.\nTotal atual: R$ ${checkData.session.total.toFixed(2)}`,
-          [{ text: "OK" }]
-        );
+        console.log("✅ Mesa aberta no POS encontrada:", checkData.session);
+        return true;
       } else {
-        // Create new session
-        const createResponse = await fetch(`${config.API_URL}/session`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ table_number: parseInt(tableNumber) }),
-        });
-        
-        const createData = await createResponse.json();
-        if (createData.success) {
-          setSession(createData.session);
-          setSessionTotal(0);
-        }
+        // Nenhuma sessão - mesa não foi aberta no POS ainda
+        setSession(null);
+        console.log("⚠️ Mesa não está aberta no POS");
+        return false;
       }
     } catch (error) {
-      console.error("Erro ao verificar/criar sessão:", error);
+      console.error("Erro ao verificar sessão no POS:", error);
+      return false;
     } finally {
       setSessionLoading(false);
     }
@@ -1788,7 +1778,7 @@ function MainApp() {
                 <TouchableOpacity
                   key={serviceType.id}
                   style={styles.serviceCardWrapperGlass}
-                  onPress={() => {
+                  onPress={async () => {
                     // Check if it's rodízio type to show modal
                     if (serviceType.linked_groups?.length > 0) {
                       const firstGroup = serviceType.linked_groups[0];
@@ -1804,15 +1794,30 @@ function MainApp() {
                           useNativeDriver: true,
                         }).start();
                       } else {
-                        // For non-rodízio types, proceed directly
-                        setSelectedMode(serviceType);
-                        // Force session creation immediately for non-rodízio
-                        checkOrCreateSession();
+                        // For non-rodízio types, check if table is open in POS
+                        const isOpen = await checkSessionFromPOS();
+                        if (isOpen) {
+                          setSelectedMode(serviceType);
+                        } else {
+                          Alert.alert(
+                            "Mesa Fechada",
+                            `A mesa ${tableNumber} não está aberta no caixa.\nPor favor, solicite ao atendente para abrir a mesa primeiro.`,
+                            [{ text: "OK" }]
+                          );
+                        }
                       }
                     } else {
-                      setSelectedMode(serviceType);
-                      // Force session creation immediately
-                      checkOrCreateSession();
+                      // Check if table is open in POS
+                      const isOpen = await checkSessionFromPOS();
+                      if (isOpen) {
+                        setSelectedMode(serviceType);
+                      } else {
+                        Alert.alert(
+                          "Mesa Fechada",
+                          `A mesa ${tableNumber} não está aberta no caixa.\nPor favor, solicite ao atendente para abrir a mesa primeiro.`,
+                          [{ text: "OK" }]
+                        );
+                      }
                     }
                     resetIdleTimer();
                   }}
@@ -2440,31 +2445,16 @@ function MainApp() {
                       try {
                         setLoading(true);
                         
-                        // Primeiro, verificar/criar sessão se ainda não existir
-                        if (!session) {
-                          console.log('📝 Criando sessão para a mesa', tableNumber);
-                          const sessionResponse = await fetch(`${config.API_URL}/session?table_number=${tableNumber}`);
-                          const sessionData = await sessionResponse.json();
-                          
-                          if (!sessionData.success || !sessionData.session) {
-                            // Create new session
-                            const createResponse = await fetch(`${config.API_URL}/session`, {
-                              method: "POST",
-                              headers: { "Content-Type": "application/json" },
-                              body: JSON.stringify({ table_number: parseInt(tableNumber) }),
-                            });
-                            
-                            const createData = await createResponse.json();
-                            if (createData.success) {
-                              setSession(createData.session);
-                              console.log('✅ Sessão criada:', createData.session);
-                            } else {
-                              throw new Error('Erro ao criar sessão');
-                            }
-                          } else {
-                            setSession(sessionData.session);
-                            console.log('✅ Sessão existente encontrada:', sessionData.session);
-                          }
+                        // Verificar se a mesa está aberta no POS
+                        const isOpen = await checkSessionFromPOS();
+                        if (!isOpen) {
+                          Alert.alert(
+                            "Mesa Fechada",
+                            `A mesa ${tableNumber} não está aberta no caixa.\nPor favor, solicite ao atendente para abrir a mesa primeiro.`,
+                            [{ text: "OK" }]
+                          );
+                          setLoading(false);
+                          return;
                         }
                         
                         // Criar itens do rodízio para o pedido
