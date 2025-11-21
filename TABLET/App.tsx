@@ -174,8 +174,7 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
     case 'table':
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Rect x="3" y="6" width="18" height="10" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.1"/>
-          <Path d="M3 10h18M8 6v10M16 6v10" stroke={color} strokeWidth="2"/>
+          <Rect x="4" y="4" width="16" height="16" rx="2" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.15"/>
         </Svg>
       );
     case 'chair':
