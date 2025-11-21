@@ -332,6 +332,12 @@ function MainApp() {
   const [selectedTable, setSelectedTable] = useState<any>(null);
   const [selectedMode, setSelectedMode] = useState<any>(null);
   const [serviceTypes, setServiceTypes] = useState<any[]>([]);
+  
+  // Modal de Rodízio (adultos e crianças)
+  const [showRodizioModal, setShowRodizioModal] = useState(false);
+  const [adultCount, setAdultCount] = useState(1);
+  const [childCount, setChildCount] = useState(0);
+  const [rodizioModalAnim] = useState(new Animated.Value(0));
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -1733,7 +1739,27 @@ function MainApp() {
                   key={serviceType.id}
                   style={styles.serviceCardWrapperGlass}
                   onPress={() => {
-                    setSelectedMode(serviceType);
+                    // Check if it's rodízio type to show modal
+                    if (serviceType.linked_groups?.length > 0) {
+                      const firstGroup = serviceType.linked_groups[0];
+                      if (firstGroup.type === 'rodizio' && firstGroup.price) {
+                        // Show rodízio modal for selecting adults and children
+                        setSelectedMode(serviceType);
+                        setShowRodizioModal(true);
+                        // Animate modal entrance
+                        Animated.spring(rodizioModalAnim, {
+                          toValue: 1,
+                          tension: 50,
+                          friction: 8,
+                          useNativeDriver: true,
+                        }).start();
+                      } else {
+                        // For non-rodízio types, proceed directly
+                        setSelectedMode(serviceType);
+                      }
+                    } else {
+                      setSelectedMode(serviceType);
+                    }
                     resetIdleTimer();
                   }}
                   activeOpacity={0.7}
@@ -2077,6 +2103,190 @@ function MainApp() {
           </TouchableOpacity>
         </Animated.View>
       </View>
+
+      {/* Rodízio Selection Modal - Apple Glass Style */}
+      {showRodizioModal && (
+        <Modal
+          visible={showRodizioModal}
+          animationType="none"
+          transparent={true}
+          onRequestClose={() => {
+            setShowRodizioModal(false);
+            setAdultCount(1);
+            setChildCount(0);
+          }}
+        >
+          <Animated.View style={[
+            styles.modalOverlay,
+            {
+              opacity: rodizioModalAnim,
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }
+          ]}>
+            <Animated.View style={[
+              styles.rodizioModalContainer,
+              {
+                transform: [{
+                  scale: rodizioModalAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0.9, 1],
+                  }),
+                }],
+              }
+            ]}>
+              <BlurView intensity={95} tint="dark" style={styles.rodizioModalContent}>
+                {/* Modal Header */}
+                <View style={styles.rodizioModalHeader}>
+                  <View style={styles.rodizioHeaderIcon}>
+                    <IconComponent name="fire" size={28} color="#FF7043" />
+                  </View>
+                  <View>
+                    <Text style={styles.rodizioModalTitle}>
+                      {selectedMode?.name || 'Rodízio'}
+                    </Text>
+                    <Text style={styles.rodizioModalSubtitle}>
+                      Selecione a quantidade de pessoas
+                    </Text>
+                  </View>
+                </View>
+
+                {/* Adults Counter */}
+                <View style={styles.rodizioCounterContainer}>
+                  <View style={styles.rodizioCounterLeft}>
+                    <IconComponent name="user" size={20} color="#FF7043" />
+                    <View style={styles.rodizioCounterInfo}>
+                      <Text style={styles.rodizioCounterTitle}>Adultos</Text>
+                      {selectedMode?.price && (
+                        <Text style={styles.rodizioCounterPrice}>
+                          R$ {selectedMode.price.toFixed(2)} por pessoa
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                  
+                  <View style={styles.rodizioCounterButtons}>
+                    <TouchableOpacity
+                      style={[styles.rodizioCounterButton, 
+                        adultCount <= 1 && styles.rodizioCounterButtonDisabled
+                      ]}
+                      onPress={() => setAdultCount(Math.max(1, adultCount - 1))}
+                      disabled={adultCount <= 1}
+                    >
+                      <IconComponent name="minus" size={20} color={adultCount <= 1 ? "#666" : "#FF7043"} />
+                    </TouchableOpacity>
+                    
+                    <View style={styles.rodizioCounterValue}>
+                      <Text style={styles.rodizioCounterNumber}>{adultCount}</Text>
+                    </View>
+                    
+                    <TouchableOpacity
+                      style={styles.rodizioCounterButton}
+                      onPress={() => setAdultCount(adultCount + 1)}
+                    >
+                      <IconComponent name="plus" size={20} color="#FF7043" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                {/* Children Counter */}
+                {selectedMode?.half_price && selectedMode.half_price > 0 && (
+                  <View style={styles.rodizioCounterContainer}>
+                    <View style={styles.rodizioCounterLeft}>
+                      <IconComponent name="child-friendly" size={20} color="#FF7043" />
+                      <View style={styles.rodizioCounterInfo}>
+                        <Text style={styles.rodizioCounterTitle}>Crianças</Text>
+                        <Text style={styles.rodizioCounterPrice}>
+                          R$ {selectedMode.half_price.toFixed(2)} por criança
+                        </Text>
+                      </View>
+                    </View>
+                    
+                    <View style={styles.rodizioCounterButtons}>
+                      <TouchableOpacity
+                        style={[styles.rodizioCounterButton,
+                          childCount <= 0 && styles.rodizioCounterButtonDisabled
+                        ]}
+                        onPress={() => setChildCount(Math.max(0, childCount - 1))}
+                        disabled={childCount <= 0}
+                      >
+                        <IconComponent name="minus" size={20} color={childCount <= 0 ? "#666" : "#FF7043"} />
+                      </TouchableOpacity>
+                      
+                      <View style={styles.rodizioCounterValue}>
+                        <Text style={styles.rodizioCounterNumber}>{childCount}</Text>
+                      </View>
+                      
+                      <TouchableOpacity
+                        style={styles.rodizioCounterButton}
+                        onPress={() => setChildCount(childCount + 1)}
+                      >
+                        <IconComponent name="plus" size={20} color="#FF7043" />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
+
+                {/* Total */}
+                <View style={styles.rodizioTotalContainer}>
+                  <Text style={styles.rodizioTotalLabel}>Total</Text>
+                  <Text style={styles.rodizioTotalValue}>
+                    R$ {(
+                      (adultCount * (selectedMode?.price || 0)) +
+                      (childCount * (selectedMode?.half_price || 0))
+                    ).toFixed(2)}
+                  </Text>
+                </View>
+
+                {/* Action Buttons */}
+                <View style={styles.rodizioModalActions}>
+                  <TouchableOpacity
+                    style={styles.rodizioCancelButton}
+                    onPress={() => {
+                      Animated.timing(rodizioModalAnim, {
+                        toValue: 0,
+                        duration: 200,
+                        useNativeDriver: true,
+                      }).start(() => {
+                        setShowRodizioModal(false);
+                        setAdultCount(1);
+                        setChildCount(0);
+                        setSelectedMode(null);
+                      });
+                    }}
+                  >
+                    <Text style={styles.rodizioCancelButtonText}>Cancelar</Text>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={styles.rodizioConfirmButton}
+                    onPress={() => {
+                      // Save rodízio selection to session data
+                      // For now, just close modal and proceed
+                      Animated.timing(rodizioModalAnim, {
+                        toValue: 0,
+                        duration: 200,
+                        useNativeDriver: true,
+                      }).start(() => {
+                        setShowRodizioModal(false);
+                        // Continue with the rodízio selection
+                        // You can store adultCount and childCount here
+                      });
+                    }}
+                  >
+                    <LinearGradient
+                      colors={['#FF7043', '#FF5722']}
+                      style={styles.rodizioConfirmGradient}
+                    >
+                      <Text style={styles.rodizioConfirmButtonText}>Confirmar</Text>
+                      <IconComponent name="check" size={18} color="#FFFFFF" />
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
+              </BlurView>
+            </Animated.View>
+          </Animated.View>
+        </Modal>
+      )}
 
       {/* Observation Modal */}
       <Modal
@@ -4612,6 +4822,176 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
+  },
+  
+  // Rodízio Modal Styles - Apple Glass Design
+  rodizioModalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  rodizioModalContent: {
+    width: '100%',
+    maxWidth: 450,
+    borderRadius: 32,
+    overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 15 },
+    shadowOpacity: 0.3,
+    shadowRadius: 30,
+    elevation: 20,
+    padding: 28,
+  },
+  rodizioModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 32,
+  },
+  rodizioHeaderIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 112, 67, 0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 112, 67, 0.25)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 16,
+  },
+  rodizioModalTitle: {
+    fontSize: 26,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  rodizioModalSubtitle: {
+    fontSize: 15,
+    color: 'rgba(255, 255, 255, 0.65)',
+    fontWeight: '400',
+  },
+  rodizioCounterContainer: {
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderRadius: 18,
+    padding: 18,
+    marginBottom: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  rodizioCounterLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  rodizioCounterInfo: {
+    marginLeft: 14,
+  },
+  rodizioCounterTitle: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginBottom: 3,
+  },
+  rodizioCounterPrice: {
+    fontSize: 13,
+    color: 'rgba(255, 255, 255, 0.55)',
+  },
+  rodizioCounterButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rodizioCounterButton: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255, 112, 67, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 112, 67, 0.25)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rodizioCounterButtonDisabled: {
+    backgroundColor: 'rgba(100, 100, 100, 0.1)',
+    borderColor: 'rgba(100, 100, 100, 0.2)',
+  },
+  rodizioCounterValue: {
+    minWidth: 60,
+    alignItems: 'center',
+  },
+  rodizioCounterNumber: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  rodizioTotalContainer: {
+    backgroundColor: 'rgba(255, 112, 67, 0.08)',
+    borderRadius: 18,
+    padding: 20,
+    marginTop: 8,
+    marginBottom: 28,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 112, 67, 0.15)',
+  },
+  rodizioTotalLabel: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.8)',
+  },
+  rodizioTotalValue: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#FF7043',
+  },
+  rodizioModalActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  rodizioCancelButton: {
+    flex: 1,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.12)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rodizioCancelButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.7)',
+  },
+  rodizioConfirmButton: {
+    flex: 1.5,
+    height: 56,
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: '#FF5722',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 12,
+    elevation: 8,
+  },
+  rodizioConfirmGradient: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
+  },
+  rodizioConfirmButtonText: {
+    fontSize: 17,
+    fontWeight: '700',
+    color: '#FFFFFF',
   },
 });
 export default function App() {
