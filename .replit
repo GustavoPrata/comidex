@@ -133,7 +133,6 @@ author = "agent"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd TABLET && npx expo start --tunnel --web"
-waitForPort = 8000
 
 [workflows.workflow.metadata]
 outputType = "console"
