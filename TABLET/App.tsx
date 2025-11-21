@@ -2147,7 +2147,7 @@ function MainApp() {
             styles.modalOverlay,
             {
               opacity: rodizioModalAnim,
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              backgroundColor: 'rgba(0, 0, 0, 0.85)',
             }
           ]}>
             <Animated.View style={[
