@@ -22,6 +22,7 @@ import {
   Pressable,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { BlurView } from "expo-blur";
 import Svg, { Path, Circle, Rect, LinearGradient, Defs, Stop } from 'react-native-svg';
 import { config } from './config';
 
@@ -1253,8 +1254,9 @@ export default function App() {
               <Text style={styles.welcomeSubtitle}>Sistema de Pedidos</Text>
             </View>
             
-            <View style={styles.tableSelectionCard}>
-              <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
+            <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
+              <View style={styles.glassOverlay}>
+                <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
               
               {tablesLoading ? (
                 <View style={styles.tablesLoadingContainer}>
@@ -1363,7 +1365,8 @@ export default function App() {
                   <Text style={styles.refreshTablesText}>Atualizar mesas</Text>
                 </TouchableOpacity>
               )}
-            </View>
+              </View>
+            </BlurView>
 
             <TouchableOpacity style={styles.adminButton} onPress={() => setIsLocked(true)}>
               <Text style={styles.adminButtonText}>Modo Administrador</Text>
@@ -1404,45 +1407,53 @@ export default function App() {
 
           <View style={styles.modeCards}>
             <TouchableOpacity
-              style={[styles.modeCard, { backgroundColor: config.colors.rodizioColor }]}
+              style={styles.modeCardWrapper}
               onPress={() => {
                 setSelectedMode("rodizio");
                 resetIdleTimer();
               }}
               activeOpacity={0.9}
             >
-              <View style={styles.modeCardIcon}>
-                <IconComponent name="fire" size={60} color="#FFF" />
-              </View>
-              <Text style={styles.modeCardTitle}>Rodízio</Text>
-              <Text style={styles.modeCardDescription}>
-                Coma à vontade com valor fixo
-              </Text>
-              <View style={styles.modeCardBadge}>
-                <Text style={styles.modeCardBadgeText}>MAIS POPULAR</Text>
-              </View>
+              <BlurView intensity={70} tint="dark" style={styles.modeCard}>
+                <View style={[styles.modeCardContent, { backgroundColor: 'rgba(255, 87, 34, 0.15)' }]}>
+                  <View style={styles.modeCardIcon}>
+                    <IconComponent name="fire" size={60} color="#FFF" />
+                  </View>
+                  <Text style={styles.modeCardTitle}>Rodízio</Text>
+                  <Text style={styles.modeCardDescription}>
+                    Coma à vontade com valor fixo
+                  </Text>
+                  <View style={styles.modeCardBadge}>
+                    <Text style={styles.modeCardBadgeText}>MAIS POPULAR</Text>
+                  </View>
+                </View>
+              </BlurView>
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.modeCard, { backgroundColor: config.colors.carteColor }]}
+              style={styles.modeCardWrapper}
               onPress={() => {
                 setSelectedMode("carte");
                 resetIdleTimer();
               }}
               activeOpacity={0.9}
             >
-              <View style={styles.modeCardIcon}>
-                <Svg width={60} height={60} viewBox="0 0 24 24" fill="none">
-                  <Path d="M4 7h16M4 12h16M4 17h16" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
-                </Svg>
-              </View>
-              <Text style={styles.modeCardTitle}>À La Carte</Text>
-              <Text style={styles.modeCardDescription}>
-                Escolha e pague por item
-              </Text>
-              <View style={[styles.modeCardBadge, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
-                <Text style={styles.modeCardBadgeText}>PERSONALIZADO</Text>
-              </View>
+              <BlurView intensity={70} tint="dark" style={styles.modeCard}>
+                <View style={[styles.modeCardContent, { backgroundColor: 'rgba(76, 175, 80, 0.15)' }]}>
+                  <View style={styles.modeCardIcon}>
+                    <Svg width={60} height={60} viewBox="0 0 24 24" fill="none">
+                      <Path d="M4 7h16M4 12h16M4 17h16" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
+                    </Svg>
+                  </View>
+                  <Text style={styles.modeCardTitle}>À La Carte</Text>
+                  <Text style={styles.modeCardDescription}>
+                    Escolha e pague por item
+                  </Text>
+                  <View style={[styles.modeCardBadge, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
+                    <Text style={styles.modeCardBadgeText}>PERSONALIZADO</Text>
+                  </View>
+                </View>
+              </BlurView>
             </TouchableOpacity>
           </View>
 
@@ -2134,6 +2145,11 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 87, 34, 0.15)',
     padding: 16,
   },
+  glassOverlay: {
+    backgroundColor: 'rgba(20, 20, 20, 0.6)',
+    padding: 20,
+    flex: 1,
+  },
   lockContainer: {
     flex: 1,
     justifyContent: "center",
@@ -2280,11 +2296,10 @@ const styles = StyleSheet.create({
   },
   // New Table Selection Styles
   tableSelectionCard: {
-    backgroundColor: config.colors.card,
-    borderRadius: 20,
-    padding: 20,
+    borderRadius: 28,
     width: "100%",
     marginVertical: 20,
+    overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
@@ -2557,16 +2572,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 20,
   },
-  modeCard: {
+  modeCardWrapper: {
     width: width * 0.35,
     maxWidth: 350,
     height: 300,
+  },
+  modeCard: {
+    flex: 1,
     borderRadius: 28,
+    overflow: 'hidden',
+  },
+  modeCardContent: {
+    flex: 1,
     padding: 32,
-    backgroundColor: 'rgba(30, 30, 30, 0.85)',
-    backdropFilter: 'blur(20px)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.15)',
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
