@@ -23,7 +23,8 @@ export async function GET() {
             id,
             name,
             type,
-            price
+            price,
+            half_price
           )
         )
       `)
@@ -39,12 +40,18 @@ export async function GET() {
         id: tsg.groups?.id,
         name: tsg.groups?.name,
         type: tsg.groups?.type,
-        price: tsg.groups?.price
+        price: tsg.groups?.price,
+        half_price: tsg.groups?.half_price
       })).filter((g: any) => g.id) || []
       
       // Usar o preço do primeiro grupo linkado
       const priceFromGroup = linkedGroups.length > 0 && linkedGroups[0].price 
         ? linkedGroups[0].price 
+        : null
+      
+      // Pegar também o half_price (preço de criança) do primeiro grupo
+      const halfPriceFromGroup = linkedGroups.length > 0 && linkedGroups[0].half_price 
+        ? linkedGroups[0].half_price 
         : null
       
       return {
@@ -54,6 +61,7 @@ export async function GET() {
         icon: type.icon,
         color: type.color,
         price: priceFromGroup, // Usar preço do grupo linkado
+        half_price: halfPriceFromGroup, // Preço de criança
         display_order: type.display_order,
         linked_groups: linkedGroups
       }
