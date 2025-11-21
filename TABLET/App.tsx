@@ -2305,7 +2305,7 @@ function MainApp() {
                         }
                         
                         // Enviar pedido do rodízio
-                        const response = await fetch(`${API_BASE}/order`, {
+                        const response = await fetch(`${config.API_URL}/order`, {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
