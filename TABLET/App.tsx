@@ -315,6 +315,33 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
           <Path d="M6 20v-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </Svg>
       );
+    case 'plus':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 5v14M5 12h14" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+      );
+    case 'minus':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M5 12h14" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+      );
+    case 'user':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle cx="12" cy="8" r="4" stroke={color} strokeWidth="2"/>
+          <Path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'child':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle cx="12" cy="7" r="3" stroke={color} strokeWidth="2"/>
+          <Path d="M7 14c0-2.5 2-4 5-4s5 1.5 5 4v5a1 1 0 01-1 1H8a1 1 0 01-1-1v-5z" stroke={color} strokeWidth="2"/>
+          <Path d="M10 5l-2-2M14 5l2-2" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+        </Svg>
+      );
     default:
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -2138,7 +2165,7 @@ function MainApp() {
                 {/* Modal Header */}
                 <View style={styles.rodizioModalHeader}>
                   <View style={styles.rodizioHeaderIcon}>
-                    <IconComponent name="fire" size={28} color="#FF7043" />
+                    <IconComponent name={selectedMode?.icon || 'fire'} size={28} color="#FF7043" />
                   </View>
                   <View>
                     <Text style={styles.rodizioModalTitle}>
@@ -2192,7 +2219,7 @@ function MainApp() {
                 {selectedMode?.half_price && selectedMode.half_price > 0 && (
                   <View style={styles.rodizioCounterContainer}>
                     <View style={styles.rodizioCounterLeft}>
-                      <IconComponent name="child-friendly" size={20} color="#FF7043" />
+                      <IconComponent name="child" size={20} color="#FF7043" />
                       <View style={styles.rodizioCounterInfo}>
                         <Text style={styles.rodizioCounterTitle}>Crianças</Text>
                         <Text style={styles.rodizioCounterPrice}>
