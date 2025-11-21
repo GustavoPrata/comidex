@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,6 +16,10 @@ import {
   Animated,
   Platform,
   KeyboardAvoidingView,
+  PanResponder,
+  BackHandler,
+  TouchableWithoutFeedback,
+  Pressable,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Svg, { Path, Circle, Rect, LinearGradient, Defs, Stop } from 'react-native-svg';
@@ -46,7 +50,45 @@ interface CartItem extends Product {
   observation?: string;
 }
 
+interface Session {
+  id: number;
+  table_id: number;
+  table_number: string;
+  status: string;
+  opened_at: string;
+  closed_at?: string;
+  subtotal: number;
+  service_fee: number;
+  discount: number;
+  total: number;
+  orders: any[];
+  payment_method?: string;
+}
+
+interface OrderHistory {
+  id: number;
+  numero: string;
+  created_at: string;
+  total: number;
+  items: any[];
+}
+
+interface Promotion {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  price?: string;
+  highlight?: boolean;
+}
+
 const { width, height } = Dimensions.get("window");
+
+// Constants
+const IDLE_TIMEOUT = 120000; // 2 minutes
+const KIOSK_PIN = "1234"; // Kiosk admin PIN
+const LONG_PRESS_DURATION = 3000; // 3 seconds for admin menu
+const CAROUSEL_INTERVAL = 5000; // 5 seconds per promotion
 
 // Icon Components
 const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size?: number, color?: string }) => {
@@ -91,6 +133,72 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
           <Path d="M12 2C12 2 17 7 17 13C17 17 14.5 20 12 20C9.5 20 7 17 7 13C7 7 12 2 12 2Z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.3"/>
         </Svg>
       );
+    case 'bill':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Rect x="5" y="4" width="14" height="16" rx="2" stroke={color} strokeWidth="2"/>
+          <Path d="M9 8h6M9 12h6M9 16h4" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'credit-card':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Rect x="3" y="5" width="18" height="14" rx="2" stroke={color} strokeWidth="2"/>
+          <Path d="M3 9h18" stroke={color} strokeWidth="2"/>
+          <Path d="M7 14h4" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'money':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle cx="12" cy="12" r="9" stroke={color} strokeWidth="2"/>
+          <Path d="M12 7v10M9 10h6" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'pix':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M4 4L20 20M20 4L4 20" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'check':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+          <Path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+        </Svg>
+      );
+    case 'admin':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 2L2 7L12 12L22 7L12 2Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M2 17L12 22L22 17" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M2 12L12 17L22 12" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+      );
+    case 'exit':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M16 17l5-5-5-5" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M21 12H9" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+      );
+    case 'refresh':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M1 4v6h6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M23 20v-6h-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+      );
+    case 'stats':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M18 20V10" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M12 20V4" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <Path d="M6 20v-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+      );
     default:
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -119,17 +227,144 @@ export default function App() {
   );
   const [searchText, setSearchText] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  // Session Management States
+  const [session, setSession] = useState<Session | null>(null);
+  const [sessionLoading, setSessionLoading] = useState(false);
+  const [showBill, setShowBill] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<"cash" | "credit" | "debit" | "pix">("cash");
+  const [sessionTotal, setSessionTotal] = useState(0);
+  const [orderHistory, setOrderHistory] = useState<OrderHistory[]>([]);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  
+  // New states for call waiter and observations
+  const [showObservationModal, setShowObservationModal] = useState(false);
+  const [selectedProductForObservation, setSelectedProductForObservation] = useState<Product | null>(null);
+  const [observationText, setObservationText] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState<"success" | "error" | "info">("info");
+
+  // Kiosk Mode and Idle Screen States
+  const [isIdle, setIsIdle] = useState(false);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
+  const [currentPromoIndex, setCurrentPromoIndex] = useState(0);
+  const [kioskMode, setKioskMode] = useState(true);
+  const [appStats, setAppStats] = useState({
+    totalOrders: 0,
+    totalRevenue: 0,
+    activeTime: 0,
+    lastReset: new Date().toISOString(),
+  });
+
+  // Timers and Refs
+  const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const carouselTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastActivityRef = useRef<number>(Date.now());
+  const panResponderRef = useRef<any>(null);
 
   // Animations
   const fadeAnim = useRef(new Animated.Value(0)).current;
+  const toastAnim = useRef(new Animated.Value(-100)).current;
+  const waiterButtonAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(height)).current;
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const cartBounceAnim = useRef(new Animated.Value(1)).current;
+  const billSlideAnim = useRef(new Animated.Value(height)).current;
+  const idleFadeAnim = useRef(new Animated.Value(0)).current;
+  const promoSlideAnim = useRef(new Animated.Value(0)).current;
 
-  // Inicializar
+  // Sample promotions data
+  const promotions: Promotion[] = [
+    {
+      id: 1,
+      title: "🍣 Rodízio Especial",
+      description: "Experimente nosso rodízio completo com mais de 50 opções de sushi e sashimi frescos!",
+      image: "rodizio",
+      price: "R$ 89,90",
+      highlight: true,
+    },
+    {
+      id: 2,
+      title: "🍹 Happy Hour",
+      description: "De segunda a sexta, das 17h às 19h, drinks com 50% de desconto!",
+      image: "drinks",
+      highlight: false,
+    },
+    {
+      id: 3,
+      title: "🎉 Combo Família",
+      description: "4 pessoas comem pelo preço de 3 no rodízio. Válido aos domingos!",
+      image: "family",
+      price: "R$ 269,90",
+      highlight: true,
+    },
+    {
+      id: 4,
+      title: "🍰 Sobremesa Grátis",
+      description: "Peça o rodízio e ganhe uma sobremesa japonesa por conta da casa!",
+      image: "dessert",
+      highlight: false,
+    },
+    {
+      id: 5,
+      title: "📱 Desconto Digital",
+      description: "Use nosso app e ganhe 10% de desconto em todos os pedidos!",
+      image: "app",
+      highlight: true,
+    },
+  ];
+
+  // Reset idle timer
+  const resetIdleTimer = useCallback(() => {
+    lastActivityRef.current = Date.now();
+    
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+    }
+    
+    if (isIdle) {
+      setIsIdle(false);
+      Animated.timing(idleFadeAnim, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true,
+      }).start();
+    }
+    
+    idleTimerRef.current = setTimeout(() => {
+      setIsIdle(true);
+      Animated.timing(idleFadeAnim, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }, IDLE_TIMEOUT);
+  }, [isIdle, idleFadeAnim]);
+
+  // Pan Responder for touch tracking
+  useEffect(() => {
+    panResponderRef.current = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderGrant: () => {
+        resetIdleTimer();
+      },
+      onPanResponderMove: () => {
+        resetIdleTimer();
+      },
+    });
+  }, [resetIdleTimer]);
+
+  // Initialize and setup
   useEffect(() => {
     loadCategories();
     loadProducts();
+    
+    // Initialize idle timer
+    resetIdleTimer();
     
     // Fade in animation
     Animated.timing(fadeAnim, {
@@ -137,7 +372,216 @@ export default function App() {
       duration: config.animations.slow,
       useNativeDriver: true,
     }).start();
+
+    // Disable back button in kiosk mode
+    if (Platform.OS === 'android' && kioskMode) {
+      BackHandler.addEventListener('hardwareBackPress', () => true);
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', () => true);
+      };
+    }
   }, []);
+
+  // Carousel timer for promotions
+  useEffect(() => {
+    if (isIdle) {
+      carouselTimerRef.current = setInterval(() => {
+        setCurrentPromoIndex((prev) => (prev + 1) % promotions.length);
+        
+        // Slide animation
+        Animated.sequence([
+          Animated.timing(promoSlideAnim, {
+            toValue: -width,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+          Animated.timing(promoSlideAnim, {
+            toValue: width,
+            duration: 0,
+            useNativeDriver: true,
+          }),
+          Animated.timing(promoSlideAnim, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }),
+        ]).start();
+      }, CAROUSEL_INTERVAL);
+    } else {
+      if (carouselTimerRef.current) {
+        clearInterval(carouselTimerRef.current);
+      }
+    }
+    
+    return () => {
+      if (carouselTimerRef.current) {
+        clearInterval(carouselTimerRef.current);
+      }
+    };
+  }, [isIdle, promoSlideAnim]);
+
+  // Check or create session when table is selected and mode is chosen
+  useEffect(() => {
+    if (tableNumber && selectedMode) {
+      checkOrCreateSession();
+      // Show waiter button animation
+      Animated.spring(waiterButtonAnim, {
+        toValue: 1,
+        friction: 5,
+        tension: 40,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [tableNumber, selectedMode]);
+
+  // Load order history when session is loaded
+  useEffect(() => {
+    if (session) {
+      loadSessionOrders();
+    }
+  }, [session?.id]);
+
+  // Auto-reset after successful order
+  const autoResetAfterOrder = useCallback(() => {
+    setTimeout(() => {
+      setCart([]);
+      setSearchText("");
+      setSelectedCategory(null);
+      resetIdleTimer();
+    }, 5000); // Reset after 5 seconds
+  }, [resetIdleTimer]);
+
+  // Handle long press for admin menu
+  const handleLongPressStart = () => {
+    longPressTimerRef.current = setTimeout(() => {
+      setShowAdminPanel(true);
+      // Vibration feedback if available
+      if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(200);
+      }
+    }, LONG_PRESS_DURATION);
+  };
+
+  const handleLongPressEnd = () => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+    }
+  };
+
+  // Admin panel actions
+  const handleExitKioskMode = () => {
+    Alert.alert(
+      "Sair do Modo Kiosk",
+      "Tem certeza que deseja sair do modo kiosk? O app poderá ser fechado.",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { 
+          text: "Sair", 
+          style: "destructive",
+          onPress: () => {
+            setKioskMode(false);
+            setShowAdminPanel(false);
+            Alert.alert("Modo Kiosk", "Modo kiosk desativado. Você pode fechar o app agora.");
+          }
+        }
+      ]
+    );
+  };
+
+  const handleRestartApp = () => {
+    Alert.alert(
+      "Reiniciar App",
+      "Tem certeza que deseja reiniciar o aplicativo?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { 
+          text: "Reiniciar", 
+          style: "destructive",
+          onPress: () => {
+            // Clear all data
+            setTableNumber("");
+            setSelectedMode(null);
+            setCart([]);
+            setSession(null);
+            setSessionTotal(0);
+            setOrderHistory([]);
+            setShowAdminPanel(false);
+            setIsIdle(false);
+            resetIdleTimer();
+          }
+        }
+      ]
+    );
+  };
+
+  const handleViewStats = () => {
+    Alert.alert(
+      "📊 Estatísticas do App",
+      `Total de Pedidos: ${appStats.totalOrders}\n` +
+      `Receita Total: R$ ${appStats.totalRevenue.toFixed(2)}\n` +
+      `Tempo Ativo: ${Math.floor(appStats.activeTime / 60)} minutos\n` +
+      `Último Reset: ${new Date(appStats.lastReset).toLocaleString('pt-BR')}`,
+      [{ text: "OK" }]
+    );
+  };
+
+  const checkOrCreateSession = async () => {
+    setSessionLoading(true);
+    try {
+      // Check for existing session
+      const checkResponse = await fetch(`${config.API_URL}/session?table_number=${tableNumber}`);
+      const checkData = await checkResponse.json();
+      
+      if (checkData.success && checkData.session) {
+        // Existing session found
+        setSession(checkData.session);
+        setSessionTotal(checkData.session.total || 0);
+        Alert.alert(
+          "Mesa Ocupada", 
+          `Esta mesa já tem uma conta aberta.\nTotal atual: R$ ${checkData.session.total.toFixed(2)}`,
+          [{ text: "OK" }]
+        );
+      } else {
+        // Create new session
+        const createResponse = await fetch(`${config.API_URL}/session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ table_number: parseInt(tableNumber) }),
+        });
+        
+        const createData = await createResponse.json();
+        if (createData.success) {
+          setSession(createData.session);
+          setSessionTotal(0);
+        }
+      }
+    } catch (error) {
+      console.error("Erro ao verificar/criar sessão:", error);
+    } finally {
+      setSessionLoading(false);
+    }
+  };
+
+  const loadSessionOrders = async () => {
+    if (!session?.id) return;
+    
+    try {
+      const response = await fetch(`${config.API_URL}/order?session_id=${session.id}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setOrderHistory(data.orders || []);
+        
+        // Calculate total from orders
+        const total = data.orders.reduce((sum: number, order: any) => 
+          sum + (order.valor_total || 0), 0
+        );
+        setSessionTotal(total);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar pedidos da sessão:", error);
+    }
+  };
 
   const loadCategories = async () => {
     setLoadingCategories(true);
@@ -173,6 +617,121 @@ export default function App() {
       Alert.alert("Erro", "Não foi possível carregar os produtos");
     } finally {
       setLoadingProducts(false);
+    }
+  };
+
+  // Show toast notification
+  const showToastNotification = (message: string, type: "success" | "error" | "info" = "info") => {
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+    
+    // Animate toast in
+    Animated.spring(toastAnim, {
+      toValue: 20,
+      friction: 8,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+      Animated.timing(toastAnim, {
+        toValue: -100,
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => {
+        setShowToast(false);
+      });
+    }, 3000);
+  };
+
+  // Call waiter function
+  const callWaiter = async () => {
+    resetIdleTimer();
+    try {
+      const response = await fetch(`${config.API_URL}/call-waiter`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          table_number: tableNumber,
+          session_id: session?.id,
+          message: `Mesa ${tableNumber} está chamando o garçom`,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToastNotification("🔔 Garçom foi chamado! Aguarde um momento.", "success");
+        // Vibration feedback if available
+        if (window.navigator && window.navigator.vibrate) {
+          window.navigator.vibrate(200);
+        }
+      } else {
+        showToastNotification("Erro ao chamar garçom. Tente novamente.", "error");
+      }
+    } catch (error) {
+      console.error("Erro ao chamar garçom:", error);
+      showToastNotification("Erro ao chamar garçom. Verifique sua conexão.", "error");
+    }
+  };
+
+  // Handle add to cart with observation
+  const handleAddToCart = (product: Product) => {
+    resetIdleTimer();
+    setSelectedProductForObservation(product);
+    setObservationText("");
+    setShowObservationModal(true);
+  };
+
+  // Confirm add to cart with observation
+  const confirmAddToCart = () => {
+    if (selectedProductForObservation) {
+      const productWithObservation = {
+        ...selectedProductForObservation,
+        observation: observationText,
+      };
+      
+      // Bounce animation
+      Animated.sequence([
+        Animated.spring(cartBounceAnim, {
+          toValue: 1.2,
+          useNativeDriver: true,
+        }),
+        Animated.spring(cartBounceAnim, {
+          toValue: 1,
+          useNativeDriver: true,
+        }),
+      ]).start();
+
+      const existingItem = cart.find((item) => 
+        item.id === selectedProductForObservation.id && 
+        item.observation === observationText
+      );
+
+      if (existingItem) {
+        setCart(
+          cart.map((item) =>
+            item.id === selectedProductForObservation.id && item.observation === observationText
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        );
+      } else {
+        setCart([...cart, { ...productWithObservation, quantity: 1 }]);
+      }
+      
+      setShowObservationModal(false);
+      setSelectedProductForObservation(null);
+      setObservationText("");
+      
+      showToastNotification(
+        observationText 
+          ? `${selectedProductForObservation.name} adicionado com observação` 
+          : `${selectedProductForObservation.name} adicionado ao carrinho`,
+        "success"
+      );
     }
   };
 
@@ -214,35 +773,8 @@ export default function App() {
     return filtered;
   };
 
-  const addToCart = (product: Product) => {
-    // Bounce animation
-    Animated.sequence([
-      Animated.spring(cartBounceAnim, {
-        toValue: 1.2,
-        useNativeDriver: true,
-      }),
-      Animated.spring(cartBounceAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
-    const existingItem = cart.find((item) => item.id === product.id);
-
-    if (existingItem) {
-      setCart(
-        cart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
-  };
-
   const updateQuantity = (productId: number, quantity: number) => {
+    resetIdleTimer();
     if (quantity === 0) {
       setCart(cart.filter((item) => item.id !== productId));
     } else {
@@ -264,11 +796,14 @@ export default function App() {
     if (cart.length === 0) return;
 
     setLoading(true);
+    resetIdleTimer();
+    
     try {
       const orderData = {
         table_number: parseInt(tableNumber) || 0,
         mode: selectedMode,
         device_id: deviceId,
+        session_id: session?.id,
         items: cart.map((item) => ({
           product_id: item.id,
           quantity: item.quantity,
@@ -286,28 +821,122 @@ export default function App() {
       const data = await response.json();
 
       if (data.success) {
+        // Update stats
+        setAppStats(prev => ({
+          ...prev,
+          totalOrders: prev.totalOrders + 1,
+          totalRevenue: prev.totalRevenue + getCartTotal(),
+        }));
+        
+        // Update session total
+        const orderTotal = getCartTotal();
+        setSessionTotal(prevTotal => prevTotal + orderTotal);
+        
         setCart([]);
         setShowCart(false);
-        setShowSuccess(true);
         
-        // Success animation
-        Animated.spring(scaleAnim, {
-          toValue: 1,
-          friction: 3,
-          tension: 40,
-          useNativeDriver: true,
-        }).start();
+        // Reload orders
+        loadSessionOrders();
+        
+        // Auto-reset after order
+        autoResetAfterOrder();
+        
+        // Show enhanced success message with print status
+        const printStatusIcon = data.print_status === 'sent_to_kitchen' ? '✅' : '⚠️';
+        const printStatusMessage = data.print_status === 'sent_to_kitchen' 
+          ? 'Pedido enviado para cozinha!' 
+          : 'Pedido criado (impressora não configurada)';
+        
+        const estimatedTime = data.order?.estimated_preparation_time 
+          ? `\nTempo estimado: ${data.order.estimated_preparation_time}` 
+          : '';
+        
+        const printJobsInfo = data.order?.print_jobs_count > 0
+          ? `\n${data.order.print_jobs_count} impressora(s) notificada(s)`
+          : '';
 
-        setTimeout(() => {
-          setShowSuccess(false);
-          scaleAnim.setValue(0);
-        }, 3000);
+        Alert.alert(
+          `${printStatusIcon} Pedido Confirmado`,
+          `${printStatusMessage}\n\nPedido #${data.order.numero}\nMesa: ${tableNumber}${estimatedTime}${printJobsInfo}\n\n${data.message || 'Pedido processado com sucesso!'}`,
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                setShowSuccess(true);
+                // Success animation
+                Animated.spring(scaleAnim, {
+                  toValue: 1,
+                  friction: 3,
+                  tension: 40,
+                  useNativeDriver: true,
+                }).start();
+
+                setTimeout(() => {
+                  setShowSuccess(false);
+                  scaleAnim.setValue(0);
+                }, 4000);
+              }
+            }
+          ]
+        );
       } else {
-        Alert.alert("Erro", "Erro ao enviar pedido");
+        Alert.alert("❌ Erro", data.error || data.message || "Erro ao enviar pedido");
       }
     } catch (error) {
       console.error("Erro ao enviar pedido:", error);
       Alert.alert("Erro", "Erro ao enviar pedido. Verifique sua conexão.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseBill = async () => {
+    if (!session?.id) return;
+    
+    setLoading(true);
+    resetIdleTimer();
+    
+    try {
+      const response = await fetch(`${config.API_URL}/session/${session.id}/close`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          payment_method: selectedPaymentMethod,
+          discount: 0,
+          tip: 0,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        Alert.alert(
+          "Conta Fechada",
+          `Mesa ${tableNumber} fechada com sucesso!\nTotal: R$ ${data.session.total.toFixed(2)}`,
+          [{
+            text: "OK",
+            onPress: () => {
+              // Reset app state - full reset
+              setSession(null);
+              setSessionTotal(0);
+              setOrderHistory([]);
+              setCart([]);
+              setSelectedMode(null);
+              setTableNumber("");
+              setShowBill(false);
+              setShowPaymentModal(false);
+              setSearchText("");
+              setSelectedCategory(null);
+              resetIdleTimer();
+            }
+          }]
+        );
+      } else {
+        Alert.alert("Erro", "Erro ao fechar conta");
+      }
+    } catch (error) {
+      console.error("Erro ao fechar conta:", error);
+      Alert.alert("Erro", "Erro ao fechar conta. Verifique sua conexão.");
     } finally {
       setLoading(false);
     }
@@ -322,6 +951,207 @@ export default function App() {
       setPassword("");
     }
   };
+
+  const handleAdminLogin = () => {
+    if (adminPassword === KIOSK_PIN) {
+      setAdminPassword("");
+      // Admin panel is already shown
+    } else {
+      Alert.alert("Erro", "PIN incorreto. Use 1234 para acessar o painel admin.");
+      setAdminPassword("");
+    }
+  };
+
+  const calculateBillTotals = () => {
+    const subtotal = sessionTotal;
+    const serviceFee = subtotal * 0.1; // 10% service fee
+    const total = subtotal + serviceFee;
+    
+    return {
+      subtotal,
+      serviceFee,
+      total,
+    };
+  };
+
+  // Idle Screen Component
+  const IdleScreen = () => {
+    const currentPromo = promotions[currentPromoIndex];
+    
+    return (
+      <Animated.View 
+        style={[
+          styles.idleContainer, 
+          { 
+            opacity: idleFadeAnim,
+            zIndex: isIdle ? 9999 : -1,
+          }
+        ]}
+        {...panResponderRef.current?.panHandlers}
+      >
+        <TouchableWithoutFeedback onPress={() => resetIdleTimer()}>
+          <View style={styles.idleContent}>
+            {/* Header with Logo */}
+            <View style={styles.idleHeader}>
+              <Animated.Text style={[styles.idleLogo, { transform: [{ scale: idleFadeAnim }] }]}>
+                🍱
+              </Animated.Text>
+              <Text style={styles.idleTitle}>ComideX</Text>
+              <Text style={styles.idleSubtitle}>Culinária Japonesa Premium</Text>
+            </View>
+
+            {/* Promotional Carousel */}
+            <Animated.View 
+              style={[
+                styles.promoCard,
+                { transform: [{ translateX: promoSlideAnim }] }
+              ]}
+            >
+              {currentPromo.highlight && (
+                <View style={styles.promoHighlight}>
+                  <Text style={styles.promoHighlightText}>DESTAQUE</Text>
+                </View>
+              )}
+              
+              <View style={styles.promoIcon}>
+                <Text style={styles.promoEmoji}>{currentPromo.title.substring(0, 2)}</Text>
+              </View>
+              
+              <Text style={styles.promoTitle}>{currentPromo.title.substring(2)}</Text>
+              <Text style={styles.promoDescription}>{currentPromo.description}</Text>
+              
+              {currentPromo.price && (
+                <View style={styles.promoPriceContainer}>
+                  <Text style={styles.promoPriceLabel}>Por apenas</Text>
+                  <Text style={styles.promoPrice}>{currentPromo.price}</Text>
+                </View>
+              )}
+            </Animated.View>
+
+            {/* Carousel Indicators */}
+            <View style={styles.carouselIndicators}>
+              {promotions.map((_, index) => (
+                <View 
+                  key={index}
+                  style={[
+                    styles.indicator,
+                    index === currentPromoIndex && styles.indicatorActive
+                  ]}
+                />
+              ))}
+            </View>
+
+            {/* Touch to Start */}
+            <Animated.View 
+              style={[
+                styles.touchToStart,
+                {
+                  transform: [
+                    { 
+                      scale: idleFadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0.8, 1]
+                      })
+                    }
+                  ]
+                }
+              ]}
+            >
+              <Text style={styles.touchToStartText}>✋ Toque para começar</Text>
+            </Animated.View>
+
+            {/* Footer with time */}
+            <View style={styles.idleFooter}>
+              <Text style={styles.idleTime}>
+                {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
+              </Text>
+              <Text style={styles.idleDate}>
+                {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
+              </Text>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Animated.View>
+    );
+  };
+
+  // Admin Panel Component
+  const AdminPanel = () => (
+    <Modal
+      visible={showAdminPanel}
+      animationType="slide"
+      transparent={true}
+      onRequestClose={() => setShowAdminPanel(false)}
+    >
+      <View style={styles.adminModalOverlay}>
+        <View style={styles.adminModalContent}>
+          <View style={styles.adminHeader}>
+            <IconComponent name="admin" size={40} color={config.colors.primary} />
+            <Text style={styles.adminTitle}>Painel Administrativo</Text>
+          </View>
+
+          {adminPassword !== KIOSK_PIN ? (
+            <View style={styles.adminLoginContainer}>
+              <Text style={styles.adminLoginLabel}>Digite o PIN do administrador</Text>
+              <TextInput
+                style={styles.adminPasswordInput}
+                value={adminPassword}
+                onChangeText={setAdminPassword}
+                placeholder="••••"
+                placeholderTextColor={config.colors.textTertiary}
+                secureTextEntry
+                keyboardType="numeric"
+                maxLength={4}
+                autoFocus
+              />
+              <TouchableOpacity style={styles.adminLoginButton} onPress={handleAdminLogin}>
+                <Text style={styles.adminLoginButtonText}>Entrar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={styles.adminCancelButton} 
+                onPress={() => {
+                  setShowAdminPanel(false);
+                  setAdminPassword("");
+                }}
+              >
+                <Text style={styles.adminCancelButtonText}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.adminOptionsContainer}>
+              <TouchableOpacity style={styles.adminOption} onPress={handleViewStats}>
+                <IconComponent name="stats" size={30} color={config.colors.info} />
+                <Text style={styles.adminOptionTitle}>Estatísticas</Text>
+                <Text style={styles.adminOptionDescription}>Ver dados do aplicativo</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.adminOption} onPress={handleRestartApp}>
+                <IconComponent name="refresh" size={30} color={config.colors.warning} />
+                <Text style={styles.adminOptionTitle}>Reiniciar App</Text>
+                <Text style={styles.adminOptionDescription}>Limpar dados e reiniciar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.adminOption} onPress={handleExitKioskMode}>
+                <IconComponent name="exit" size={30} color={config.colors.error} />
+                <Text style={styles.adminOptionTitle}>Sair do Kiosk</Text>
+                <Text style={styles.adminOptionDescription}>Desativar modo kiosk</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={[styles.adminOption, styles.adminCloseButton]} 
+                onPress={() => {
+                  setShowAdminPanel(false);
+                  setAdminPassword("");
+                }}
+              >
+                <Text style={styles.adminCloseButtonText}>Fechar Painel</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+      </View>
+    </Modal>
+  );
 
   // Lock Screen
   if (isLocked) {
@@ -362,10 +1192,18 @@ export default function App() {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="dark" />
+        <IdleScreen />
+        <AdminPanel />
         <ScrollView contentContainerStyle={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={styles.welcomeHeader}>
-              <Text style={styles.welcomeLogo}>🍱</Text>
+              <Pressable
+                onLongPress={handleLongPressStart}
+                onPressOut={handleLongPressEnd}
+                delayLongPress={0}
+              >
+                <Text style={styles.welcomeLogo}>🍱</Text>
+              </Pressable>
               <Text style={styles.welcomeTitle}>ComideX</Text>
               <Text style={styles.welcomeSubtitle}>Sistema de Pedidos</Text>
             </View>
@@ -375,7 +1213,10 @@ export default function App() {
               <TextInput
                 style={styles.tableInput}
                 value={tableNumber}
-                onChangeText={setTableNumber}
+                onChangeText={(text) => {
+                  setTableNumber(text);
+                  resetIdleTimer();
+                }}
                 placeholder="00"
                 placeholderTextColor={config.colors.textTertiary}
                 keyboardType="numeric"
@@ -386,6 +1227,7 @@ export default function App() {
                   style={styles.continueButton}
                   onPress={() => {
                     if (tableNumber) {
+                      resetIdleTimer();
                       Animated.timing(fadeAnim, {
                         toValue: 0,
                         duration: config.animations.fast,
@@ -413,16 +1255,34 @@ export default function App() {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="dark" />
-        <View style={styles.modeContainer}>
+        <IdleScreen />
+        <AdminPanel />
+        <View style={styles.modeContainer} {...panResponderRef.current?.panHandlers}>
           <View style={styles.modeHeader}>
-            <Text style={styles.modeTitle}>Mesa {tableNumber}</Text>
+            <Pressable
+              onLongPress={handleLongPressStart}
+              onPressOut={handleLongPressEnd}
+              delayLongPress={0}
+            >
+              <Text style={styles.modeTitle}>Mesa {tableNumber}</Text>
+            </Pressable>
             <Text style={styles.modeSubtitle}>Escolha como deseja pedir</Text>
+            {session && (
+              <View style={styles.sessionStatusBadge}>
+                <Text style={styles.sessionStatusText}>
+                  Mesa com conta aberta - Total: R$ {sessionTotal.toFixed(2)}
+                </Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.modeCards}>
             <TouchableOpacity
               style={[styles.modeCard, { backgroundColor: config.colors.rodizioColor }]}
-              onPress={() => setSelectedMode("rodizio")}
+              onPress={() => {
+                setSelectedMode("rodizio");
+                resetIdleTimer();
+              }}
               activeOpacity={0.9}
             >
               <View style={styles.modeCardIcon}>
@@ -439,7 +1299,10 @@ export default function App() {
 
             <TouchableOpacity
               style={[styles.modeCard, { backgroundColor: config.colors.carteColor }]}
-              onPress={() => setSelectedMode("carte")}
+              onPress={() => {
+                setSelectedMode("carte");
+                resetIdleTimer();
+              }}
               activeOpacity={0.9}
             >
               <View style={styles.modeCardIcon}>
@@ -459,7 +1322,10 @@ export default function App() {
 
           <TouchableOpacity 
             style={styles.changeMesaButton}
-            onPress={() => setTableNumber("")}
+            onPress={() => {
+              setTableNumber("");
+              resetIdleTimer();
+            }}
           >
             <Text style={styles.changeMesaButtonText}>Trocar Mesa</Text>
           </TouchableOpacity>
@@ -472,374 +1338,642 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
+      <IdleScreen />
+      <AdminPanel />
       
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Text style={styles.headerTitle}>Mesa {tableNumber}</Text>
-          <View style={[
-            styles.modeBadge,
-            { backgroundColor: selectedMode === "rodizio" ? config.colors.rodizioColor : config.colors.carteColor }
-          ]}>
-            <Text style={styles.modeBadgeText}>
-              {selectedMode === "rodizio" ? "Rodízio" : "À La Carte"}
-            </Text>
+      <View {...panResponderRef.current?.panHandlers} style={{ flex: 1 }}>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <Pressable
+              onLongPress={handleLongPressStart}
+              onPressOut={handleLongPressEnd}
+              delayLongPress={0}
+            >
+              <Text style={styles.headerTitle}>Mesa {tableNumber}</Text>
+            </Pressable>
+            <View style={[
+              styles.modeBadge,
+              { backgroundColor: selectedMode === "rodizio" ? config.colors.rodizioColor : config.colors.carteColor }
+            ]}>
+              <Text style={styles.modeBadgeText}>
+                {selectedMode === "rodizio" ? "Rodízio" : "À La Carte"}
+              </Text>
+            </View>
+            {session && (
+              <View style={styles.sessionBadge}>
+                <Text style={styles.sessionBadgeText}>
+                  Conta: R$ {sessionTotal.toFixed(2)}
+                </Text>
+              </View>
+            )}
+          </View>
+          
+          <View style={styles.headerRight}>
+            <TouchableOpacity 
+              style={[styles.headerButton, styles.billButton]}
+              onPress={() => {
+                setShowBill(true);
+                resetIdleTimer();
+                Animated.spring(billSlideAnim, {
+                  toValue: 0,
+                  useNativeDriver: true,
+                }).start();
+              }}
+            >
+              <IconComponent name="bill" size={20} color={config.colors.primary} />
+              <Text style={styles.billButtonText}>Ver Conta</Text>
+            </TouchableOpacity>
+            <TouchableOpacity 
+              style={styles.headerButton}
+              onPress={() => {
+                setSelectedMode(null);
+                setCart([]);
+                resetIdleTimer();
+              }}
+            >
+              <Text style={styles.headerButtonText}>Trocar Modo</Text>
+            </TouchableOpacity>
           </View>
         </View>
-        
-        <View style={styles.headerRight}>
-          <TouchableOpacity 
-            style={styles.headerButton}
-            onPress={() => {
-              setSelectedMode(null);
-              setCart([]);
+
+        {/* Search Bar */}
+        <View style={styles.searchContainer}>
+          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={styles.searchIcon}>
+            <Circle cx="11" cy="11" r="8" stroke={config.colors.textTertiary} strokeWidth="2"/>
+            <Path d="M21 21l-4.35-4.35" stroke={config.colors.textTertiary} strokeWidth="2" strokeLinecap="round"/>
+          </Svg>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar produtos..."
+            placeholderTextColor={config.colors.textTertiary}
+            value={searchText}
+            onChangeText={(text) => {
+              setSearchText(text);
+              resetIdleTimer();
             }}
-          >
-            <Text style={styles.headerButtonText}>Trocar Modo</Text>
-          </TouchableOpacity>
+          />
         </View>
-      </View>
 
-      {/* Search Bar */}
-      <View style={styles.searchContainer}>
-        <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={styles.searchIcon}>
-          <Circle cx="11" cy="11" r="8" stroke={config.colors.textTertiary} strokeWidth="2"/>
-          <Path d="M21 21l-4.35-4.35" stroke={config.colors.textTertiary} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar produtos..."
-          placeholderTextColor={config.colors.textTertiary}
-          value={searchText}
-          onChangeText={setSearchText}
-        />
-      </View>
-
-      {/* Categories */}
-      {loadingCategories ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={config.colors.primary} />
-        </View>
-      ) : (
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          style={styles.categoriesContainer}
-          contentContainerStyle={styles.categoriesContent}
-        >
-          <TouchableOpacity
-            style={[
-              styles.categoryCard,
-              !selectedCategory && styles.categoryCardActive,
-              { borderColor: config.colors.primary }
-            ]}
-            onPress={() => setSelectedCategory(null)}
+        {/* Categories */}
+        {loadingCategories ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={config.colors.primary} />
+          </View>
+        ) : (
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={styles.categoriesContainer}
+            contentContainerStyle={styles.categoriesContent}
+            onScroll={() => resetIdleTimer()}
           >
-            <View style={[styles.categoryIcon, { backgroundColor: config.colors.primary }]}>
-              <Text style={styles.categoryIconText}>🍽️</Text>
-            </View>
-            <Text style={[
-              styles.categoryName,
-              !selectedCategory && styles.categoryNameActive
-            ]}>
-              Todos
-            </Text>
-          </TouchableOpacity>
-
-          {categories.map((category) => (
             <TouchableOpacity
-              key={category.id}
               style={[
                 styles.categoryCard,
-                selectedCategory === category.id && styles.categoryCardActive,
-                { borderColor: category.color || config.colors.primary }
+                !selectedCategory && styles.categoryCardActive,
+                { borderColor: config.colors.primary }
               ]}
-              onPress={() => setSelectedCategory(category.id)}
+              onPress={() => {
+                setSelectedCategory(null);
+                resetIdleTimer();
+              }}
             >
-              <View style={[styles.categoryIcon, { backgroundColor: category.color || config.colors.primary }]}>
-                <IconComponent 
-                  name={category.icon || 'sushi'} 
-                  size={28} 
-                  color="#FFF" 
-                />
+              <View style={[styles.categoryIcon, { backgroundColor: config.colors.primary }]}>
+                <Text style={styles.categoryIconText}>🍽️</Text>
               </View>
               <Text style={[
                 styles.categoryName,
-                selectedCategory === category.id && styles.categoryNameActive
+                !selectedCategory && styles.categoryNameActive
               ]}>
-                {category.name}
+                Todos
               </Text>
             </TouchableOpacity>
-          ))}
-        </ScrollView>
-      )}
 
-      {/* Products Grid */}
-      {loadingProducts ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={config.colors.primary} />
-          <Text style={styles.loadingText}>Carregando produtos...</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={getFilteredProducts()}
-          numColumns={Math.floor((width - 32) / 220)}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.productsContainer}
-          showsVerticalScrollIndicator={false}
-          ListEmptyComponent={
-            <View style={styles.emptyContainer}>
-              <Text style={styles.emptyIcon}>🍱</Text>
-              <Text style={styles.emptyText}>Nenhum produto encontrado</Text>
-              <Text style={styles.emptySubtext}>Tente buscar por outro termo ou categoria</Text>
-            </View>
-          }
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.productCard}
-              onPress={() => addToCart(item)}
-              activeOpacity={0.9}
-            >
-              {item.is_premium && (
-                <View style={styles.premiumBadge}>
-                  <Text style={styles.premiumBadgeText}>PREMIUM</Text>
-                </View>
-              )}
-              
-              <View style={styles.productImageContainer}>
-                {item.image_url ? (
-                  <Image
-                    source={{ uri: item.image_url }}
-                    style={styles.productImage}
-                    resizeMode="cover"
-                  />
-                ) : (
-                  <View style={styles.productImagePlaceholder}>
-                    <Text style={styles.productImagePlaceholderText}>
-                      {item.category?.includes('Bebida') ? '🥤' : '🍱'}
-                    </Text>
-                  </View>
-                )}
-              </View>
-              
-              <View style={styles.productInfo}>
-                <Text style={styles.productName} numberOfLines={2}>
-                  {item.name}
-                </Text>
-                {item.description && (
-                  <Text style={styles.productDescription} numberOfLines={2}>
-                    {item.description}
-                  </Text>
-                )}
-                <View style={styles.productFooter}>
-                  <Text style={styles.productPrice}>
-                    {parseFloat(item.price) === 0 ? (
-                      <Text style={styles.productPriceIncluded}>Incluso</Text>
-                    ) : (
-                      <>R$ {parseFloat(item.price).toFixed(2)}</>
-                    )}
-                  </Text>
-                  <View style={styles.addButton}>
-                    <Text style={styles.addButtonText}>+</Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      )}
-
-      {/* Floating Cart Button */}
-      {cart.length > 0 && (
-        <Animated.View style={[
-          styles.cartFloatingButton,
-          { transform: [{ scale: cartBounceAnim }] }
-        ]}>
-          <TouchableOpacity
-            style={styles.cartFloatingButtonInner}
-            onPress={() => {
-              setShowCart(true);
-              Animated.spring(slideAnim, {
-                toValue: 0,
-                useNativeDriver: true,
-              }).start();
-            }}
-          >
-            <View style={styles.cartFloatingContent}>
-              <View style={styles.cartFloatingIcon}>
-                <Text style={styles.cartFloatingIconText}>🛒</Text>
-                <View style={styles.cartBadge}>
-                  <Text style={styles.cartBadgeText}>
-                    {cart.reduce((sum, item) => sum + item.quantity, 0)}
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.cartFloatingInfo}>
-                <Text style={styles.cartFloatingLabel}>Ver Carrinho</Text>
-                <Text style={styles.cartFloatingTotal}>
-                  R$ {getCartTotal().toFixed(2)}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        </Animated.View>
-      )}
-
-      {/* Cart Modal */}
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={showCart}
-        onRequestClose={() => {
-          Animated.timing(slideAnim, {
-            toValue: height,
-            duration: config.animations.fast,
-            useNativeDriver: true,
-          }).start(() => setShowCart(false));
-        }}
-      >
-        <View style={styles.modalOverlay}>
-          <TouchableOpacity 
-            style={styles.modalOverlayTouch}
-            activeOpacity={1}
-            onPress={() => {
-              Animated.timing(slideAnim, {
-                toValue: height,
-                duration: config.animations.fast,
-                useNativeDriver: true,
-              }).start(() => setShowCart(false));
-            }}
-          />
-          
-          <Animated.View style={[
-            styles.modalContent,
-            { transform: [{ translateY: slideAnim }] }
-          ]}>
-            <View style={styles.modalHandle} />
-            
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>Seu Pedido</Text>
+            {categories.map((category) => (
               <TouchableOpacity
-                style={styles.modalCloseButton}
+                key={category.id}
+                style={[
+                  styles.categoryCard,
+                  selectedCategory === category.id && styles.categoryCardActive,
+                  { borderColor: category.color || config.colors.primary }
+                ]}
                 onPress={() => {
-                  Animated.timing(slideAnim, {
-                    toValue: height,
-                    duration: config.animations.fast,
-                    useNativeDriver: true,
-                  }).start(() => setShowCart(false));
+                  setSelectedCategory(category.id);
+                  resetIdleTimer();
                 }}
               >
-                <Text style={styles.modalCloseText}>✕</Text>
+                <View style={[styles.categoryIcon, { backgroundColor: category.color || config.colors.primary }]}>
+                  <IconComponent 
+                    name={category.icon || 'sushi'} 
+                    size={28} 
+                    color="#FFF" 
+                  />
+                </View>
+                <Text style={[
+                  styles.categoryName,
+                  selectedCategory === category.id && styles.categoryNameActive
+                ]}>
+                  {category.name}
+                </Text>
               </TouchableOpacity>
-            </View>
+            ))}
+          </ScrollView>
+        )}
 
-            <ScrollView style={styles.cartItemsContainer}>
-              {cart.map((item, index) => (
-                <Animated.View
-                  key={item.id}
-                  style={[
-                    styles.cartItem,
-                    {
-                      opacity: fadeAnim,
-                      transform: [{
-                        translateX: fadeAnim.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [50, 0],
-                        })
-                      }]
-                    }
-                  ]}
-                >
-                  <View style={styles.cartItemLeft}>
-                    {item.image_url ? (
-                      <Image
-                        source={{ uri: item.image_url }}
-                        style={styles.cartItemImage}
-                      />
+        {/* Products Grid */}
+        {loadingProducts ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={config.colors.primary} />
+            <Text style={styles.loadingText}>Carregando produtos...</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={getFilteredProducts()}
+            keyExtractor={(item) => item.id.toString()}
+            numColumns={2}
+            contentContainerStyle={styles.productsGrid}
+            onScroll={() => resetIdleTimer()}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>Nenhum produto encontrado</Text>
+              </View>
+            }
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.productCard}
+                onPress={() => handleAddToCart(item)}
+                activeOpacity={0.9}
+              >
+                {item.image_url ? (
+                  <Image source={{ uri: item.image_url }} style={styles.productImage} />
+                ) : (
+                  <View style={styles.productImagePlaceholder}>
+                    <Text style={styles.productImagePlaceholderText}>🍽️</Text>
+                  </View>
+                )}
+                {item.is_premium && (
+                  <View style={styles.premiumBadge}>
+                    <Text style={styles.premiumBadgeText}>⭐ PREMIUM</Text>
+                  </View>
+                )}
+                <View style={styles.productInfo}>
+                  <Text style={styles.productName} numberOfLines={2}>
+                    {item.name}
+                  </Text>
+                  {item.description && (
+                    <Text style={styles.productDescription} numberOfLines={2}>
+                      {item.description}
+                    </Text>
+                  )}
+                  <View style={styles.productPriceContainer}>
+                    {parseFloat(item.price) > 0 ? (
+                      <Text style={styles.productPrice}>
+                        R$ {parseFloat(item.price).toFixed(2)}
+                      </Text>
                     ) : (
-                      <View style={[styles.cartItemImage, styles.cartItemImagePlaceholder]}>
-                        <Text>{item.category?.includes('Bebida') ? '🥤' : '🍱'}</Text>
+                      <View style={styles.rodizioTag}>
+                        <Text style={styles.rodizioTagText}>Rodízio</Text>
                       </View>
                     )}
-                    <View style={styles.cartItemInfo}>
-                      <Text style={styles.cartItemName} numberOfLines={1}>
-                        {item.name}
-                      </Text>
-                      <Text style={styles.cartItemPrice}>
-                        {parseFloat(item.price) === 0 
-                          ? "Incluso" 
-                          : `R$ ${parseFloat(item.price).toFixed(2)}`}
-                      </Text>
-                    </View>
                   </View>
-                  
-                  <View style={styles.cartItemQuantity}>
-                    <TouchableOpacity
-                      style={styles.quantityButton}
-                      onPress={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))}
-                    >
-                      <Text style={styles.quantityButtonText}>−</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.quantityText}>{item.quantity}</Text>
-                    <TouchableOpacity
-                      style={styles.quantityButton}
-                      onPress={() => updateQuantity(item.id, item.quantity + 1)}
-                    >
-                      <Text style={styles.quantityButtonText}>+</Text>
-                    </TouchableOpacity>
-                  </View>
-                </Animated.View>
-              ))}
-            </ScrollView>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        )}
 
-            <View style={styles.cartFooter}>
-              <View style={styles.cartSummary}>
-                <Text style={styles.cartSummaryLabel}>Total do Pedido</Text>
-                <Text style={styles.cartSummaryValue}>
-                  R$ {getCartTotal().toFixed(2)}
-                </Text>
+        {/* Cart Button */}
+        {cart.length > 0 && (
+          <Animated.View style={[
+            styles.cartFloatingButton,
+            { transform: [{ scale: cartBounceAnim }] }
+          ]}>
+            <TouchableOpacity
+              style={styles.cartFloatingButtonInner}
+              onPress={() => {
+                setShowCart(true);
+                resetIdleTimer();
+                Animated.spring(slideAnim, {
+                  toValue: 0,
+                  useNativeDriver: true,
+                }).start();
+              }}
+            >
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{cart.length}</Text>
               </View>
-              
+              <Text style={styles.cartFloatingButtonText}>Ver Carrinho</Text>
+              <Text style={styles.cartFloatingButtonTotal}>
+                R$ {getCartTotal().toFixed(2)}
+              </Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+
+        {/* Waiter Button */}
+        <Animated.View style={[
+          styles.waiterButton,
+          {
+            transform: [{ scale: waiterButtonAnim }],
+            opacity: waiterButtonAnim,
+          }
+        ]}>
+          <TouchableOpacity
+            style={styles.waiterButtonInner}
+            onPress={callWaiter}
+          >
+            <Text style={styles.waiterButtonIcon}>🔔</Text>
+            <Text style={styles.waiterButtonText}>Chamar</Text>
+            <Text style={styles.waiterButtonText}>Garçom</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </View>
+
+      {/* Observation Modal */}
+      <Modal
+        visible={showObservationModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowObservationModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.observationModal}>
+            <Text style={styles.observationModalTitle}>
+              {selectedProductForObservation?.name}
+            </Text>
+            <Text style={styles.observationModalSubtitle}>
+              Deseja adicionar alguma observação?
+            </Text>
+            <TextInput
+              style={styles.observationInput}
+              placeholder="Ex: Sem wasabi, pouco shoyu..."
+              placeholderTextColor={config.colors.textTertiary}
+              value={observationText}
+              onChangeText={setObservationText}
+              multiline
+              numberOfLines={3}
+              maxLength={200}
+            />
+            <View style={styles.observationModalButtons}>
               <TouchableOpacity
-                style={[styles.sendOrderButton, loading && styles.buttonDisabled]}
-                onPress={sendOrder}
-                disabled={loading}
+                style={[styles.observationModalButton, styles.observationModalButtonCancel]}
+                onPress={() => {
+                  setShowObservationModal(false);
+                  setSelectedProductForObservation(null);
+                  setObservationText("");
+                }}
               >
-                {loading ? (
-                  <ActivityIndicator color="#FFF" size="small" />
-                ) : (
-                  <>
-                    <Text style={styles.sendOrderButtonText}>Enviar Pedido</Text>
-                    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
-                      <Path d="M5 12h14M12 5l7 7-7 7" stroke="#FFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </Svg>
-                  </>
-                )}
+                <Text style={styles.observationModalButtonCancelText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.observationModalButton, styles.observationModalButtonConfirm]}
+                onPress={confirmAddToCart}
+              >
+                <Text style={styles.observationModalButtonConfirmText}>
+                  Adicionar ao Carrinho
+                </Text>
               </TouchableOpacity>
             </View>
-          </Animated.View>
+          </View>
         </View>
       </Modal>
 
-      {/* Success Modal */}
-      {showSuccess && (
-        <View style={styles.successOverlay}>
-          <Animated.View style={[
-            styles.successCard,
-            { transform: [{ scale: scaleAnim }] }
-          ]}>
-            <View style={styles.successIcon}>
-              <Svg width={80} height={80} viewBox="0 0 24 24" fill="none">
-                <Circle cx="12" cy="12" r="10" stroke={config.colors.success} strokeWidth="2"/>
-                <Path d="M8 12l3 3 5-6" stroke={config.colors.success} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </Svg>
+      {/* Cart Modal */}
+      <Modal
+        visible={showCart}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowCart(false)}
+      >
+        <Animated.View 
+          style={[
+            styles.cartModal,
+            {
+              transform: [{ translateY: slideAnim }]
+            }
+          ]}
+        >
+          <View style={styles.cartHeader}>
+            <Text style={styles.cartTitle}>Carrinho</Text>
+            <TouchableOpacity onPress={() => {
+              setShowCart(false);
+              Animated.timing(slideAnim, {
+                toValue: height,
+                duration: config.animations.normal,
+                useNativeDriver: true,
+              }).start();
+            }}>
+              <Text style={styles.cartCloseButton}>✕</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView style={styles.cartItems}>
+            {cart.map((item) => (
+              <View key={`${item.id}-${item.observation}`} style={styles.cartItem}>
+                <View style={styles.cartItemInfo}>
+                  <Text style={styles.cartItemName}>{item.name}</Text>
+                  {item.observation && (
+                    <Text style={styles.cartItemObservation}>
+                      📝 {item.observation}
+                    </Text>
+                  )}
+                  <Text style={styles.cartItemPrice}>
+                    R$ {(parseFloat(item.price) * item.quantity).toFixed(2)}
+                  </Text>
+                </View>
+                <View style={styles.cartItemQuantity}>
+                  <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => updateQuantity(item.id, item.quantity - 1)}
+                  >
+                    <Text style={styles.quantityButtonText}>-</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.quantityText}>{item.quantity}</Text>
+                  <TouchableOpacity
+                    style={styles.quantityButton}
+                    onPress={() => updateQuantity(item.id, item.quantity + 1)}
+                  >
+                    <Text style={styles.quantityButtonText}>+</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </ScrollView>
+
+          <View style={styles.cartFooter}>
+            <View style={styles.cartTotal}>
+              <Text style={styles.cartTotalLabel}>Total:</Text>
+              <Text style={styles.cartTotalValue}>R$ {getCartTotal().toFixed(2)}</Text>
             </View>
-            <Text style={styles.successTitle}>Pedido Enviado!</Text>
-            <Text style={styles.successMessage}>
-              Seu pedido foi recebido e está sendo preparado
+            <TouchableOpacity
+              style={[styles.sendOrderButton, loading && styles.sendOrderButtonDisabled]}
+              onPress={sendOrder}
+              disabled={loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#FFF" />
+              ) : (
+                <Text style={styles.sendOrderButtonText}>Enviar Pedido</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
+      </Modal>
+
+      {/* Bill Modal */}
+      <Modal
+        visible={showBill}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowBill(false)}
+      >
+        <Animated.View 
+          style={[
+            styles.billModal,
+            {
+              transform: [{ translateY: billSlideAnim }]
+            }
+          ]}
+        >
+          <View style={styles.billHeader}>
+            <IconComponent name="bill" size={30} color={config.colors.primary} />
+            <Text style={styles.billTitle}>Conta Mesa {tableNumber}</Text>
+            <TouchableOpacity onPress={() => {
+              setShowBill(false);
+              Animated.timing(billSlideAnim, {
+                toValue: height,
+                duration: config.animations.normal,
+                useNativeDriver: true,
+              }).start();
+            }}>
+              <Text style={styles.billCloseButton}>✕</Text>
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView style={styles.billContent}>
+            {orderHistory.length === 0 ? (
+              <View style={styles.billEmpty}>
+                <Text style={styles.billEmptyText}>Nenhum pedido realizado ainda</Text>
+              </View>
+            ) : (
+              orderHistory.map((order) => (
+                <View key={order.id} style={styles.billOrder}>
+                  <View style={styles.billOrderHeader}>
+                    <Text style={styles.billOrderNumber}>Pedido #{order.numero}</Text>
+                    <Text style={styles.billOrderTime}>
+                      {new Date(order.created_at).toLocaleTimeString('pt-BR', {
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </Text>
+                  </View>
+                  {order.items.map((item: any, index: number) => (
+                    <View key={index} style={styles.billItem}>
+                      <Text style={styles.billItemQuantity}>{item.quantity}x</Text>
+                      <Text style={styles.billItemName}>{item.product_name}</Text>
+                      <Text style={styles.billItemPrice}>
+                        R$ {(item.quantity * item.price).toFixed(2)}
+                      </Text>
+                    </View>
+                  ))}
+                  <View style={styles.billOrderTotal}>
+                    <Text style={styles.billOrderTotalLabel}>Subtotal:</Text>
+                    <Text style={styles.billOrderTotalValue}>
+                      R$ {order.total.toFixed(2)}
+                    </Text>
+                  </View>
+                </View>
+              ))
+            )}
+          </ScrollView>
+
+          <View style={styles.billFooter}>
+            <View style={styles.billTotals}>
+              <View style={styles.billTotalRow}>
+                <Text style={styles.billTotalLabel}>Subtotal:</Text>
+                <Text style={styles.billTotalValue}>
+                  R$ {calculateBillTotals().subtotal.toFixed(2)}
+                </Text>
+              </View>
+              <View style={styles.billTotalRow}>
+                <Text style={styles.billTotalLabel}>Taxa de Serviço (10%):</Text>
+                <Text style={styles.billTotalValue}>
+                  R$ {calculateBillTotals().serviceFee.toFixed(2)}
+                </Text>
+              </View>
+              <View style={[styles.billTotalRow, styles.billGrandTotal]}>
+                <Text style={styles.billGrandTotalLabel}>Total:</Text>
+                <Text style={styles.billGrandTotalValue}>
+                  R$ {calculateBillTotals().total.toFixed(2)}
+                </Text>
+              </View>
+            </View>
+            
+            {sessionTotal > 0 && (
+              <TouchableOpacity
+                style={styles.requestBillButton}
+                onPress={() => {
+                  setShowPaymentModal(true);
+                  setShowBill(false);
+                }}
+              >
+                <Text style={styles.requestBillButtonText}>Pagar Conta</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </Animated.View>
+      </Modal>
+
+      {/* Payment Modal */}
+      <Modal
+        visible={showPaymentModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowPaymentModal(false)}
+      >
+        <View style={styles.paymentModal}>
+          <View style={styles.paymentModalContent}>
+            <Text style={styles.paymentModalTitle}>Forma de Pagamento</Text>
+            <Text style={styles.paymentModalSubtitle}>
+              Total: R$ {calculateBillTotals().total.toFixed(2)}
             </Text>
-          </Animated.View>
+
+            <View style={styles.paymentOptions}>
+              <TouchableOpacity
+                style={[
+                  styles.paymentOption,
+                  selectedPaymentMethod === 'cash' && styles.paymentOptionSelected
+                ]}
+                onPress={() => setSelectedPaymentMethod('cash')}
+              >
+                <IconComponent 
+                  name="money" 
+                  size={40} 
+                  color={selectedPaymentMethod === 'cash' ? config.colors.primary : config.colors.textSecondary}
+                />
+                <Text style={[
+                  styles.paymentOptionText,
+                  selectedPaymentMethod === 'cash' && styles.paymentOptionTextSelected
+                ]}>
+                  Dinheiro
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.paymentOption,
+                  selectedPaymentMethod === 'credit' && styles.paymentOptionSelected
+                ]}
+                onPress={() => setSelectedPaymentMethod('credit')}
+              >
+                <IconComponent 
+                  name="credit-card" 
+                  size={40} 
+                  color={selectedPaymentMethod === 'credit' ? config.colors.primary : config.colors.textSecondary}
+                />
+                <Text style={[
+                  styles.paymentOptionText,
+                  selectedPaymentMethod === 'credit' && styles.paymentOptionTextSelected
+                ]}>
+                  Crédito
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.paymentOption,
+                  selectedPaymentMethod === 'debit' && styles.paymentOptionSelected
+                ]}
+                onPress={() => setSelectedPaymentMethod('debit')}
+              >
+                <IconComponent 
+                  name="credit-card" 
+                  size={40} 
+                  color={selectedPaymentMethod === 'debit' ? config.colors.primary : config.colors.textSecondary}
+                />
+                <Text style={[
+                  styles.paymentOptionText,
+                  selectedPaymentMethod === 'debit' && styles.paymentOptionTextSelected
+                ]}>
+                  Débito
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[
+                  styles.paymentOption,
+                  selectedPaymentMethod === 'pix' && styles.paymentOptionSelected
+                ]}
+                onPress={() => setSelectedPaymentMethod('pix')}
+              >
+                <IconComponent 
+                  name="pix" 
+                  size={40} 
+                  color={selectedPaymentMethod === 'pix' ? config.colors.primary : config.colors.textSecondary}
+                />
+                <Text style={[
+                  styles.paymentOptionText,
+                  selectedPaymentMethod === 'pix' && styles.paymentOptionTextSelected
+                ]}>
+                  PIX
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <View style={styles.paymentModalButtons}>
+              <TouchableOpacity
+                style={[styles.paymentModalButton, styles.paymentModalButtonCancel]}
+                onPress={() => setShowPaymentModal(false)}
+              >
+                <Text style={styles.paymentModalButtonCancelText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.paymentModalButton, styles.paymentModalButtonConfirm]}
+                onPress={handleCloseBill}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#FFF" />
+                ) : (
+                  <Text style={styles.paymentModalButtonConfirmText}>Fechar Conta</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
+      </Modal>
+
+      {/* Toast Notification */}
+      {showToast && (
+        <Animated.View 
+          style={[
+            styles.toast,
+            styles[`toast${toastType.charAt(0).toUpperCase() + toastType.slice(1)}`],
+            {
+              transform: [{ translateY: toastAnim }]
+            }
+          ]}
+        >
+          <Text style={styles.toastText}>{toastMessage}</Text>
+        </Animated.View>
+      )}
+
+      {/* Success Overlay */}
+      {showSuccess && (
+        <Animated.View style={[
+          styles.successOverlay,
+          {
+            transform: [{ scale: scaleAnim }],
+            opacity: scaleAnim,
+          }
+        ]}>
+          <View style={styles.successContent}>
+            <IconComponent name="check" size={80} color="#FFF" />
+            <Text style={styles.successText}>Pedido Enviado!</Text>
+            <Text style={styles.successSubtext}>Aguarde a preparação</Text>
+          </View>
+        </Animated.View>
       )}
     </SafeAreaView>
   );
@@ -850,716 +1984,1232 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: config.colors.background,
   },
-
-  // Lock Screen
   lockContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: config.colors.surface,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: config.colors.background,
+    padding: 20,
   },
   lockCard: {
     backgroundColor: config.colors.card,
+    borderRadius: 20,
     padding: 40,
-    borderRadius: 24,
-    alignItems: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    width: Math.min(400, width * 0.9),
   },
   lockIcon: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   lockTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: "bold",
     color: config.colors.textPrimary,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   lockSubtitle: {
     fontSize: 16,
     color: config.colors.textSecondary,
-    marginBottom: 32,
+    marginBottom: 30,
   },
   passwordInput: {
-    width: '100%',
-    height: 56,
+    width: 200,
+    height: 50,
+    borderRadius: 10,
     backgroundColor: config.colors.surface,
-    borderRadius: 12,
-    paddingHorizontal: 20,
     fontSize: 24,
+    textAlign: "center",
+    letterSpacing: 10,
+    marginBottom: 20,
     color: config.colors.textPrimary,
-    textAlign: 'center',
-    marginBottom: 24,
-    letterSpacing: 8,
   },
   unlockButton: {
-    width: '100%',
-    height: 56,
     backgroundColor: config.colors.primary,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 40,
+    paddingVertical: 15,
+    borderRadius: 25,
   },
   unlockButtonText: {
-    color: config.colors.textOnPrimary,
-    fontSize: 18,
-    fontWeight: '600',
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
   },
-
-  // Welcome Screen
   welcomeContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    backgroundColor: config.colors.surface,
   },
   welcomeContent: {
-    width: '100%',
-    maxWidth: 500,
-    alignItems: 'center',
+    alignItems: "center",
+    width: "100%",
+    maxWidth: 400,
   },
   welcomeHeader: {
-    alignItems: 'center',
-    marginBottom: 48,
+    alignItems: "center",
+    marginBottom: 40,
   },
   welcomeLogo: {
     fontSize: 80,
-    marginBottom: 16,
+    marginBottom: 20,
   },
   welcomeTitle: {
-    fontSize: 48,
-    fontWeight: 'bold',
+    fontSize: 36,
+    fontWeight: "bold",
     color: config.colors.textPrimary,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   welcomeSubtitle: {
     fontSize: 18,
     color: config.colors.textSecondary,
   },
   tableInputCard: {
-    width: '100%',
     backgroundColor: config.colors.card,
-    padding: 32,
-    borderRadius: 24,
-    alignItems: 'center',
-    shadowColor: '#000',
+    borderRadius: 20,
+    padding: 30,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
   },
   tableInputLabel: {
-    fontSize: 20,
-    color: config.colors.textPrimary,
-    marginBottom: 24,
-    fontWeight: '500',
+    fontSize: 18,
+    color: config.colors.textSecondary,
+    marginBottom: 20,
   },
   tableInput: {
-    width: 150,
-    height: 100,
+    width: 120,
+    height: 80,
+    fontSize: 48,
+    fontWeight: "bold",
+    textAlign: "center",
+    borderRadius: 15,
     backgroundColor: config.colors.surface,
-    borderRadius: 20,
-    fontSize: 64,
-    fontWeight: 'bold',
-    color: config.colors.primary,
-    textAlign: 'center',
-    marginBottom: 32,
+    color: config.colors.textPrimary,
+    marginBottom: 20,
   },
   continueButton: {
-    paddingVertical: 16,
-    paddingHorizontal: 48,
     backgroundColor: config.colors.primary,
-    borderRadius: 12,
+    paddingHorizontal: 50,
+    paddingVertical: 15,
+    borderRadius: 25,
   },
   continueButtonText: {
-    color: config.colors.textOnPrimary,
+    color: "#FFF",
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "bold",
   },
   adminButton: {
-    marginTop: 32,
-    padding: 12,
+    marginTop: 40,
+    padding: 10,
   },
   adminButtonText: {
     color: config.colors.textTertiary,
     fontSize: 14,
+    textDecorationLine: "underline",
   },
-
-  // Mode Selection
   modeContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
-    backgroundColor: config.colors.surface,
   },
   modeHeader: {
-    alignItems: 'center',
-    marginBottom: 48,
+    alignItems: "center",
+    marginBottom: 40,
   },
   modeTitle: {
     fontSize: 32,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: config.colors.textPrimary,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   modeSubtitle: {
     fontSize: 18,
     color: config.colors.textSecondary,
   },
+  sessionStatusBadge: {
+    backgroundColor: config.colors.info,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginTop: 10,
+  },
+  sessionStatusText: {
+    color: "#FFF",
+    fontSize: 14,
+    fontWeight: "600",
+  },
   modeCards: {
-    flexDirection: 'row',
-    gap: 24,
-    marginBottom: 32,
+    flexDirection: "row",
+    gap: 20,
   },
   modeCard: {
-    width: 240,
-    height: 320,
-    borderRadius: 24,
-    padding: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    width: width * 0.4,
+    maxWidth: 300,
+    height: 280,
+    borderRadius: 20,
+    padding: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.2,
     shadowRadius: 20,
-    elevation: 15,
+    elevation: 10,
   },
   modeCardIcon: {
-    marginBottom: 24,
+    marginBottom: 20,
   },
   modeCardTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FFF',
-    marginBottom: 12,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#FFF",
+    marginBottom: 10,
   },
   modeCardDescription: {
-    fontSize: 16,
-    color: 'rgba(255,255,255,0.9)',
-    textAlign: 'center',
+    fontSize: 14,
+    color: "rgba(255,255,255,0.9)",
+    textAlign: "center",
     marginBottom: 20,
   },
   modeCardBadge: {
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    backgroundColor: "rgba(255,255,255,0.3)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
   },
   modeCardBadgeText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 12,
-    fontWeight: 'bold',
-    letterSpacing: 1,
+    fontWeight: "bold",
   },
   changeMesaButton: {
-    padding: 12,
+    marginTop: 40,
+    padding: 10,
   },
   changeMesaButtonText: {
-    color: config.colors.textTertiary,
+    color: config.colors.textSecondary,
     fontSize: 16,
+    textDecorationLine: "underline",
   },
-
-  // Main Interface - Header
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
     backgroundColor: config.colors.card,
     borderBottomWidth: 1,
     borderBottomColor: config.colors.surface,
   },
   headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
   headerTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: config.colors.textPrimary,
   },
   modeBadge: {
-    paddingVertical: 6,
     paddingHorizontal: 12,
-    borderRadius: 20,
+    paddingVertical: 6,
+    borderRadius: 15,
   },
   modeBadgeText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  sessionBadge: {
+    backgroundColor: config.colors.surface,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 15,
+  },
+  sessionBadgeText: {
+    color: config.colors.textPrimary,
+    fontSize: 12,
+    fontWeight: "600",
   },
   headerRight: {
-    flexDirection: 'row',
-    gap: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
   },
   headerButton: {
+    paddingHorizontal: 15,
     paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: config.colors.surface,
+    borderRadius: 20,
+    backgroundColor: config.colors.surface,
   },
   headerButtonText: {
     color: config.colors.textSecondary,
     fontSize: 14,
+    fontWeight: "600",
   },
-
-  // Search Bar
+  billButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    backgroundColor: config.colors.primary + "15",
+  },
+  billButtonText: {
+    color: config.colors.primary,
+    fontSize: 14,
+    fontWeight: "600",
+  },
   searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: config.colors.surface,
-    marginHorizontal: 16,
-    marginVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    height: 48,
+    borderRadius: 15,
+    margin: 15,
+    paddingHorizontal: 15,
+    height: 50,
   },
   searchIcon: {
-    marginRight: 12,
+    marginRight: 10,
   },
   searchInput: {
     flex: 1,
     fontSize: 16,
     color: config.colors.textPrimary,
   },
-
-  // Categories
   categoriesContainer: {
     maxHeight: 120,
-    marginBottom: 8,
+    marginBottom: 10,
   },
   categoriesContent: {
-    paddingHorizontal: 16,
-    gap: 12,
+    paddingHorizontal: 15,
+    gap: 10,
   },
   categoryCard: {
-    width: 100,
-    height: 100,
+    alignItems: "center",
+    padding: 10,
+    borderRadius: 15,
     backgroundColor: config.colors.card,
-    borderRadius: 16,
-    padding: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
     borderWidth: 2,
-    borderColor: 'transparent',
+    borderColor: "transparent",
+    marginRight: 10,
+    minWidth: 100,
   },
   categoryCardActive: {
     borderColor: config.colors.primary,
-    backgroundColor: config.colors.surface,
+    backgroundColor: config.colors.primary + "10",
   },
   categoryIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 8,
   },
   categoryIconText: {
-    fontSize: 24,
+    fontSize: 28,
   },
   categoryName: {
-    fontSize: 12,
+    fontSize: 13,
     color: config.colors.textSecondary,
-    textAlign: 'center',
+    fontWeight: "600",
   },
   categoryNameActive: {
-    color: config.colors.textPrimary,
-    fontWeight: '600',
+    color: config.colors.primary,
+    fontWeight: "bold",
   },
-
-  // Products Grid
-  productsContainer: {
-    padding: 16,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 40,
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: config.colors.textSecondary,
+  },
+  productsGrid: {
+    paddingHorizontal: 10,
     paddingBottom: 100,
   },
   productCard: {
-    width: 200,
+    flex: 1,
     backgroundColor: config.colors.card,
-    borderRadius: 16,
-    overflow: 'hidden',
-    margin: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
+    borderRadius: 15,
+    margin: 5,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     elevation: 5,
   },
-  premiumBadge: {
-    position: 'absolute',
-    top: 12,
-    right: 12,
-    backgroundColor: config.colors.warning,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 6,
-    zIndex: 10,
-  },
-  premiumBadgeText: {
-    color: '#FFF',
-    fontSize: 10,
-    fontWeight: 'bold',
-  },
-  productImageContainer: {
-    width: '100%',
-    height: 140,
-    backgroundColor: config.colors.surface,
-  },
   productImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: 150,
+    resizeMode: "cover",
   },
   productImagePlaceholder: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    height: 150,
     backgroundColor: config.colors.surface,
+    alignItems: "center",
+    justifyContent: "center",
   },
   productImagePlaceholderText: {
-    fontSize: 48,
+    fontSize: 50,
+  },
+  premiumBadge: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    backgroundColor: config.colors.warning,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 15,
+  },
+  premiumBadgeText: {
+    color: "#FFF",
+    fontSize: 10,
+    fontWeight: "bold",
   },
   productInfo: {
     padding: 12,
   },
   productName: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 16,
+    fontWeight: "bold",
     color: config.colors.textPrimary,
-    marginBottom: 4,
-    height: 36,
+    marginBottom: 5,
   },
   productDescription: {
     fontSize: 12,
     color: config.colors.textSecondary,
-    marginBottom: 12,
-    height: 32,
+    marginBottom: 10,
   },
-  productFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  productPriceContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   productPrice: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: config.colors.textPrimary,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: config.colors.primary,
   },
-  productPriceIncluded: {
-    color: config.colors.success,
+  rodizioTag: {
+    backgroundColor: config.colors.rodizioColor,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 10,
   },
-  addButton: {
-    width: 32,
-    height: 32,
-    backgroundColor: config.colors.primary,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+  rodizioTagText: {
+    color: "#FFF",
+    fontSize: 12,
+    fontWeight: "bold",
   },
-  addButtonText: {
-    color: '#FFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-
-  // Loading States
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 16,
-    fontSize: 16,
-    color: config.colors.textSecondary,
-  },
-
-  // Empty State
   emptyContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 60,
-  },
-  emptyIcon: {
-    fontSize: 64,
-    marginBottom: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 40,
+    marginTop: 50,
   },
   emptyText: {
     fontSize: 18,
-    fontWeight: '600',
-    color: config.colors.textPrimary,
-    marginBottom: 8,
-  },
-  emptySubtext: {
-    fontSize: 14,
     color: config.colors.textSecondary,
+    textAlign: "center",
   },
-
-  // Floating Cart Button
   cartFloatingButton: {
-    position: 'absolute',
-    bottom: 24,
-    right: 24,
-  },
-  cartFloatingButtonInner: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    left: 20,
     backgroundColor: config.colors.primary,
-    borderRadius: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 16,
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
     elevation: 10,
   },
-  cartFloatingContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    gap: 16,
-  },
-  cartFloatingIcon: {
-    position: 'relative',
-  },
-  cartFloatingIconText: {
-    fontSize: 28,
+  cartFloatingButtonInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 18,
   },
   cartBadge: {
-    position: 'absolute',
-    top: -8,
-    right: -8,
-    backgroundColor: config.colors.secondary,
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#FFF",
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
   },
   cartBadgeText: {
-    color: '#FFF',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  cartFloatingInfo: {
-    alignItems: 'flex-start',
-  },
-  cartFloatingLabel: {
-    color: 'rgba(255,255,255,0.9)',
+    color: config.colors.primary,
     fontSize: 14,
+    fontWeight: "bold",
   },
-  cartFloatingTotal: {
-    color: '#FFF',
+  cartFloatingButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  cartFloatingButtonTotal: {
+    color: "#FFF",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-
-  // Cart Modal
+  waiterButton: {
+    position: "absolute",
+    bottom: 100,
+    left: 20,
+    backgroundColor: config.colors.info,
+    borderRadius: 35,
+    width: 70,
+    height: 70,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 8,
+  },
+  waiterButtonInner: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  waiterButtonIcon: {
+    fontSize: 24,
+  },
+  waiterButtonText: {
+    color: "#FFF",
+    fontSize: 10,
+    fontWeight: "bold",
+  },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  modalOverlayTouch: {
+  observationModal: {
+    backgroundColor: config.colors.card,
+    borderRadius: 20,
+    padding: 25,
+    width: width * 0.8,
+    maxWidth: 400,
+  },
+  observationModalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  observationModalSubtitle: {
+    fontSize: 14,
+    color: config.colors.textSecondary,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  observationInput: {
+    backgroundColor: config.colors.surface,
+    borderRadius: 10,
+    padding: 15,
+    fontSize: 16,
+    color: config.colors.textPrimary,
+    minHeight: 80,
+    textAlignVertical: "top",
+    marginBottom: 20,
+  },
+  observationModalButtons: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  observationModalButton: {
     flex: 1,
+    paddingVertical: 15,
+    borderRadius: 25,
+    alignItems: "center",
   },
-  modalContent: {
-    position: 'absolute',
+  observationModalButtonCancel: {
+    backgroundColor: config.colors.surface,
+  },
+  observationModalButtonCancelText: {
+    color: config.colors.textSecondary,
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  observationModalButtonConfirm: {
+    backgroundColor: config.colors.primary,
+  },
+  observationModalButtonConfirmText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  cartModal: {
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: config.colors.card,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    maxHeight: height * 0.9,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -10 },
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    maxHeight: height * 0.8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -5 },
     shadowOpacity: 0.2,
     shadowRadius: 20,
     elevation: 20,
   },
-  modalHandle: {
-    width: 40,
-    height: 4,
-    backgroundColor: config.colors.textTertiary,
-    borderRadius: 2,
-    alignSelf: 'center',
-    marginTop: 12,
-    marginBottom: 8,
-  },
-  modalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+  cartHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: config.colors.surface,
   },
-  modalTitle: {
+  cartTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: config.colors.textPrimary,
   },
-  modalCloseButton: {
-    width: 32,
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalCloseText: {
-    fontSize: 24,
+  cartCloseButton: {
+    fontSize: 30,
     color: config.colors.textSecondary,
   },
-
-  // Cart Items
-  cartItemsContainer: {
+  cartItems: {
     maxHeight: height * 0.5,
-    paddingHorizontal: 24,
-    paddingTop: 16,
   },
   cartItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: config.colors.surface,
-    padding: 12,
-    borderRadius: 12,
-    marginBottom: 12,
-  },
-  cartItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  cartItemImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 8,
-    marginRight: 12,
-  },
-  cartItemImagePlaceholder: {
-    backgroundColor: config.colors.card,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: config.colors.surface,
   },
   cartItemInfo: {
     flex: 1,
   },
   cartItemName: {
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "600",
     color: config.colors.textPrimary,
-    marginBottom: 4,
+    marginBottom: 5,
+  },
+  cartItemObservation: {
+    fontSize: 12,
+    color: config.colors.textSecondary,
+    fontStyle: "italic",
+    marginBottom: 5,
   },
   cartItemPrice: {
-    fontSize: 14,
+    fontSize: 16,
     color: config.colors.primary,
-    fontWeight: '600',
+    fontWeight: "bold",
   },
   cartItemQuantity: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 15,
   },
   quantityButton: {
-    width: 32,
-    height: 32,
-    backgroundColor: config.colors.card,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: config.colors.surface,
+    alignItems: "center",
+    justifyContent: "center",
   },
   quantityButtonText: {
     fontSize: 20,
-    color: config.colors.primary,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
   },
   quantityText: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: "bold",
     color: config.colors.textPrimary,
-    minWidth: 24,
-    textAlign: 'center',
+    minWidth: 30,
+    textAlign: "center",
   },
-
-  // Cart Footer
   cartFooter: {
-    padding: 24,
+    padding: 20,
     borderTopWidth: 1,
     borderTopColor: config.colors.surface,
   },
-  cartSummary: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 20,
+  cartTotal: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
   },
-  cartSummaryLabel: {
+  cartTotalLabel: {
     fontSize: 18,
     color: config.colors.textSecondary,
   },
-  cartSummaryValue: {
-    fontSize: 28,
-    fontWeight: 'bold',
+  cartTotalValue: {
+    fontSize: 24,
+    fontWeight: "bold",
     color: config.colors.textPrimary,
   },
   sendOrderButton: {
     backgroundColor: config.colors.primary,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    gap: 12,
-    paddingVertical: 16,
-    borderRadius: 12,
+    paddingVertical: 18,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  sendOrderButtonDisabled: {
+    opacity: 0.5,
   },
   sendOrderButtonText: {
-    color: '#FFF',
+    color: "#FFF",
     fontSize: 18,
-    fontWeight: '600',
+    fontWeight: "bold",
   },
-  buttonDisabled: {
-    opacity: 0.6,
+  billModal: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: config.colors.card,
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    maxHeight: height * 0.85,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 20,
+    elevation: 20,
   },
-
-  // Success Modal
+  billHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: config.colors.surface,
+  },
+  billTitle: {
+    flex: 1,
+    fontSize: 22,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    marginLeft: 10,
+  },
+  billCloseButton: {
+    fontSize: 30,
+    color: config.colors.textSecondary,
+  },
+  billContent: {
+    maxHeight: height * 0.55,
+    padding: 20,
+  },
+  billEmpty: {
+    alignItems: "center",
+    padding: 40,
+  },
+  billEmptyText: {
+    fontSize: 16,
+    color: config.colors.textSecondary,
+  },
+  billOrder: {
+    backgroundColor: config.colors.surface,
+    borderRadius: 15,
+    padding: 15,
+    marginBottom: 15,
+  },
+  billOrderHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  billOrderNumber: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+  },
+  billOrderTime: {
+    fontSize: 14,
+    color: config.colors.textSecondary,
+  },
+  billItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 5,
+  },
+  billItemQuantity: {
+    fontSize: 14,
+    color: config.colors.textSecondary,
+    width: 30,
+  },
+  billItemName: {
+    flex: 1,
+    fontSize: 14,
+    color: config.colors.textPrimary,
+    paddingHorizontal: 10,
+  },
+  billItemPrice: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: config.colors.textPrimary,
+  },
+  billOrderTotal: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: config.colors.surface,
+  },
+  billOrderTotalLabel: {
+    fontSize: 14,
+    color: config.colors.textSecondary,
+  },
+  billOrderTotalValue: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+  },
+  billFooter: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: config.colors.surface,
+  },
+  billTotals: {
+    marginBottom: 20,
+  },
+  billTotalRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 8,
+  },
+  billTotalLabel: {
+    fontSize: 16,
+    color: config.colors.textSecondary,
+  },
+  billTotalValue: {
+    fontSize: 16,
+    color: config.colors.textPrimary,
+  },
+  billGrandTotal: {
+    borderTopWidth: 1,
+    borderTopColor: config.colors.surface,
+    marginTop: 10,
+    paddingTop: 15,
+  },
+  billGrandTotalLabel: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+  },
+  billGrandTotalValue: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: config.colors.primary,
+  },
+  requestBillButton: {
+    backgroundColor: config.colors.success,
+    paddingVertical: 18,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  requestBillButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  paymentModal: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  paymentModalContent: {
+    backgroundColor: config.colors.card,
+    borderRadius: 20,
+    padding: 25,
+    width: width * 0.8,
+    maxWidth: 500,
+  },
+  paymentModalTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  paymentModalSubtitle: {
+    fontSize: 18,
+    color: config.colors.primary,
+    fontWeight: "600",
+    textAlign: "center",
+    marginBottom: 25,
+  },
+  paymentOptions: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    marginBottom: 25,
+  },
+  paymentOption: {
+    width: "48%",
+    backgroundColor: config.colors.surface,
+    borderRadius: 15,
+    padding: 20,
+    alignItems: "center",
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: "transparent",
+  },
+  paymentOptionSelected: {
+    borderColor: config.colors.primary,
+    backgroundColor: config.colors.primary + "10",
+  },
+  paymentOptionText: {
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: "600",
+    color: config.colors.textSecondary,
+  },
+  paymentOptionTextSelected: {
+    color: config.colors.primary,
+  },
+  paymentModalButtons: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  paymentModalButton: {
+    flex: 1,
+    paddingVertical: 15,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+  paymentModalButtonCancel: {
+    backgroundColor: config.colors.surface,
+  },
+  paymentModalButtonCancelText: {
+    color: config.colors.textSecondary,
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  paymentModalButtonConfirm: {
+    backgroundColor: config.colors.success,
+  },
+  paymentModalButtonConfirmText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  toast: {
+    position: "absolute",
+    top: 0,
+    left: 20,
+    right: 20,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 5 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  toastSuccess: {
+    backgroundColor: config.colors.success,
+  },
+  toastError: {
+    backgroundColor: config.colors.error,
+  },
+  toastInfo: {
+    backgroundColor: config.colors.info,
+  },
+  toastText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
+  },
   successOverlay: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0,0,0,0.8)",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  successCard: {
-    backgroundColor: config.colors.card,
-    padding: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    width: Math.min(400, width * 0.9),
+  successContent: {
+    backgroundColor: config.colors.success,
+    borderRadius: 30,
+    padding: 40,
+    alignItems: "center",
   },
-  successIcon: {
-    marginBottom: 24,
-  },
-  successTitle: {
+  successText: {
+    color: "#FFF",
     fontSize: 28,
-    fontWeight: 'bold',
-    color: config.colors.textPrimary,
-    marginBottom: 12,
+    fontWeight: "bold",
+    marginTop: 20,
   },
-  successMessage: {
+  successSubtext: {
+    color: "rgba(255,255,255,0.9)",
+    fontSize: 16,
+    marginTop: 10,
+  },
+  // Idle Screen Styles
+  idleContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: config.colors.background,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  idleContent: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 40,
+  },
+  idleHeader: {
+    alignItems: "center",
+    marginTop: 60,
+  },
+  idleLogo: {
+    fontSize: 100,
+  },
+  idleTitle: {
+    fontSize: 42,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    marginTop: 20,
+  },
+  idleSubtitle: {
+    fontSize: 18,
+    color: config.colors.textSecondary,
+    marginTop: 10,
+  },
+  promoCard: {
+    backgroundColor: config.colors.card,
+    borderRadius: 25,
+    padding: 30,
+    width: width * 0.8,
+    maxWidth: 500,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.15,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  promoHighlight: {
+    position: "absolute",
+    top: -15,
+    right: 20,
+    backgroundColor: config.colors.error,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  promoHighlightText: {
+    color: "#FFF",
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  promoIcon: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: config.colors.primary + "20",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 20,
+  },
+  promoEmoji: {
+    fontSize: 40,
+  },
+  promoTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    textAlign: "center",
+    marginBottom: 15,
+  },
+  promoDescription: {
     fontSize: 16,
     color: config.colors.textSecondary,
-    textAlign: 'center',
+    textAlign: "center",
+    lineHeight: 24,
+    marginBottom: 20,
+  },
+  promoPriceContainer: {
+    alignItems: "center",
+  },
+  promoPriceLabel: {
+    fontSize: 14,
+    color: config.colors.textTertiary,
+  },
+  promoPrice: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: config.colors.primary,
+    marginTop: 5,
+  },
+  carouselIndicators: {
+    flexDirection: "row",
+    gap: 8,
+  },
+  indicator: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: config.colors.textTertiary,
+  },
+  indicatorActive: {
+    backgroundColor: config.colors.primary,
+    width: 20,
+  },
+  touchToStart: {
+    backgroundColor: config.colors.primary,
+    paddingHorizontal: 40,
+    paddingVertical: 20,
+    borderRadius: 30,
+  },
+  touchToStartText: {
+    color: "#FFF",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  idleFooter: {
+    alignItems: "center",
+  },
+  idleTime: {
+    fontSize: 48,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+  },
+  idleDate: {
+    fontSize: 16,
+    color: config.colors.textSecondary,
+    marginTop: 5,
+    textTransform: "capitalize",
+  },
+  // Admin Panel Styles
+  adminModalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.7)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  adminModalContent: {
+    backgroundColor: config.colors.card,
+    borderRadius: 25,
+    padding: 30,
+    width: width * 0.8,
+    maxWidth: 450,
+    alignItems: "center",
+  },
+  adminHeader: {
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  adminTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    marginTop: 15,
+  },
+  adminLoginContainer: {
+    width: "100%",
+    alignItems: "center",
+  },
+  adminLoginLabel: {
+    fontSize: 16,
+    color: config.colors.textSecondary,
+    marginBottom: 20,
+  },
+  adminPasswordInput: {
+    width: 200,
+    height: 60,
+    fontSize: 32,
+    fontWeight: "bold",
+    textAlign: "center",
+    borderRadius: 15,
+    backgroundColor: config.colors.surface,
+    color: config.colors.textPrimary,
+    letterSpacing: 15,
+    marginBottom: 25,
+  },
+  adminLoginButton: {
+    backgroundColor: config.colors.primary,
+    paddingHorizontal: 60,
+    paddingVertical: 15,
+    borderRadius: 25,
+    marginBottom: 15,
+  },
+  adminLoginButtonText: {
+    color: "#FFF",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  adminCancelButton: {
+    padding: 10,
+  },
+  adminCancelButtonText: {
+    color: config.colors.textTertiary,
+    fontSize: 16,
+  },
+  adminOptionsContainer: {
+    width: "100%",
+    gap: 15,
+  },
+  adminOption: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: config.colors.surface,
+    borderRadius: 15,
+    padding: 20,
+  },
+  adminOptionTitle: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: "bold",
+    color: config.colors.textPrimary,
+    marginLeft: 15,
+  },
+  adminOptionDescription: {
+    fontSize: 12,
+    color: config.colors.textSecondary,
+  },
+  adminCloseButton: {
+    backgroundColor: config.colors.primary,
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  adminCloseButtonText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

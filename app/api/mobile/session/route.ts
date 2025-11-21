@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+import { createClient } from '@/lib/supabase/server'
 
 // GET - Obter sessão ativa da mesa
 export async function GET(request: NextRequest) {
   try {
+    const supabase = await createClient()
+    
     const searchParams = request.nextUrl.searchParams
     const table_number = searchParams.get('table_number')
     
@@ -21,7 +18,7 @@ export async function GET(request: NextRequest) {
 
     // Buscar mesa
     const { data: table } = await supabase
-      .from('tables')
+      .from('restaurant_tables')
       .select('*')
       .eq('number', parseInt(table_number))
       .single()
@@ -35,19 +32,19 @@ export async function GET(request: NextRequest) {
 
     // Buscar sessão ativa
     const { data: session } = await supabase
-      .from('table_sessions')
+      .from('tablet_sessoes')
       .select(`
         *,
-        orders(
+        tablet_pedidos(
           *,
-          order_items(
+          tablet_pedido_itens(
             *,
-            products(name, price, image_url)
+            items(name, price, image)
           )
         )
       `)
-      .eq('table_id', table.id)
-      .eq('status', 'active')
+      .eq('mesa_id', table.id)
+      .eq('status', 'ativa')
       .single()
 
     if (!session) {
@@ -59,25 +56,25 @@ export async function GET(request: NextRequest) {
     }
 
     // Calcular totais
-    const subtotal = session.total || 0
-    const service_fee = subtotal * 0.1
-    const discount = session.discount_amount || 0
+    const subtotal = session.valor_total || 0
+    const service_fee = session.taxa_servico || (subtotal * 0.1)
+    const discount = session.valor_desconto || 0
     const total = subtotal + service_fee - discount
 
     return NextResponse.json({
       success: true,
       session: {
         id: session.id,
-        table_id: session.table_id,
+        table_id: session.mesa_id,
         table_number,
         status: session.status,
-        opened_at: session.opened_at,
-        closed_at: session.closed_at,
+        opened_at: session.inicio_atendimento,
+        closed_at: session.fim_atendimento,
         subtotal,
         service_fee,
         discount,
         total,
-        orders: session.orders || [],
+        orders: session.tablet_pedidos || [],
         payment_method: session.payment_method
       }
     })
@@ -97,6 +94,8 @@ export async function GET(request: NextRequest) {
 // POST - Criar nova sessão
 export async function POST(request: NextRequest) {
   try {
+    const supabase = await createClient()
+    
     const { table_number } = await request.json()
     
     if (!table_number) {
@@ -108,7 +107,7 @@ export async function POST(request: NextRequest) {
 
     // Buscar mesa
     const { data: table } = await supabase
-      .from('tables')
+      .from('restaurant_tables')
       .select('*')
       .eq('number', parseInt(table_number))
       .single()
@@ -122,10 +121,10 @@ export async function POST(request: NextRequest) {
 
     // Verificar se já existe sessão ativa
     const { data: existingSession } = await supabase
-      .from('table_sessions')
+      .from('tablet_sessoes')
       .select('*')
-      .eq('table_id', table.id)
-      .eq('status', 'active')
+      .eq('mesa_id', table.id)
+      .eq('status', 'ativa')
       .single()
 
     if (existingSession) {
@@ -138,13 +137,13 @@ export async function POST(request: NextRequest) {
 
     // Criar nova sessão
     const { data: newSession, error } = await supabase
-      .from('table_sessions')
+      .from('tablet_sessoes')
       .insert({
-        table_id: table.id,
-        status: 'active',
-        opened_at: new Date().toISOString(),
-        total: 0,
-        discount_amount: 0
+        mesa_id: table.id,
+        status: 'ativa',
+        inicio_atendimento: new Date().toISOString(),
+        valor_total: 0,
+        valor_desconto: 0
       })
       .select()
       .single()

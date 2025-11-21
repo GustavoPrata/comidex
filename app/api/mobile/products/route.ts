@@ -1,21 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+import { createClient } from '@/lib/supabase/server'
 
 // GET - Listar produtos com filtros
 export async function GET(request: NextRequest) {
   try {
+    const supabase = await createClient()
+    
     const searchParams = request.nextUrl.searchParams
     const category_id = searchParams.get('category_id')
     const mode = searchParams.get('mode') // 'rodizio' ou 'carte'
     
     let query = supabase
-      .from('products')
-      .select('*, categories(name, icon)')
+      .from('items')
+      .select('*, categories(name, image)')
       .eq('active', true)
       .order('name', { ascending: true })
 
@@ -50,12 +47,12 @@ export async function GET(request: NextRequest) {
       name: product.name,
       description: product.description,
       price: product.price,
-      image_url: product.image_url,
+      image_url: product.image || null,
       category: product.categories?.name || 'Sem categoria',
       category_id: product.category_id,
-      is_premium: product.is_premium || false,
+      is_premium: product.group_id ? true : false,
       printer_id: product.printer_id,
-      available: product.active
+      available: product.available
     }))
 
     return NextResponse.json({

@@ -1,6 +1,6 @@
 // Configuration file for the Tablet App
 export const config = {
-  // API URL - using the correct domain
+  // API URL - using the real backend
   API_URL: 'https://0cf83c93-8147-42e6-967b-30b169de3e65-00-1uqldc8o7pfpx.spock.replit.dev/api/mobile',
   
   // For local development

@@ -1,10 +1,10 @@
-modules = ["nodejs-20", "web"]
+modules = ["nodejs-20", "web", "postgresql-16"]
 run = "npm run dev"
 hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 
 [nix]
 channel = "stable-25_05"
-packages = ["chromium"]
+packages = ["chromium", "jq"]
 
 [deployment]
 deploymentTarget = "autoscale"
@@ -25,7 +25,6 @@ externalPort = 80
 
 [[ports]]
 localPort = 8081
-externalPort = 4200
 
 [[ports]]
 localPort = 34099
@@ -85,31 +84,6 @@ PORT = "5000"
 runButton = "Project"
 
 [[workflows.workflow]]
-name = "Project"
-mode = "parallel"
-author = "agent"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start application"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Tablet Expo App"
-
-[[workflows.workflow]]
-name = "Start application"
-author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "npm run dev"
-waitForPort = 5000
-
-[[workflows.workflow]]
 name = "RR"
 mode = "sequential"
 author = 44958585
@@ -128,7 +102,32 @@ task = "shell.exec"
 args = "tsx server/prompt-console.ts"
 
 [[workflows.workflow]]
-name = "Tablet Expo App"
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Tablet App"
+
+[[workflows.workflow]]
+name = "Start application"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+waitForPort = 5000
+
+[workflows.workflow.metadata]
+outputType = "webview"
+
+[[workflows.workflow]]
+name = "Tablet App"
 author = "agent"
 
 [workflows.workflow.metadata]
@@ -136,7 +135,7 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd TABLET && npx expo start --tunnel --web --port 8080"
+args = "cd TABLET && npx expo start --web --port 8080"
 waitForPort = 8080
 
 [agent]
