@@ -382,9 +382,9 @@ function MainApp() {
 
     // Disable back button in kiosk mode
     if (Platform.OS === 'android' && kioskMode) {
-      BackHandler.addEventListener('hardwareBackPress', () => true);
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
       return () => {
-        BackHandler.removeEventListener('hardwareBackPress', () => true);
+        backHandler.remove();
       };
     }
   }, []);
@@ -2448,7 +2448,7 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    maxHeight: height * 0.55,
+    height: height * 0.55,
     marginTop: 10,
   },
   tablesListContent: {
