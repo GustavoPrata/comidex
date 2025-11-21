@@ -359,6 +359,8 @@ function MainApp() {
   const [selectedTable, setSelectedTable] = useState<any>(null);
   const [selectedMode, setSelectedMode] = useState<any>(null);
   const [serviceTypes, setServiceTypes] = useState<any[]>([]);
+  const [groups, setGroups] = useState<any[]>([]);
+  const [selectedRodizioGroup, setSelectedRodizioGroup] = useState<any>(null);
   
   // Modal de Rodízio (adultos e crianças)
   const [showRodizioModal, setShowRodizioModal] = useState(false);
@@ -519,7 +521,7 @@ function MainApp() {
     loadCategories();
     loadProducts();
     loadTables(); // Load available tables on startup
-    loadServiceTypes(); // Load service types
+    loadServiceTypes(); // Load service types and groups
     
     // Atualiza as mesas a cada 30 segundos para manter sincronizado com o POS
     const tablesInterval = setInterval(() => {
@@ -789,11 +791,22 @@ function MainApp() {
       
       if (data.success) {
         console.log("✅ Tipos de atendimento recebidos:", data.service_types);
+        
+        // Extract all groups from service types
+        const allGroups: any[] = [];
+        data.service_types.forEach((type: any) => {
+          if (type.linked_groups && type.linked_groups.length > 0) {
+            allGroups.push(...type.linked_groups);
+          }
+        });
+        setGroups(allGroups);
+        
         // Process service types with proper icon mapping
         const processedTypes = data.service_types.map((type: any) => ({
           ...type,
           icon: getIconForServiceType(type),
-          color: type.color || '#FF7043' // Use default orange if no color
+          color: type.color || '#FF7043', // Use default orange if no color
+          linked_group_id: type.linked_groups?.[0]?.id // Use first linked group ID
         }));
         setServiceTypes(processedTypes);
       } else {
@@ -1004,11 +1017,21 @@ function MainApp() {
       );
     }
 
-    // Filter by mode
-    if (selectedMode === "rodizio") {
-      filtered = filtered.filter((p) => parseFloat(p.price) === 0);
-    } else if (selectedMode === "carte") {
-      filtered = filtered.filter((p) => parseFloat(p.price) > 0);
+    // Filter by selected service type/mode
+    if (selectedMode) {
+      // Check if it's a rodízio service type
+      const linkedGroup = selectedMode.linked_group_id && groups ? 
+        groups.find(g => g.id === selectedMode.linked_group_id) : null;
+      
+      if (linkedGroup?.type === 'rodizio') {
+        // Show only rodízio items (price = 0)
+        filtered = filtered.filter((p) => parseFloat(p.price) === 0);
+      } else if (selectedMode.name?.toLowerCase().includes('carte') || 
+                 selectedMode.name?.toLowerCase().includes('à la carte')) {
+        // Show only à la carte items (price > 0)
+        filtered = filtered.filter((p) => parseFloat(p.price) > 0);
+      }
+      // For other service types, show all products
     }
 
     // Filter by category
@@ -1967,10 +1990,25 @@ function MainApp() {
                     styles.groupItemGlass,
                     selectedMode?.id === type.id && styles.groupItemActiveGlass
                   ]}
-                  onPress={() => {
+                  onPress={async () => {
                     setSelectedMode(type);
                     setSelectedCategory(null);
                     resetIdleTimer();
+                    
+                    // If service type has linked rodízio group, show modal
+                    if (type.linked_group_id && groups && groups.length > 0) {
+                      const linkedGroup = groups.find(g => g.id === type.linked_group_id);
+                      if (linkedGroup?.type === 'rodizio') {
+                        setSelectedRodizioGroup(linkedGroup);
+                        setShowRodizioModal(true);
+                        Animated.spring(rodizioModalAnim, {
+                          toValue: 1,
+                          useNativeDriver: true,
+                          tension: 50,
+                          friction: 9,
+                        }).start();
+                      }
+                    }
                   }}
                   activeOpacity={0.7}
                 >
