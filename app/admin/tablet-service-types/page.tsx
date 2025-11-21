@@ -15,12 +15,9 @@ import {
   Save, 
   Trash2, 
   Edit, 
-  GripVertical, 
   Link as LinkIcon, 
   Tablet,
   Search,
-  ChevronUp,
-  ChevronDown,
   Settings,
   Sparkles,
   Crown,
@@ -34,7 +31,9 @@ import {
   Salad,
   Cake,
   Wine,
-  Loader2
+  Loader2,
+  ArrowUp,
+  ArrowDown
 } from "lucide-react"
 import {
   Dialog,
@@ -51,6 +50,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { toast } from "sonner"
 
 interface ServiceType {
@@ -452,24 +457,39 @@ export default function TabletServiceTypesPage() {
                 <div className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                      {/* Drag Handle and Order Buttons */}
-                      <div className="flex flex-col gap-1">
-                        <button
-                          onClick={() => handleOrderChange(type, 'up')}
-                          disabled={index === 0}
-                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
-                        >
-                          <ChevronUp className="h-4 w-4" />
-                        </button>
-                        <GripVertical className="h-4 w-4 text-gray-400" />
-                        <button
-                          onClick={() => handleOrderChange(type, 'down')}
-                          disabled={index === serviceTypes.length - 1}
-                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
-                        >
-                          <ChevronDown className="h-4 w-4" />
-                        </button>
-                      </div>
+                      {/* Drag Handle with Dropdown */}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div
+                            className="cursor-move p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full touch-none group select-none transition-all hover:shadow-sm flex items-center justify-center"
+                            style={{ touchAction: 'none', userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none' }}
+                            onMouseDown={(e) => e.preventDefault()}
+                            title="Reordenar"
+                          >
+                            <svg className="w-5 h-5 text-gray-400 group-hover:text-orange-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                            </svg>
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start">
+                          <DropdownMenuItem 
+                            onClick={() => handleOrderChange(type, 'up')}
+                            disabled={index === 0}
+                            className="cursor-pointer"
+                          >
+                            <ArrowUp className="h-4 w-4 mr-2" />
+                            Mover para cima
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => handleOrderChange(type, 'down')}
+                            disabled={index === serviceTypes.length - 1}
+                            className="cursor-pointer"
+                          >
+                            <ArrowDown className="h-4 w-4 mr-2" />
+                            Mover para baixo
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                       
                       {/* Icon */}
                       <div 

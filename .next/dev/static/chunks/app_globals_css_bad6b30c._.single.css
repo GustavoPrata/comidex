@@ -4492,6 +4492,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: rgb(254 215 170 / var(--tw-bg-opacity, 1));
 }
 
+.data-\[state\=checked\]\:bg-green-500[data-state="checked"] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity, 1));
+}
+
 .data-\[state\=active\]\:text-foreground[data-state="active"] {
   color: hsl(var(--foreground));
 }
@@ -4617,6 +4622,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:border-yellow-800:is(.dark *) {
   --tw-border-opacity: 1;
   border-color: rgb(133 77 14 / var(--tw-border-opacity, 1));
+}
+
+.dark\:border-gray-700\/40:is(.dark *) {
+  border-color: #37415166;
 }
 
 .dark\:border-b-gray-950:is(.dark *) {
@@ -5224,6 +5233,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:hover\:text-white:hover:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.dark\:hover\:text-gray-300:hover:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(209 213 219 / var(--tw-text-opacity, 1));
 }
 
 .dark\:focus\:bg-orange-900\/20:focus:is(.dark *) {
