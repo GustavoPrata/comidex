@@ -8,6 +8,7 @@
   "/api/mobile/session/route": "app/api/mobile/session/route.js",
   "/api/mobile/tables/route": "app/api/mobile/tables/route.js",
   "/api/notifications/route": "app/api/notifications/route.js",
+  "/api/promocoes/route": "app/api/promocoes/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
   "/page": "app/page.js",
   "/pos/page": "app/pos/page.js"

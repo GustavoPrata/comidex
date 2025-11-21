@@ -1806,9 +1806,13 @@ function MainApp() {
                       } else {
                         // For non-rodízio types, proceed directly
                         setSelectedMode(serviceType);
+                        // Force session creation immediately for non-rodízio
+                        checkOrCreateSession();
                       }
                     } else {
                       setSelectedMode(serviceType);
+                      // Force session creation immediately
+                      checkOrCreateSession();
                     }
                     resetIdleTimer();
                   }}
@@ -2435,6 +2439,33 @@ function MainApp() {
                       // Lançar rodízio automaticamente no caixa
                       try {
                         setLoading(true);
+                        
+                        // Primeiro, verificar/criar sessão se ainda não existir
+                        if (!session) {
+                          console.log('📝 Criando sessão para a mesa', tableNumber);
+                          const sessionResponse = await fetch(`${config.API_URL}/session?table_number=${tableNumber}`);
+                          const sessionData = await sessionResponse.json();
+                          
+                          if (!sessionData.success || !sessionData.session) {
+                            // Create new session
+                            const createResponse = await fetch(`${config.API_URL}/session`, {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                              body: JSON.stringify({ table_number: parseInt(tableNumber) }),
+                            });
+                            
+                            const createData = await createResponse.json();
+                            if (createData.success) {
+                              setSession(createData.session);
+                              console.log('✅ Sessão criada:', createData.session);
+                            } else {
+                              throw new Error('Erro ao criar sessão');
+                            }
+                          } else {
+                            setSession(sessionData.session);
+                            console.log('✅ Sessão existente encontrada:', sessionData.session);
+                          }
+                        }
                         
                         // Criar itens do rodízio para o pedido
                         const rodizioItems = [];
@@ -3812,6 +3843,18 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
   },
+  glassHeaderContent: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+  },
+  glassHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
   headerContentGlass: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -3999,42 +4042,6 @@ const styles = StyleSheet.create({
     backgroundColor: config.colors.card,
     borderBottomWidth: 1,
     borderBottomColor: config.colors.surface,
-  },
-  // New Glassmorphic Header Styles
-  glassHeader: {
-    height: 70,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  glassHeaderContent: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-  },
-  glassHeaderLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  tableInfoGlass: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  tableIconGlass: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    backgroundColor: 'rgba(255, 112, 67, 0.15)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tableNumberGlass: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#FFFFFF',
   },
   modeTagGlass: {
     flexDirection: 'row',
@@ -4373,10 +4380,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: 8,
-  },
-  priceContainerGlass: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
   },
   currencyGlass: {
     fontSize: 11,
