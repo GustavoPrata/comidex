@@ -8,7 +8,34 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { Plus, Save, Trash2, Edit, GripVertical, Link as LinkIcon, Unlink } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Checkbox } from "@/components/ui/checkbox"
+import { 
+  Plus, 
+  Save, 
+  Trash2, 
+  Edit, 
+  GripVertical, 
+  Link as LinkIcon, 
+  Tablet,
+  Search,
+  ChevronUp,
+  ChevronDown,
+  Settings,
+  Sparkles,
+  Crown,
+  Flame,
+  Utensils,
+  BookOpen,
+  Coffee,
+  Star,
+  Pizza,
+  Sandwich,
+  Salad,
+  Cake,
+  Wine,
+  Loader2
+} from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -24,8 +51,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { Checkbox } from "@/components/ui/checkbox"
+import { toast } from "sonner"
 
 interface ServiceType {
   id: number
@@ -47,6 +73,22 @@ interface Group {
   active: boolean
 }
 
+const iconMap: { [key: string]: any } = {
+  crown: Crown,
+  fire: Flame,
+  utensils: Utensils,
+  'menu-book': BookOpen,
+  'cup-soda': Coffee,
+  star: Star,
+  pizza: Pizza,
+  burger: Sandwich,
+  salad: Salad,
+  coffee: Coffee,
+  cake: Cake,
+  wine: Wine,
+  restaurant: Utensils
+}
+
 export default function TabletServiceTypesPage() {
   const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([])
   const [groups, setGroups] = useState<Group[]>([])
@@ -54,6 +96,8 @@ export default function TabletServiceTypesPage() {
   const [editingType, setEditingType] = useState<ServiceType | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [selectedGroups, setSelectedGroups] = useState<number[]>([])
+  const [searchTerm, setSearchTerm] = useState("")
+  const [saving, setSaving] = useState(false)
   const supabase = createClient()
 
   useEffect(() => {
@@ -63,7 +107,6 @@ export default function TabletServiceTypesPage() {
 
   const loadServiceTypes = async () => {
     try {
-      // Buscar tipos de atendimento com grupos linkados
       const { data: typesData, error: typesError } = await supabase
         .from('tablet_service_types')
         .select(`
@@ -80,7 +123,6 @@ export default function TabletServiceTypesPage() {
 
       if (typesError) throw typesError
 
-      // Formatar dados com grupos linkados
       const formattedTypes = typesData?.map((type: any) => ({
         ...type,
         linked_groups: type.tablet_service_type_groups?.map((tsg: any) => tsg.groups?.name).filter(Boolean) || []
@@ -89,6 +131,7 @@ export default function TabletServiceTypesPage() {
       setServiceTypes(formattedTypes)
     } catch (error: any) {
       console.error('Erro ao carregar tipos de atendimento:', error)
+      toast.error('Erro ao carregar tipos de atendimento')
     } finally {
       setIsLoading(false)
     }
@@ -106,13 +149,13 @@ export default function TabletServiceTypesPage() {
       setGroups(data || [])
     } catch (error: any) {
       console.error('Erro ao carregar grupos:', error)
+      toast.error('Erro ao carregar grupos')
     }
   }
 
   const handleEdit = async (type: ServiceType) => {
     setEditingType(type)
     
-    // Carregar grupos linkados
     const { data: linkedGroups } = await supabase
       .from('tablet_service_type_groups')
       .select('group_id')
@@ -124,9 +167,9 @@ export default function TabletServiceTypesPage() {
 
   const handleSave = async () => {
     if (!editingType) return
+    setSaving(true)
 
     try {
-      // Atualizar tipo de atendimento
       const { error: updateError } = await supabase
         .from('tablet_service_types')
         .update({
@@ -141,14 +184,11 @@ export default function TabletServiceTypesPage() {
 
       if (updateError) throw updateError
 
-      // Atualizar grupos linkados
-      // Primeiro, remover todos os links existentes
       await supabase
         .from('tablet_service_type_groups')
         .delete()
         .eq('service_type_id', editingType.id)
 
-      // Depois, criar novos links
       if (selectedGroups.length > 0) {
         const { error: linkError } = await supabase
           .from('tablet_service_type_groups')
@@ -162,11 +202,14 @@ export default function TabletServiceTypesPage() {
         if (linkError) throw linkError
       }
 
-      console.log('Tipo de atendimento atualizado com sucesso')
+      toast.success('Tipo de atendimento atualizado com sucesso')
       setDialogOpen(false)
       loadServiceTypes()
     } catch (error: any) {
       console.error('Erro ao atualizar tipo de atendimento:', error)
+      toast.error('Erro ao atualizar tipo de atendimento')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -187,6 +230,7 @@ export default function TabletServiceTypesPage() {
 
   const handleCreateNew = async () => {
     if (!editingType || editingType.id !== 0) return
+    setSaving(true)
 
     try {
       const { data, error } = await supabase
@@ -204,7 +248,6 @@ export default function TabletServiceTypesPage() {
 
       if (error) throw error
 
-      // Criar links com grupos selecionados
       if (data && data[0] && selectedGroups.length > 0) {
         await supabase
           .from('tablet_service_type_groups')
@@ -216,11 +259,14 @@ export default function TabletServiceTypesPage() {
           )
       }
 
-      console.log('Tipo de atendimento criado com sucesso')
+      toast.success('Tipo de atendimento criado com sucesso')
       setDialogOpen(false)
       loadServiceTypes()
     } catch (error: any) {
       console.error('Erro ao criar tipo de atendimento:', error)
+      toast.error('Erro ao criar tipo de atendimento')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -228,13 +274,11 @@ export default function TabletServiceTypesPage() {
     if (!confirm('Deseja realmente excluir este tipo de atendimento?')) return
 
     try {
-      // Primeiro remover os links
       await supabase
         .from('tablet_service_type_groups')
         .delete()
         .eq('service_type_id', id)
 
-      // Depois remover o tipo
       const { error } = await supabase
         .from('tablet_service_types')
         .delete()
@@ -242,10 +286,11 @@ export default function TabletServiceTypesPage() {
 
       if (error) throw error
 
-      console.log('Tipo de atendimento excluído com sucesso')
+      toast.success('Tipo de atendimento excluído com sucesso')
       loadServiceTypes()
     } catch (error: any) {
       console.error('Erro ao excluir tipo de atendimento:', error)
+      toast.error('Erro ao excluir tipo de atendimento')
     }
   }
 
@@ -258,10 +303,11 @@ export default function TabletServiceTypesPage() {
 
       if (error) throw error
 
-      console.log('Status atualizado com sucesso')
+      toast.success('Status atualizado com sucesso')
       loadServiceTypes()
     } catch (error: any) {
       console.error('Erro ao atualizar status:', error)
+      toast.error('Erro ao atualizar status')
     }
   }
 
@@ -274,7 +320,6 @@ export default function TabletServiceTypesPage() {
     const targetType = serviceTypes[targetIndex]
 
     try {
-      // Trocar as ordens
       await supabase
         .from('tablet_service_types')
         .update({ display_order: targetType.display_order })
@@ -285,163 +330,278 @@ export default function TabletServiceTypesPage() {
         .update({ display_order: type.display_order })
         .eq('id', targetType.id)
 
-      console.log('Ordem atualizada com sucesso')
+      toast.success('Ordem atualizada com sucesso')
       loadServiceTypes()
     } catch (error: any) {
       console.error('Erro ao atualizar ordem:', error)
+      toast.error('Erro ao atualizar ordem')
     }
   }
 
   const iconOptions = [
-    { value: 'crown', label: '👑 Coroa' },
-    { value: 'fire', label: '🔥 Fogo' },
-    { value: 'utensils', label: '🍴 Talheres' },
-    { value: 'menu-book', label: '📖 Menu' },
-    { value: 'cup-soda', label: '🥤 Bebida' },
-    { value: 'star', label: '⭐ Estrela' },
-    { value: 'pizza', label: '🍕 Pizza' },
-    { value: 'burger', label: '🍔 Hambúrguer' },
-    { value: 'salad', label: '🥗 Salada' },
-    { value: 'coffee', label: '☕ Café' },
-    { value: 'cake', label: '🍰 Bolo' },
-    { value: 'restaurant', label: '🍽️ Restaurante' }
+    { value: 'crown', label: 'Coroa', icon: Crown },
+    { value: 'fire', label: 'Fogo', icon: Flame },
+    { value: 'utensils', label: 'Talheres', icon: Utensils },
+    { value: 'menu-book', label: 'Menu', icon: BookOpen },
+    { value: 'cup-soda', label: 'Bebida', icon: Coffee },
+    { value: 'star', label: 'Estrela', icon: Star },
+    { value: 'pizza', label: 'Pizza', icon: Pizza },
+    { value: 'burger', label: 'Hambúrguer', icon: Sandwich },
+    { value: 'salad', label: 'Salada', icon: Salad },
+    { value: 'coffee', label: 'Café', icon: Coffee },
+    { value: 'cake', label: 'Bolo', icon: Cake },
+    { value: 'wine', label: 'Vinho', icon: Wine },
+    { value: 'restaurant', label: 'Restaurante', icon: Utensils }
   ]
 
-  const getIconDisplay = (icon: string | null) => {
-    const option = iconOptions.find(opt => opt.value === icon)
-    return option ? option.label : '🍽️ Restaurante'
+  const getIcon = (iconName: string | null) => {
+    const Icon = iconMap[iconName || 'restaurant'] || Utensils
+    return Icon
   }
+
+  const filteredServiceTypes = serviceTypes.filter(type => 
+    !searchTerm || 
+    type.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (type.description && type.description.toLowerCase().includes(searchTerm.toLowerCase()))
+  )
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-          <p className="mt-4">Carregando...</p>
+          <Loader2 className="h-12 w-12 animate-spin mx-auto text-orange-500" />
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Carregando...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      <div className="mb-6 flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Configurar Tipos de Atendimento</h1>
-        <Button onClick={handleCreate}>
-          <Plus className="w-4 h-4 mr-2" />
-          Novo Tipo
-        </Button>
+    <div className="min-h-screen relative">
+      {/* Header */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Tablet className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Tipos de Atendimento</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <Input
+                  placeholder="Pesquisar..."
+                  className="w-64 pr-10 rounded-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-orange-500 hover:bg-orange-600 rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </button>
+              </div>
+              <Button 
+                onClick={handleCreate}
+                className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Tipo
+              </Button>
+            </div>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+            Configure os tipos de atendimento disponíveis no tablet para os clientes
+          </p>
+
+          {/* Summary */}
+          <div className="flex items-center gap-6 text-sm">
+            <div className="flex items-center gap-2">
+              <Settings className="h-4 w-4 text-gray-400" />
+              <span className="text-gray-600 dark:text-gray-400">
+                {serviceTypes.length} {serviceTypes.length === 1 ? 'tipo' : 'tipos'}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-gray-400" />
+              <span className="text-gray-600 dark:text-gray-400">
+                {serviceTypes.filter(t => t.active).length} {serviceTypes.filter(t => t.active).length === 1 ? 'ativo' : 'ativos'}
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-4">
-        {serviceTypes.map((type, index) => (
-          <Card key={type.id} className={!type.active ? 'opacity-60' : ''}>
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="flex flex-col gap-1">
-                    <button
-                      onClick={() => handleOrderChange(type, 'up')}
-                      disabled={index === 0}
-                      className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                    >
-                      ↑
-                    </button>
-                    <button
-                      onClick={() => handleOrderChange(type, 'down')}
-                      disabled={index === serviceTypes.length - 1}
-                      className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                    >
-                      ↓
-                    </button>
-                  </div>
-                  
-                  <div className="text-3xl">{getIconDisplay(type.icon)}</div>
-                  
-                  <div>
-                    <h3 className="font-semibold text-lg">{type.name}</h3>
-                    <p className="text-sm text-gray-600">{type.description}</p>
-                    {type.price && (
-                      <p className="text-sm font-semibold text-green-600 mt-1">
-                        R$ {type.price.toFixed(2)}
-                      </p>
-                    )}
-                    {type.linked_groups && type.linked_groups.length > 0 && (
-                      <div className="flex gap-1 mt-2">
-                        <LinkIcon className="w-4 h-4 text-gray-400" />
-                        {type.linked_groups.map((group, idx) => (
-                          <Badge key={idx} variant="secondary" className="text-xs">
-                            {group}
-                          </Badge>
-                        ))}
+      {/* Content */}
+      <div className="p-4">
+        <div className="space-y-4">
+          {filteredServiceTypes.map((type, index) => {
+            const Icon = getIcon(type.icon)
+            
+            return (
+              <div
+                key={type.id}
+                className={`bg-white dark:bg-gray-900/95 rounded-2xl border ${
+                  !type.active 
+                    ? 'border-gray-200 dark:border-gray-700/40 opacity-60' 
+                    : 'border-gray-200 dark:border-gray-700/60'
+                } shadow-sm hover:shadow-md transition-shadow`}
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
+                      {/* Drag Handle and Order Buttons */}
+                      <div className="flex flex-col gap-1">
+                        <button
+                          onClick={() => handleOrderChange(type, 'up')}
+                          disabled={index === 0}
+                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                          <ChevronUp className="h-4 w-4" />
+                        </button>
+                        <GripVertical className="h-4 w-4 text-gray-400" />
+                        <button
+                          onClick={() => handleOrderChange(type, 'down')}
+                          disabled={index === serviceTypes.length - 1}
+                          className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 disabled:opacity-30 disabled:cursor-not-allowed"
+                        >
+                          <ChevronDown className="h-4 w-4" />
+                        </button>
                       </div>
-                    )}
-                  </div>
-                </div>
+                      
+                      {/* Icon */}
+                      <div 
+                        className="flex items-center justify-center w-14 h-14 rounded-xl"
+                        style={{ backgroundColor: type.color + '20' }}
+                      >
+                        <Icon 
+                          className="h-7 w-7" 
+                          style={{ color: type.color }}
+                        />
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-1">
+                          <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
+                            {type.name}
+                          </h3>
+                          {type.price && (
+                            <Badge className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                              R$ {type.price.toFixed(2)}
+                            </Badge>
+                          )}
+                        </div>
+                        
+                        {type.description && (
+                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            {type.description}
+                          </p>
+                        )}
+                        
+                        {type.linked_groups && type.linked_groups.length > 0 && (
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <LinkIcon className="h-4 w-4 text-gray-400" />
+                            {type.linked_groups.map((group, idx) => (
+                              <Badge 
+                                key={idx} 
+                                variant="secondary"
+                                className="text-xs"
+                              >
+                                {group}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={type.active}
-                    onCheckedChange={() => handleToggleActive(type)}
-                  />
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleEdit(type)}
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => handleDelete(type.id)}
-                  >
-                    <Trash2 className="w-4 h-4 text-red-500" />
-                  </Button>
+                    {/* Actions */}
+                    <div className="flex items-center gap-3">
+                      <Switch
+                        checked={type.active}
+                        onCheckedChange={() => handleToggleActive(type)}
+                        className="data-[state=checked]:bg-green-500"
+                      />
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleEdit(type)}
+                        className="hover:bg-orange-50 dark:hover:bg-orange-900/20"
+                      >
+                        <Edit className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => handleDelete(type.id)}
+                        className="hover:bg-red-50 dark:hover:bg-red-900/20"
+                      >
+                        <Trash2 className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+            )
+          })}
+        </div>
+
+        {filteredServiceTypes.length === 0 && (
+          <div className="bg-white dark:bg-gray-900/95 rounded-2xl border border-gray-200 dark:border-gray-700/60 shadow-sm">
+            <div className="text-center py-12">
+              <Tablet className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-500 dark:text-gray-400 mb-4">
+                {searchTerm 
+                  ? 'Nenhum tipo de atendimento encontrado' 
+                  : 'Nenhum tipo de atendimento configurado'}
+              </p>
+              {!searchTerm && (
+                <Button 
+                  onClick={handleCreate}
+                  className="bg-orange-500 hover:bg-orange-600 text-white"
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  Criar Primeiro Tipo
+                </Button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
 
-      {serviceTypes.length === 0 && (
-        <Card className="mt-4">
-          <CardContent className="text-center py-8">
-            <p className="text-gray-500">Nenhum tipo de atendimento configurado</p>
-            <Button className="mt-4" onClick={handleCreate}>
-              <Plus className="w-4 h-4 mr-2" />
-              Criar Primeiro Tipo
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
+      {/* Add/Edit Modal */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-2xl bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60">
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Tablet className="h-4 w-4 text-white" />
+              </div>
               {editingType?.id === 0 ? 'Novo' : 'Editar'} Tipo de Atendimento
             </DialogTitle>
             <DialogDescription>
-              Configure as informações do tipo de atendimento
+              Configure as informações do tipo de atendimento para o tablet
             </DialogDescription>
           </DialogHeader>
 
           {editingType && (
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div className="space-y-2">
                   <Label htmlFor="name">Nome</Label>
                   <Input
                     id="name"
                     value={editingType.name}
                     onChange={(e) => setEditingType({ ...editingType, name: e.target.value })}
                     placeholder="Ex: Rodízio Premium"
+                    className="rounded-xl"
                   />
                 </div>
 
-                <div>
+                <div className="space-y-2">
                   <Label htmlFor="price">Preço (opcional)</Label>
                   <Input
                     id="price"
@@ -453,41 +613,49 @@ export default function TabletServiceTypesPage() {
                       price: e.target.value ? parseFloat(e.target.value) : null 
                     })}
                     placeholder="Ex: 189.00"
+                    className="rounded-xl"
                   />
                 </div>
               </div>
 
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="description">Descrição</Label>
                 <Textarea
                   id="description"
                   value={editingType.description || ''}
                   onChange={(e) => setEditingType({ ...editingType, description: e.target.value })}
                   placeholder="Ex: Rodízio completo com todas as opções do cardápio"
+                  className="rounded-xl min-h-[80px]"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div>
+                <div className="space-y-2">
                   <Label htmlFor="icon">Ícone</Label>
                   <Select
                     value={editingType.icon || 'restaurant'}
                     onValueChange={(value) => setEditingType({ ...editingType, icon: value })}
                   >
-                    <SelectTrigger>
+                    <SelectTrigger className="rounded-xl">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {iconOptions.map((option) => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
+                      {iconOptions.map((option) => {
+                        const IconComponent = option.icon
+                        return (
+                          <SelectItem key={option.value} value={option.value}>
+                            <div className="flex items-center gap-2">
+                              <IconComponent className="h-4 w-4" />
+                              {option.label}
+                            </div>
+                          </SelectItem>
+                        )
+                      })}
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div>
+                <div className="space-y-2">
                   <Label htmlFor="color">Cor</Label>
                   <div className="flex gap-2">
                     <Input
@@ -495,23 +663,23 @@ export default function TabletServiceTypesPage() {
                       type="color"
                       value={editingType.color}
                       onChange={(e) => setEditingType({ ...editingType, color: e.target.value })}
-                      className="w-20 h-10"
+                      className="w-20 h-10 rounded-xl cursor-pointer"
                     />
                     <Input
                       value={editingType.color}
                       onChange={(e) => setEditingType({ ...editingType, color: e.target.value })}
                       placeholder="#FF7043"
-                      className="flex-1"
+                      className="flex-1 rounded-xl"
                     />
                   </div>
                 </div>
               </div>
 
-              <div>
-                <Label>Grupos de Cardápio Linkados</Label>
-                <div className="border rounded-lg p-4 max-h-60 overflow-y-auto">
+              <div className="space-y-2">
+                <Label>Grupos de Cardápio Vinculados</Label>
+                <div className="border border-gray-200 dark:border-gray-700 rounded-xl p-4 max-h-60 overflow-y-auto">
                   {groups.map((group) => (
-                    <div key={group.id} className="flex items-center space-x-2 py-1">
+                    <div key={group.id} className="flex items-center space-x-2 py-2">
                       <Checkbox
                         id={`group-${group.id}`}
                         checked={selectedGroups.includes(group.id)}
@@ -525,7 +693,7 @@ export default function TabletServiceTypesPage() {
                       />
                       <Label
                         htmlFor={`group-${group.id}`}
-                        className="flex-1 cursor-pointer"
+                        className="flex-1 cursor-pointer font-normal"
                       >
                         {group.name}
                         {group.price && (
@@ -537,11 +705,11 @@ export default function TabletServiceTypesPage() {
                     </div>
                   ))}
                   {groups.length === 0 && (
-                    <p className="text-gray-500 text-sm">Nenhum grupo disponível</p>
+                    <p className="text-gray-500 text-sm text-center">Nenhum grupo disponível</p>
                   )}
                 </div>
-                <p className="text-xs text-gray-500 mt-1">
-                  Os grupos selecionados determinarão quais itens do cardápio estarão disponíveis neste tipo de atendimento
+                <p className="text-xs text-gray-500">
+                  Os grupos selecionados determinam quais itens do cardápio estarão disponíveis
                 </p>
               </div>
 
@@ -550,19 +718,40 @@ export default function TabletServiceTypesPage() {
                   id="active"
                   checked={editingType.active}
                   onCheckedChange={(checked) => setEditingType({ ...editingType, active: checked })}
+                  className="data-[state=checked]:bg-green-500"
                 />
-                <Label htmlFor="active">Ativo</Label>
+                <Label htmlFor="active" className="font-normal cursor-pointer">
+                  Tipo de atendimento ativo
+                </Label>
               </div>
             </div>
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>
+            <Button 
+              variant="outline" 
+              onClick={() => setDialogOpen(false)}
+              className="rounded-full"
+              disabled={saving}
+            >
               Cancelar
             </Button>
-            <Button onClick={editingType?.id === 0 ? handleCreateNew : handleSave}>
-              <Save className="w-4 h-4 mr-2" />
-              Salvar
+            <Button 
+              onClick={editingType?.id === 0 ? handleCreateNew : handleSave}
+              className="bg-orange-500 hover:bg-orange-600 text-white rounded-full"
+              disabled={saving || !editingType?.name}
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Salvando...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  Salvar
+                </>
+              )}
             </Button>
           </DialogFooter>
         </DialogContent>
