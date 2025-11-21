@@ -94,6 +94,103 @@ const LONG_PRESS_DURATION = 3000; // 3 seconds for admin menu
 // Icon Components
 const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size?: number, color?: string }) => {
   switch(name) {
+    case 'crown':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M5 16L3 7l4.5 3L12 4l4.5 6L21 7l-2 9H5z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2" strokeLinejoin="round"/>
+          <Circle cx="12" cy="15" r="2" fill={color}/>
+        </Svg>
+      );
+    case 'fire':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 2C12 2 17 7 17 13C17 17 14.5 20 12 20C9.5 20 7 17 7 13C7 7 12 2 12 2Z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.3"/>
+        </Svg>
+      );
+    case 'utensils':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M9 2v8l-3 3v8M9 10h3m0-8v19M15 2v5c0 1.5 2 3 3 3V2" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </Svg>
+      );
+    case 'menu-book':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v14M4 19l8-1 8 1M4 19a2 2 0 002 2h12a2 2 0 002-2" stroke={color} strokeWidth="2"/>
+          <Path d="M8 7h8M8 11h8M8 15h5" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'cup-soda':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M5 12V8a1 1 0 011-1h12a1 1 0 011 1v4M5 12l2 8h10l2-8M5 12h14" stroke={color} strokeWidth="2"/>
+          <Path d="M7 2v5M12 2v5M17 2v5" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'star':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+          <Path d="M12 2l3 7h7l-5.5 4 2 7L12 15l-6.5 5 2-7L2 9h7z"/>
+        </Svg>
+      );
+    case 'pizza':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 2L3 13h18L12 2z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
+          <Path d="M3 13l9 8 9-8" stroke={color} strokeWidth="2"/>
+          <Circle cx="12" cy="9" r="1" fill={color}/>
+          <Circle cx="9" cy="14" r="1" fill={color}/>
+          <Circle cx="15" cy="14" r="1" fill={color}/>
+        </Svg>
+      );
+    case 'burger':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M4 9h16M4 15h16" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+          <Path d="M5 9a7 7 0 0114 0M5 15v2a2 2 0 002 2h10a2 2 0 002-2v-2" stroke={color} strokeWidth="2"/>
+        </Svg>
+      );
+    case 'salad':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M7 10h10l-1 8H8l-1-8z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
+          <Path d="M12 3v7M8 6l4 4M16 6l-4 4" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'coffee':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M6 8h10v8a2 2 0 01-2 2H8a2 2 0 01-2-2V8zM16 10h2a2 2 0 110 4h-2" stroke={color} strokeWidth="2"/>
+          <Path d="M10 3v2M12 3v2M14 3v2" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'cake':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M3 20h18v-8H3v8zM3 12h18V9a1 1 0 00-1-1H4a1 1 0 00-1 1v3z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
+          <Path d="M12 8V5M12 5a1 1 0 100-2 1 1 0 000 2z" stroke={color} strokeWidth="2"/>
+        </Svg>
+      );
+    case 'table':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Rect x="3" y="6" width="18" height="10" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.1"/>
+          <Path d="M3 10h18M8 6v10M16 6v10" stroke={color} strokeWidth="2"/>
+        </Svg>
+      );
+    case 'chair':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4M5 10v10M19 10v10M5 14h14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'restaurant':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle cx="12" cy="12" r="10" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.1"/>
+          <Path d="M8 12h8M12 8v8" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
     case 'sushi':
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -128,10 +225,10 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
           <Rect x="8" y="12" width="8" height="8" rx="1" stroke={color} strokeWidth="2"/>
         </Svg>
       );
-    case 'fire':
+    case 'arrow-right':
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 2C12 2 17 7 17 13C17 17 14.5 20 12 20C9.5 20 7 17 7 13C7 7 12 2 12 2Z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.3"/>
+          <Path d="M5 12h14M12 5l7 7-7 7" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </Svg>
       );
     case 'bill':
@@ -1474,9 +1571,13 @@ function MainApp() {
             >
               <View style={styles.modeHeaderContent}>
                 <View style={styles.tableIndicator}>
-                  <Text style={styles.tableIcon}>
-                    {parseInt(tableNumber) > 100 ? '🪑' : '🍽️'}
-                  </Text>
+                  <View style={styles.tableIconContainer}>
+                    <IconComponent 
+                      name={parseInt(tableNumber) > 100 ? 'chair' : 'table'} 
+                      size={40} 
+                      color="#FFFFFF" 
+                    />
+                  </View>
                   <View style={styles.tableInfoEnhanced}>
                     <Text style={styles.modeTitleEnhanced}>
                       {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
@@ -1495,13 +1596,13 @@ function MainApp() {
                 style={styles.sessionBadgeEnhanced}
               >
                 <Text style={styles.sessionTextEnhanced}>
-                  💳 Conta Aberta • R$ {sessionTotal.toFixed(2)}
+                  Conta Aberta • R$ {sessionTotal.toFixed(2)}
                 </Text>
               </LinearGradient>
             )}
           </View>
 
-          {/* Service Type Cards - Beautiful Grid */}
+          {/* Service Type Cards - Professional Grid */}
           <ScrollView 
             style={styles.serviceTypeScroll}
             showsVerticalScrollIndicator={false}
@@ -1516,67 +1617,56 @@ function MainApp() {
                     setSelectedMode(serviceType);
                     resetIdleTimer();
                   }}
-                  activeOpacity={0.95}
+                  activeOpacity={0.9}
                 >
-                  <LinearGradient
-                    colors={[
-                      serviceType.color ? `${serviceType.color}15` : '#FF704315',
-                      serviceType.color ? `${serviceType.color}08` : '#FF704308'
-                    ]}
-                    style={styles.serviceCardEnhanced}
-                  >
+                  <View style={[styles.serviceCardModern, {
+                    borderColor: serviceType.color ? `${serviceType.color}30` : '#FF704330',
+                  }]}>
                     {/* Popular Badge */}
                     {index === 0 && (
-                      <View style={styles.popularBadgeEnhanced}>
+                      <View style={styles.popularBadgeModern}>
                         <LinearGradient
-                          colors={['#fbbf24', '#f59e0b']}
-                          style={styles.popularGradientBadge}
+                          colors={['#FFD700', '#FFA500']}
+                          style={styles.popularGradient}
                         >
-                          <Text style={styles.popularText}>⭐ MAIS PEDIDO</Text>
+                          <IconComponent name="star" size={14} color="#FFFFFF" />
+                          <Text style={styles.popularTextModern}>POPULAR</Text>
                         </LinearGradient>
                       </View>
                     )}
                     
-                    {/* Card Glow Effect */}
-                    <View style={[styles.cardGlow, {
-                      backgroundColor: serviceType.color || '#FF7043',
-                      shadowColor: serviceType.color || '#FF7043',
-                    }]} />
+                    {/* Icon Section */}
+                    <LinearGradient
+                      colors={[
+                        serviceType.color ? `${serviceType.color}10` : '#FF704310',
+                        serviceType.color ? `${serviceType.color}05` : '#FF704305'
+                      ]}
+                      style={styles.iconSectionModern}
+                    >
+                      <IconComponent 
+                        name={serviceType.icon || 'restaurant'} 
+                        size={48} 
+                        color={serviceType.color || '#FF7043'} 
+                      />
+                    </LinearGradient>
                     
-                    {/* Icon with Background */}
-                    <View style={[styles.iconWrapper, {
-                      backgroundColor: serviceType.color ? `${serviceType.color}20` : '#FF704320'
-                    }]}>
-                      <Text style={styles.serviceIcon}>
-                        {serviceType.icon === 'crown' && '👑'}
-                        {serviceType.icon === 'fire' && '🔥'}
-                        {serviceType.icon === 'utensils' && '🍴'}
-                        {serviceType.icon === 'menu-book' && '📋'}
-                        {serviceType.icon === 'cup-soda' && '🥤'}
-                        {serviceType.icon === 'star' && '⭐'}
-                        {serviceType.icon === 'pizza' && '🍕'}
-                        {serviceType.icon === 'burger' && '🍔'}
-                        {serviceType.icon === 'salad' && '🥗'}
-                        {serviceType.icon === 'coffee' && '☕'}
-                        {serviceType.icon === 'cake' && '🍰'}
-                        {!serviceType.icon && '🍽️'}
-                      </Text>
-                    </View>
-                    
-                    {/* Content Section */}
-                    <View style={styles.cardMainContent}>
-                      <Text style={styles.cardName}>{serviceType.name}</Text>
-                      <Text style={styles.cardDesc}>
-                        {serviceType.description || 'Peça com rapidez e praticidade'}
-                      </Text>
-                    </View>
-                    
-                    {/* Price Tag */}
-                    {serviceType.price && serviceType.price > 0 && (
-                      <View style={[styles.priceTag, {
-                        backgroundColor: serviceType.color ? `${serviceType.color}15` : '#FF704315'
+                    {/* Content */}
+                    <View style={styles.cardContentModern}>
+                      <Text style={[styles.cardTitleModern, {
+                        color: serviceType.color || '#FF7043'
                       }]}>
-                        <Text style={[styles.priceValue, {
+                        {serviceType.name}
+                      </Text>
+                      <Text style={styles.cardDescModern}>
+                        {serviceType.description || 'Atendimento rápido e eficiente'}
+                      </Text>
+                    </View>
+                    
+                    {/* Price Section */}
+                    {serviceType.price && serviceType.price > 0 && (
+                      <View style={styles.priceSectionModern}>
+                        <Text style={styles.priceLabel}>Taxa de serviço</Text>
+                        <Text style={[styles.priceAmount, {
                           color: serviceType.color || '#FF7043'
                         }]}>
                           R$ {serviceType.price.toFixed(2)}
@@ -1584,15 +1674,18 @@ function MainApp() {
                       </View>
                     )}
                     
-                    {/* Select Button */}
-                    <TouchableOpacity
-                      style={[styles.selectBtn, {
-                        backgroundColor: serviceType.color || '#FF7043'
-                      }]}
+                    {/* Action Button */}
+                    <LinearGradient
+                      colors={[
+                        serviceType.color || '#FF7043',
+                        `${serviceType.color || '#FF7043'}DD`
+                      ]}
+                      style={styles.actionButtonModern}
                     >
-                      <Text style={styles.selectBtnText}>Escolher →</Text>
-                    </TouchableOpacity>
-                  </LinearGradient>
+                      <Text style={styles.actionButtonText}>SELECIONAR</Text>
+                      <IconComponent name="arrow-right" size={18} color="#FFFFFF" />
+                    </LinearGradient>
+                  </View>
                 </TouchableOpacity>
               ))}
             </View>
@@ -1611,7 +1704,7 @@ function MainApp() {
                 colors={['#ef4444', '#dc2626']}
                 style={styles.changeMesaGradientBtn}
               >
-                <Text style={styles.changeMesaBtnText}>↩️  Trocar Mesa</Text>
+                <Text style={styles.changeMesaBtnText}>Trocar Mesa</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -2842,6 +2935,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 15,
   },
+  tableIconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
   tableIcon: {
     fontSize: 45,
   },
@@ -2919,6 +3021,11 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderBottomLeftRadius: 12,
     borderTopRightRadius: 23,
+  },
+  popularBadgeContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
   },
   popularText: {
     color: '#FFFFFF',
@@ -3015,6 +3122,93 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '700',
+  },
+  
+  // Modern Card Styles
+  serviceCardModern: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    padding: 20,
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
+    height: 320,
+  },
+  popularBadgeModern: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 10,
+  },
+  popularGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    gap: 4,
+  },
+  popularTextModern: {
+    color: '#FFFFFF',
+    fontSize: 10,
+    fontWeight: '700',
+  },
+  iconSectionModern: {
+    width: 100,
+    height: 100,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  cardContentModern: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  cardTitleModern: {
+    fontSize: 20,
+    fontWeight: '700',
+    marginBottom: 8,
+  },
+  cardDescModern: {
+    fontSize: 13,
+    color: '#666666',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  priceSectionModern: {
+    borderTopWidth: 1,
+    borderTopColor: '#F0F0F0',
+    paddingTop: 12,
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  priceLabel: {
+    fontSize: 11,
+    color: '#999999',
+    marginBottom: 4,
+  },
+  priceAmount: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  actionButtonModern: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 12,
+    gap: 8,
+  },
+  actionButtonText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   header: {
     flexDirection: "row",

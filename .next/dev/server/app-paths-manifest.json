@@ -1,10 +1,3 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/admin/notifications/page": "app/admin/notifications/page.js",
-  "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
-  "/api/mobile/products/route": "app/api/mobile/products/route.js",
-  "/api/mobile/service-types/route": "app/api/mobile/service-types/route.js",
-  "/api/mobile/tables/route": "app/api/mobile/tables/route.js",
-  "/api/notifications/route": "app/api/notifications/route.js",
   "/page": "app/page.js"
 }
