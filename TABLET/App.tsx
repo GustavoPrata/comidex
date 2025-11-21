@@ -2420,7 +2420,7 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    maxHeight: 400,
+    maxHeight: height * 0.55,
     marginTop: 10,
   },
   tablesListContent: {
@@ -2430,12 +2430,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: config.colors.surface,
-    borderRadius: 12,
+    backgroundColor: 'rgba(30, 30, 30, 0.75)',
+    backdropFilter: 'blur(10px)',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 87, 34, 0.2)',
     padding: 15,
     marginBottom: 10,
-    borderWidth: 1,
-    borderColor: config.colors.primary,
     shadowColor: config.colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
