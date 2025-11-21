@@ -376,7 +376,8 @@ function MainApp() {
   });
 
   // Tables States (for proper selection)
-  const [availableTables, setAvailableTables] = useState<any[]>([]);
+  const [tables, setTables] = useState<any[]>([]);  // All tables
+  const [availableTables, setAvailableTables] = useState<any[]>([]);  // Filtered tables
   const [tablesLoading, setTablesLoading] = useState(true);
   const [tablesError, setTablesError] = useState("");
   const [tableSearchText, setTableSearchText] = useState("");
@@ -828,7 +829,8 @@ function MainApp() {
       console.log("✅ Mesas recebidas:", data);
       
       if (data.success && data.tables) {
-        setAvailableTables(data.tables);
+        setTables(data.tables);  // Set all tables
+        setAvailableTables(data.tables);  // Initially show all tables
         console.log(`📊 Total de mesas: ${data.total}, Disponíveis: ${data.available}, Ocupadas: ${data.occupied}`);
       } else {
         setTablesError(data.error || "Erro ao carregar mesas");
