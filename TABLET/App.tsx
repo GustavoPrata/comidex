@@ -1832,20 +1832,6 @@ function MainApp() {
                         </>
                       )}
                     </View>
-                    
-                    {/* Select Button */}
-                    <TouchableOpacity
-                      style={styles.selectButtonGlass}
-                      activeOpacity={0.8}
-                    >
-                      <LinearGradient
-                        colors={['#FF7043', '#FF5722']}
-                        style={styles.selectButtonGradientGlass}
-                      >
-                        <Text style={styles.selectButtonTextGlass}>Selecionar</Text>
-                        <IconComponent name="arrow-right" size={16} color="#FFFFFF" />
-                      </LinearGradient>
-                    </TouchableOpacity>
                   </BlurView>
                 </TouchableOpacity>
               ))}

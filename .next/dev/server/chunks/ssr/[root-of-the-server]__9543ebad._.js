@@ -883,7 +883,8 @@ function TabletServiceTypesPage() {
             if (typesError) throw typesError;
             const formattedTypes = typesData?.map((type)=>({
                     ...type,
-                    linked_groups: type.tablet_service_type_groups?.map((tsg)=>tsg.groups?.name).filter(Boolean) || []
+                    linked_groups: type.tablet_service_type_groups?.map((tsg)=>tsg.groups?.name).filter(Boolean) || [],
+                    linked_groups_details: type.tablet_service_type_groups?.map((tsg)=>tsg.groups).filter(Boolean) || []
                 })) || [];
             setServiceTypes(formattedTypes);
         } catch (error) {
@@ -916,8 +917,7 @@ function TabletServiceTypesPage() {
             const { error: updateError } = await supabase.from('tablet_service_types').update({
                 name: editingType.name,
                 description: editingType.description,
-                active: editingType.active,
-                price: editingType.price
+                active: editingType.active
             }).eq('id', editingType.id);
             if (updateError) throw updateError;
             await supabase.from('tablet_service_type_groups').delete().eq('service_type_id', editingType.id);
@@ -946,8 +946,7 @@ function TabletServiceTypesPage() {
             active: true,
             display_order: serviceTypes.length + 1,
             icon: null,
-            color: '#FF7043',
-            price: null
+            color: '#FF7043'
         });
         setSelectedGroups([]);
         setDialogOpen(true);
@@ -961,8 +960,7 @@ function TabletServiceTypesPage() {
                     name: editingType.name,
                     description: editingType.description,
                     active: editingType.active,
-                    display_order: editingType.display_order,
-                    price: editingType.price
+                    display_order: editingType.display_order
                 }
             ]).select();
             if (error) throw error;
@@ -1056,7 +1054,7 @@ function TabletServiceTypesPage() {
                         className: "h-12 w-12 animate-spin mx-auto text-orange-500"
                     }, void 0, false, {
                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                        lineNumber: 354,
+                        lineNumber: 352,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1064,18 +1062,18 @@ function TabletServiceTypesPage() {
                         children: "Carregando..."
                     }, void 0, false, {
                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                        lineNumber: 355,
+                        lineNumber: 353,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                lineNumber: 353,
+                lineNumber: 351,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-            lineNumber: 352,
+            lineNumber: 350,
             columnNumber: 7
         }, this);
     }
@@ -1099,12 +1097,12 @@ function TabletServiceTypesPage() {
                                                 className: "h-5 w-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                lineNumber: 370,
+                                                lineNumber: 368,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 369,
+                                            lineNumber: 367,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -1112,13 +1110,13 @@ function TabletServiceTypesPage() {
                                             children: "Tipos de Atendimento"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 372,
+                                            lineNumber: 370,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 368,
+                                    lineNumber: 366,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1134,7 +1132,7 @@ function TabletServiceTypesPage() {
                                                     onChange: (e)=>setSearchTerm(e.target.value)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 376,
+                                                    lineNumber: 374,
                                                     columnNumber: 17
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1143,18 +1141,18 @@ function TabletServiceTypesPage() {
                                                         className: "h-4 w-4 text-white"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 383,
+                                                        lineNumber: 381,
                                                         columnNumber: 19
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 382,
+                                                    lineNumber: 380,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 375,
+                                            lineNumber: 373,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1165,26 +1163,26 @@ function TabletServiceTypesPage() {
                                                     className: "h-4 w-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 390,
+                                                    lineNumber: 388,
                                                     columnNumber: 17
                                                 }, this),
                                                 "Novo Tipo"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 386,
+                                            lineNumber: 384,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 374,
+                                    lineNumber: 372,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                            lineNumber: 367,
+                            lineNumber: 365,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1192,7 +1190,7 @@ function TabletServiceTypesPage() {
                             children: "Configure os tipos de atendimento disponíveis no tablet para os clientes"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                            lineNumber: 397,
+                            lineNumber: 395,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1205,7 +1203,7 @@ function TabletServiceTypesPage() {
                                             className: "h-4 w-4 text-gray-400"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 404,
+                                            lineNumber: 402,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1217,13 +1215,13 @@ function TabletServiceTypesPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 405,
+                                            lineNumber: 403,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 403,
+                                    lineNumber: 401,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1233,7 +1231,7 @@ function TabletServiceTypesPage() {
                                             className: "h-4 w-4 text-gray-400"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 410,
+                                            lineNumber: 408,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1245,30 +1243,30 @@ function TabletServiceTypesPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 411,
+                                            lineNumber: 409,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 409,
+                                    lineNumber: 407,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                            lineNumber: 402,
+                            lineNumber: 400,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                    lineNumber: 365,
+                    lineNumber: 363,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                lineNumber: 364,
+                lineNumber: 362,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1314,22 +1312,22 @@ function TabletServiceTypesPage() {
                                                                             d: "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                            lineNumber: 447,
+                                                                            lineNumber: 445,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                        lineNumber: 446,
+                                                                        lineNumber: 444,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                    lineNumber: 440,
+                                                                    lineNumber: 438,
                                                                     columnNumber: 27
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                lineNumber: 439,
+                                                                lineNumber: 437,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -1344,14 +1342,14 @@ function TabletServiceTypesPage() {
                                                                                 className: "h-4 w-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                                lineNumber: 457,
+                                                                                lineNumber: 455,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             "Mover para cima"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                        lineNumber: 452,
+                                                                        lineNumber: 450,
                                                                         columnNumber: 27
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -1363,26 +1361,26 @@ function TabletServiceTypesPage() {
                                                                                 className: "h-4 w-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                                lineNumber: 465,
+                                                                                lineNumber: 463,
                                                                                 columnNumber: 29
                                                                             }, this),
                                                                             "Mover para baixo"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                        lineNumber: 460,
+                                                                        lineNumber: 458,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                lineNumber: 451,
+                                                                lineNumber: 449,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 438,
+                                                        lineNumber: 436,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1391,12 +1389,12 @@ function TabletServiceTypesPage() {
                                                             className: "h-7 w-7 text-orange-500"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                            lineNumber: 475,
+                                                            lineNumber: 473,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 472,
+                                                        lineNumber: 470,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1404,30 +1402,17 @@ function TabletServiceTypesPage() {
                                                         children: [
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "flex items-center gap-3 mb-1",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                                        className: "font-semibold text-lg text-gray-900 dark:text-gray-100",
-                                                                        children: type.name
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                        lineNumber: 483,
-                                                                        columnNumber: 27
-                                                                    }, this),
-                                                                    type.price && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
-                                                                        className: "bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400",
-                                                                        children: [
-                                                                            "R$ ",
-                                                                            type.price.toFixed(2)
-                                                                        ]
-                                                                    }, void 0, true, {
-                                                                        fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                        lineNumber: 487,
-                                                                        columnNumber: 29
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                    className: "font-semibold text-lg text-gray-900 dark:text-gray-100",
+                                                                    children: type.name
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/app/admin/tablet-service-types/page.tsx",
+                                                                    lineNumber: 481,
+                                                                    columnNumber: 27
+                                                                }, this)
+                                                            }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                lineNumber: 482,
+                                                                lineNumber: 480,
                                                                 columnNumber: 25
                                                             }, this),
                                                             type.description && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1435,44 +1420,57 @@ function TabletServiceTypesPage() {
                                                                 children: type.description
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                lineNumber: 494,
+                                                                lineNumber: 487,
                                                                 columnNumber: 27
                                                             }, this),
-                                                            type.linked_groups && type.linked_groups.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            type.linked_groups_details && type.linked_groups_details.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                                 className: "flex items-center gap-2 flex-wrap",
                                                                 children: [
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$link$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Link$3e$__["Link"], {
                                                                         className: "h-4 w-4 text-gray-400"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                        lineNumber: 501,
+                                                                        lineNumber: 494,
                                                                         columnNumber: 29
                                                                     }, this),
-                                                                    type.linked_groups.map((group, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
+                                                                    type.linked_groups_details.map((group, idx)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Badge"], {
                                                                             variant: "secondary",
                                                                             className: "text-xs",
-                                                                            children: group
-                                                                        }, idx, false, {
+                                                                            children: [
+                                                                                group.name,
+                                                                                group.price && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                    className: "ml-1 font-bold text-green-600 dark:text-green-400",
+                                                                                    children: [
+                                                                                        "R$ ",
+                                                                                        group.price.toFixed(2)
+                                                                                    ]
+                                                                                }, void 0, true, {
+                                                                                    fileName: "[project]/app/admin/tablet-service-types/page.tsx",
+                                                                                    lineNumber: 503,
+                                                                                    columnNumber: 35
+                                                                                }, this)
+                                                                            ]
+                                                                        }, idx, true, {
                                                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                            lineNumber: 503,
+                                                                            lineNumber: 496,
                                                                             columnNumber: 31
                                                                         }, this))
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                lineNumber: 500,
+                                                                lineNumber: 493,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 481,
+                                                        lineNumber: 479,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                lineNumber: 436,
+                                                lineNumber: 434,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1484,7 +1482,7 @@ function TabletServiceTypesPage() {
                                                         children: type.active ? 'Ativo' : 'Inativo'
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 518,
+                                                        lineNumber: 516,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1496,12 +1494,12 @@ function TabletServiceTypesPage() {
                                                             className: "h-4 w-4 text-gray-600 dark:text-gray-400"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                            lineNumber: 534,
+                                                            lineNumber: 532,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 528,
+                                                        lineNumber: 526,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1513,40 +1511,40 @@ function TabletServiceTypesPage() {
                                                             className: "h-4 w-4 text-red-500"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                            lineNumber: 542,
+                                                            lineNumber: 540,
                                                             columnNumber: 25
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 536,
+                                                        lineNumber: 534,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                lineNumber: 517,
+                                                lineNumber: 515,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                        lineNumber: 435,
+                                        lineNumber: 433,
                                         columnNumber: 19
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 434,
+                                    lineNumber: 432,
                                     columnNumber: 17
                                 }, this)
                             }, type.id, false, {
                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                lineNumber: 426,
+                                lineNumber: 424,
                                 columnNumber: 15
                             }, this);
                         })
                     }, void 0, false, {
                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                        lineNumber: 421,
+                        lineNumber: 419,
                         columnNumber: 9
                     }, this),
                     filteredServiceTypes.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1558,7 +1556,7 @@ function TabletServiceTypesPage() {
                                     className: "h-12 w-12 text-gray-400 mx-auto mb-4"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 555,
+                                    lineNumber: 553,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1566,7 +1564,7 @@ function TabletServiceTypesPage() {
                                     children: searchTerm ? 'Nenhum tipo de atendimento encontrado' : 'Nenhum tipo de atendimento configurado'
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 556,
+                                    lineNumber: 554,
                                     columnNumber: 15
                                 }, this),
                                 !searchTerm && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1577,31 +1575,31 @@ function TabletServiceTypesPage() {
                                             className: "h-4 w-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 566,
+                                            lineNumber: 564,
                                             columnNumber: 19
                                         }, this),
                                         "Criar Primeiro Tipo"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 562,
+                                    lineNumber: 560,
                                     columnNumber: 17
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                            lineNumber: 554,
+                            lineNumber: 552,
                             columnNumber: 13
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                        lineNumber: 553,
+                        lineNumber: 551,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                lineNumber: 420,
+                lineNumber: 418,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -1621,12 +1619,12 @@ function TabletServiceTypesPage() {
                                                 className: "h-4 w-4 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                lineNumber: 581,
+                                                lineNumber: 579,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 580,
+                                            lineNumber: 578,
                                             columnNumber: 15
                                         }, this),
                                         editingType?.id === 0 ? 'Novo' : 'Editar',
@@ -1634,20 +1632,20 @@ function TabletServiceTypesPage() {
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 579,
+                                    lineNumber: 577,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogDescription"], {
                                     children: "Configure as informações do tipo de atendimento para o tablet"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 585,
+                                    lineNumber: 583,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                            lineNumber: 578,
+                            lineNumber: 576,
                             columnNumber: 11
                         }, this),
                         editingType && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1655,75 +1653,40 @@ function TabletServiceTypesPage() {
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                     className: "grid grid-cols-2 gap-4",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-2",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
-                                                    htmlFor: "name",
-                                                    children: "Nome"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 594,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                                    id: "name",
-                                                    value: editingType.name,
-                                                    onChange: (e)=>setEditingType({
-                                                            ...editingType,
-                                                            name: e.target.value
-                                                        }),
-                                                    placeholder: "Ex: Rodízio Premium",
-                                                    className: "rounded-xl"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 595,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 593,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-2",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
-                                                    htmlFor: "price",
-                                                    children: "Preço (opcional)"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 605,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
-                                                    id: "price",
-                                                    type: "number",
-                                                    step: "0.01",
-                                                    value: editingType.price || '',
-                                                    onChange: (e)=>setEditingType({
-                                                            ...editingType,
-                                                            price: e.target.value ? parseFloat(e.target.value) : null
-                                                        }),
-                                                    placeholder: "Ex: 189.00",
-                                                    className: "rounded-xl"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 606,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 604,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "space-y-2",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
+                                                htmlFor: "name",
+                                                children: "Nome"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablet-service-types/page.tsx",
+                                                lineNumber: 592,
+                                                columnNumber: 19
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
+                                                id: "name",
+                                                value: editingType.name,
+                                                onChange: (e)=>setEditingType({
+                                                        ...editingType,
+                                                        name: e.target.value
+                                                    }),
+                                                placeholder: "Ex: Rodízio Premium",
+                                                className: "rounded-xl"
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablet-service-types/page.tsx",
+                                                lineNumber: 593,
+                                                columnNumber: 19
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/tablet-service-types/page.tsx",
+                                        lineNumber: 591,
+                                        columnNumber: 17
+                                    }, this)
+                                }, void 0, false, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 592,
+                                    lineNumber: 590,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1734,7 +1697,7 @@ function TabletServiceTypesPage() {
                                             children: "Descrição"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 622,
+                                            lineNumber: 605,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$textarea$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Textarea"], {
@@ -1748,13 +1711,13 @@ function TabletServiceTypesPage() {
                                             className: "rounded-xl min-h-[80px]"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 623,
+                                            lineNumber: 606,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 621,
+                                    lineNumber: 604,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1764,7 +1727,7 @@ function TabletServiceTypesPage() {
                                             children: "Grupos de Cardápio Vinculados"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 634,
+                                            lineNumber: 617,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1788,7 +1751,7 @@ function TabletServiceTypesPage() {
                                                                 }
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                lineNumber: 638,
+                                                                lineNumber: 621,
                                                                 columnNumber: 23
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
@@ -1805,19 +1768,19 @@ function TabletServiceTypesPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                        lineNumber: 655,
+                                                                        lineNumber: 638,
                                                                         columnNumber: 27
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                                lineNumber: 649,
+                                                                lineNumber: 632,
                                                                 columnNumber: 23
                                                             }, this)
                                                         ]
                                                     }, group.id, true, {
                                                         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                        lineNumber: 637,
+                                                        lineNumber: 620,
                                                         columnNumber: 21
                                                     }, this)),
                                                 groups.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1825,13 +1788,13 @@ function TabletServiceTypesPage() {
                                                     children: "Nenhum grupo disponível"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                    lineNumber: 663,
+                                                    lineNumber: 646,
                                                     columnNumber: 21
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 635,
+                                            lineNumber: 618,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1839,13 +1802,13 @@ function TabletServiceTypesPage() {
                                             children: "Os grupos selecionados determinam quais itens do cardápio estarão disponíveis"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 666,
+                                            lineNumber: 649,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 633,
+                                    lineNumber: 616,
                                     columnNumber: 15
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1860,7 +1823,7 @@ function TabletServiceTypesPage() {
                                             children: editingType.active ? 'Ativo' : 'Inativo'
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 672,
+                                            lineNumber: 655,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1872,19 +1835,19 @@ function TabletServiceTypesPage() {
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                            lineNumber: 682,
+                                            lineNumber: 665,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 671,
+                                    lineNumber: 654,
                                     columnNumber: 15
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                            lineNumber: 591,
+                            lineNumber: 589,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -1897,7 +1860,7 @@ function TabletServiceTypesPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 690,
+                                    lineNumber: 673,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1910,7 +1873,7 @@ function TabletServiceTypesPage() {
                                                 className: "h-4 w-4 mr-2 animate-spin"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                lineNumber: 705,
+                                                lineNumber: 688,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvando..."
@@ -1921,7 +1884,7 @@ function TabletServiceTypesPage() {
                                                 className: "h-4 w-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                                lineNumber: 710,
+                                                lineNumber: 693,
                                                 columnNumber: 19
                                             }, this),
                                             "Salvar"
@@ -1929,30 +1892,30 @@ function TabletServiceTypesPage() {
                                     }, void 0, true)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                                    lineNumber: 698,
+                                    lineNumber: 681,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                            lineNumber: 689,
+                            lineNumber: 672,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                    lineNumber: 577,
+                    lineNumber: 575,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-                lineNumber: 576,
+                lineNumber: 574,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/tablet-service-types/page.tsx",
-        lineNumber: 362,
+        lineNumber: 360,
         columnNumber: 5
     }, this);
 }
