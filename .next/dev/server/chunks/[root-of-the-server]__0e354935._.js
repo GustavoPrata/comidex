@@ -826,27 +826,36 @@ async function POST(request) {
                 status: 400
             });
         }
-        // Buscar ou criar sessão da mesa
+        // ARQUITETURA CORRETA: POS é o comandante!
+        // Tablet NUNCA cria sessões, apenas usa sessões abertas pelo POS
         let session = null;
         if (table_number) {
             // Buscar mesa
             const { data: table } = await supabase.from('restaurant_tables').select('*').eq('number', table_number).single();
             if (table) {
-                // Buscar sessão ativa
+                // Buscar sessão ativa - APENAS LER, NUNCA CRIAR!
                 const { data: activeSession } = await supabase.from('tablet_sessoes').select('*').eq('mesa_id', table.id).eq('status', 'ativa').single();
                 if (activeSession) {
                     session = activeSession;
                 } else {
-                    // Criar nova sessão
-                    const { data: newSession } = await supabase.from('tablet_sessoes').insert({
-                        mesa_id: table.id,
-                        status: 'ativa',
-                        inicio_atendimento: new Date().toISOString(),
-                        valor_total: 0,
-                        valor_desconto: 0
-                    }).select().single();
-                    session = newSession;
+                    // ERRO: Mesa não está aberta no POS!
+                    // O tablet não pode enviar pedidos sem sessão aberta
+                    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                        success: false,
+                        error: 'Mesa não está aberta no caixa',
+                        message: 'Por favor, solicite ao atendente para abrir a mesa antes de fazer pedidos.'
+                    }, {
+                        status: 400
+                    });
                 }
+            } else {
+                return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                    success: false,
+                    error: 'Mesa não encontrada',
+                    message: `Mesa ${table_number} não existe no sistema.`
+                }, {
+                    status: 404
+                });
             }
         }
         // Calcular total do pedido

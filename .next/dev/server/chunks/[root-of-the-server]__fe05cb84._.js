@@ -495,61 +495,18 @@ async function GET(request) {
     }
 }
 async function POST(request) {
-    try {
-        const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
-        const { table_number } = await request.json();
-        if (!table_number) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                success: false,
-                error: 'Número da mesa não fornecido'
-            }, {
-                status: 400
-            });
-        }
-        // Buscar mesa
-        const { data: table } = await supabase.from('restaurant_tables').select('*').eq('number', parseInt(table_number)).single();
-        if (!table) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                success: false,
-                error: 'Mesa não encontrada'
-            }, {
-                status: 404
-            });
-        }
-        // Verificar se já existe sessão ativa
-        const { data: existingSession } = await supabase.from('tablet_sessoes').select('*').eq('mesa_id', table.id).eq('status', 'ativa').single();
-        if (existingSession) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-                success: true,
-                session: existingSession,
-                message: 'Sessão já existe para esta mesa'
-            });
-        }
-        // Criar nova sessão
-        const { data: newSession, error } = await supabase.from('tablet_sessoes').insert({
-            mesa_id: table.id,
-            status: 'ativa',
-            inicio_atendimento: new Date().toISOString(),
-            valor_total: 0,
-            valor_desconto: 0
-        }).select().single();
-        if (error) throw error;
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            success: true,
-            session: newSession,
-            message: 'Sessão criada com sucesso'
-        });
-    } catch (error) {
-        console.error('Erro ao criar sessão:', error);
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
-            success: false,
-            error: 'Erro ao criar sessão',
-            message: error.message
-        }, {
-            status: 500
-        });
-    }
-}
+    // BLOQUEADO: Tablet não tem permissão para criar sessões
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: false,
+        error: 'Operação não permitida',
+        message: 'O tablet não pode criar sessões. As mesas devem ser abertas pelo caixa (POS).'
+    }, {
+        status: 403
+    });
+} /* CÓDIGO ORIGINAL REMOVIDO - Tablet nunca deve criar sessões
+ * Apenas o POS tem autoridade para abrir/fechar mesas
+ * O tablet é apenas um visualizador que envia pedidos
+ */ 
 }),
 ];
 

@@ -71,8 +71,9 @@ interface OrderHistory {
   id: number;
   numero: string;
   created_at: string;
-  total: number;
-  items: any[];
+  total?: number;
+  valor_total?: number;
+  items?: any[];
 }
 
 interface Promotion {
@@ -2749,19 +2750,25 @@ function MainApp() {
                       })}
                     </Text>
                   </View>
-                  {order.items.map((item: any, index: number) => (
-                    <View key={index} style={styles.billItem}>
-                      <Text style={styles.billItemQuantity}>{item.quantity}x</Text>
-                      <Text style={styles.billItemName}>{item.product_name}</Text>
-                      <Text style={styles.billItemPrice}>
-                        R$ {(item.quantity * item.price).toFixed(2)}
-                      </Text>
+                  {order.items && order.items.length > 0 ? (
+                    order.items.map((item: any, index: number) => (
+                      <View key={index} style={styles.billItem}>
+                        <Text style={styles.billItemQuantity}>{item.quantity}x</Text>
+                        <Text style={styles.billItemName}>{item.product_name}</Text>
+                        <Text style={styles.billItemPrice}>
+                          R$ {(item.quantity * item.price).toFixed(2)}
+                        </Text>
+                      </View>
+                    ))
+                  ) : (
+                    <View style={styles.billItem}>
+                      <Text style={styles.billItemName}>Pedido sem detalhes</Text>
                     </View>
-                  ))}
+                  )}
                   <View style={styles.billOrderTotal}>
                     <Text style={styles.billOrderTotalLabel}>Subtotal:</Text>
                     <Text style={styles.billOrderTotalValue}>
-                      R$ {order.total.toFixed(2)}
+                      R$ {(order.total || order.valor_total || 0).toFixed(2)}
                     </Text>
                   </View>
                 </View>
