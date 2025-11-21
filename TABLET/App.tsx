@@ -1292,6 +1292,9 @@ function MainApp() {
                   style={styles.tablesList}
                   showsVerticalScrollIndicator={true}
                   contentContainerStyle={styles.tablesListContent}
+                  nestedScrollEnabled={true}
+                  scrollEnabled={true}
+                  bounces={true}
                 >
                   {availableTables.map((table) => (
                     <TouchableOpacity
@@ -2157,7 +2160,7 @@ const styles = StyleSheet.create({
   glassOverlay: {
     backgroundColor: 'rgba(20, 20, 20, 0.6)',
     padding: 20,
-    height: '100%',
+    flex: 1,
   },
   lockContainer: {
     flex: 1,
@@ -2215,36 +2218,38 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: width * 0.05,
-    paddingVertical: height * 0.03,
+    paddingTop: height * 0.05,
+    paddingBottom: height * 0.02,
     backgroundColor: config.colors.background,
   },
   welcomeContent: {
     alignItems: "center",
     width: "100%",
     maxWidth: width * 0.9,
+    flex: 1,
   },
   welcomeHeader: {
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: height * 0.02,
   },
   welcomeLogo: {
     fontSize: 80,
     marginBottom: 20,
   },
   logoCircleContainer: {
-    width: Math.min(width * 0.25, 180),
-    height: Math.min(width * 0.25, 180),
+    width: Math.min(width * 0.2, 140),
+    height: Math.min(width * 0.2, 140),
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: height * 0.02,
+    marginBottom: height * 0.01,
   },
   logoCircleBg: {
-    width: Math.min(width * 0.25, 180),
-    height: Math.min(width * 0.25, 180),
-    borderRadius: Math.min(width * 0.125, 90),
+    width: Math.min(width * 0.2, 140),
+    height: Math.min(width * 0.2, 140),
+    borderRadius: Math.min(width * 0.1, 70),
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     alignItems: "center",
     justifyContent: "center",
@@ -2257,8 +2262,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 112, 67, 0.3)",
   },
   welcomeLogoImage: {
-    width: Math.min(width * 0.17, 120),
-    height: Math.min(width * 0.17, 120),
+    width: Math.min(width * 0.14, 100),
+    height: Math.min(width * 0.14, 100),
   },
   welcomeTitle: {
     fontSize: 36,
@@ -2324,8 +2329,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   adminButton: {
-    marginTop: height * 0.03,
-    padding: height * 0.015,
+    marginTop: height * 0.02,
+    padding: height * 0.01,
+    marginBottom: height * 0.02,
   },
   adminButtonText: {
     color: config.colors.textTertiary,
@@ -2336,16 +2342,15 @@ const styles = StyleSheet.create({
   tableSelectionCard: {
     borderRadius: 28,
     width: "95%",
-    marginVertical: height * 0.02,
+    marginTop: height * 0.01,
+    marginBottom: height * 0.01,
     overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    minHeight: height * 0.5,
-    maxHeight: height * 0.7,
-    flex: 1,
+    height: height * 0.6,
   },
   tableSelectionTitle: {
     fontSize: 22,
@@ -2476,12 +2481,11 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    flex: 1,
+    maxHeight: height * 0.35,
     marginTop: height * 0.01,
   },
   tablesListContent: {
-    paddingBottom: height * 0.02,
-    flexGrow: 1,
+    paddingBottom: height * 0.03,
   },
   tableListItem: {
     flexDirection: "row",
