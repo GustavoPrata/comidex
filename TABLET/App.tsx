@@ -2151,7 +2151,7 @@ const styles = StyleSheet.create({
   glassOverlay: {
     backgroundColor: 'rgba(20, 20, 20, 0.6)',
     padding: 20,
-    flex: 1,
+    height: '100%',
   },
   lockContainer: {
     flex: 1,
@@ -2316,6 +2316,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
+    height: height * 0.65,
   },
   tableSelectionTitle: {
     fontSize: 22,
@@ -2446,11 +2447,12 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    height: height * 0.55,
+    height: height * 0.4,
     marginTop: 10,
   },
   tablesListContent: {
-    paddingBottom: 10,
+    paddingBottom: 20,
+    flexGrow: 1,
   },
   tableListItem: {
     flexDirection: "row",
