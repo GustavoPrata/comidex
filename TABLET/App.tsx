@@ -629,18 +629,37 @@ export default function App() {
   const loadTables = async () => {
     setTablesLoading(true);
     setTablesError("");
+    
+    console.log("🔍 Carregando mesas da API:", config.API_URL);
+    
     try {
-      const response = await fetch(`${config.API_URL}/tables`);
-      const data = await response.json();
+      const response = await fetch(`${config.API_URL}/tables`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
       
-      if (data.success) {
-        setAvailableTables(data.tables);
-      } else {
-        setTablesError("Erro ao carregar mesas");
+      console.log("📡 Response status:", response.status);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    } catch (error) {
-      console.error("Erro ao carregar mesas:", error);
-      setTablesError("Não foi possível carregar as mesas disponíveis");
+      
+      const data = await response.json();
+      console.log("✅ Mesas recebidas:", data);
+      
+      if (data.success && data.tables) {
+        setAvailableTables(data.tables);
+        console.log(`📊 Total de mesas: ${data.total}, Disponíveis: ${data.available}, Ocupadas: ${data.occupied}`);
+      } else {
+        setTablesError(data.error || "Erro ao carregar mesas");
+        console.error("❌ Erro na resposta da API:", data);
+      }
+    } catch (error: any) {
+      console.error("❌ Erro ao carregar mesas:", error);
+      console.error("Detalhes do erro:", error.message);
+      setTablesError(`Erro de conexão: ${error.message || 'Verifique sua internet'}`);
     } finally {
       setTablesLoading(false);
     }

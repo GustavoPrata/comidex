@@ -407,6 +407,38 @@ async function createClient() {
     }
 }
 }),
+"[project]/app/api/mobile/middleware.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "corsHeaders",
+    ()=>corsHeaders,
+    "createCorsResponse",
+    ()=>createCorsResponse,
+    "handleOptions",
+    ()=>handleOptions
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
+;
+function corsHeaders(response) {
+    // Add CORS headers for cross-origin requests
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Access-Control-Max-Age', '86400');
+    return response;
+}
+function createCorsResponse(data) {
+    const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data);
+    return corsHeaders(response);
+}
+function handleOptions() {
+    const response = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"](null, {
+        status: 200
+    });
+    return corsHeaders(response);
+}
+}),
 "[project]/app/api/mobile/tables/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
@@ -420,16 +452,12 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/supabase/server.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$api$2f$mobile$2f$middleware$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/app/api/mobile/middleware.ts [app-route] (ecmascript)");
+;
 ;
 ;
 async function OPTIONS(request) {
-    const response = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"](null, {
-        status: 200
-    });
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-    return response;
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$api$2f$mobile$2f$middleware$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["handleOptions"])();
 }
 async function GET() {
     try {
@@ -456,26 +484,19 @@ async function GET() {
                 occupied_since: activeSession?.inicio_atendimento || null
             };
         });
-        const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$api$2f$mobile$2f$middleware$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createCorsResponse"])({
             success: true,
             tables: formattedTables,
             total: formattedTables.length,
             available: formattedTables.filter((t)=>t.status === 'available').length,
             occupied: formattedTables.filter((t)=>t.status === 'occupied').length
         });
-        // Add CORS headers for cross-origin requests
-        response.headers.set('Access-Control-Allow-Origin', '*');
-        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
-        return response;
     } catch (error) {
         console.error('Erro ao buscar mesas:', error);
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$api$2f$mobile$2f$middleware$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createCorsResponse"])({
             success: false,
             error: 'Erro ao buscar mesas',
             message: error.message
-        }, {
-            status: 500
         });
     }
 }
@@ -568,4 +589,4 @@ async function POST(request) {
 }),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__74850dc6._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__62fa1766._.js.map

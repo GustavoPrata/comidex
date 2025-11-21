@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createCorsResponse, handleOptions } from '../middleware'
+
+// OPTIONS - Handle CORS preflight
+export async function OPTIONS(request: NextRequest) {
+  return handleOptions()
+}
 
 // GET - Listar mesas disponíveis
 export async function GET() {
@@ -40,7 +46,7 @@ export async function GET() {
       }
     })
 
-    return NextResponse.json({
+    return createCorsResponse({
       success: true,
       tables: formattedTables,
       total: formattedTables.length,
@@ -49,14 +55,11 @@ export async function GET() {
     })
   } catch (error: any) {
     console.error('Erro ao buscar mesas:', error)
-    return NextResponse.json(
-      { 
-        success: false,
-        error: 'Erro ao buscar mesas',
-        message: error.message 
-      },
-      { status: 500 }
-    )
+    return createCorsResponse({ 
+      success: false,
+      error: 'Erro ao buscar mesas',
+      message: error.message 
+    })
   }
 }
 
