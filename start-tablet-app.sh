@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "🚀 Iniciando TABLET App (Expo com Tunnel)..."
+echo "🚀 Iniciando TABLET App (Expo)..."
 cd TABLET
 
 # Verifica se node_modules existe
@@ -9,8 +9,11 @@ if [ ! -d "node_modules" ]; then
 fi
 
 echo ""
-echo "✨ Iniciando Expo com Tunnel (acesso externo)..."
-echo "📱 Escaneie o QR code com o app Expo Go no seu celular"
-echo "🌐 Para web: Pressione 'w' no terminal ou acesse http://0.0.0.0:8000"
+echo "✨ Iniciando Expo Metro Bundler..."
+echo "📱 Para usar no celular:"
+echo "   1. Instale o app 'Expo Go' no celular"
+echo "   2. Pressione 's' e escolha 'Expo Go' para ver o QR code"
+echo ""
+echo "🌐 Para web: Pressione 'w' ou acesse http://0.0.0.0:8000"
 echo ""
 npm start
