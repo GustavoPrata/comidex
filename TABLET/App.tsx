@@ -171,6 +171,25 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
           <Path d="M12 8V5M12 5a1 1 0 100-2 1 1 0 000 2z" stroke={color} strokeWidth="2"/>
         </Svg>
       );
+    case 'crown':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M5 16L3 7l5.5 5L12 4l3.5 8L21 7l-2 9H5z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill={color} fillOpacity="0.2"/>
+          <Path d="M5 20h14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'fire':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M12 2c1 3 5 6 5 10a5 5 0 01-10 0c0-1.5.5-2.5 1-3.5.5 1.5 2 2.5 3.5 2.5 1.5 0 2.5-2 .5-5z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
+        </Svg>
+      );
+    case 'menu-book':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v14M4 19l8-2 8 2M4 19a2 2 0 002 2h12a2 2 0 002-2M12 17V5" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
     case 'table':
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -692,6 +711,41 @@ function MainApp() {
     }
   };
 
+  // Get icon based on linked groups
+  const getIconForServiceType = (type: any) => {
+    // Map icons based on linked groups, same logic as admin
+    if (type.linked_groups && type.linked_groups.length > 0) {
+      const groupName = type.linked_groups[0].name?.toLowerCase() || '';
+      
+      if (groupName.includes('premium') || groupName.includes('rodízio premium')) {
+        return 'crown';
+      } else if (groupName.includes('tradicional') || groupName.includes('rodízio tradicional')) {
+        return 'utensils';
+      } else if (groupName.includes('bebida')) {
+        return 'coffee';
+      } else if (groupName.includes('carte')) {
+        return 'menu-book';
+      } else if (groupName.includes('sushi') || groupName.includes('japonês')) {
+        return 'sushi';
+      } else if (groupName.includes('drink') || groupName.includes('coquetel')) {
+        return 'drink';
+      }
+    }
+    
+    // Check type name as fallback
+    const typeName = type.name?.toLowerCase() || '';
+    if (typeName.includes('rodízio')) {
+      return 'fire';
+    } else if (typeName.includes('carte')) {
+      return 'menu-book';
+    } else if (typeName.includes('bebida')) {
+      return 'cup';
+    }
+    
+    // Default icon
+    return 'restaurant';
+  };
+
   const loadServiceTypes = async () => {
     try {
       console.log("📋 Carregando tipos de atendimento da API:", config.API_URL);
@@ -700,7 +754,13 @@ function MainApp() {
       
       if (data.success) {
         console.log("✅ Tipos de atendimento recebidos:", data.service_types);
-        setServiceTypes(data.service_types);
+        // Process service types with proper icon mapping
+        const processedTypes = data.service_types.map((type: any) => ({
+          ...type,
+          icon: getIconForServiceType(type),
+          color: type.color || '#FF7043' // Use default orange if no color
+        }));
+        setServiceTypes(processedTypes);
       } else {
         console.error("❌ Erro ao carregar tipos de atendimento:", data);
         // Usar tipos padrão se falhar
@@ -710,14 +770,14 @@ function MainApp() {
             name: 'Rodízio',
             description: 'Coma à vontade com valor fixo',
             icon: 'fire',
-            color: '#FF5722'
+            color: '#FF7043'
           },
           {
             id: 2,
             name: 'À La Carte',
             description: 'Escolha e pague por item',
             icon: 'menu-book',
-            color: '#4CAF50'
+            color: '#FF7043'
           }
         ]);
       }
@@ -730,14 +790,14 @@ function MainApp() {
           name: 'Rodízio',
           description: 'Coma à vontade com valor fixo',
           icon: 'fire',
-          color: '#FF5722'
+          color: '#FF7043'
         },
         {
           id: 2,
           name: 'À La Carte',
           description: 'Escolha e pague por item',
           icon: 'menu-book',
-          color: '#4CAF50'
+          color: '#FF7043'
         }
       ]);
     }
