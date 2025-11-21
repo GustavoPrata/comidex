@@ -40,6 +40,27 @@ The system is built with a modern web stack. The frontend utilizes **Next.js 15*
 - **Real-time Integration:** Orders sent directly to kitchen printers through existing queue system
 - **Device Tracking:** Unique device ID support for order history
 
+## Running Both Applications
+
+### Main Application (Next.js)
+The main restaurant management system runs on **port 5000** via the "Start application" workflow.
+- URL: `http://localhost:5000`
+- Includes: Admin panel, POS system, and REST APIs
+
+### TABLET Application (Expo/React Native)
+The tablet app runs on **port 8081** (Metro bundler) and **port 8082** (web version).
+To start the TABLET app:
+```bash
+cd TABLET
+npm start
+```
+Or use the convenience script:
+```bash
+./TABLET/start-tablet.sh
+```
+
+Both applications can run simultaneously without port conflicts.
+
 ## External Dependencies
 - **Supabase:** Used for PostgreSQL database and authentication.
 - **jsPDF:** Integrated for professional PDF generation, especially for virtual printer simulations.
