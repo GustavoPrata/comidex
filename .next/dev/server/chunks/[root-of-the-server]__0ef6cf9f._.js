@@ -473,21 +473,27 @@ async function GET() {
       `).eq('active', true).order('display_order');
         if (error) throw error;
         // Formatar resposta
-        const formattedTypes = (serviceTypes || []).map((type)=>({
+        const formattedTypes = (serviceTypes || []).map((type)=>{
+            // Pegar o preço do primeiro grupo linkado
+            const linkedGroups = type.tablet_service_type_groups?.map((tsg)=>({
+                    id: tsg.groups?.id,
+                    name: tsg.groups?.name,
+                    type: tsg.groups?.type,
+                    price: tsg.groups?.price
+                })).filter((g)=>g.id) || [];
+            // Usar o preço do primeiro grupo linkado
+            const priceFromGroup = linkedGroups.length > 0 && linkedGroups[0].price ? linkedGroups[0].price : null;
+            return {
                 id: type.id,
                 name: type.name,
                 description: type.description,
                 icon: type.icon,
                 color: type.color,
-                price: type.price,
+                price: priceFromGroup,
                 display_order: type.display_order,
-                linked_groups: type.tablet_service_type_groups?.map((tsg)=>({
-                        id: tsg.groups?.id,
-                        name: tsg.groups?.name,
-                        type: tsg.groups?.type,
-                        price: tsg.groups?.price
-                    })).filter((g)=>g.id) || []
-            }));
+                linked_groups: linkedGroups
+            };
+        });
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$api$2f$mobile$2f$middleware$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createCorsResponse"])({
             success: true,
             service_types: formattedTypes,
