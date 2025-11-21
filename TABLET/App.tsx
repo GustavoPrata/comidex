@@ -379,6 +379,7 @@ function MainApp() {
   const [availableTables, setAvailableTables] = useState<any[]>([]);
   const [tablesLoading, setTablesLoading] = useState(true);
   const [tablesError, setTablesError] = useState("");
+  const [tableSearchText, setTableSearchText] = useState("");
 
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -1467,6 +1468,68 @@ function MainApp() {
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
               <View style={styles.glassOverlay}>
                 <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
+                
+                {/* Search Input for Direct Table Number */}
+                <View style={styles.tableSearchContainer}>
+                  <IconComponent name="search" size={16} color="#999" />
+                  <TextInput
+                    style={styles.tableSearchInput}
+                    placeholder="Digite o número da mesa..."
+                    placeholderTextColor="#999"
+                    value={tableSearchText}
+                    onChangeText={(text) => {
+                      setTableSearchText(text);
+                      // Filter tables by number
+                      if (text.trim()) {
+                        const filtered = tables.filter(t => 
+                          t.number.toString().includes(text)
+                        );
+                        setAvailableTables(filtered);
+                      } else {
+                        setAvailableTables(tables);
+                      }
+                    }}
+                    keyboardType="numeric"
+                    returnKeyType="done"
+                    onSubmitEditing={() => {
+                      // If there's exactly one match, select it automatically
+                      const exactMatch = tables.find(t => 
+                        t.number.toString() === tableSearchText
+                      );
+                      if (exactMatch) {
+                        setTableNumber(exactMatch.number.toString());
+                        setSelectedTable(exactMatch);
+                        resetIdleTimer();
+                        
+                        if (exactMatch.status === 'occupied') {
+                          Alert.alert(
+                            "Mesa Ocupada",
+                            `Mesa ${exactMatch.number} possui uma conta aberta.\n${exactMatch.session_total > 0 ? `Total atual: R$ ${exactMatch.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
+                            [
+                              { text: "Cancelar", style: "cancel" },
+                              { 
+                                text: "Continuar",
+                                onPress: () => {
+                                  Animated.timing(fadeAnim, {
+                                    toValue: 0,
+                                    duration: config.animations.fast,
+                                    useNativeDriver: true,
+                                  }).start();
+                                }
+                              }
+                            ]
+                          );
+                        } else {
+                          Animated.timing(fadeAnim, {
+                            toValue: 0,
+                            duration: config.animations.fast,
+                            useNativeDriver: true,
+                          }).start();
+                        }
+                      }
+                    }}
+                  />
+                </View>
               
               {tablesLoading ? (
                 <View style={styles.tablesLoadingContainer}>
@@ -2628,7 +2691,25 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: config.colors.textPrimary,
     textAlign: "center",
+    marginBottom: 15,
+  },
+  tableSearchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: 'rgba(40, 40, 42, 0.8)',
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
     marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.08)',
+  },
+  tableSearchInput: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 14,
+    color: config.colors.textPrimary,
+    padding: 0,
   },
   tablesLoadingContainer: {
     padding: 40,
@@ -2762,23 +2843,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: 'rgba(30, 30, 30, 0.75)',
-
-    borderRadius: 20,
+    backgroundColor: 'rgba(40, 40, 42, 0.95)', // Uniform glass color
+    borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 87, 34, 0.2)',
+    borderColor: 'rgba(255, 255, 255, 0.08)',
     padding: 15,
     marginBottom: 10,
-    shadowColor: config.colors.primary,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
   tableListItemOccupied: {
-    backgroundColor: "#0A0A0A",
-    borderColor: "#333333",
-    opacity: 0.6,
+    backgroundColor: 'rgba(40, 40, 42, 0.6)', // Slightly transparent for occupied
+    borderColor: 'rgba(255, 112, 67, 0.2)',
   },
   tableListItemLeft: {
     flexDirection: "row",
