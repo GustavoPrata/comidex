@@ -33,21 +33,31 @@ export async function GET() {
     if (error) throw error
 
     // Formatar resposta
-    const formattedTypes = (serviceTypes || []).map(type => ({
-      id: type.id,
-      name: type.name,
-      description: type.description,
-      icon: type.icon,
-      color: type.color,
-      price: type.price,
-      display_order: type.display_order,
-      linked_groups: type.tablet_service_type_groups?.map((tsg: any) => ({
+    const formattedTypes = (serviceTypes || []).map((type: any) => {
+      // Pegar o preço do primeiro grupo linkado
+      const linkedGroups = type.tablet_service_type_groups?.map((tsg: any) => ({
         id: tsg.groups?.id,
         name: tsg.groups?.name,
         type: tsg.groups?.type,
         price: tsg.groups?.price
       })).filter((g: any) => g.id) || []
-    }))
+      
+      // Usar o preço do primeiro grupo linkado
+      const priceFromGroup = linkedGroups.length > 0 && linkedGroups[0].price 
+        ? linkedGroups[0].price 
+        : null
+      
+      return {
+        id: type.id,
+        name: type.name,
+        description: type.description,
+        icon: type.icon,
+        color: type.color,
+        price: priceFromGroup, // Usar preço do grupo linkado
+        display_order: type.display_order,
+        linked_groups: linkedGroups
+      }
+    })
 
     return createCorsResponse({
       success: true,
