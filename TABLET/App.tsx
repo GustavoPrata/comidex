@@ -214,6 +214,7 @@ function MainApp() {
   const [isLocked, setIsLocked] = useState(false);
   const [password, setPassword] = useState("");
   const [tableNumber, setTableNumber] = useState("");
+  const [selectedTable, setSelectedTable] = useState<any>(null);
   const [selectedMode, setSelectedMode] = useState<"rodizio" | "carte" | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
@@ -369,6 +370,11 @@ function MainApp() {
     loadCategories();
     loadProducts();
     loadTables(); // Load available tables on startup
+    
+    // Atualiza as mesas a cada 30 segundos para manter sincronizado com o POS
+    const tablesInterval = setInterval(() => {
+      loadTables();
+    }, 30000);
     
     // Initialize idle timer
     resetIdleTimer();
@@ -1304,24 +1310,40 @@ function MainApp() {
                         table.status === 'occupied' && styles.tableListItemOccupied,
                       ]}
                       onPress={() => {
-                        if (table.status === 'available') {
-                          setTableNumber(table.number.toString());
-                          resetIdleTimer();
+                        setTableNumber(table.number.toString());
+                        setSelectedTable(table);
+                        resetIdleTimer();
+                        
+                        // Se a mesa está ocupada, mostra informação da conta existente
+                        if (table.status === 'occupied') {
+                          Alert.alert(
+                            "Mesa Ocupada",
+                            `Mesa ${table.number} possui uma conta aberta.\n${table.session_total > 0 ? `Total atual: R$ ${table.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
+                            [
+                              { text: "Cancelar", style: "cancel" },
+                              { 
+                                text: "Continuar",
+                                onPress: () => {
+                                  Animated.timing(fadeAnim, {
+                                    toValue: 0,
+                                    duration: config.animations.fast,
+                                    useNativeDriver: true,
+                                  }).start();
+                                }
+                              }
+                            ]
+                          );
+                        } else {
+                          // Mesa disponível, entra direto
                           Animated.timing(fadeAnim, {
                             toValue: 0,
                             duration: config.animations.fast,
                             useNativeDriver: true,
                           }).start();
-                        } else {
-                          Alert.alert(
-                            "Mesa Ocupada",
-                            `A mesa ${table.number} já está em uso.\n${table.session_total > 0 ? `Conta atual: R$ ${table.session_total.toFixed(2)}` : ''}`,
-                            [{ text: "OK" }]
-                          );
                         }
                       }}
-                      disabled={table.status === 'occupied'}
-                      activeOpacity={table.status === 'occupied' ? 1 : 0.7}
+                      disabled={false}
+                      activeOpacity={0.7}
                     >
                       <View style={styles.tableListItemLeft}>
                         <View style={[
