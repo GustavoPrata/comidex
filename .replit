@@ -119,3 +119,12 @@ author = 44958585
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "tsx server/prompt-console.ts"
+
+[[workflows.workflow]]
+name = "Start TABLET"
+mode = "sequential"
+author = 49976001
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./start-tablet-app.sh"

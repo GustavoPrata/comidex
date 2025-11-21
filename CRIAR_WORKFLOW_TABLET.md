@@ -48,8 +48,8 @@ npm start
 
 ## ✅ Portas Configuradas
 
-- **Metro Bundler (React Native):** Porta 8081
-- **Web Version:** Porta 8082
+- **Metro Bundler (React Native):** Porta 19000 (porta padrão do Expo)
+- **Web Version:** Porta 19006 (porta padrão do Expo Web)
 
 ---
 
@@ -58,7 +58,8 @@ npm start
 Depois de iniciar:
 
 1. **No navegador:**
-   - Acesse: `http://localhost:8082`
+   - Metro Bundler: `http://0.0.0.0:19000`
+   - Web Version: `http://0.0.0.0:19006`
 
 2. **No celular (Expo Go):**
    - Instale o app **Expo Go** no celular

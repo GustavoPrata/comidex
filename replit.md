@@ -48,7 +48,7 @@ The main restaurant management system runs on **port 5000** via the "Start appli
 - Includes: Admin panel, POS system, and REST APIs
 
 ### TABLET Application (Expo/React Native)
-The tablet app runs on **port 8081** (Metro bundler) and **port 8082** (web version).
+The tablet app runs on **port 19000** (Metro bundler) and **port 19006** (web version).
 To start the TABLET app:
 ```bash
 cd TABLET
@@ -56,7 +56,7 @@ npm start
 ```
 Or use the convenience script:
 ```bash
-./TABLET/start-tablet.sh
+./start-tablet-app.sh
 ```
 
 Both applications can run simultaneously without port conflicts.

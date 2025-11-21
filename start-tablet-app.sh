@@ -8,5 +8,7 @@ if [ ! -d "node_modules" ]; then
   npm install
 fi
 
-echo "✨ Iniciando Expo..."
+echo "✨ Iniciando Expo na porta 19000..."
+echo "📱 Metro Bundler: http://0.0.0.0:19000"
+echo "🌐 Web Version: http://0.0.0.0:19006"
 npm start

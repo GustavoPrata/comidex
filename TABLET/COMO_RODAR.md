@@ -22,8 +22,8 @@
    ```
 
 5. **O Expo vai iniciar em:**
-   - Metro Bundler: porta **8081**
-   - Web: porta **8082**
+   - Metro Bundler: porta **19000** (porta padrão do Expo)
+   - Web: porta **19006** (porta padrão do Expo Web)
 
 ## Opção 2: Usando o Script de Inicialização
 
@@ -46,17 +46,20 @@ No terminal:
 ## Testando
 
 - **Aplicação Principal:** Acesse `http://localhost:5000`
-- **TABLET Web:** Acesse `http://localhost:8082`
+- **TABLET Metro Bundler:** `http://0.0.0.0:19000`
+- **TABLET Web:** Acesse `http://0.0.0.0:19006`
 - **TABLET Mobile:** Use o app Expo Go no celular e escaneie o QR code
 
 ## Problemas Comuns
 
-### "Port already in use"
+### "Port already in use" ou "No ports available"
 Se aparecer erro de porta já em uso:
 ```bash
-# Mate o processo na porta 8081
-npx kill-port 8081
+# Mate o processo na porta 19000
+npx kill-port 19000
 ```
+
+Se aparecer "No ports available" no Replit, o Expo vai automaticamente usar uma porta disponível.
 
 ### Dependências não instaladas
 ```bash
