@@ -1,14 +1,12 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/admin/items/page": "app/admin/items/page.js",
-  "/admin/menu-structure/page": "app/admin/menu-structure/page.js",
-  "/admin/page": "app/admin/page.js",
   "/admin/tablet-service-types/page": "app/admin/tablet-service-types/page.js",
   "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
   "/api/mobile/products/route": "app/api/mobile/products/route.js",
   "/api/mobile/service-types/route": "app/api/mobile/service-types/route.js",
   "/api/mobile/tables/route": "app/api/mobile/tables/route.js",
   "/api/notifications/route": "app/api/notifications/route.js",
+  "/api/promocoes/route": "app/api/promocoes/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
   "/page": "app/page.js",
   "/pos/page": "app/pos/page.js"

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -76,22 +75,6 @@ interface Group {
   type: string | null
   price: number | null
   active: boolean
-}
-
-const iconMap: { [key: string]: any } = {
-  crown: Crown,
-  fire: Flame,
-  utensils: Utensils,
-  'menu-book': BookOpen,
-  'cup-soda': Coffee,
-  star: Star,
-  pizza: Pizza,
-  burger: Sandwich,
-  salad: Salad,
-  coffee: Coffee,
-  cake: Cake,
-  wine: Wine,
-  restaurant: Utensils
 }
 
 export default function TabletServiceTypesPage() {
@@ -181,8 +164,6 @@ export default function TabletServiceTypesPage() {
           name: editingType.name,
           description: editingType.description,
           active: editingType.active,
-          icon: editingType.icon,
-          color: editingType.color,
           price: editingType.price
         })
         .eq('id', editingType.id)
@@ -225,7 +206,7 @@ export default function TabletServiceTypesPage() {
       description: '',
       active: true,
       display_order: serviceTypes.length + 1,
-      icon: 'restaurant',
+      icon: null,
       color: '#FF7043',
       price: null
     })
@@ -245,8 +226,6 @@ export default function TabletServiceTypesPage() {
           description: editingType.description,
           active: editingType.active,
           display_order: editingType.display_order,
-          icon: editingType.icon,
-          color: editingType.color,
           price: editingType.price
         }])
         .select()
@@ -343,25 +322,23 @@ export default function TabletServiceTypesPage() {
     }
   }
 
-  const iconOptions = [
-    { value: 'crown', label: 'Coroa', icon: Crown },
-    { value: 'fire', label: 'Fogo', icon: Flame },
-    { value: 'utensils', label: 'Talheres', icon: Utensils },
-    { value: 'menu-book', label: 'Menu', icon: BookOpen },
-    { value: 'cup-soda', label: 'Bebida', icon: Coffee },
-    { value: 'star', label: 'Estrela', icon: Star },
-    { value: 'pizza', label: 'Pizza', icon: Pizza },
-    { value: 'burger', label: 'Hambúrguer', icon: Sandwich },
-    { value: 'salad', label: 'Salada', icon: Salad },
-    { value: 'coffee', label: 'Café', icon: Coffee },
-    { value: 'cake', label: 'Bolo', icon: Cake },
-    { value: 'wine', label: 'Vinho', icon: Wine },
-    { value: 'restaurant', label: 'Restaurante', icon: Utensils }
-  ]
-
-  const getIcon = (iconName: string | null) => {
-    const Icon = iconMap[iconName || 'restaurant'] || Utensils
-    return Icon
+  // Get icon based on linked group type
+  const getIconForType = (type: ServiceType) => {
+    // Try to get icon from the first linked group name
+    if (type.linked_groups && type.linked_groups.length > 0) {
+      const groupName = type.linked_groups[0].toLowerCase()
+      if (groupName.includes('premium') || groupName.includes('rodízio premium')) {
+        return Crown
+      } else if (groupName.includes('tradicional') || groupName.includes('rodízio tradicional')) {
+        return Utensils
+      } else if (groupName.includes('bebida')) {
+        return Coffee
+      } else if (groupName.includes('carte')) {
+        return BookOpen
+      }
+    }
+    // Default icon
+    return Utensils
   }
 
   const filteredServiceTypes = serviceTypes.filter(type => 
@@ -443,7 +420,7 @@ export default function TabletServiceTypesPage() {
       <div className="p-4">
         <div className="space-y-4">
           {filteredServiceTypes.map((type, index) => {
-            const Icon = getIcon(type.icon)
+            const Icon = getIconForType(type)
             
             return (
               <div
@@ -493,12 +470,10 @@ export default function TabletServiceTypesPage() {
                       
                       {/* Icon */}
                       <div 
-                        className="flex items-center justify-center w-14 h-14 rounded-xl"
-                        style={{ backgroundColor: type.color + '20' }}
+                        className="flex items-center justify-center w-14 h-14 rounded-xl bg-orange-500/10"
                       >
                         <Icon 
-                          className="h-7 w-7" 
-                          style={{ color: type.color }}
+                          className="h-7 w-7 text-orange-500"
                         />
                       </div>
                       
@@ -540,11 +515,16 @@ export default function TabletServiceTypesPage() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-3">
-                      <Switch
-                        checked={type.active}
-                        onCheckedChange={() => handleToggleActive(type)}
-                        className="data-[state=checked]:bg-green-500"
-                      />
+                      <button
+                        onClick={() => handleToggleActive(type)}
+                        className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                          type.active 
+                            ? 'bg-green-600 hover:bg-green-700 text-white' 
+                            : 'bg-red-500 hover:bg-red-600 text-white'
+                        }`}
+                      >
+                        {type.active ? 'Ativo' : 'Inativo'}
+                      </button>
                       <Button
                         size="sm"
                         variant="ghost"
@@ -649,51 +629,6 @@ export default function TabletServiceTypesPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="icon">Ícone</Label>
-                  <Select
-                    value={editingType.icon || 'restaurant'}
-                    onValueChange={(value) => setEditingType({ ...editingType, icon: value })}
-                  >
-                    <SelectTrigger className="rounded-xl">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {iconOptions.map((option) => {
-                        const IconComponent = option.icon
-                        return (
-                          <SelectItem key={option.value} value={option.value}>
-                            <div className="flex items-center gap-2">
-                              <IconComponent className="h-4 w-4" />
-                              {option.label}
-                            </div>
-                          </SelectItem>
-                        )
-                      })}
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="color">Cor</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="color"
-                      type="color"
-                      value={editingType.color}
-                      onChange={(e) => setEditingType({ ...editingType, color: e.target.value })}
-                      className="w-20 h-10 rounded-xl cursor-pointer"
-                    />
-                    <Input
-                      value={editingType.color}
-                      onChange={(e) => setEditingType({ ...editingType, color: e.target.value })}
-                      placeholder="#FF7043"
-                      className="flex-1 rounded-xl"
-                    />
-                  </div>
-                </div>
-              </div>
 
               <div className="space-y-2">
                 <Label>Grupos de Cardápio Vinculados</Label>
@@ -734,15 +669,19 @@ export default function TabletServiceTypesPage() {
               </div>
 
               <div className="flex items-center space-x-2">
-                <Switch
-                  id="active"
-                  checked={editingType.active}
-                  onCheckedChange={(checked) => setEditingType({ ...editingType, active: checked })}
-                  className="data-[state=checked]:bg-green-500"
-                />
-                <Label htmlFor="active" className="font-normal cursor-pointer">
-                  Tipo de atendimento ativo
-                </Label>
+                <button
+                  onClick={() => setEditingType({ ...editingType, active: !editingType.active })}
+                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                    editingType.active 
+                      ? 'bg-green-600 hover:bg-green-700 text-white' 
+                      : 'bg-red-500 hover:bg-red-600 text-white'
+                  }`}
+                >
+                  {editingType.active ? 'Ativo' : 'Inativo'}
+                </button>
+                <span className="text-sm text-gray-600 dark:text-gray-400">
+                  Tipo de atendimento {editingType.active ? 'disponível' : 'não disponível'} no tablet
+                </span>
               </div>
             </div>
           )}
