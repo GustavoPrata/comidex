@@ -112,7 +112,7 @@ args = "Start application"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Tablet App"
+args = "Tablet App (Ngrok Tunnel)"
 
 [[workflows.workflow]]
 name = "Start application"
@@ -127,16 +127,16 @@ waitForPort = 5000
 outputType = "webview"
 
 [[workflows.workflow]]
-name = "Tablet App"
+name = "Tablet App (Ngrok Tunnel)"
 author = "agent"
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd TABLET && npx expo start --web --port 8080"
-waitForPort = 8080
+args = "cd TABLET && npx expo start --tunnel --web"
+waitForPort = 8000
+
+[workflows.workflow.metadata]
+outputType = "console"
 
 [agent]
 expertMode = true
