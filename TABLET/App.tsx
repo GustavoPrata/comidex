@@ -1050,7 +1050,6 @@ function MainApp() {
                   </View>
                 </View>
               </Animated.View>
-              <Text style={styles.idleSubtitle}>SISTEMA JAPONÊS</Text>
             </View>
 
             {/* Promotional Carousel */}
@@ -1263,7 +1262,6 @@ function MainApp() {
                   </View>
                 </View>
               </Pressable>
-              <Text style={styles.welcomeSubtitle}>SISTEMA JAPONÊS</Text>
             </View>
             
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
@@ -2219,14 +2217,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 40,
-    paddingVertical: 20,
+    paddingHorizontal: width * 0.05,
+    paddingVertical: height * 0.03,
     backgroundColor: config.colors.background,
   },
   welcomeContent: {
     alignItems: "center",
     width: "100%",
-    maxWidth: 600,
+    maxWidth: width * 0.9,
   },
   welcomeHeader: {
     alignItems: "center",
@@ -2237,16 +2235,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logoCircleContainer: {
-    width: 180,
-    height: 180,
+    width: Math.min(width * 0.25, 180),
+    height: Math.min(width * 0.25, 180),
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20,
+    marginBottom: height * 0.02,
   },
   logoCircleBg: {
-    width: 180,
-    height: 180,
-    borderRadius: 90,
+    width: Math.min(width * 0.25, 180),
+    height: Math.min(width * 0.25, 180),
+    borderRadius: Math.min(width * 0.125, 90),
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     alignItems: "center",
     justifyContent: "center",
@@ -2259,8 +2257,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 112, 67, 0.3)",
   },
   welcomeLogoImage: {
-    width: 120,
-    height: 120,
+    width: Math.min(width * 0.17, 120),
+    height: Math.min(width * 0.17, 120),
   },
   welcomeTitle: {
     fontSize: 36,
@@ -2326,8 +2324,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   adminButton: {
-    marginTop: 40,
-    padding: 10,
+    marginTop: height * 0.03,
+    padding: height * 0.015,
   },
   adminButtonText: {
     color: config.colors.textTertiary,
@@ -2337,15 +2335,17 @@ const styles = StyleSheet.create({
   // New Table Selection Styles
   tableSelectionCard: {
     borderRadius: 28,
-    width: "100%",
-    marginVertical: 20,
+    width: "95%",
+    marginVertical: height * 0.02,
     overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: height * 0.65,
+    minHeight: height * 0.5,
+    maxHeight: height * 0.7,
+    flex: 1,
   },
   tableSelectionTitle: {
     fontSize: 22,
@@ -2476,11 +2476,11 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    height: height * 0.4,
-    marginTop: 10,
+    flex: 1,
+    marginTop: height * 0.01,
   },
   tablesListContent: {
-    paddingBottom: 20,
+    paddingBottom: height * 0.02,
     flexGrow: 1,
   },
   tableListItem: {
