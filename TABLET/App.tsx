@@ -22,8 +22,9 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BlurView } from "expo-blur";
+import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Svg, { Path, Circle, Rect, LinearGradient, Defs, Stop } from 'react-native-svg';
+import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import { config } from './config';
 
 // Types
@@ -1098,7 +1099,7 @@ function MainApp() {
               >
                 <View style={styles.idleLogoCircle}>
                   <Image 
-                    source={require('./assets/logo-comidex-new.png')}
+                    source={require('./assets/logo23.png')}
                     style={styles.idleLogoImage}
                     resizeMode="contain"
                   />
@@ -1298,7 +1299,7 @@ function MainApp() {
                 <View style={styles.logoCircleContainer}>
                   <View style={styles.logoCircleBg}>
                     <Image 
-                      source={require('./assets/logo-comidex-new.png')}
+                      source={require('./assets/logo23.png')}
                       style={styles.welcomeLogoImage}
                       resizeMode="contain"
                     />
@@ -1449,101 +1450,171 @@ function MainApp() {
     );
   }
 
-  // Mode Selection Screen
+  // Mode Selection Screen - New Beautiful Design
   if (!selectedMode) {
     return (
       <View style={styles.container}>
         <StatusBar style="light" />
         <IdleScreen />
         <AdminPanel />
+        
+        {/* Gradient Background */}
+        <LinearGradient
+          colors={['#1a1a2e', '#16213e', '#0f3460']}
+          style={StyleSheet.absoluteFillObject}
+        />
+        
         <View style={styles.modeContainer} {...panResponderRef.current?.panHandlers}>
-          <View style={styles.modeHeader}>
+          {/* Enhanced Header */}
+          <View style={styles.modeHeaderEnhanced}>
             <Pressable
               onLongPress={handleLongPressStart}
               onPressOut={handleLongPressEnd}
               delayLongPress={0}
             >
-              <Text style={styles.modeTitle}>
-                {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
-              </Text>
-            </Pressable>
-            <Text style={styles.modeSubtitle}>Escolha como deseja pedir</Text>
-            {session && (
-              <View style={styles.sessionStatusBadge}>
-                <Text style={styles.sessionStatusText}>
-                  Mesa com conta aberta - Total: R$ {sessionTotal.toFixed(2)}
-                </Text>
+              <View style={styles.modeHeaderContent}>
+                <View style={styles.tableIndicator}>
+                  <Text style={styles.tableIcon}>
+                    {parseInt(tableNumber) > 100 ? '🪑' : '🍽️'}
+                  </Text>
+                  <View style={styles.tableInfoEnhanced}>
+                    <Text style={styles.modeTitleEnhanced}>
+                      {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
+                    </Text>
+                    <Text style={styles.modeSubtitleEnhanced}>
+                      Escolha seu atendimento preferido
+                    </Text>
+                  </View>
+                </View>
               </View>
+            </Pressable>
+            
+            {session && (
+              <LinearGradient
+                colors={['#22c55e', '#16a34a']}
+                style={styles.sessionBadgeEnhanced}
+              >
+                <Text style={styles.sessionTextEnhanced}>
+                  💳 Conta Aberta • R$ {sessionTotal.toFixed(2)}
+                </Text>
+              </LinearGradient>
             )}
           </View>
 
+          {/* Service Type Cards - Beautiful Grid */}
           <ScrollView 
-            horizontal 
-            style={styles.modeCards}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.modeCardsContent}
+            style={styles.serviceTypeScroll}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.serviceTypeGrid}
           >
-            {serviceTypes.map((serviceType, index) => (
-              <TouchableOpacity
-                key={serviceType.id}
-                style={styles.modeCardWrapper}
-                onPress={() => {
-                  setSelectedMode(serviceType);
-                  resetIdleTimer();
-                }}
-                activeOpacity={0.9}
-              >
-                <BlurView intensity={70} tint="dark" style={styles.modeCard}>
-                  <View style={[styles.modeCardContent, { 
-                    backgroundColor: `${serviceType.color || '#FF7043'}20`
-                  }]}>
-                    <View style={styles.modeCardIcon}>
-                      {serviceType.icon === 'crown' && <Text style={{ fontSize: 50 }}>👑</Text>}
-                      {serviceType.icon === 'fire' && <IconComponent name="fire" size={60} color="#FFF" />}
-                      {serviceType.icon === 'utensils' && <Text style={{ fontSize: 50 }}>🍴</Text>}
-                      {serviceType.icon === 'menu-book' && (
-                        <Svg width={60} height={60} viewBox="0 0 24 24" fill="none">
-                          <Path d="M4 7h16M4 12h16M4 17h16" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
-                        </Svg>
-                      )}
-                      {serviceType.icon === 'cup-soda' && <Text style={{ fontSize: 50 }}>🥤</Text>}
-                      {serviceType.icon === 'star' && <Text style={{ fontSize: 50 }}>⭐</Text>}
-                      {serviceType.icon === 'pizza' && <Text style={{ fontSize: 50 }}>🍕</Text>}
-                      {serviceType.icon === 'burger' && <Text style={{ fontSize: 50 }}>🍔</Text>}
-                      {serviceType.icon === 'salad' && <Text style={{ fontSize: 50 }}>🥗</Text>}
-                      {serviceType.icon === 'coffee' && <Text style={{ fontSize: 50 }}>☕</Text>}
-                      {serviceType.icon === 'cake' && <Text style={{ fontSize: 50 }}>🍰</Text>}
-                      {!serviceType.icon && <IconComponent name="restaurant" size={60} color="#FFF" />}
-                    </View>
-                    <Text style={styles.modeCardTitle}>{serviceType.name}</Text>
-                    <Text style={styles.modeCardDescription}>
-                      {serviceType.description || 'Selecione este modo de atendimento'}
-                    </Text>
-                    {serviceType.price && (
-                      <View style={styles.modeCardPrice}>
-                        <Text style={styles.modeCardPriceText}>R$ {serviceType.price.toFixed(2)}</Text>
-                      </View>
-                    )}
+            <View style={styles.cardsGridContainer}>
+              {serviceTypes.map((serviceType, index) => (
+                <TouchableOpacity
+                  key={serviceType.id}
+                  style={styles.serviceCardWrapper}
+                  onPress={() => {
+                    setSelectedMode(serviceType);
+                    resetIdleTimer();
+                  }}
+                  activeOpacity={0.95}
+                >
+                  <LinearGradient
+                    colors={[
+                      serviceType.color ? `${serviceType.color}15` : '#FF704315',
+                      serviceType.color ? `${serviceType.color}08` : '#FF704308'
+                    ]}
+                    style={styles.serviceCardEnhanced}
+                  >
+                    {/* Popular Badge */}
                     {index === 0 && (
-                      <View style={styles.modeCardBadge}>
-                        <Text style={styles.modeCardBadgeText}>MAIS POPULAR</Text>
+                      <View style={styles.popularBadgeEnhanced}>
+                        <LinearGradient
+                          colors={['#fbbf24', '#f59e0b']}
+                          style={styles.popularGradientBadge}
+                        >
+                          <Text style={styles.popularText}>⭐ MAIS PEDIDO</Text>
+                        </LinearGradient>
                       </View>
                     )}
-                  </View>
-                </BlurView>
-              </TouchableOpacity>
-            ))}
+                    
+                    {/* Card Glow Effect */}
+                    <View style={[styles.cardGlow, {
+                      backgroundColor: serviceType.color || '#FF7043',
+                      shadowColor: serviceType.color || '#FF7043',
+                    }]} />
+                    
+                    {/* Icon with Background */}
+                    <View style={[styles.iconWrapper, {
+                      backgroundColor: serviceType.color ? `${serviceType.color}20` : '#FF704320'
+                    }]}>
+                      <Text style={styles.serviceIcon}>
+                        {serviceType.icon === 'crown' && '👑'}
+                        {serviceType.icon === 'fire' && '🔥'}
+                        {serviceType.icon === 'utensils' && '🍴'}
+                        {serviceType.icon === 'menu-book' && '📋'}
+                        {serviceType.icon === 'cup-soda' && '🥤'}
+                        {serviceType.icon === 'star' && '⭐'}
+                        {serviceType.icon === 'pizza' && '🍕'}
+                        {serviceType.icon === 'burger' && '🍔'}
+                        {serviceType.icon === 'salad' && '🥗'}
+                        {serviceType.icon === 'coffee' && '☕'}
+                        {serviceType.icon === 'cake' && '🍰'}
+                        {!serviceType.icon && '🍽️'}
+                      </Text>
+                    </View>
+                    
+                    {/* Content Section */}
+                    <View style={styles.cardMainContent}>
+                      <Text style={styles.cardName}>{serviceType.name}</Text>
+                      <Text style={styles.cardDesc}>
+                        {serviceType.description || 'Peça com rapidez e praticidade'}
+                      </Text>
+                    </View>
+                    
+                    {/* Price Tag */}
+                    {serviceType.price && serviceType.price > 0 && (
+                      <View style={[styles.priceTag, {
+                        backgroundColor: serviceType.color ? `${serviceType.color}15` : '#FF704315'
+                      }]}>
+                        <Text style={[styles.priceValue, {
+                          color: serviceType.color || '#FF7043'
+                        }]}>
+                          R$ {serviceType.price.toFixed(2)}
+                        </Text>
+                      </View>
+                    )}
+                    
+                    {/* Select Button */}
+                    <TouchableOpacity
+                      style={[styles.selectBtn, {
+                        backgroundColor: serviceType.color || '#FF7043'
+                      }]}
+                    >
+                      <Text style={styles.selectBtnText}>Escolher →</Text>
+                    </TouchableOpacity>
+                  </LinearGradient>
+                </TouchableOpacity>
+              ))}
+            </View>
           </ScrollView>
 
-          <TouchableOpacity 
-            style={styles.changeMesaButton}
-            onPress={() => {
-              setTableNumber("");
-              resetIdleTimer();
-            }}
-          >
-            <Text style={styles.changeMesaButtonText}>Trocar Mesa</Text>
-          </TouchableOpacity>
+          {/* Bottom Actions */}
+          <View style={styles.bottomActionsContainer}>
+            <TouchableOpacity 
+              style={styles.changeMesaButtonEnhanced}
+              onPress={() => {
+                setTableNumber("");
+                resetIdleTimer();
+              }}
+            >
+              <LinearGradient
+                colors={['#ef4444', '#dc2626']}
+                style={styles.changeMesaGradientBtn}
+              >
+                <Text style={styles.changeMesaBtnText}>↩️  Trocar Mesa</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -2755,6 +2826,195 @@ const styles = StyleSheet.create({
     color: config.colors.textSecondary,
     fontSize: 16,
     textDecorationLine: "underline",
+  },
+  
+  // Enhanced Mode Selection Styles
+  modeHeaderEnhanced: {
+    alignItems: "center",
+    marginBottom: 30,
+    paddingHorizontal: 20,
+  },
+  modeHeaderContent: {
+    alignItems: "center",
+  },
+  tableIndicator: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 15,
+  },
+  tableIcon: {
+    fontSize: 45,
+  },
+  tableInfoEnhanced: {
+    alignItems: "flex-start",
+  },
+  modeTitleEnhanced: {
+    fontSize: 36,
+    fontWeight: "800",
+    color: "#FFFFFF",
+    letterSpacing: 0.5,
+    textShadowColor: 'rgba(0,0,0,0.3)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 5,
+  },
+  modeSubtitleEnhanced: {
+    fontSize: 16,
+    color: "rgba(255,255,255,0.7)",
+    marginTop: 3,
+  },
+  sessionBadgeEnhanced: {
+    borderRadius: 25,
+    marginTop: 15,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    shadowColor: "#22c55e",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  sessionTextEnhanced: {
+    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "700",
+  },
+  serviceTypeScroll: {
+    flex: 1,
+  },
+  serviceTypeGrid: {
+    paddingVertical: 10,
+  },
+  cardsGridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    gap: 20,
+  },
+  serviceCardWrapper: {
+    width: width * 0.28,
+    minWidth: 280,
+    maxWidth: 320,
+    height: 340,
+    marginBottom: 15,
+  },
+  serviceCardEnhanced: {
+    flex: 1,
+    borderRadius: 25,
+    padding: 25,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    position: 'relative',
+    overflow: 'hidden',
+  },
+  popularBadgeEnhanced: {
+    position: 'absolute',
+    top: -2,
+    right: -2,
+    zIndex: 10,
+  },
+  popularGradientBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderBottomLeftRadius: 12,
+    borderTopRightRadius: 23,
+  },
+  popularText: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+  },
+  cardGlow: {
+    position: 'absolute',
+    top: -50,
+    left: '50%',
+    marginLeft: -75,
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    opacity: 0.1,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 50,
+    elevation: 10,
+  },
+  iconWrapper: {
+    width: 90,
+    height: 90,
+    borderRadius: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+  serviceIcon: {
+    fontSize: 55,
+  },
+  cardMainContent: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  cardName: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  cardDesc: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.6)',
+    textAlign: 'center',
+    lineHeight: 20,
+  },
+  priceTag: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 15,
+    alignSelf: 'center',
+    marginBottom: 15,
+  },
+  priceValue: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  selectBtn: {
+    paddingVertical: 13,
+    borderRadius: 15,
+    alignItems: 'center',
+  },
+  selectBtnText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  bottomActionsContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
+  },
+  changeMesaButtonEnhanced: {
+    alignSelf: 'center',
+  },
+  changeMesaGradientBtn: {
+    paddingHorizontal: 30,
+    paddingVertical: 12,
+    borderRadius: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    shadowColor: "#ef4444",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  changeMesaBtnText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
   },
   header: {
     flexDirection: "row",
