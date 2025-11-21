@@ -236,6 +236,25 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
           <Circle cx="10" cy="11" r="1" fill={color}/>
         </Svg>
       );
+    case 'search':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Circle cx="11" cy="11" r="8" stroke={color} strokeWidth="2" fill="none"/>
+          <Path d="M21 21l-4.35-4.35" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'wifi-off':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M1 1l22 22M9 16.2c1.1-.9 2.5-1.4 4-1.4s2.9.5 4 1.4M5 12c.6-.5 1.2-.9 1.9-1.3M19 12c-.6-.5-1.2-.9-1.9-1.3M2 8c1.7-1.4 3.7-2.4 5.9-3M22 8c-1.7-1.4-3.7-2.4-5.9-3" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
+    case 'x':
+      return (
+        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+          <Path d="M18 6L6 18M6 6l12 12" stroke={color} strokeWidth="2" strokeLinecap="round"/>
+        </Svg>
+      );
     case 'dessert':
       return (
         <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
@@ -1441,74 +1460,133 @@ function MainApp() {
 
   // Welcome Screen - Table Selection
   if (!tableNumber) {
+    const [searchTable, setSearchTable] = React.useState("");
+    
+    // Filter tables based on search
+    const filteredTables = availableTables.filter(table => 
+      table.number.toString().includes(searchTable) ||
+      table.name.toLowerCase().includes(searchTable.toLowerCase())
+    );
+
+    // Handle direct navigation when exact match
+    React.useEffect(() => {
+      if (searchTable.length > 0) {
+        const exactMatch = availableTables.find(table => 
+          table.number.toString() === searchTable
+        );
+        if (exactMatch) {
+          // Auto-select if exact match
+          setTimeout(() => {
+            setTableNumber(exactMatch.number.toString());
+            setSelectedTable(exactMatch);
+            setSearchTable("");
+            resetIdleTimer();
+          }, 500);
+        }
+      }
+    }, [searchTable]);
+
     return (
       <View style={styles.container}>
         <StatusBar style="light" />
+        
+        {/* Beautiful Dark Background */}
+        <View style={[StyleSheet.absoluteFillObject, { backgroundColor: '#1C1C1E' }]} />
+        
         <View style={styles.welcomeContainer}>
-          <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
-            <View style={styles.welcomeHeader}>
+          <Animated.View style={[styles.welcomeContentModern, { opacity: fadeAnim }]}>
+            {/* Logo Header */}
+            <View style={styles.welcomeHeaderModern}>
               <Pressable
                 onLongPress={handleLongPressStart}
                 onPressOut={handleLongPressEnd}
                 delayLongPress={0}
               >
-                <View style={styles.logoCircleContainer}>
-                  <View style={styles.logoCircleBg}>
-                    <Image 
-                      source={require('./assets/logo23.png')}
-                      style={styles.welcomeLogoImage}
-                      resizeMode="contain"
-                    />
-                  </View>
+                <View style={styles.logoContainerModern}>
+                  <Image 
+                    source={require('./assets/logo23.png')}
+                    style={styles.logoImageModern}
+                    resizeMode="contain"
+                  />
                 </View>
               </Pressable>
             </View>
             
-            <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
-              <View style={styles.glassOverlay}>
-                <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
-              
+            {/* Search Input Section */}
+            <View style={styles.searchSectionModern}>
+              <BlurView intensity={60} tint="dark" style={styles.searchBlurContainer}>
+                <View style={styles.searchInputWrapper}>
+                  <IconComponent name="search" size={20} color="#FF7043" />
+                  <TextInput
+                    style={styles.searchInputModern}
+                    placeholder="Pesquisar mesa ou digite o número..."
+                    placeholderTextColor="rgba(255,255,255,0.4)"
+                    value={searchTable}
+                    onChangeText={setSearchTable}
+                    keyboardType="default"
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                  />
+                  {searchTable.length > 0 && (
+                    <TouchableOpacity onPress={() => setSearchTable("")}>
+                      <IconComponent name="x" size={18} color="rgba(255,255,255,0.5)" />
+                    </TouchableOpacity>
+                  )}
+                </View>
+              </BlurView>
+            </View>
+            
+            {/* Tables List Section */}
+            <View style={styles.tablesContainerModern}>
               {tablesLoading ? (
                 <View style={styles.tablesLoadingContainer}>
                   <ActivityIndicator size="large" color={config.colors.primary} />
                   <Text style={styles.tablesLoadingText}>Carregando mesas...</Text>
                 </View>
               ) : tablesError ? (
-                <View style={styles.tablesErrorContainer}>
-                  <Text style={styles.tablesErrorText}>{tablesError}</Text>
+                <View style={styles.tablesErrorModern}>
+                  <IconComponent name="wifi-off" size={48} color="#FF7043" />
+                  <Text style={styles.errorTitleModern}>Erro de Conexão</Text>
+                  <Text style={styles.errorMessageModern}>{tablesError}</Text>
                   <TouchableOpacity 
-                    style={styles.retryButton}
+                    style={styles.retryButtonModern}
                     onPress={() => {
                       loadTables();
                       resetIdleTimer();
                     }}
                   >
-                    <IconComponent name="refresh" size={20} color="#000" />
-                    <Text style={styles.retryButtonText}>Tentar Novamente</Text>
+                    <LinearGradient
+                      colors={['#FF7043', '#FF5722']}
+                      style={styles.retryGradient}
+                    >
+                      <IconComponent name="refresh" size={18} color="#FFFFFF" />
+                      <Text style={styles.retryTextModern}>Tentar Novamente</Text>
+                    </LinearGradient>
                   </TouchableOpacity>
+                </View>
+              ) : filteredTables.length === 0 ? (
+                <View style={styles.emptyStateModern}>
+                  <IconComponent name="search" size={48} color="rgba(255,255,255,0.3)" />
+                  <Text style={styles.emptyTitleModern}>Nenhuma mesa encontrada</Text>
+                  <Text style={styles.emptyMessageModern}>
+                    {searchTable ? `Não encontramos a mesa "${searchTable}"` : 'Não há mesas disponíveis no momento'}
+                  </Text>
                 </View>
               ) : (
                 <ScrollView 
-                  style={styles.tablesList}
-                  showsVerticalScrollIndicator={true}
-                  contentContainerStyle={styles.tablesListContent}
-                  nestedScrollEnabled={true}
-                  scrollEnabled={true}
-                  bounces={true}
+                  style={styles.tablesScrollModern}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.tablesGridModern}
                 >
-                  {availableTables.map((table) => (
+                  {filteredTables.map((table) => (
                     <TouchableOpacity
                       key={table.id}
-                      style={[
-                        styles.tableListItem,
-                        table.status === 'occupied' && styles.tableListItemOccupied,
-                      ]}
+                      style={styles.tableCardWrapper}
                       onPress={() => {
                         setTableNumber(table.number.toString());
                         setSelectedTable(table);
                         resetIdleTimer();
                         
-                        // Se a mesa está ocupada, mostra informação da conta existente
                         if (table.status === 'occupied') {
                           Alert.alert(
                             "Mesa Ocupada",
@@ -1528,7 +1606,6 @@ function MainApp() {
                             ]
                           );
                         } else {
-                          // Mesa disponível, entra direto
                           Animated.timing(fadeAnim, {
                             toValue: 0,
                             duration: config.animations.fast,
@@ -1536,66 +1613,74 @@ function MainApp() {
                           }).start();
                         }
                       }}
-                      disabled={false}
                       activeOpacity={0.7}
                     >
-                      <View style={styles.tableListItemLeft}>
+                      <BlurView intensity={60} tint="dark" style={[
+                        styles.tableCardModern,
+                        table.status === 'occupied' && styles.tableCardOccupied
+                      ]}>
+                        {/* Table Number */}
                         <View style={[
-                          styles.tableNumberCircle,
-                          table.status === 'occupied' && styles.tableNumberCircleOccupied
+                          styles.tableNumberModern,
+                          table.status === 'occupied' && styles.tableNumberOccupied
                         ]}>
+                          <IconComponent 
+                            name={parseInt(table.number) > 100 ? 'chair' : 'table'} 
+                            size={24} 
+                            color={table.status === 'occupied' ? '#FF7043' : 'rgba(255,255,255,0.8)'} 
+                          />
                           <Text style={[
-                            styles.tableListNumber,
-                            table.status === 'occupied' && styles.tableListNumberOccupied
+                            styles.tableNumberTextModern,
+                            table.status === 'occupied' && styles.tableNumberTextOccupied
                           ]}>
                             {table.number}
                           </Text>
                         </View>
-                        <View style={styles.tableInfo}>
-                          <Text style={[
-                            styles.tableListName,
-                            table.status === 'occupied' && styles.tableListNameOccupied
-                          ]}>
-                            {table.name}
+                        
+                        {/* Table Name */}
+                        <Text style={[
+                          styles.tableNameModern,
+                          table.status === 'occupied' && styles.tableNameOccupied
+                        ]}>
+                          {table.name}
+                        </Text>
+                        
+                        {/* Status Badge */}
+                        <View style={[
+                          styles.statusBadgeModern,
+                          table.status === 'occupied' ? styles.statusOccupied : styles.statusAvailable
+                        ]}>
+                          <Text style={styles.statusTextModern}>
+                            {table.status === 'occupied' ? 'OCUPADA' : 'DISPONÍVEL'}
                           </Text>
+                          {table.status === 'occupied' && table.session_total > 0 && (
+                            <Text style={styles.totalTextModern}>
+                              R$ {table.session_total.toFixed(2)}
+                            </Text>
+                          )}
                         </View>
-                      </View>
-                      <View style={styles.tableListItemRight}>
-                        {table.status === 'occupied' ? (
-                          <View style={styles.occupiedIndicator}>
-                            <Text style={styles.occupiedText}>OCUPADA</Text>
-                            {table.session_total > 0 && (
-                              <Text style={styles.occupiedTotal}>
-                                R$ {table.session_total.toFixed(2)}
-                              </Text>
-                            )}
-                          </View>
-                        ) : (
-                          <View style={styles.availableIndicator}>
-                            <Text style={styles.availableText}>DISPONÍVEL</Text>
-                          </View>
-                        )}
-                      </View>
+                      </BlurView>
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
               )}
 
-              {/* Refresh button */}
+              {/* Refresh Button */}
               {!tablesLoading && !tablesError && (
                 <TouchableOpacity 
-                  style={styles.refreshTablesButton}
+                  style={styles.refreshButtonModern}
                   onPress={() => {
                     loadTables();
                     resetIdleTimer();
                   }}
                 >
-                  <IconComponent name="refresh" size={16} color={config.colors.primary} />
-                  <Text style={styles.refreshTablesText}>Atualizar mesas</Text>
+                  <BlurView intensity={50} tint="dark" style={styles.refreshBlurModern}>
+                    <IconComponent name="refresh" size={16} color="#FF7043" />
+                    <Text style={styles.refreshTextModern}>Atualizar</Text>
+                  </BlurView>
                 </TouchableOpacity>
               )}
-              </View>
-            </BlurView>
+            </View>
 
             <TouchableOpacity style={styles.adminButton} onPress={() => setIsLocked(true)}>
               <Text style={styles.adminButtonText}>Modo Administrador</Text>
@@ -3434,6 +3519,204 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.15)',
   },
   changeMesaTextGlass: {
+    color: '#FF7043',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  
+  // Modern Table Selection Styles
+  welcomeContentModern: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  welcomeHeaderModern: {
+    alignItems: 'center',
+    marginBottom: 24,
+  },
+  logoContainerModern: {
+    width: 100,
+    height: 100,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,112,67,0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,112,67,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+  },
+  logoImageModern: {
+    width: 80,
+    height: 80,
+  },
+  searchSectionModern: {
+    marginBottom: 20,
+  },
+  searchBlurContainer: {
+    borderRadius: 25,
+    overflow: 'hidden',
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+  },
+  searchInputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    gap: 12,
+  },
+  searchInputModern: {
+    flex: 1,
+    fontSize: 16,
+    color: '#FFFFFF',
+    fontWeight: '500',
+  },
+  tablesContainerModern: {
+    flex: 1,
+  },
+  tablesErrorModern: {
+    alignItems: 'center',
+    paddingVertical: 60,
+  },
+  errorTitleModern: {
+    fontSize: 20,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  errorMessageModern: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.6)',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  retryButtonModern: {
+    width: 180,
+  },
+  retryGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    borderRadius: 20,
+    gap: 8,
+  },
+  retryTextModern: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  emptyStateModern: {
+    alignItems: 'center',
+    paddingVertical: 60,
+  },
+  emptyTitleModern: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  emptyMessageModern: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.5)',
+    textAlign: 'center',
+  },
+  tablesScrollModern: {
+    flex: 1,
+  },
+  tablesGridModern: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingBottom: 100,
+    gap: 12,
+  },
+  tableCardWrapper: {
+    width: '48%',
+  },
+  tableCardModern: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+  },
+  tableCardOccupied: {
+    borderColor: 'rgba(255,112,67,0.3)',
+    backgroundColor: 'rgba(255,112,67,0.08)',
+  },
+  tableNumberModern: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
+  },
+  tableNumberOccupied: {
+    // Specific styles for occupied
+  },
+  tableNumberTextModern: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#FFFFFF',
+  },
+  tableNumberTextOccupied: {
+    color: '#FF7043',
+  },
+  tableNameModern: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: 12,
+  },
+  tableNameOccupied: {
+    color: 'rgba(255,112,67,0.8)',
+  },
+  statusBadgeModern: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  statusAvailable: {
+    backgroundColor: 'rgba(34,197,94,0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(34,197,94,0.3)',
+  },
+  statusOccupied: {
+    backgroundColor: 'rgba(255,112,67,0.15)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,112,67,0.3)',
+  },
+  statusTextModern: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 0.5,
+  },
+  totalTextModern: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#FF7043',
+    marginTop: 2,
+  },
+  refreshButtonModern: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+  },
+  refreshBlurModern: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+  },
+  refreshTextModern: {
     color: '#FF7043',
     fontSize: 13,
     fontWeight: '600',
