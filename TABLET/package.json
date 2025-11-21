@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "start": "expo start --port 19000",
-    "android": "expo start --android --port 19000",
-    "ios": "expo start --ios --port 19000",
-    "web": "expo start --web --port 19006"
+    "start": "expo start --tunnel --port 8081",
+    "start-local": "expo start --port 8081",
+    "android": "expo start --android --tunnel",
+    "ios": "expo start --ios --tunnel",
+    "web": "expo start --web --port 8000"
   },
   "dependencies": {
     "expo": "~54.0.25",

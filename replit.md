@@ -48,16 +48,27 @@ The main restaurant management system runs on **port 5000** via the "Start appli
 - Includes: Admin panel, POS system, and REST APIs
 
 ### TABLET Application (Expo/React Native)
-The tablet app runs on **port 19000** (Metro bundler) and **port 19006** (web version).
+The tablet app runs on **port 8081** (Metro bundler with tunnel) and **port 8000** (web version).
+
+**Best way to test:** Use **Expo Go** app on your phone and scan the QR code.
+
 To start the TABLET app:
-```bash
-cd TABLET
-npm start
-```
-Or use the convenience script:
 ```bash
 ./start-tablet-app.sh
 ```
+
+Or manually:
+```bash
+cd TABLET
+npm install
+npm start
+```
+
+Then:
+- **Mobile (recommended):** Install Expo Go app and scan the QR code
+- **Web:** Press `w` in terminal or access `http://0.0.0.0:8000`
+
+See full instructions: `TABLET/COMO_RODAR_EXPO_REPLIT.md`
 
 Both applications can run simultaneously without port conflicts.
 

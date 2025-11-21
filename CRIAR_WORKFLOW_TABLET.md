@@ -48,23 +48,30 @@ npm start
 
 ## ✅ Portas Configuradas
 
-- **Metro Bundler (React Native):** Porta 19000 (porta padrão do Expo)
-- **Web Version:** Porta 19006 (porta padrão do Expo Web)
+- **Metro Bundler (com Tunnel):** Porta 8081
+- **Web Version:** Porta 8000
 
 ---
 
 ## 📱 Acessando o App
 
-Depois de iniciar:
+### MELHOR FORMA: Expo Go no Celular 🎯
 
-1. **No navegador:**
-   - Metro Bundler: `http://0.0.0.0:19000`
-   - Web Version: `http://0.0.0.0:19006`
+1. **Instale o Expo Go:**
+   - [Android - Google Play](https://play.google.com/store/apps/details?id=host.exp.exponent)
+   - [iOS - App Store](https://apps.apple.com/app/expo-go/id982107779)
 
-2. **No celular (Expo Go):**
-   - Instale o app **Expo Go** no celular
-   - Escaneie o QR code que aparece no terminal
-   - Ou digite o endereço manualmente
+2. **Escaneie o QR code:**
+   - Depois de rodar o script, um QR code aparecerá no terminal
+   - Abra o Expo Go e escaneie o código
+   - O app vai carregar no seu celular!
+
+### Opção Web (Navegador):
+
+1. No terminal, pressione **`w`** (depois de iniciar)
+2. Acesse: `http://0.0.0.0:8000`
+
+**📖 Guia completo:** Veja `TABLET/COMO_RODAR_EXPO_REPLIT.md`
 
 ---
 
