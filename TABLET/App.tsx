@@ -1640,16 +1640,16 @@ function MainApp() {
                     <View style={styles.priceContainerGlass}>
                       {serviceType.price && serviceType.price > 0 ? (
                         <>
-                          <Text style={styles.priceLabelGlass}>Taxa de serviço</Text>
+                          <Text style={styles.priceLabelGlass}>Valor</Text>
                           <Text style={[styles.priceAmountGlass, { color: '#FF7043' }]}>
                             R$ {serviceType.price.toFixed(2)}
                           </Text>
                         </>
                       ) : (
                         <>
-                          <Text style={styles.priceLabelGlass}>Sem taxa adicional</Text>
+                          <Text style={styles.priceLabelGlass}>Valor</Text>
                           <Text style={[styles.priceAmountGlass, { color: '#FF7043' }]}>
-                            Incluso
+                            Individual
                           </Text>
                         </>
                       )}
