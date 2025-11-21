@@ -65,8 +65,8 @@ interface ServiceType {
   display_order: number
   icon: string | null
   color: string
-  price: number | null
   linked_groups?: string[]
+  linked_groups_details?: { id: number, name: string, price: number | null }[]
 }
 
 interface Group {
@@ -113,7 +113,8 @@ export default function TabletServiceTypesPage() {
 
       const formattedTypes = typesData?.map((type: any) => ({
         ...type,
-        linked_groups: type.tablet_service_type_groups?.map((tsg: any) => tsg.groups?.name).filter(Boolean) || []
+        linked_groups: type.tablet_service_type_groups?.map((tsg: any) => tsg.groups?.name).filter(Boolean) || [],
+        linked_groups_details: type.tablet_service_type_groups?.map((tsg: any) => tsg.groups).filter(Boolean) || []
       })) || []
 
       setServiceTypes(formattedTypes)
@@ -149,7 +150,7 @@ export default function TabletServiceTypesPage() {
       .select('group_id')
       .eq('service_type_id', type.id)
     
-    setSelectedGroups(linkedGroups?.map(lg => lg.group_id) || [])
+    setSelectedGroups(linkedGroups?.map((lg: any) => lg.group_id) || [])
     setDialogOpen(true)
   }
 
@@ -163,8 +164,7 @@ export default function TabletServiceTypesPage() {
         .update({
           name: editingType.name,
           description: editingType.description,
-          active: editingType.active,
-          price: editingType.price
+          active: editingType.active
         })
         .eq('id', editingType.id)
 
@@ -207,8 +207,7 @@ export default function TabletServiceTypesPage() {
       active: true,
       display_order: serviceTypes.length + 1,
       icon: null,
-      color: '#FF7043',
-      price: null
+      color: '#FF7043'
     })
     setSelectedGroups([])
     setDialogOpen(true)
@@ -225,8 +224,7 @@ export default function TabletServiceTypesPage() {
           name: editingType.name,
           description: editingType.description,
           active: editingType.active,
-          display_order: editingType.display_order,
-          price: editingType.price
+          display_order: editingType.display_order
         }])
         .select()
 
@@ -483,11 +481,6 @@ export default function TabletServiceTypesPage() {
                           <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">
                             {type.name}
                           </h3>
-                          {type.price && (
-                            <Badge className="bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                              R$ {type.price.toFixed(2)}
-                            </Badge>
-                          )}
                         </div>
                         
                         {type.description && (
@@ -496,16 +489,21 @@ export default function TabletServiceTypesPage() {
                           </p>
                         )}
                         
-                        {type.linked_groups && type.linked_groups.length > 0 && (
+                        {type.linked_groups_details && type.linked_groups_details.length > 0 && (
                           <div className="flex items-center gap-2 flex-wrap">
                             <LinkIcon className="h-4 w-4 text-gray-400" />
-                            {type.linked_groups.map((group, idx) => (
+                            {type.linked_groups_details.map((group: any, idx: number) => (
                               <Badge 
                                 key={idx} 
                                 variant="secondary"
                                 className="text-xs"
                               >
-                                {group}
+                                {group.name}
+                                {group.price && (
+                                  <span className="ml-1 font-bold text-green-600 dark:text-green-400">
+                                    R$ {group.price.toFixed(2)}
+                                  </span>
+                                )}
                               </Badge>
                             ))}
                           </div>
@@ -601,21 +599,6 @@ export default function TabletServiceTypesPage() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="price">Preço (opcional)</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    step="0.01"
-                    value={editingType.price || ''}
-                    onChange={(e) => setEditingType({ 
-                      ...editingType, 
-                      price: e.target.value ? parseFloat(e.target.value) : null 
-                    })}
-                    placeholder="Ex: 189.00"
-                    className="rounded-xl"
-                  />
-                </div>
               </div>
 
               <div className="space-y-2">
