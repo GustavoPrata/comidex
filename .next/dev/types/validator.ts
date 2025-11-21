@@ -236,6 +236,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/admin/tablet-service-types/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/admin/tablet-service-types">> = Specific
+  const handler = {} as typeof import("../../../app/admin/tablet-service-types/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/admin/tablets/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/admin/tablets">> = Specific
@@ -375,6 +384,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/products">> = Specific
   const handler = {} as typeof import("../../../app/api/mobile/products/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/mobile/service-types/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/service-types">> = Specific
+  const handler = {} as typeof import("../../../app/api/mobile/service-types/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

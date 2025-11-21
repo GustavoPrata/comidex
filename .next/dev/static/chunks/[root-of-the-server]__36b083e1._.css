@@ -1106,6 +1106,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   max-height: var(--radix-dropdown-menu-content-available-height);
 }
 
+.max-h-48 {
+  max-height: 12rem;
+}
+
 .min-h-0 {
   min-height: 0;
 }

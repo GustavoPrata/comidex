@@ -1,6 +1,8 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/admin/page": "app/admin/page.js",
+  "/admin/tablet-service-types/page": "app/admin/tablet-service-types/page.js",
+  "/api/mobile/service-types/route": "app/api/mobile/service-types/route.js",
   "/api/mobile/tables/route": "app/api/mobile/tables/route.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",

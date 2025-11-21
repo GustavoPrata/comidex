@@ -215,7 +215,8 @@ function MainApp() {
   const [password, setPassword] = useState("");
   const [tableNumber, setTableNumber] = useState("");
   const [selectedTable, setSelectedTable] = useState<any>(null);
-  const [selectedMode, setSelectedMode] = useState<"rodizio" | "carte" | null>(null);
+  const [selectedMode, setSelectedMode] = useState<any>(null);
+  const [serviceTypes, setServiceTypes] = useState<any[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -370,6 +371,7 @@ function MainApp() {
     loadCategories();
     loadProducts();
     loadTables(); // Load available tables on startup
+    loadServiceTypes(); // Load service types
     
     // Atualiza as mesas a cada 30 segundos para manter sincronizado com o POS
     const tablesInterval = setInterval(() => {
@@ -630,6 +632,57 @@ function MainApp() {
       Alert.alert("Erro", "Não foi possível carregar os produtos");
     } finally {
       setLoadingProducts(false);
+    }
+  };
+
+  const loadServiceTypes = async () => {
+    try {
+      console.log("📋 Carregando tipos de atendimento da API:", config.API_URL);
+      const response = await fetch(`${config.API_URL}/service-types`);
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log("✅ Tipos de atendimento recebidos:", data.service_types);
+        setServiceTypes(data.service_types);
+      } else {
+        console.error("❌ Erro ao carregar tipos de atendimento:", data);
+        // Usar tipos padrão se falhar
+        setServiceTypes([
+          {
+            id: 1,
+            name: 'Rodízio',
+            description: 'Coma à vontade com valor fixo',
+            icon: 'fire',
+            color: '#FF5722'
+          },
+          {
+            id: 2,
+            name: 'À La Carte',
+            description: 'Escolha e pague por item',
+            icon: 'menu-book',
+            color: '#4CAF50'
+          }
+        ]);
+      }
+    } catch (error) {
+      console.error("❌ Erro ao carregar tipos de atendimento:", error);
+      // Usar tipos padrão se falhar
+      setServiceTypes([
+        {
+          id: 1,
+          name: 'Rodízio',
+          description: 'Coma à vontade com valor fixo',
+          icon: 'fire',
+          color: '#FF5722'
+        },
+        {
+          id: 2,
+          name: 'À La Carte',
+          description: 'Escolha e pague por item',
+          icon: 'menu-book',
+          color: '#4CAF50'
+        }
+      ]);
     }
   };
 
@@ -1440,57 +1493,63 @@ function MainApp() {
             )}
           </View>
 
-          <View style={styles.modeCards}>
-            <TouchableOpacity
-              style={styles.modeCardWrapper}
-              onPress={() => {
-                setSelectedMode("rodizio");
-                resetIdleTimer();
-              }}
-              activeOpacity={0.9}
-            >
-              <BlurView intensity={70} tint="dark" style={styles.modeCard}>
-                <View style={[styles.modeCardContent, { backgroundColor: 'rgba(255, 87, 34, 0.15)' }]}>
-                  <View style={styles.modeCardIcon}>
-                    <IconComponent name="fire" size={60} color="#FFF" />
+          <ScrollView 
+            horizontal 
+            style={styles.modeCards}
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.modeCardsContent}
+          >
+            {serviceTypes.map((serviceType, index) => (
+              <TouchableOpacity
+                key={serviceType.id}
+                style={styles.modeCardWrapper}
+                onPress={() => {
+                  setSelectedMode(serviceType);
+                  resetIdleTimer();
+                }}
+                activeOpacity={0.9}
+              >
+                <BlurView intensity={70} tint="dark" style={styles.modeCard}>
+                  <View style={[styles.modeCardContent, { 
+                    backgroundColor: `${serviceType.color || '#FF7043'}20`
+                  }]}>
+                    <View style={styles.modeCardIcon}>
+                      {serviceType.icon === 'crown' && <Text style={{ fontSize: 50 }}>👑</Text>}
+                      {serviceType.icon === 'fire' && <IconComponent name="fire" size={60} color="#FFF" />}
+                      {serviceType.icon === 'utensils' && <Text style={{ fontSize: 50 }}>🍴</Text>}
+                      {serviceType.icon === 'menu-book' && (
+                        <Svg width={60} height={60} viewBox="0 0 24 24" fill="none">
+                          <Path d="M4 7h16M4 12h16M4 17h16" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
+                        </Svg>
+                      )}
+                      {serviceType.icon === 'cup-soda' && <Text style={{ fontSize: 50 }}>🥤</Text>}
+                      {serviceType.icon === 'star' && <Text style={{ fontSize: 50 }}>⭐</Text>}
+                      {serviceType.icon === 'pizza' && <Text style={{ fontSize: 50 }}>🍕</Text>}
+                      {serviceType.icon === 'burger' && <Text style={{ fontSize: 50 }}>🍔</Text>}
+                      {serviceType.icon === 'salad' && <Text style={{ fontSize: 50 }}>🥗</Text>}
+                      {serviceType.icon === 'coffee' && <Text style={{ fontSize: 50 }}>☕</Text>}
+                      {serviceType.icon === 'cake' && <Text style={{ fontSize: 50 }}>🍰</Text>}
+                      {!serviceType.icon && <IconComponent name="restaurant" size={60} color="#FFF" />}
+                    </View>
+                    <Text style={styles.modeCardTitle}>{serviceType.name}</Text>
+                    <Text style={styles.modeCardDescription}>
+                      {serviceType.description || 'Selecione este modo de atendimento'}
+                    </Text>
+                    {serviceType.price && (
+                      <View style={styles.modeCardPrice}>
+                        <Text style={styles.modeCardPriceText}>R$ {serviceType.price.toFixed(2)}</Text>
+                      </View>
+                    )}
+                    {index === 0 && (
+                      <View style={styles.modeCardBadge}>
+                        <Text style={styles.modeCardBadgeText}>MAIS POPULAR</Text>
+                      </View>
+                    )}
                   </View>
-                  <Text style={styles.modeCardTitle}>Rodízio</Text>
-                  <Text style={styles.modeCardDescription}>
-                    Coma à vontade com valor fixo
-                  </Text>
-                  <View style={styles.modeCardBadge}>
-                    <Text style={styles.modeCardBadgeText}>MAIS POPULAR</Text>
-                  </View>
-                </View>
-              </BlurView>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.modeCardWrapper}
-              onPress={() => {
-                setSelectedMode("carte");
-                resetIdleTimer();
-              }}
-              activeOpacity={0.9}
-            >
-              <BlurView intensity={70} tint="dark" style={styles.modeCard}>
-                <View style={[styles.modeCardContent, { backgroundColor: 'rgba(76, 175, 80, 0.15)' }]}>
-                  <View style={styles.modeCardIcon}>
-                    <Svg width={60} height={60} viewBox="0 0 24 24" fill="none">
-                      <Path d="M4 7h16M4 12h16M4 17h16" stroke="#FFF" strokeWidth="2" strokeLinecap="round"/>
-                    </Svg>
-                  </View>
-                  <Text style={styles.modeCardTitle}>À La Carte</Text>
-                  <Text style={styles.modeCardDescription}>
-                    Escolha e pague por item
-                  </Text>
-                  <View style={[styles.modeCardBadge, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
-                    <Text style={styles.modeCardBadgeText}>PERSONALIZADO</Text>
-                  </View>
-                </View>
-              </BlurView>
-            </TouchableOpacity>
-          </View>
+                </BlurView>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
 
           <TouchableOpacity 
             style={styles.changeMesaButton}
@@ -1528,10 +1587,10 @@ function MainApp() {
             </Pressable>
             <View style={[
               styles.modeBadge,
-              { backgroundColor: selectedMode === "rodizio" ? config.colors.rodizioColor : config.colors.carteColor }
+              { backgroundColor: selectedMode?.color || config.colors.primary }
             ]}>
               <Text style={styles.modeBadgeText}>
-                {selectedMode === "rodizio" ? "Rodízio" : "À La Carte"}
+                {selectedMode?.name || 'Selecione'}
               </Text>
             </View>
             {session && (
@@ -2640,6 +2699,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 20,
   },
+  modeCardsContent: {
+    paddingHorizontal: 10,
+    alignItems: 'center',
+  },
   modeCardWrapper: {
     width: width * 0.35,
     maxWidth: 350,
@@ -2686,6 +2749,19 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 12,
     fontWeight: "bold",
+  },
+  modeCardPrice: {
+    marginTop: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 6,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    borderRadius: 12,
+    alignSelf: 'center',
+  },
+  modeCardPriceText: {
+    color: "#FFF",
+    fontSize: 16,
+    fontWeight: "700",
   },
   changeMesaButton: {
     marginTop: 40,
