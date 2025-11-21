@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  SafeAreaView,
   TouchableOpacity,
   ScrollView,
   TextInput,
@@ -1205,7 +1204,7 @@ export default function App() {
   // Lock Screen
   if (isLocked) {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar style="light" />
         <View style={styles.lockContainer}>
           <View style={styles.lockCard}>
@@ -1232,14 +1231,14 @@ export default function App() {
             </TouchableOpacity>
           </View>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   // Welcome Screen - Table Selection
   if (!tableNumber) {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar style="light" />
         <IdleScreen />
         <AdminPanel />
@@ -1379,14 +1378,14 @@ export default function App() {
             </TouchableOpacity>
           </Animated.View>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   // Mode Selection Screen
   if (!selectedMode) {
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar style="light" />
         <IdleScreen />
         <AdminPanel />
@@ -1473,7 +1472,7 @@ export default function App() {
             <Text style={styles.changeMesaButtonText}>Trocar Mesa</Text>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
