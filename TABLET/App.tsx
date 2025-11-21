@@ -1040,11 +1040,15 @@ function MainApp() {
             {/* Header with Logo */}
             <View style={styles.idleHeader}>
               <Animated.View style={[{ transform: [{ scale: idleFadeAnim }] }]}>
-                <Image 
-                  source={require('./assets/logo-comidex.png')}
-                  style={styles.idleLogoImage}
-                  resizeMode="contain"
-                />
+                <View style={styles.logoCircleContainer}>
+                  <View style={styles.logoCircleBg}>
+                    <Image 
+                      source={require('./assets/logo-comidex-new.png')}
+                      style={styles.idleLogoImage}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </View>
               </Animated.View>
               <Text style={styles.idleSubtitle}>SISTEMA JAPONÊS</Text>
             </View>
@@ -1249,11 +1253,15 @@ function MainApp() {
                 onPressOut={handleLongPressEnd}
                 delayLongPress={0}
               >
-                <Image 
-                  source={require('./assets/logo-comidex.png')}
-                  style={styles.welcomeLogoImage}
-                  resizeMode="contain"
-                />
+                <View style={styles.logoCircleContainer}>
+                  <View style={styles.logoCircleBg}>
+                    <Image 
+                      source={require('./assets/logo-comidex-new.png')}
+                      style={styles.welcomeLogoImage}
+                      resizeMode="contain"
+                    />
+                  </View>
+                </View>
               </Pressable>
               <Text style={styles.welcomeSubtitle}>SISTEMA JAPONÊS</Text>
             </View>
@@ -2228,10 +2236,31 @@ const styles = StyleSheet.create({
     fontSize: 80,
     marginBottom: 20,
   },
-  welcomeLogoImage: {
-    width: 200,
-    height: 200,
+  logoCircleContainer: {
+    width: 180,
+    height: 180,
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 20,
+  },
+  logoCircleBg: {
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#FF7043",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 12,
+    borderWidth: 3,
+    borderColor: "rgba(255, 112, 67, 0.3)",
+  },
+  welcomeLogoImage: {
+    width: 120,
+    height: 120,
   },
   welcomeTitle: {
     fontSize: 36,
@@ -3451,9 +3480,8 @@ const styles = StyleSheet.create({
     fontSize: 100,
   },
   idleLogoImage: {
-    width: 150,
-    height: 150,
-    marginBottom: 15,
+    width: 120,
+    height: 120,
   },
   idleTitle: {
     fontSize: 42,
