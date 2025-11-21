@@ -1859,7 +1859,7 @@ function MainApp() {
     );
   }
 
-  // Main Interface
+  // Main Interface - New 3-Column Layout Goomer Style with Apple Glass Design
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
@@ -1867,208 +1867,329 @@ function MainApp() {
       <AdminPanel />
       
       <View {...panResponderRef.current?.panHandlers} style={{ flex: 1 }}>
-        {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerLeft}>
-            <Pressable
-              onLongPress={handleLongPressStart}
-              onPressOut={handleLongPressEnd}
-              delayLongPress={0}
-            >
-              <Text style={styles.headerTitle}>
-                {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
-              </Text>
-            </Pressable>
-            <View style={[
-              styles.modeBadge,
-              { backgroundColor: selectedMode?.color || config.colors.primary }
-            ]}>
-              <Text style={styles.modeBadgeText}>
-                {selectedMode?.name || 'Selecione'}
-              </Text>
-            </View>
-            {session && (
-              <View style={styles.sessionBadge}>
-                <Text style={styles.sessionBadgeText}>
-                  Conta: R$ {sessionTotal.toFixed(2)}
+        {/* Glass Header Bar */}
+        <BlurView intensity={85} tint="dark" style={styles.glassHeader}>
+          <View style={styles.glassHeaderContent}>
+            {/* Left Section - Table Info */}
+            <View style={styles.glassHeaderLeft}>
+              <Pressable
+                onLongPress={handleLongPressStart}
+                onPressOut={handleLongPressEnd}
+                delayLongPress={0}
+                style={styles.tableInfoGlass}
+              >
+                <View style={styles.tableIconGlass}>
+                  <IconComponent name="table" size={20} color="#FF7043" />
+                </View>
+                <Text style={styles.tableNumberGlass}>
+                  {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
                 </Text>
+              </Pressable>
+              
+              {selectedMode && (
+                <View style={styles.modeTagGlass}>
+                  <IconComponent name={selectedMode.icon || 'restaurant'} size={16} color="#FF7043" />
+                  <Text style={styles.modeTagTextGlass}>{selectedMode.name}</Text>
+                </View>
+              )}
+            </View>
+            
+            {/* Center Section - Search */}
+            <View style={styles.glassHeaderCenter}>
+              <View style={styles.searchBarGlass}>
+                <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
+                  <Circle cx="11" cy="11" r="8" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2"/>
+                  <Path d="M19 19l-4-4" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2" strokeLinecap="round"/>
+                </Svg>
+                <TextInput
+                  style={styles.searchInputGlass}
+                  placeholder="Buscar produtos..."
+                  placeholderTextColor="rgba(255, 255, 255, 0.3)"
+                  value={searchText}
+                  onChangeText={setSearchText}
+                />
               </View>
-            )}
-          </View>
-          
-          <View style={styles.headerRight}>
-            <TouchableOpacity 
-              style={[styles.headerButton, styles.billButton]}
-              onPress={() => {
-                setShowBill(true);
-                resetIdleTimer();
-                Animated.spring(billSlideAnim, {
-                  toValue: 0,
-                  useNativeDriver: true,
-                }).start();
-              }}
-            >
-              <IconComponent name="bill" size={20} color={config.colors.primary} />
-              <Text style={styles.billButtonText}>Ver Conta</Text>
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={styles.headerButton}
-              onPress={() => {
-                setSelectedMode(null);
-                setCart([]);
-                resetIdleTimer();
-              }}
-            >
-              <Text style={styles.headerButtonText}>Trocar Modo</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <Svg width={20} height={20} viewBox="0 0 24 24" fill="none" style={styles.searchIcon}>
-            <Circle cx="11" cy="11" r="8" stroke={config.colors.textTertiary} strokeWidth="2"/>
-            <Path d="M21 21l-4.35-4.35" stroke={config.colors.textTertiary} strokeWidth="2" strokeLinecap="round"/>
-          </Svg>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Buscar produtos..."
-            placeholderTextColor={config.colors.textTertiary}
-            value={searchText}
-            onChangeText={(text) => {
-              setSearchText(text);
-              resetIdleTimer();
-            }}
-          />
-        </View>
-
-        {/* Categories */}
-        {loadingCategories ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={config.colors.primary} />
-          </View>
-        ) : (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.categoriesContainer}
-            contentContainerStyle={styles.categoriesContent}
-            onScroll={() => resetIdleTimer()}
-          >
-            <TouchableOpacity
-              style={[
-                styles.categoryCard,
-                !selectedCategory && styles.categoryCardActive,
-                { borderColor: config.colors.primary }
-              ]}
-              onPress={() => {
-                setSelectedCategory(null);
-                resetIdleTimer();
-              }}
-            >
-              <View style={[styles.categoryIcon, { backgroundColor: config.colors.primary }]}>
-                <Text style={styles.categoryIconText}>🍽️</Text>
-              </View>
-              <Text style={[
-                styles.categoryName,
-                !selectedCategory && styles.categoryNameActive
-              ]}>
-                Todos
-              </Text>
-            </TouchableOpacity>
-
-            {categories.map((category) => (
+            </View>
+            
+            {/* Right Section - Actions */}
+            <View style={styles.glassHeaderRight}>
+              {session && sessionTotal > 0 && (
+                <View style={styles.totalBadgeGlass}>
+                  <Text style={styles.totalLabelGlass}>Total</Text>
+                  <Text style={styles.totalValueGlass}>R$ {sessionTotal.toFixed(2)}</Text>
+                </View>
+              )}
+              
               <TouchableOpacity
-                key={category.id}
-                style={[
-                  styles.categoryCard,
-                  selectedCategory === category.id && styles.categoryCardActive,
-                  { borderColor: category.color || config.colors.primary }
-                ]}
+                style={styles.billButtonGlass}
                 onPress={() => {
-                  setSelectedCategory(category.id);
+                  setShowBill(true);
+                  resetIdleTimer();
+                  Animated.spring(billSlideAnim, {
+                    toValue: 0,
+                    useNativeDriver: true,
+                  }).start();
+                }}
+              >
+                <IconComponent name="bill" size={18} color="#FFFFFF" />
+                <Text style={styles.billButtonTextGlass}>Conta</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={styles.exitButtonGlass}
+                onPress={() => {
+                  setSelectedMode(null);
+                  setCart([]);
                   resetIdleTimer();
                 }}
               >
-                <View style={[styles.categoryIcon, { backgroundColor: category.color || config.colors.primary }]}>
-                  <IconComponent 
-                    name={category.icon || 'sushi'} 
-                    size={28} 
-                    color="#FFF" 
-                  />
-                </View>
-                <Text style={[
-                  styles.categoryName,
-                  selectedCategory === category.id && styles.categoryNameActive
-                ]}>
-                  {category.name}
-                </Text>
+                <IconComponent name="exit" size={18} color="#FFFFFF" />
               </TouchableOpacity>
-            ))}
-          </ScrollView>
-        )}
-
-        {/* Products Grid */}
-        {loadingProducts ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={config.colors.primary} />
-            <Text style={styles.loadingText}>Carregando produtos...</Text>
+            </View>
           </View>
-        ) : (
-          <FlatList
-            data={getFilteredProducts()}
-            keyExtractor={(item) => item.id.toString()}
-            numColumns={2}
-            contentContainerStyle={styles.productsGrid}
-            onScroll={() => resetIdleTimer()}
-            ListEmptyComponent={
-              <View style={styles.emptyContainer}>
-                <Text style={styles.emptyText}>Nenhum produto encontrado</Text>
-              </View>
-            }
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={styles.productCard}
-                onPress={() => handleAddToCart(item)}
-                activeOpacity={0.9}
-              >
-                {item.image_url ? (
-                  <Image source={{ uri: item.image_url }} style={styles.productImage} />
-                ) : (
-                  <View style={styles.productImagePlaceholder}>
-                    <Text style={styles.productImagePlaceholderText}>🍽️</Text>
+        </BlurView>
+
+        {/* 3-Column Main Content Area - Goomer Style with Apple Glass */}
+        <View style={styles.mainContentGlass}>
+          {/* Left Sidebar - Groups/Modes */}
+          <BlurView intensity={75} tint="dark" style={styles.leftSidebarGlass}>
+            <View style={styles.sidebarHeader}>
+              <Text style={styles.sidebarTitle}>Cardápio</Text>
+            </View>
+            <ScrollView 
+              showsVerticalScrollIndicator={false}
+              style={styles.groupsList}
+            >
+              {serviceTypes.map((type) => (
+                <TouchableOpacity
+                  key={type.id}
+                  style={[
+                    styles.groupItemGlass,
+                    selectedMode?.id === type.id && styles.groupItemActiveGlass
+                  ]}
+                  onPress={() => {
+                    setSelectedMode(type);
+                    setSelectedCategory(null);
+                    resetIdleTimer();
+                  }}
+                  activeOpacity={0.7}
+                >
+                  <View style={[
+                    styles.groupIconContainerGlass,
+                    selectedMode?.id === type.id && styles.groupIconActiveGlass
+                  ]}>
+                    <IconComponent 
+                      name={type.icon || 'restaurant'} 
+                      size={24} 
+                      color={selectedMode?.id === type.id ? '#FF7043' : 'rgba(255, 255, 255, 0.7)'} 
+                    />
                   </View>
-                )}
-                {item.is_premium && (
-                  <View style={styles.premiumBadge}>
-                    <Text style={styles.premiumBadgeText}>⭐ PREMIUM</Text>
-                  </View>
-                )}
-                <View style={styles.productInfo}>
-                  <Text style={styles.productName} numberOfLines={2}>
-                    {item.name}
-                  </Text>
-                  {item.description && (
-                    <Text style={styles.productDescription} numberOfLines={2}>
-                      {item.description}
+                  <View style={styles.groupTextContainer}>
+                    <Text style={[
+                      styles.groupNameGlass,
+                      selectedMode?.id === type.id && styles.groupNameActiveGlass
+                    ]}>
+                      {type.name}
                     </Text>
-                  )}
-                  <View style={styles.productPriceContainer}>
-                    {parseFloat(item.price) > 0 ? (
-                      <Text style={styles.productPrice}>
-                        R$ {parseFloat(item.price).toFixed(2)}
+                    {type.description && (
+                      <Text style={styles.groupDescGlass} numberOfLines={1}>
+                        {type.description}
                       </Text>
-                    ) : (
-                      <View style={styles.rodizioTag}>
-                        <Text style={styles.rodizioTagText}>Rodízio</Text>
-                      </View>
                     )}
                   </View>
+                  {selectedMode?.id === type.id && (
+                    <View style={styles.groupActiveIndicator} />
+                  )}
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </BlurView>
+
+          {/* Center Column - Categories */}
+          <View style={styles.centerColumnGlass}>
+            <BlurView intensity={70} tint="dark" style={styles.categoriesHeaderGlass}>
+              <Text style={styles.categoriesTitle}>Categorias</Text>
+              <View style={styles.categoriesCount}>
+                <Text style={styles.categoriesCountText}>{categories.length}</Text>
+              </View>
+            </BlurView>
+            
+            <ScrollView 
+              showsVerticalScrollIndicator={false}
+              style={styles.categoriesListGlass}
+            >
+              {loadingCategories ? (
+                <View style={styles.loadingCategoriesGlass}>
+                  <ActivityIndicator size="small" color="#FF7043" />
+                  <Text style={styles.loadingTextGlass}>Carregando...</Text>
                 </View>
-              </TouchableOpacity>
+              ) : (
+                <>
+                  {/* All Categories Option */}
+                  <TouchableOpacity
+                    style={[
+                      styles.categoryItemGlass,
+                      !selectedCategory && styles.categoryItemActiveGlass
+                    ]}
+                    onPress={() => {
+                      setSelectedCategory(null);
+                      resetIdleTimer();
+                    }}
+                  >
+                    <View style={[
+                      styles.categoryIconGlass,
+                      !selectedCategory && styles.categoryIconActiveGlass
+                    ]}>
+                      <IconComponent name="restaurant" size={20} color={!selectedCategory ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} />
+                    </View>
+                    <Text style={[
+                      styles.categoryNameGlass,
+                      !selectedCategory && styles.categoryNameActiveGlass
+                    ]}>
+                      Todos os Pratos
+                    </Text>
+                    {!selectedCategory && (
+                      <View style={styles.categoryActiveBar} />
+                    )}
+                  </TouchableOpacity>
+
+                  {/* Category List */}
+                  {categories.map((category) => (
+                    <TouchableOpacity
+                      key={category.id}
+                      style={[
+                        styles.categoryItemGlass,
+                        selectedCategory === category.id && styles.categoryItemActiveGlass
+                      ]}
+                      onPress={() => {
+                        setSelectedCategory(category.id);
+                        resetIdleTimer();
+                      }}
+                    >
+                      <View style={[
+                        styles.categoryIconGlass,
+                        selectedCategory === category.id && styles.categoryIconActiveGlass
+                      ]}>
+                        <IconComponent 
+                          name={category.icon || 'sushi'} 
+                          size={20} 
+                          color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} 
+                        />
+                      </View>
+                      <Text style={[
+                        styles.categoryNameGlass,
+                        selectedCategory === category.id && styles.categoryNameActiveGlass
+                      ]}>
+                        {category.name}
+                      </Text>
+                      {selectedCategory === category.id && (
+                        <View style={styles.categoryActiveBar} />
+                      )}
+                    </TouchableOpacity>
+                  ))}
+                </>
+              )}
+            </ScrollView>
+          </View>
+
+          {/* Right Column - Products Grid */}
+          <View style={styles.rightColumnGlass}>
+            {loadingProducts ? (
+              <View style={styles.loadingProductsGlass}>
+                <ActivityIndicator size="large" color="#FF7043" />
+                <Text style={styles.loadingTextGlass}>Carregando produtos...</Text>
+              </View>
+            ) : (
+              <FlatList
+                data={getFilteredProducts()}
+                keyExtractor={(item) => item.id.toString()}
+                numColumns={2}
+                contentContainerStyle={styles.productsGridGlass}
+                showsVerticalScrollIndicator={false}
+                onScroll={() => resetIdleTimer()}
+                ListEmptyComponent={
+                  <View style={styles.emptyContainerGlass}>
+                    <IconComponent name="restaurant" size={48} color="rgba(255, 255, 255, 0.3)" />
+                    <Text style={styles.emptyTextGlass}>Nenhum produto encontrado</Text>
+                    <Text style={styles.emptySubtextGlass}>Tente buscar por outro termo</Text>
+                  </View>
+                }
+                renderItem={({ item }) => (
+                  <TouchableOpacity
+                    style={styles.productCardGlass}
+                    onPress={() => handleAddToCart(item)}
+                    activeOpacity={0.85}
+                  >
+                    <BlurView intensity={80} tint="dark" style={styles.productCardInnerGlass}>
+                      {/* Product Image */}
+                      {item.image_url ? (
+                        <Image source={{ uri: item.image_url }} style={styles.productImageGlass} />
+                      ) : (
+                        <View style={styles.productImagePlaceholderGlass}>
+                          <IconComponent name="sushi" size={36} color="rgba(255, 255, 255, 0.3)" />
+                        </View>
+                      )}
+                      
+                      {/* Premium Badge */}
+                      {item.is_premium && (
+                        <LinearGradient
+                          colors={['#FFD700', '#FFA000']}
+                          style={styles.premiumBadgeGlass}
+                        >
+                          <IconComponent name="star" size={12} color="#FFFFFF" />
+                          <Text style={styles.premiumTextGlass}>PREMIUM</Text>
+                        </LinearGradient>
+                      )}
+                      
+                      {/* Product Info */}
+                      <View style={styles.productInfoGlass}>
+                        <Text style={styles.productNameGlass} numberOfLines={2}>
+                          {item.name}
+                        </Text>
+                        
+                        {item.description && (
+                          <Text style={styles.productDescriptionGlass} numberOfLines={2}>
+                            {item.description}
+                          </Text>
+                        )}
+                        
+                        {/* Price Section */}
+                        <View style={styles.productFooterGlass}>
+                          {parseFloat(item.price) > 0 ? (
+                            <View style={styles.priceContainerGlass}>
+                              <Text style={styles.currencyGlass}>R$</Text>
+                              <Text style={styles.priceValueGlass}>
+                                {parseFloat(item.price).toFixed(2)}
+                              </Text>
+                            </View>
+                          ) : (
+                            <View style={styles.rodizioTagGlass}>
+                              <IconComponent name="fire" size={14} color="#FF7043" />
+                              <Text style={styles.rodizioTextGlass}>Rodízio</Text>
+                            </View>
+                          )}
+                          
+                          {/* Add Button */}
+                          <TouchableOpacity 
+                            style={styles.addButtonGlass}
+                            activeOpacity={0.7}
+                          >
+                            <LinearGradient
+                              colors={['#FF7043', '#FF5722']}
+                              style={styles.addButtonGradientGlass}
+                            >
+                              <IconComponent name="plus" size={20} color="#FFFFFF" />
+                            </LinearGradient>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </BlurView>
+                  </TouchableOpacity>
+                )}
+              />
             )}
-          />
-        )}
+          </View>
+        </View>
 
         {/* Cart Button */}
         {cart.length > 0 && (
