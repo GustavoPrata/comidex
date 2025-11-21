@@ -364,7 +364,7 @@ function MainApp() {
   const [showRodizioModal, setShowRodizioModal] = useState(false);
   const [adultCount, setAdultCount] = useState(1);
   const [childCount, setChildCount] = useState(0);
-  const [rodizioModalAnim] = useState(new Animated.Value(0));
+  const rodizioModalAnim = useRef(new Animated.Value(0)).current;
   const [categories, setCategories] = useState<Category[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -2272,26 +2272,114 @@ function MainApp() {
 
                   <TouchableOpacity
                     style={styles.rodizioConfirmButton}
-                    onPress={() => {
-                      // Save rodízio selection to session data
-                      // For now, just close modal and proceed
-                      Animated.timing(rodizioModalAnim, {
-                        toValue: 0,
-                        duration: 200,
-                        useNativeDriver: true,
-                      }).start(() => {
-                        setShowRodizioModal(false);
-                        // Continue with the rodízio selection
-                        // You can store adultCount and childCount here
-                      });
+                    onPress={async () => {
+                      // Lançar rodízio automaticamente no caixa
+                      try {
+                        setLoading(true);
+                        
+                        // Criar itens do rodízio para o pedido
+                        const rodizioItems = [];
+                        
+                        // Adicionar rodízios adultos
+                        if (adultCount > 0 && selectedMode?.price) {
+                          rodizioItems.push({
+                            id: -1 * Date.now(), // ID negativo para rodízio
+                            name: selectedMode.name,
+                            price: selectedMode.price,
+                            quantity: adultCount,
+                            is_rodizio: true,
+                            group_id: selectedMode.linked_groups?.[0]?.id || null
+                          });
+                        }
+                        
+                        // Adicionar rodízios crianças (meio)
+                        if (childCount > 0 && selectedMode?.half_price) {
+                          rodizioItems.push({
+                            id: -2 * Date.now(), // ID negativo diferente para meio rodízio
+                            name: `${selectedMode.name} (Criança)`,
+                            price: selectedMode.half_price,
+                            quantity: childCount,
+                            is_rodizio: true,
+                            group_id: selectedMode.linked_groups?.[0]?.id || null
+                          });
+                        }
+                        
+                        // Enviar pedido do rodízio
+                        const response = await fetch(`${API_BASE}/order`, {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                          },
+                          body: JSON.stringify({
+                            table_number: tableNumber,
+                            items: rodizioItems,
+                            mode: 'rodizio',
+                            device_id: deviceId
+                          }),
+                        });
+                        
+                        if (!response.ok) {
+                          throw new Error('Erro ao lançar rodízio');
+                        }
+                        
+                        const result = await response.json();
+                        console.log('🎯 Rodízio lançado com sucesso:', result);
+                        
+                        // Atualizar sessão local com informações do rodízio
+                        setSession((prev: any) => ({
+                          ...prev,
+                          has_rodizio: true,
+                          rodizio_type: selectedMode.name,
+                          adult_count: adultCount,
+                          child_count: childCount
+                        }));
+                        
+                        // Fechar modal com animação
+                        Animated.timing(rodizioModalAnim, {
+                          toValue: 0,
+                          duration: 200,
+                          useNativeDriver: true,
+                        }).start(() => {
+                          setShowRodizioModal(false);
+                          setAdultCount(1);
+                          setChildCount(0);
+                          
+                          // Mostrar sucesso
+                          Alert.alert(
+                            '✅ Rodízio Lançado',
+                            `${selectedMode?.name} para ${adultCount} ${adultCount === 1 ? 'adulto' : 'adultos'}${childCount > 0 ? ` e ${childCount} ${childCount === 1 ? 'criança' : 'crianças'}` : ''} foi lançado na mesa ${tableNumber}!`,
+                            [
+                              {
+                                text: 'OK',
+                                onPress: () => {
+                                  // Continuar para o catálogo
+                                  // Já com o selectedMode definido
+                                }
+                              }
+                            ]
+                          );
+                        });
+                        
+                      } catch (error) {
+                        console.error('❌ Erro ao lançar rodízio:', error);
+                        Alert.alert('Erro', 'Não foi possível lançar o rodízio. Tente novamente.');
+                      } finally {
+                        setLoading(false);
+                      }
                     }}
                   >
                     <LinearGradient
                       colors={['#FF7043', '#FF5722']}
                       style={styles.rodizioConfirmGradient}
                     >
-                      <Text style={styles.rodizioConfirmButtonText}>Confirmar</Text>
-                      <IconComponent name="check" size={18} color="#FFFFFF" />
+                      {loading ? (
+                        <ActivityIndicator size="small" color="#FFFFFF" />
+                      ) : (
+                        <>
+                          <Text style={styles.rodizioConfirmButtonText}>Confirmar</Text>
+                          <IconComponent name="check" size={18} color="#FFFFFF" />
+                        </>
+                      )}
                     </LinearGradient>
                   </TouchableOpacity>
                 </View>
