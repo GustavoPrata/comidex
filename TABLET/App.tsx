@@ -1241,8 +1241,6 @@ function MainApp() {
     return (
       <View style={styles.container}>
         <StatusBar style="light" />
-        {isIdle && <IdleScreen />}
-        {showAdminPanel && <AdminPanel />}
         <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={styles.welcomeHeader}>
