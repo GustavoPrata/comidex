@@ -89,7 +89,6 @@ const { width, height } = Dimensions.get("window");
 const IDLE_TIMEOUT = 120000; // 2 minutes
 const KIOSK_PIN = "1234"; // Kiosk admin PIN
 const LONG_PRESS_DURATION = 3000; // 3 seconds for admin menu
-const CAROUSEL_INTERVAL = 5000; // 5 seconds per promotion
 
 // Icon Components
 const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size?: number, color?: string }) => {
@@ -252,7 +251,6 @@ function MainApp() {
   const [isIdle, setIsIdle] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
-  const [currentPromoIndex, setCurrentPromoIndex] = useState(0);
   const [kioskMode, setKioskMode] = useState(true);
   const [appStats, setAppStats] = useState({
     totalOrders: 0,
@@ -269,7 +267,6 @@ function MainApp() {
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const carouselTimerRef = useRef<NodeJS.Timeout | null>(null);
   const lastActivityRef = useRef<number>(Date.now());
   const panResponderRef = useRef<any>(null);
 
@@ -397,43 +394,6 @@ function MainApp() {
     }
   }, []);
 
-  // Carousel timer for promotions
-  useEffect(() => {
-    if (isIdle) {
-      carouselTimerRef.current = setInterval(() => {
-        setCurrentPromoIndex((prev) => (prev + 1) % promotions.length);
-        
-        // Slide animation
-        Animated.sequence([
-          Animated.timing(promoSlideAnim, {
-            toValue: -width,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-          Animated.timing(promoSlideAnim, {
-            toValue: width,
-            duration: 0,
-            useNativeDriver: true,
-          }),
-          Animated.timing(promoSlideAnim, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-        ]).start();
-      }, CAROUSEL_INTERVAL);
-    } else {
-      if (carouselTimerRef.current) {
-        clearInterval(carouselTimerRef.current);
-      }
-    }
-    
-    return () => {
-      if (carouselTimerRef.current) {
-        clearInterval(carouselTimerRef.current);
-      }
-    };
-  }, [isIdle, promoSlideAnim]);
 
   // Check or create session when table is selected and mode is chosen
   useEffect(() => {
@@ -1079,9 +1039,33 @@ function MainApp() {
     };
   };
 
-  // Idle Screen Component
+  // Idle Screen Component - Clock Style
   const IdleScreen = () => {
-    const currentPromo = promotions[currentPromoIndex];
+    const [currentTime, setCurrentTime] = useState(new Date());
+    
+    // Update clock every second
+    useEffect(() => {
+      if (isIdle) {
+        const timer = setInterval(() => {
+          setCurrentTime(new Date());
+        }, 1000);
+        
+        return () => clearInterval(timer);
+      }
+    }, [isIdle]);
+    
+    const formatTime = (date: Date) => {
+      return date.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+    };
+    
+    const formatDate = (date: Date) => {
+      const options = { weekday: 'long' as const, day: 'numeric' as const, month: 'long' as const };
+      return date.toLocaleDateString('pt-BR', options);
+    };
     
     return (
       <Animated.View 
@@ -1096,90 +1080,90 @@ function MainApp() {
       >
         <TouchableWithoutFeedback onPress={() => resetIdleTimer()}>
           <View style={styles.idleContent}>
-            {/* Header with Logo */}
-            <View style={styles.idleHeader}>
-              <Animated.View style={[{ transform: [{ scale: idleFadeAnim }] }]}>
-                <View style={styles.logoCircleContainer}>
-                  <View style={styles.logoCircleBg}>
-                    <Image 
-                      source={require('./assets/logo-comidex-new.png')}
-                      style={styles.idleLogoImage}
-                      resizeMode="contain"
-                    />
-                  </View>
-                </View>
-              </Animated.View>
-            </View>
-
-            {/* Promotional Carousel */}
-            <Animated.View 
-              style={[
-                styles.promoCard,
-                { transform: [{ translateX: promoSlideAnim }] }
-              ]}
-            >
-              {currentPromo.highlight && (
-                <View style={styles.promoHighlight}>
-                  <Text style={styles.promoHighlightText}>DESTAQUE</Text>
-                </View>
-              )}
-              
-              <View style={styles.promoIcon}>
-                <Text style={styles.promoEmoji}>{currentPromo.title.substring(0, 2)}</Text>
-              </View>
-              
-              <Text style={styles.promoTitle}>{currentPromo.title.substring(2)}</Text>
-              <Text style={styles.promoDescription}>{currentPromo.description}</Text>
-              
-              {currentPromo.price && (
-                <View style={styles.promoPriceContainer}>
-                  <Text style={styles.promoPriceLabel}>Por apenas</Text>
-                  <Text style={styles.promoPrice}>{currentPromo.price}</Text>
-                </View>
-              )}
-            </Animated.View>
-
-            {/* Carousel Indicators */}
-            <View style={styles.carouselIndicators}>
-              {promotions.map((_, index) => (
-                <View 
-                  key={index}
-                  style={[
-                    styles.indicator,
-                    index === currentPromoIndex && styles.indicatorActive
-                  ]}
-                />
-              ))}
-            </View>
-
-            {/* Touch to Start */}
-            <Animated.View 
-              style={[
-                styles.touchToStart,
-                {
-                  transform: [
-                    { 
+            {/* Glass Background */}
+            <BlurView intensity={95} tint="dark" style={styles.idleGlassBg}>
+              {/* Logo */}
+              <Animated.View 
+                style={[
+                  styles.idleLogoWrapper,
+                  { 
+                    transform: [{ 
                       scale: idleFadeAnim.interpolate({
                         inputRange: [0, 1],
-                        outputRange: [0.8, 1]
+                        outputRange: [0.5, 1]
+                      }) 
+                    }] 
+                  }
+                ]}
+              >
+                <View style={styles.idleLogoCircle}>
+                  <Image 
+                    source={require('./assets/logo23.png')}
+                    style={styles.idleLogoImage}
+                    resizeMode="contain"
+                  />
+                </View>
+              </Animated.View>
+
+              {/* Clock Display */}
+              <Animated.View 
+                style={[
+                  styles.clockContainer,
+                  {
+                    opacity: idleFadeAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 1]
+                    })
+                  }
+                ]}
+              >
+                <Text style={styles.clockTime}>{formatTime(currentTime)}</Text>
+                <Text style={styles.clockDate}>{formatDate(currentTime)}</Text>
+              </Animated.View>
+
+              {/* Restaurant Name */}
+              <Animated.Text 
+                style={[
+                  styles.idleRestaurantName,
+                  {
+                    opacity: idleFadeAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 0.8]
+                    })
+                  }
+                ]}
+              >
+                ComideX
+              </Animated.Text>
+
+              {/* Touch Hint */}
+              <Animated.View 
+                style={[
+                  styles.idleHintContainer,
+                  {
+                    transform: [{
+                      translateY: idleFadeAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [50, 0]
+                      })
+                    }]
+                  }
+                ]}
+              >
+                <Animated.View 
+                  style={[
+                    styles.idleHintDot,
+                    {
+                      opacity: idleFadeAnim.interpolate({
+                        inputRange: [0, 0.5, 1],
+                        outputRange: [0, 1, 0.6]
                       })
                     }
-                  ]
-                }
-              ]}
-            >
-              <Text style={styles.touchToStartText}>✋ Toque para começar</Text>
-            </Animated.View>
-
-            {/* Footer with time */}
-            <View style={styles.idleFooter}>
-              <Text style={styles.idleTime}>
-                {new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
-              </Text>
-              <Text style={styles.idleDate}>
-                {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
-              </Text>
-            </View>
+                  ]}
+                />
+                <Text style={styles.idleHintText}>Toque para começar</Text>
+              </Animated.View>
+            </BlurView>
           </View>
         </TouchableWithoutFeedback>
       </Animated.View>
@@ -2184,7 +2168,7 @@ function MainApp() {
         <Animated.View 
           style={[
             styles.toast,
-            styles[`toast${toastType.charAt(0).toUpperCase() + toastType.slice(1)}`],
+            toastType === 'success' ? styles.toastSuccess : styles.toastError,
             {
               transform: [{ translateY: toastAnim }]
             }
@@ -3570,9 +3554,79 @@ const styles = StyleSheet.create({
   idleContent: {
     flex: 1,
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    padding: 40,
+  },
+  idleGlassBg: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.85)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  idleLogoWrapper: {
+    marginBottom: 60,
+  },
+  idleLogoCircle: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    justifyContent: "center",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 15,
+  },
+  idleLogoImage: {
+    width: 100,
+    height: 100,
+  },
+  clockContainer: {
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  clockTime: {
+    fontSize: 72,
+    fontWeight: "200",
+    color: "#FFFFFF",
+    letterSpacing: -2,
+  },
+  clockDate: {
+    fontSize: 20,
+    fontWeight: "300",
+    color: "rgba(255, 255, 255, 0.7)",
+    marginTop: 5,
+    textTransform: "capitalize",
+  },
+  idleRestaurantName: {
+    fontSize: 28,
+    fontWeight: "600",
+    color: config.colors.primary,
+    marginBottom: 60,
+    letterSpacing: 2,
+  },
+  idleHintContainer: {
+    alignItems: "center",
+    position: "absolute",
+    bottom: 100,
+  },
+  idleHintDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: config.colors.primary,
+    marginBottom: 10,
+  },
+  idleHintText: {
+    fontSize: 16,
+    color: "rgba(255, 255, 255, 0.6)",
+    fontWeight: "300",
   },
   idleHeader: {
     alignItems: "center",
@@ -3580,10 +3634,6 @@ const styles = StyleSheet.create({
   },
   idleLogo: {
     fontSize: 100,
-  },
-  idleLogoImage: {
-    width: 120,
-    height: 120,
   },
   idleTitle: {
     fontSize: 42,
