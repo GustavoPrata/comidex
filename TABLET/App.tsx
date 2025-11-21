@@ -1039,11 +1039,14 @@ export default function App() {
           <View style={styles.idleContent}>
             {/* Header with Logo */}
             <View style={styles.idleHeader}>
-              <Animated.Text style={[styles.idleLogo, { transform: [{ scale: idleFadeAnim }] }]}>
-                🍱
-              </Animated.Text>
-              <Text style={styles.idleTitle}>ComideX</Text>
-              <Text style={styles.idleSubtitle}>Culinária Japonesa Premium</Text>
+              <Animated.View style={[{ transform: [{ scale: idleFadeAnim }] }]}>
+                <Image 
+                  source={require('./assets/logo-comidex.png')}
+                  style={styles.idleLogoImage}
+                  resizeMode="contain"
+                />
+              </Animated.View>
+              <Text style={styles.idleSubtitle}>SISTEMA JAPONÊS</Text>
             </View>
 
             {/* Promotional Carousel */}
@@ -1248,10 +1251,13 @@ export default function App() {
                 onPressOut={handleLongPressEnd}
                 delayLongPress={0}
               >
-                <Text style={styles.welcomeLogo}>🍱</Text>
+                <Image 
+                  source={require('./assets/logo-comidex.png')}
+                  style={styles.welcomeLogoImage}
+                  resizeMode="contain"
+                />
               </Pressable>
-              <Text style={styles.welcomeTitle}>ComideX</Text>
-              <Text style={styles.welcomeSubtitle}>Sistema de Pedidos</Text>
+              <Text style={styles.welcomeSubtitle}>SISTEMA JAPONÊS</Text>
             </View>
             
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
@@ -2127,7 +2133,6 @@ const styles = StyleSheet.create({
   },
   glassContainer: {
     backgroundColor: 'rgba(20, 20, 20, 0.85)',
-    backdropFilter: 'blur(20px)',
     borderRadius: 20,
     borderWidth: 1,
     borderColor: 'rgba(255, 87, 34, 0.2)',
@@ -2139,7 +2144,7 @@ const styles = StyleSheet.create({
   },
   glassCard: {
     backgroundColor: 'rgba(30, 30, 30, 0.75)',
-    backdropFilter: 'blur(10px)',
+
     borderRadius: 16,
     borderWidth: 1,
     borderColor: 'rgba(255, 87, 34, 0.15)',
@@ -2225,6 +2230,11 @@ const styles = StyleSheet.create({
     fontSize: 80,
     marginBottom: 20,
   },
+  welcomeLogoImage: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+  },
   welcomeTitle: {
     fontSize: 36,
     fontWeight: "bold",
@@ -2232,8 +2242,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   welcomeSubtitle: {
-    fontSize: 18,
+    fontSize: 16,
     color: config.colors.textSecondary,
+    letterSpacing: 3,
+    fontWeight: '300',
+    textTransform: 'uppercase',
   },
   tableInputCard: {
     backgroundColor: 'rgba(30, 30, 30, 0.85)',
@@ -2241,7 +2254,7 @@ const styles = StyleSheet.create({
     padding: 30,
     width: "100%",
     alignItems: "center",
-    backdropFilter: 'blur(20px)',
+
     borderWidth: 1,
     borderColor: 'rgba(255, 87, 34, 0.2)',
     shadowColor: '#FF5722',
@@ -2271,7 +2284,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60,
     paddingVertical: 18,
     borderRadius: 28,
-    backdropFilter: 'blur(10px)',
+
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
     shadowColor: '#FF5722',
@@ -2446,7 +2459,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: 'rgba(30, 30, 30, 0.75)',
-    backdropFilter: 'blur(10px)',
+
     borderRadius: 20,
     borderWidth: 1,
     borderColor: 'rgba(255, 87, 34, 0.2)',
@@ -2726,7 +2739,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 20,
     backgroundColor: 'rgba(30, 30, 30, 0.75)',
-    backdropFilter: 'blur(10px)',
+
     borderWidth: 1,
     borderColor: "transparent",
     marginRight: 10,
@@ -2774,7 +2787,7 @@ const styles = StyleSheet.create({
   productCard: {
     flex: 1,
     backgroundColor: 'rgba(30, 30, 30, 0.75)',
-    backdropFilter: 'blur(10px)',
+
     borderRadius: 20,
     margin: 5,
     overflow: "hidden",
@@ -2939,7 +2952,7 @@ const styles = StyleSheet.create({
   },
   observationModal: {
     backgroundColor: 'rgba(30, 30, 30, 0.95)',
-    backdropFilter: 'blur(20px)',
+
     borderRadius: 28,
     padding: 28,
     width: width * 0.7,
@@ -3002,7 +3015,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: 'rgba(20, 20, 20, 0.95)',
-    backdropFilter: 'blur(20px)',
+
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
     borderWidth: 1,
@@ -3127,7 +3140,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: 'rgba(20, 20, 20, 0.95)',
-    backdropFilter: 'blur(20px)',
+
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     maxHeight: height * 0.85,
@@ -3436,6 +3449,11 @@ const styles = StyleSheet.create({
   },
   idleLogo: {
     fontSize: 100,
+  },
+  idleLogoImage: {
+    width: 150,
+    height: 150,
+    marginBottom: 15,
   },
   idleTitle: {
     fontSize: 42,

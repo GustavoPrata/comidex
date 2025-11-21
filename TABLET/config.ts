@@ -13,11 +13,11 @@ export const config = {
   // App settings
   ADMIN_PASSWORD: '0000',
   
-  // Theme colors - Dark Mode
+  // Theme colors - Dark Mode (matching ComideX official logo)
   colors: {
-    primary: '#FF6B35',          // Orange - Main accent color
-    secondary: '#FFA726',        // Lighter Orange - Secondary accent
-    tertiary: '#FF8C42',         // Medium Orange - Tertiary accent
+    primary: '#FF7043',          // ComideX Orange - Main accent color
+    secondary: '#FFA166',        // Lighter Orange - Secondary accent
+    tertiary: '#FF8557',         // Medium Orange - Tertiary accent
     success: '#4CAF50',          // Green
     warning: '#FFA726',          // Orange
     error: '#F44336',            // Red
@@ -35,13 +35,13 @@ export const config = {
     textOnPrimary: '#FFFFFF',    // White text on primary
     
     // Gradients
-    gradientStart: '#FF6B35',    // Orange
-    gradientEnd: '#FF8C42',      // Lighter Orange
+    gradientStart: '#FF7043',    // ComideX Orange
+    gradientEnd: '#FF8557',      // Lighter Orange
     
     // Category colors
     categoryColors: [
       '#FF6366',  // Pink
-      '#FFA726',  // Orange
+      '#FF7043',  // ComideX Orange
       '#AB47BC',  // Purple
       '#5C6BC0',  // Indigo
       '#42A5F5',  // Blue
@@ -51,8 +51,8 @@ export const config = {
     ],
     
     // Mode colors
-    rodizioColor: '#FF6B35',     // Orange for Rodízio
-    carteColor: '#FF8C42',       // Lighter Orange for À La Carte
+    rodizioColor: '#FF7043',     // ComideX Orange for Rodízio
+    carteColor: '#FF8557',       // Lighter Orange for À La Carte
   },
   
   // Animation durations
