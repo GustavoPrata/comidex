@@ -1098,7 +1098,7 @@ function MainApp() {
               >
                 <View style={styles.idleLogoCircle}>
                   <Image 
-                    source={require('./assets/logo23.png')}
+                    source={require('./assets/logo-comidex-new.png')}
                     style={styles.idleLogoImage}
                     resizeMode="contain"
                   />
