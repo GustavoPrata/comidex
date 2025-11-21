@@ -22,6 +22,7 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BlurView } from "expo-blur";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient, Defs, Stop } from 'react-native-svg';
 import { config } from './config';
 
@@ -208,7 +209,7 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
   }
 };
 
-export default function App() {
+function MainApp() {
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
   const [password, setPassword] = useState("");
@@ -3669,3 +3670,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <MainApp />
+    </SafeAreaProvider>
+  );
+}
