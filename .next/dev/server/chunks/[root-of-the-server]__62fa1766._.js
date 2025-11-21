@@ -463,9 +463,7 @@ async function GET() {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // Buscar todas as mesas ativas
-        const { data: tables, error } = await supabase.from('restaurant_tables').select('*').eq('active', true).order('number', {
-            ascending: true
-        });
+        const { data: tables, error } = await supabase.from('restaurant_tables').select('*').eq('active', true);
         if (error) throw error;
         // Buscar sessões ativas separadamente
         const { data: sessions } = await supabase.from('tablet_sessoes').select('*').eq('status', 'ativa');
@@ -473,16 +471,24 @@ async function GET() {
         const formattedTables = (tables || []).map((table)=>{
             // Verificar se há sessão ativa para esta mesa
             const activeSession = sessions?.find((session)=>session.mesa_id === table.id);
+            // Determinar se é Mesa ou Balcão baseado no número
+            const tableNumber = parseInt(table.number);
+            const displayName = tableNumber > 100 ? `Balcão ${table.number}` : table.name || `Mesa ${table.number}`;
             return {
                 id: table.id,
                 number: table.number,
-                name: table.name,
+                name: displayName,
                 capacity: table.capacity || 4,
                 status: activeSession ? 'occupied' : 'available',
                 session_id: activeSession?.id || null,
                 session_total: activeSession?.valor_total || 0,
-                occupied_since: activeSession?.inicio_atendimento || null
+                occupied_since: activeSession?.inicio_atendimento || null,
+                isCounter: tableNumber > 100 // Flag para identificar balcões
             };
+        });
+        // Ordenar por número (convertendo para integer)
+        formattedTables.sort((a, b)=>{
+            return parseInt(a.number) - parseInt(b.number);
         });
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$app$2f$api$2f$mobile$2f$middleware$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createCorsResponse"])({
             success: true,

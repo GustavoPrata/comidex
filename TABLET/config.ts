@@ -13,30 +13,30 @@ export const config = {
   // App settings
   ADMIN_PASSWORD: '0000',
   
-  // Theme colors
+  // Theme colors - Dark Mode
   colors: {
-    primary: '#FF6366',          // Coral Pink - Main accent color
-    secondary: '#FFA726',        // Orange - Secondary accent
-    tertiary: '#AB47BC',         // Purple - Tertiary accent
-    success: '#66BB6A',          // Green
+    primary: '#FF6B35',          // Orange - Main accent color
+    secondary: '#FFA726',        // Lighter Orange - Secondary accent
+    tertiary: '#FF8C42',         // Medium Orange - Tertiary accent
+    success: '#4CAF50',          // Green
     warning: '#FFA726',          // Orange
-    error: '#EF5350',            // Red
-    info: '#42A5F5',             // Blue
+    error: '#F44336',            // Red
+    info: '#2196F3',             // Blue
     
-    // Background colors
-    background: '#FFFFFF',       // White
-    surface: '#F8F9FA',          // Light Gray
-    card: '#FFFFFF',             // White cards
+    // Background colors - Dark Mode
+    background: '#000000',       // Pure Black
+    surface: '#1A1A1A',          // Very Dark Gray
+    card: '#1F1F1F',             // Dark Gray cards
     
-    // Text colors
-    textPrimary: '#2C3E50',      // Dark Blue-Gray
-    textSecondary: '#64748B',    // Medium Gray
-    textTertiary: '#94A3B8',     // Light Gray
+    // Text colors - Dark Mode
+    textPrimary: '#FFFFFF',      // White
+    textSecondary: '#B0B0B0',    // Light Gray
+    textTertiary: '#808080',     // Medium Gray
     textOnPrimary: '#FFFFFF',    // White text on primary
     
     // Gradients
-    gradientStart: '#FF6366',    // Pink
-    gradientEnd: '#FFA726',      // Orange
+    gradientStart: '#FF6B35',    // Orange
+    gradientEnd: '#FF8C42',      // Lighter Orange
     
     // Category colors
     categoryColors: [
@@ -51,8 +51,8 @@ export const config = {
     ],
     
     // Mode colors
-    rodizioColor: '#FF6366',     // Pink for Rodízio
-    carteColor: '#42A5F5',       // Blue for À La Carte
+    rodizioColor: '#FF6B35',     // Orange for Rodízio
+    carteColor: '#FF8C42',       // Lighter Orange for À La Carte
   },
   
   // Animation durations

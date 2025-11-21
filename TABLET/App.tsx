@@ -1202,7 +1202,7 @@ export default function App() {
   if (isLocked) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <View style={styles.lockContainer}>
           <View style={styles.lockCard}>
             <View style={styles.lockIcon}>
@@ -1236,10 +1236,10 @@ export default function App() {
   if (!tableNumber) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <IdleScreen />
         <AdminPanel />
-        <ScrollView contentContainerStyle={styles.welcomeContainer}>
+        <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={styles.welcomeHeader}>
               <Pressable
@@ -1271,18 +1271,22 @@ export default function App() {
                       resetIdleTimer();
                     }}
                   >
-                    <IconComponent name="refresh" size={20} color="#FFF" />
+                    <IconComponent name="refresh" size={20} color="#000" />
                     <Text style={styles.retryButtonText}>Tentar Novamente</Text>
                   </TouchableOpacity>
                 </View>
               ) : (
-                <View style={styles.tablesGrid}>
+                <ScrollView 
+                  style={styles.tablesList}
+                  showsVerticalScrollIndicator={true}
+                  contentContainerStyle={styles.tablesListContent}
+                >
                   {availableTables.map((table) => (
                     <TouchableOpacity
                       key={table.id}
                       style={[
-                        styles.tableCard,
-                        table.status === 'occupied' && styles.tableCardOccupied,
+                        styles.tableListItem,
+                        table.status === 'occupied' && styles.tableListItemOccupied,
                       ]}
                       onPress={() => {
                         if (table.status === 'available') {
@@ -1302,40 +1306,54 @@ export default function App() {
                         }
                       }}
                       disabled={table.status === 'occupied'}
-                      activeOpacity={table.status === 'occupied' ? 1 : 0.8}
+                      activeOpacity={table.status === 'occupied' ? 1 : 0.7}
                     >
-                      <View style={styles.tableCardContent}>
-                        <Text style={[
-                          styles.tableNumber,
-                          table.status === 'occupied' && styles.tableNumberOccupied
+                      <View style={styles.tableListItemLeft}>
+                        <View style={[
+                          styles.tableNumberCircle,
+                          table.status === 'occupied' && styles.tableNumberCircleOccupied
                         ]}>
-                          {table.number}
-                        </Text>
-                        <Text style={[
-                          styles.tableName,
-                          table.status === 'occupied' && styles.tableNameOccupied
-                        ]}>
-                          {table.name || `Mesa ${table.number}`}
-                        </Text>
-                        {table.capacity && (
-                          <View style={styles.tableCapacity}>
-                            <Text style={[
-                              styles.tableCapacityText,
-                              table.status === 'occupied' && styles.tableCapacityTextOccupied
-                            ]}>
-                              👥 {table.capacity}
-                            </Text>
+                          <Text style={[
+                            styles.tableListNumber,
+                            table.status === 'occupied' && styles.tableListNumberOccupied
+                          ]}>
+                            {table.number}
+                          </Text>
+                        </View>
+                        <View style={styles.tableInfo}>
+                          <Text style={[
+                            styles.tableListName,
+                            table.status === 'occupied' && styles.tableListNameOccupied
+                          ]}>
+                            {table.name}
+                          </Text>
+                          <Text style={[
+                            styles.tableListCapacity,
+                            table.status === 'occupied' && styles.tableListCapacityOccupied
+                          ]}>
+                            👥 Capacidade: {table.capacity || 4} pessoas
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={styles.tableListItemRight}>
+                        {table.status === 'occupied' ? (
+                          <View style={styles.occupiedIndicator}>
+                            <Text style={styles.occupiedText}>OCUPADA</Text>
+                            {table.session_total > 0 && (
+                              <Text style={styles.occupiedTotal}>
+                                R$ {table.session_total.toFixed(2)}
+                              </Text>
+                            )}
                           </View>
-                        )}
-                        {table.status === 'occupied' && (
-                          <View style={styles.occupiedBadge}>
-                            <Text style={styles.occupiedBadgeText}>OCUPADA</Text>
+                        ) : (
+                          <View style={styles.availableIndicator}>
+                            <Text style={styles.availableText}>DISPONÍVEL</Text>
                           </View>
                         )}
                       </View>
                     </TouchableOpacity>
                   ))}
-                </View>
+                </ScrollView>
               )}
 
               {/* Refresh button */}
@@ -1357,7 +1375,7 @@ export default function App() {
               <Text style={styles.adminButtonText}>Modo Administrador</Text>
             </TouchableOpacity>
           </Animated.View>
-        </ScrollView>
+        </View>
       </SafeAreaView>
     );
   }
@@ -1366,7 +1384,7 @@ export default function App() {
   if (!selectedMode) {
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar style="dark" />
+        <StatusBar style="light" />
         <IdleScreen />
         <AdminPanel />
         <View style={styles.modeContainer} {...panResponderRef.current?.panHandlers}>
@@ -1376,7 +1394,9 @@ export default function App() {
               onPressOut={handleLongPressEnd}
               delayLongPress={0}
             >
-              <Text style={styles.modeTitle}>Mesa {tableNumber}</Text>
+              <Text style={styles.modeTitle}>
+                {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
+              </Text>
             </Pressable>
             <Text style={styles.modeSubtitle}>Escolha como deseja pedir</Text>
             {session && (
@@ -1449,7 +1469,7 @@ export default function App() {
   // Main Interface
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <IdleScreen />
       <AdminPanel />
       
@@ -1462,7 +1482,9 @@ export default function App() {
               onPressOut={handleLongPressEnd}
               delayLongPress={0}
             >
-              <Text style={styles.headerTitle}>Mesa {tableNumber}</Text>
+              <Text style={styles.headerTitle}>
+                {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
+              </Text>
             </Pressable>
             <View style={[
               styles.modeBadge,
@@ -1850,7 +1872,9 @@ export default function App() {
         >
           <View style={styles.billHeader}>
             <IconComponent name="bill" size={30} color={config.colors.primary} />
-            <Text style={styles.billTitle}>Conta Mesa {tableNumber}</Text>
+            <Text style={styles.billTitle}>
+              Conta {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
+            </Text>
             <TouchableOpacity onPress={() => {
               setShowBill(false);
               Animated.timing(billSlideAnim, {
@@ -2366,6 +2390,108 @@ const styles = StyleSheet.create({
   refreshTablesText: {
     fontSize: 14,
     color: config.colors.primary,
+  },
+  // New Table List Styles (Dark Mode)
+  tablesList: {
+    maxHeight: 400,
+    marginTop: 10,
+  },
+  tablesListContent: {
+    paddingBottom: 10,
+  },
+  tableListItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: config.colors.surface,
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 10,
+    borderWidth: 1,
+    borderColor: config.colors.primary,
+    shadowColor: config.colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  tableListItemOccupied: {
+    backgroundColor: "#0A0A0A",
+    borderColor: "#333333",
+    opacity: 0.6,
+  },
+  tableListItemLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  tableNumberCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: config.colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 15,
+  },
+  tableNumberCircleOccupied: {
+    backgroundColor: "#333333",
+  },
+  tableListNumber: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+  },
+  tableListNumberOccupied: {
+    color: "#666666",
+  },
+  tableInfo: {
+    flex: 1,
+  },
+  tableListName: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: config.colors.textPrimary,
+    marginBottom: 4,
+  },
+  tableListNameOccupied: {
+    color: "#666666",
+  },
+  tableListCapacity: {
+    fontSize: 13,
+    color: config.colors.textSecondary,
+  },
+  tableListCapacityOccupied: {
+    color: "#555555",
+  },
+  tableListItemRight: {
+    alignItems: "flex-end",
+  },
+  availableIndicator: {
+    backgroundColor: config.colors.success + "20",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: config.colors.success,
+  },
+  availableText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: config.colors.success,
+  },
+  occupiedIndicator: {
+    alignItems: "flex-end",
+  },
+  occupiedText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: "#FF6B6B",
+    marginBottom: 4,
+  },
+  occupiedTotal: {
+    fontSize: 11,
+    color: "#888888",
   },
   modeContainer: {
     flex: 1,

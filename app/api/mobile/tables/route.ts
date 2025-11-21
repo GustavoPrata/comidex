@@ -17,7 +17,6 @@ export async function GET() {
       .from('restaurant_tables')
       .select('*')
       .eq('active', true)
-      .order('number', { ascending: true })
     
     if (error) throw error
 
@@ -34,16 +33,28 @@ export async function GET() {
         (session: any) => session.mesa_id === table.id
       )
       
+      // Determinar se é Mesa ou Balcão baseado no número
+      const tableNumber = parseInt(table.number)
+      const displayName = tableNumber > 100 
+        ? `Balcão ${table.number}` 
+        : table.name || `Mesa ${table.number}`
+      
       return {
         id: table.id,
         number: table.number,
-        name: table.name,
+        name: displayName,
         capacity: table.capacity || 4,
         status: activeSession ? 'occupied' : 'available',
         session_id: activeSession?.id || null,
         session_total: activeSession?.valor_total || 0,
-        occupied_since: activeSession?.inicio_atendimento || null
+        occupied_since: activeSession?.inicio_atendimento || null,
+        isCounter: tableNumber > 100  // Flag para identificar balcões
       }
+    })
+    
+    // Ordenar por número (convertendo para integer)
+    formattedTables.sort((a, b) => {
+      return parseInt(a.number) - parseInt(b.number)
     })
 
     return createCorsResponse({
