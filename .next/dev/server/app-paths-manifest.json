@@ -1,5 +1,6 @@
 {
   "/admin/notifications/page": "app/admin/notifications/page.js",
+  "/admin/tables/page": "app/admin/tables/page.js",
   "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
   "/api/mobile/products/route": "app/api/mobile/products/route.js",
   "/api/mobile/service-types/route": "app/api/mobile/service-types/route.js",

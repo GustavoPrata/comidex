@@ -1555,157 +1555,156 @@ function MainApp() {
         <IdleScreen />
         <AdminPanel />
         
-        {/* Gradient Background */}
+        {/* Beautiful Apple-style Gradient Background */}
         <LinearGradient
-          colors={['#1a1a2e', '#16213e', '#0f3460']}
+          colors={['#2C2C2E', '#1C1C1E', '#000000']}
           style={StyleSheet.absoluteFillObject}
         />
         
         <View style={styles.modeContainer} {...panResponderRef.current?.panHandlers}>
-          {/* Enhanced Header */}
-          <View style={styles.modeHeaderEnhanced}>
+          {/* Glass Header with Blur */}
+          <BlurView intensity={80} tint="dark" style={styles.glassHeader}>
             <Pressable
               onLongPress={handleLongPressStart}
               onPressOut={handleLongPressEnd}
               delayLongPress={0}
             >
-              <View style={styles.modeHeaderContent}>
-                <View style={styles.tableIndicator}>
-                  <View style={styles.tableIconContainer}>
+              <View style={styles.headerContentGlass}>
+                <View style={styles.tableInfoGlass}>
+                  <View style={styles.tableIconGlass}>
                     <IconComponent 
                       name={parseInt(tableNumber) > 100 ? 'chair' : 'table'} 
-                      size={40} 
-                      color="#FFFFFF" 
+                      size={24} 
+                      color="#FF7043" 
                     />
                   </View>
-                  <View style={styles.tableInfoEnhanced}>
-                    <Text style={styles.modeTitleEnhanced}>
+                  <View>
+                    <Text style={styles.tableNumberGlass}>
                       {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
                     </Text>
-                    <Text style={styles.modeSubtitleEnhanced}>
-                      Escolha seu atendimento preferido
+                    <Text style={styles.tableSubtitleGlass}>
+                      Escolha o tipo de atendimento
                     </Text>
                   </View>
                 </View>
               </View>
             </Pressable>
             
-            {session && (
-              <LinearGradient
-                colors={['#22c55e', '#16a34a']}
-                style={styles.sessionBadgeEnhanced}
-              >
-                <Text style={styles.sessionTextEnhanced}>
-                  Conta Aberta • R$ {sessionTotal.toFixed(2)}
+            {session && sessionTotal > 0 && (
+              <View style={styles.sessionBadgeGlass}>
+                <IconComponent name="credit-card" size={14} color="#FF7043" />
+                <Text style={styles.sessionTextGlass}>
+                  R$ {sessionTotal.toFixed(2)}
                 </Text>
-              </LinearGradient>
+              </View>
             )}
-          </View>
+          </BlurView>
 
-          {/* Service Type Cards - Professional Grid */}
+          {/* Service Type Cards - Apple Glass Style */}
           <ScrollView 
             style={styles.serviceTypeScroll}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.serviceTypeGrid}
+            contentContainerStyle={styles.serviceTypeGridGlass}
           >
-            <View style={styles.cardsGridContainer}>
+            <View style={styles.cardsGridGlass}>
               {serviceTypes.map((serviceType, index) => (
                 <TouchableOpacity
                   key={serviceType.id}
-                  style={styles.serviceCardWrapper}
+                  style={styles.serviceCardWrapperGlass}
                   onPress={() => {
                     setSelectedMode(serviceType);
                     resetIdleTimer();
                   }}
-                  activeOpacity={0.9}
+                  activeOpacity={0.7}
                 >
-                  <View style={[styles.serviceCardModern, {
-                    borderColor: serviceType.color ? `${serviceType.color}30` : '#FF704330',
-                  }]}>
+                  <BlurView intensity={60} tint="dark" style={styles.serviceCardGlass}>
                     {/* Popular Badge */}
                     {index === 0 && (
-                      <View style={styles.popularBadgeModern}>
+                      <View style={styles.popularBadgeGlass}>
                         <LinearGradient
-                          colors={['#FFD700', '#FFA500']}
-                          style={styles.popularGradient}
+                          colors={['#FF7043', '#FF5722']}
+                          style={styles.popularGradientGlass}
                         >
-                          <IconComponent name="star" size={14} color="#FFFFFF" />
-                          <Text style={styles.popularTextModern}>POPULAR</Text>
+                          <IconComponent name="star" size={12} color="#FFFFFF" />
+                          <Text style={styles.popularTextGlass}>POPULAR</Text>
                         </LinearGradient>
                       </View>
                     )}
                     
-                    {/* Icon Section */}
-                    <LinearGradient
-                      colors={[
-                        serviceType.color ? `${serviceType.color}10` : '#FF704310',
-                        serviceType.color ? `${serviceType.color}05` : '#FF704305'
-                      ]}
-                      style={styles.iconSectionModern}
-                    >
+                    {/* Icon Circle */}
+                    <View style={[styles.iconCircleGlass, {
+                      backgroundColor: '#FF704315',
+                      borderColor: '#FF704330',
+                    }]}>
                       <IconComponent 
                         name={serviceType.icon || 'restaurant'} 
-                        size={48} 
-                        color={serviceType.color || '#FF7043'} 
+                        size={42} 
+                        color="#FF7043"
                       />
-                    </LinearGradient>
+                    </View>
                     
-                    {/* Content */}
-                    <View style={styles.cardContentModern}>
-                      <Text style={[styles.cardTitleModern, {
-                        color: serviceType.color || '#FF7043'
-                      }]}>
+                    {/* Card Content */}
+                    <View style={styles.cardContentGlass}>
+                      <Text style={styles.cardTitleGlass}>
                         {serviceType.name}
                       </Text>
-                      <Text style={styles.cardDescModern}>
-                        {serviceType.description || 'Atendimento rápido e eficiente'}
+                      <Text style={styles.cardDescGlass}>
+                        {serviceType.description || 'Atendimento rápido'}
                       </Text>
                     </View>
                     
-                    {/* Price Section */}
-                    {serviceType.price && serviceType.price > 0 && (
-                      <View style={styles.priceSectionModern}>
-                        <Text style={styles.priceLabel}>Taxa de serviço</Text>
-                        <Text style={[styles.priceAmount, {
-                          color: serviceType.color || '#FF7043'
-                        }]}>
-                          R$ {serviceType.price.toFixed(2)}
-                        </Text>
-                      </View>
-                    )}
+                    {/* Price Section - Same height for all cards */}
+                    <View style={styles.priceContainerGlass}>
+                      {serviceType.price && serviceType.price > 0 ? (
+                        <>
+                          <Text style={styles.priceLabelGlass}>Taxa de serviço</Text>
+                          <Text style={[styles.priceAmountGlass, { color: '#FF7043' }]}>
+                            R$ {serviceType.price.toFixed(2)}
+                          </Text>
+                        </>
+                      ) : (
+                        <>
+                          <Text style={styles.priceLabelGlass}>Sem taxa adicional</Text>
+                          <Text style={[styles.priceAmountGlass, { color: '#FF7043' }]}>
+                            Incluso
+                          </Text>
+                        </>
+                      )}
+                    </View>
                     
-                    {/* Action Button */}
-                    <LinearGradient
-                      colors={[
-                        serviceType.color || '#FF7043',
-                        `${serviceType.color || '#FF7043'}DD`
-                      ]}
-                      style={styles.actionButtonModern}
+                    {/* Select Button */}
+                    <TouchableOpacity
+                      style={styles.selectButtonGlass}
+                      activeOpacity={0.8}
                     >
-                      <Text style={styles.actionButtonText}>SELECIONAR</Text>
-                      <IconComponent name="arrow-right" size={18} color="#FFFFFF" />
-                    </LinearGradient>
-                  </View>
+                      <LinearGradient
+                        colors={['#FF7043', '#FF5722']}
+                        style={styles.selectButtonGradientGlass}
+                      >
+                        <Text style={styles.selectButtonTextGlass}>Selecionar</Text>
+                        <IconComponent name="arrow-right" size={16} color="#FFFFFF" />
+                      </LinearGradient>
+                    </TouchableOpacity>
+                  </BlurView>
                 </TouchableOpacity>
               ))}
             </View>
           </ScrollView>
 
-          {/* Bottom Actions */}
-          <View style={styles.bottomActionsContainer}>
+          {/* Bottom Actions - Glass Button */}
+          <View style={styles.bottomActionsGlass}>
             <TouchableOpacity 
-              style={styles.changeMesaButtonEnhanced}
+              style={styles.changeMesaGlass}
               onPress={() => {
                 setTableNumber("");
                 resetIdleTimer();
               }}
+              activeOpacity={0.7}
             >
-              <LinearGradient
-                colors={['#ef4444', '#dc2626']}
-                style={styles.changeMesaGradientBtn}
-              >
-                <Text style={styles.changeMesaBtnText}>Trocar Mesa</Text>
-              </LinearGradient>
+              <BlurView intensity={50} tint="dark" style={styles.changeMesaBlurGlass}>
+                <IconComponent name="refresh" size={16} color="#FF7043" />
+                <Text style={styles.changeMesaTextGlass}>Trocar Mesa</Text>
+              </BlurView>
             </TouchableOpacity>
           </View>
         </View>
@@ -3210,6 +3209,193 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.5,
   },
+  
+  // Apple Glassmorphism Styles
+  glassHeader: {
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  headerContentGlass: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  tableInfoGlass: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  tableIconGlass: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    backgroundColor: 'rgba(255,112,67,0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,112,67,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  tableNumberGlass: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+  },
+  tableSubtitleGlass: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.6)',
+    marginTop: 2,
+  },
+  sessionBadgeGlass: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255,112,67,0.15)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,112,67,0.3)',
+  },
+  sessionTextGlass: {
+    color: '#FF7043',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  serviceTypeGridGlass: {
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 100,
+  },
+  cardsGridGlass: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 16,
+  },
+  serviceCardWrapperGlass: {
+    width: '48%',
+  },
+  serviceCardGlass: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+    height: 280, // Fixed height for all cards
+    justifyContent: 'space-between',
+  },
+  popularBadgeGlass: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    zIndex: 10,
+  },
+  popularGradientGlass: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    gap: 4,
+  },
+  popularTextGlass: {
+    color: '#FFFFFF',
+    fontSize: 9,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  iconCircleGlass: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderWidth: 1,
+  },
+  cardContentGlass: {
+    alignItems: 'center',
+    marginTop: 12,
+  },
+  cardTitleGlass: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginBottom: 6,
+  },
+  cardDescGlass: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.6)',
+    textAlign: 'center',
+    lineHeight: 16,
+  },
+  priceContainerGlass: {
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
+    paddingTop: 12,
+    alignItems: 'center',
+    minHeight: 50, // Fixed height for price section
+  },
+  priceLabelGlass: {
+    fontSize: 10,
+    color: 'rgba(255,255,255,0.5)',
+    marginBottom: 4,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  priceAmountGlass: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  selectButtonGlass: {
+    width: '100%',
+    marginTop: 12,
+  },
+  selectButtonGradientGlass: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+    borderRadius: 12,
+    gap: 6,
+  },
+  selectButtonTextGlass: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  bottomActionsGlass: {
+    position: 'absolute',
+    bottom: 30,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
+  changeMesaGlass: {
+    width: 140,
+  },
+  changeMesaBlurGlass: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+  },
+  changeMesaTextGlass: {
+    color: '#FF7043',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
