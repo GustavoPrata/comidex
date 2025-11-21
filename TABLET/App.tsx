@@ -1555,15 +1555,15 @@ function MainApp() {
         <IdleScreen />
         <AdminPanel />
         
-        {/* Beautiful Apple-style Gradient Background */}
+        {/* Beautiful Light Gradient Background */}
         <LinearGradient
-          colors={['#2C2C2E', '#1C1C1E', '#000000']}
+          colors={['#F5F5F7', '#E5E5EA', '#D1D1D6']}
           style={StyleSheet.absoluteFillObject}
         />
         
         <View style={styles.modeContainer} {...panResponderRef.current?.panHandlers}>
           {/* Glass Header with Blur */}
-          <BlurView intensity={80} tint="dark" style={styles.glassHeader}>
+          <BlurView intensity={80} tint="light" style={styles.glassHeader}>
             <Pressable
               onLongPress={handleLongPressStart}
               onPressOut={handleLongPressEnd}
@@ -1617,20 +1617,7 @@ function MainApp() {
                   }}
                   activeOpacity={0.7}
                 >
-                  <BlurView intensity={60} tint="dark" style={styles.serviceCardGlass}>
-                    {/* Popular Badge */}
-                    {index === 0 && (
-                      <View style={styles.popularBadgeGlass}>
-                        <LinearGradient
-                          colors={['#FF7043', '#FF5722']}
-                          style={styles.popularGradientGlass}
-                        >
-                          <IconComponent name="star" size={12} color="#FFFFFF" />
-                          <Text style={styles.popularTextGlass}>POPULAR</Text>
-                        </LinearGradient>
-                      </View>
-                    )}
-                    
+                  <BlurView intensity={60} tint="light" style={styles.serviceCardGlass}>
                     {/* Icon Circle */}
                     <View style={[styles.iconCircleGlass, {
                       backgroundColor: '#FF704315',
@@ -1701,7 +1688,7 @@ function MainApp() {
               }}
               activeOpacity={0.7}
             >
-              <BlurView intensity={50} tint="dark" style={styles.changeMesaBlurGlass}>
+              <BlurView intensity={50} tint="light" style={styles.changeMesaBlurGlass}>
                 <IconComponent name="refresh" size={16} color="#FF7043" />
                 <Text style={styles.changeMesaTextGlass}>Trocar Mesa</Text>
               </BlurView>
@@ -3214,9 +3201,9 @@ const styles = StyleSheet.create({
   glassHeader: {
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(255,255,255,0.7)',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.1)',
+    borderBottomColor: 'rgba(0,0,0,0.1)',
   },
   headerContentGlass: {
     flexDirection: 'row',
@@ -3241,11 +3228,11 @@ const styles = StyleSheet.create({
   tableNumberGlass: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: '#2C2C2E',
   },
   tableSubtitleGlass: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.6)',
+    color: 'rgba(0,0,0,0.6)',
     marginTop: 2,
   },
   sessionBadgeGlass: {
@@ -3279,11 +3266,11 @@ const styles = StyleSheet.create({
     width: '48%',
   },
   serviceCardGlass: {
-    backgroundColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(255,255,255,0.8)',
     borderRadius: 20,
     padding: 20,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
+    borderColor: 'rgba(0,0,0,0.1)',
     height: 280, // Fixed height for all cards
     justifyContent: 'space-between',
   },
@@ -3323,25 +3310,25 @@ const styles = StyleSheet.create({
   cardTitleGlass: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: '#2C2C2E',
     marginBottom: 6,
   },
   cardDescGlass: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.6)',
+    color: 'rgba(0,0,0,0.6)',
     textAlign: 'center',
     lineHeight: 16,
   },
   priceContainerGlass: {
     borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.1)',
+    borderTopColor: 'rgba(0,0,0,0.1)',
     paddingTop: 12,
     alignItems: 'center',
     minHeight: 50, // Fixed height for price section
   },
   priceLabelGlass: {
     fontSize: 10,
-    color: 'rgba(255,255,255,0.5)',
+    color: 'rgba(0,0,0,0.5)',
     marginBottom: 4,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -3386,9 +3373,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(255,255,255,0.9)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.15)',
+    borderColor: 'rgba(0,0,0,0.1)',
   },
   changeMesaTextGlass: {
     color: '#FF7043',
