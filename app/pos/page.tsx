@@ -3339,18 +3339,9 @@ export default function POSPage() {
                             <Badge className="bg-green-600 text-white text-xs py-0.5 mb-1">
                               LIVRE
                             </Badge>
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              className="mt-1 w-full text-xs bg-orange-600/20 hover:bg-orange-600/40 border-orange-600/50 h-7"
-                              onClick={(e) => {
-                                e.stopPropagation(); // Não abrir o diálogo
-                                handleQuickOpen(table);
-                              }}
-                            >
-                              <Zap className="h-3 w-3 mr-1" />
-                              Abrir Rápido
-                            </Button>
+                            <div className="text-xs text-gray-500 mt-2">
+                              <p>Disponível</p>
+                            </div>
                           </>
                         )}
                       </div>

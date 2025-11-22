@@ -130,23 +130,9 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST - Abrir mesa (criar nova sessão) - CONTROLE TOTAL DO POS
+// POST - Abrir mesa (criar nova sessão) - Aceita requisições do tablet também
 export async function POST(request: NextRequest) {
   try {
-    // Proteção: apenas o POS pode abrir mesas
-    // Verifica se a requisição vem do POS (internamente) ou de uma origem confiável
-    const origin = request.headers.get('origin') || ''
-    const referer = request.headers.get('referer') || ''
-    const userAgent = request.headers.get('user-agent') || ''
-    
-    // Se a requisição vem do tablet (React Native), bloqueia
-    if (userAgent.includes('okhttp') || userAgent.includes('Expo')) {
-      return NextResponse.json({
-        success: false,
-        message: 'Apenas o POS pode abrir mesas. Por favor, solicite ao atendente.'
-      }, { status: 403 })
-    }
-    
     const supabase = await createClient()
     
     const data = await request.json()
@@ -155,16 +141,8 @@ export async function POST(request: NextRequest) {
       attendance_type = 'À La Carte',
       number_of_people = 1,
       service_type, // Para rodízio
-      source = 'pos' // Identificar origem (pos, tablet, etc)
+      source = 'unknown' // Identificar origem (pos, tablet, etc)
     } = data
-    
-    // Proteção adicional: rejeita se source não for 'pos'
-    if (source !== 'pos') {
-      return NextResponse.json({
-        success: false,
-        message: 'Apenas o POS pode abrir mesas.'
-      }, { status: 403 })
-    }
     
     if (!table_number) {
       const response = NextResponse.json({

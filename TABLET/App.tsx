@@ -1793,33 +1793,35 @@ function MainApp() {
                     const sessionExists = await checkSessionFromPOS();
                     
                     if (!sessionExists) {
-                      // Mesa não está aberta - mostrar tela de espera
-                      Alert.alert(
-                        "📋 Mesa Não Liberada",
-                        `Mesa ${tableNumber} precisa ser liberada pelo atendente.\n\nPor favor, aguarde a liberação ou chame o garçom.`,
-                        [
-                          {
-                            text: "Chamar Garçom",
-                            onPress: () => {
-                              callWaiter();
-                              // Iniciar polling para detectar quando mesa for aberta
-                              setSelectedServiceType(serviceType);
-                              startPOSPolling();
-                            },
-                            style: "default"
-                          },
-                          {
-                            text: "Aguardar",
-                            onPress: () => {
-                              // Apenas iniciar polling
-                              setSelectedServiceType(serviceType);
-                              startPOSPolling();
-                            },
-                            style: "cancel"
-                          }
-                        ]
-                      );
-                      return;
+                      // Mesa não está aberta - abrir automaticamente
+                      setLoading(true);
+                      try {
+                        const response = await fetch(config.POS_API.session, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            table_number: parseInt(tableNumber),
+                            attendance_type: serviceType?.name || 'À La Carte',
+                            number_of_people: 1,
+                            service_type: serviceType,
+                            source: 'tablet' // Identificar que veio do tablet
+                          })
+                        });
+                        
+                        const result = await response.json();
+                        if (result.success) {
+                          setSession(result.session);
+                          console.log('✅ Mesa aberta automaticamente:', result.session);
+                        } else {
+                          Alert.alert('Erro', result.message || 'Não foi possível abrir a mesa');
+                          return;
+                        }
+                      } catch (error) {
+                        Alert.alert('Erro', 'Erro ao abrir mesa automaticamente');
+                        return;
+                      } finally {
+                        setLoading(false);
+                      }
                     }
                     
                     // Mesa está aberta - processar seleção do tipo

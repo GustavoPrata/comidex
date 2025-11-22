@@ -1,5 +1,8 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
+  "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
+  "/api/mobile/products/route": "app/api/mobile/products/route.js",
+  "/api/pos/service-types/route": "app/api/pos/service-types/route.js",
   "/api/pos/session/route": "app/api/pos/session/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
