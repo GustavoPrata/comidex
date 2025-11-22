@@ -28,6 +28,41 @@ import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Sto
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
 import { config } from './config';
+// Import Lucide icons para ter os mesmos ícones do admin
+import {
+  Crown,
+  Utensils,
+  BookOpen,
+  Coffee,
+  Pizza,
+  Star,
+  Home,
+  ShoppingCart,
+  User,
+  Bell,
+  X,
+  Plus,
+  Minus,
+  MessageCircle,
+  ChevronRight,
+  Search,
+  RefreshCw,
+  AlertCircle,
+  CheckCircle,
+  Info,
+  Trash2,
+  LogOut,
+  CreditCard,
+  DollarSign,
+  Settings,
+  Loader2,
+  ChevronLeft,
+  Menu as MenuIcon,
+  Baby,
+  ArrowRight,
+  Receipt,
+  BarChart3
+} from 'lucide-react-native';
 
 // Types
 interface Product {
@@ -94,263 +129,73 @@ const IDLE_TIMEOUT = 120000; // 2 minutes
 const KIOSK_PIN = "1234"; // Kiosk admin PIN
 const LONG_PRESS_DURATION = 3000; // 3 seconds for admin menu
 
-// Icon Components
+// Icon Component usando Lucide - IDÊNTICO AO ADMIN
 const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size?: number, color?: string }) => {
+  // Agora usa os MESMOS ícones Lucide do admin panel!
   switch(name) {
     case 'crown':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M5 16L3 7l4.5 3L12 4l4.5 6L21 7l-2 9H5z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2" strokeLinejoin="round"/>
-          <Circle cx="12" cy="15" r="2" fill={color}/>
-        </Svg>
-      );
+      return <Crown size={size} color={color} strokeWidth={2} />;
     case 'fire':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 2C12 2 17 7 17 13C17 17 14.5 20 12 20C9.5 20 7 17 7 13C7 7 12 2 12 2Z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.3"/>
-        </Svg>
-      );
+      return <Crown size={size} color={color} strokeWidth={2} />; // Fire não existe, usando Crown temporariamente
     case 'utensils':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M9 2v8l-3 3v8M9 10h3m0-8v19M15 2v5c0 1.5 2 3 3 3V2" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <Utensils size={size} color={color} strokeWidth={2} />;
     case 'menu-book':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v14M4 19l8-1 8 1M4 19a2 2 0 002 2h12a2 2 0 002-2" stroke={color} strokeWidth="2"/>
-          <Path d="M8 7h8M8 11h8M8 15h5" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <BookOpen size={size} color={color} strokeWidth={2} />;
     case 'cup-soda':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M5 12V8a1 1 0 011-1h12a1 1 0 011 1v4M5 12l2 8h10l2-8M5 12h14" stroke={color} strokeWidth="2"/>
-          <Path d="M7 2v5M12 2v5M17 2v5" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
-        </Svg>
-      );
+    case 'cup':
+      return <Coffee size={size} color={color} strokeWidth={2} />;
     case 'star':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
-          <Path d="M12 2l3 7h7l-5.5 4 2 7L12 15l-6.5 5 2-7L2 9h7z"/>
-        </Svg>
-      );
+      return <Star size={size} color={color} strokeWidth={2} />;
     case 'pizza':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 2L3 13h18L12 2z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
-          <Path d="M3 13l9 8 9-8" stroke={color} strokeWidth="2"/>
-          <Circle cx="12" cy="9" r="1" fill={color}/>
-          <Circle cx="9" cy="14" r="1" fill={color}/>
-          <Circle cx="15" cy="14" r="1" fill={color}/>
-        </Svg>
-      );
+      return <Pizza size={size} color={color} strokeWidth={2} />;
     case 'burger':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M4 9h16M4 15h16" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-          <Path d="M5 9a7 7 0 0114 0M5 15v2a2 2 0 002 2h10a2 2 0 002-2v-2" stroke={color} strokeWidth="2"/>
-        </Svg>
-      );
+      return <Utensils size={size} color={color} strokeWidth={2} />; // Usando Utensils para burger
     case 'salad':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M7 10h10l-1 8H8l-1-8z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
-          <Path d="M12 3v7M8 6l4 4M16 6l-4 4" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <Utensils size={size} color={color} strokeWidth={2} />; // Usando Utensils para salad
     case 'coffee':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M6 8h10v8a2 2 0 01-2 2H8a2 2 0 01-2-2V8zM16 10h2a2 2 0 110 4h-2" stroke={color} strokeWidth="2"/>
-          <Path d="M10 3v2M12 3v2M14 3v2" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <Coffee size={size} color={color} strokeWidth={2} />;
     case 'cake':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M3 20h18v-8H3v8zM3 12h18V9a1 1 0 00-1-1H4a1 1 0 00-1 1v3z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
-          <Path d="M12 8V5M12 5a1 1 0 100-2 1 1 0 000 2z" stroke={color} strokeWidth="2"/>
-        </Svg>
-      );
-    case 'crown':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M5 16L3 7l5.5 5L12 4l3.5 8L21 7l-2 9H5z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill={color} fillOpacity="0.2"/>
-          <Path d="M5 20h14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
-    case 'fire':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 2c1 3 5 6 5 10a5 5 0 01-10 0c0-1.5.5-2.5 1-3.5.5 1.5 2 2.5 3.5 2.5 1.5 0 2.5-2 .5-5z" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.2"/>
-        </Svg>
-      );
-    case 'menu-book':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M4 19V5a2 2 0 012-2h12a2 2 0 012 2v14M4 19l8-2 8 2M4 19a2 2 0 002 2h12a2 2 0 002-2M12 17V5" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
-    case 'table':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Rect x="4" y="4" width="16" height="16" rx="2" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.15"/>
-        </Svg>
-      );
-    case 'chair':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M5 10V6a2 2 0 012-2h10a2 2 0 012 2v4M5 10v10M19 10v10M5 14h14" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
-    case 'restaurant':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Circle cx="12" cy="12" r="10" stroke={color} strokeWidth="2" fill={color} fillOpacity="0.1"/>
-          <Path d="M8 12h8M12 8v8" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
-    case 'sushi':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Circle cx="12" cy="12" r="9" stroke={color} strokeWidth="2"/>
-          <Circle cx="12" cy="12" r="4" fill={color}/>
-        </Svg>
-      );
-    case 'drink':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M5 12V7a1 1 0 011-1h12a1 1 0 011 1v5M5 12l2 7h10l2-7M5 12h14M12 6v7" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
-    case 'rice':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Rect x="6" y="10" width="12" height="8" rx="2" stroke={color} strokeWidth="2"/>
-          <Path d="M8 10V8a4 4 0 018 0v2" stroke={color} strokeWidth="2"/>
-        </Svg>
-      );
-    case 'fish':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 5C16 5 19 8 19 12C19 16 16 19 12 19C8 19 5 16 5 12C5 8 8 5 12 5Z" stroke={color} strokeWidth="2"/>
-          <Circle cx="10" cy="11" r="1" fill={color}/>
-        </Svg>
-      );
     case 'dessert':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 2L15 10H9L12 2Z" fill={color}/>
-          <Rect x="8" y="12" width="8" height="8" rx="1" stroke={color} strokeWidth="2"/>
-        </Svg>
-      );
+      return <Coffee size={size} color={color} strokeWidth={2} />; // Temporário para cake/dessert
+    case 'table':
+    case 'chair':
+    case 'sushi':
+    case 'drink':
+    case 'rice':
+    case 'fish':
+      return <Utensils size={size} color={color} strokeWidth={2} />; // Temporário para estes casos
+    case 'restaurant':
+      return <Utensils size={size} color={color} strokeWidth={2} />;
     case 'arrow-right':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M5 12h14M12 5l7 7-7 7" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <ArrowRight size={size} color={color} strokeWidth={2} />;
     case 'bill':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Rect x="5" y="4" width="14" height="16" rx="2" stroke={color} strokeWidth="2"/>
-          <Path d="M9 8h6M9 12h6M9 16h4" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <Receipt size={size} color={color} strokeWidth={2} />;
     case 'credit-card':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Rect x="3" y="5" width="18" height="14" rx="2" stroke={color} strokeWidth="2"/>
-          <Path d="M3 9h18" stroke={color} strokeWidth="2"/>
-          <Path d="M7 14h4" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <CreditCard size={size} color={color} strokeWidth={2} />;
     case 'money':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Circle cx="12" cy="12" r="9" stroke={color} strokeWidth="2"/>
-          <Path d="M12 7v10M9 10h6" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <DollarSign size={size} color={color} strokeWidth={2} />;
     case 'pix':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M4 4L20 20M20 4L4 20" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <CreditCard size={size} color={color} strokeWidth={2} />; // Temporário para PIX
     case 'check':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
-          <Path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-        </Svg>
-      );
+      return <CheckCircle size={size} color={color} strokeWidth={2} />;
     case 'admin':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 2L2 7L12 12L22 7L12 2Z" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M2 17L12 22L22 17" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M2 12L12 17L22 12" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <Settings size={size} color={color} strokeWidth={2} />;
     case 'exit':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M16 17l5-5-5-5" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M21 12H9" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <LogOut size={size} color={color} strokeWidth={2} />;
     case 'refresh':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M1 4v6h6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M23 20v-6h-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M20.49 9A9 9 0 005.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 013.51 15" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <RefreshCw size={size} color={color} strokeWidth={2} />;
     case 'stats':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M18 20V10" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M12 20V4" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <Path d="M6 20v-6" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <BarChart3 size={size} color={color} strokeWidth={2} />;
     case 'plus':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M12 5v14M5 12h14" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <Plus size={size} color={color} strokeWidth={2} />;
     case 'minus':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Path d="M5 12h14" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </Svg>
-      );
+      return <Minus size={size} color={color} strokeWidth={2} />;
     case 'user':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Circle cx="12" cy="8" r="4" stroke={color} strokeWidth="2"/>
-          <Path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2" stroke={color} strokeWidth="2" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <User size={size} color={color} strokeWidth={2} />;
     case 'child':
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Circle cx="12" cy="7" r="3" stroke={color} strokeWidth="2"/>
-          <Path d="M7 14c0-2.5 2-4 5-4s5 1.5 5 4v5a1 1 0 01-1 1H8a1 1 0 01-1-1v-5z" stroke={color} strokeWidth="2"/>
-          <Path d="M10 5l-2-2M14 5l2-2" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
-        </Svg>
-      );
+      return <Baby size={size} color={color} strokeWidth={2} />;
     default:
-      return (
-        <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
-          <Circle cx="12" cy="12" r="10" stroke={color} strokeWidth="2"/>
-        </Svg>
-      );
+      return <Utensils size={size} color={color} strokeWidth={2} />; // Ícone padrão
   }
 };
 
