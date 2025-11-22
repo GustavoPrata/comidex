@@ -411,6 +411,8 @@ async function createClient() {
 "use strict";
 
 __turbopack_context__.s([
+    "OPTIONS",
+    ()=>OPTIONS,
     "POST",
     ()=>POST
 ]);
@@ -418,37 +420,59 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/supabase/server.ts [app-route] (ecmascript)");
 ;
 ;
+async function OPTIONS(request) {
+    const response = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"](null, {
+        status: 200
+    });
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Access-Control-Max-Age', '86400');
+    return response;
+}
 async function POST(request) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const data = await request.json();
         const { table_number, service_type, adult_count, child_count } = data;
         if (!table_number || !service_type) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: false,
                 error: 'Mesa e tipo de atendimento são obrigatórios'
             }, {
                 status: 400
             });
+            response.headers.set('Access-Control-Allow-Origin', '*');
+            response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return response;
         }
         // Buscar mesa
         const { data: table, error: tableError } = await supabase.from('restaurant_tables').select('*').eq('number', parseInt(table_number)).single();
         if (tableError || !table) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: false,
                 error: 'Mesa não encontrada'
             }, {
                 status: 404
             });
+            response.headers.set('Access-Control-Allow-Origin', '*');
+            response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return response;
         }
         // Verificar se já tem sessão ativa
         const { data: existingSession } = await supabase.from('table_sessions').select('*').eq('table_id', table.id).eq('status', 'active').single();
         if (existingSession) {
-            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: true,
                 session: existingSession,
                 message: 'Mesa já está aberta'
             });
+            response.headers.set('Access-Control-Allow-Origin', '*');
+            response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+            response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            return response;
         }
         // ABRIR MESA USANDO LÓGICA DO POS
         // Criar sessão na tabela table_sessions (mesma que o POS usa!)
@@ -520,7 +544,7 @@ async function POST(request) {
             }).eq('id', newSession.id);
         }
         console.log(`✅ Mesa ${table_number} aberta pelo POS via tablet - Sessão ${newSession.id}`);
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
             session: {
                 id: newSession.id,
@@ -534,15 +558,23 @@ async function POST(request) {
             },
             message: `Mesa ${table_number} aberta com sucesso`
         });
+        response.headers.set('Access-Control-Allow-Origin', '*');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
     } catch (error) {
         console.error('Erro ao abrir mesa pelo POS:', error);
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: false,
             error: 'Erro ao abrir mesa',
             message: error.message
         }, {
             status: 500
         });
+        response.headers.set('Access-Control-Allow-Origin', '*');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
     }
 }
 }),
