@@ -674,6 +674,53 @@ function MainApp() {
     }
   };
 
+  // Função para verificar se existe rodízio já lançado na mesa
+  const checkForExistingRodizio = async (tableNumber: string): Promise<boolean> => {
+    try {
+      console.log(`🔍 Verificando rodízio para mesa ${tableNumber}...`);
+      
+      // Chamar API do POS para verificar pedidos da mesa
+      const response = await fetch(
+        `${config.API_BASE_URL}/api/pos/orders-by-table?table_number=${tableNumber}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        console.log("❌ Erro ao buscar pedidos da mesa");
+        return false;
+      }
+
+      const data = await response.json();
+      
+      // Verificar se existe algum pedido de rodízio
+      if (data.orders && data.orders.length > 0) {
+        const hasRodizio = data.orders.some((order: any) => {
+          // Verificar se o pedido tem itens de rodízio
+          return order.items && order.items.some((item: any) => 
+            item.name?.toLowerCase().includes('rodízio') || 
+            item.name?.toLowerCase().includes('rodizio') ||
+            item.category?.toLowerCase() === 'rodízio' ||
+            item.category?.toLowerCase() === 'rodizio'
+          );
+        });
+        
+        console.log(`✅ Rodízio ${hasRodizio ? 'encontrado' : 'não encontrado'} para mesa ${tableNumber}`);
+        return hasRodizio;
+      }
+      
+      console.log(`❌ Nenhum pedido encontrado para mesa ${tableNumber}`);
+      return false;
+    } catch (error) {
+      console.error("Erro ao verificar rodízio existente:", error);
+      return false;
+    }
+  };
+
   const loadCategories = async () => {
     setLoadingCategories(true);
     try {
@@ -1598,54 +1645,70 @@ function MainApp() {
                         styles.tableListItem,
                         table.status === 'occupied' && styles.tableListItemOccupied,
                       ]}
-                      onPress={() => {
+                      onPress={async () => {
                         setTableNumber(table.number.toString());
                         setSelectedTable(table);
                         resetIdleTimer();
                         
-                        // Se a mesa está ocupada, mostra informação da conta existente
-                        if (table.status === 'occupied') {
-                          Alert.alert(
-                            "Mesa Ocupada",
-                            `Mesa ${table.number} possui uma conta aberta.\n${table.session_total > 0 ? `Total atual: R$ ${table.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
-                            [
-                              { text: "Cancelar", style: "cancel" },
-                              { 
-                                text: "Continuar",
-                                onPress: async () => {
-                                  // VERIFICAR SE TEM RODÍZIO NA MESA OCUPADA
-                                  console.log("🔍 Mesa ocupada selecionada! Verificando rodízio...");
-                                  const hasRodizio = await checkForExistingRodizio(table.number.toString());
-                                  
-                                  if (hasRodizio && serviceTypes.length > 0) {
-                                    console.log("✅ Mesa com rodízio ativo! Indo direto para o catálogo");
-                                    showToastNotification('Mesa com rodízio ativo - acessando cardápio', 'info');
-                                    
-                                    // Buscar o tipo rodízio dos service types
-                                    const rodizioType = serviceTypes.find(st => 
-                                      st.linked_groups?.some(g => g.type === 'rodizio')
-                                    );
-                                    
-                                    if (rodizioType) {
-                                      // Configurar o modo rodízio
-                                      setSelectedMode(rodizioType);
-                                      
-                                      // Carregar o catálogo
-                                      await loadCategories();
-                                      await loadProducts();
-                                      
-                                      // Fazer a animação e NÃO mostrar tipos de atendimento
-                                      Animated.timing(fadeAnim, {
-                                        toValue: 0,
-                                        duration: config.animations.fast,
-                                        useNativeDriver: true,
-                                      }).start(() => {
-                                        // Já com selectedMode configurado, vai direto pro catálogo
-                                      });
-                                    }
-                                  } else {
-                                    console.log("❌ Mesa sem rodízio, mostrando tipos de atendimento");
-                                    // Sem rodízio - continuar fluxo normal
+                        // VERIFICAR RODÍZIO IMEDIATAMENTE PARA QUALQUER MESA
+                        console.log("🔍 Mesa selecionada! Verificando se tem rodízio lançado...");
+                        setLoading(true);
+                        
+                        try {
+                          const hasRodizio = await checkForExistingRodizio(table.number.toString());
+                          
+                          if (hasRodizio && serviceTypes.length > 0) {
+                            console.log("✅ Mesa com rodízio ativo! Indo direto para o catálogo");
+                            showToastNotification('Mesa com rodízio ativo - acessando cardápio', 'success');
+                            
+                            // Buscar o tipo rodízio dos service types
+                            const rodizioType = serviceTypes.find(st => 
+                              st.linked_groups?.some(g => g.type === 'rodizio')
+                            );
+                            
+                            if (rodizioType) {
+                              // Configurar o modo rodízio
+                              setSelectedMode(rodizioType);
+                              
+                              // Buscar o grupo rodízio para configurar corretamente
+                              const rodizioGroup = rodizioType.linked_groups?.find(g => g.type === 'rodizio');
+                              if (rodizioGroup) {
+                                setSelectedRodizioGroup(rodizioGroup);
+                              }
+                              
+                              // Carregar o catálogo
+                              await loadCategories();
+                              await loadProducts();
+                              
+                              // Fazer a animação e ir DIRETO pro catálogo (pula seleção de tipo)
+                              Animated.timing(fadeAnim, {
+                                toValue: 0,
+                                duration: config.animations.fast,
+                                useNativeDriver: true,
+                              }).start(() => {
+                                // Com selectedMode já configurado, vai direto pro catálogo
+                                setLoading(false);
+                              });
+                              
+                              return; // Sai da função, não continua
+                            }
+                          }
+                          
+                          // Se chegou aqui, não tem rodízio ou falhou ao configurar
+                          console.log("❌ Mesa sem rodízio, mostrando tipos de atendimento");
+                          setLoading(false);
+                          
+                          // Se a mesa está ocupada mas sem rodízio, mostra aviso
+                          if (table.status === 'occupied') {
+                            Alert.alert(
+                              "Mesa Ocupada",
+                              `Mesa ${table.number} possui uma conta aberta.\n${table.session_total > 0 ? `Total atual: R$ ${table.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
+                              [
+                                { text: "Cancelar", style: "cancel" },
+                                { 
+                                  text: "Continuar",
+                                  onPress: () => {
+                                    // Continuar fluxo normal - mostrar tipos de atendimento
                                     Animated.timing(fadeAnim, {
                                       toValue: 0,
                                       duration: config.animations.fast,
@@ -1653,11 +1716,21 @@ function MainApp() {
                                     }).start();
                                   }
                                 }
-                              }
-                            ]
-                          );
-                        } else {
-                          // Mesa disponível, entra direto
+                              ]
+                            );
+                          } else {
+                            // Mesa disponível sem rodízio - mostrar tipos de atendimento
+                            Animated.timing(fadeAnim, {
+                              toValue: 0,
+                              duration: config.animations.fast,
+                              useNativeDriver: true,
+                            }).start();
+                          }
+                        } catch (error) {
+                          console.error("Erro ao verificar rodízio:", error);
+                          setLoading(false);
+                          
+                          // Em caso de erro, continua o fluxo normal
                           Animated.timing(fadeAnim, {
                             toValue: 0,
                             duration: config.animations.fast,
