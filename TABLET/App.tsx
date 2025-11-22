@@ -1697,12 +1697,40 @@ function MainApp() {
                               { text: "Cancelar", style: "cancel" },
                               { 
                                 text: "Continuar",
-                                onPress: () => {
-                                  Animated.timing(fadeAnim, {
-                                    toValue: 0,
-                                    duration: config.animations.fast,
-                                    useNativeDriver: true,
-                                  }).start();
+                                onPress: async () => {
+                                  // VERIFICAR SE TEM RODÍZIO ANTES DE CONTINUAR
+                                  const hasRodizio = await checkForExistingRodizio(exactMatch.number.toString());
+                                  
+                                  if (hasRodizio && serviceTypes.length > 0) {
+                                    console.log("✅ Mesa com rodízio detectado! Entrando direto no catálogo");
+                                    
+                                    // Buscar o tipo rodízio
+                                    const rodizioType = serviceTypes.find(st => 
+                                      st.linked_groups?.some(g => g.type === 'rodizio')
+                                    );
+                                    
+                                    if (rodizioType) {
+                                      setSelectedMode(rodizioType);
+                                      await loadCategories();
+                                      await loadProducts();
+                                      
+                                      // Ir direto para o catálogo sem mostrar tipos de atendimento
+                                      Animated.timing(fadeAnim, {
+                                        toValue: 0,
+                                        duration: config.animations.fast,
+                                        useNativeDriver: true,
+                                      }).start(() => {
+                                        // Após animação, já estar no catálogo
+                                      });
+                                    }
+                                  } else {
+                                    // Sem rodízio, continuar fluxo normal
+                                    Animated.timing(fadeAnim, {
+                                      toValue: 0,
+                                      duration: config.animations.fast,
+                                      useNativeDriver: true,
+                                    }).start();
+                                  }
                                 }
                               }
                             ]
@@ -1768,12 +1796,46 @@ function MainApp() {
                               { text: "Cancelar", style: "cancel" },
                               { 
                                 text: "Continuar",
-                                onPress: () => {
-                                  Animated.timing(fadeAnim, {
-                                    toValue: 0,
-                                    duration: config.animations.fast,
-                                    useNativeDriver: true,
-                                  }).start();
+                                onPress: async () => {
+                                  // VERIFICAR SE TEM RODÍZIO NA MESA OCUPADA
+                                  console.log("🔍 Mesa ocupada selecionada! Verificando rodízio...");
+                                  const hasRodizio = await checkForExistingRodizio(table.number.toString());
+                                  
+                                  if (hasRodizio && serviceTypes.length > 0) {
+                                    console.log("✅ Mesa com rodízio ativo! Indo direto para o catálogo");
+                                    showToastNotification('Mesa com rodízio ativo - acessando cardápio', 'info');
+                                    
+                                    // Buscar o tipo rodízio dos service types
+                                    const rodizioType = serviceTypes.find(st => 
+                                      st.linked_groups?.some(g => g.type === 'rodizio')
+                                    );
+                                    
+                                    if (rodizioType) {
+                                      // Configurar o modo rodízio
+                                      setSelectedMode(rodizioType);
+                                      
+                                      // Carregar o catálogo
+                                      await loadCategories();
+                                      await loadProducts();
+                                      
+                                      // Fazer a animação e NÃO mostrar tipos de atendimento
+                                      Animated.timing(fadeAnim, {
+                                        toValue: 0,
+                                        duration: config.animations.fast,
+                                        useNativeDriver: true,
+                                      }).start(() => {
+                                        // Já com selectedMode configurado, vai direto pro catálogo
+                                      });
+                                    }
+                                  } else {
+                                    console.log("❌ Mesa sem rodízio, mostrando tipos de atendimento");
+                                    // Sem rodízio - continuar fluxo normal
+                                    Animated.timing(fadeAnim, {
+                                      toValue: 0,
+                                      duration: config.animations.fast,
+                                      useNativeDriver: true,
+                                    }).start();
+                                  }
                                 }
                               }
                             ]
