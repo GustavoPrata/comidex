@@ -1019,85 +1019,119 @@ function MainApp() {
     }
   };
 
-  // Check if rodízio already exists in session - Check when entering occupied table
+  // Check if rodízio already exists on table - DIRECT POS CHECK
   const checkRodizioExists = async (tableNumber: string): Promise<boolean> => {
     try {
       console.log("🔍 Verificando se já existe rodízio na mesa:", tableNumber);
       
-      // Primeiro buscar a sessão ativa da mesa
-      const sessionResponse = await fetch(`${config.POS_API.session}?table_number=${tableNumber}`, {
+      // Buscar a mesa direto no POS para pegar o table_id
+      const tablesResponse = await fetch(`${config.POS_API.tables}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
       
-      if (!sessionResponse.ok) {
-        console.log("⚠️ Mesa não tem sessão ativa");
+      if (!tablesResponse.ok) {
+        console.log("⚠️ Não conseguiu buscar mesas");
         return false;
       }
       
-      const sessionData = await sessionResponse.json();
+      const tablesData = await tablesResponse.json();
+      const table = tablesData.tables?.find((t: any) => t.number === parseInt(tableNumber));
       
-      if (!sessionData.success || !sessionData.session) {
-        console.log("⚠️ Sessão não encontrada");
+      if (!table) {
+        console.log("⚠️ Mesa não encontrada");
         return false;
       }
       
-      const sessionId = sessionData.session.id;
-      console.log("📋 Sessão encontrada, verificando pedidos:", sessionId);
+      const tableId = table.id;
+      console.log("📋 Mesa encontrada com ID:", tableId, "- buscando pedidos");
       
-      // Buscar pedidos da sessão via API
-      const response = await fetch(`${config.BASE_URL}/api/orders?session_id=${sessionId}`, {
+      // Buscar TODOS os pedidos da mesa (pendentes/confirmados)
+      const ordersUrl = `${config.BASE_URL}/api/pos/orders-by-table?table_id=${tableId}`;
+      console.log("🔍 Buscando pedidos em:", ordersUrl);
+      
+      const response = await fetch(ordersUrl, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
       
       if (!response.ok) {
-        console.log("⚠️ Não foi possível verificar pedidos existentes");
+        console.log("⚠️ Não foi possível verificar pedidos (tentando API alternativa)");
+        
+        // Tentar API alternativa /api/orders
+        const altResponse = await fetch(`${config.BASE_URL}/api/orders`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        
+        if (altResponse.ok) {
+          const altData = await altResponse.json();
+          // Filtrar pedidos desta mesa manualmente
+          const tableOrders = altData.orders?.filter((o: any) => 
+            o.table_id === tableId && 
+            (o.status === 'pending' || o.status === 'confirmed' || o.status === 'preparing')
+          ) || [];
+          
+          return checkOrdersForRodizio(tableOrders);
+        }
         return false;
       }
       
       const data = await response.json();
-      console.log("📦 Pedidos encontrados:", data);
+      console.log("📦 Resposta dos pedidos:", data);
       
-      if (data.success && data.orders) {
-        // Verificar se algum pedido tem items de rodízio
-        for (const order of data.orders) {
-          // Verificar em order_items se existir
-          if (order.order_items && Array.isArray(order.order_items)) {
-            const hasRodizio = order.order_items.some((item: any) => {
-              // Checar metadata se existir
-              if (item.metadata) {
-                const metadata = typeof item.metadata === 'string' ? 
-                  JSON.parse(item.metadata) : item.metadata;
-                return metadata.is_rodizio === true || 
-                       metadata.category?.toLowerCase().includes('rodízio') ||
-                       metadata.name?.toLowerCase().includes('rodízio');
-              }
-              // Checar observation (onde salvamos o nome do rodízio)
-              const obsLower = item.observation?.toLowerCase() || '';
-              const hasRodizioKeyword = obsLower.includes('rodízio') || 
-                                       obsLower.includes('rodizio') ||
-                                       obsLower.includes('tradicional') ||
-                                       obsLower.includes('premium');
-              
-              console.log(`Item ${item.id}: observation="${item.observation}", hasRodizio=${hasRodizioKeyword}`);
-              return hasRodizioKeyword;
-            });
-            
-            if (hasRodizio) {
-              console.log("✅ Rodízio já foi lançado nesta sessão!");
-              return true;
-            }
-          }
-        }
-      }
+      return checkOrdersForRodizio(data.orders || []);
       
-      console.log("❌ Nenhum rodízio encontrado na sessão");
-      return false;
     } catch (error) {
       console.error("❌ Erro ao verificar rodízio:", error);
       return false;
     }
+  };
+  
+  // Helper function to check orders for rodizio items
+  const checkOrdersForRodizio = (orders: any[]): boolean => {
+    if (!orders || orders.length === 0) {
+      console.log("❌ Nenhum pedido encontrado");
+      return false;
+    }
+    
+    // Verificar cada pedido
+    for (const order of orders) {
+      // Verificar em order_items
+      if (order.order_items && Array.isArray(order.order_items)) {
+        const hasRodizio = order.order_items.some((item: any) => {
+          // Checar notes/observation
+          const notes = (item.notes || item.observation || '').toLowerCase();
+          const hasInNotes = notes.includes('rodízio') || 
+                             notes.includes('rodizio') ||
+                             notes.includes('tradicional') ||
+                             notes.includes('premium');
+          
+          // Checar metadata
+          if (item.metadata) {
+            const metadata = typeof item.metadata === 'string' ? 
+              JSON.parse(item.metadata) : item.metadata;
+            const hasInMetadata = metadata.type === 'rodizio' ||
+                                 metadata.name?.toLowerCase().includes('rodízio') ||
+                                 metadata.name?.toLowerCase().includes('rodizio');
+            
+            console.log(`Item ${item.id}: notes="${notes}", metadata=${JSON.stringify(metadata)}, hasRodizio=${hasInNotes || hasInMetadata}`);
+            return hasInNotes || hasInMetadata;
+          }
+          
+          console.log(`Item ${item.id}: notes="${notes}", hasRodizio=${hasInNotes}`);
+          return hasInNotes;
+        });
+        
+        if (hasRodizio) {
+          console.log("✅ Rodízio já foi lançado nesta mesa!");
+          return true;
+        }
+      }
+    }
+    
+    console.log("❌ Nenhum rodízio encontrado nos pedidos");
+    return false;
   };
 
   // Show toast notification
