@@ -11,7 +11,21 @@ Do not make changes to the folder `Z`.
 Do not make changes to the file `Y`.
 
 ## System Architecture
+
+### Core Architecture - POS as Single Source of Truth
+**Implemented**: The POS system now serves as the absolute authority for all restaurant operations. All table management, session control, and order processing flows through dedicated POS APIs (`/api/pos/*`), ensuring data consistency and preventing state conflicts.
+
+### Technology Stack
 The system is built with a modern web stack. The frontend utilizes **Next.js 15** with the App Router, **React 19**, **TypeScript**, **Tailwind CSS** for styling, **shadcn/ui** for components, and **SWR** for data fetching. The backend leverages **Next.js API Routes** for RESTful APIs, with **Supabase** (PostgreSQL and authentication) as the database.
+
+### API Architecture (Refactored November 22, 2024)
+- **POS APIs (`/api/pos/*`)**: Authoritative endpoints for table, session, and order management
+  - `/api/pos/tables`: Lists all tables with real-time status from POS
+  - `/api/pos/session`: Manages table sessions (open/close operations)
+  - `/api/pos/order`: Processes orders with automatic printer routing
+- **Catalog APIs (`/api/mobile/*`)**: Read-only endpoints for menu data
+  - Categories, products, and service types remain read-only for tablet access
+- **Tablet Integration**: The tablet app acts as a passive viewer/sender, never creating or managing sessions directly
 
 **UI/UX Decisions:**
 - **Minimalist color palette:** Black, orange, and white.
