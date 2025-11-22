@@ -679,9 +679,16 @@ function MainApp() {
     try {
       console.log(`🔍 Verificando rodízio para mesa ${tableNumber}...`);
       
-      // Chamar API do POS para verificar pedidos da mesa
+      // Primeiro, encontrar o ID da mesa pelo número
+      const table = tables.find(t => t.number.toString() === tableNumber.toString());
+      if (!table) {
+        console.log(`❌ Mesa ${tableNumber} não encontrada`);
+        return false;
+      }
+      
+      // Chamar API do POS para verificar pedidos da mesa usando table_id
       const response = await fetch(
-        `${config.API_BASE_URL}/api/pos/orders-by-table?table_number=${tableNumber}`,
+        `https://0cf83c93-8147-42e6-967b-30b169de3e65-00-1uqldc8o7pfpx.spock.replit.dev/api/pos/orders-by-table?table_id=${table.id}`,
         {
           method: 'GET',
           headers: {
@@ -691,7 +698,7 @@ function MainApp() {
       );
 
       if (!response.ok) {
-        console.log("❌ Erro ao buscar pedidos da mesa");
+        console.log("❌ Erro ao buscar pedidos da mesa:", response.status);
         return false;
       }
 
@@ -700,20 +707,20 @@ function MainApp() {
       // Verificar se existe algum pedido de rodízio
       if (data.orders && data.orders.length > 0) {
         const hasRodizio = data.orders.some((order: any) => {
-          // Verificar se o pedido tem itens de rodízio
-          return order.items && order.items.some((item: any) => 
-            item.name?.toLowerCase().includes('rodízio') || 
-            item.name?.toLowerCase().includes('rodizio') ||
-            item.category?.toLowerCase() === 'rodízio' ||
-            item.category?.toLowerCase() === 'rodizio'
+          // Verificar se o pedido tem itens de rodízio nos order_items
+          return order.order_items && order.order_items.some((item: any) => 
+            item.product_name?.toLowerCase().includes('rodízio') || 
+            item.product_name?.toLowerCase().includes('rodizio') ||
+            item.notes?.toLowerCase().includes('rodízio') ||
+            item.notes?.toLowerCase().includes('rodizio')
           );
         });
         
-        console.log(`✅ Rodízio ${hasRodizio ? 'encontrado' : 'não encontrado'} para mesa ${tableNumber}`);
+        console.log(`✅ Rodízio ${hasRodizio ? 'encontrado' : 'não encontrado'} para mesa ${tableNumber} (ID: ${table.id})`);
         return hasRodizio;
       }
       
-      console.log(`❌ Nenhum pedido encontrado para mesa ${tableNumber}`);
+      console.log(`❌ Nenhum pedido encontrado para mesa ${tableNumber} (ID: ${table.id})`);
       return false;
     } catch (error) {
       console.error("Erro ao verificar rodízio existente:", error);
