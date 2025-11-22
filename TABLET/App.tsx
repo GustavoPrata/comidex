@@ -2141,100 +2141,34 @@ function MainApp() {
               showsVerticalScrollIndicator={false}
               style={styles.groupsList}
             >
-              {serviceTypes.map((type, index) => {
-                // First item is compact (icon on top, name below, no description)
-                if (index === 0) {
-                  return (
-                    <TouchableOpacity
-                      key={type.id}
-                      style={styles.firstItemCompact}
-                      onPress={() => {
-                        setSelectedMode(type);
-                        setSelectedCategory(null);
-                        resetIdleTimer();
-                      }}
-                      activeOpacity={0.7}
-                    >
-                      <View style={[
-                        styles.compactIconContainer,
-                        selectedMode?.id === type.id && styles.compactIconActive
-                      ]}>
-                        <IconComponent 
-                          name={type.icon || 'restaurant'} 
-                          size={28} 
-                          color={selectedMode?.id === type.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'}
-                        />
-                      </View>
-                      <Text style={[
-                        styles.compactModeName,
-                        selectedMode?.id === type.id && styles.compactModeNameActive
-                      ]}>
-                        {/* Dynamic type detection based on linked_groups */}
-                        {(() => {
-                          // Check if it has linked groups with rodízio or a_la_carte type
-                          if (type.linked_groups && type.linked_groups.length > 0) {
-                            const groupType = type.linked_groups[0].type;
-                            if (groupType === 'rodizio') {
-                              return 'Rodízio';
-                            } else if (groupType === 'a_la_carte') {
-                              return 'À La Carte';
-                            }
-                          }
-                          // For other types, use the service type name
-                          return type.name;
-                        })()}
-                      </Text>
-                      {selectedMode?.id === type.id && (
-                        <View style={styles.compactActiveIndicator} />
-                      )}
-                    </TouchableOpacity>
-                  );
-                }
-
-                // Other items are normal (with description)
-                return (
-                  <TouchableOpacity
-                    key={type.id}
-                    style={[
-                      styles.groupItemGlass,
-                      selectedMode?.id === type.id && styles.groupItemActiveGlass
-                    ]}
-                    onPress={() => {
-                      setSelectedMode(type);
-                      setSelectedCategory(null);
-                      resetIdleTimer();
-                    }}
-                    activeOpacity={0.7}
-                  >
-                    <View style={[
-                      styles.groupIconContainerGlass,
-                      selectedMode?.id === type.id && styles.groupIconActiveGlass
-                    ]}>
-                      <IconComponent 
-                        name={type.icon || 'restaurant'} 
-                        size={24} 
-                        color={selectedMode?.id === type.id ? '#FF7043' : 'rgba(255, 255, 255, 0.7)'} 
-                      />
-                    </View>
-                    <View style={styles.groupTextContainer}>
-                      <Text style={[
-                        styles.groupNameGlass,
-                        selectedMode?.id === type.id && styles.groupNameActiveGlass
-                      ]}>
-                        {type.name}
-                      </Text>
-                      {type.description && (
-                        <Text style={styles.groupDescGlass} numberOfLines={1}>
-                          {type.description}
-                        </Text>
-                      )}
-                    </View>
-                    {selectedMode?.id === type.id && (
-                      <View style={styles.groupActiveIndicator} />
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
+              {selectedMode && (
+                <View style={styles.selectedModeCompact}>
+                  {/* Compact mode display - icon on top, name below */}
+                  <View style={styles.compactIconContainer}>
+                    <IconComponent 
+                      name={selectedMode.icon || 'restaurant'} 
+                      size={32} 
+                      color="#FF7043"
+                    />
+                  </View>
+                  <Text style={styles.compactModeName}>
+                    {/* Dynamic type detection based on linked_groups */}
+                    {(() => {
+                      // Check if it has linked groups with rodízio or a_la_carte type
+                      if (selectedMode.linked_groups && selectedMode.linked_groups.length > 0) {
+                        const groupType = selectedMode.linked_groups[0].type;
+                        if (groupType === 'rodizio') {
+                          return 'Rodízio';
+                        } else if (groupType === 'a_la_carte') {
+                          return 'À La Carte';
+                        }
+                      }
+                      // For other types, use the service type name
+                      return selectedMode.name;
+                    })()}
+                  </Text>
+                </View>
+              )}
             </ScrollView>
           </BlurView>
 
@@ -4381,30 +4315,9 @@ const styles = StyleSheet.create({
   compactModeName: {
     fontSize: 13,
     fontWeight: '600',
-    color: 'rgba(255, 255, 255, 0.6)',
+    color: '#FF7043',
     textAlign: 'center',
     letterSpacing: 0.3,
-  },
-  firstItemCompact: {
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-    marginBottom: 8,
-  },
-  compactIconActive: {
-    backgroundColor: 'rgba(255, 112, 67, 0.25)',
-    borderColor: '#FF7043',
-  },
-  compactModeNameActive: {
-    color: '#FF7043',
-    fontWeight: '700',
-  },
-  compactActiveIndicator: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#FF7043',
-    marginTop: 4,
   },
   groupItemGlass: {
     flexDirection: 'row',
