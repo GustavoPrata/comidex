@@ -1791,23 +1791,28 @@ function MainApp() {
                     const sessionExists = await checkSessionFromPOS();
                     
                     if (!sessionExists) {
-                      // Mesa não está aberta - mostrar modal para chamar garçom
-                      setSelectedServiceType(serviceType);
-                      setWaitingForPOS(true);
-                      setShowWaitingModal(true);
-                      startPOSPolling(); // Iniciar polling para detectar quando POS abrir
-                      
+                      // Mesa não está aberta - mostrar tela de espera
                       Alert.alert(
-                        "⏳ Mesa Aguardando Abertura",
-                        "A mesa ainda não foi aberta no sistema. Por favor, chame o garçom para liberar o pedido.",
+                        "📋 Mesa Não Liberada",
+                        `Mesa ${tableNumber} precisa ser liberada pelo atendente.\n\nPor favor, aguarde a liberação ou chame o garçom.`,
                         [
                           {
                             text: "Chamar Garçom",
-                            onPress: () => callWaiter(),
+                            onPress: () => {
+                              callWaiter();
+                              // Iniciar polling para detectar quando mesa for aberta
+                              setSelectedServiceType(serviceType);
+                              startPOSPolling();
+                            },
                             style: "default"
                           },
                           {
-                            text: "OK",
+                            text: "Aguardar",
+                            onPress: () => {
+                              // Apenas iniciar polling
+                              setSelectedServiceType(serviceType);
+                              startPOSPolling();
+                            },
                             style: "cancel"
                           }
                         ]

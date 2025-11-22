@@ -536,7 +536,7 @@ async function POST(request) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const data = await request.json();
-        const { table_number, attendance_type = 'À La Carte', number_of_people = 1, service_type// Para rodízio
+        const { table_number, attendance_type = 'À La Carte', number_of_people = 1, service_type, source = 'pos' // Identificar origem (pos, tablet, etc)
          } = data;
         if (!table_number) {
             const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({

@@ -140,7 +140,8 @@ export async function POST(request: NextRequest) {
       table_number, 
       attendance_type = 'À La Carte',
       number_of_people = 1,
-      service_type // Para rodízio
+      service_type, // Para rodízio
+      source = 'pos' // Identificar origem (pos, tablet, etc)
     } = data
     
     if (!table_number) {
