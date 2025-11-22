@@ -25,6 +25,8 @@ import { BlurView } from "expo-blur";
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
+import * as Brightness from 'expo-brightness';
+import { useKeepAwake } from 'expo-keep-awake';
 import { config } from './config';
 
 // Types
@@ -353,6 +355,9 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
 };
 
 function MainApp() {
+  // Keep screen awake to prevent battery-saving sleep mode
+  useKeepAwake();
+  
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
   const [password, setPassword] = useState("");
@@ -399,8 +404,9 @@ function MainApp() {
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<"success" | "error" | "info">("info");
 
-  // Kiosk Mode and Idle Screen States
-  const [isIdle, setIsIdle] = useState(false);
+  // Brightness Control and Kiosk Mode States
+  const [originalBrightness, setOriginalBrightness] = useState(1);
+  const [isDimmed, setIsDimmed] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
   const [kioskMode, setKioskMode] = useState(true);
@@ -432,7 +438,6 @@ function MainApp() {
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const cartBounceAnim = useRef(new Animated.Value(1)).current;
   const billSlideAnim = useRef(new Animated.Value(height)).current;
-  const idleFadeAnim = useRef(new Animated.Value(0)).current;
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
 
   // Sample promotions data
@@ -476,32 +481,39 @@ function MainApp() {
     },
   ];
 
-  // Reset idle timer
-  const resetIdleTimer = useCallback(() => {
+  // Brightness management
+  const resetIdleTimer = useCallback(async () => {
     lastActivityRef.current = Date.now();
     
     if (idleTimerRef.current) {
       clearTimeout(idleTimerRef.current);
     }
     
-    if (isIdle) {
-      setIsIdle(false);
-      Animated.timing(idleFadeAnim, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
+    // Restore brightness if dimmed
+    if (isDimmed) {
+      try {
+        await Brightness.setBrightnessAsync(originalBrightness);
+        setIsDimmed(false);
+      } catch (error) {
+        console.error('Error restoring brightness:', error);
+      }
     }
     
-    idleTimerRef.current = setTimeout(() => {
-      setIsIdle(true);
-      Animated.timing(idleFadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
+    // Set timer to dim after 2 minutes of inactivity
+    idleTimerRef.current = setTimeout(async () => {
+      try {
+        // Save current brightness before dimming
+        const currentBrightness = await Brightness.getBrightnessAsync();
+        setOriginalBrightness(currentBrightness);
+        
+        // Dim to 10% brightness to save battery
+        await Brightness.setBrightnessAsync(0.1);
+        setIsDimmed(true);
+      } catch (error) {
+        console.error('Error dimming screen:', error);
+      }
     }, IDLE_TIMEOUT);
-  }, [isIdle, idleFadeAnim]);
+  }, [isDimmed, originalBrightness]);
 
   // Pan Responder for touch tracking
   useEffect(() => {
@@ -519,6 +531,25 @@ function MainApp() {
 
   // Initialize and setup
   useEffect(() => {
+    // Initialize brightness control
+    const initBrightness = async () => {
+      try {
+        // Request permission to control brightness if needed
+        const { status } = await Brightness.requestPermissionsAsync();
+        if (status === 'granted') {
+          // Get current brightness to store as original
+          const current = await Brightness.getBrightnessAsync();
+          setOriginalBrightness(current);
+          console.log('Brightness control initialized. Current brightness:', current);
+        } else {
+          console.log('Brightness permission not granted');
+        }
+      } catch (error) {
+        console.error('Error initializing brightness:', error);
+      }
+    };
+    
+    initBrightness();
     loadCategories();
     loadProducts();
     loadTables(); // Load available tables on startup
@@ -539,13 +570,25 @@ function MainApp() {
       useNativeDriver: true,
     }).start();
 
-    // Disable back button in kiosk mode
+    // Cleanup and disable back button in kiosk mode
+    const cleanup = () => {
+      clearInterval(tablesInterval);
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+      }
+      // Restore original brightness when app closes
+      Brightness.setBrightnessAsync(originalBrightness).catch(console.error);
+    };
+    
     if (Platform.OS === 'android' && kioskMode) {
       const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
       return () => {
         backHandler.remove();
+        cleanup();
       };
     }
+    
+    return cleanup;
   }, []);
 
 
@@ -1271,136 +1314,6 @@ function MainApp() {
     };
   };
 
-  // Idle Screen Component - Clock Style
-  const IdleScreen = () => {
-    const [currentTime, setCurrentTime] = useState(new Date());
-    
-    // Update clock every second
-    useEffect(() => {
-      if (isIdle) {
-        const timer = setInterval(() => {
-          setCurrentTime(new Date());
-        }, 1000);
-        
-        return () => clearInterval(timer);
-      }
-    }, [isIdle]);
-    
-    const formatTime = (date: Date) => {
-      return date.toLocaleTimeString('pt-BR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-      });
-    };
-    
-    const formatDate = (date: Date) => {
-      const options = { weekday: 'long' as const, day: 'numeric' as const, month: 'long' as const };
-      return date.toLocaleDateString('pt-BR', options);
-    };
-    
-    return (
-      <Animated.View 
-        style={[
-          styles.idleContainer, 
-          { 
-            opacity: idleFadeAnim,
-            zIndex: isIdle ? 9999 : -1,
-          }
-        ]}
-        {...panResponderRef.current?.panHandlers}
-      >
-        <TouchableWithoutFeedback onPress={() => resetIdleTimer()}>
-          <View style={styles.idleContent}>
-            {/* Glass Background */}
-            <BlurView intensity={95} tint="dark" style={styles.idleGlassBg}>
-              {/* Logo */}
-              <Animated.View 
-                style={[
-                  styles.idleLogoWrapper,
-                  { 
-                    transform: [{ 
-                      scale: idleFadeAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0.5, 1]
-                      }) 
-                    }] 
-                  }
-                ]}
-              >
-                <View style={styles.idleLogoCircle}>
-                  <Image 
-                    source={require('./assets/logo23.png')}
-                    style={styles.idleLogoImage}
-                    resizeMode="contain"
-                  />
-                </View>
-              </Animated.View>
-
-              {/* Clock Display */}
-              <Animated.View 
-                style={[
-                  styles.clockContainer,
-                  {
-                    opacity: idleFadeAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 1]
-                    })
-                  }
-                ]}
-              >
-                <Text style={styles.clockTime}>{formatTime(currentTime)}</Text>
-                <Text style={styles.clockDate}>{formatDate(currentTime)}</Text>
-              </Animated.View>
-
-              {/* Restaurant Name */}
-              <Animated.Text 
-                style={[
-                  styles.idleRestaurantName,
-                  {
-                    opacity: idleFadeAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 0.8]
-                    })
-                  }
-                ]}
-              >
-                ComideX
-              </Animated.Text>
-
-              {/* Touch Hint */}
-              <Animated.View 
-                style={[
-                  styles.idleHintContainer,
-                  {
-                    transform: [{
-                      translateY: idleFadeAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [50, 0]
-                      })
-                    }]
-                  }
-                ]}
-              >
-                <Animated.View 
-                  style={[
-                    styles.idleHintDot,
-                    {
-                      opacity: idleFadeAnim.interpolate({
-                        inputRange: [0, 0.5, 1],
-                        outputRange: [0, 1, 0.6]
-                      })
-                    }
-                  ]}
-                />
-                <Text style={styles.idleHintText}>Toque para começar</Text>
-              </Animated.View>
-            </BlurView>
-          </View>
-        </TouchableWithoutFeedback>
-      </Animated.View>
-    );
-  };
 
   // Admin Panel Component
   const AdminPanel = () => (
@@ -1748,7 +1661,6 @@ function MainApp() {
     return (
       <View style={styles.container}>
         <StatusBar style="light" />
-        <IdleScreen />
         <AdminPanel />
         
         {/* Dark Background - Same as Table Selection */}
@@ -1953,7 +1865,6 @@ function MainApp() {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
-      <IdleScreen />
       <AdminPanel />
       
       <View {...panResponderRef.current?.panHandlers} style={{ flex: 1 }}>
