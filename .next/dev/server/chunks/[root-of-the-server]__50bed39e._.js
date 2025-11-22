@@ -469,45 +469,55 @@ async function POST(request) {
             session_id: newSession.id
         }).eq('id', table.id);
         // Se for rodízio, já criar o pedido inicial
-        if (service_type.linked_groups?.length > 0) {
-            const firstGroup = service_type.linked_groups[0];
-            if (firstGroup.type === 'rodizio' && firstGroup.price) {
-                const items = [];
-                // Adicionar rodízios adultos
-                if (adult_count > 0) {
-                    items.push({
-                        name: `${service_type.name} - Adulto`,
-                        price: firstGroup.price,
-                        quantity: adult_count,
-                        category: 'Rodízio',
-                        observation: 'Lançado automaticamente pelo tablet'
-                    });
-                }
-                // Adicionar rodízios crianças
-                if (child_count > 0) {
-                    items.push({
-                        name: `${service_type.name} - Criança`,
-                        price: firstGroup.half_price || firstGroup.price / 2,
-                        quantity: child_count,
-                        category: 'Rodízio',
-                        observation: 'Lançado automaticamente pelo tablet'
-                    });
-                }
-                // Calcular total
-                const total = items.reduce((sum, item)=>sum + item.price * item.quantity, 0);
-                // Criar pedido na tabela orders (POS)
-                const { data: order } = await supabase.from('orders').insert({
-                    session_id: newSession.id,
-                    items: items,
-                    total: total,
-                    status: 'pending',
-                    created_at: new Date().toISOString()
-                }).select().single();
-                // Atualizar total da sessão
-                await supabase.from('table_sessions').update({
-                    total_price: total
-                }).eq('id', newSession.id);
+        // CORREÇÃO: Verificar se service_type tem dados necessários antes de acessar
+        const isRodizio = service_type?.name?.toLowerCase().includes('rodízio') || service_type?.name?.toLowerCase().includes('rodizio');
+        if (isRodizio && (adult_count > 0 || child_count > 0)) {
+            console.log('🍽️ Detectado rodízio, criando pedido automático...');
+            // Usar preço do service_type ou valores padrão do banco
+            const adultPrice = service_type.price || 89.90 // Preço padrão adulto
+            ;
+            const childPrice = service_type.half_price || adultPrice / 2 // Metade do preço para criança
+            ;
+            const items = [];
+            // Adicionar rodízios adultos
+            if (adult_count > 0) {
+                items.push({
+                    name: `${service_type.name} - Adulto`,
+                    price: adultPrice,
+                    quantity: adult_count,
+                    category: 'Rodízio',
+                    observation: 'Lançado automaticamente pelo tablet'
+                });
             }
+            // Adicionar rodízios crianças  
+            if (child_count > 0) {
+                items.push({
+                    name: `${service_type.name} - Criança`,
+                    price: childPrice,
+                    quantity: child_count,
+                    category: 'Rodízio',
+                    observation: 'Lançado automaticamente pelo tablet'
+                });
+            }
+            // Calcular total
+            const total = items.reduce((sum, item)=>sum + item.price * item.quantity, 0);
+            // Criar pedido na tabela orders (POS)
+            const { data: order, error: orderError } = await supabase.from('orders').insert({
+                session_id: newSession.id,
+                items: items,
+                total: total,
+                status: 'pending',
+                created_at: new Date().toISOString()
+            }).select().single();
+            if (orderError) {
+                console.error('⚠️ Erro ao criar pedido de rodízio:', orderError);
+            } else {
+                console.log('✅ Pedido de rodízio criado:', order);
+            }
+            // Atualizar total da sessão
+            await supabase.from('table_sessions').update({
+                total_price: total
+            }).eq('id', newSession.id);
         }
         console.log(`✅ Mesa ${table_number} aberta pelo POS via tablet - Sessão ${newSession.id}`);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
