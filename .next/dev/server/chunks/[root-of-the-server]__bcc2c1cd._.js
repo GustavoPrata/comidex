@@ -584,18 +584,14 @@ async function POST(request) {
             number_of_people,
             unit_price: service_type?.price || 0,
             total_price: 0,
-            opened_at: new Date().toLocaleString("en-US", {
-                timeZone: "America/Sao_Paulo"
-            }),
+            opened_at: new Date().toISOString(),
             status: 'active'
         }).select().single();
         if (sessionError) throw sessionError;
         // Atualizar status da mesa
         await supabase.from('restaurant_tables').update({
             status: 'occupied',
-            occupied_since: new Date().toLocaleString("en-US", {
-                timeZone: "America/Sao_Paulo"
-            }),
+            occupied_since: new Date().toISOString(),
             session_id: newSession.id
         }).eq('id', table.id);
         // Se for rodízio, criar pedido automático
@@ -630,9 +626,7 @@ async function POST(request) {
                     items,
                     total,
                     status: 'pending',
-                    created_at: new Date().toLocaleString("en-US", {
-                        timeZone: "America/Sao_Paulo"
-                    })
+                    created_at: new Date().toISOString()
                 });
                 // Atualizar total da sessão
                 await supabase.from('table_sessions').update({

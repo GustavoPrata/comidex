@@ -574,11 +574,6 @@ async function POST(request) {
         const orderTotal = items.reduce((sum, item)=>sum + (item.price || 0) * (item.quantity || 1), 0);
         // Gerar número do pedido
         const orderNumber = `P${Date.now().toString().slice(-8)}`;
-        // Horário correto de São Paulo
-        const saoPauloTime = new Date().toLocaleString("en-US", {
-            timeZone: "America/Sao_Paulo"
-        });
-        const createdAt = new Date(saoPauloTime).toISOString();
         // Criar pedido principal (sem items - eles vão para order_items)
         const { data: newOrder, error: orderError } = await supabase.from('orders').insert({
             order_number: orderNumber,
@@ -586,7 +581,7 @@ async function POST(request) {
             total: orderTotal,
             final_total: orderTotal,
             status: 'pending',
-            created_at: createdAt,
+            created_at: new Date().toISOString(),
             notes: `Origem: ${source}`
         }).select().single();
         if (orderError) {

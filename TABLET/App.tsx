@@ -1019,6 +1019,71 @@ function MainApp() {
     }
   };
 
+  // Check if rodízio already exists in session
+  const checkRodizioExists = async (sessionId: number): Promise<boolean> => {
+    try {
+      console.log("🔍 Verificando se já existe rodízio na sessão:", sessionId);
+      
+      // Buscar pedidos da sessão via API
+      const response = await fetch(`${config.BASE_URL}/api/orders?session_id=${sessionId}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        console.log("⚠️ Não foi possível verificar pedidos existentes");
+        return false;
+      }
+      
+      const data = await response.json();
+      
+      if (data.success && data.orders) {
+        // Verificar se algum pedido tem items de rodízio
+        for (const order of data.orders) {
+          // Verificar no campo items do pedido
+          if (order.items && Array.isArray(order.items)) {
+            const hasRodizio = order.items.some((item: any) => 
+              item.category?.toLowerCase().includes('rodízio') ||
+              item.name?.toLowerCase().includes('rodízio') ||
+              item.is_rodizio === true
+            );
+            
+            if (hasRodizio) {
+              console.log("✅ Rodízio já foi lançado nesta sessão!");
+              return true;
+            }
+          }
+          
+          // Verificar também em order_items se existir
+          if (order.order_items && Array.isArray(order.order_items)) {
+            const hasRodizio = order.order_items.some((item: any) => {
+              // Checar metadata se existir
+              if (item.metadata) {
+                const metadata = typeof item.metadata === 'string' ? 
+                  JSON.parse(item.metadata) : item.metadata;
+                return metadata.is_rodizio === true || 
+                       metadata.category?.toLowerCase().includes('rodízio');
+              }
+              // Checar observation (onde salvamos o nome do rodízio)
+              return item.observation?.toLowerCase().includes('rodízio');
+            });
+            
+            if (hasRodizio) {
+              console.log("✅ Rodízio já foi lançado nesta sessão!");
+              return true;
+            }
+          }
+        }
+      }
+      
+      console.log("❌ Nenhum rodízio encontrado na sessão");
+      return false;
+    } catch (error) {
+      console.error("❌ Erro ao verificar rodízio:", error);
+      return false;
+    }
+  };
+
   // Show toast notification
   const showToastNotification = (message: string, type: "success" | "error" | "info" = "info") => {
     setToastMessage(message);
@@ -1827,22 +1892,32 @@ function MainApp() {
                     if (serviceType.linked_groups?.length > 0) {
                       const firstGroup = serviceType.linked_groups[0];
                       if (firstGroup.type === 'rodizio' && firstGroup.price) {
-                        // Show rodízio modal for selecting adults and children
-                        // Pass the service type with the group's pricing info
-                        const modeWithPricing = {
-                          ...serviceType,
-                          price: firstGroup.price || serviceType.price,
-                          half_price: firstGroup.half_price || 0
-                        };
-                        setSelectedMode(modeWithPricing);
-                        setShowRodizioModal(true);
-                        // Animate modal entrance
-                        Animated.spring(rodizioModalAnim, {
-                          toValue: 1,
-                          tension: 50,
-                          friction: 8,
-                          useNativeDriver: true,
-                        }).start();
+                        // Verificar se já existe rodízio lançado na sessão
+                        const rodizioExists = session?.id ? await checkRodizioExists(session.id) : false;
+                        
+                        if (rodizioExists) {
+                          // Rodízio já existe - entrar direto no catálogo
+                          console.log('🔄 Rodízio já lançado - entrando direto no atendimento');
+                          setSelectedMode(serviceType);
+                          showToastNotification('Rodízio já está lançado nesta mesa', 'info');
+                        } else {
+                          // Rodízio não existe - mostrar modal para selecionar adultos/crianças
+                          // Pass the service type with the group's pricing info
+                          const modeWithPricing = {
+                            ...serviceType,
+                            price: firstGroup.price || serviceType.price,
+                            half_price: firstGroup.half_price || 0
+                          };
+                          setSelectedMode(modeWithPricing);
+                          setShowRodizioModal(true);
+                          // Animate modal entrance
+                          Animated.spring(rodizioModalAnim, {
+                            toValue: 1,
+                            tension: 50,
+                            friction: 8,
+                            useNativeDriver: true,
+                          }).start();
+                        }
                       } else {
                         // Para outros tipos, apenas selecionar
                         setSelectedMode(serviceType);

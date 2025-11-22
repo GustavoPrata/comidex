@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+// OPTIONS - Handle CORS preflight
+export async function OPTIONS(request: NextRequest) {
+  const response = new NextResponse(null, { status: 200 })
+  response.headers.set('Access-Control-Allow-Origin', '*')
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  response.headers.set('Access-Control-Max-Age', '86400')
+  return response
+}
+
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient()
@@ -35,7 +45,15 @@ export async function GET(request: NextRequest) {
     
     if (error) throw error
     
-    return NextResponse.json(data || [])
+    const response = NextResponse.json({
+      success: true,
+      orders: data || []
+    })
+    
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    return response
   } catch (error) {
     console.error('Error fetching orders:', error)
     return NextResponse.json(

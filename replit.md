@@ -20,6 +20,9 @@ Do not make changes to the file `Y`.
 - Added "Quick Open" feature in POS with ⚡ lightning button for instant table opening
 - Protected POST endpoints to prevent unauthorized table opening from tablets
 - Tablet strictly enforces passive viewer pattern with automatic polling
+- Fixed timezone issue - timestamps now properly saved in UTC for correct display
+- Fixed database structure - orders properly saved in `orders` table, items in `order_items`
+- Added smart rodízio detection - if rodízio already launched, enters directly without re-launching
 
 ### Technology Stack
 The system is built with a modern web stack. The frontend utilizes **Next.js 15** with the App Router, **React 19**, **TypeScript**, **Tailwind CSS** for styling, **shadcn/ui** for components, and **SWR** for data fetching. The backend leverages **Next.js API Routes** for RESTful APIs, with **Supabase** (PostgreSQL and authentication) as the database.
