@@ -351,12 +351,3 @@ Total de itens: ${items.reduce((sum, i) => sum + i.quantity, 0)}
 
   return content
 }
-
-// OPTIONS - Handle CORS preflight requests
-export async function OPTIONS(request: NextRequest) {
-  const response = new NextResponse(null, { status: 200 })
-  response.headers.set('Access-Control-Allow-Origin', '*')
-  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-  return response
-}
