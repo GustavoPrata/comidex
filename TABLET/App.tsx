@@ -893,11 +893,11 @@ function MainApp() {
       const data = await response.json();
       
       if (data.success) {
-        console.log("✅ Tipos de atendimento recebidos:", data.service_types);
+        console.log("✅ Tipos de atendimento recebidos:", data.serviceTypes);
         
         // Extract all groups from service types
         const allGroups: any[] = [];
-        data.service_types.forEach((type: any) => {
+        data.serviceTypes.forEach((type: any) => {
           if (type.linked_groups && type.linked_groups.length > 0) {
             allGroups.push(...type.linked_groups);
           }
@@ -905,7 +905,7 @@ function MainApp() {
         setGroups(allGroups);
         
         // Process service types with proper icon mapping
-        const processedTypes = data.service_types.map((type: any) => ({
+        const processedTypes = data.serviceTypes.map((type: any) => ({
           ...type,
           icon: getIconForServiceType(type),
           color: type.color || '#FF7043', // Use default orange if no color
