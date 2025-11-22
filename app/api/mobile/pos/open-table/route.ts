@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       .from('table_sessions')
       .select('*')
       .eq('table_id', table.id)
-      .eq('status', 'open')
+      .eq('status', 'active')
       .single()
 
     if (existingSession) {
@@ -53,10 +53,12 @@ export async function POST(request: NextRequest) {
       .from('table_sessions')
       .insert({
         table_id: table.id,
-        status: 'open',
+        attendance_type: service_type.name || 'À La Carte',
+        number_of_people: (adult_count || 0) + (child_count || 0) || 1,
+        unit_price: service_type.price || 0,
+        total_price: 0,
         opened_at: new Date().toISOString(),
-        total: 0,
-        service_type: service_type.name || 'À La Carte'
+        status: 'active'
       })
       .select()
       .single()
@@ -120,7 +122,7 @@ export async function POST(request: NextRequest) {
         // Atualizar total da sessão
         await supabase
           .from('table_sessions')
-          .update({ total: total })
+          .update({ total_price: total })
           .eq('id', newSession.id)
       }
     }
@@ -133,10 +135,11 @@ export async function POST(request: NextRequest) {
         id: newSession.id,
         table_id: table.id,
         table_number,
-        status: 'open',
+        status: 'active',
         opened_at: newSession.opened_at,
-        total: newSession.total || 0,
-        service_type: service_type.name
+        total: newSession.total_price || 0,
+        attendance_type: service_type.name,
+        number_of_people: newSession.number_of_people
       },
       message: `Mesa ${table_number} aberta com sucesso`
     })

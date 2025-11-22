@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
           .from('table_sessions')
           .select('*')
           .eq('table_id', table.id)
-          .eq('status', 'open')
+          .eq('status', 'active')
           .single()
 
         if (activeSession) {
@@ -96,16 +96,16 @@ export async function POST(request: NextRequest) {
     // Atualizar total da sessão no POS
     const { data: currentSession } = await supabase
       .from('table_sessions')
-      .select('total')
+      .select('total_price')
       .eq('id', session.id)
       .single()
     
-    const newTotal = (currentSession?.total || 0) + total
+    const newTotal = (currentSession?.total_price || 0) + total
     
     await supabase
       .from('table_sessions')
       .update({ 
-        total: newTotal
+        total_price: newTotal
       })
       .eq('id', session.id)
     

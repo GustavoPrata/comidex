@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
         )
       `)
       .eq('table_id', table.id)
-      .eq('status', 'open')
+      .eq('status', 'active')
       .single()
 
     if (!session) {
@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Calcular totais usando estrutura do POS
-    const subtotal = session.total || 0
+    const subtotal = session.total_price || 0
     const service_fee = subtotal * 0.1
     const discount = 0
     const total = subtotal + service_fee - discount
@@ -71,7 +71,9 @@ export async function GET(request: NextRequest) {
         discount,
         total,
         orders: session.orders || [],
-        payment_method: session.payment_method
+        payment_method: session.payment_method,
+        attendance_type: session.attendance_type,
+        number_of_people: session.number_of_people
       }
     })
   } catch (error: any) {
