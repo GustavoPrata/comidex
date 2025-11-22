@@ -1593,7 +1593,7 @@ function MainApp() {
                                     
                                     // Buscar o tipo rodízio
                                     const rodizioType = serviceTypes.find(st => 
-                                      st.linked_groups?.some(g => g.type === 'rodizio')
+                                      st.linked_groups?.some((g: any) => g.type === 'rodizio')
                                     );
                                     
                                     if (rodizioType) {
@@ -1687,7 +1687,7 @@ function MainApp() {
                             
                             // Buscar o tipo rodízio dos service types
                             const rodizioType = serviceTypes.find(st => 
-                              st.linked_groups?.some(g => g.type === 'rodizio')
+                              st.linked_groups?.some((g: any) => g.type === 'rodizio')
                             );
                             
                             if (rodizioType) {
@@ -1695,7 +1695,7 @@ function MainApp() {
                               setSelectedMode(rodizioType);
                               
                               // Buscar o grupo rodízio para configurar corretamente
-                              const rodizioGroup = rodizioType.linked_groups?.find(g => g.type === 'rodizio');
+                              const rodizioGroup = rodizioType.linked_groups?.find((g: any) => g.type === 'rodizio');
                               if (rodizioGroup) {
                                 setSelectedRodizioGroup(rodizioGroup);
                               }
@@ -2141,63 +2141,34 @@ function MainApp() {
               showsVerticalScrollIndicator={false}
               style={styles.groupsList}
             >
-              {serviceTypes.map((type) => (
-                <TouchableOpacity
-                  key={type.id}
-                  style={[
-                    styles.groupItemGlass,
-                    selectedMode?.id === type.id && styles.groupItemActiveGlass
-                  ]}
-                  onPress={async () => {
-                    setSelectedMode(type);
-                    setSelectedCategory(null);
-                    resetIdleTimer();
-                    
-                    // If service type has linked rodízio group, show modal
-                    if (type.linked_group_id && groups && groups.length > 0) {
-                      const linkedGroup = groups.find(g => g.id === type.linked_group_id);
-                      if (linkedGroup?.type === 'rodizio') {
-                        setSelectedRodizioGroup(linkedGroup);
-                        setShowRodizioModal(true);
-                        Animated.spring(rodizioModalAnim, {
-                          toValue: 1,
-                          useNativeDriver: true,
-                          tension: 50,
-                          friction: 9,
-                        }).start();
-                      }
-                    }
-                  }}
-                  activeOpacity={0.7}
-                >
-                  <View style={[
-                    styles.groupIconContainerGlass,
-                    selectedMode?.id === type.id && styles.groupIconActiveGlass
-                  ]}>
+              {selectedMode && (
+                <View style={styles.selectedModeCompact}>
+                  {/* Compact mode display - icon on top, name below */}
+                  <View style={styles.compactIconContainer}>
                     <IconComponent 
-                      name={type.icon || 'restaurant'} 
-                      size={24} 
-                      color={selectedMode?.id === type.id ? '#FF7043' : 'rgba(255, 255, 255, 0.7)'} 
+                      name={selectedMode.icon || 'restaurant'} 
+                      size={32} 
+                      color="#FF7043"
                     />
                   </View>
-                  <View style={styles.groupTextContainer}>
-                    <Text style={[
-                      styles.groupNameGlass,
-                      selectedMode?.id === type.id && styles.groupNameActiveGlass
-                    ]}>
-                      {type.name}
-                    </Text>
-                    {type.description && (
-                      <Text style={styles.groupDescGlass} numberOfLines={1}>
-                        {type.description}
-                      </Text>
-                    )}
-                  </View>
-                  {selectedMode?.id === type.id && (
-                    <View style={styles.groupActiveIndicator} />
-                  )}
-                </TouchableOpacity>
-              ))}
+                  <Text style={styles.compactModeName}>
+                    {/* Dynamic type detection based on linked_groups */}
+                    {(() => {
+                      // Check if it has linked groups with rodízio or a_la_carte type
+                      if (selectedMode.linked_groups && selectedMode.linked_groups.length > 0) {
+                        const groupType = selectedMode.linked_groups[0].type;
+                        if (groupType === 'rodizio') {
+                          return 'Rodízio';
+                        } else if (groupType === 'a_la_carte') {
+                          return 'À La Carte';
+                        }
+                      }
+                      // For other types, use the service type name
+                      return selectedMode.name;
+                    })()}
+                  </Text>
+                </View>
+              )}
             </ScrollView>
           </BlurView>
 
@@ -4324,6 +4295,29 @@ const styles = StyleSheet.create({
   },
   groupsList: {
     flex: 1,
+  },
+  selectedModeCompact: {
+    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 12,
+  },
+  compactIconContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 112, 67, 0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 112, 67, 0.25)',
+  },
+  compactModeName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: '#FF7043',
+    textAlign: 'center',
+    letterSpacing: 0.3,
   },
   groupItemGlass: {
     flexDirection: 'row',
