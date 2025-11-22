@@ -548,7 +548,7 @@ async function POST(request) {
         // Verificar se sessão existe e está ativa
         const { data: session, error: sessionError } = await supabase.from('table_sessions').select(`
         *,
-        restaurant_tables(id, number, name)
+        restaurant_tables(id, number)
       `).eq('id', session_id).eq('status', 'active').single();
         console.log('🔍 POS Order: Resultado da busca:', {
             session,
@@ -588,7 +588,11 @@ async function POST(request) {
             total_price: newSessionTotal
         }).eq('id', session_id);
         // ENVIAR PARA IMPRESSORAS CONFORME CATEGORIA
-        const printJobs = await createPrintJobs(newOrder, session.restaurant_tables, items);
+        const tableInfo = {
+            ...session.restaurant_tables,
+            name: `Mesa ${session.restaurant_tables.number}`
+        };
+        const printJobs = await createPrintJobs(newOrder, tableInfo, items);
         console.log(`✅ POS: Pedido #${newOrder.id} lançado - Mesa ${session.restaurant_tables.number}`);
         console.log(`📨 ${printJobs.length} comandas enviadas para impressão`);
         const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
