@@ -982,7 +982,6 @@ function MainApp() {
       }
       
       const data = await response.json();
-      console.log("✅ Mesas recebidas:", data);
       
       if (data.success && data.tables) {
         setTables(data.tables);  // Set all tables
@@ -1829,7 +1828,13 @@ function MainApp() {
                       const firstGroup = serviceType.linked_groups[0];
                       if (firstGroup.type === 'rodizio' && firstGroup.price) {
                         // Show rodízio modal for selecting adults and children
-                        setSelectedMode(serviceType);
+                        // Pass the service type with the group's pricing info
+                        const modeWithPricing = {
+                          ...serviceType,
+                          price: firstGroup.price || serviceType.price,
+                          half_price: firstGroup.half_price || 0
+                        };
+                        setSelectedMode(modeWithPricing);
                         setShowRodizioModal(true);
                         // Animate modal entrance
                         Animated.spring(rodizioModalAnim, {
