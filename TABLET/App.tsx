@@ -2529,7 +2529,7 @@ function MainApp() {
                         }
                         
                         // Enviar pedido do rodízio
-                        const response = await fetch(`${config.API_URL}/order`, {
+                        const orderResponse = await fetch(`${config.API_URL}/order`, {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
@@ -2542,12 +2542,12 @@ function MainApp() {
                           }),
                         });
                         
-                        if (!response.ok) {
+                        if (!orderResponse.ok) {
                           throw new Error('Erro ao lançar rodízio');
                         }
                         
-                        const result = await response.json();
-                        console.log('🎯 Rodízio lançado com sucesso:', result);
+                        const orderResult = await orderResponse.json();
+                        console.log('🎯 Rodízio lançado com sucesso:', orderResult);
                         
                         // Atualizar sessão local com informações do rodízio
                         setSession((prev: any) => ({
