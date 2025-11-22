@@ -1,4 +1,5 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
   "/admin/menu-structure/page": "app/admin/menu-structure/page.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
