@@ -113,7 +113,7 @@ args = "Start application"
 
 [[workflows.workflow.tasks]]
 task = "workflow.run"
-args = "Tablet App"
+args = "Tablet App (Ngrok Tunnel)"
 
 [[workflows.workflow]]
 name = "Start application"
@@ -128,13 +128,12 @@ waitForPort = 5000
 outputType = "webview"
 
 [[workflows.workflow]]
-name = "Tablet App"
+name = "Tablet App (Ngrok Tunnel)"
 author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "cd TABLET && npm start -- --web --port 8000"
-waitForPort = 8000
+args = "./TABLET/start-tablet-with-ngrok.sh"
 
 [workflows.workflow.metadata]
 outputType = "console"

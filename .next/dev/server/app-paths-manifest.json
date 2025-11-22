@@ -1,9 +1,5 @@
 {
-  "/api/mobile/order/route": "app/api/mobile/order/route.js",
-  "/api/mobile/pos/open-table/route": "app/api/mobile/pos/open-table/route.js",
-  "/api/mobile/session/route": "app/api/mobile/session/route.js",
-  "/api/mobile/tables/route": "app/api/mobile/tables/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/page": "app/page.js",
-  "/pos/page": "app/pos/page.js",
   "/prompt/page": "app/prompt/page.js"
 }
