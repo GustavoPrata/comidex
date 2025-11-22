@@ -1048,7 +1048,7 @@ function MainApp() {
       console.log("📋 Mesa encontrada com ID:", tableId, "- buscando pedidos");
       
       // Buscar TODOS os pedidos da mesa (pendentes/confirmados)
-      const ordersUrl = `${config.BASE_URL}/api/pos/orders-by-table?table_id=${tableId}`;
+      const ordersUrl = `https://0cf83c93-8147-42e6-967b-30b169de3e65-00-1uqldc8o7pfpx.spock.replit.dev/api/pos/orders-by-table?table_id=${tableId}`;
       console.log("🔍 Buscando pedidos em:", ordersUrl);
       
       const response = await fetch(ordersUrl, {
