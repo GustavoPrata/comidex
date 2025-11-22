@@ -139,7 +139,7 @@ interface RestaurantTable {
 interface TableSession {
   id: number;
   table_id: number;
-  status: 'open' | 'closed';
+  status: 'active' | 'closed';
   customer_count: number;
   opened_at: string;
   closed_at?: string | null;
@@ -626,7 +626,7 @@ export default function POSPage() {
 
       const processedTables = (tablesData || []).map((table: any) => ({
         ...table,
-        current_session: table.current_session?.find((s: any) => s.status === 'open')
+        current_session: table.current_session?.find((s: any) => s.status === 'active')
       }));
 
       // Ordenação numérica das mesas/balcões
@@ -861,7 +861,7 @@ export default function POSPage() {
         .from('table_sessions')
         .insert({
           table_id: selectedTable.id,
-          status: 'open',
+          status: 'active',
           customer_count: customerCount,
           opened_at: new Date().toISOString(),
           total: 0
@@ -1049,7 +1049,7 @@ export default function POSPage() {
         .from('table_sessions')
         .insert({
           table_id: targetTable.id,
-          status: 'open',
+          status: 'active',
           opened_at: new Date().toISOString(),
           customer_count: currentSession.customer_count || 1,
           total: 0

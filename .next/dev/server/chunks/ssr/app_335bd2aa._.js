@@ -2578,7 +2578,7 @@ function POSPage() {
             if (error) throw error;
             const processedTables = (tablesData || []).map((table)=>({
                     ...table,
-                    current_session: table.current_session?.find((s)=>s.status === 'open')
+                    current_session: table.current_session?.find((s)=>s.status === 'active')
                 }));
             // Ordenação numérica das mesas/balcões
             processedTables.sort((a, b)=>{
@@ -2770,7 +2770,7 @@ function POSPage() {
         try {
             const { data: sessionData, error: sessionError } = await supabase.from('table_sessions').insert({
                 table_id: selectedTable.id,
-                status: 'open',
+                status: 'active',
                 customer_count: customerCount,
                 opened_at: new Date().toISOString(),
                 total: 0
@@ -2913,7 +2913,7 @@ function POSPage() {
             // Criar nova sessão para a mesa de destino
             const { data: newSession, error: newSessionError } = await supabase.from('table_sessions').insert({
                 table_id: targetTable.id,
-                status: 'open',
+                status: 'active',
                 opened_at: new Date().toISOString(),
                 customer_count: currentSession.customer_count || 1,
                 total: 0
