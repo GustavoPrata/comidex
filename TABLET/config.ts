@@ -18,7 +18,8 @@ export const config = {
   POS_API: {
     tables: `${POS_API_URL}/tables`,      // GET: listar mesas com status real
     session: `${POS_API_URL}/session`,    // GET: buscar sessão, POST: abrir mesa (apenas POS UI)
-    order: `${POS_API_URL}/order`         // POST: lançar pedido (tablet pode usar)
+    order: `${POS_API_URL}/order`,        // POST: lançar pedido (tablet pode usar)
+    serviceTypes: `${POS_API_URL}/service-types` // GET: tipos de serviço (rodízio)
   },
   
   // Catalog APIs - Dados read-only do catálogo

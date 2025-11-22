@@ -534,10 +534,33 @@ async function GET(request) {
 }
 async function POST(request) {
     try {
+        // Proteção: apenas o POS pode abrir mesas
+        // Verifica se a requisição vem do POS (internamente) ou de uma origem confiável
+        const origin = request.headers.get('origin') || '';
+        const referer = request.headers.get('referer') || '';
+        const userAgent = request.headers.get('user-agent') || '';
+        // Se a requisição vem do tablet (React Native), bloqueia
+        if (userAgent.includes('okhttp') || userAgent.includes('Expo')) {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                success: false,
+                message: 'Apenas o POS pode abrir mesas. Por favor, solicite ao atendente.'
+            }, {
+                status: 403
+            });
+        }
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const data = await request.json();
         const { table_number, attendance_type = 'À La Carte', number_of_people = 1, service_type, source = 'pos' // Identificar origem (pos, tablet, etc)
          } = data;
+        // Proteção adicional: rejeita se source não for 'pos'
+        if (source !== 'pos') {
+            return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+                success: false,
+                message: 'Apenas o POS pode abrir mesas.'
+            }, {
+                status: 403
+            });
+        }
         if (!table_number) {
             const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: false,

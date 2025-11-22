@@ -887,8 +887,9 @@ function MainApp() {
 
   const loadServiceTypes = async () => {
     try {
-      console.log("📋 Carregando tipos de atendimento da API:", config.CATALOG_API.serviceTypes);
-      const response = await fetch(config.CATALOG_API.serviceTypes);
+      // Usar API do POS para buscar service types (single source of truth)
+      console.log("📋 Carregando tipos de atendimento da API do POS:", config.POS_API.serviceTypes);
+      const response = await fetch(config.POS_API.serviceTypes);
       const data = await response.json();
       
       if (data.success) {
@@ -957,8 +958,9 @@ function MainApp() {
     setTablesLoading(true);
     setTablesError("");
     
-    const apiUrl = `${config.API_URL}/tables`;
-    console.log("🔍 Carregando mesas da API:", apiUrl);
+    // Usar API do POS para buscar mesas (single source of truth)
+    const apiUrl = config.POS_API.tables;
+    console.log("🔍 Carregando mesas da API do POS:", apiUrl);
     console.log("📍 URL completa:", apiUrl);
     
     try {
