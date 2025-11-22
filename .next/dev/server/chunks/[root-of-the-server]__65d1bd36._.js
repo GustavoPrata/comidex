@@ -572,16 +572,42 @@ async function POST(request) {
         }
         // Calcular total do pedido
         const orderTotal = items.reduce((sum, item)=>sum + (item.price || 0) * (item.quantity || 1), 0);
-        // Criar pedido
+        // Gerar número do pedido
+        const orderNumber = `P${Date.now().toString().slice(-8)}`;
+        // Criar pedido principal (sem items - eles vão para order_items)
         const { data: newOrder, error: orderError } = await supabase.from('orders').insert({
-            session_id,
-            items,
+            order_number: orderNumber,
+            table_id: session.table_id,
             total: orderTotal,
+            final_total: orderTotal,
             status: 'pending',
             created_at: new Date().toISOString(),
-            source
+            notes: `Origem: ${source}`
         }).select().single();
-        if (orderError) throw orderError;
+        if (orderError) {
+            console.error('❌ Erro ao criar pedido:', orderError);
+            throw orderError;
+        }
+        // Criar items do pedido na tabela order_items
+        const orderItems = items.map((item)=>({
+                order_id: newOrder.id,
+                item_id: item.id > 0 ? item.id : null,
+                quantity: item.quantity || 1,
+                unit_price: item.price || 0,
+                total_price: (item.price || 0) * (item.quantity || 1),
+                observation: item.observation || item.name,
+                metadata: {
+                    name: item.name,
+                    category: item.category,
+                    is_rodizio: item.is_rodizio || false,
+                    group_id: item.group_id || null
+                }
+            }));
+        const { data: createdItems, error: itemsError } = await supabase.from('order_items').insert(orderItems).select();
+        if (itemsError) {
+            console.error('❌ Erro ao criar items do pedido:', itemsError);
+            throw itemsError;
+        }
         // Atualizar total da sessão
         const newSessionTotal = (session.total_price || 0) + orderTotal;
         await supabase.from('table_sessions').update({
@@ -599,13 +625,14 @@ async function POST(request) {
             success: true,
             order: {
                 id: newOrder.id,
-                session_id: newOrder.session_id,
-                items: newOrder.items,
+                order_number: newOrder.order_number,
+                session_id: session_id,
+                items: createdItems,
                 total: newOrder.total,
                 status: newOrder.status,
                 created_at: newOrder.created_at,
                 table_number: session.restaurant_tables.number,
-                table_name: session.restaurant_tables.name
+                table_name: `Mesa ${session.restaurant_tables.number}`
             },
             print_jobs: printJobs,
             session_total: newSessionTotal,
