@@ -859,6 +859,7 @@ export default function POSPage() {
     
     try {
       // Criar sessão diretamente sem diálogo
+      // POS usa Supabase direto (é a autoridade)
       const { data: sessionData, error: sessionError } = await supabase
         .from('table_sessions')
         .insert({

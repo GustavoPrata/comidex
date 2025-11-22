@@ -1,4 +1,7 @@
 {
+  "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
+  "/api/mobile/products/route": "app/api/mobile/products/route.js",
+  "/api/mobile/service-types/route": "app/api/mobile/service-types/route.js",
   "/api/mobile/tables/route": "app/api/mobile/tables/route.js",
   "/api/pos/session/route": "app/api/pos/session/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
