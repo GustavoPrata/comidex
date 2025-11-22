@@ -866,19 +866,7 @@ function MainApp() {
     }
   };
 
-  // Get icon based on linked groups - AGORA USANDO ÍCONE CONFIGURADO NO ADMIN
-  const getIconForServiceType = (type: any) => {
-    // USAR O ÍCONE QUE VEM DIRETO DO ADMIN (API)
-    // O admin já envia o ícone correto configurado: crown, utensils, menu-book, etc.
-    if (type.icon) {
-      console.log(`📦 Usando ícone do admin para ${type.name}: ${type.icon}`);
-      return type.icon;
-    }
-    
-    // Fallback para ícone padrão apenas se não vier nenhum ícone
-    console.warn(`⚠️ Sem ícone configurado para ${type.name}, usando padrão`);
-    return 'restaurant';
-  };
+  // FUNÇÃO REMOVIDA - agora usamos direto o ícone que vem do admin
 
   const loadServiceTypes = async () => {
     try {
@@ -900,13 +888,16 @@ function MainApp() {
         setGroups(allGroups);
         
         // Process service types - ÍCONE JÁ VEM CORRETO DO ADMIN
-        const processedTypes = data.serviceTypes.map((type: any) => ({
-          ...type,
-          // NÃO SOBRESCREVER O ÍCONE - já vem correto do admin (crown, utensils, menu-book)
-          icon: type.icon || 'restaurant', // Usa o ícone do admin ou fallback
-          color: type.color || '#FF7043', // Use default orange if no color
-          linked_group_id: type.linked_groups?.[0]?.id // Use first linked group ID
-        }));
+        const processedTypes = data.serviceTypes.map((type: any) => {
+          console.log(`🎨 Service Type: ${type.name}, Ícone recebido: ${type.icon}`);
+          return {
+            ...type,
+            // NÃO SOBRESCREVER O ÍCONE - já vem correto do admin (crown, utensils, menu-book)
+            icon: type.icon || 'restaurant', // Usa o ícone do admin ou fallback
+            color: type.color || '#FF7043', // Use default orange if no color
+            linked_group_id: type.linked_groups?.[0]?.id // Use first linked group ID
+          };
+        });
         setServiceTypes(processedTypes);
       } else {
         console.error("❌ Erro ao carregar tipos de atendimento:", data);
