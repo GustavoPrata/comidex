@@ -701,7 +701,7 @@ function MainApp() {
     setSessionLoading(true);
     try {
       // APENAS verificar se existe sessão aberta no POS - NUNCA criar!
-      const checkResponse = await fetch(`${config.API_URL}/session?table_number=${tableNumber}`);
+      const checkResponse = await fetch(`${config.POS_API.session}?table_number=${tableNumber}`);
       const checkData = await checkResponse.json();
       
       if (checkData.success && checkData.session) {
@@ -728,7 +728,7 @@ function MainApp() {
     if (!session?.id) return;
     
     try {
-      const response = await fetch(`${config.API_URL}/order?session_id=${session.id}`);
+      const response = await fetch(`${config.POS_API.order}?session_id=${session.id}`);
       const data = await response.json();
       
       if (data.success) {
@@ -736,7 +736,7 @@ function MainApp() {
         
         // Calculate total from orders
         const total = data.orders.reduce((sum: number, order: any) => 
-          sum + (order.valor_total || 0), 0
+          sum + (order.total || 0), 0
         );
         setSessionTotal(total);
       }
@@ -748,7 +748,7 @@ function MainApp() {
   const loadCategories = async () => {
     setLoadingCategories(true);
     try {
-      const response = await fetch(`${config.API_URL}/categories`);
+      const response = await fetch(config.CATALOG_API.categories);
       const data = await response.json();
       if (data.success) {
         // Add colors to categories
@@ -769,7 +769,7 @@ function MainApp() {
   const loadProducts = async () => {
     setLoadingProducts(true);
     try {
-      const response = await fetch(`${config.API_URL}/products`);
+      const response = await fetch(config.CATALOG_API.products);
       const data = await response.json();
       if (data.success) {
         setProducts(data.products);
@@ -819,8 +819,8 @@ function MainApp() {
 
   const loadServiceTypes = async () => {
     try {
-      console.log("📋 Carregando tipos de atendimento da API:", config.API_URL);
-      const response = await fetch(`${config.API_URL}/service-types`);
+      console.log("📋 Carregando tipos de atendimento da API:", config.CATALOG_API.serviceTypes);
+      const response = await fetch(config.CATALOG_API.serviceTypes);
       const data = await response.json();
       
       if (data.success) {
@@ -980,7 +980,7 @@ function MainApp() {
   const callWaiter = async () => {
     resetIdleTimer();
     try {
-      const response = await fetch(`${config.API_URL}/call-waiter`, {
+      const response = await fetch(config.CATALOG_API.callWaiter, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1139,20 +1139,20 @@ function MainApp() {
     resetIdleTimer();
     
     try {
+      // Preparar dados para API do POS
       const orderData = {
-        table_number: parseInt(tableNumber) || 0,
-        mode: selectedMode,
-        device_id: deviceId,
-        session_id: session?.id,
+        session_id: session?.id, // POS API precisa do session_id
+        source: 'tablet', // Identificar origem como tablet
         items: cart.map((item) => ({
-          product_id: item.id,
+          name: item.name,
+          price: parseFloat(item.price),
           quantity: item.quantity,
-          price: item.price,
+          category: item.category,
           observation: item.observation || "",
         })),
       };
 
-      const response = await fetch(`${config.API_URL}/order`, {
+      const response = await fetch(config.POS_API.order, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(orderData),

@@ -1,14 +1,36 @@
 // Configuration file for the Tablet App
 
-// Determina a URL base dependendo do ambiente
-const getApiUrl = () => {
-  // URL do backend do Replit (sempre use HTTPS para Expo)
-  return 'https://0cf83c93-8147-42e6-967b-30b169de3e65-00-1uqldc8o7pfpx.spock.replit.dev/api/mobile';
-};
+// ARQUITETURA: POS é o single source of truth
+// Tablet APENAS lê estados do POS e envia pedidos
+// Nunca cria ou gerencia sessões diretamente
+
+// URL do backend do Replit
+const BACKEND_URL = 'https://0cf83c93-8147-42e6-967b-30b169de3e65-00-1uqldc8o7pfpx.spock.replit.dev';
+
+// APIs do POS - Single Source of Truth para operações
+const POS_API_URL = `${BACKEND_URL}/api/pos`;
+
+// APIs de Catálogo - Read-only para produtos e categorias
+const CATALOG_API_URL = `${BACKEND_URL}/api/mobile`;
 
 export const config = {
-  // API URL - using the real backend
-  API_URL: getApiUrl(),
+  // POS APIs - Autoridade sobre mesas, sessões e pedidos
+  POS_API: {
+    tables: `${POS_API_URL}/tables`,      // GET: listar mesas com status real
+    session: `${POS_API_URL}/session`,    // GET: buscar sessão, POST: abrir mesa (apenas POS UI)
+    order: `${POS_API_URL}/order`         // POST: lançar pedido (tablet pode usar)
+  },
+  
+  // Catalog APIs - Dados read-only do catálogo
+  CATALOG_API: {
+    categories: `${CATALOG_API_URL}/categories`,    // GET: listar categorias
+    products: `${CATALOG_API_URL}/products`,        // GET: listar produtos
+    serviceTypes: `${CATALOG_API_URL}/service-types`, // GET: tipos de serviço (rodízio)
+    callWaiter: `${CATALOG_API_URL}/call-waiter`    // POST: chamar garçom
+  },
+  
+  // Legacy - será removido após migração completa
+  API_URL: CATALOG_API_URL, // Mantido temporariamente para compatibilidade
   
   // App settings
   ADMIN_PASSWORD: '0000',
