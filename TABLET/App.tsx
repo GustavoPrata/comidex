@@ -1036,7 +1036,8 @@ function MainApp() {
       }
       
       const tablesData = await tablesResponse.json();
-      const table = tablesData.tables?.find((t: any) => t.number === parseInt(tableNumber));
+      // number é VARCHAR no banco, não INTEGER!
+      const table = tablesData.tables?.find((t: any) => t.number === tableNumber || t.number === parseInt(tableNumber).toString());
       
       if (!table) {
         console.log("⚠️ Mesa não encontrada");

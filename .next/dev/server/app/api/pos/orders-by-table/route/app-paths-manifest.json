@@ -1,0 +1,3 @@
+{
+  "/api/pos/orders-by-table/route": "app/api/pos/orders-by-table/route.js"
+}
