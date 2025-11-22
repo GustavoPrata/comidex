@@ -1683,7 +1683,7 @@ function MainApp() {
                           
                           if (hasRodizio && serviceTypes.length > 0) {
                             console.log("✅ Mesa com rodízio ativo! Indo direto para o catálogo");
-                            showToastNotification('Mesa com rodízio ativo - acessando cardápio', 'success');
+                            // Removido aviso verde conforme solicitado pelo usuário
                             
                             // Buscar o tipo rodízio dos service types
                             const rodizioType = serviceTypes.find(st => 
