@@ -205,7 +205,7 @@ export async function POST(request: NextRequest) {
         number_of_people,
         unit_price: service_type?.price || 0,
         total_price: 0,
-        opened_at: new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }),
+        opened_at: new Date().toISOString(),
         status: 'active'
       })
       .select()
@@ -218,7 +218,7 @@ export async function POST(request: NextRequest) {
       .from('restaurant_tables')
       .update({ 
         status: 'occupied',
-        occupied_since: new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" }),
+        occupied_since: new Date().toISOString(),
         session_id: newSession.id
       })
       .eq('id', table.id)
@@ -262,7 +262,7 @@ export async function POST(request: NextRequest) {
             items,
             total,
             status: 'pending',
-            created_at: new Date().toLocaleString("en-US", { timeZone: "America/Sao_Paulo" })
+            created_at: new Date().toISOString()
           })
 
         // Atualizar total da sessão
