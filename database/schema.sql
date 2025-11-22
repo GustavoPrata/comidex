@@ -197,3 +197,42 @@ CREATE TRIGGER update_orders_updated_at BEFORE UPDATE ON orders
 
 CREATE TRIGGER update_order_items_updated_at BEFORE UPDATE ON order_items
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- Tabelas ponte para eliminar duplicação de produtos
+-- Permite que um grupo use categorias compartilhadas
+CREATE TABLE IF NOT EXISTS group_categories (
+    id SERIAL PRIMARY KEY,
+    group_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+    sort_order INTEGER DEFAULT 0,
+    active BOOLEAN DEFAULT true,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(group_id, category_id)
+);
+
+-- Permite que um grupo tenha configurações específicas para produtos
+CREATE TABLE IF NOT EXISTS group_item_settings (
+    id SERIAL PRIMARY KEY,
+    group_id INTEGER NOT NULL,
+    item_id INTEGER NOT NULL,
+    price_override DECIMAL(10,2),
+    is_available BOOLEAN DEFAULT true,
+    sort_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(group_id, item_id)
+);
+
+-- Índices para as tabelas ponte
+CREATE INDEX idx_group_categories_group ON group_categories(group_id);
+CREATE INDEX idx_group_categories_category ON group_categories(category_id);
+CREATE INDEX idx_group_item_settings_group ON group_item_settings(group_id);
+CREATE INDEX idx_group_item_settings_item ON group_item_settings(item_id);
+
+-- Triggers para as tabelas ponte
+CREATE TRIGGER update_group_categories_updated_at BEFORE UPDATE ON group_categories
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+CREATE TRIGGER update_group_item_settings_updated_at BEFORE UPDATE ON group_item_settings
+  FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
