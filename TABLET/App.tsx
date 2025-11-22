@@ -424,6 +424,12 @@ function MainApp() {
   const [tablesError, setTablesError] = useState("");
   const [tableSearchText, setTableSearchText] = useState("");
 
+  // POS Waiting States
+  const [waitingForPOS, setWaitingForPOS] = useState(false);
+  const [pollingInterval, setPollingInterval] = useState<NodeJS.Timeout | null>(null);
+  const [selectedServiceType, setSelectedServiceType] = useState<any>(null);
+  const [showWaitingModal, setShowWaitingModal] = useState(false);
+
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -722,6 +728,69 @@ function MainApp() {
     } finally {
       setSessionLoading(false);
     }
+  };
+
+  // Iniciar polling para aguardar POS abrir mesa
+  const startPOSPolling = () => {
+    console.log("🔄 Iniciando polling - aguardando POS abrir mesa...");
+    
+    // Limpar polling anterior se existir
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+    }
+    
+    // Verificar a cada 5 segundos
+    const interval = setInterval(async () => {
+      console.log("🔍 Verificando se POS abriu a mesa...");
+      const sessionFound = await checkSessionFromPOS();
+      
+      if (sessionFound) {
+        console.log("✅ Mesa aberta pelo POS! Parando polling.");
+        stopPOSPolling();
+        setWaitingForPOS(false);
+        setShowWaitingModal(false);
+        
+        // Se tiver tipo de serviço selecionado, processar
+        if (selectedServiceType) {
+          handleServiceTypeSelected(selectedServiceType);
+        }
+      }
+    }, 5000); // 5 segundos
+    
+    setPollingInterval(interval);
+  };
+
+  // Parar polling
+  const stopPOSPolling = () => {
+    if (pollingInterval) {
+      clearInterval(pollingInterval);
+      setPollingInterval(null);
+      console.log("⏹️ Polling parado");
+    }
+  };
+
+  // Processar tipo de serviço selecionado
+  const handleServiceTypeSelected = (serviceType: any) => {
+    // Se for rodízio, abrir modal de quantidade
+    if (serviceType.linked_groups?.length > 0) {
+      const firstGroup = serviceType.linked_groups[0];
+      if (firstGroup.type === 'rodizio' && firstGroup.price) {
+        setSelectedMode(serviceType);
+        setShowRodizioModal(true);
+        // Animate modal
+        Animated.spring(rodizioModalAnim, {
+          toValue: 1,
+          tension: 50,
+          friction: 8,
+          useNativeDriver: true,
+        }).start();
+        return;
+      }
+    }
+    
+    // Para outros tipos, apenas selecionar
+    setSelectedMode(serviceType);
+    console.log("✅ Tipo de atendimento selecionado:", serviceType.name);
   };
 
   const loadSessionOrders = async () => {
@@ -1717,7 +1786,37 @@ function MainApp() {
                   key={serviceType.id}
                   style={styles.serviceCardWrapperGlass}
                   onPress={async () => {
-                    // Check if it's rodízio type to show modal
+                    resetIdleTimer();
+                    
+                    // Sempre verificar primeiro se mesa está aberta no POS
+                    const sessionExists = await checkSessionFromPOS();
+                    
+                    if (!sessionExists) {
+                      // Mesa não está aberta - mostrar modal para chamar garçom
+                      setSelectedServiceType(serviceType);
+                      setWaitingForPOS(true);
+                      setShowWaitingModal(true);
+                      startPOSPolling(); // Iniciar polling para detectar quando POS abrir
+                      
+                      Alert.alert(
+                        "⏳ Mesa Aguardando Abertura",
+                        "A mesa ainda não foi aberta no sistema. Por favor, chame o garçom para liberar o pedido.",
+                        [
+                          {
+                            text: "Chamar Garçom",
+                            onPress: () => callWaiter(),
+                            style: "default"
+                          },
+                          {
+                            text: "OK",
+                            style: "cancel"
+                          }
+                        ]
+                      );
+                      return;
+                    }
+                    
+                    // Mesa está aberta - processar seleção do tipo
                     if (serviceType.linked_groups?.length > 0) {
                       const firstGroup = serviceType.linked_groups[0];
                       if (firstGroup.type === 'rodizio' && firstGroup.price) {
@@ -1732,64 +1831,15 @@ function MainApp() {
                           useNativeDriver: true,
                         }).start();
                       } else {
-                        // For non-rodízio types, request POS to open table
-                        setLoading(true);
-                        try {
-                          const response = await fetch(`${config.API_URL}/pos/open-table`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              table_number: parseInt(tableNumber),
-                              service_type: serviceType,
-                              adult_count: 0,
-                              child_count: 0
-                            })
-                          });
-                          
-                          const result = await response.json();
-                          if (result.success) {
-                            setSession(result.session);
-                            setSelectedMode(serviceType);
-                            console.log('✅ POS abriu a mesa:', result.session);
-                          } else {
-                            Alert.alert('Erro', result.message || 'Não foi possível abrir a mesa');
-                          }
-                        } catch (error) {
-                          Alert.alert('Erro', 'Erro ao solicitar abertura da mesa ao POS');
-                        } finally {
-                          setLoading(false);
-                        }
+                        // Para outros tipos, apenas selecionar
+                        setSelectedMode(serviceType);
+                        console.log('✅ Tipo de atendimento selecionado:', serviceType.name);
                       }
                     } else {
-                      // Request POS to open table
-                      setLoading(true);
-                      try {
-                        const response = await fetch(`${config.API_URL}/pos/open-table`, {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            table_number: parseInt(tableNumber),
-                            service_type: serviceType,
-                            adult_count: 0,
-                            child_count: 0
-                          })
-                        });
-                        
-                        const result = await response.json();
-                        if (result.success) {
-                          setSession(result.session);
-                          setSelectedMode(serviceType);
-                          console.log('✅ POS abriu a mesa:', result.session);
-                        } else {
-                          Alert.alert('Erro', result.message || 'Não foi possível abrir a mesa');
-                        }
-                      } catch (error) {
-                        Alert.alert('Erro', 'Erro ao solicitar abertura da mesa ao POS');
-                      } finally {
-                        setLoading(false);
-                      }
+                      // Tipo sem grupos - apenas selecionar
+                      setSelectedMode(serviceType);
+                      console.log('✅ Tipo de atendimento selecionado:', serviceType.name);
                     }
-                    resetIdleTimer();
                   }}
                   activeOpacity={0.7}
                 >
@@ -2410,32 +2460,39 @@ function MainApp() {
                   <TouchableOpacity
                     style={styles.rodizioConfirmButton}
                     onPress={async () => {
-                      // Solicitar ao POS para abrir mesa com rodízio
                       try {
                         setLoading(true);
                         
-                        // Solicitar ao POS para abrir a mesa e lançar o rodízio
-                        const response = await fetch(`${config.API_URL}/pos/open-table`, {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            table_number: parseInt(tableNumber),
-                            service_type: selectedMode,
-                            adult_count: adultCount,
-                            child_count: childCount
-                          })
-                        });
+                        // SEMPRE verificar se mesa está aberta antes de lançar rodízio
+                        const sessionExists = await checkSessionFromPOS();
                         
-                        const result = await response.json();
-                        if (!result.success) {
-                          Alert.alert('Erro', result.message || 'Não foi possível abrir a mesa');
+                        if (!sessionExists) {
+                          // Mesa não está aberta - mostrar mensagem e iniciar polling
                           setLoading(false);
+                          setSelectedServiceType(selectedMode);
+                          setWaitingForPOS(true);
+                          startPOSPolling();
+                          
+                          Alert.alert(
+                            "⏳ Mesa Aguardando Abertura",
+                            "A mesa ainda não foi aberta no caixa. Por favor, chame o garçom para liberar a mesa e lançar o rodízio.",
+                            [
+                              {
+                                text: "Chamar Garçom",
+                                onPress: () => callWaiter(),
+                                style: "default"
+                              },
+                              {
+                                text: "OK",
+                                style: "cancel"
+                              }
+                            ]
+                          );
                           return;
                         }
                         
-                        // Mesa aberta com sucesso pelo POS
-                        setSession(result.session);
-                        console.log('✅ POS abriu a mesa com rodízio:', result.session);
+                        // Mesa está aberta - prosseguir com o lançamento do rodízio
+                        console.log('✅ Mesa aberta no POS, lançando rodízio...');
                         
                         // Criar itens do rodízio para o pedido
                         const rodizioItems = [];
@@ -2464,17 +2521,22 @@ function MainApp() {
                           });
                         }
                         
-                        // Enviar pedido do rodízio
-                        const orderResponse = await fetch(`${config.API_URL}/order`, {
+                        // Enviar pedido do rodízio para o POS
+                        const orderResponse = await fetch(config.POS_API.order, {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
                           },
                           body: JSON.stringify({
-                            table_number: tableNumber,
-                            items: rodizioItems,
-                            mode: 'rodizio',
-                            device_id: deviceId
+                            session_id: session?.id, // POS API precisa do session_id
+                            source: 'tablet', // Identificar origem como tablet
+                            items: rodizioItems.map(item => ({
+                              name: item.name,
+                              price: parseFloat(item.price),
+                              quantity: item.quantity,
+                              category: 'Rodízio',
+                              observation: 'Lançado automaticamente pelo tablet'
+                            }))
                           }),
                         });
                         
