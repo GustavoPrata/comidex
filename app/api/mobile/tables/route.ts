@@ -24,7 +24,7 @@ export async function GET() {
     const { data: sessions } = await supabase
       .from('table_sessions')
       .select('*')
-      .eq('status', 'open')
+      .eq('status', 'active')
 
     // Formatar resposta com status das mesas
     const formattedTables = (tables || []).map(table => {

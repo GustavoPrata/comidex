@@ -442,7 +442,7 @@ async function POST(request) {
             });
         }
         // Verificar se já tem sessão ativa
-        const { data: existingSession } = await supabase.from('table_sessions').select('*').eq('table_id', table.id).eq('status', 'open').single();
+        const { data: existingSession } = await supabase.from('table_sessions').select('*').eq('table_id', table.id).eq('status', 'active').single();
         if (existingSession) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: true,
@@ -454,10 +454,12 @@ async function POST(request) {
         // Criar sessão na tabela table_sessions (mesma que o POS usa!)
         const { data: newSession, error: sessionError } = await supabase.from('table_sessions').insert({
             table_id: table.id,
-            status: 'open',
+            attendance_type: service_type.name || 'À La Carte',
+            number_of_people: (adult_count || 0) + (child_count || 0) || 1,
+            unit_price: service_type.price || 0,
+            total_price: 0,
             opened_at: new Date().toISOString(),
-            total: 0,
-            service_type: service_type.name || 'À La Carte'
+            status: 'active'
         }).select().single();
         if (sessionError) throw sessionError;
         // Atualizar status da mesa para ocupada
@@ -503,7 +505,7 @@ async function POST(request) {
                 }).select().single();
                 // Atualizar total da sessão
                 await supabase.from('table_sessions').update({
-                    total: total
+                    total_price: total
                 }).eq('id', newSession.id);
             }
         }
@@ -514,10 +516,11 @@ async function POST(request) {
                 id: newSession.id,
                 table_id: table.id,
                 table_number,
-                status: 'open',
+                status: 'active',
                 opened_at: newSession.opened_at,
-                total: newSession.total || 0,
-                service_type: service_type.name
+                total: newSession.total_price || 0,
+                attendance_type: service_type.name,
+                number_of_people: newSession.number_of_people
             },
             message: `Mesa ${table_number} aberta com sucesso`
         });

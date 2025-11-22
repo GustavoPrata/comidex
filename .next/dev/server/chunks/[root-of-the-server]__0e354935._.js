@@ -833,8 +833,8 @@ async function POST(request) {
             // Buscar mesa
             const { data: table } = await supabase.from('restaurant_tables').select('*').eq('number', table_number).single();
             if (table) {
-                // Buscar sessão ativa - APENAS LER, NUNCA CRIAR!
-                const { data: activeSession } = await supabase.from('tablet_sessoes').select('*').eq('mesa_id', table.id).eq('status', 'ativa').single();
+                // Buscar sessão ativa na tabela do POS - APENAS LER, NUNCA CRIAR!
+                const { data: activeSession } = await supabase.from('table_sessions').select('*').eq('table_id', table.id).eq('status', 'active').single();
                 if (activeSession) {
                     session = activeSession;
                 } else {
@@ -862,16 +862,28 @@ async function POST(request) {
         const total = items.reduce((sum, item)=>{
             return sum + parseFloat(item.price) * item.quantity;
         }, 0);
-        // Criar pedido com status pendente (enviado para cozinha)
-        const { data: order, error: orderError } = await supabase.from('tablet_pedidos').insert({
-            sessao_id: session?.id || null,
-            numero: `PED-${Date.now()}`,
-            status: 'pendente',
-            valor_total: total,
-            observacoes: `Origem: tablet${device_id ? ` - Device: ${device_id}` : ''}`,
+        // Criar pedido na tabela do POS (orders)!
+        const { data: order, error: orderError } = await supabase.from('orders').insert({
+            session_id: session?.id || null,
+            items: items.map((item)=>({
+                    id: item.product_id,
+                    name: item.product_name || item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    observation: item.observation || null,
+                    category: item.category || 'Geral'
+                })),
+            total: total,
+            status: 'pending',
             created_at: new Date().toISOString()
         }).select().single();
         if (orderError) throw orderError;
+        // Atualizar total da sessão no POS
+        const { data: currentSession } = await supabase.from('table_sessions').select('total_price').eq('id', session.id).single();
+        const newTotal = (currentSession?.total_price || 0) + total;
+        await supabase.from('table_sessions').update({
+            total_price: newTotal
+        }).eq('id', session.id);
         // Adicionar itens do pedido e agrupar por impressora
         const orderItems = [];
         const itemsByPrinter = new Map();
@@ -880,15 +892,7 @@ async function POST(request) {
         const barPrinter = printers?.find((p)=>p.name === 'BAR');
         const kitchenPrinter = printers?.find((p)=>p.name === 'COZINHA');
         for (const item of items){
-            const { data: orderItem } = await supabase.from('tablet_pedido_itens').insert({
-                pedido_id: order.id,
-                item_id: item.product_id,
-                quantidade: item.quantity,
-                preco_unitario: item.price,
-                preco_total: item.price * item.quantity,
-                observacoes: item.observation || null
-            }).select().single();
-            orderItems.push(orderItem);
+            orderItems.push(item);
             // Buscar produto com informações completas incluindo grupo através da categoria
             const { data: product } = await supabase.from('items').select(`
           *,
@@ -991,10 +995,7 @@ async function POST(request) {
         }
         // Atualizar total da sessão se houver
         if (session) {
-            const newTotal = (session.valor_total || 0) + total;
-            await supabase.from('tablet_sessoes').update({
-                valor_total: newTotal
-            }).eq('id', session.id);
+        // Remover código de atualização duplicado - já atualizamos acima!
         }
         // Preparar resposta com informações de impressão
         const printStatus = printJobs.length > 0 ? 'sent_to_kitchen' : 'no_printer_configured';
@@ -1061,8 +1062,8 @@ async function PATCH(request) {
                 status: 400
             });
         }
-        // Atualizar status do pedido
-        const { data: updatedOrder, error } = await supabase.from('tablet_pedidos').update({
+        // Atualizar status do pedido na tabela do POS (orders)
+        const { data: updatedOrder, error } = await supabase.from('orders').update({
             status,
             updated_at: new Date().toISOString()
         }).eq('id', order_id).select().single();
@@ -1095,18 +1096,14 @@ async function GET(request) {
         const device_id = searchParams.get('device_id');
         const session_id = searchParams.get('session_id');
         const status = searchParams.get('status');
-        let query = supabase.from('tablet_pedidos').select(`
-        *,
-        tablet_pedido_itens(
-          *,
-          items(name, price, image)
-        )
+        let query = supabase.from('orders').select(`
+        *
       `).order('created_at', {
             ascending: false
         }).limit(50);
         // Filtrar por sessão se especificado
         if (session_id) {
-            query = query.eq('sessao_id', session_id);
+            query = query.eq('session_id', session_id);
         }
         // Filtrar por status se especificado
         if (status) {

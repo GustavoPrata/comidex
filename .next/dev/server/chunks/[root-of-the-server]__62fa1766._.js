@@ -466,7 +466,7 @@ async function GET() {
         const { data: tables, error } = await supabase.from('restaurant_tables').select('*').eq('active', true);
         if (error) throw error;
         // Buscar sessões ativas separadamente - usar table_sessions do POS
-        const { data: sessions } = await supabase.from('table_sessions').select('*').eq('status', 'open');
+        const { data: sessions } = await supabase.from('table_sessions').select('*').eq('status', 'active');
         // Formatar resposta com status das mesas
         const formattedTables = (tables || []).map((table)=>{
             // Verificar se há sessão ativa para esta mesa

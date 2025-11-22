@@ -846,10 +846,13 @@ function MainApp() {
     setTablesLoading(true);
     setTablesError("");
     
-    console.log("🔍 Carregando mesas da API:", config.API_URL);
+    const apiUrl = `${config.API_URL}/tables`;
+    console.log("🔍 Carregando mesas da API:", apiUrl);
+    console.log("📍 URL completa:", apiUrl);
     
     try {
-      const response = await fetch(`${config.API_URL}/tables`, {
+      console.log("🚀 Fazendo requisição...");
+      const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -857,9 +860,12 @@ function MainApp() {
       });
       
       console.log("📡 Response status:", response.status);
+      console.log("📡 Response ok:", response.ok);
       
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error("❌ Erro na resposta:", errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
       
       const data = await response.json();
@@ -869,14 +875,33 @@ function MainApp() {
         setTables(data.tables);  // Set all tables
         setAvailableTables(data.tables);  // Initially show all tables
         console.log(`📊 Total de mesas: ${data.total}, Disponíveis: ${data.available}, Ocupadas: ${data.occupied}`);
+        setTablesError("");  // Clear any previous error
       } else {
-        setTablesError(data.error || "Erro ao carregar mesas");
+        const errorMsg = data.error || "Erro ao carregar mesas";
+        setTablesError(errorMsg);
         console.error("❌ Erro na resposta da API:", data);
       }
     } catch (error: any) {
       console.error("❌ Erro ao carregar mesas:", error);
-      console.error("Detalhes do erro:", error.message);
-      setTablesError(`Erro de conexão: ${error.message || 'Verifique sua internet'}`);
+      console.error("❌ Tipo do erro:", error.constructor.name);
+      console.error("❌ Stack do erro:", error.stack);
+      console.error("❌ Mensagem do erro:", error.message);
+      
+      // Mensagem mais específica sobre o erro
+      let errorMessage = "Erro ao conectar ao servidor";
+      
+      if (error.message.includes('Network request failed')) {
+        errorMessage = "Erro de rede: Verifique sua conexão com a internet";
+      } else if (error.message.includes('Failed to fetch')) {
+        errorMessage = "Falha ao conectar: O servidor pode estar fora do ar";
+      } else if (error.message.includes('HTTP error')) {
+        errorMessage = error.message;
+      } else {
+        errorMessage = `Erro: ${error.message || 'Falha na conexão'}`;
+      }
+      
+      setTablesError(errorMessage);
+      console.log("🔴 Erro mostrado ao usuário:", errorMessage);
     } finally {
       setTablesLoading(false);
     }
