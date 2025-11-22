@@ -852,6 +852,61 @@ export default function POSPage() {
     }
   };
 
+  // Função para abertura rápida de mesa
+  const handleQuickOpen = async (table: RestaurantTable) => {
+    console.log('Abertura rápida para mesa:', table.number);
+    setLoading(true);
+    
+    try {
+      // Criar sessão diretamente sem diálogo
+      const { data: sessionData, error: sessionError } = await supabase
+        .from('table_sessions')
+        .insert({
+          table_id: table.id,
+          status: 'active',
+          customer_count: 1, // Padrão 1 pessoa para abertura rápida
+          opened_at: new Date().toISOString(),
+        })
+        .select()
+        .single();
+
+      if (sessionError) {
+        toast.error('Erro ao abrir mesa: ' + sessionError.message);
+        return;
+      }
+
+      // Atualizar mesa
+      const { error: tableError } = await supabase
+        .from('tables')
+        .update({ 
+          status: 'occupied',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', table.id);
+
+      if (tableError) {
+        toast.error('Erro ao atualizar status da mesa');
+        return;
+      }
+
+      toast.success(`Mesa ${table.number} aberta com sucesso!`);
+      
+      // Recarregar dados
+      await loadTables();
+      
+      // Ir direto para a sessão
+      setSelectedTable({...table, status: 'occupied', current_session: sessionData});
+      setCurrentSession(sessionData);
+      setScreen('session');
+      
+    } catch (error) {
+      console.error('Erro na abertura rápida:', error);
+      toast.error('Erro ao abrir mesa');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleOpenTable = async () => {
     if (!selectedTable) return;
     
@@ -3283,9 +3338,18 @@ export default function POSPage() {
                             <Badge className="bg-green-600 text-white text-xs py-0.5 mb-1">
                               LIVRE
                             </Badge>
-                            <div className="text-xs text-gray-500 mt-2">
-                              <p>Disponível</p>
-                            </div>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              className="mt-1 w-full text-xs bg-orange-600/20 hover:bg-orange-600/40 border-orange-600/50 h-7"
+                              onClick={(e) => {
+                                e.stopPropagation(); // Não abrir o diálogo
+                                handleQuickOpen(table);
+                              }}
+                            >
+                              <Zap className="h-3 w-3 mr-1" />
+                              Abrir Rápido
+                            </Button>
                           </>
                         )}
                       </div>
