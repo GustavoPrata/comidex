@@ -866,38 +866,17 @@ function MainApp() {
     }
   };
 
-  // Get icon based on linked groups
+  // Get icon based on linked groups - AGORA USANDO ÍCONE CONFIGURADO NO ADMIN
   const getIconForServiceType = (type: any) => {
-    // Map icons based on linked groups, same logic as admin
-    if (type.linked_groups && type.linked_groups.length > 0) {
-      const groupName = type.linked_groups[0].name?.toLowerCase() || '';
-      
-      if (groupName.includes('premium') || groupName.includes('rodízio premium')) {
-        return 'crown';
-      } else if (groupName.includes('tradicional') || groupName.includes('rodízio tradicional')) {
-        return 'utensils';
-      } else if (groupName.includes('bebida')) {
-        return 'coffee';
-      } else if (groupName.includes('carte')) {
-        return 'menu-book';
-      } else if (groupName.includes('sushi') || groupName.includes('japonês')) {
-        return 'sushi';
-      } else if (groupName.includes('drink') || groupName.includes('coquetel')) {
-        return 'drink';
-      }
+    // USAR O ÍCONE QUE VEM DIRETO DO ADMIN (API)
+    // O admin já envia o ícone correto configurado: crown, utensils, menu-book, etc.
+    if (type.icon) {
+      console.log(`📦 Usando ícone do admin para ${type.name}: ${type.icon}`);
+      return type.icon;
     }
     
-    // Check type name as fallback
-    const typeName = type.name?.toLowerCase() || '';
-    if (typeName.includes('rodízio')) {
-      return 'fire';
-    } else if (typeName.includes('carte')) {
-      return 'menu-book';
-    } else if (typeName.includes('bebida')) {
-      return 'cup';
-    }
-    
-    // Default icon
+    // Fallback para ícone padrão apenas se não vier nenhum ícone
+    console.warn(`⚠️ Sem ícone configurado para ${type.name}, usando padrão`);
     return 'restaurant';
   };
 
@@ -920,10 +899,11 @@ function MainApp() {
         });
         setGroups(allGroups);
         
-        // Process service types with proper icon mapping
+        // Process service types - ÍCONE JÁ VEM CORRETO DO ADMIN
         const processedTypes = data.serviceTypes.map((type: any) => ({
           ...type,
-          icon: getIconForServiceType(type),
+          // NÃO SOBRESCREVER O ÍCONE - já vem correto do admin (crown, utensils, menu-book)
+          icon: type.icon || 'restaurant', // Usa o ícone do admin ou fallback
           color: type.color || '#FF7043', // Use default orange if no color
           linked_group_id: type.linked_groups?.[0]?.id // Use first linked group ID
         }));
