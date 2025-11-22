@@ -16,7 +16,7 @@ export async function GET() {
           group:groups(*)
         )
       `)
-      .order('sort_order', { ascending: true });
+      .order('display_order', { ascending: true });
       
     if (error) {
       console.error('Erro ao buscar service types:', error);

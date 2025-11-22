@@ -31,19 +31,71 @@ export async function GET(request: NextRequest) {
       return response
     }
 
-    // Buscar pedidos da sessão
-    const { data: orders, error } = await supabase
-      .from('orders')
+    // Primeiro buscar a sessão para obter a table_id
+    const { data: session, error: sessionError } = await supabase
+      .from('table_sessions')
       .select('*')
-      .eq('session_id', session_id)
+      .eq('id', session_id)
+      .single()
+
+    if (sessionError || !session) {
+      const response = NextResponse.json({
+        success: false,
+        error: 'Sessão não encontrada'
+      }, { status: 404 })
+      
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+      return response
+    }
+
+    // Buscar pedidos da mesa durante o período da sessão
+    let query = supabase
+      .from('orders')
+      .select(`
+        *,
+        order_items (
+          *,
+          item:items (
+            id,
+            name,
+            price,
+            description
+          )
+        )
+      `)
+      .eq('table_id', session.table_id)
+      .gte('created_at', session.opened_at)
       .order('created_at', { ascending: false })
+
+    // Se a sessão já foi fechada, limitar os pedidos até o momento do fechamento
+    if (session.closed_at) {
+      query = query.lte('created_at', session.closed_at)
+    }
+
+    const { data: orders, error } = await query
 
     if (error) throw error
 
+    // Formatar os pedidos para incluir os itens detalhados
+    const formattedOrders = (orders || []).map(order => ({
+      ...order,
+      items: order.order_items.map((item: any) => ({
+        id: item.id,
+        product_id: item.item?.id,
+        product: item.item?.name || 'Produto removido',
+        quantity: item.quantity,
+        price: item.unit_price || item.item?.price || 0,
+        total: item.total_price || (item.quantity * (item.unit_price || item.item?.price || 0)),
+        observation: item.observation || item.notes
+      }))
+    }))
+
     const response = NextResponse.json({
       success: true,
-      orders: orders || [],
-      total: orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0
+      orders: formattedOrders,
+      total: formattedOrders.reduce((sum, order) => sum + (order.total || 0), 0)
     })
     
     response.headers.set('Access-Control-Allow-Origin', '*')
