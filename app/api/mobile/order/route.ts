@@ -32,12 +32,12 @@ export async function POST(request: NextRequest) {
         .single()
 
       if (table) {
-        // Buscar sessão ativa - APENAS LER, NUNCA CRIAR!
+        // Buscar sessão ativa na tabela do POS - APENAS LER, NUNCA CRIAR!
         const { data: activeSession } = await supabase
-          .from('tablet_sessoes')
+          .from('table_sessions')
           .select('*')
-          .eq('mesa_id', table.id)
-          .eq('status', 'ativa')
+          .eq('table_id', table.id)
+          .eq('status', 'open')
           .single()
 
         if (activeSession) {
@@ -71,15 +71,21 @@ export async function POST(request: NextRequest) {
       return sum + (parseFloat(item.price) * item.quantity)
     }, 0)
 
-    // Criar pedido com status pendente (enviado para cozinha)
+    // Criar pedido na tabela do POS (orders)!
     const { data: order, error: orderError } = await supabase
-      .from('tablet_pedidos')
+      .from('orders')
       .insert({
-        sessao_id: session?.id || null,
-        numero: `PED-${Date.now()}`,
-        status: 'pendente',
-        valor_total: total,
-        observacoes: `Origem: tablet${device_id ? ` - Device: ${device_id}` : ''}`,
+        session_id: session?.id || null,
+        items: items.map(item => ({
+          id: item.product_id,
+          name: item.product_name || item.name,
+          price: item.price,
+          quantity: item.quantity,
+          observation: item.observation || null,
+          category: item.category || 'Geral'
+        })),
+        total: total,
+        status: 'pending',
         created_at: new Date().toISOString()
       })
       .select()
@@ -87,6 +93,22 @@ export async function POST(request: NextRequest) {
 
     if (orderError) throw orderError
 
+    // Atualizar total da sessão no POS
+    const { data: currentSession } = await supabase
+      .from('table_sessions')
+      .select('total')
+      .eq('id', session.id)
+      .single()
+    
+    const newTotal = (currentSession?.total || 0) + total
+    
+    await supabase
+      .from('table_sessions')
+      .update({ 
+        total: newTotal
+      })
+      .eq('id', session.id)
+    
     // Adicionar itens do pedido e agrupar por impressora
     const orderItems = []
     const itemsByPrinter = new Map()
@@ -97,24 +119,11 @@ export async function POST(request: NextRequest) {
       .select('id, name, ip_address, port, active')
       .eq('active', true)
     
-    const barPrinter = printers?.find(p => p.name === 'BAR')
-    const kitchenPrinter = printers?.find(p => p.name === 'COZINHA')
+    const barPrinter = printers?.find((p: any) => p.name === 'BAR')
+    const kitchenPrinter = printers?.find((p: any) => p.name === 'COZINHA')
     
     for (const item of items) {
-      const { data: orderItem } = await supabase
-        .from('tablet_pedido_itens')
-        .insert({
-          pedido_id: order.id,
-          item_id: item.product_id,
-          quantidade: item.quantity,
-          preco_unitario: item.price,
-          preco_total: item.price * item.quantity,
-          observacoes: item.observation || null
-        })
-        .select()
-        .single()
-      
-      orderItems.push(orderItem)
+      orderItems.push(item)
 
       // Buscar produto com informações completas incluindo grupo através da categoria
       const { data: product } = await supabase
@@ -243,11 +252,7 @@ export async function POST(request: NextRequest) {
 
     // Atualizar total da sessão se houver
     if (session) {
-      const newTotal = (session.valor_total || 0) + total
-      await supabase
-        .from('tablet_sessoes')
-        .update({ valor_total: newTotal })
-        .eq('id', session.id)
+      // Remover código de atualização duplicado - já atualizamos acima!
     }
 
     // Preparar resposta com informações de impressão
@@ -315,9 +320,9 @@ export async function PATCH(request: NextRequest) {
       )
     }
 
-    // Atualizar status do pedido
+    // Atualizar status do pedido na tabela do POS (orders)
     const { data: updatedOrder, error } = await supabase
-      .from('tablet_pedidos')
+      .from('orders')
       .update({ 
         status,
         updated_at: new Date().toISOString()
@@ -363,20 +368,16 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     
     let query = supabase
-      .from('tablet_pedidos')
+      .from('orders')
       .select(`
-        *,
-        tablet_pedido_itens(
-          *,
-          items(name, price, image)
-        )
+        *
       `)
       .order('created_at', { ascending: false })
       .limit(50)
 
     // Filtrar por sessão se especificado
     if (session_id) {
-      query = query.eq('sessao_id', session_id)
+      query = query.eq('session_id', session_id)
     }
     
     // Filtrar por status se especificado

@@ -30,7 +30,7 @@ The system is built with a modern web stack. The frontend utilizes **Next.js 15*
 - **Data Management:** Expanded database with item duplication for different service models (e.g., Premium, Traditional).
 - **Console Prompt System:** Integrated with a TypeScript server on port 3456.
 
-## Tablet App - 100% Funcional e Conectado
+## Tablet App - 100% Integrado com POS (Caixa como Comandante)
 
 ### ✅ APIs Mobile Completas e Testadas
 - **REST API Completa:** Todos os endpoints funcionando em `/api/mobile/`

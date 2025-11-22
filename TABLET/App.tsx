@@ -1795,29 +1795,61 @@ function MainApp() {
                           useNativeDriver: true,
                         }).start();
                       } else {
-                        // For non-rodízio types, check if table is open in POS
-                        const isOpen = await checkSessionFromPOS();
-                        if (isOpen) {
-                          setSelectedMode(serviceType);
-                        } else {
-                          Alert.alert(
-                            "Mesa Fechada",
-                            `A mesa ${tableNumber} não está aberta no caixa.\nPor favor, solicite ao atendente para abrir a mesa primeiro.`,
-                            [{ text: "OK" }]
-                          );
+                        // For non-rodízio types, request POS to open table
+                        setLoading(true);
+                        try {
+                          const response = await fetch(`${config.API_URL}/pos/open-table`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              table_number: parseInt(tableNumber),
+                              service_type: serviceType,
+                              adult_count: 0,
+                              child_count: 0
+                            })
+                          });
+                          
+                          const result = await response.json();
+                          if (result.success) {
+                            setSession(result.session);
+                            setSelectedMode(serviceType);
+                            console.log('✅ POS abriu a mesa:', result.session);
+                          } else {
+                            Alert.alert('Erro', result.message || 'Não foi possível abrir a mesa');
+                          }
+                        } catch (error) {
+                          Alert.alert('Erro', 'Erro ao solicitar abertura da mesa ao POS');
+                        } finally {
+                          setLoading(false);
                         }
                       }
                     } else {
-                      // Check if table is open in POS
-                      const isOpen = await checkSessionFromPOS();
-                      if (isOpen) {
-                        setSelectedMode(serviceType);
-                      } else {
-                        Alert.alert(
-                          "Mesa Fechada",
-                          `A mesa ${tableNumber} não está aberta no caixa.\nPor favor, solicite ao atendente para abrir a mesa primeiro.`,
-                          [{ text: "OK" }]
-                        );
+                      // Request POS to open table
+                      setLoading(true);
+                      try {
+                        const response = await fetch(`${config.API_URL}/pos/open-table`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            table_number: parseInt(tableNumber),
+                            service_type: serviceType,
+                            adult_count: 0,
+                            child_count: 0
+                          })
+                        });
+                        
+                        const result = await response.json();
+                        if (result.success) {
+                          setSession(result.session);
+                          setSelectedMode(serviceType);
+                          console.log('✅ POS abriu a mesa:', result.session);
+                        } else {
+                          Alert.alert('Erro', result.message || 'Não foi possível abrir a mesa');
+                        }
+                      } catch (error) {
+                        Alert.alert('Erro', 'Erro ao solicitar abertura da mesa ao POS');
+                      } finally {
+                        setLoading(false);
                       }
                     }
                     resetIdleTimer();
@@ -2442,21 +2474,32 @@ function MainApp() {
                   <TouchableOpacity
                     style={styles.rodizioConfirmButton}
                     onPress={async () => {
-                      // Lançar rodízio automaticamente no caixa
+                      // Solicitar ao POS para abrir mesa com rodízio
                       try {
                         setLoading(true);
                         
-                        // Verificar se a mesa está aberta no POS
-                        const isOpen = await checkSessionFromPOS();
-                        if (!isOpen) {
-                          Alert.alert(
-                            "Mesa Fechada",
-                            `A mesa ${tableNumber} não está aberta no caixa.\nPor favor, solicite ao atendente para abrir a mesa primeiro.`,
-                            [{ text: "OK" }]
-                          );
+                        // Solicitar ao POS para abrir a mesa e lançar o rodízio
+                        const response = await fetch(`${config.API_URL}/pos/open-table`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            table_number: parseInt(tableNumber),
+                            service_type: selectedMode,
+                            adult_count: adultCount,
+                            child_count: childCount
+                          })
+                        });
+                        
+                        const result = await response.json();
+                        if (!result.success) {
+                          Alert.alert('Erro', result.message || 'Não foi possível abrir a mesa');
                           setLoading(false);
                           return;
                         }
+                        
+                        // Mesa aberta com sucesso pelo POS
+                        setSession(result.session);
+                        console.log('✅ POS abriu a mesa com rodízio:', result.session);
                         
                         // Criar itens do rodízio para o pedido
                         const rodizioItems = [];
