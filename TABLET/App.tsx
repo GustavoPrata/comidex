@@ -769,11 +769,27 @@ function MainApp() {
   };
 
   // Processar tipo de serviço selecionado
-  const handleServiceTypeSelected = (serviceType: any) => {
-    // Se for rodízio, abrir modal de quantidade
+  const handleServiceTypeSelected = async (serviceType: any) => {
+    // Se for rodízio, verificar se já existe antes de abrir modal
     if (serviceType.linked_groups?.length > 0) {
       const firstGroup = serviceType.linked_groups[0];
       if (firstGroup.type === 'rodizio' && firstGroup.price) {
+        // VERIFICAR SE JÁ TEM RODÍZIO LANÇADO
+        console.log("🔍 Verificando se já tem rodízio lançado...");
+        const hasRodizio = await checkForExistingRodizio(tableNumber);
+        
+        if (hasRodizio) {
+          console.log("✅ Rodízio já existe! Entrando direto no catálogo");
+          // Se já tem rodízio, ir direto para o catálogo
+          setSelectedMode(serviceType);
+          // Carregar categorias e produtos
+          await loadCategories();
+          await loadProducts();
+          return;
+        }
+        
+        console.log("❌ Não tem rodízio ainda, mostrando modal");
+        // Se não tem, mostrar modal
         setSelectedMode(serviceType);
         setShowRodizioModal(true);
         // Animate modal
