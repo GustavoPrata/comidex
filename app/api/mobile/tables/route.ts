@@ -74,113 +74,26 @@ export async function GET() {
   }
 }
 
-// POST - Atualizar status da mesa
+// POST - BLOQUEADO - Tablet não pode criar/fechar sessões diretamente
+// ARQUITETURA: Apenas o POS gerencia sessões via /api/mobile/pos/open-table
 export async function POST(request: NextRequest) {
-  try {
-    const supabase = await createClient()
-    
-    const { table_number, action } = await request.json()
-    
-    if (!table_number) {
-      return NextResponse.json(
-        { success: false, error: 'Número da mesa não fornecido' },
-        { status: 400 }
-      )
-    }
-
-    // Buscar mesa
-    const { data: table, error: tableError } = await supabase
-      .from('restaurant_tables')
-      .select('*')
-      .eq('number', parseInt(table_number))
-      .single()
-
-    if (tableError || !table) {
-      return NextResponse.json(
-        { success: false, error: 'Mesa não encontrada' },
-        { status: 404 }
-      )
-    }
-
-    // Executar ação baseada no comando
-    if (action === 'open') {
-      // Abrir mesa (criar sessão) - usar table_sessions do POS
-      const { data: existingSession } = await supabase
-        .from('table_sessions')
-        .select('*')
-        .eq('table_id', table.id)
-        .eq('status', 'open')
-        .single()
-
-      if (existingSession) {
-        return NextResponse.json({
-          success: true,
-          message: 'Mesa já está aberta',
-          session_id: existingSession.id
-        })
-      }
-
-      // Criar nova sessão na tabela do POS
-      const { data: newSession, error: sessionError } = await supabase
-        .from('table_sessions')
-        .insert({
-          table_id: table.id,
-          status: 'open',
-          opened_at: new Date().toISOString(),
-          customer_count: 1,
-          total: 0
-        })
-        .select()
-        .single()
-
-      if (sessionError) throw sessionError
-
-      return NextResponse.json({
-        success: true,
-        message: 'Mesa aberta com sucesso',
-        session_id: newSession.id
-      })
-    } else if (action === 'close') {
-      // Fechar mesa (encerrar sessão) - usar table_sessions do POS
-      const { data: session, error: sessionError } = await supabase
-        .from('table_sessions')
-        .update({
-          status: 'closed',
-          closed_at: new Date().toISOString()
-        })
-        .eq('table_id', table.id)
-        .eq('status', 'open')
-        .select()
-        .single()
-
-      if (sessionError) {
-        return NextResponse.json({
-          success: false,
-          error: 'Nenhuma sessão ativa para fechar'
-        }, { status: 400 })
-      }
-
-      return NextResponse.json({
-        success: true,
-        message: 'Mesa fechada com sucesso',
-        session_id: session.id,
-        total: session.valor_total
-      })
-    } else {
-      return NextResponse.json(
-        { success: false, error: 'Ação inválida. Use "open" ou "close"' },
-        { status: 400 }
-      )
-    }
-  } catch (error: any) {
-    console.error('Erro ao atualizar mesa:', error)
-    return NextResponse.json(
-      { 
-        success: false,
-        error: 'Erro ao atualizar mesa',
-        message: error.message 
-      },
-      { status: 500 }
-    )
-  }
+  // CRÍTICO: Tablet NUNCA deve criar ou gerenciar sessões diretamente
+  // Todo controle de mesas deve ser feito pelo POS como single source of truth
+  
+  console.error('⚠️ TENTATIVA BLOQUEADA: Tablet tentou criar/fechar sessão diretamente')
+  console.error('Use /api/mobile/pos/open-table para abrir mesas pelo POS')
+  
+  const response = NextResponse.json({
+    success: false,
+    error: 'Operação não permitida',
+    message: 'O tablet não pode gerenciar sessões diretamente. Use o POS para abrir/fechar mesas.',
+    redirect_to: '/api/mobile/pos/open-table'
+  }, { status: 403 })
+  
+  // Add CORS headers
+  response.headers.set('Access-Control-Allow-Origin', '*')
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  
+  return response
 }
