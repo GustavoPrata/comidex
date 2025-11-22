@@ -55,7 +55,8 @@ export async function POST(request: NextRequest) {
         table_id: table.id,
         status: 'open',
         opened_at: new Date().toISOString(),
-        total: 0
+        total: 0,
+        service_type: service_type.name || 'À La Carte'
       })
       .select()
       .single()
@@ -134,7 +135,8 @@ export async function POST(request: NextRequest) {
         table_number,
         status: 'open',
         opened_at: newSession.opened_at,
-        total: newSession.total || 0
+        total: newSession.total || 0,
+        service_type: service_type.name
       },
       message: `Mesa ${table_number} aberta com sucesso`
     })

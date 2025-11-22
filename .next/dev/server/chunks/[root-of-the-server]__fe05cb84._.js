@@ -443,13 +443,17 @@ async function GET(request) {
                 status: 404
             });
         }
-        // Buscar sessão ativa na tabela do POS!
-        const { data: session } = await supabase.from('table_sessions').select(`
+        // Buscar sessão ativa
+        const { data: session } = await supabase.from('tablet_sessoes').select(`
         *,
-        orders(
-          *
+        tablet_pedidos(
+          *,
+          tablet_pedido_itens(
+            *,
+            items(name, price, image)
+          )
         )
-      `).eq('table_id', table.id).eq('status', 'open').single();
+      `).eq('mesa_id', table.id).eq('status', 'ativa').single();
         if (!session) {
             return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: true,
@@ -457,25 +461,25 @@ async function GET(request) {
                 message: 'Nenhuma sessão ativa para esta mesa'
             });
         }
-        // Calcular totais usando estrutura do POS
-        const subtotal = session.total || 0;
-        const service_fee = subtotal * 0.1;
-        const discount = 0;
+        // Calcular totais
+        const subtotal = session.valor_total || 0;
+        const service_fee = session.taxa_servico || subtotal * 0.1;
+        const discount = session.valor_desconto || 0;
         const total = subtotal + service_fee - discount;
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
             session: {
                 id: session.id,
-                table_id: session.table_id,
+                table_id: session.mesa_id,
                 table_number,
                 status: session.status,
-                opened_at: session.opened_at,
-                closed_at: session.closed_at,
+                opened_at: session.inicio_atendimento,
+                closed_at: session.fim_atendimento,
                 subtotal,
                 service_fee,
                 discount,
                 total,
-                orders: session.orders || [],
+                orders: session.tablet_pedidos || [],
                 payment_method: session.payment_method
             }
         });
