@@ -434,7 +434,10 @@ async function GET() {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         // Buscar todas as mesas ativas do restaurante
-        const { data: tables, error } = await supabase.from('restaurant_tables').select('*').eq('active', true).order('number');
+        const { data: tables, error } = await supabase.from('restaurant_tables').select('*').eq('active', true).order('number', {
+            ascending: true,
+            nullsFirst: false
+        });
         if (error) throw error;
         // Buscar todas as sessões ativas (mesas abertas no POS)
         const { data: sessions, error: sessionsError } = await supabase.from('table_sessions').select('*').eq('status', 'active');
@@ -474,16 +477,22 @@ async function GET() {
                 } : null
             };
         });
+        // Ordenar as mesas numericamente pelo número
+        const sortedTables = formattedTables.sort((a, b)=>{
+            const numA = parseInt(a.number);
+            const numB = parseInt(b.number);
+            return numA - numB;
+        });
         // Estatísticas gerais
         const stats = {
-            total: formattedTables.length,
-            available: formattedTables.filter((t)=>t.status === 'available').length,
-            occupied: formattedTables.filter((t)=>t.status === 'occupied').length,
-            total_revenue: formattedTables.reduce((sum, t)=>sum + (t.session?.total || 0), 0)
+            total: sortedTables.length,
+            available: sortedTables.filter((t)=>t.status === 'available').length,
+            occupied: sortedTables.filter((t)=>t.status === 'occupied').length,
+            total_revenue: sortedTables.reduce((sum, t)=>sum + (t.session?.total || 0), 0)
         };
         const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
-            tables: formattedTables,
+            tables: sortedTables,
             stats,
             timestamp: new Date().toISOString()
         });

@@ -21,7 +21,7 @@ export async function GET() {
       .from('restaurant_tables')
       .select('*')
       .eq('active', true)
-      .order('number')
+      .order('number', { ascending: true, nullsFirst: false })
     
     if (error) throw error
 
@@ -78,19 +78,26 @@ export async function GET() {
       }
     })
 
+    // Ordenar as mesas numericamente pelo número
+    const sortedTables = formattedTables.sort((a, b) => {
+      const numA = parseInt(a.number)
+      const numB = parseInt(b.number)
+      return numA - numB
+    })
+
     // Estatísticas gerais
     const stats = {
-      total: formattedTables.length,
-      available: formattedTables.filter(t => t.status === 'available').length,
-      occupied: formattedTables.filter(t => t.status === 'occupied').length,
-      total_revenue: formattedTables.reduce((sum, t) => 
+      total: sortedTables.length,
+      available: sortedTables.filter(t => t.status === 'available').length,
+      occupied: sortedTables.filter(t => t.status === 'occupied').length,
+      total_revenue: sortedTables.reduce((sum, t) => 
         sum + (t.session?.total || 0), 0
       )
     }
 
     const response = NextResponse.json({
       success: true,
-      tables: formattedTables,
+      tables: sortedTables,
       stats,
       timestamp: new Date().toISOString()
     })
