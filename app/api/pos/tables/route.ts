@@ -28,16 +28,7 @@ export async function GET() {
     // Buscar todas as sessões ativas (mesas abertas no POS)
     const { data: sessions, error: sessionsError } = await supabase
       .from('table_sessions')
-      .select(`
-        *,
-        orders(
-          id,
-          items,
-          total,
-          status,
-          created_at
-        )
-      `)
+      .select('*')
       .eq('status', 'active')
 
     if (sessionsError) throw sessionsError
@@ -60,17 +51,8 @@ export async function GET() {
       let orderCount = 0
       if (activeSession) {
         totalValue = activeSession.total_price || 0
-        orderCount = activeSession.orders?.length || 0
-        
-        // Se houver pedidos, somar o total real dos pedidos
-        if (activeSession.orders && activeSession.orders.length > 0) {
-          const ordersTotal = activeSession.orders.reduce((sum: number, order: any) => 
-            sum + (order.total || 0), 0
-          )
-          if (ordersTotal > totalValue) {
-            totalValue = ordersTotal
-          }
-        }
+        // We'll get order count from orders query if needed
+        orderCount = 0 // Will be updated if we query orders separately
       }
       
       return {
@@ -91,8 +73,7 @@ export async function GET() {
           attendance_type: activeSession.attendance_type || 'À La Carte',
           number_of_people: activeSession.number_of_people || 1,
           total: totalValue,
-          order_count: orderCount,
-          orders: activeSession.orders || []
+          order_count: orderCount
         } : null
       }
     })

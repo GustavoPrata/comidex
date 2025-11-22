@@ -38,14 +38,7 @@ export async function GET(request: NextRequest) {
         .from('table_sessions')
         .select(`
           *,
-          restaurant_tables(id, number, name),
-          orders(
-            id,
-            items,
-            total,
-            status,
-            created_at
-          )
+          restaurant_tables(id, number, name)
         `)
         .eq('id', session_id)
         .single()
@@ -95,16 +88,7 @@ export async function GET(request: NextRequest) {
     // Buscar sessão ativa desta mesa
     const { data: session } = await supabase
       .from('table_sessions')
-      .select(`
-        *,
-        orders(
-          id,
-          items,
-          total,
-          status,
-          created_at
-        )
-      `)
+      .select('*')
       .eq('table_id', table.id)
       .eq('status', 'active')
       .single()
@@ -425,7 +409,6 @@ function formatSession(session: any) {
     subtotal,
     service_fee,
     total,
-    payment_method: session.payment_method,
-    orders: session.orders || []
+    payment_method: session.payment_method
   }
 }

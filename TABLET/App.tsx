@@ -684,7 +684,6 @@ function MainApp() {
             setSessionTotal(0);
             setOrderHistory([]);
             setShowAdminPanel(false);
-            setIsIdle(false);
             resetIdleTimer();
           }
         }
