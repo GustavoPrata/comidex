@@ -708,12 +708,29 @@ function MainApp() {
       if (data.orders && data.orders.length > 0) {
         const hasRodizio = data.orders.some((order: any) => {
           // Verificar se o pedido tem itens de rodízio nos order_items
-          return order.order_items && order.order_items.some((item: any) => 
-            item.product_name?.toLowerCase().includes('rodízio') || 
-            item.product_name?.toLowerCase().includes('rodizio') ||
-            item.notes?.toLowerCase().includes('rodízio') ||
-            item.notes?.toLowerCase().includes('rodizio')
-          );
+          return order.order_items && order.order_items.some((item: any) => {
+            // Verificar em vários campos possíveis
+            const checkFields = [
+              item.product_name,
+              item.notes,
+              item.metadata?.name,
+              item.metadata?.category
+            ];
+            
+            // Log para debug
+            if (item.metadata) {
+              console.log(`Item ${item.id}: metadata=`, item.metadata);
+            }
+            
+            return checkFields.some(field => 
+              field && (
+                field.toLowerCase().includes('rodízio') || 
+                field.toLowerCase().includes('rodizio') ||
+                field.toLowerCase().includes('premium') ||
+                field.toLowerCase().includes('tradicional')
+              )
+            );
+          });
         });
         
         console.log(`✅ Rodízio ${hasRodizio ? 'encontrado' : 'não encontrado'} para mesa ${tableNumber} (ID: ${table.id})`);
