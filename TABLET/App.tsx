@@ -2535,13 +2535,19 @@ function MainApp() {
                         }
                         
                         // Enviar pedido do rodízio para o POS
+                        console.log('📦 Enviando rodízio para o POS:', { session_id: session?.id, items: rodizioItems });
+                        
+                        if (!session?.id) {
+                          throw new Error('Sessão não encontrada. Por favor, tente novamente.');
+                        }
+                        
                         const orderResponse = await fetch(config.POS_API.order, {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
                           },
                           body: JSON.stringify({
-                            session_id: session?.id, // POS API precisa do session_id
+                            session_id: session.id, // POS API precisa do session_id
                             source: 'tablet', // Identificar origem como tablet
                             items: rodizioItems.map(item => ({
                               name: item.name,
@@ -2554,7 +2560,9 @@ function MainApp() {
                         });
                         
                         if (!orderResponse.ok) {
-                          throw new Error('Erro ao lançar rodízio');
+                          const errorData = await orderResponse.text();
+                          console.error('❌ Erro na resposta do servidor:', errorData);
+                          throw new Error(`Erro ao lançar rodízio: ${orderResponse.status}`);
                         }
                         
                         const orderResult = await orderResponse.json();
