@@ -413,6 +413,8 @@ async function createClient() {
 __turbopack_context__.s([
     "GET",
     ()=>GET,
+    "OPTIONS",
+    ()=>OPTIONS,
     "PATCH",
     ()=>PATCH,
     "POST",
@@ -422,34 +424,51 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$serv
 var __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/lib/supabase/server.ts [app-route] (ecmascript)");
 ;
 ;
+async function OPTIONS(request) {
+    const response = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"](null, {
+        status: 200
+    });
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    response.headers.set('Access-Control-Max-Age', '86400');
+    return response;
+}
 async function GET(request) {
     try {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const { searchParams } = new URL(request.url);
         const sessionId = searchParams.get('session_id');
         const status = searchParams.get('status');
+        // Simpler query that works with current database structure
         let query = supabase.from('orders').select(`
         *,
-        order_items (
-          *,
-          items (name, description)
-        ),
-        table_sessions (
-          table_id,
-          restaurant_tables (name, number)
-        )
+        order_items (*)
       `).order('created_at', {
             ascending: false
         });
+        // Filter by session if provided (filter by table_id from session)
         if (sessionId) {
-            query = query.eq('session_id', sessionId);
+            // First get the session to find table_id
+            const { data: session } = await supabase.from('table_sessions').select('table_id, opened_at').eq('id', sessionId).single();
+            if (session) {
+                // Get orders for this table after session opened
+                query = query.eq('table_id', session.table_id).gte('created_at', session.opened_at);
+            }
         }
         if (status) {
             query = query.eq('status', status);
         }
         const { data, error } = await query;
         if (error) throw error;
-        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(data || []);
+        const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+            success: true,
+            orders: data || []
+        });
+        response.headers.set('Access-Control-Allow-Origin', '*');
+        response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS');
+        response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        return response;
     } catch (error) {
         console.error('Error fetching orders:', error);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({

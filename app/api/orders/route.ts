@@ -18,23 +18,30 @@ export async function GET(request: NextRequest) {
     const sessionId = searchParams.get('session_id')
     const status = searchParams.get('status')
     
+    // Simpler query that works with current database structure
     let query = supabase
       .from('orders')
       .select(`
         *,
-        order_items (
-          *,
-          items (name, description)
-        ),
-        table_sessions (
-          table_id,
-          restaurant_tables (name, number)
-        )
+        order_items (*)
       `)
       .order('created_at', { ascending: false })
     
+    // Filter by session if provided (filter by table_id from session)
     if (sessionId) {
-      query = query.eq('session_id', sessionId)
+      // First get the session to find table_id
+      const { data: session } = await supabase
+        .from('table_sessions')
+        .select('table_id, opened_at')
+        .eq('id', sessionId)
+        .single()
+      
+      if (session) {
+        // Get orders for this table after session opened
+        query = query
+          .eq('table_id', session.table_id)
+          .gte('created_at', session.opened_at)
+      }
     }
     
     if (status) {

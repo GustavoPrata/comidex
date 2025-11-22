@@ -1019,10 +1019,31 @@ function MainApp() {
     }
   };
 
-  // Check if rodízio already exists in session
-  const checkRodizioExists = async (sessionId: number): Promise<boolean> => {
+  // Check if rodízio already exists in session - Check when entering occupied table
+  const checkRodizioExists = async (tableNumber: string): Promise<boolean> => {
     try {
-      console.log("🔍 Verificando se já existe rodízio na sessão:", sessionId);
+      console.log("🔍 Verificando se já existe rodízio na mesa:", tableNumber);
+      
+      // Primeiro buscar a sessão ativa da mesa
+      const sessionResponse = await fetch(`${config.POS_API.session}?table_number=${tableNumber}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!sessionResponse.ok) {
+        console.log("⚠️ Mesa não tem sessão ativa");
+        return false;
+      }
+      
+      const sessionData = await sessionResponse.json();
+      
+      if (!sessionData.success || !sessionData.session) {
+        console.log("⚠️ Sessão não encontrada");
+        return false;
+      }
+      
+      const sessionId = sessionData.session.id;
+      console.log("📋 Sessão encontrada, verificando pedidos:", sessionId);
       
       // Buscar pedidos da sessão via API
       const response = await fetch(`${config.BASE_URL}/api/orders?session_id=${sessionId}`, {
@@ -1036,25 +1057,12 @@ function MainApp() {
       }
       
       const data = await response.json();
+      console.log("📦 Pedidos encontrados:", data);
       
       if (data.success && data.orders) {
         // Verificar se algum pedido tem items de rodízio
         for (const order of data.orders) {
-          // Verificar no campo items do pedido
-          if (order.items && Array.isArray(order.items)) {
-            const hasRodizio = order.items.some((item: any) => 
-              item.category?.toLowerCase().includes('rodízio') ||
-              item.name?.toLowerCase().includes('rodízio') ||
-              item.is_rodizio === true
-            );
-            
-            if (hasRodizio) {
-              console.log("✅ Rodízio já foi lançado nesta sessão!");
-              return true;
-            }
-          }
-          
-          // Verificar também em order_items se existir
+          // Verificar em order_items se existir
           if (order.order_items && Array.isArray(order.order_items)) {
             const hasRodizio = order.order_items.some((item: any) => {
               // Checar metadata se existir
@@ -1062,10 +1070,18 @@ function MainApp() {
                 const metadata = typeof item.metadata === 'string' ? 
                   JSON.parse(item.metadata) : item.metadata;
                 return metadata.is_rodizio === true || 
-                       metadata.category?.toLowerCase().includes('rodízio');
+                       metadata.category?.toLowerCase().includes('rodízio') ||
+                       metadata.name?.toLowerCase().includes('rodízio');
               }
               // Checar observation (onde salvamos o nome do rodízio)
-              return item.observation?.toLowerCase().includes('rodízio');
+              const obsLower = item.observation?.toLowerCase() || '';
+              const hasRodizioKeyword = obsLower.includes('rodízio') || 
+                                       obsLower.includes('rodizio') ||
+                                       obsLower.includes('tradicional') ||
+                                       obsLower.includes('premium');
+              
+              console.log(`Item ${item.id}: observation="${item.observation}", hasRodizio=${hasRodizioKeyword}`);
+              return hasRodizioKeyword;
             });
             
             if (hasRodizio) {
@@ -1893,7 +1909,7 @@ function MainApp() {
                       const firstGroup = serviceType.linked_groups[0];
                       if (firstGroup.type === 'rodizio' && firstGroup.price) {
                         // Verificar se já existe rodízio lançado na sessão
-                        const rodizioExists = session?.id ? await checkRodizioExists(session.id) : false;
+                        const rodizioExists = await checkRodizioExists(tableNumber);
                         
                         if (rodizioExists) {
                           // Rodízio já existe - entrar direto no catálogo
