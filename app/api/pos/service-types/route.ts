@@ -9,10 +9,10 @@ export async function GET() {
     
     // Buscar service types com grupos linkados
     const { data: serviceTypes, error } = await supabase
-      .from('service_types')
+      .from('tablet_service_types')
       .select(`
         *,
-        linked_groups:service_type_groups(
+        linked_groups:tablet_service_type_groups(
           group:groups(*)
         )
       `)
