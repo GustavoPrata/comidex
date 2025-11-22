@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+// OPTIONS - Handle CORS preflight
+export async function OPTIONS(request: NextRequest) {
+  const response = new NextResponse(null, { status: 200 })
+  response.headers.set('Access-Control-Allow-Origin', '*')
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  response.headers.set('Access-Control-Max-Age', '86400')
+  return response
+}
+
 // POST - Tablet solicita ao POS para abrir mesa
 // Esta é a ÚNICA forma do tablet abrir mesa - através do POS!
 export async function POST(request: NextRequest) {
@@ -11,10 +21,14 @@ export async function POST(request: NextRequest) {
     const { table_number, service_type, adult_count, child_count } = data
     
     if (!table_number || !service_type) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { success: false, error: 'Mesa e tipo de atendimento são obrigatórios' },
         { status: 400 }
       )
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+      return response
     }
 
     // Buscar mesa
@@ -25,10 +39,14 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (tableError || !table) {
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: false,
         error: 'Mesa não encontrada'
       }, { status: 404 })
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+      return response
     }
 
     // Verificar se já tem sessão ativa
@@ -40,11 +58,15 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (existingSession) {
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: true,
         session: existingSession,
         message: 'Mesa já está aberta'
       })
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+      return response
     }
 
     // ABRIR MESA USANDO LÓGICA DO POS
@@ -142,7 +164,7 @@ export async function POST(request: NextRequest) {
 
     console.log(`✅ Mesa ${table_number} aberta pelo POS via tablet - Sessão ${newSession.id}`)
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       session: {
         id: newSession.id,
@@ -156,9 +178,13 @@ export async function POST(request: NextRequest) {
       },
       message: `Mesa ${table_number} aberta com sucesso`
     })
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    return response
   } catch (error: any) {
     console.error('Erro ao abrir mesa pelo POS:', error)
-    return NextResponse.json(
+    const response = NextResponse.json(
       { 
         success: false,
         error: 'Erro ao abrir mesa',
@@ -166,5 +192,9 @@ export async function POST(request: NextRequest) {
       },
       { status: 500 }
     )
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    return response
   }
 }

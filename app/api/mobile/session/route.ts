@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 
+// OPTIONS - Handle CORS preflight
+export async function OPTIONS(request: NextRequest) {
+  const response = new NextResponse(null, { status: 200 })
+  response.headers.set('Access-Control-Allow-Origin', '*')
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+  response.headers.set('Access-Control-Max-Age', '86400')
+  return response
+}
+
 // GET - Obter sessão ativa da mesa
 export async function GET(request: NextRequest) {
   try {
@@ -10,10 +20,14 @@ export async function GET(request: NextRequest) {
     const table_number = searchParams.get('table_number')
     
     if (!table_number) {
-      return NextResponse.json(
+      const response = NextResponse.json(
         { success: false, error: 'Número da mesa não fornecido' },
         { status: 400 }
       )
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+      return response
     }
 
     // Buscar mesa
@@ -24,10 +38,14 @@ export async function GET(request: NextRequest) {
       .single()
 
     if (!table) {
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: false,
         error: 'Mesa não encontrada'
       }, { status: 404 })
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+      return response
     }
 
     // Buscar sessão ativa na tabela do POS!
@@ -44,11 +62,15 @@ export async function GET(request: NextRequest) {
       .single()
 
     if (!session) {
-      return NextResponse.json({
+      const response = NextResponse.json({
         success: true,
         session: null,
         message: 'Nenhuma sessão ativa para esta mesa'
       })
+      response.headers.set('Access-Control-Allow-Origin', '*')
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+      response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+      return response
     }
 
     // Calcular totais usando estrutura do POS
@@ -57,7 +79,7 @@ export async function GET(request: NextRequest) {
     const discount = 0
     const total = subtotal + service_fee - discount
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
       session: {
         id: session.id,
@@ -76,9 +98,13 @@ export async function GET(request: NextRequest) {
         number_of_people: session.number_of_people
       }
     })
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    return response
   } catch (error: any) {
     console.error('Erro ao buscar sessão:', error)
-    return NextResponse.json(
+    const response = NextResponse.json(
       { 
         success: false,
         error: 'Erro ao buscar sessão',
@@ -86,6 +112,10 @@ export async function GET(request: NextRequest) {
       },
       { status: 500 }
     )
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+    return response
   }
 }
 
