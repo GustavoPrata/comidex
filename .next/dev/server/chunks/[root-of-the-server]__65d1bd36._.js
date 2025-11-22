@@ -526,6 +526,11 @@ async function POST(request) {
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
         const data = await request.json();
         const { session_id, items, source = 'pos' } = data;
+        console.log('🔍 POS Order: Dados recebidos:', {
+            session_id,
+            items_count: items?.length,
+            source
+        });
         if (!session_id || !items || items.length === 0) {
             const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: false,
@@ -538,12 +543,22 @@ async function POST(request) {
             response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
             return response;
         }
+        // Debug: Log do session_id recebido
+        console.log('🔍 POS Order: Verificando sessão ID:', session_id);
         // Verificar se sessão existe e está ativa
         const { data: session, error: sessionError } = await supabase.from('table_sessions').select(`
         *,
         restaurant_tables(id, number, name)
       `).eq('id', session_id).eq('status', 'active').single();
+        console.log('🔍 POS Order: Resultado da busca:', {
+            session,
+            sessionError
+        });
         if (sessionError || !session) {
+            console.error('❌ POS Order: Sessão não encontrada:', {
+                session_id,
+                sessionError
+            });
             const response = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
                 success: false,
                 error: 'Sessão não encontrada ou já fechada'
@@ -703,15 +718,6 @@ Total de itens: ${items.reduce((sum, i)=>sum + i.quantity, 0)}
 ================================
 `;
     return content;
-}
-async function OPTIONS(request) {
-    const response = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"](null, {
-        status: 200
-    });
-    response.headers.set('Access-Control-Allow-Origin', '*');
-    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    return response;
 }
 }),
 ];

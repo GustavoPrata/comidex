@@ -125,6 +125,8 @@ export async function POST(request: NextRequest) {
     const data = await request.json()
     const { session_id, items, source = 'pos' } = data
     
+    console.log('🔍 POS Order: Dados recebidos:', { session_id, items_count: items?.length, source })
+    
     if (!session_id || !items || items.length === 0) {
       const response = NextResponse.json({
         success: false,
@@ -137,18 +139,24 @@ export async function POST(request: NextRequest) {
       return response
     }
 
+    // Debug: Log do session_id recebido
+    console.log('🔍 POS Order: Verificando sessão ID:', session_id)
+    
     // Verificar se sessão existe e está ativa
     const { data: session, error: sessionError } = await supabase
       .from('table_sessions')
       .select(`
         *,
-        restaurant_tables(id, number, name)
+        restaurant_tables(id, number)
       `)
       .eq('id', session_id)
       .eq('status', 'active')
       .single()
 
+    console.log('🔍 POS Order: Resultado da busca:', { session, sessionError })
+
     if (sessionError || !session) {
+      console.error('❌ POS Order: Sessão não encontrada:', { session_id, sessionError })
       const response = NextResponse.json({
         success: false,
         error: 'Sessão não encontrada ou já fechada'
@@ -189,7 +197,11 @@ export async function POST(request: NextRequest) {
       .eq('id', session_id)
 
     // ENVIAR PARA IMPRESSORAS CONFORME CATEGORIA
-    const printJobs = await createPrintJobs(newOrder, session.restaurant_tables, items)
+    const tableInfo = {
+      ...session.restaurant_tables,
+      name: `Mesa ${session.restaurant_tables.number}`
+    }
+    const printJobs = await createPrintJobs(newOrder, tableInfo, items)
 
     console.log(`✅ POS: Pedido #${newOrder.id} lançado - Mesa ${session.restaurant_tables.number}`)
     console.log(`📨 ${printJobs.length} comandas enviadas para impressão`)
