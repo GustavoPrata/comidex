@@ -745,10 +745,42 @@ function MainApp() {
     }
   };
 
+  const getGroupIdFromMode = (mode: any): number | null => {
+    if (!mode) return null;
+    
+    // Map service types to group IDs based on linked groups
+    if (mode.linked_groups && mode.linked_groups.length > 0) {
+      // Use the first linked group's ID
+      return mode.linked_groups[0].id;
+    }
+    
+    // Fallback to type-based mapping
+    if (mode.type === 'rodizio') {
+      // Check if it's premium or traditional
+      if (mode.name?.includes('Premium')) {
+        return 1; // Rodízio Premium
+      } else if (mode.name?.includes('Tradicional')) {
+        return 2; // Rodízio Tradicional
+      }
+      return 1; // Default to premium
+    } else if (mode.type === 'a_la_carte') {
+      return 3; // À la Carte
+    }
+    
+    return null;
+  };
+
   const loadCategories = async () => {
     setLoadingCategories(true);
     try {
-      const response = await fetch(config.CATALOG_API.categories);
+      const groupId = getGroupIdFromMode(selectedMode);
+      const url = groupId 
+        ? `${config.CATALOG_API.categories}?group_id=${groupId}`
+        : config.CATALOG_API.categories;
+      
+      console.log(`📦 Carregando categorias do grupo ${groupId}:`, url);
+      
+      const response = await fetch(url);
       const data = await response.json();
       if (data.success) {
         // Add colors to categories
@@ -757,6 +789,7 @@ function MainApp() {
           color: config.colors.categoryColors[index % config.colors.categoryColors.length]
         }));
         setCategories(categoriesWithColors);
+        console.log(`✅ ${categoriesWithColors.length} categorias carregadas para grupo ${groupId}`);
       }
     } catch (error) {
       console.error("Erro ao carregar categorias:", error);
@@ -769,10 +802,18 @@ function MainApp() {
   const loadProducts = async () => {
     setLoadingProducts(true);
     try {
-      const response = await fetch(config.CATALOG_API.products);
+      const groupId = getGroupIdFromMode(selectedMode);
+      const url = groupId
+        ? `${config.CATALOG_API.products}?group_id=${groupId}`
+        : config.CATALOG_API.products;
+      
+      console.log(`📦 Carregando produtos do grupo ${groupId}:`, url);
+      
+      const response = await fetch(url);
       const data = await response.json();
       if (data.success) {
         setProducts(data.products);
+        console.log(`✅ ${data.products.length} produtos carregados para grupo ${groupId}`);
       }
     } catch (error) {
       console.error("Erro ao carregar produtos:", error);
