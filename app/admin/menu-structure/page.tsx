@@ -1032,25 +1032,62 @@ export default function GripStructurePage() {
 
       if (groupError) throw groupError;
 
-      // Duplicate all categories from the original group
+      // Duplicate all categories from the original group with their items
       if (group.categories && group.categories.length > 0) {
-        const categoriesToDuplicate = group.categories.map((cat, index) => ({
-          name: cat.name, // Keep original name for categories
-          description: cat.description,
-          group_id: newGroup.id,
-          active: cat.active,
-          sort_order: index
-        }));
+        for (const cat of group.categories) {
+          // Insert the duplicated category
+          const { data: newCategory, error: catError } = await supabase
+            .from("categories")
+            .insert({
+              name: cat.name,
+              description: cat.description,
+              group_id: newGroup.id,
+              active: cat.active,
+              sort_order: cat.sort_order,
+              image: cat.image
+            })
+            .select()
+            .single();
 
-        const { error: catError } = await supabase
-          .from("categories")
-          .insert(categoriesToDuplicate);
+          if (catError) throw catError;
 
-        if (catError) throw catError;
+          // Get all items from the original category
+          if (newCategory) {
+            const { data: originalItems, error: fetchItemsError } = await supabase
+              .from("items")
+              .select("*")
+              .eq("category_id", cat.id)
+              .eq("group_id", group.id);
+
+            if (fetchItemsError) throw fetchItemsError;
+
+            // Duplicate all items to the new category
+            if (originalItems && originalItems.length > 0) {
+              const itemsToDuplicate = originalItems.map(item => ({
+                name: item.name,
+                description: item.description,
+                price: item.price,
+                category_id: newCategory.id,
+                group_id: newGroup.id,
+                active: item.active,
+                available: item.available,
+                image: item.image,
+                sort_order: item.sort_order,
+                printer_id: item.printer_id
+              }));
+
+              const { error: itemError } = await supabase
+                .from("items")
+                .insert(itemsToDuplicate);
+
+              if (itemError) throw itemError;
+            }
+          }
+        }
       }
 
       await loadData();
-      toast.success(`Grupo duplicado com sucesso!`);
+      toast.success(`Grupo duplicado com sucesso com todas as categorias e produtos!`);
     } catch (error) {
       console.error("Erro ao duplicar grupo:", error);
       toast.error("Erro ao duplicar o grupo");
@@ -1101,6 +1138,48 @@ export default function GripStructurePage() {
 
       if (error) throw error;
 
+      // Duplicate all items from the original category
+      if (newCategory) {
+        // Get the group_id for the items
+        const { data: categoryData, error: catFetchError } = await supabase
+          .from("categories")
+          .select("group_id")
+          .eq("id", category.id)
+          .single();
+        
+        if (catFetchError) throw catFetchError;
+        
+        // Get all items from the original category
+        const { data: originalItems, error: fetchItemsError } = await supabase
+          .from("items")
+          .select("*")
+          .eq("category_id", category.id);
+
+        if (fetchItemsError) throw fetchItemsError;
+
+        // Duplicate all items to the new category
+        if (originalItems && originalItems.length > 0) {
+          const itemsToDuplicate = originalItems.map(item => ({
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            category_id: newCategory.id,
+            group_id: categoryData.group_id || item.group_id,
+            active: item.active,
+            available: item.available,
+            image: item.image,
+            sort_order: item.sort_order,
+            printer_id: item.printer_id
+          }));
+
+          const { error: itemError } = await supabase
+            .from("items")
+            .insert(itemsToDuplicate);
+
+          if (itemError) throw itemError;
+        }
+      }
+
       // If there's an image, copy it with a new filename
       if (category.image && newCategory) {
         try {
@@ -1130,7 +1209,7 @@ export default function GripStructurePage() {
       }
 
       await loadData();
-      toast.success(`Categoria duplicada com sucesso!`);
+      toast.success(`Categoria duplicada com sucesso com todos os produtos!`);
     } catch (error) {
       console.error("Erro ao duplicar categoria:", error);
       toast.error("Erro ao duplicar a categoria");
