@@ -1,3 +1,4 @@
+import 'expo-dev-client';
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
