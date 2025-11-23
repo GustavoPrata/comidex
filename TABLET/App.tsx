@@ -28,6 +28,7 @@ import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Sto
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
 import * as ScreenOrientation from 'expo-screen-orientation';
+import ImmersiveMode from 'react-native-immersive-mode';
 import { config } from './config';
 // Import Lucide icons para ter os mesmos ícones do admin
 import {
@@ -383,18 +384,43 @@ function MainApp() {
 
   // Initialize and setup
   useEffect(() => {
-    // Configure kiosk-like mode (maximum possible with Expo managed)
-    const configureKioskMode = async () => {
+    // Configure FULL kiosk mode with immersive navigation
+    const configureFullKioskMode = async () => {
       try {
         // Lock screen orientation to landscape
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
         console.log('Screen locked to landscape mode');
         
-        // Set system UI visibility (hide as much as possible)
+        // Enable FULL immersive mode - HIDE EVERYTHING including navigation bar
         if (Platform.OS === 'android') {
-          // Note: These are the maximum settings possible with Expo managed
-          StatusBar.setHidden(true, 'fade');
-          console.log('Status bar hidden');
+          try {
+            // Full immersive sticky mode - hides both status bar AND navigation bar
+            await ImmersiveMode.fullLayout(true);
+            await ImmersiveMode.setBarMode('FullSticky');
+            
+            // Additional immersive configurations
+            await ImmersiveMode.setBarTranslucent(true);
+            await ImmersiveMode.setBarColor('#00000000'); // Transparent
+            
+            console.log('✅ FULL IMMERSIVE MODE ACTIVATED - Navigation bar HIDDEN!');
+            
+            // Keep refreshing immersive mode to prevent system from showing bars
+            const immersiveInterval = setInterval(async () => {
+              try {
+                await ImmersiveMode.fullLayout(true);
+                await ImmersiveMode.setBarMode('FullSticky');
+              } catch (e) {
+                // Silent refresh
+              }
+            }, 3000);
+            
+            // Store interval for cleanup
+            (global as any).immersiveInterval = immersiveInterval;
+          } catch (immersiveError) {
+            console.error('ImmersiveMode error:', immersiveError);
+            // Fallback to StatusBar only
+            StatusBar.setHidden(true, 'fade');
+          }
         }
       } catch (error) {
         console.error('Error configuring kiosk mode:', error);
@@ -422,7 +448,7 @@ function MainApp() {
       }
     };
     
-    configureKioskMode();
+    configureFullKioskMode();
     initBrightness();
     loadCategories();
     loadProducts();
@@ -449,6 +475,10 @@ function MainApp() {
       clearInterval(tablesInterval);
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current);
+      }
+      // Clear immersive interval
+      if ((global as any).immersiveInterval) {
+        clearInterval((global as any).immersiveInterval);
       }
       // Restore original brightness when app closes
       Brightness.setBrightnessAsync(originalBrightness).catch(console.error);
