@@ -96,9 +96,10 @@ import { getIconByName } from "@/lib/menu-icons-library";
 const supabase = createClient();
 import type { Item, Category, Group, AdditionalCategory, Additional } from "@/types/supabase";
 
-// Extended Item type with additional categories
+// Extended Item type with additional categories and groups
 type ItemWithAdditionalCategories = Item & {
   additional_categories?: string[];
+  groups?: Group[];
 };
 
 // Sortable Product Row Component
@@ -253,6 +254,27 @@ function SortableProductRow({
           <p className="font-medium">{item.name}</p>
           {item.description && (
             <p className="text-sm text-gray-500">{item.description}</p>
+          )}
+          {/* Group Badges */}
+          {item.groups && item.groups.length > 0 && (
+            <div className="flex gap-1 mt-1 flex-wrap">
+              {item.groups.map((group: any) => (
+                <span 
+                  key={group.id}
+                  className={`inline-flex text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                    group.name === 'Rodízio Premium' 
+                      ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' 
+                      : group.name === 'Rodízio Tradicional'
+                      ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+                      : group.name === 'A la Carte'
+                      ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                      : 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-300'
+                  }`}
+                >
+                  {group.name.replace('Rodízio ', '')}
+                </span>
+              ))}
+            </div>
           )}
         </div>
       </div>
@@ -521,7 +543,7 @@ export default function ProductsPage() {
     
     const attemptLoad = async (): Promise<boolean> => {
       try {
-        // Load items with relationships
+        // Load items with relationships - now we get ALL unique items
         const { data: itemsData, error: itemsError } = await supabase
           .from('items')
           .select(`
@@ -601,13 +623,35 @@ export default function ProductsPage() {
           throw additionalsError;
         }
         
-        // Process items to include additional category names
-        const processedItems: ItemWithAdditionalCategories[] = (itemsData || []).map((item: any) => ({
-          ...item,
-          additional_categories: item.item_additional_categories?.map(
-            (iac: any) => iac.additional_categories?.name
-          ).filter(Boolean) || []
-        }));
+        // Get all group associations for all items at once (more efficient)
+        const { data: groupSettingsData, error: groupSettingsError } = await supabase
+          .from('group_item_settings')
+          .select('item_id, group_id');
+        
+        // Create a map of item_id to group_ids
+        const itemGroupMap = new Map();
+        (groupSettingsData || []).forEach((gs: any) => {
+          if (!itemGroupMap.has(gs.item_id)) {
+            itemGroupMap.set(gs.item_id, []);
+          }
+          itemGroupMap.get(gs.item_id).push(gs.group_id);
+        });
+        
+        // Process items to include additional category names and groups
+        const processedItems: ItemWithAdditionalCategories[] = (itemsData || []).map((item: any) => {
+          const itemGroupIds = itemGroupMap.get(item.id) || [];
+          const itemGroups = itemGroupIds.map((gid: number) => 
+            groupsData?.find((g: Group) => g.id === gid)
+          ).filter(Boolean);
+          
+          return {
+            ...item,
+            additional_categories: item.item_additional_categories?.map(
+              (iac: any) => iac.additional_categories?.name
+            ).filter(Boolean) || [],
+            groups: itemGroups
+          };
+        });
         
         setItems(processedItems);
         setCategories(categoriesData || []);

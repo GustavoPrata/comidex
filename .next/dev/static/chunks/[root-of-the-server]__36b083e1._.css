@@ -3359,6 +3359,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(147 51 234 / var(--tw-text-opacity, 1));
 }
 
+.text-purple-700 {
+  --tw-text-opacity: 1;
+  color: rgb(126 34 206 / var(--tw-text-opacity, 1));
+}
+
 .text-red-300 {
   --tw-text-opacity: 1;
   color: rgb(252 165 165 / var(--tw-text-opacity, 1));
@@ -4746,6 +4751,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #11182733;
 }
 
+.dark\:bg-gray-900\/30:is(.dark *) {
+  background-color: #1118274d;
+}
+
 .dark\:bg-gray-900\/50:is(.dark *) {
   background-color: #11182780;
 }
@@ -4820,6 +4829,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 
 .dark\:bg-purple-900\/20:is(.dark *) {
   background-color: #581c8733;
+}
+
+.dark\:bg-purple-900\/30:is(.dark *) {
+  background-color: #581c874d;
 }
 
 .dark\:bg-purple-950:is(.dark *) {
@@ -5091,6 +5104,11 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:text-orange-500:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(249 115 22 / var(--tw-text-opacity, 1));
+}
+
+.dark\:text-purple-300:is(.dark *) {
+  --tw-text-opacity: 1;
+  color: rgb(216 180 254 / var(--tw-text-opacity, 1));
 }
 
 .dark\:text-purple-500:is(.dark *) {
