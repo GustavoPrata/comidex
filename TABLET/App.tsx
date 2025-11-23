@@ -28,7 +28,6 @@ import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Sto
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
 import * as ScreenOrientation from 'expo-screen-orientation';
-import ImmersiveMode from 'react-native-immersive-mode';
 import { config } from './config';
 // Import Lucide icons para ter os mesmos ícones do admin
 import {
@@ -204,6 +203,47 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
 function MainApp() {
   // Keep screen awake to prevent battery-saving sleep mode
   useKeepAwake();
+  
+  // Force fullscreen on web platform
+  useEffect(() => {
+    if (Platform.OS === 'web') {
+      // Request fullscreen on web
+      const requestFullscreen = () => {
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen().catch(() => {});
+        } else if ((elem as any).webkitRequestFullscreen) {
+          (elem as any).webkitRequestFullscreen();
+        } else if ((elem as any).mozRequestFullScreen) {
+          (elem as any).mozRequestFullScreen();
+        } else if ((elem as any).msRequestFullscreen) {
+          (elem as any).msRequestFullscreen();
+        }
+      };
+      
+      // Request fullscreen on first touch/click
+      const handleFirstInteraction = () => {
+        requestFullscreen();
+        document.removeEventListener('touchstart', handleFirstInteraction);
+        document.removeEventListener('click', handleFirstInteraction);
+      };
+      
+      document.addEventListener('touchstart', handleFirstInteraction);
+      document.addEventListener('click', handleFirstInteraction);
+      
+      // Hide cursor on web for kiosk mode
+      document.body.style.cursor = 'none';
+      
+      // Prevent context menu
+      document.addEventListener('contextmenu', (e) => e.preventDefault());
+      
+      return () => {
+        document.removeEventListener('touchstart', handleFirstInteraction);
+        document.removeEventListener('click', handleFirstInteraction);
+        document.body.style.cursor = 'auto';
+      };
+    }
+  }, []);
   
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
@@ -384,46 +424,27 @@ function MainApp() {
 
   // Initialize and setup
   useEffect(() => {
-    // Configure FULL kiosk mode with immersive navigation
-    const configureFullKioskMode = async () => {
+    // Configure FULLSCREEN mode (maximum possible with Expo)
+    const configureFullscreen = async () => {
       try {
         // Lock screen orientation to landscape
         await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
         console.log('Screen locked to landscape mode');
         
-        // Enable FULL immersive mode - HIDE EVERYTHING including navigation bar
+        // Configure fullscreen mode
         if (Platform.OS === 'android') {
-          try {
-            // Full immersive sticky mode - hides both status bar AND navigation bar
-            await ImmersiveMode.fullLayout(true);
-            await ImmersiveMode.setBarMode('FullSticky');
-            
-            // Additional immersive configurations
-            await ImmersiveMode.setBarTranslucent(true);
-            await ImmersiveMode.setBarColor('#00000000'); // Transparent
-            
-            console.log('✅ FULL IMMERSIVE MODE ACTIVATED - Navigation bar HIDDEN!');
-            
-            // Keep refreshing immersive mode to prevent system from showing bars
-            const immersiveInterval = setInterval(async () => {
-              try {
-                await ImmersiveMode.fullLayout(true);
-                await ImmersiveMode.setBarMode('FullSticky');
-              } catch (e) {
-                // Silent refresh
-              }
-            }, 3000);
-            
-            // Store interval for cleanup
-            (global as any).immersiveInterval = immersiveInterval;
-          } catch (immersiveError) {
-            console.error('ImmersiveMode error:', immersiveError);
-            // Fallback to StatusBar only
-            StatusBar.setHidden(true, 'fade');
-          }
+          // Hide status bar completely
+          StatusBar.setHidden(true, 'fade');
+          StatusBar.setTranslucent(true);
+          StatusBar.setBackgroundColor('transparent');
+          
+          console.log('✅ FULLSCREEN MODE - Status bar hidden!');
+          
+          // Note: Navigation bar cannot be hidden in Expo managed workflow
+          // But the app will use full available screen space
         }
       } catch (error) {
-        console.error('Error configuring kiosk mode:', error);
+        console.error('Error configuring fullscreen:', error);
       }
     };
 
@@ -448,7 +469,7 @@ function MainApp() {
       }
     };
     
-    configureFullKioskMode();
+    configureFullscreen();
     initBrightness();
     loadCategories();
     loadProducts();
@@ -475,10 +496,6 @@ function MainApp() {
       clearInterval(tablesInterval);
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current);
-      }
-      // Clear immersive interval
-      if ((global as any).immersiveInterval) {
-        clearInterval((global as any).immersiveInterval);
       }
       // Restore original brightness when app closes
       Brightness.setBrightnessAsync(originalBrightness).catch(console.error);
@@ -1579,7 +1596,7 @@ function MainApp() {
   if (isLocked) {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
+        <StatusBar hidden={true} translucent={true} backgroundColor="transparent" />
         <View style={styles.lockContainer}>
           <View style={styles.lockCard}>
             <View style={styles.lockIcon}>
@@ -1613,7 +1630,7 @@ function MainApp() {
   if (!tableNumber) {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
+        <StatusBar hidden={true} translucent={true} backgroundColor="transparent" />
         <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={styles.welcomeHeader}>
@@ -1930,7 +1947,7 @@ function MainApp() {
   if (!selectedMode) {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
+        <StatusBar hidden={true} translucent={true} backgroundColor="transparent" />
         <AdminPanel />
         
         {/* Dark Background - Same as Table Selection */}
@@ -3215,6 +3232,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: config.colors.background,
+    ...Platform.select({
+      android: {
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
+      web: {
+        height: '100vh',
+        width: '100vw',
+        overflow: 'hidden',
+        position: 'absolute' as any,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+      },
+      ios: {
+        paddingTop: 0,
+        paddingBottom: 0,
+      }
+    })
   },
   glassContainer: {
     backgroundColor: 'rgba(20, 20, 20, 0.85)',
