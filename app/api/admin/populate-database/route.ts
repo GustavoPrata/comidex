@@ -1,0 +1,416 @@
+import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/client";
+
+const supabase = createClient();
+
+export async function POST(request: NextRequest) {
+  console.log('🚀 Iniciando população do banco Supabase...');
+  
+  try {
+    // 1. Verificar se já temos produtos
+    const { data: existingItems, error: checkError } = await supabase
+      .from('items')
+      .select('id')
+      .eq('group_id', 1);
+    
+    if (checkError) {
+      console.error('Erro ao verificar produtos:', checkError);
+      return NextResponse.json({ error: checkError.message }, { status: 500 });
+    }
+    
+    console.log(`📦 Produtos existentes no grupo 1: ${existingItems?.length || 0}`);
+    
+    let addedCount = 0;
+    
+    // 2. Adicionar produtos faltantes do Niguiri
+    const niguiriProducts = [
+      { name: 'Niguiri Peixe Branco', description: 'Fatia de peixe branco sobre arroz' },
+      { name: 'Niguiri Tilápia', description: 'Fatia de tilápia sobre arroz' },
+      { name: 'Niguiri Skin', description: 'Pele de salmão crocante sobre arroz' }
+    ];
+    
+    // Buscar ID da categoria Niguiri
+    const { data: niguiriCat } = await supabase
+      .from('categories')
+      .select('id')
+      .eq('name', 'Niguiri')
+      .eq('group_id', 1)
+      .single();
+    
+    if (niguiriCat) {
+      for (const product of niguiriProducts) {
+        const { data: existing } = await supabase
+          .from('items')
+          .select('id')
+          .eq('name', product.name)
+          .eq('category_id', niguiriCat.id)
+          .single();
+        
+        if (!existing) {
+          const { error } = await supabase
+            .from('items')
+            .insert({
+              ...product,
+              price: 0,
+              category_id: niguiriCat.id,
+              group_id: 1,
+              active: true,
+              available: true
+            });
+          
+          if (!error) {
+            addedCount++;
+            console.log(`✅ Adicionado: ${product.name}`);
+          }
+        }
+      }
+    }
+    
+    // 3. Adicionar produtos do Uramaki
+    const uramakiProducts = [
+      { name: 'Uramaki Skin', description: 'Pele de salmão crocante, cream cheese' },
+      { name: 'Uramaki Doritos', description: 'Doritos, cream cheese, salmão' },
+      { name: 'Uramaki Morango', description: 'Morango, cream cheese, salmão' }
+    ];
+    
+    const { data: uramakiCat } = await supabase
+      .from('categories')
+      .select('id')
+      .eq('name', 'Uramaki')
+      .eq('group_id', 1)
+      .single();
+    
+    if (uramakiCat) {
+      for (const product of uramakiProducts) {
+        const { data: existing } = await supabase
+          .from('items')
+          .select('id')
+          .eq('name', product.name)
+          .eq('category_id', uramakiCat.id)
+          .single();
+        
+        if (!existing) {
+          const { error } = await supabase
+            .from('items')
+            .insert({
+              ...product,
+              price: 0,
+              category_id: uramakiCat.id,
+              group_id: 1,
+              active: true,
+              available: true
+            });
+          
+          if (!error) {
+            addedCount++;
+            console.log(`✅ Adicionado: ${product.name}`);
+          }
+        }
+      }
+    }
+    
+    // 4. Adicionar produtos do Temaki
+    const temakiProducts = [
+      { name: 'Temaki Skin Fry', description: 'Pele de salmão crocante empanada' },
+      { name: 'Temaki Hot Roll', description: 'Salmão empanado com cream cheese' }
+    ];
+    
+    const { data: temakiCat } = await supabase
+      .from('categories')
+      .select('id')
+      .eq('name', 'Temaki')
+      .eq('group_id', 1)
+      .single();
+    
+    if (temakiCat) {
+      for (const product of temakiProducts) {
+        const { data: existing } = await supabase
+          .from('items')
+          .select('id')
+          .eq('name', product.name)
+          .eq('category_id', temakiCat.id)
+          .single();
+        
+        if (!existing) {
+          const { error } = await supabase
+            .from('items')
+            .insert({
+              ...product,
+              price: 0,
+              category_id: temakiCat.id,
+              group_id: 1,
+              active: true,
+              available: true
+            });
+          
+          if (!error) {
+            addedCount++;
+            console.log(`✅ Adicionado: ${product.name}`);
+          }
+        }
+      }
+    }
+    
+    // 5. Adicionar produtos do Joe, Na Chapa, Hot Roll, etc
+    const otherProducts = [
+      { category: 'Joe', products: [
+        { name: 'Joe Geleia Framboesa', description: 'Salmão com geleia de framboesa' },
+        { name: 'Joe Sugar', description: 'Salmão com açúcar cristal' },
+        { name: 'Joe Couve Fry', description: 'Salmão com couve crocante' },
+        { name: 'Joe Shimeji', description: 'Salmão com shimeji grelhado' }
+      ]},
+      { category: 'Na Chapa', products: [
+        { name: 'Chapa Shimeji', description: 'Shimeji grelhado na chapa' },
+        { name: 'Chapa Shitake', description: 'Shitake grelhado na chapa' },
+        { name: 'Chapa Mista', description: 'Mix de cogumelos na chapa' },
+        { name: 'Chapa Polvo', description: 'Polvo grelhado na chapa' }
+      ]},
+      { category: 'Hot Roll', products: [
+        { name: 'Hot Roll Shimeji', description: 'Shimeji empanado, cream cheese' },
+        { name: 'Hot Roll Filadelfia', description: 'Salmão, cream cheese empanado' },
+        { name: 'Hot Roll Doritos', description: 'Doritos, salmão, cream cheese' }
+      ]},
+      { category: 'Harumaki', products: [
+        { name: 'Harumaki Queijo', description: 'Massa crocante com queijo' },
+        { name: 'Harumaki Legumes', description: 'Massa crocante com legumes' }
+      ]},
+      { category: 'Hossomaki', products: [
+        { name: 'Hossomaki Salmão', description: 'Rolo fino de salmão' },
+        { name: 'Hossomaki Atum', description: 'Rolo fino de atum' },
+        { name: 'Hossomaki Pepino', description: 'Rolo fino de pepino' },
+        { name: 'Hossomaki Kanikama', description: 'Rolo fino de kanikama' }
+      ]},
+      { category: 'Sobremesa', products: [
+        { name: 'Abacaxi Flambado', description: 'Abacaxi caramelizado no açúcar' },
+        { name: 'Banana Flambada', description: 'Banana caramelizada com canela' },
+        { name: 'Banana com Chocolate', description: 'Banana com calda de chocolate' },
+        { name: 'Morango com Chocolate', description: 'Morangos frescos com chocolate' }
+      ]},
+      { category: 'Kids', products: [
+        { name: 'Kids Temaki', description: 'Mini temaki de salmão' },
+        { name: 'Kids Salmão', description: 'Bolinhos de salmão empanados' },
+        { name: 'Kids Kanikama', description: 'Bolinhos de kanikama' }
+      ]}
+    ];
+    
+    for (const categoryData of otherProducts) {
+      const { data: category } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('name', categoryData.category)
+        .eq('group_id', 1)
+        .single();
+      
+      if (category) {
+        for (const product of categoryData.products) {
+          const { data: existing } = await supabase
+            .from('items')
+            .select('id')
+            .eq('name', product.name)
+            .eq('category_id', category.id)
+            .single();
+          
+          if (!existing) {
+            const { error } = await supabase
+              .from('items')
+              .insert({
+                ...product,
+                price: 0,
+                category_id: category.id,
+                group_id: 1,
+                active: true,
+                available: true
+              });
+            
+            if (!error) {
+              addedCount++;
+              console.log(`✅ Adicionado: ${product.name}`);
+            }
+          }
+        }
+      }
+    }
+    
+    // 6. Configurar group_item_settings para Rodízio Tradicional
+    console.log('\n📋 Configurando Rodízio Tradicional...');
+    
+    // Limpar configurações antigas
+    await supabase
+      .from('group_item_settings')
+      .delete()
+      .eq('group_id', 2);
+    
+    // Buscar todos os produtos não-premium
+    const premiumNames = [
+      'Vinagrete de Camarão', 'Ceviche Especial',
+      'Sashimi Polvo', 'Sashimi Camarão',
+      'Carpaccio Salmão Trufado', 'Carpaccio Polvo Trufado', 'Carpaccio Camarão Trufado', 'Carpaccio Misto Trufado',
+      'Niguiri Camarão', 'Niguiri Polvo', 'Niguiri Salmão Especial', 'Niguiri Salmão Fry Ouro',
+      'Uramaki Camarão', 'Uramaki Salmão Fry Ouro', 'Uramaki Camarão Fry Ouro', 'Uramaki Salmão Mel Fry',
+      'Acelgamaki Salmão Fry',
+      'Joe Camarão', 'Joe California',
+      'Chapa Mista', 'Chapa Polvo', 'Chapa Camarão',
+      'Hot Roll Camarão',
+      'Harumaki Camarão',
+      'Pastel Camarão', 'Pastel Bacalhau',
+      'Salmão MAAD', 'Camarão MAAD', 'Atum MAAD', 'Kaka MAAD', 'Ebi Hot Shake MAAD', 'Dubai MAAD',
+      'Lula Com Salmão', 'Polvo no gelo', 'Yakissoba Frutos do Mar', 'Tempura Camarão', 'Roru Tomato',
+      'Camarão Na Chapa', 'Atum Na Chapa', 'Salmão Especial'
+    ];
+    
+    const { data: itemsForTradicional } = await supabase
+      .from('items')
+      .select('id, name')
+      .eq('group_id', 1);
+    
+    if (itemsForTradicional) {
+      const nonPremiumItems = itemsForTradicional.filter(item => !premiumNames.includes(item.name));
+      
+      const settings = nonPremiumItems.map(item => ({
+        group_id: 2,
+        item_id: item.id,
+        is_available: true,
+        sort_order: 0
+      }));
+      
+      // Inserir em lotes
+      const batchSize = 50;
+      for (let i = 0; i < settings.length; i += batchSize) {
+        const batch = settings.slice(i, i + batchSize);
+        await supabase.from('group_item_settings').insert(batch);
+      }
+      
+      console.log(`✅ Rodízio Tradicional configurado com ${settings.length} produtos`);
+    }
+    
+    // 7. Configurar À la Carte com preços
+    console.log('\n💰 Configurando À la Carte com preços...');
+    
+    // Limpar configurações antigas
+    await supabase
+      .from('group_item_settings')
+      .delete()
+      .eq('group_id', 3);
+    
+    // Buscar todos os produtos para À la Carte
+    const { data: allItems } = await supabase
+      .from('items')
+      .select('id, name, category_id')
+      .eq('group_id', 1);
+    
+    const { data: categories } = await supabase
+      .from('categories')
+      .select('id, name');
+    
+    const categoryMap = new Map(categories?.map(c => [c.id, c.name]));
+    
+    if (allItems) {
+      const alaCarteSettings = allItems.map(item => {
+        const categoryName = categoryMap.get(item.category_id);
+        let price = 25.90; // Preço padrão
+        
+        // Definir preços baseados na categoria e nome do produto
+        if (categoryName === 'Entradas') {
+          price = item.name.includes('Especial') ? 28.90 : 
+                  item.name.includes('Vinagrete') ? 24.90 : 
+                  18.90 + Math.random() * 6;
+        } else if (categoryName === 'Sashimi') {
+          price = item.name.includes('Polvo') ? 42.90 :
+                  item.name.includes('Atum') ? 38.90 :
+                  item.name.includes('Salmão') ? 34.90 :
+                  28.90 + Math.random() * 10;
+        } else if (categoryName === 'Carpaccio') {
+          price = 45.90 + Math.random() * 10;
+        } else if (categoryName === 'Niguiri') {
+          price = item.name.includes('Camarão') || item.name.includes('Polvo') ? 22.90 :
+                  item.name.includes('Especial') || item.name.includes('Ouro') ? 24.90 :
+                  16.90 + Math.random() * 6;
+        } else if (categoryName === 'Uramaki') {
+          price = item.name.includes('Camarão') ? 38.90 :
+                  item.name.includes('Ouro') || item.name.includes('Mel') ? 42.90 :
+                  28.90 + Math.random() * 10;
+        } else if (categoryName === 'Temaki') {
+          price = item.name.includes('Camarão') ? 26.90 : 19.90 + Math.random() * 6;
+        } else if (categoryName === 'Joe') {
+          price = item.name.includes('Camarão') ? 34.90 : 24.90 + Math.random() * 8;
+        } else if (categoryName === 'Na Chapa') {
+          price = item.name.includes('Camarão') || item.name.includes('Polvo') ? 48.90 :
+                  item.name.includes('Mista') ? 42.90 :
+                  32.90 + Math.random() * 10;
+        } else if (categoryName === 'Hot Roll') {
+          price = item.name.includes('Camarão') ? 36.90 : 26.90 + Math.random() * 8;
+        } else if (categoryName === 'Sobremesa') {
+          price = item.name.includes('Nutella') ? 22.90 :
+                  item.name.includes('Flambad') ? 19.90 :
+                  14.90 + Math.random() * 8;
+        } else if (categoryName === 'Kids') {
+          price = item.name.includes('Prato') ? 24.90 :
+                  item.name.includes('Porção') ? 18.90 :
+                  14.90 + Math.random() * 6;
+        }
+        
+        return {
+          group_id: 3,
+          item_id: item.id,
+          price_override: parseFloat(price.toFixed(2)),
+          is_available: true,
+          sort_order: 0
+        };
+      });
+      
+      // Dividir em lotes menores para evitar timeout
+      const batchSize = 50;
+      for (let i = 0; i < alaCarteSettings.length; i += batchSize) {
+        const batch = alaCarteSettings.slice(i, i + batchSize);
+        await supabase.from('group_item_settings').insert(batch);
+        console.log(`✅ Lote ${i/batchSize + 1} inserido (${batch.length} produtos)`);
+      }
+      
+      console.log(`✅ À la Carte configurado com ${alaCarteSettings.length} produtos com preços`);
+    }
+    
+    // 8. Verificar resultado final
+    const { count: finalCount } = await supabase
+      .from('items')
+      .select('*', { count: 'exact', head: true })
+      .eq('group_id', 1);
+    
+    const { count: traditionalCount } = await supabase
+      .from('group_item_settings')
+      .select('*', { count: 'exact', head: true })
+      .eq('group_id', 2);
+    
+    const { count: alaCarteCount } = await supabase
+      .from('group_item_settings')
+      .select('*', { count: 'exact', head: true })
+      .eq('group_id', 3);
+    
+    const result = {
+      success: true,
+      message: 'Banco de dados populado com sucesso!',
+      stats: {
+        newProducts: addedCount,
+        rodizio_premium: finalCount || 0,
+        rodizio_tradicional: traditionalCount || 0,
+        a_la_carte: alaCarteCount || 0
+      }
+    };
+    
+    console.log('\n📊 Resultado Final:', result);
+    
+    return NextResponse.json(result);
+    
+  } catch (error) {
+    console.error('❌ Erro ao popular banco:', error);
+    return NextResponse.json(
+      { error: 'Erro ao popular banco de dados', details: error },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET() {
+  return NextResponse.json({
+    message: "Use POST para popular o banco de dados"
+  });
+}

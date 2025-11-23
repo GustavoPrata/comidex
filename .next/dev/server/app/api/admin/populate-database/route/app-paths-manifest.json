@@ -1,0 +1,3 @@
+{
+  "/api/admin/populate-database/route": "app/api/admin/populate-database/route.js"
+}
