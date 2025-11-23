@@ -26,6 +26,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
+import * as NavigationBar from 'expo-navigation-bar';
 import { useKeepAwake } from 'expo-keep-awake';
 import { config } from './config';
 // Import Lucide icons para ter os mesmos ícones do admin
@@ -382,6 +383,21 @@ function MainApp() {
 
   // Initialize and setup
   useEffect(() => {
+    // Configure fullscreen mode (hide system UI)
+    const configureFullscreen = async () => {
+      try {
+        // Hide navigation bar on Android
+        if (Platform.OS === 'android') {
+          await NavigationBar.setVisibilityAsync('hidden');
+          await NavigationBar.setBehaviorAsync('inset-swipe');
+          await NavigationBar.setBackgroundColorAsync('#00000001'); // Transparent
+          console.log('Navigation bar hidden for fullscreen mode');
+        }
+      } catch (error) {
+        console.error('Error configuring fullscreen:', error);
+      }
+    };
+
     // Initialize brightness control
     const initBrightness = async () => {
       try {
@@ -400,6 +416,7 @@ function MainApp() {
       }
     };
     
+    configureFullscreen();
     initBrightness();
     loadCategories();
     loadProducts();
@@ -421,9 +438,17 @@ function MainApp() {
       useNativeDriver: true,
     }).start();
 
+    // Keep fullscreen mode active
+    const fullscreenInterval = setInterval(() => {
+      if (Platform.OS === 'android') {
+        NavigationBar.setVisibilityAsync('hidden').catch(() => {});
+      }
+    }, 5000);
+
     // Cleanup and disable back button in kiosk mode
     const cleanup = () => {
       clearInterval(tablesInterval);
+      clearInterval(fullscreenInterval);
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current);
       }
@@ -1526,7 +1551,7 @@ function MainApp() {
   if (isLocked) {
     return (
       <View style={styles.container}>
-        <StatusBar style="light" />
+        <StatusBar hidden={true} />
         <View style={styles.lockContainer}>
           <View style={styles.lockCard}>
             <View style={styles.lockIcon}>
@@ -1560,7 +1585,7 @@ function MainApp() {
   if (!tableNumber) {
     return (
       <View style={styles.container}>
-        <StatusBar style="light" />
+        <StatusBar hidden={true} />
         <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={styles.welcomeHeader}>
@@ -1877,7 +1902,7 @@ function MainApp() {
   if (!selectedMode) {
     return (
       <View style={styles.container}>
-        <StatusBar style="light" />
+        <StatusBar hidden={true} />
         <AdminPanel />
         
         {/* Dark Background - Same as Table Selection */}

@@ -22,7 +22,12 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "navigationBarVisible": false,
+      "navigationBarBehavior": "inset-swipe",
+      "softwareKeyboardLayoutMode": "resize",
+      "immersive": true,
+      "systemUiVisibility": ["immersive", "hideNavigation", "fullscreen"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
