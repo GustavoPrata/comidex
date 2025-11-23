@@ -27,6 +27,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
+import * as ScreenOrientation from 'expo-screen-orientation';
 import { config } from './config';
 // Import Lucide icons para ter os mesmos ícones do admin
 import {
@@ -382,6 +383,24 @@ function MainApp() {
 
   // Initialize and setup
   useEffect(() => {
+    // Configure kiosk-like mode (maximum possible with Expo managed)
+    const configureKioskMode = async () => {
+      try {
+        // Lock screen orientation to landscape
+        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
+        console.log('Screen locked to landscape mode');
+        
+        // Set system UI visibility (hide as much as possible)
+        if (Platform.OS === 'android') {
+          // Note: These are the maximum settings possible with Expo managed
+          StatusBar.setHidden(true, 'fade');
+          console.log('Status bar hidden');
+        }
+      } catch (error) {
+        console.error('Error configuring kiosk mode:', error);
+      }
+    };
+
     // Initialize brightness control
     const initBrightness = async () => {
       try {
@@ -392,6 +411,9 @@ function MainApp() {
           const current = await Brightness.getBrightnessAsync();
           setOriginalBrightness(current);
           console.log('Brightness control initialized. Current brightness:', current);
+          
+          // Set max brightness for better visibility in restaurant
+          await Brightness.setBrightnessAsync(1.0); // Maximum brightness
         } else {
           console.log('Brightness permission not granted');
         }
@@ -400,6 +422,7 @@ function MainApp() {
       }
     };
     
+    configureKioskMode();
     initBrightness();
     loadCategories();
     loadProducts();

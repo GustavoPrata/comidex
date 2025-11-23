@@ -27,7 +27,20 @@
       "navigationBarBehavior": "inset-swipe",
       "softwareKeyboardLayoutMode": "resize",
       "immersive": true,
-      "systemUiVisibility": ["immersive", "hideNavigation", "fullscreen"]
+      "systemUiVisibility": ["immersive", "hideNavigation", "fullscreen"],
+      "allowBackup": false,
+      "hardwareAccelerated": true
+    },
+    "androidStatusBar": {
+      "hidden": true,
+      "translucent": true,
+      "backgroundColor": "#00000001",
+      "barStyle": "light-content"
+    },
+    "androidNavigationBar": {
+      "visible": false,
+      "barStyle": "light-content",
+      "backgroundColor": "#00000001"
     },
     "web": {
       "favicon": "./assets/favicon.png"
