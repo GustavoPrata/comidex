@@ -7,8 +7,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleDebug"
+        "buildType": "apk"
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "http://0cf83c93-8147-42e6-967b-30b169de3e65.spock.replit.dev:5000"
