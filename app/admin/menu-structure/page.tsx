@@ -250,7 +250,7 @@ function SortableGroupItem({
                 {group.price && (
                   <Badge variant="outline" className="bg-blue-50 dark:bg-blue-900/20">
                     <DollarSign className="h-3 w-3 mr-1" />
-                    R$ {group.price.toFixed(2)}
+                    R$ {typeof group.price === 'string' ? parseFloat(group.price).toFixed(2) : group.price.toFixed(2)}
                   </Badge>
                 )}
               </div>
@@ -608,54 +608,17 @@ export default function GripStructurePage() {
     
     const attemptLoad = async (): Promise<boolean> => {
       try {
-        const { data: groupsData, error: groupsError } = await supabase
-          .from("groups")
-          .select("*")
-          .order("sort_order");
-
-        if (groupsError) throw groupsError;
-
-        const { data: categoriesData, error: categoriesError } = await supabase
-          .from("categories")
-          .select("*")
-          .order("sort_order");
-
-        if (categoriesError) throw categoriesError;
-
-        // Buscar contagem de itens
-        const { data: itemsData } = await supabase
-          .from("items")
-          .select("category_id, id");
-
-        const categoryItemCounts: Record<string, number> = {};
+        const response = await fetch('/api/admin/menu-structure');
+        const data = await response.json();
         
-        // Contar itens por categoria
-        itemsData?.forEach((item: any) => {
-          if (item.category_id) {
-            categoryItemCounts[item.category_id] = (categoryItemCounts[item.category_id] || 0) + 1;
-          }
-        });
+        console.log('Menu Structure API Response:', data); // Debug log
+        
+        if (!data.success) {
+          throw new Error(data.error || 'Erro ao carregar dados');
+        }
 
-        // Montar grupos com categorias e calcular contagem de itens
-        const groupsWithCategories = groupsData?.map((group: any) => {
-          const groupCategories = categoriesData
-            ?.filter((cat: any) => cat.group_id === group.id)
-            .map((cat: any) => ({
-              ...cat,
-              itemCount: categoryItemCounts[cat.id] || 0
-            })) || [];
-          
-          // Calcular total de itens do grupo somando os itens de todas as suas categorias
-          const groupItemCount = groupCategories.reduce((total: number, cat: any) => total + (cat.itemCount || 0), 0);
-          
-          return {
-            ...group,
-            itemCount: groupItemCount,
-            categories: groupCategories
-          };
-        }) || [];
-
-        setGroups(groupsWithCategories);
+        setGroups(data.groups || []);
+        console.log('Groups set to:', data.groups || []); // Debug log
         return true;
       } catch (error) {
         console.error(`Erro ao carregar dados (tentativa ${retryCount + 1}/${maxRetries}):`, error);
