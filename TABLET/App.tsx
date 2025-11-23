@@ -443,6 +443,15 @@ function MainApp() {
   }, []);
 
 
+  // Reload categories and products when service mode changes
+  useEffect(() => {
+    if (selectedMode) {
+      console.log(`🔄 Modo de serviço mudou para: ${selectedMode.name}, recarregando catálogo...`);
+      loadCategories();
+      loadProducts();
+    }
+  }, [selectedMode]);
+
   // Check or create session when table is selected and mode is chosen
   useEffect(() => {
     if (tableNumber && selectedMode) {
