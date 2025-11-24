@@ -33,11 +33,6 @@
       "backgroundColor": "#00000001",
       "barStyle": "light-content"
     },
-    "androidNavigationBar": {
-      "visible": false,
-      "barStyle": "light-content",
-      "backgroundColor": "#00000001"
-    },
     "web": {
       "favicon": "./assets/favicon.png"
     }
