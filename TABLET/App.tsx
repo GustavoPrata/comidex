@@ -1593,21 +1593,22 @@ function MainApp() {
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    borderRadius: 10,
-                    paddingHorizontal: 12,
-                    paddingVertical: 6,
+                    borderRadius: 8,
+                    paddingHorizontal: 10,
+                    paddingVertical: 4,
                     borderWidth: 1,
                     borderColor: 'rgba(255, 112, 67, 0.2)',
                     marginRight: 10,
+                    height: 34,
                   }}>
-                    <IconComponent name="search" size={14} color="#999" />
+                    <IconComponent name="search" size={13} color="#999" />
                     <TextInput
                       style={{
                         color: '#FFFFFF',
-                        fontSize: 14,
+                        fontSize: 13,
                         marginLeft: 6,
                         textAlign: 'center',
-                        width: 120,
+                        width: 110,
                       }}
                       placeholder="Número da Mesa"
                       placeholderTextColor="rgba(255, 255, 255, 0.3)"
@@ -1763,15 +1764,15 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: '18%',
-                        height: 90,
+                        width: '18.4%',
+                        aspectRatio: 1.85,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
                         borderRadius: 10,
                         padding: 4,
                         marginBottom: 6,
-                        marginHorizontal: '1%',
+                        marginHorizontal: '0.8%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
                           ? 'rgba(255, 112, 67, 0.25)'
@@ -3273,7 +3274,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(20, 20, 20, 0.6)',
     paddingTop: 20,
     paddingHorizontal: 20,
-    paddingBottom: 5,
+    paddingBottom: 0,
     flex: 1,
   },
   lockContainer: {
@@ -3459,10 +3460,15 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     width: "100%",
-    marginTop: height * 0.01,
+    marginTop: height * 0.005,
     marginBottom: 0,
+    paddingBottom: 0,
     overflow: 'hidden',
-    flex: 1,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    top: height * 0.22,
   },
   tableSelectionTitle: {
     fontSize: 22,
@@ -3611,8 +3617,10 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    maxHeight: height * 0.35,
-    marginTop: height * 0.01,
+    flex: 1,
+    marginTop: 0,
+    marginBottom: 0,
+    paddingBottom: 0,
   },
   tablesListContent: {
     paddingBottom: height * 0.03,
