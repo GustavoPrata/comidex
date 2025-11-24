@@ -3,13 +3,9 @@
     "name": "ComideX Tablet",
     "slug": "comidex-tablet",
     "version": "1.0.0",
-    "runtimeVersion": {
-      "policy": "sdkVersion"
-    },
     "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "scheme": "comidex-tablet",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -23,15 +19,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "softwareKeyboardLayoutMode": "resize",
-      "allowBackup": false
-    },
-    "androidStatusBar": {
-      "hidden": true,
-      "translucent": true,
-      "backgroundColor": "#00000001",
-      "barStyle": "light-content"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
