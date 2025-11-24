@@ -1754,7 +1754,7 @@ function MainApp() {
                     paddingHorizontal: 5,
                     paddingTop: 5,
                     paddingBottom: 0,
-                    flexGrow: 0,
+                    flexGrow: 1,
                   }}
                   nestedScrollEnabled={true}
                   scrollEnabled={true}
@@ -2169,7 +2169,7 @@ function MainApp() {
 
   // Main Interface - New 3-Column Layout Goomer Style with Apple Glass Design
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <StatusBar style="light" />
       <AdminPanel />
       
@@ -3332,7 +3332,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingHorizontal: width * 0.05,
+    paddingHorizontal: 0,
     paddingTop: height * 0.05,
     paddingBottom: 0,
     backgroundColor: config.colors.background,
@@ -3452,17 +3452,15 @@ const styles = StyleSheet.create({
   },
   // New Table Selection Styles
   tableSelectionCard: {
-    borderRadius: 28,
-    width: "95%",
+    borderTopLeftRadius: 28,
+    borderTopRightRadius: 28,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    width: "100%",
     marginTop: height * 0.01,
-    marginBottom: 0,
+    marginBottom: -20,
     overflow: 'hidden',
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 20,
-    elevation: 10,
-    height: height * 0.85,
+    flex: 1,
   },
   tableSelectionTitle: {
     fontSize: 22,
