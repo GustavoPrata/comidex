@@ -1583,7 +1583,23 @@ function MainApp() {
             
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
               <View style={styles.glassOverlay}>
-                <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
+                  <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
+                  
+                  {/* Refresh button moved to top right */}
+                  {!tablesLoading && !tablesError && (
+                    <TouchableOpacity 
+                      style={[styles.refreshTablesButton, { marginBottom: 0, paddingVertical: 8, paddingHorizontal: 12 }]}
+                      onPress={() => {
+                        loadTables();
+                        resetIdleTimer();
+                      }}
+                    >
+                      <IconComponent name="refresh" size={16} color={config.colors.primary} />
+                      <Text style={[styles.refreshTablesText, { marginLeft: 5 }]}>Atualizar</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
                 
                 {/* Search Input for Direct Table Number */}
                 <View style={styles.tableSearchContainer}>
@@ -1846,20 +1862,6 @@ function MainApp() {
                     </TouchableOpacity>
                   ))}
                 </ScrollView>
-              )}
-
-              {/* Refresh button */}
-              {!tablesLoading && !tablesError && (
-                <TouchableOpacity 
-                  style={styles.refreshTablesButton}
-                  onPress={() => {
-                    loadTables();
-                    resetIdleTimer();
-                  }}
-                >
-                  <IconComponent name="refresh" size={16} color={config.colors.primary} />
-                  <Text style={styles.refreshTablesText}>Atualizar mesas</Text>
-                </TouchableOpacity>
               )}
               </View>
             </BlurView>
