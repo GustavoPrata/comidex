@@ -123,7 +123,8 @@ interface Promotion {
   highlight?: boolean;
 }
 
-// Dynamic dimensions will be used inside component
+// Get initial dimensions for styles
+const { width: initialWidth, height: initialHeight } = Dimensions.get("window");
 
 // Constants
 const IDLE_TIMEOUT = 120000; // 2 minutes
@@ -3383,20 +3384,20 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 0,
-    paddingTop: height * 0.03,
+    paddingTop: initialHeight * 0.03,
     paddingBottom: 0,
     backgroundColor: config.colors.background,
   },
   welcomeContent: {
     alignItems: "center",
     width: "100%",
-    maxWidth: width * 0.9,
+    maxWidth: initialWidth * 0.9,
     flex: 1,
   },
   welcomeHeader: {
     alignItems: "center",
-    marginBottom: height * 0.015,
-    height: height * 0.16,
+    marginBottom: initialHeight * 0.015,
+    height: initialHeight * 0.16,
     justifyContent: "center",
   },
   welcomeLogo: {
@@ -3404,16 +3405,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logoCircleContainer: {
-    width: Math.min(width * 0.2, 140),
-    height: Math.min(width * 0.2, 140),
+    width: Math.min(initialWidth * 0.2, 140),
+    height: Math.min(initialWidth * 0.2, 140),
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: height * 0.01,
+    marginBottom: initialHeight * 0.01,
   },
   logoCircleBg: {
-    width: Math.min(width * 0.2, 140),
-    height: Math.min(width * 0.2, 140),
-    borderRadius: Math.min(width * 0.1, 70),
+    width: Math.min(initialWidth * 0.2, 140),
+    height: Math.min(initialWidth * 0.2, 140),
+    borderRadius: Math.min(initialWidth * 0.1, 70),
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     alignItems: "center",
     justifyContent: "center",
@@ -3426,8 +3427,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 112, 67, 0.3)",
   },
   welcomeLogoImage: {
-    width: Math.min(width * 0.14, 100),
-    height: Math.min(width * 0.14, 100),
+    width: Math.min(initialWidth * 0.14, 100),
+    height: Math.min(initialWidth * 0.14, 100),
   },
   welcomeTitle: {
     fontSize: 36,
