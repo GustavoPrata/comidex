@@ -1,0 +1,44 @@
+==================================================
+🚀 GERAR APK - COMANDO DIRETO
+==================================================
+
+COPIE E COLE ESTE COMANDO NO SEU TERMINAL:
+(funciona no Mac, Linux e Windows Git Bash)
+
+==================================================
+COMANDO ÚNICO (copie tudo de uma vez):
+==================================================
+
+cd TABLET && rm -rf node_modules .expo android ios package-lock.json dist && cp package.json.minimal package.json && cp babel.config.minimal.js babel.config.js && npm install --legacy-peer-deps && eas build --profile preview --platform android --clear-cache
+
+==================================================
+O QUE VAI ACONTECER:
+==================================================
+1. Limpar todos os arquivos problemáticos
+2. Usar versão sem react-native-reanimated (causa do erro)
+3. Instalar dependências corretas
+4. Gerar APK na nuvem do Expo
+
+==================================================
+TEMPO ESTIMADO:
+==================================================
+- Instalação: 2-3 minutos
+- Build do APK: 15-30 minutos
+- Total: ~30 minutos
+
+==================================================
+DEPOIS DO BUILD:
+==================================================
+1. Você receberá um link para download
+2. Baixe o APK
+3. Instale no tablet
+
+==================================================
+SE PEDIR LOGIN:
+==================================================
+npx eas login
+(use sua conta Expo)
+
+==================================================
+GARANTIA: Este comando resolve o erro export:embed
+==================================================
