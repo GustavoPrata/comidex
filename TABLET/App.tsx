@@ -299,15 +299,21 @@ function MainApp() {
   const lastActivityRef = useRef<number>(Date.now());
   const panResponderRef = useRef<any>(null);
 
-  // Animations
+  // Animations - Use a safe initial value, will be updated in useEffect
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const toastAnim = useRef(new Animated.Value(-100)).current;
   const waiterButtonAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(height)).current;
+  const slideAnim = useRef(new Animated.Value(1000)).current;  // Safe initial value
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const cartBounceAnim = useRef(new Animated.Value(1)).current;
-  const billSlideAnim = useRef(new Animated.Value(height)).current;
+  const billSlideAnim = useRef(new Animated.Value(1000)).current;  // Safe initial value
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
+
+  // Update animations when height changes
+  useEffect(() => {
+    slideAnim.setValue(height);
+    billSlideAnim.setValue(height);
+  }, [height]);
 
   // Sample promotions data
   const promotions: Promotion[] = [
