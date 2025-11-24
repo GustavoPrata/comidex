@@ -408,7 +408,7 @@ function MainApp() {
     // Atualização automática silenciosa a cada 5 segundos
     const tablesInterval = setInterval(async () => {
       try {
-        const response = await fetch(`${config.API_BASE_URL}/api/pos/tables`);
+        const response = await fetch(config.POS_API.tables);
         const data = await response.json();
         
         if (data.success && data.tables) {
