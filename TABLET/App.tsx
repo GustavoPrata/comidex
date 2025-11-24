@@ -1,4 +1,3 @@
-import 'expo-dev-client';
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
@@ -28,7 +27,6 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
-import * as ScreenOrientation from 'expo-screen-orientation';
 import { config } from './config';
 // Import Lucide icons para ter os mesmos ícones do admin
 import {
@@ -204,47 +202,6 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
 function MainApp() {
   // Keep screen awake to prevent battery-saving sleep mode
   useKeepAwake();
-  
-  // Force fullscreen on web platform
-  useEffect(() => {
-    if (Platform.OS === 'web') {
-      // Request fullscreen on web
-      const requestFullscreen = () => {
-        const elem = document.documentElement;
-        if (elem.requestFullscreen) {
-          elem.requestFullscreen().catch(() => {});
-        } else if ((elem as any).webkitRequestFullscreen) {
-          (elem as any).webkitRequestFullscreen();
-        } else if ((elem as any).mozRequestFullScreen) {
-          (elem as any).mozRequestFullScreen();
-        } else if ((elem as any).msRequestFullscreen) {
-          (elem as any).msRequestFullscreen();
-        }
-      };
-      
-      // Request fullscreen on first touch/click
-      const handleFirstInteraction = () => {
-        requestFullscreen();
-        document.removeEventListener('touchstart', handleFirstInteraction);
-        document.removeEventListener('click', handleFirstInteraction);
-      };
-      
-      document.addEventListener('touchstart', handleFirstInteraction);
-      document.addEventListener('click', handleFirstInteraction);
-      
-      // Hide cursor on web for kiosk mode
-      document.body.style.cursor = 'none';
-      
-      // Prevent context menu
-      document.addEventListener('contextmenu', (e) => e.preventDefault());
-      
-      return () => {
-        document.removeEventListener('touchstart', handleFirstInteraction);
-        document.removeEventListener('click', handleFirstInteraction);
-        document.body.style.cursor = 'auto';
-      };
-    }
-  }, []);
   
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
@@ -425,30 +382,6 @@ function MainApp() {
 
   // Initialize and setup
   useEffect(() => {
-    // Configure FULLSCREEN mode (maximum possible with Expo)
-    const configureFullscreen = async () => {
-      try {
-        // Lock screen orientation to landscape
-        await ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.LANDSCAPE);
-        console.log('Screen locked to landscape mode');
-        
-        // Configure fullscreen mode
-        if (Platform.OS === 'android') {
-          // Hide status bar completely
-          StatusBar.setHidden(true, 'fade');
-          StatusBar.setTranslucent(true);
-          StatusBar.setBackgroundColor('transparent');
-          
-          console.log('✅ FULLSCREEN MODE - Status bar hidden!');
-          
-          // Note: Navigation bar cannot be hidden in Expo managed workflow
-          // But the app will use full available screen space
-        }
-      } catch (error) {
-        console.error('Error configuring fullscreen:', error);
-      }
-    };
-
     // Initialize brightness control
     const initBrightness = async () => {
       try {
@@ -459,9 +392,6 @@ function MainApp() {
           const current = await Brightness.getBrightnessAsync();
           setOriginalBrightness(current);
           console.log('Brightness control initialized. Current brightness:', current);
-          
-          // Set max brightness for better visibility in restaurant
-          await Brightness.setBrightnessAsync(1.0); // Maximum brightness
         } else {
           console.log('Brightness permission not granted');
         }
@@ -470,7 +400,6 @@ function MainApp() {
       }
     };
     
-    configureFullscreen();
     initBrightness();
     loadCategories();
     loadProducts();
@@ -1597,7 +1526,7 @@ function MainApp() {
   if (isLocked) {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} translucent={true} backgroundColor="transparent" />
+        <StatusBar hidden={true} />
         <View style={styles.lockContainer}>
           <View style={styles.lockCard}>
             <View style={styles.lockIcon}>
@@ -1631,7 +1560,7 @@ function MainApp() {
   if (!tableNumber) {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} translucent={true} backgroundColor="transparent" />
+        <StatusBar hidden={true} />
         <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={styles.welcomeHeader}>
@@ -1948,7 +1877,7 @@ function MainApp() {
   if (!selectedMode) {
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} translucent={true} backgroundColor="transparent" />
+        <StatusBar hidden={true} />
         <AdminPanel />
         
         {/* Dark Background - Same as Table Selection */}
@@ -3233,26 +3162,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: config.colors.background,
-    ...Platform.select({
-      android: {
-        paddingTop: 0,
-        paddingBottom: 0,
-      },
-      web: {
-        height: '100vh',
-        width: '100vw',
-        overflow: 'hidden',
-        position: 'absolute' as any,
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-      },
-      ios: {
-        paddingTop: 0,
-        paddingBottom: 0,
-      }
-    })
   },
   glassContainer: {
     backgroundColor: 'rgba(20, 20, 20, 0.85)',

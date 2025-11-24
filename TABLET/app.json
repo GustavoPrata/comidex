@@ -1,11 +1,13 @@
 {
   "expo": {
-    "name": "ComideX Tablet",
-    "slug": "comidex-tablet",
+    "name": "TABLET",
+    "slug": "TABLET",
     "version": "1.0.0",
     "orientation": "landscape",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "scheme": "comidex-tablet",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -15,11 +17,17 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.comidex.tablet",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "navigationBarVisible": false,
+      "navigationBarBehavior": "inset-swipe",
+      "softwareKeyboardLayoutMode": "resize",
+      "immersive": true,
+      "systemUiVisibility": ["immersive", "hideNavigation", "fullscreen"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
