@@ -23,7 +23,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -1754,7 +1754,6 @@ function MainApp() {
                     paddingHorizontal: 5,
                     paddingTop: 5,
                     paddingBottom: 0,
-                    flexGrow: 1,
                   }}
                   nestedScrollEnabled={true}
                   scrollEnabled={true}
@@ -2167,9 +2166,12 @@ function MainApp() {
     );
   }
 
+  // Get safe area insets for manual padding control
+  const insets = useSafeAreaInsets();
+
   // Main Interface - New 3-Column Layout Goomer Style with Apple Glass Design
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <View style={[styles.container, { paddingTop: insets.top }]}>
       <StatusBar style="light" />
       <AdminPanel />
       
@@ -3239,7 +3241,7 @@ function MainApp() {
           </View>
         </Animated.View>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -3458,7 +3460,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
     width: "100%",
     marginTop: height * 0.01,
-    marginBottom: -20,
+    marginBottom: 0,
     overflow: 'hidden',
     flex: 1,
   },
