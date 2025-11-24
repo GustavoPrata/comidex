@@ -205,10 +205,13 @@ function MainApp() {
   // Keep screen awake to prevent battery-saving sleep mode
   useKeepAwake();
   
-  // Get dynamic dimensions
+  // Get dynamic dimensions with safe fallback
   const windowDimensions = useWindowDimensions();
-  const width = windowDimensions.width;
-  const height = windowDimensions.height;
+  const width = windowDimensions?.width || initialWidth;
+  const height = windowDimensions?.height || initialHeight;
+  
+  // Debug log to check dimensions
+  console.log('Window dimensions:', { width, height, windowDimensions });
   
   // Responsive helper functions (percentage-based)
   const wp = (percentage: number) => (width * percentage) / 100;
@@ -299,20 +302,22 @@ function MainApp() {
   const lastActivityRef = useRef<number>(Date.now());
   const panResponderRef = useRef<any>(null);
 
-  // Animations - Use a safe initial value, will be updated in useEffect
+  // Animations - Using dynamic values from height
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const toastAnim = useRef(new Animated.Value(-100)).current;
   const waiterButtonAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(1000)).current;  // Safe initial value
+  const slideAnim = useRef(new Animated.Value(height || 1000)).current;
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const cartBounceAnim = useRef(new Animated.Value(1)).current;
-  const billSlideAnim = useRef(new Animated.Value(1000)).current;  // Safe initial value
+  const billSlideAnim = useRef(new Animated.Value(height || 1000)).current;
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
 
   // Update animations when height changes
   useEffect(() => {
-    slideAnim.setValue(height);
-    billSlideAnim.setValue(height);
+    if (height && height > 0) {
+      slideAnim.setValue(height);
+      billSlideAnim.setValue(height);
+    }
   }, [height]);
 
   // Sample promotions data
@@ -2972,7 +2977,7 @@ function MainApp() {
             <TouchableOpacity onPress={() => {
               setShowCart(false);
               Animated.timing(slideAnim, {
-                toValue: 1000,  // Use fixed value instead of height
+                toValue: height || 1000,
                 duration: config.animations.normal,
                 useNativeDriver: true,
               }).start();
@@ -3057,7 +3062,7 @@ function MainApp() {
             <TouchableOpacity onPress={() => {
               setShowBill(false);
               Animated.timing(billSlideAnim, {
-                toValue: 1000,  // Use fixed value instead of height
+                toValue: height || 1000,
                 duration: config.animations.normal,
                 useNativeDriver: true,
               }).start();
