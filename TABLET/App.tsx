@@ -10,6 +10,7 @@ import {
   Alert,
   Image,
   Dimensions,
+  useWindowDimensions,
   ActivityIndicator,
   FlatList,
   Animated,
@@ -122,7 +123,7 @@ interface Promotion {
   highlight?: boolean;
 }
 
-const { width, height } = Dimensions.get("window");
+// Dynamic dimensions will be used inside component
 
 // Constants
 const IDLE_TIMEOUT = 120000; // 2 minutes
@@ -202,6 +203,17 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
 function MainApp() {
   // Keep screen awake to prevent battery-saving sleep mode
   useKeepAwake();
+  
+  // Get dynamic dimensions
+  const windowDimensions = useWindowDimensions();
+  const width = windowDimensions.width;
+  const height = windowDimensions.height;
+  
+  // Responsive breakpoints
+  const isCompactTablet = width < 900;
+  const isSmallTablet = width < 768;
+  const logoSize = isSmallTablet ? 60 : isCompactTablet ? 80 : 100;
+  const headerHeight = isSmallTablet ? height * 0.12 : height * 0.15;
   
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
@@ -1566,21 +1578,43 @@ function MainApp() {
     return (
       <View style={styles.container}>
         <StatusBar hidden={true} />
-        <View style={styles.welcomeContainer}>
+        <View style={[styles.welcomeContainer, { paddingTop: isSmallTablet ? 10 : 20 }]}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
-            <View style={styles.welcomeHeader}>
+            <View style={{
+              alignItems: "center",
+              marginBottom: 10,
+              height: headerHeight,
+              justifyContent: "center",
+            }}>
               <View style={styles.logoCircleContainer}>
-                <View style={styles.logoCircleBg}>
+                <View style={{
+                  width: logoSize + 20,
+                  height: logoSize + 20,
+                  borderRadius: (logoSize + 20) / 2,
+                  backgroundColor: "rgba(255, 255, 255, 0.95)",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  shadowColor: "#FF7043",
+                  shadowOffset: { width: 0, height: 8 },
+                  shadowOpacity: 0.3,
+                  shadowRadius: 12,
+                  elevation: 10,
+                }}>
                   <Image 
                     source={require('./assets/logo23.png')}
-                    style={styles.welcomeLogoImage}
+                    style={{
+                      width: logoSize,
+                      height: logoSize,
+                    }}
                     resizeMode="contain"
                   />
                 </View>
               </View>
             </View>
             
-            <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
+            <BlurView intensity={80} tint="dark" style={[styles.tableSelectionCard, { 
+              marginTop: isSmallTablet ? 5 : 10,
+            }]}>
               <View style={styles.glassOverlay}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                   <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
@@ -1605,13 +1639,15 @@ function MainApp() {
                     <TextInput
                       style={{
                         color: '#FFFFFF',
-                        fontSize: 13,
-                        marginLeft: 6,
-                        textAlign: 'center',
-                        width: 110,
-                        height: 26,
+                        fontSize: 14,
+                        marginLeft: 8,
+                        textAlign: 'left',
+                        flex: 1,
+                        paddingVertical: 0,
+                        lineHeight: 20,
+                        includeFontPadding: false,
                       }}
-                      placeholder="Número da Mesa"
+                      placeholder="Número"
                       placeholderTextColor="rgba(255, 255, 255, 0.3)"
                       value={tableSearchText}
                       onChangeText={(text) => {
@@ -1765,15 +1801,17 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: '18.4%',
-                        aspectRatio: 1.85,
+                        width: isSmallTablet ? '19%' : '18.4%',
+                        aspectRatio: isSmallTablet ? 1.6 : 1.85,
+                        minHeight: isSmallTablet ? 75 : 85,
+                        maxHeight: isSmallTablet ? 85 : 95,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
                         borderRadius: 10,
                         padding: 4,
                         marginBottom: 6,
-                        marginHorizontal: '0.8%',
+                        marginHorizontal: isSmallTablet ? '0.5%' : '0.8%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
                           ? 'rgba(255, 112, 67, 0.25)'
