@@ -406,10 +406,32 @@ function MainApp() {
     loadTables(); // Load available tables on startup
     loadServiceTypes(); // Load service types and groups
     
-    // Atualiza as mesas a cada 30 segundos para manter sincronizado com o POS
-    const tablesInterval = setInterval(() => {
-      loadTables();
-    }, 30000);
+    // Atualização automática silenciosa a cada 5 segundos
+    const tablesInterval = setInterval(async () => {
+      try {
+        const response = await fetch(`${config.API_BASE_URL}/api/pos/tables`);
+        const data = await response.json();
+        
+        if (data.success && data.tables) {
+          // Atualiza silenciosamente sem mostrar loading
+          const currentTables = data.tables;
+          setTables(currentTables);
+          
+          // Mantém o filtro de busca aplicado
+          if (tableSearchText?.trim()) {
+            const filtered = currentTables.filter((t: any) => 
+              t.number.toString().includes(tableSearchText)
+            );
+            setAvailableTables(filtered);
+          } else {
+            setAvailableTables(currentTables);
+          }
+        }
+      } catch (error) {
+        // Falha silenciosa - não mostra erro na atualização automática
+        console.log('Auto-refresh silencioso:', error);
+      }
+    }, 5000); // Atualiza a cada 5 segundos sem piscar
     
     // Initialize idle timer
     resetIdleTimer();
@@ -440,7 +462,7 @@ function MainApp() {
     }
     
     return cleanup;
-  }, []);
+  }, [tableSearchText]); // Adiciona tableSearchText para o setInterval poder usar
 
 
   // Check or create session when table is selected and mode is chosen
@@ -1583,149 +1605,100 @@ function MainApp() {
             
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
               <View style={styles.glassOverlay}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                  <Text style={[styles.tableSelectionTitle, { flex: 1 }]}>Selecione sua mesa</Text>
-                  
-                  {/* Search Input - Compact in the middle */}
-                  <View style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    borderRadius: 12,
-                    paddingHorizontal: 12,
-                    paddingVertical: 6,
-                    marginHorizontal: 10,
-                    borderWidth: 1,
-                    borderColor: 'rgba(255, 112, 67, 0.3)',
-                    minWidth: 120,
-                    maxWidth: 150,
-                  }}>
-                    <IconComponent name="search" size={14} color={config.colors.primary} />
-                    <TextInput
-                      style={{
-                        flex: 1,
-                        color: '#FFFFFF',
-                        fontSize: 14,
-                        marginLeft: 8,
-                        textAlign: 'center',
-                        fontWeight: '600',
-                      }}
-                      placeholder="Mesa..."
-                      placeholderTextColor="rgba(255, 255, 255, 0.4)"
-                      value={tableSearchText}
-                      onChangeText={(text) => {
-                        // Limit to 4 digits
-                        if (text.length <= 4) {
-                          setTableSearchText(text);
-                          // Filter tables by number
-                          if (text.trim()) {
-                            const filtered = tables.filter(t => 
-                              t.number.toString().includes(text)
-                            );
-                            setAvailableTables(filtered);
-                          } else {
-                            setAvailableTables(tables);
-                          }
+                <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
+                
+                {/* Search Input for Direct Table Number */}
+                <View style={styles.tableSearchContainer}>
+                  <IconComponent name="search" size={16} color="#999" />
+                  <TextInput
+                    style={[styles.tableSearchInput, { maxWidth: 200 }]}
+                    placeholder="Buscar mesa..."
+                    placeholderTextColor="#999"
+                    value={tableSearchText}
+                    onChangeText={(text) => {
+                      // Limit to 4 digits
+                      if (text.length <= 4) {
+                        setTableSearchText(text);
+                        // Filter tables by number
+                        if (text.trim()) {
+                          const filtered = tables.filter(t => 
+                            t.number.toString().includes(text)
+                          );
+                          setAvailableTables(filtered);
+                        } else {
+                          setAvailableTables(tables);
                         }
-                      }}
-                      keyboardType="numeric"
-                      returnKeyType="done"
-                      maxLength={4}
-                      onSubmitEditing={() => {
-                        // If there's exactly one match, select it automatically
-                        const exactMatch = tables.find(t => 
-                          t.number.toString() === tableSearchText
-                        );
-                        if (exactMatch) {
-                          setTableNumber(exactMatch.number.toString());
-                          setSelectedTable(exactMatch);
-                          resetIdleTimer();
-                          
-                          if (exactMatch.status === 'occupied') {
-                            Alert.alert(
-                              "Mesa Ocupada",
-                              `Mesa ${exactMatch.number} possui uma conta aberta.\n${exactMatch.session_total > 0 ? `Total atual: R$ ${exactMatch.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
-                              [
-                                { text: "Cancelar", style: "cancel" },
-                                { 
-                                  text: "Continuar",
-                                  onPress: async () => {
-                                    // VERIFICAR SE TEM RODÍZIO ANTES DE CONTINUAR
-                                    const hasRodizio = await checkForExistingRodizio(exactMatch.number.toString());
+                      }
+                    }}
+                    keyboardType="numeric"
+                    returnKeyType="done"
+                    maxLength={4}
+                    onSubmitEditing={() => {
+                      // If there's exactly one match, select it automatically
+                      const exactMatch = tables.find(t => 
+                        t.number.toString() === tableSearchText
+                      );
+                      if (exactMatch) {
+                        setTableNumber(exactMatch.number.toString());
+                        setSelectedTable(exactMatch);
+                        resetIdleTimer();
+                        
+                        if (exactMatch.status === 'occupied') {
+                          Alert.alert(
+                            "Mesa Ocupada",
+                            `Mesa ${exactMatch.number} possui uma conta aberta.\n${exactMatch.session_total > 0 ? `Total atual: R$ ${exactMatch.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
+                            [
+                              { text: "Cancelar", style: "cancel" },
+                              { 
+                                text: "Continuar",
+                                onPress: async () => {
+                                  // VERIFICAR SE TEM RODÍZIO ANTES DE CONTINUAR
+                                  const hasRodizio = await checkForExistingRodizio(exactMatch.number.toString());
+                                  
+                                  if (hasRodizio && serviceTypes.length > 0) {
+                                    console.log("✅ Mesa com rodízio detectado! Entrando direto no catálogo");
                                     
-                                    if (hasRodizio && serviceTypes.length > 0) {
-                                      console.log("✅ Mesa com rodízio detectado! Entrando direto no catálogo");
+                                    // Buscar o tipo rodízio
+                                    const rodizioType = serviceTypes.find(st => 
+                                      st.linked_groups?.some((g: any) => g.type === 'rodizio')
+                                    );
+                                    
+                                    if (rodizioType) {
+                                      setSelectedMode(rodizioType);
+                                      await loadCategories();
+                                      await loadProducts();
                                       
-                                      // Buscar o tipo rodízio
-                                      const rodizioType = serviceTypes.find(st => 
-                                        st.linked_groups?.some((g: any) => g.type === 'rodizio')
-                                      );
-                                      
-                                      if (rodizioType) {
-                                        setSelectedMode(rodizioType);
-                                        await loadCategories();
-                                        await loadProducts();
-                                        
-                                        // Ir direto para o catálogo sem mostrar tipos de atendimento
-                                        Animated.timing(fadeAnim, {
-                                          toValue: 0,
-                                          duration: config.animations.fast,
-                                          useNativeDriver: true,
-                                        }).start(() => {
-                                          // Após animação, já estar no catálogo
-                                        });
-                                      }
-                                    } else {
-                                      // Sem rodízio, continuar fluxo normal
+                                      // Ir direto para o catálogo sem mostrar tipos de atendimento
                                       Animated.timing(fadeAnim, {
                                         toValue: 0,
                                         duration: config.animations.fast,
                                         useNativeDriver: true,
-                                      }).start();
+                                      }).start(() => {
+                                        // Após animação, já estar no catálogo
+                                      });
                                     }
+                                  } else {
+                                    // Sem rodízio, continuar fluxo normal
+                                    Animated.timing(fadeAnim, {
+                                      toValue: 0,
+                                      duration: config.animations.fast,
+                                      useNativeDriver: true,
+                                    }).start();
                                   }
                                 }
-                              ]
-                            );
-                          } else {
-                            Animated.timing(fadeAnim, {
-                              toValue: 0,
-                              duration: config.animations.fast,
-                              useNativeDriver: true,
-                            }).start();
-                          }
+                              }
+                            ]
+                          );
+                        } else {
+                          Animated.timing(fadeAnim, {
+                            toValue: 0,
+                            duration: config.animations.fast,
+                            useNativeDriver: true,
+                          }).start();
                         }
-                      }}
-                    />
-                  </View>
-                  
-                  {/* Refresh button moved to top right */}
-                  {!tablesLoading && !tablesError && (
-                    <TouchableOpacity 
-                      style={{
-                        backgroundColor: 'rgba(255, 112, 67, 0.15)',
-                        borderRadius: 12,
-                        paddingVertical: 8,
-                        paddingHorizontal: 14,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        borderWidth: 1,
-                        borderColor: 'rgba(255, 112, 67, 0.3)',
-                      }}
-                      onPress={() => {
-                        loadTables();
-                        resetIdleTimer();
-                      }}
-                    >
-                      <IconComponent name="refresh" size={14} color={config.colors.primary} />
-                      <Text style={{
-                        color: config.colors.primary,
-                        fontSize: 13,
-                        fontWeight: '600',
-                        marginLeft: 5,
-                      }}>Atualizar</Text>
-                    </TouchableOpacity>
-                  )}
+                      }
+                    }}
+                  />
                 </View>
               
               {tablesLoading ? (
