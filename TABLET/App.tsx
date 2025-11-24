@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,7 +10,6 @@ import {
   Alert,
   Image,
   Dimensions,
-  useWindowDimensions,
   ActivityIndicator,
   FlatList,
   Animated,
@@ -24,7 +23,7 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from 'expo-linear-gradient';
-import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
@@ -123,6 +122,8 @@ interface Promotion {
   highlight?: boolean;
 }
 
+const { width, height } = Dimensions.get("window");
+
 // Constants
 const IDLE_TIMEOUT = 120000; // 2 minutes
 const KIOSK_PIN = "1234"; // Kiosk admin PIN
@@ -198,115 +199,9 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
   }
 };
 
-// Sistema de métricas responsivas centralizado
-const createResponsiveMetrics = (width: number, height: number) => {
-  // Unidade base para escala
-  const baseUnit = Math.min(width, height) / 100;
-  const isLandscape = width > height;
-  
-  // Helper para clamp responsivo
-  const clamp = (min: number, value: number, max: number) => {
-    return Math.min(Math.max(min, value), max);
-  };
-  
-  // Tokens de espaçamento
-  const spacing = {
-    xs: clamp(4, baseUnit * 1, 8),
-    s: clamp(8, baseUnit * 2, 16),
-    m: clamp(12, baseUnit * 3, 24),
-    l: clamp(16, baseUnit * 4, 32),
-    xl: clamp(20, baseUnit * 5, 40),
-    xxl: clamp(24, baseUnit * 6, 48),
-  };
-  
-  // Tokens de tipografia
-  const typography = {
-    tiny: clamp(10, baseUnit * 2.5, 14),
-    small: clamp(12, baseUnit * 3, 16),
-    body: clamp(14, baseUnit * 3.5, 18),
-    large: clamp(16, baseUnit * 4, 22),
-    title: clamp(18, baseUnit * 4.5, 26),
-    heading: clamp(20, baseUnit * 5, 32),
-    display: clamp(24, baseUnit * 6, 40),
-  };
-  
-  // Tokens de grid
-  const grid = {
-    columns: 5,
-    gap: spacing.m,
-    padding: spacing.l,
-    // Cálculo dinâmico da largura das colunas
-    getColumnWidth: (containerWidth: number) => {
-      const contentWidth = containerWidth - (spacing.l * 2); // Remove padding
-      const totalGap = spacing.m * 4; // 4 gaps entre 5 colunas
-      return Math.floor((contentWidth - totalGap) / 5);
-    }
-  };
-  
-  // Tokens de componentes
-  const components = {
-    inputHeight: clamp(120, height * 0.18, 180),
-    inputWidth: clamp(220, width * 0.28, 340),
-    inputFontSize: clamp(48, baseUnit * 10, 72),
-    buttonHeight: clamp(40, height * 0.06, 60),
-    buttonPadding: spacing.l,
-    cardRadius: clamp(12, baseUnit * 3, 20),
-    iconSize: {
-      small: clamp(16, baseUnit * 4, 24),
-      medium: clamp(20, baseUnit * 5, 32),
-      large: clamp(24, baseUnit * 6, 40),
-    },
-    tableCard: {
-      width: grid.getColumnWidth(width),
-      minHeight: clamp(70, height * 0.09, 100),
-      maxHeight: clamp(90, height * 0.13, 130),
-      aspectRatio: 1.3
-    }
-  };
-  
-  return {
-    width,
-    height,
-    baseUnit,
-    isLandscape,
-    clamp,
-    spacing,
-    typography,
-    grid,
-    components,
-  };
-};
-
 function MainApp() {
   // Keep screen awake to prevent battery-saving sleep mode
   useKeepAwake();
-  
-  // Get dynamic dimensions with safe fallback
-  const windowDimensions = useWindowDimensions();
-  const { width: initialWidth, height: initialHeight } = Dimensions.get("window");
-  const width = windowDimensions?.width || initialWidth;
-  const height = windowDimensions?.height || initialHeight;
-  
-  // Debug log to check dimensions
-  console.log('Window dimensions:', { width, height, windowDimensions });
-  
-  // Create responsive metrics
-  const metrics = useMemo(() => createResponsiveMetrics(width, height), [width, height]);
-  
-  // Create styles with current dimensions and metrics using useMemo for performance
-  const styles = useMemo(() => createStyles(width, height, metrics), [width, height, metrics]);
-  
-  // Responsive helper functions (percentage-based)
-  const wp = (percentage: number) => (width * percentage) / 100;
-  const hp = (percentage: number) => (height * percentage) / 100;
-  
-  // Responsive breakpoints
-  const isCompactTablet = width < 900;
-  const isSmallTablet = width < 768;
-  
-  // All sizes in percentages - NO PIXELS!
-  const logoSizePercent = isSmallTablet ? wp(8) : isCompactTablet ? wp(10) : wp(12);
-  const headerHeightPercent = isSmallTablet ? hp(12) : hp(15);
   
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
@@ -385,23 +280,15 @@ function MainApp() {
   const lastActivityRef = useRef<number>(Date.now());
   const panResponderRef = useRef<any>(null);
 
-  // Animations - Using dynamic values from height
+  // Animations
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const toastAnim = useRef(new Animated.Value(-100)).current;
   const waiterButtonAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(height || 1000)).current;
+  const slideAnim = useRef(new Animated.Value(height)).current;
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const cartBounceAnim = useRef(new Animated.Value(1)).current;
-  const billSlideAnim = useRef(new Animated.Value(height || 1000)).current;
+  const billSlideAnim = useRef(new Animated.Value(height)).current;
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
-
-  // Update animations when height changes
-  useEffect(() => {
-    if (height && height > 0) {
-      slideAnim.setValue(height);
-      billSlideAnim.setValue(height);
-    }
-  }, [height]);
 
   // Sample promotions data
   const promotions: Promotion[] = [
@@ -1679,46 +1566,24 @@ function MainApp() {
     return (
       <View style={styles.container}>
         <StatusBar hidden={true} />
-        <View style={[styles.welcomeContainer, { paddingTop: hp(2) }]}>
+        <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
-            <View style={{
-              alignItems: "center",
-              marginBottom: hp(1),
-              height: headerHeightPercent,
-              justifyContent: "center",
-            }}>
+            <View style={styles.welcomeHeader}>
               <View style={styles.logoCircleContainer}>
-                <View style={{
-                  width: logoSizePercent + wp(3),
-                  height: logoSizePercent + wp(3),
-                  borderRadius: (logoSizePercent + wp(3)) / 2,
-                  backgroundColor: "rgba(255, 255, 255, 0.95)",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  shadowColor: "#FF7043",
-                  shadowOffset: { width: 0, height: wp(1) },
-                  shadowOpacity: 0.3,
-                  shadowRadius: wp(1.5),
-                  elevation: 10,
-                }}>
+                <View style={styles.logoCircleBg}>
                   <Image 
                     source={require('./assets/logo23.png')}
-                    style={{
-                      width: logoSizePercent,
-                      height: logoSizePercent,
-                    }}
+                    style={styles.welcomeLogoImage}
                     resizeMode="contain"
                   />
                 </View>
               </View>
             </View>
             
-            <BlurView intensity={80} tint="dark" style={[styles.tableSelectionCard, { 
-              marginTop: hp(1),
-            }]}>
+            <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
               <View style={styles.glassOverlay}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: hp(2.5) }}>
-                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: metrics.spacing.m }]}>Selecione sua mesa</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
                   
                   {/* Spacer */}
                   <View style={{ flex: 1 }} />
@@ -1728,49 +1593,43 @@ function MainApp() {
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    borderRadius: wp(1),
-                    paddingHorizontal: wp(1.5),
-                    paddingVertical: hp(0.5),
+                    borderRadius: 10,
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
                     borderWidth: 1,
                     borderColor: 'rgba(255, 112, 67, 0.2)',
-                    marginRight: wp(1.5),
-                    height: hp(4),
-                    minWidth: wp(15),
-                    maxWidth: wp(25),
+                    marginRight: 10,
                   }}>
-                    <IconComponent name="search" size={wp(2)} color="#999" />
+                    <IconComponent name="search" size={14} color="#999" />
                     <TextInput
                       style={{
                         color: '#FFFFFF',
-                        fontSize: wp(2),
-                        marginLeft: wp(1),
-                        textAlign: 'left',
-                        flex: 1,
-                        paddingVertical: 0,
-                        lineHeight: wp(2.5),
-                        includeFontPadding: false,
+                        fontSize: 14,
+                        marginLeft: 6,
+                        textAlign: 'center',
+                        width: 120,
                       }}
-                      placeholder="Número"
+                      placeholder="Número da Mesa"
                       placeholderTextColor="rgba(255, 255, 255, 0.3)"
-                      value={tableSearchText}
-                      onChangeText={(text) => {
-                        // Limit to 4 digits
-                        if (text.length <= 4) {
-                          setTableSearchText(text);
-                          // Filter tables by number
-                          if (text.trim()) {
-                            const filtered = tables.filter(t => 
-                              t.number.toString().includes(text)
-                            );
-                            setAvailableTables(filtered);
-                          } else {
-                            setAvailableTables(tables);
+                        value={tableSearchText}
+                        onChangeText={(text) => {
+                          // Limit to 4 digits
+                          if (text.length <= 4) {
+                            setTableSearchText(text);
+                            // Filter tables by number
+                            if (text.trim()) {
+                              const filtered = tables.filter(t => 
+                                t.number.toString().includes(text)
+                              );
+                              setAvailableTables(filtered);
+                            } else {
+                              setAvailableTables(tables);
+                            }
                           }
-                        }
-                      }}
-                      keyboardType="numeric"
-                      returnKeyType="done"
-                      maxLength={4}
+                        }}
+                        keyboardType="numeric"
+                        returnKeyType="done"
+                        maxLength={4}
                         onSubmitEditing={() => {
                       // If there's exactly one match, select it automatically
                       const exactMatch = tables.find(t => 
@@ -1892,10 +1751,10 @@ function MainApp() {
                   contentContainerStyle={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
-                    paddingHorizontal: metrics.spacing.m,
-                    paddingTop: metrics.spacing.s,
-                    paddingBottom: metrics.spacing.l,
-                    gap: metrics.grid.gap,
+                    paddingHorizontal: 5,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    flexGrow: 0,
                   }}
                   nestedScrollEnabled={true}
                   scrollEnabled={true}
@@ -1905,17 +1764,15 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: metrics.components.tableCard.width,
-                        minHeight: metrics.components.tableCard.minHeight,
-                        maxHeight: metrics.components.tableCard.maxHeight,
-                        aspectRatio: metrics.components.tableCard.aspectRatio,
+                        width: '18%',
+                        height: 90,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
-                        borderRadius: metrics.components.cardRadius,
-                        padding: metrics.spacing.s,
-                        marginBottom: metrics.spacing.m,
-                        marginHorizontal: metrics.spacing.xs,
+                        borderRadius: 10,
+                        padding: 4,
+                        marginBottom: 6,
+                        marginHorizontal: '1%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
                           ? 'rgba(255, 112, 67, 0.25)'
@@ -2021,22 +1878,22 @@ function MainApp() {
                     >
                       {/* Table Number in Circle - BIGGER */}
                       <View style={{
-                        width: wp(5.5),
-                        height: wp(5.5),
-                        borderRadius: wp(2.75),
+                        width: 42,
+                        height: 42,
+                        borderRadius: 21,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.15)' 
                           : 'rgba(255, 255, 255, 0.08)',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginBottom: hp(0.3),
+                        marginBottom: 2,
                         borderWidth: 1,
                         borderColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.3)' 
                           : 'rgba(255, 255, 255, 0.15)',
                       }}>
                         <Text style={{
-                          fontSize: wp(3),
+                          fontSize: 22,
                           fontWeight: 'bold',
                           color: table.status === 'occupied' ? config.colors.primary : '#FFFFFF',
                         }}>
@@ -2046,9 +1903,9 @@ function MainApp() {
                       
                       {/* Table Name - Smaller */}
                       <Text style={{
-                        fontSize: wp(1.2),
+                        fontSize: 7,
                         color: 'rgba(255, 255, 255, 0.4)',
-                        marginBottom: hp(0.2),
+                        marginBottom: 2,
                         textAlign: 'center',
                       }}>
                         {table.name.length > 8 ? table.name.substring(0, 8) + '..' : table.name}
@@ -2056,15 +1913,15 @@ function MainApp() {
                       
                       {/* Status Badge - Smaller */}
                       <View style={{
-                        paddingHorizontal: wp(0.8),
-                        paddingVertical: hp(0.1),
-                        borderRadius: wp(0.5),
+                        paddingHorizontal: 5,
+                        paddingVertical: 1,
+                        borderRadius: 3,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.2)' 
                           : 'rgba(76, 175, 80, 0.2)',
                       }}>
                         <Text style={{
-                          fontSize: wp(1),
+                          fontSize: 7,
                           fontWeight: '600',
                           color: table.status === 'occupied' 
                             ? config.colors.primary 
@@ -2077,10 +1934,10 @@ function MainApp() {
                       {/* Session Total if occupied - Smaller */}
                       {table.status === 'occupied' && table.session_total > 0 && (
                         <Text style={{
-                          fontSize: wp(1.2),
+                          fontSize: 8,
                           fontWeight: 'bold',
                           color: config.colors.primary,
-                          marginTop: hp(0.1),
+                          marginTop: 1,
                         }}>
                           R$ {table.session_total.toFixed(2)}
                         </Text>
@@ -2310,12 +2167,9 @@ function MainApp() {
     );
   }
 
-  // Get safe area insets for manual padding control
-  const insets = useSafeAreaInsets();
-
   // Main Interface - New 3-Column Layout Goomer Style with Apple Glass Design
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <SafeAreaView style={styles.container}>
       <StatusBar style="light" />
       <AdminPanel />
       
@@ -3061,7 +2915,7 @@ function MainApp() {
             <TouchableOpacity onPress={() => {
               setShowCart(false);
               Animated.timing(slideAnim, {
-                toValue: height || 1000,
+                toValue: height,
                 duration: config.animations.normal,
                 useNativeDriver: true,
               }).start();
@@ -3146,7 +3000,7 @@ function MainApp() {
             <TouchableOpacity onPress={() => {
               setShowBill(false);
               Animated.timing(billSlideAnim, {
-                toValue: height || 1000,
+                toValue: height,
                 duration: config.animations.normal,
                 useNativeDriver: true,
               }).start();
@@ -3385,21 +3239,16 @@ function MainApp() {
           </View>
         </Animated.View>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
-// Create styles factory function
-const createStyles = (width: number, height: number, metrics?: ReturnType<typeof createResponsiveMetrics>) => {
-  // Use default metrics if not provided (for backwards compatibility)
-  const m = metrics || createResponsiveMetrics(width, height);
-  
-  return StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: config.colors.background,
-    },
-    glassContainer: {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: config.colors.background,
+  },
+  glassContainer: {
     backgroundColor: 'rgba(20, 20, 20, 0.85)',
     borderRadius: 20,
     borderWidth: 1,
@@ -3420,9 +3269,7 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
   },
   glassOverlay: {
     backgroundColor: 'rgba(20, 20, 20, 0.6)',
-    paddingTop: 20,
-    paddingHorizontal: 20,
-    paddingBottom: 0,
+    padding: 20,
     flex: 1,
   },
   lockContainer: {
@@ -3483,8 +3330,8 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingHorizontal: 0,
-    paddingTop: height * 0.03,
+    paddingHorizontal: width * 0.05,
+    paddingTop: height * 0.05,
     paddingBottom: 0,
     backgroundColor: config.colors.background,
   },
@@ -3496,9 +3343,7 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
   },
   welcomeHeader: {
     alignItems: "center",
-    marginBottom: height * 0.015,
-    height: height * 0.16,
-    justifyContent: "center",
+    marginBottom: height * 0.02,
   },
   welcomeLogo: {
     fontSize: 80,
@@ -3564,17 +3409,15 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
     marginBottom: 20,
   },
   tableInput: {
-    width: m.components.inputWidth,
-    height: m.components.inputHeight,
-    fontSize: m.components.inputFontSize,
+    width: 120,
+    height: 80,
+    fontSize: 48,
     fontWeight: "bold",
     textAlign: "center",
-    borderRadius: m.components.cardRadius,
+    borderRadius: 15,
     backgroundColor: config.colors.surface,
     color: config.colors.textPrimary,
-    marginBottom: m.spacing.l,
-    paddingHorizontal: m.spacing.m,
-    paddingVertical: m.spacing.s,
+    marginBottom: 20,
   },
   continueButton: {
     backgroundColor: 'rgba(255, 87, 34, 0.9)',
@@ -3607,23 +3450,24 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
   },
   // New Table Selection Styles
   tableSelectionCard: {
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    width: "100%",
+    borderRadius: 28,
+    width: "95%",
     marginTop: height * 0.01,
     marginBottom: 0,
-    paddingBottom: 0,
     overflow: 'hidden',
-    flex: 1,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 10,
+    height: height * 0.75,
   },
   tableSelectionTitle: {
-    fontSize: m.typography.heading,
+    fontSize: 22,
     fontWeight: "bold",
     color: config.colors.textPrimary,
     textAlign: "center",
-    marginBottom: m.spacing.m,
+    marginBottom: 15,
   },
   tableSearchContainer: {
     flexDirection: "row",
@@ -3765,10 +3609,8 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    flex: 1,
-    marginTop: 0,
-    marginBottom: 0,
-    paddingBottom: 0,
+    maxHeight: height * 0.35,
+    marginTop: height * 0.01,
   },
   tablesListContent: {
     paddingBottom: height * 0.03,
@@ -6123,9 +5965,7 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
     fontWeight: '700',
     color: '#FFFFFF',
   },
-  });
-};
-
+});
 export default function App() {
   return (
     <SafeAreaProvider>
