@@ -2972,7 +2972,7 @@ function MainApp() {
             <TouchableOpacity onPress={() => {
               setShowCart(false);
               Animated.timing(slideAnim, {
-                toValue: height,
+                toValue: 1000,  // Use fixed value instead of height
                 duration: config.animations.normal,
                 useNativeDriver: true,
               }).start();
@@ -3057,7 +3057,7 @@ function MainApp() {
             <TouchableOpacity onPress={() => {
               setShowBill(false);
               Animated.timing(billSlideAnim, {
-                toValue: height,
+                toValue: 1000,  // Use fixed value instead of height
                 duration: config.animations.normal,
                 useNativeDriver: true,
               }).start();
