@@ -1754,15 +1754,19 @@ function MainApp() {
                 </View>
               ) : (
                 <ScrollView 
-                  style={styles.tablesList}
+                  style={{
+                    flex: 1,
+                    width: '100%',
+                    maxHeight: height * 0.5,
+                  }}
                   showsVerticalScrollIndicator={true}
                   contentContainerStyle={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     paddingHorizontal: 5,
                     paddingTop: 5,
-                    paddingBottom: 5,
-                    flexGrow: 0,
+                    paddingBottom: 20,
+                    minHeight: 200,
                   }}
                   nestedScrollEnabled={true}
                   scrollEnabled={true}
