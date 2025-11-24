@@ -1608,51 +1608,56 @@ function MainApp() {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                   <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
                   
-                  {/* Search Input - Compact in the center */}
+                  {/* Search Input - Bigger and Centered */}
                   <View style={{
                     flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    borderRadius: 10,
-                    paddingHorizontal: 10,
-                    paddingVertical: 6,
+                    justifyContent: 'center',
                     marginHorizontal: 10,
-                    borderWidth: 1,
-                    borderColor: 'rgba(255, 112, 67, 0.2)',
-                    maxWidth: 140,
                   }}>
-                    <IconComponent name="search" size={14} color="#999" />
-                    <TextInput
-                      style={{
-                        flex: 1,
-                        color: '#FFFFFF',
-                        fontSize: 14,
-                        marginLeft: 6,
-                        textAlign: 'center',
-                      }}
-                      placeholder="Mesa..."
-                      placeholderTextColor="rgba(255, 255, 255, 0.3)"
-                      value={tableSearchText}
-                      onChangeText={(text) => {
-                        // Limit to 4 digits
-                        if (text.length <= 4) {
-                          setTableSearchText(text);
-                          // Filter tables by number
-                          if (text.trim()) {
-                            const filtered = tables.filter(t => 
-                              t.number.toString().includes(text)
-                            );
-                            setAvailableTables(filtered);
-                          } else {
-                            setAvailableTables(tables);
+                    <View style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
+                      borderRadius: 12,
+                      paddingHorizontal: 16,
+                      paddingVertical: 10,
+                      borderWidth: 1,
+                      borderColor: 'rgba(255, 112, 67, 0.2)',
+                      width: 220,
+                    }}>
+                      <IconComponent name="search" size={18} color="#999" />
+                      <TextInput
+                        style={{
+                          flex: 1,
+                          color: '#FFFFFF',
+                          fontSize: 18,
+                          marginLeft: 10,
+                          textAlign: 'center',
+                        }}
+                        placeholder="Número da Mesa"
+                        placeholderTextColor="rgba(255, 255, 255, 0.3)"
+                        value={tableSearchText}
+                        onChangeText={(text) => {
+                          // Limit to 4 digits
+                          if (text.length <= 4) {
+                            setTableSearchText(text);
+                            // Filter tables by number
+                            if (text.trim()) {
+                              const filtered = tables.filter(t => 
+                                t.number.toString().includes(text)
+                              );
+                              setAvailableTables(filtered);
+                            } else {
+                              setAvailableTables(tables);
+                            }
                           }
-                        }
-                      }}
-                      keyboardType="numeric"
-                      returnKeyType="done"
-                      maxLength={4}
-                    onSubmitEditing={() => {
+                        }}
+                        keyboardType="numeric"
+                        returnKeyType="done"
+                        maxLength={4}
+                        onSubmitEditing={() => {
                       // If there's exactly one match, select it automatically
                       const exactMatch = tables.find(t => 
                         t.number.toString() === tableSearchText
@@ -1716,8 +1721,9 @@ function MainApp() {
                           }).start();
                         }
                       }
-                    }}
-                    />
+                        }}
+                      />
+                    </View>
                   </View>
                   
                   {/* Refresh button on the right */}

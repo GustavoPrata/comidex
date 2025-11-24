@@ -8,5 +8,7 @@
   "/api/pos/service-types/route": "app/api/pos/service-types/route.js",
   "/api/pos/session/route": "app/api/pos/session/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
-  "/page": "app/page.js"
+  "/api/prompt-message/route": "app/api/prompt-message/route.js",
+  "/page": "app/page.js",
+  "/prompt/page": "app/prompt/page.js"
 }
