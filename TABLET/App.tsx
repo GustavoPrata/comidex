@@ -1636,7 +1636,7 @@ function MainApp() {
             }]}>
               <View style={styles.glassOverlay}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: hp(2.5) }}>
-                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: wp(1.5), fontSize: wp(3.5) }]}>Selecione sua mesa</Text>
+                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: wp(1.5), fontSize: wp(2.5) }]}>Selecione sua mesa</Text>
                   
                   {/* Spacer */}
                   <View style={{ flex: 1 }} />
@@ -1822,7 +1822,7 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: '18.4%',
+                        width: '17.5%',
                         aspectRatio: 1.8,
                         minHeight: hp(8),
                         maxHeight: hp(11),
@@ -1831,8 +1831,8 @@ function MainApp() {
                           : 'rgba(255, 255, 255, 0.04)',
                         borderRadius: wp(1.5),
                         padding: wp(0.5),
-                        marginBottom: hp(0.8),
-                        marginHorizontal: '0.8%',
+                        marginBottom: hp(1.2),
+                        marginHorizontal: '1.25%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
                           ? 'rgba(255, 112, 67, 0.25)'
@@ -3478,8 +3478,8 @@ const createStyles = (width: number, height: number) => {
     marginBottom: 20,
   },
   tableInput: {
-    width: 120,
-    height: 80,
+    width: 160,
+    height: 100,
     fontSize: 48,
     fontWeight: "bold",
     textAlign: "center",
