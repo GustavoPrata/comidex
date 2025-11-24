@@ -3269,7 +3269,9 @@ const styles = StyleSheet.create({
   },
   glassOverlay: {
     backgroundColor: 'rgba(20, 20, 20, 0.6)',
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 0,
     flex: 1,
   },
   lockContainer: {
@@ -3451,16 +3453,18 @@ const styles = StyleSheet.create({
   // New Table Selection Styles
   tableSelectionCard: {
     borderRadius: 28,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
     width: "95%",
     marginTop: height * 0.01,
-    marginBottom: 0,
+    marginBottom: height * 0.05,
     overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: height * 0.75,
+    height: height * 0.65,
   },
   tableSelectionTitle: {
     fontSize: 22,
