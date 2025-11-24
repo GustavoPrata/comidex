@@ -122,21 +122,7 @@ interface Promotion {
   highlight?: boolean;
 }
 
-// Fixed design canvas - all tablets will see this exact layout
-const BASE_WIDTH = 600; // Smaller base for larger zoom
-const BASE_HEIGHT = 800; // Smaller base for larger zoom  
-
-// Get actual device dimensions
-const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
-
-// Calculate scale to fit the base design on any screen
-const scaleX = deviceWidth / BASE_WIDTH;
-const scaleY = deviceHeight / BASE_HEIGHT;
-const scale = Math.min(scaleX, scaleY) * 1.2; // Added 20% more zoom
-
-// These are the dimensions we'll use for layout (always the same)
-const width = BASE_WIDTH;
-const height = BASE_HEIGHT;
+const { width, height } = Dimensions.get("window");
 
 // Constants
 const IDLE_TIMEOUT = 120000; // 2 minutes
@@ -1778,15 +1764,15 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: 105, // Adjusted width for new canvas size
-                        height: 80,
+                        width: '18%',
+                        height: 90,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
                         borderRadius: 10,
                         padding: 4,
                         marginBottom: 6,
-                        marginHorizontal: 7, // Fixed margin
+                        marginHorizontal: '1%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
                           ? 'rgba(255, 112, 67, 0.25)'
@@ -3344,8 +3330,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingHorizontal: 38, // Fixed padding instead of percentage
-    paddingTop: 51, // Fixed padding instead of percentage
+    paddingHorizontal: width * 0.05,
+    paddingTop: height * 0.05,
     paddingBottom: 0,
     backgroundColor: config.colors.background,
   },
@@ -3465,8 +3451,8 @@ const styles = StyleSheet.create({
   // New Table Selection Styles
   tableSelectionCard: {
     borderRadius: 28,
-    width: 570, // Adjusted for new canvas
-    marginTop: 10,
+    width: "95%",
+    marginTop: height * 0.01,
     marginBottom: 0,
     overflow: 'hidden',
     shadowColor: "#000",
@@ -3474,7 +3460,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: 600, // Adjusted for new canvas
+    height: height * 0.75,
   },
   tableSelectionTitle: {
     fontSize: 22,
@@ -5980,37 +5966,10 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 });
-// Scaled wrapper component for consistent display across all devices
-function ScaledApp() {
-  // Center the scaled content
-  const translateX = (deviceWidth - BASE_WIDTH * scale) / 2 / scale;
-  const translateY = (deviceHeight - BASE_HEIGHT * scale) / 2 / scale;
-
-  return (
-    <View style={{
-      flex: 1,
-      backgroundColor: config.colors.background,
-    }}>
-      <View style={{
-        width: BASE_WIDTH,
-        height: BASE_HEIGHT,
-        transform: [
-          { scale: scale },
-          { translateX: translateX },
-          { translateY: translateY }
-        ],
-        transformOrigin: 'top left',
-      }}>
-        <MainApp />
-      </View>
-    </View>
-  );
-}
-
 export default function App() {
   return (
     <SafeAreaProvider>
-      <ScaledApp />
+      <MainApp />
     </SafeAreaProvider>
   );
 }
