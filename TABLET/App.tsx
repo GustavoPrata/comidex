@@ -245,9 +245,9 @@ const createResponsiveMetrics = (width: number, height: number) => {
   
   // Tokens de componentes
   const components = {
-    inputHeight: clamp(80, height * 0.12, 120),
-    inputWidth: clamp(140, width * 0.16, 200),
-    inputFontSize: typography.display,
+    inputHeight: clamp(100, height * 0.15, 150),
+    inputWidth: clamp(180, width * 0.22, 260),
+    inputFontSize: clamp(36, baseUnit * 8, 56),
     buttonHeight: clamp(40, height * 0.06, 60),
     buttonPadding: spacing.l,
     cardRadius: clamp(12, baseUnit * 3, 20),
@@ -3566,13 +3566,15 @@ const createStyles = (width: number, height: number, metrics?: ReturnType<typeof
   tableInput: {
     width: m.components.inputWidth,
     height: m.components.inputHeight,
-    fontSize: m.typography.display,
+    fontSize: m.components.inputFontSize,
     fontWeight: "bold",
     textAlign: "center",
     borderRadius: m.components.cardRadius,
     backgroundColor: config.colors.surface,
     color: config.colors.textPrimary,
     marginBottom: m.spacing.l,
+    paddingHorizontal: m.spacing.m,
+    paddingVertical: m.spacing.s,
   },
   continueButton: {
     backgroundColor: 'rgba(255, 87, 34, 0.9)',
