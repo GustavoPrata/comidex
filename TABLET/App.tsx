@@ -1754,18 +1754,15 @@ function MainApp() {
                 </View>
               ) : (
                 <ScrollView 
-                  style={{
-                    flex: 1,
-                    width: '100%',
-                    height: height * 0.65,  // Aumentando altura para mostrar mais mesas
-                  }}
+                  style={styles.tablesList}
                   showsVerticalScrollIndicator={true}
                   contentContainerStyle={{
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     paddingHorizontal: 5,
-                    paddingTop: 10,
-                    paddingBottom: 30,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    flexGrow: 0,
                   }}
                   nestedScrollEnabled={true}
                   scrollEnabled={true}
@@ -3521,6 +3518,10 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 16,
     fontWeight: "600",
+  },
+  tablesList: {
+    flex: 1,
+    width: '100%',
   },
   tablesGrid: {
     flexDirection: "row",
