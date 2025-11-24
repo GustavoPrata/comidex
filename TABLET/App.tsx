@@ -245,9 +245,9 @@ const createResponsiveMetrics = (width: number, height: number) => {
   
   // Tokens de componentes
   const components = {
-    inputHeight: clamp(100, height * 0.15, 150),
-    inputWidth: clamp(180, width * 0.22, 260),
-    inputFontSize: clamp(36, baseUnit * 8, 56),
+    inputHeight: clamp(120, height * 0.18, 180),
+    inputWidth: clamp(220, width * 0.28, 340),
+    inputFontSize: clamp(48, baseUnit * 10, 72),
     buttonHeight: clamp(40, height * 0.06, 60),
     buttonPadding: spacing.l,
     cardRadius: clamp(12, baseUnit * 3, 20),
