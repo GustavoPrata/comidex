@@ -123,9 +123,6 @@ interface Promotion {
   highlight?: boolean;
 }
 
-// Get initial dimensions for styles
-const { width: initialWidth, height: initialHeight } = Dimensions.get("window");
-
 // Constants
 const IDLE_TIMEOUT = 120000; // 2 minutes
 const KIOSK_PIN = "1234"; // Kiosk admin PIN
@@ -207,11 +204,15 @@ function MainApp() {
   
   // Get dynamic dimensions with safe fallback
   const windowDimensions = useWindowDimensions();
+  const { width: initialWidth, height: initialHeight } = Dimensions.get("window");
   const width = windowDimensions?.width || initialWidth;
   const height = windowDimensions?.height || initialHeight;
   
   // Debug log to check dimensions
   console.log('Window dimensions:', { width, height, windowDimensions });
+  
+  // Create styles with current dimensions using useMemo for performance
+  const styles = useMemo(() => createStyles(width, height), [width, height]);
   
   // Responsive helper functions (percentage-based)
   const wp = (percentage: number) => (width * percentage) / 100;
@@ -3305,12 +3306,14 @@ function MainApp() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: config.colors.background,
-  },
-  glassContainer: {
+// Create styles factory function
+const createStyles = (width: number, height: number) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: config.colors.background,
+    },
+    glassContainer: {
     backgroundColor: 'rgba(20, 20, 20, 0.85)',
     borderRadius: 20,
     borderWidth: 1,
@@ -3395,20 +3398,20 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 0,
-    paddingTop: initialHeight * 0.03,
+    paddingTop: height * 0.03,
     paddingBottom: 0,
     backgroundColor: config.colors.background,
   },
   welcomeContent: {
     alignItems: "center",
     width: "100%",
-    maxWidth: initialWidth * 0.9,
+    maxWidth: width * 0.9,
     flex: 1,
   },
   welcomeHeader: {
     alignItems: "center",
-    marginBottom: initialHeight * 0.015,
-    height: initialHeight * 0.16,
+    marginBottom: height * 0.015,
+    height: height * 0.16,
     justifyContent: "center",
   },
   welcomeLogo: {
@@ -3416,16 +3419,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   logoCircleContainer: {
-    width: Math.min(initialWidth * 0.2, 140),
-    height: Math.min(initialWidth * 0.2, 140),
+    width: Math.min(width * 0.2, 140),
+    height: Math.min(width * 0.2, 140),
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: initialHeight * 0.01,
+    marginBottom: height * 0.01,
   },
   logoCircleBg: {
-    width: Math.min(initialWidth * 0.2, 140),
-    height: Math.min(initialWidth * 0.2, 140),
-    borderRadius: Math.min(initialWidth * 0.1, 70),
+    width: Math.min(width * 0.2, 140),
+    height: Math.min(width * 0.2, 140),
+    borderRadius: Math.min(width * 0.1, 70),
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     alignItems: "center",
     justifyContent: "center",
@@ -3438,8 +3441,8 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255, 112, 67, 0.3)",
   },
   welcomeLogoImage: {
-    width: Math.min(initialWidth * 0.14, 100),
-    height: Math.min(initialWidth * 0.14, 100),
+    width: Math.min(width * 0.14, 100),
+    height: Math.min(width * 0.14, 100),
   },
   welcomeTitle: {
     fontSize: 36,
@@ -6032,7 +6035,9 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#FFFFFF',
   },
-});
+  });
+};
+
 export default function App() {
   return (
     <SafeAreaProvider>
