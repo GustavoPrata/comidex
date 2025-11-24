@@ -209,11 +209,17 @@ function MainApp() {
   const width = windowDimensions.width;
   const height = windowDimensions.height;
   
+  // Responsive helper functions (percentage-based)
+  const wp = (percentage: number) => (width * percentage) / 100;
+  const hp = (percentage: number) => (height * percentage) / 100;
+  
   // Responsive breakpoints
   const isCompactTablet = width < 900;
   const isSmallTablet = width < 768;
-  const logoSize = isSmallTablet ? 60 : isCompactTablet ? 80 : 100;
-  const headerHeight = isSmallTablet ? height * 0.12 : height * 0.15;
+  
+  // All sizes in percentages - NO PIXELS!
+  const logoSizePercent = isSmallTablet ? wp(8) : isCompactTablet ? wp(10) : wp(12);
+  const headerHeightPercent = isSmallTablet ? hp(12) : hp(15);
   
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
@@ -1578,33 +1584,33 @@ function MainApp() {
     return (
       <View style={styles.container}>
         <StatusBar hidden={true} />
-        <View style={[styles.welcomeContainer, { paddingTop: isSmallTablet ? 10 : 20 }]}>
+        <View style={[styles.welcomeContainer, { paddingTop: hp(2) }]}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={{
               alignItems: "center",
-              marginBottom: 10,
-              height: headerHeight,
+              marginBottom: hp(1),
+              height: headerHeightPercent,
               justifyContent: "center",
             }}>
               <View style={styles.logoCircleContainer}>
                 <View style={{
-                  width: logoSize + 20,
-                  height: logoSize + 20,
-                  borderRadius: (logoSize + 20) / 2,
+                  width: logoSizePercent + wp(3),
+                  height: logoSizePercent + wp(3),
+                  borderRadius: (logoSizePercent + wp(3)) / 2,
                   backgroundColor: "rgba(255, 255, 255, 0.95)",
                   alignItems: "center",
                   justifyContent: "center",
                   shadowColor: "#FF7043",
-                  shadowOffset: { width: 0, height: 8 },
+                  shadowOffset: { width: 0, height: wp(1) },
                   shadowOpacity: 0.3,
-                  shadowRadius: 12,
+                  shadowRadius: wp(1.5),
                   elevation: 10,
                 }}>
                   <Image 
                     source={require('./assets/logo23.png')}
                     style={{
-                      width: logoSize,
-                      height: logoSize,
+                      width: logoSizePercent,
+                      height: logoSizePercent,
                     }}
                     resizeMode="contain"
                   />
@@ -1613,11 +1619,11 @@ function MainApp() {
             </View>
             
             <BlurView intensity={80} tint="dark" style={[styles.tableSelectionCard, { 
-              marginTop: isSmallTablet ? 5 : 10,
+              marginTop: hp(1),
             }]}>
               <View style={styles.glassOverlay}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: hp(2.5) }}>
+                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: wp(1.5), fontSize: wp(3.5) }]}>Selecione sua mesa</Text>
                   
                   {/* Spacer */}
                   <View style={{ flex: 1 }} />
@@ -1627,24 +1633,26 @@ function MainApp() {
                     flexDirection: 'row',
                     alignItems: 'center',
                     backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                    borderRadius: 8,
-                    paddingHorizontal: 10,
-                    paddingVertical: 4,
+                    borderRadius: wp(1),
+                    paddingHorizontal: wp(1.5),
+                    paddingVertical: hp(0.5),
                     borderWidth: 1,
                     borderColor: 'rgba(255, 112, 67, 0.2)',
-                    marginRight: 10,
-                    height: 34,
+                    marginRight: wp(1.5),
+                    height: hp(4),
+                    minWidth: wp(15),
+                    maxWidth: wp(25),
                   }}>
-                    <IconComponent name="search" size={13} color="#999" />
+                    <IconComponent name="search" size={wp(2)} color="#999" />
                     <TextInput
                       style={{
                         color: '#FFFFFF',
-                        fontSize: 14,
-                        marginLeft: 8,
+                        fontSize: wp(2),
+                        marginLeft: wp(1),
                         textAlign: 'left',
                         flex: 1,
                         paddingVertical: 0,
-                        lineHeight: 20,
+                        lineHeight: wp(2.5),
                         includeFontPadding: false,
                       }}
                       placeholder="Número"
@@ -1801,17 +1809,17 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: isSmallTablet ? '19%' : '18.4%',
-                        aspectRatio: isSmallTablet ? 1.6 : 1.85,
-                        minHeight: isSmallTablet ? 75 : 85,
-                        maxHeight: isSmallTablet ? 85 : 95,
+                        width: '18.4%',
+                        aspectRatio: 1.8,
+                        minHeight: hp(8),
+                        maxHeight: hp(11),
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
-                        borderRadius: 10,
-                        padding: 4,
-                        marginBottom: 6,
-                        marginHorizontal: isSmallTablet ? '0.5%' : '0.8%',
+                        borderRadius: wp(1.5),
+                        padding: wp(0.5),
+                        marginBottom: hp(0.8),
+                        marginHorizontal: '0.8%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
                           ? 'rgba(255, 112, 67, 0.25)'
@@ -1917,22 +1925,22 @@ function MainApp() {
                     >
                       {/* Table Number in Circle - BIGGER */}
                       <View style={{
-                        width: 42,
-                        height: 42,
-                        borderRadius: 21,
+                        width: wp(5.5),
+                        height: wp(5.5),
+                        borderRadius: wp(2.75),
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.15)' 
                           : 'rgba(255, 255, 255, 0.08)',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginBottom: 2,
+                        marginBottom: hp(0.3),
                         borderWidth: 1,
                         borderColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.3)' 
                           : 'rgba(255, 255, 255, 0.15)',
                       }}>
                         <Text style={{
-                          fontSize: 22,
+                          fontSize: wp(3),
                           fontWeight: 'bold',
                           color: table.status === 'occupied' ? config.colors.primary : '#FFFFFF',
                         }}>
@@ -1942,9 +1950,9 @@ function MainApp() {
                       
                       {/* Table Name - Smaller */}
                       <Text style={{
-                        fontSize: 7,
+                        fontSize: wp(1.2),
                         color: 'rgba(255, 255, 255, 0.4)',
-                        marginBottom: 2,
+                        marginBottom: hp(0.2),
                         textAlign: 'center',
                       }}>
                         {table.name.length > 8 ? table.name.substring(0, 8) + '..' : table.name}
@@ -1952,15 +1960,15 @@ function MainApp() {
                       
                       {/* Status Badge - Smaller */}
                       <View style={{
-                        paddingHorizontal: 5,
-                        paddingVertical: 1,
-                        borderRadius: 3,
+                        paddingHorizontal: wp(0.8),
+                        paddingVertical: hp(0.1),
+                        borderRadius: wp(0.5),
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.2)' 
                           : 'rgba(76, 175, 80, 0.2)',
                       }}>
                         <Text style={{
-                          fontSize: 7,
+                          fontSize: wp(1),
                           fontWeight: '600',
                           color: table.status === 'occupied' 
                             ? config.colors.primary 
@@ -1973,10 +1981,10 @@ function MainApp() {
                       {/* Session Total if occupied - Smaller */}
                       {table.status === 'occupied' && table.session_total > 0 && (
                         <Text style={{
-                          fontSize: 8,
+                          fontSize: wp(1.2),
                           fontWeight: 'bold',
                           color: config.colors.primary,
-                          marginTop: 1,
+                          marginTop: hp(0.1),
                         }}>
                           R$ {table.session_total.toFixed(2)}
                         </Text>
