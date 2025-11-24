@@ -408,7 +408,7 @@ function MainApp() {
     // Atualização automática silenciosa a cada 5 segundos
     const tablesInterval = setInterval(async () => {
       try {
-        const response = await fetch(config.POS_API.tables);
+        const response = await fetch(`${config.API_BASE_URL}/api/pos/tables`);
         const data = await response.json();
         
         if (data.success && data.tables) {
@@ -931,19 +931,11 @@ function MainApp() {
       }
       
       const data = await response.json();
-      console.log("📥 Dados recebidos:", JSON.stringify(data).substring(0, 200));
       
       if (data.success && data.tables) {
-        console.log(`✅ ${data.tables.length} mesas recebidas da API`);
         setTables(data.tables);  // Set all tables
         setAvailableTables(data.tables);  // Initially show all tables
-        
-        // Calcular estatísticas localmente se não vieram da API
-        const totalTables = data.tables.length;
-        const occupiedTables = data.tables.filter((t: any) => t.status === 'occupied').length;
-        const availableTables = totalTables - occupiedTables;
-        
-        console.log(`📊 Total de mesas: ${totalTables}, Disponíveis: ${availableTables}, Ocupadas: ${occupiedTables}`);
+        console.log(`📊 Total de mesas: ${data.total}, Disponíveis: ${data.available}, Ocupadas: ${data.occupied}`);
         setTablesError("");  // Clear any previous error
       } else {
         const errorMsg = data.error || "Erro ao carregar mesas";
@@ -1768,12 +1760,6 @@ function MainApp() {
                   scrollEnabled={true}
                   bounces={true}
                 >
-                  {console.log(`🎨 Renderizando ${availableTables.length} mesas`)}
-                  {availableTables.length === 0 && (
-                    <Text style={{color: '#FFF', textAlign: 'center', width: '100%', padding: 20}}>
-                      Carregando mesas...
-                    </Text>
-                  )}
                   {availableTables.map((table) => (
                     <TouchableOpacity
                       key={table.id}
@@ -1962,6 +1948,10 @@ function MainApp() {
               )}
               </View>
             </BlurView>
+
+            <TouchableOpacity style={styles.adminButton} onPress={() => setIsLocked(true)}>
+              <Text style={styles.adminButtonText}>Modo Administrador</Text>
+            </TouchableOpacity>
           </Animated.View>
         </View>
       </View>
@@ -3280,7 +3270,7 @@ const styles = StyleSheet.create({
   glassOverlay: {
     backgroundColor: 'rgba(20, 20, 20, 0.6)',
     padding: 20,
-    paddingBottom: 10,
+    flex: 1,
   },
   lockContainer: {
     flex: 1,
@@ -3448,6 +3438,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  adminButton: {
+    marginTop: height * 0.02,
+    padding: height * 0.01,
+    marginBottom: height * 0.02,
+  },
+  adminButtonText: {
+    color: config.colors.textTertiary,
+    fontSize: 14,
+    textDecorationLine: "underline",
+  },
   // New Table Selection Styles
   tableSelectionCard: {
     borderRadius: 28,
@@ -3460,6 +3460,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
+    height: height * 0.75,
   },
   tableSelectionTitle: {
     fontSize: 22,
@@ -3518,13 +3519,6 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 16,
     fontWeight: "600",
-  },
-  tablesList: {
-    flex: 1,
-    width: '100%',
-    height: height * 0.6,
-    minHeight: 400,
-    maxHeight: height * 0.7,
   },
   tablesGrid: {
     flexDirection: "row",
@@ -3615,11 +3609,11 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    flex: 1,
+    maxHeight: height * 0.35,
     marginTop: height * 0.01,
   },
   tablesListContent: {
-    paddingBottom: 0,
+    paddingBottom: height * 0.03,
   },
   tableListItem: {
     flexDirection: "row",
