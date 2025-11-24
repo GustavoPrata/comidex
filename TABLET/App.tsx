@@ -1583,112 +1583,149 @@ function MainApp() {
             
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
               <View style={styles.glassOverlay}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 }}>
-                  <Text style={styles.tableSelectionTitle}>Selecione sua mesa</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+                  <Text style={[styles.tableSelectionTitle, { flex: 1 }]}>Selecione sua mesa</Text>
+                  
+                  {/* Search Input - Compact in the middle */}
+                  <View style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderRadius: 12,
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                    marginHorizontal: 10,
+                    borderWidth: 1,
+                    borderColor: 'rgba(255, 112, 67, 0.3)',
+                    minWidth: 120,
+                    maxWidth: 150,
+                  }}>
+                    <IconComponent name="search" size={14} color={config.colors.primary} />
+                    <TextInput
+                      style={{
+                        flex: 1,
+                        color: '#FFFFFF',
+                        fontSize: 14,
+                        marginLeft: 8,
+                        textAlign: 'center',
+                        fontWeight: '600',
+                      }}
+                      placeholder="Mesa..."
+                      placeholderTextColor="rgba(255, 255, 255, 0.4)"
+                      value={tableSearchText}
+                      onChangeText={(text) => {
+                        // Limit to 4 digits
+                        if (text.length <= 4) {
+                          setTableSearchText(text);
+                          // Filter tables by number
+                          if (text.trim()) {
+                            const filtered = tables.filter(t => 
+                              t.number.toString().includes(text)
+                            );
+                            setAvailableTables(filtered);
+                          } else {
+                            setAvailableTables(tables);
+                          }
+                        }
+                      }}
+                      keyboardType="numeric"
+                      returnKeyType="done"
+                      maxLength={4}
+                      onSubmitEditing={() => {
+                        // If there's exactly one match, select it automatically
+                        const exactMatch = tables.find(t => 
+                          t.number.toString() === tableSearchText
+                        );
+                        if (exactMatch) {
+                          setTableNumber(exactMatch.number.toString());
+                          setSelectedTable(exactMatch);
+                          resetIdleTimer();
+                          
+                          if (exactMatch.status === 'occupied') {
+                            Alert.alert(
+                              "Mesa Ocupada",
+                              `Mesa ${exactMatch.number} possui uma conta aberta.\n${exactMatch.session_total > 0 ? `Total atual: R$ ${exactMatch.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
+                              [
+                                { text: "Cancelar", style: "cancel" },
+                                { 
+                                  text: "Continuar",
+                                  onPress: async () => {
+                                    // VERIFICAR SE TEM RODÍZIO ANTES DE CONTINUAR
+                                    const hasRodizio = await checkForExistingRodizio(exactMatch.number.toString());
+                                    
+                                    if (hasRodizio && serviceTypes.length > 0) {
+                                      console.log("✅ Mesa com rodízio detectado! Entrando direto no catálogo");
+                                      
+                                      // Buscar o tipo rodízio
+                                      const rodizioType = serviceTypes.find(st => 
+                                        st.linked_groups?.some((g: any) => g.type === 'rodizio')
+                                      );
+                                      
+                                      if (rodizioType) {
+                                        setSelectedMode(rodizioType);
+                                        await loadCategories();
+                                        await loadProducts();
+                                        
+                                        // Ir direto para o catálogo sem mostrar tipos de atendimento
+                                        Animated.timing(fadeAnim, {
+                                          toValue: 0,
+                                          duration: config.animations.fast,
+                                          useNativeDriver: true,
+                                        }).start(() => {
+                                          // Após animação, já estar no catálogo
+                                        });
+                                      }
+                                    } else {
+                                      // Sem rodízio, continuar fluxo normal
+                                      Animated.timing(fadeAnim, {
+                                        toValue: 0,
+                                        duration: config.animations.fast,
+                                        useNativeDriver: true,
+                                      }).start();
+                                    }
+                                  }
+                                }
+                              ]
+                            );
+                          } else {
+                            Animated.timing(fadeAnim, {
+                              toValue: 0,
+                              duration: config.animations.fast,
+                              useNativeDriver: true,
+                            }).start();
+                          }
+                        }
+                      }}
+                    />
+                  </View>
                   
                   {/* Refresh button moved to top right */}
                   {!tablesLoading && !tablesError && (
                     <TouchableOpacity 
-                      style={[styles.refreshTablesButton, { marginBottom: 0, paddingVertical: 8, paddingHorizontal: 12 }]}
+                      style={{
+                        backgroundColor: 'rgba(255, 112, 67, 0.15)',
+                        borderRadius: 12,
+                        paddingVertical: 8,
+                        paddingHorizontal: 14,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        borderWidth: 1,
+                        borderColor: 'rgba(255, 112, 67, 0.3)',
+                      }}
                       onPress={() => {
                         loadTables();
                         resetIdleTimer();
                       }}
                     >
-                      <IconComponent name="refresh" size={16} color={config.colors.primary} />
-                      <Text style={[styles.refreshTablesText, { marginLeft: 5 }]}>Atualizar</Text>
+                      <IconComponent name="refresh" size={14} color={config.colors.primary} />
+                      <Text style={{
+                        color: config.colors.primary,
+                        fontSize: 13,
+                        fontWeight: '600',
+                        marginLeft: 5,
+                      }}>Atualizar</Text>
                     </TouchableOpacity>
                   )}
-                </View>
-                
-                {/* Search Input for Direct Table Number */}
-                <View style={styles.tableSearchContainer}>
-                  <IconComponent name="search" size={16} color="#999" />
-                  <TextInput
-                    style={styles.tableSearchInput}
-                    placeholder="Digite o número da mesa..."
-                    placeholderTextColor="#999"
-                    value={tableSearchText}
-                    onChangeText={(text) => {
-                      setTableSearchText(text);
-                      // Filter tables by number
-                      if (text.trim()) {
-                        const filtered = tables.filter(t => 
-                          t.number.toString().includes(text)
-                        );
-                        setAvailableTables(filtered);
-                      } else {
-                        setAvailableTables(tables);
-                      }
-                    }}
-                    keyboardType="numeric"
-                    returnKeyType="done"
-                    onSubmitEditing={() => {
-                      // If there's exactly one match, select it automatically
-                      const exactMatch = tables.find(t => 
-                        t.number.toString() === tableSearchText
-                      );
-                      if (exactMatch) {
-                        setTableNumber(exactMatch.number.toString());
-                        setSelectedTable(exactMatch);
-                        resetIdleTimer();
-                        
-                        if (exactMatch.status === 'occupied') {
-                          Alert.alert(
-                            "Mesa Ocupada",
-                            `Mesa ${exactMatch.number} possui uma conta aberta.\n${exactMatch.session_total > 0 ? `Total atual: R$ ${exactMatch.session_total.toFixed(2)}` : 'Total: R$ 0,00'}\n\nOs novos pedidos serão adicionados à conta existente.`,
-                            [
-                              { text: "Cancelar", style: "cancel" },
-                              { 
-                                text: "Continuar",
-                                onPress: async () => {
-                                  // VERIFICAR SE TEM RODÍZIO ANTES DE CONTINUAR
-                                  const hasRodizio = await checkForExistingRodizio(exactMatch.number.toString());
-                                  
-                                  if (hasRodizio && serviceTypes.length > 0) {
-                                    console.log("✅ Mesa com rodízio detectado! Entrando direto no catálogo");
-                                    
-                                    // Buscar o tipo rodízio
-                                    const rodizioType = serviceTypes.find(st => 
-                                      st.linked_groups?.some((g: any) => g.type === 'rodizio')
-                                    );
-                                    
-                                    if (rodizioType) {
-                                      setSelectedMode(rodizioType);
-                                      await loadCategories();
-                                      await loadProducts();
-                                      
-                                      // Ir direto para o catálogo sem mostrar tipos de atendimento
-                                      Animated.timing(fadeAnim, {
-                                        toValue: 0,
-                                        duration: config.animations.fast,
-                                        useNativeDriver: true,
-                                      }).start(() => {
-                                        // Após animação, já estar no catálogo
-                                      });
-                                    }
-                                  } else {
-                                    // Sem rodízio, continuar fluxo normal
-                                    Animated.timing(fadeAnim, {
-                                      toValue: 0,
-                                      duration: config.animations.fast,
-                                      useNativeDriver: true,
-                                    }).start();
-                                  }
-                                }
-                              }
-                            ]
-                          );
-                        } else {
-                          Animated.timing(fadeAnim, {
-                            toValue: 0,
-                            duration: config.animations.fast,
-                            useNativeDriver: true,
-                          }).start();
-                        }
-                      }
-                    }}
-                  />
                 </View>
               
               {tablesLoading ? (
