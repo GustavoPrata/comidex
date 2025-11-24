@@ -122,7 +122,21 @@ interface Promotion {
   highlight?: boolean;
 }
 
-const { width, height } = Dimensions.get("window");
+// Fixed design canvas - all tablets will see this exact layout
+const BASE_WIDTH = 768; // iPad portrait width  
+const BASE_HEIGHT = 1024; // iPad portrait height
+
+// Get actual device dimensions
+const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
+
+// Calculate scale to fit the base design on any screen
+const scaleX = deviceWidth / BASE_WIDTH;
+const scaleY = deviceHeight / BASE_HEIGHT;
+const scale = Math.min(scaleX, scaleY); // Use the smaller scale to fit everything
+
+// These are the dimensions we'll use for layout (always the same)
+const width = BASE_WIDTH;
+const height = BASE_HEIGHT;
 
 // Constants
 const IDLE_TIMEOUT = 120000; // 2 minutes
@@ -1764,7 +1778,7 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: '18%',
+                        width: 135, // Fixed width for exactly 5 cards per row
                         height: 90,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
@@ -1772,7 +1786,7 @@ function MainApp() {
                         borderRadius: 10,
                         padding: 4,
                         marginBottom: 6,
-                        marginHorizontal: '1%',
+                        marginHorizontal: 7, // Fixed margin
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
                           ? 'rgba(255, 112, 67, 0.25)'
@@ -3330,8 +3344,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingHorizontal: width * 0.05,
-    paddingTop: height * 0.05,
+    paddingHorizontal: 38, // Fixed padding instead of percentage
+    paddingTop: 51, // Fixed padding instead of percentage
     paddingBottom: 0,
     backgroundColor: config.colors.background,
   },
@@ -3451,8 +3465,8 @@ const styles = StyleSheet.create({
   // New Table Selection Styles
   tableSelectionCard: {
     borderRadius: 28,
-    width: "95%",
-    marginTop: height * 0.01,
+    width: 730, // Fixed width instead of percentage
+    marginTop: 10,
     marginBottom: 0,
     overflow: 'hidden',
     shadowColor: "#000",
@@ -3460,7 +3474,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: height * 0.75,
+    height: 768, // Fixed height instead of percentage
   },
   tableSelectionTitle: {
     fontSize: 22,
@@ -5966,10 +5980,37 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 });
+// Scaled wrapper component for consistent display across all devices
+function ScaledApp() {
+  // Center the scaled content
+  const translateX = (deviceWidth - BASE_WIDTH * scale) / 2 / scale;
+  const translateY = (deviceHeight - BASE_HEIGHT * scale) / 2 / scale;
+
+  return (
+    <View style={{
+      flex: 1,
+      backgroundColor: config.colors.background,
+    }}>
+      <View style={{
+        width: BASE_WIDTH,
+        height: BASE_HEIGHT,
+        transform: [
+          { scale: scale },
+          { translateX: translateX },
+          { translateY: translateY }
+        ],
+        transformOrigin: 'top left',
+      }}>
+        <MainApp />
+      </View>
+    </View>
+  );
+}
+
 export default function App() {
   return (
     <SafeAreaProvider>
-      <MainApp />
+      <ScaledApp />
     </SafeAreaProvider>
   );
 }
