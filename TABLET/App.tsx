@@ -1753,7 +1753,7 @@ function MainApp() {
                     flexWrap: 'wrap',
                     paddingHorizontal: 5,
                     paddingTop: 5,
-                    paddingBottom: 5,
+                    paddingBottom: 0,
                     flexGrow: 0,
                   }}
                   nestedScrollEnabled={true}
@@ -3269,7 +3269,9 @@ const styles = StyleSheet.create({
   },
   glassOverlay: {
     backgroundColor: 'rgba(20, 20, 20, 0.6)',
-    padding: 20,
+    paddingTop: 20,
+    paddingHorizontal: 20,
+    paddingBottom: 5,
     flex: 1,
   },
   lockContainer: {
@@ -3460,7 +3462,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: height * 0.75,
+    height: height * 0.85,
   },
   tableSelectionTitle: {
     fontSize: 22,
