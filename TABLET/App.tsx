@@ -1608,32 +1608,31 @@ function MainApp() {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                   <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
                   
-                  {/* Search Input - Bigger and Centered */}
+                  {/* Search Input - Same height as button */}
                   <View style={{
                     flex: 1,
                     flexDirection: 'row',
                     alignItems: 'center',
-                    justifyContent: 'center',
                     marginHorizontal: 10,
                   }}>
                     <View style={{
                       flexDirection: 'row',
                       alignItems: 'center',
                       backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                      borderRadius: 12,
-                      paddingHorizontal: 16,
+                      borderRadius: 10,
+                      paddingHorizontal: 14,
                       paddingVertical: 10,
                       borderWidth: 1,
                       borderColor: 'rgba(255, 112, 67, 0.2)',
-                      width: 220,
+                      width: 200,
                     }}>
-                      <IconComponent name="search" size={18} color="#999" />
+                      <IconComponent name="search" size={15} color="#999" />
                       <TextInput
                         style={{
                           flex: 1,
                           color: '#FFFFFF',
-                          fontSize: 18,
-                          marginLeft: 10,
+                          fontSize: 15,
+                          marginLeft: 8,
                           textAlign: 'center',
                         }}
                         placeholder="Número da Mesa"
