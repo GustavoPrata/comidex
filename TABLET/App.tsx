@@ -1568,22 +1568,24 @@ function MainApp() {
         <StatusBar hidden={true} />
         <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
-            <View style={styles.welcomeHeader}>
-              <View style={styles.logoCircleContainer}>
-                <View style={styles.logoCircleBg}>
-                  <Image 
-                    source={require('./assets/logo23.png')}
-                    style={styles.welcomeLogoImage}
-                    resizeMode="contain"
-                  />
-                </View>
-              </View>
-            </View>
-            
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
               <View style={styles.glassOverlay}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                   <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
+                  
+                  {/* Logo in the middle */}
+                  <View style={{ 
+                    position: 'absolute', 
+                    left: '50%', 
+                    transform: [{ translateX: -30 }],
+                    top: -5,
+                  }}>
+                    <Image 
+                      source={require('./assets/logo23.png')}
+                      style={{ width: 60, height: 60 }}
+                      resizeMode="contain"
+                    />
+                  </View>
                   
                   {/* Spacer */}
                   <View style={{ flex: 1 }} />
@@ -3455,15 +3457,15 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     width: "95%",
-    marginTop: height * 0.01,
-    marginBottom: height * 0.05,
+    marginTop: height * 0.05,
+    marginBottom: height * 0.02,
     overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: height * 0.65,
+    height: height * 0.80,
   },
   tableSelectionTitle: {
     fontSize: 22,
