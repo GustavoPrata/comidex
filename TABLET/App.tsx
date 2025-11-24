@@ -277,7 +277,6 @@ function MainApp() {
 
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
   const lastActivityRef = useRef<number>(Date.now());
   const panResponderRef = useRef<any>(null);
 
@@ -496,22 +495,6 @@ function MainApp() {
     }, 5000); // Reset after 5 seconds
   }, [resetIdleTimer]);
 
-  // Handle long press for admin menu
-  const handleLongPressStart = () => {
-    longPressTimerRef.current = setTimeout(() => {
-      setShowAdminPanel(true);
-      // Vibration feedback if available
-      if (window.navigator && window.navigator.vibrate) {
-        window.navigator.vibrate(200);
-      }
-    }, LONG_PRESS_DURATION);
-  };
-
-  const handleLongPressEnd = () => {
-    if (longPressTimerRef.current) {
-      clearTimeout(longPressTimerRef.current);
-    }
-  };
 
   // Admin panel actions
   const handleExitKioskMode = () => {
@@ -1586,21 +1569,15 @@ function MainApp() {
         <View style={styles.welcomeContainer}>
           <Animated.View style={[styles.welcomeContent, { opacity: fadeAnim }]}>
             <View style={styles.welcomeHeader}>
-              <Pressable
-                onLongPress={handleLongPressStart}
-                onPressOut={handleLongPressEnd}
-                delayLongPress={0}
-              >
-                <View style={styles.logoCircleContainer}>
-                  <View style={styles.logoCircleBg}>
-                    <Image 
-                      source={require('./assets/logo23.png')}
-                      style={styles.welcomeLogoImage}
-                      resizeMode="contain"
-                    />
-                  </View>
+              <View style={styles.logoCircleContainer}>
+                <View style={styles.logoCircleBg}>
+                  <Image 
+                    source={require('./assets/logo23.png')}
+                    style={styles.welcomeLogoImage}
+                    resizeMode="contain"
+                  />
                 </View>
-              </Pressable>
+              </View>
             </View>
             
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
@@ -3355,7 +3332,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: width * 0.05,
     paddingTop: height * 0.05,
-    paddingBottom: height * 0.02,
+    paddingBottom: 0,
     backgroundColor: config.colors.background,
   },
   welcomeContent: {
@@ -3476,14 +3453,14 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     width: "95%",
     marginTop: height * 0.01,
-    marginBottom: height * 0.01,
+    marginBottom: 0,
     overflow: 'hidden',
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: height * 0.6,
+    height: height * 0.75,
   },
   tableSelectionTitle: {
     fontSize: 22,
