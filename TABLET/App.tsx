@@ -1609,28 +1609,29 @@ function MainApp() {
                         marginLeft: 6,
                         textAlign: 'center',
                         width: 110,
+                        height: 26,
                       }}
                       placeholder="Número da Mesa"
                       placeholderTextColor="rgba(255, 255, 255, 0.3)"
-                        value={tableSearchText}
-                        onChangeText={(text) => {
-                          // Limit to 4 digits
-                          if (text.length <= 4) {
-                            setTableSearchText(text);
-                            // Filter tables by number
-                            if (text.trim()) {
-                              const filtered = tables.filter(t => 
-                                t.number.toString().includes(text)
-                              );
-                              setAvailableTables(filtered);
-                            } else {
-                              setAvailableTables(tables);
-                            }
+                      value={tableSearchText}
+                      onChangeText={(text) => {
+                        // Limit to 4 digits
+                        if (text.length <= 4) {
+                          setTableSearchText(text);
+                          // Filter tables by number
+                          if (text.trim()) {
+                            const filtered = tables.filter(t => 
+                              t.number.toString().includes(text)
+                            );
+                            setAvailableTables(filtered);
+                          } else {
+                            setAvailableTables(tables);
                           }
-                        }}
-                        keyboardType="numeric"
-                        returnKeyType="done"
-                        maxLength={4}
+                        }
+                      }}
+                      keyboardType="numeric"
+                      returnKeyType="done"
+                      maxLength={4}
                         onSubmitEditing={() => {
                       // If there's exactly one match, select it automatically
                       const exactMatch = tables.find(t => 
@@ -3336,7 +3337,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingHorizontal: 0,
-    paddingTop: height * 0.05,
+    paddingTop: height * 0.03,
     paddingBottom: 0,
     backgroundColor: config.colors.background,
   },
@@ -3348,7 +3349,9 @@ const styles = StyleSheet.create({
   },
   welcomeHeader: {
     alignItems: "center",
-    marginBottom: height * 0.02,
+    marginBottom: height * 0.015,
+    height: height * 0.16,
+    justifyContent: "center",
   },
   welcomeLogo: {
     fontSize: 80,
@@ -3460,15 +3463,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
     width: "100%",
-    marginTop: height * 0.005,
+    marginTop: height * 0.01,
     marginBottom: 0,
     paddingBottom: 0,
     overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    top: height * 0.22,
+    flex: 1,
   },
   tableSelectionTitle: {
     fontSize: 22,
