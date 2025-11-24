@@ -1948,10 +1948,6 @@ function MainApp() {
               )}
               </View>
             </BlurView>
-
-            <TouchableOpacity style={styles.adminButton} onPress={() => setIsLocked(true)}>
-              <Text style={styles.adminButtonText}>Modo Administrador</Text>
-            </TouchableOpacity>
           </Animated.View>
         </View>
       </View>
@@ -3437,16 +3433,6 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 18,
     fontWeight: "bold",
-  },
-  adminButton: {
-    marginTop: height * 0.02,
-    padding: height * 0.01,
-    marginBottom: height * 0.02,
-  },
-  adminButtonText: {
-    color: config.colors.textTertiary,
-    fontSize: 14,
-    textDecorationLine: "underline",
   },
   // New Table Selection Styles
   tableSelectionCard: {
