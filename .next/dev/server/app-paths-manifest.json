@@ -3,8 +3,6 @@
   "/api/mobile/products/route": "app/api/mobile/products/route.js",
   "/api/pos/service-types/route": "app/api/pos/service-types/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
-  "/api/prompt-message/route": "app/api/prompt-message/route.js",
-  "/api/prompt-upload-image/route": "app/api/prompt-upload-image/route.js",
   "/page": "app/page.js",
   "/prompt/page": "app/prompt/page.js"
 }

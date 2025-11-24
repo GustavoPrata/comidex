@@ -931,11 +931,19 @@ function MainApp() {
       }
       
       const data = await response.json();
+      console.log("📥 Dados recebidos:", JSON.stringify(data).substring(0, 200));
       
       if (data.success && data.tables) {
+        console.log(`✅ ${data.tables.length} mesas recebidas da API`);
         setTables(data.tables);  // Set all tables
         setAvailableTables(data.tables);  // Initially show all tables
-        console.log(`📊 Total de mesas: ${data.total}, Disponíveis: ${data.available}, Ocupadas: ${data.occupied}`);
+        
+        // Calcular estatísticas localmente se não vieram da API
+        const totalTables = data.tables.length;
+        const occupiedTables = data.tables.filter((t: any) => t.status === 'occupied').length;
+        const availableTables = totalTables - occupiedTables;
+        
+        console.log(`📊 Total de mesas: ${totalTables}, Disponíveis: ${availableTables}, Ocupadas: ${occupiedTables}`);
         setTablesError("");  // Clear any previous error
       } else {
         const errorMsg = data.error || "Erro ao carregar mesas";
@@ -1760,6 +1768,12 @@ function MainApp() {
                   scrollEnabled={true}
                   bounces={true}
                 >
+                  {console.log(`🎨 Renderizando ${availableTables.length} mesas`)}
+                  {availableTables.length === 0 && (
+                    <Text style={{color: '#FFF', textAlign: 'center', width: '100%', padding: 20}}>
+                      Carregando mesas...
+                    </Text>
+                  )}
                   {availableTables.map((table) => (
                     <TouchableOpacity
                       key={table.id}
