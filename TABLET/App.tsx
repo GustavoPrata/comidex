@@ -2202,6 +2202,26 @@ function MainApp() {
               )}
             </View>
             
+            {/* Logo in center top */}
+            <View style={{
+              position: 'absolute',
+              top: -15,
+              left: '50%',
+              transform: [{ translateX: -20 }],
+              zIndex: 10,
+            }}>
+              <Image 
+                source={require('./assets/logo23.png')}
+                style={{ 
+                  width: 40, 
+                  height: 40,
+                  borderRadius: 20,
+                  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+                }}
+                resizeMode="contain"
+              />
+            </View>
+
             {/* Center Section - Search */}
             <View style={styles.glassHeaderCenter}>
               <View style={styles.searchBarGlass}>
@@ -2565,9 +2585,11 @@ function MainApp() {
               <BlurView intensity={95} tint="dark" style={styles.rodizioModalContent}>
                 {/* Modal Header */}
                 <View style={styles.rodizioModalHeader}>
-                  <View style={styles.rodizioHeaderIcon}>
-                    <IconComponent name={selectedMode?.icon || 'fire'} size={28} color="#FF7043" />
-                  </View>
+                  <Image 
+                    source={require('./assets/logo23.png')}
+                    style={{ width: 45, height: 45, marginRight: 12 }}
+                    resizeMode="contain"
+                  />
                   <View>
                     <Text style={styles.rodizioModalTitle}>
                       {selectedMode?.name || 'Rodízio'}
@@ -2856,6 +2878,14 @@ function MainApp() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.observationModal}>
+            {/* Logo in observation modal */}
+            <View style={{ alignItems: 'center', marginBottom: 15 }}>
+              <Image 
+                source={require('./assets/logo23.png')}
+                style={{ width: 50, height: 50 }}
+                resizeMode="contain"
+              />
+            </View>
             <Text style={styles.observationModalTitle}>
               {selectedProductForObservation?.name}
             </Text>
@@ -2912,7 +2942,15 @@ function MainApp() {
           ]}
         >
           <View style={styles.cartHeader}>
-            <Text style={styles.cartTitle}>Carrinho</Text>
+            {/* Logo in cart header */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <Image 
+                source={require('./assets/logo23.png')}
+                style={{ width: 35, height: 35 }}
+                resizeMode="contain"
+              />
+              <Text style={styles.cartTitle}>Carrinho</Text>
+            </View>
             <TouchableOpacity onPress={() => {
               setShowCart(false);
               Animated.timing(slideAnim, {
