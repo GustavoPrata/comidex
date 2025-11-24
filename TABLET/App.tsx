@@ -1753,25 +1753,24 @@ function MainApp() {
                     flexWrap: 'wrap',
                     paddingHorizontal: 5,
                     paddingTop: 5,
-                    paddingBottom: 5,
-                    flexGrow: 0,
+                    paddingBottom: 0,
                   }}
                   nestedScrollEnabled={true}
                   scrollEnabled={true}
-                  bounces={true}
+                  bounces={false}
                 >
                   {availableTables.map((table) => (
                     <TouchableOpacity
                       key={table.id}
                       style={{
                         width: '18%',
-                        height: 90,
+                        height: 88,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
                         borderRadius: 10,
                         padding: 4,
-                        marginBottom: 6,
+                        marginBottom: 5,
                         marginHorizontal: '1%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
@@ -3613,8 +3612,8 @@ const styles = StyleSheet.create({
   },
   // New Table List Styles (Dark Mode)
   tablesList: {
-    maxHeight: height * 0.35,
-    marginTop: height * 0.01,
+    flex: 1,
+    marginTop: 0,
   },
   tablesListContent: {
     paddingBottom: height * 0.03,
