@@ -3522,6 +3522,9 @@ const styles = StyleSheet.create({
   tablesList: {
     flex: 1,
     width: '100%',
+    height: height * 0.6,
+    minHeight: 400,
+    maxHeight: height * 0.7,
   },
   tablesGrid: {
     flexDirection: "row",
