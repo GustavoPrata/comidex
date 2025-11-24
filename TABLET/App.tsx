@@ -1774,7 +1774,9 @@ function MainApp() {
                     flexDirection: 'row',
                     flexWrap: 'wrap',
                     paddingHorizontal: 5,
-                    paddingVertical: 5,
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    flexGrow: 0,
                   }}
                   nestedScrollEnabled={true}
                   scrollEnabled={true}
@@ -1785,13 +1787,13 @@ function MainApp() {
                       key={table.id}
                       style={{
                         width: '18%',
-                        aspectRatio: 1,
+                        height: 90,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
                         borderRadius: 10,
-                        padding: 5,
-                        marginBottom: 8,
+                        padding: 4,
+                        marginBottom: 6,
                         marginHorizontal: '1%',
                         borderWidth: 1,
                         borderColor: table.status === 'occupied'
@@ -1896,24 +1898,24 @@ function MainApp() {
                       disabled={false}
                       activeOpacity={0.7}
                     >
-                      {/* Table Number in Circle */}
+                      {/* Table Number in Circle - BIGGER */}
                       <View style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 16,
+                        width: 42,
+                        height: 42,
+                        borderRadius: 21,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.15)' 
                           : 'rgba(255, 255, 255, 0.08)',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        marginBottom: 3,
+                        marginBottom: 2,
                         borderWidth: 1,
                         borderColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.3)' 
                           : 'rgba(255, 255, 255, 0.15)',
                       }}>
                         <Text style={{
-                          fontSize: 16,
+                          fontSize: 22,
                           fontWeight: 'bold',
                           color: table.status === 'occupied' ? config.colors.primary : '#FFFFFF',
                         }}>
@@ -1923,25 +1925,25 @@ function MainApp() {
                       
                       {/* Table Name - Smaller */}
                       <Text style={{
-                        fontSize: 8,
-                        color: 'rgba(255, 255, 255, 0.5)',
-                        marginBottom: 3,
+                        fontSize: 7,
+                        color: 'rgba(255, 255, 255, 0.4)',
+                        marginBottom: 2,
                         textAlign: 'center',
                       }}>
-                        {table.name.length > 10 ? table.name.substring(0, 10) + '...' : table.name}
+                        {table.name.length > 8 ? table.name.substring(0, 8) + '..' : table.name}
                       </Text>
                       
                       {/* Status Badge - Smaller */}
                       <View style={{
-                        paddingHorizontal: 6,
-                        paddingVertical: 2,
-                        borderRadius: 4,
+                        paddingHorizontal: 5,
+                        paddingVertical: 1,
+                        borderRadius: 3,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.2)' 
                           : 'rgba(76, 175, 80, 0.2)',
                       }}>
                         <Text style={{
-                          fontSize: 8,
+                          fontSize: 7,
                           fontWeight: '600',
                           color: table.status === 'occupied' 
                             ? config.colors.primary 
@@ -1954,10 +1956,10 @@ function MainApp() {
                       {/* Session Total if occupied - Smaller */}
                       {table.status === 'occupied' && table.session_total > 0 && (
                         <Text style={{
-                          fontSize: 9,
+                          fontSize: 8,
                           fontWeight: 'bold',
                           color: config.colors.primary,
-                          marginTop: 2,
+                          marginTop: 1,
                         }}>
                           R$ {table.session_total.toFixed(2)}
                         </Text>
