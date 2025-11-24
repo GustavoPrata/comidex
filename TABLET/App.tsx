@@ -27,7 +27,6 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
-import * as NavigationBar from 'expo-navigation-bar';
 import { config } from './config';
 // Import Lucide icons para ter os mesmos ícones do admin
 import {
@@ -203,19 +202,6 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
 function MainApp() {
   // Keep screen awake to prevent battery-saving sleep mode
   useKeepAwake();
-  
-  // Hide Android navigation bar for fullscreen experience
-  useEffect(() => {
-    const setupFullscreen = async () => {
-      try {
-        await NavigationBar.setVisibilityAsync("hidden");
-        await NavigationBar.setBehaviorAsync("overlay-swipe");
-      } catch (error) {
-        console.log("NavigationBar not available:", error);
-      }
-    };
-    setupFullscreen();
-  }, []);
   
   // Estados principais
   const [isLocked, setIsLocked] = useState(false);
