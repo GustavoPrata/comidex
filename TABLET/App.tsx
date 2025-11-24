@@ -123,8 +123,8 @@ interface Promotion {
 }
 
 // Fixed design canvas - all tablets will see this exact layout
-const BASE_WIDTH = 768; // iPad portrait width  
-const BASE_HEIGHT = 1024; // iPad portrait height
+const BASE_WIDTH = 600; // Smaller base for larger zoom
+const BASE_HEIGHT = 800; // Smaller base for larger zoom  
 
 // Get actual device dimensions
 const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
@@ -132,7 +132,7 @@ const { width: deviceWidth, height: deviceHeight } = Dimensions.get("window");
 // Calculate scale to fit the base design on any screen
 const scaleX = deviceWidth / BASE_WIDTH;
 const scaleY = deviceHeight / BASE_HEIGHT;
-const scale = Math.min(scaleX, scaleY); // Use the smaller scale to fit everything
+const scale = Math.min(scaleX, scaleY) * 1.2; // Added 20% more zoom
 
 // These are the dimensions we'll use for layout (always the same)
 const width = BASE_WIDTH;
@@ -1778,8 +1778,8 @@ function MainApp() {
                     <TouchableOpacity
                       key={table.id}
                       style={{
-                        width: 135, // Fixed width for exactly 5 cards per row
-                        height: 90,
+                        width: 105, // Adjusted width for new canvas size
+                        height: 80,
                         backgroundColor: table.status === 'occupied' 
                           ? 'rgba(255, 112, 67, 0.08)' 
                           : 'rgba(255, 255, 255, 0.04)',
@@ -3465,7 +3465,7 @@ const styles = StyleSheet.create({
   // New Table Selection Styles
   tableSelectionCard: {
     borderRadius: 28,
-    width: 730, // Fixed width instead of percentage
+    width: 570, // Adjusted for new canvas
     marginTop: 10,
     marginBottom: 0,
     overflow: 'hidden',
@@ -3474,7 +3474,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 20,
     elevation: 10,
-    height: 768, // Fixed height instead of percentage
+    height: 600, // Adjusted for new canvas
   },
   tableSelectionTitle: {
     fontSize: 22,
