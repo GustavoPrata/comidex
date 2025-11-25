@@ -1947,7 +1947,7 @@ function MainApp() {
     return { length, offset, index };
   };
 
-  // Scroll para categoria quando clicada (user initiated)
+  // Scroll para categoria quando clicada (user initiated) - OPTIMIZED
   const scrollToCategory = (categoryId: number) => {
     // Mark as programmatic scroll to prevent handleProductScroll from fighting
     isProgrammaticScrollRef.current = true;
@@ -1955,22 +1955,16 @@ function MainApp() {
     const items = getProductsWithHeaders();
     const index = items.findIndex(item => typeof item === 'object' && 'isHeader' in item && item.categoryId === categoryId);
     
-    console.log(`🎯 Scrolling to category ${categoryId}, index: ${index}`);
-    
     if (index !== -1 && productListRef.current) {
-      try {
-        productListRef.current.scrollToIndex({ index, animated: true, viewPosition: 0 });
-      } catch (e) {
-        console.log('⚠️ scrollToIndex failed, using scrollToOffset');
-        const layout = getItemLayout(items, index);
-        productListRef.current.scrollToOffset({ offset: layout.offset, animated: true });
-      }
+      // Use scrollToOffset directly for precise positioning at top
+      const layout = getItemLayout(items, index);
+      productListRef.current.scrollToOffset({ offset: layout.offset, animated: true });
     }
     
     // Release lock after scroll animation completes
     setTimeout(() => {
       isProgrammaticScrollRef.current = false;
-    }, 500);
+    }, 400);
   };
 
   // Called when scroll momentum ends - release programmatic scroll lock
@@ -1978,7 +1972,10 @@ function MainApp() {
     isProgrammaticScrollRef.current = false;
   };
 
-  // Detecta categoria visível ao scrollar (user scroll only)
+  // Detecta categoria visível ao scrollar (user scroll only) - OPTIMIZED
+  const lastScrollY = useRef(0);
+  const scrollThrottleRef = useRef<NodeJS.Timeout | null>(null);
+  
   const handleProductScroll = (event: any) => {
     resetIdleTimer();
     
@@ -1986,33 +1983,40 @@ function MainApp() {
     if (isProgrammaticScrollRef.current) return;
     
     const offsetY = event.nativeEvent.contentOffset.y;
-    const items = getProductsWithHeaders();
     
-    // Se não tem items, não faz nada
-    if (!items || items.length === 0) return;
+    // Throttle: only process if scrolled more than 50px
+    if (Math.abs(offsetY - lastScrollY.current) < 50) return;
+    lastScrollY.current = offsetY;
     
-    // Encontra qual header está mais próximo do topo
-    let currentCategoryId: number | null = null;
-    let accumulatedHeight = 0;
-    const headerHeight = 50;
-    const productHeight = 180;
+    // Debounce the category detection
+    if (scrollThrottleRef.current) {
+      clearTimeout(scrollThrottleRef.current);
+    }
     
-    for (const item of items) {
-      if (typeof item === 'object' && 'isHeader' in item) {
-        if (accumulatedHeight <= offsetY + 100) {
-          currentCategoryId = item.categoryId;
+    scrollThrottleRef.current = setTimeout(() => {
+      const items = getProductsWithHeaders();
+      if (!items || items.length === 0) return;
+      
+      // Find category at current scroll position
+      let currentCategoryId: number | null = null;
+      let accumulatedHeight = 0;
+      
+      for (const item of items) {
+        if (typeof item === 'object' && 'isHeader' in item) {
+          if (accumulatedHeight <= offsetY + 80) {
+            currentCategoryId = item.categoryId;
+          }
+          accumulatedHeight += HEADER_HEIGHT;
+        } else {
+          accumulatedHeight += PRODUCT_HEIGHT;
         }
-        accumulatedHeight += headerHeight;
-      } else {
-        accumulatedHeight += productHeight;
       }
-    }
-    
-    // Only update if category changed and is valid
-    if (currentCategoryId && currentCategoryId !== selectedCategory) {
-      setSelectedCategory(currentCategoryId);
-      // Animation and scroll handled by useEffect
-    }
+      
+      // Only update if category changed
+      if (currentCategoryId && currentCategoryId !== selectedCategory) {
+        setSelectedCategory(currentCategoryId);
+      }
+    }, 100);
   };
 
   const updateQuantity = (productId: number, quantity: number) => {
