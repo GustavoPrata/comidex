@@ -3948,144 +3948,138 @@ function MainApp() {
         </View>
       </Modal>
 
-      {/* Cart Modal - Goomer Style */}
+      {/* Cart Modal - Full Screen Right Side */}
       <Modal
         visible={showCart}
         animationType="fade"
         transparent={true}
         onRequestClose={() => setShowCart(false)}
       >
-        <View style={styles.cartModalOverlay}>
-          <View style={styles.cartModalContainer}>
+        <View style={styles.cartFullScreenOverlay}>
+          {/* Close Button on Left Side */}
+          <Pressable 
+            style={styles.cartFullScreenCloseArea}
+            onPress={() => setShowCart(false)}
+          >
+            <View style={styles.cartFullScreenCloseCircle}>
+              <X size={28} color="#333" strokeWidth={2.5} />
+            </View>
+          </Pressable>
+
+          {/* Cart Panel on Right Side */}
+          <View style={styles.cartFullScreenPanel}>
             {/* Header */}
-            <View style={styles.cartModalHeader}>
+            <View style={styles.cartFullScreenHeader}>
+              <Text style={styles.cartFullScreenTitle}>CARRINHO DE COMPRAS</Text>
               <TouchableOpacity 
-                style={styles.cartCloseCircle}
-                onPress={() => {
-                  setShowCart(false);
-                  Animated.timing(slideAnim, {
-                    toValue: height,
-                    duration: config.animations.normal,
-                    useNativeDriver: true,
-                  }).start();
-                }}
-              >
-                <X size={24} color="#333" strokeWidth={2.5} />
-              </TouchableOpacity>
-              
-              <Text style={styles.cartModalTitle}>CARRINHO DE COMPRAS</Text>
-              
-              <TouchableOpacity 
-                style={styles.clearCartButton}
+                style={styles.cartFullScreenClearBtn}
                 onPress={() => {
                   triggerHaptic();
                   clearCart();
                 }}
               >
-                <Text style={styles.clearCartButtonText}>LIMPAR CARRINHO</Text>
+                <Text style={styles.cartFullScreenClearText}>LIMPAR</Text>
               </TouchableOpacity>
-            </View>
-
-            {/* Table Header */}
-            <View style={styles.cartTableHeader}>
-              <Text style={styles.cartTableHeaderText}>Item</Text>
-              <Text style={styles.cartTableHeaderQty}>Qtd</Text>
-              <Text style={styles.cartTableHeaderSubtotal}>Subtotal</Text>
             </View>
 
             {/* Cart Items */}
-            <ScrollView style={styles.cartItemsList}>
-              {cart.map((item) => (
-                <View key={`${item.id}-${item.observation || ''}`} style={styles.cartItemRow}>
-                  {/* Delete Button */}
-                  <TouchableOpacity 
-                    style={styles.cartItemDelete}
-                    onPress={() => {
-                      triggerHaptic();
-                      deleteFromCart(item.id, item.observation);
-                    }}
-                  >
-                    <X size={18} color="#999" strokeWidth={2} />
-                  </TouchableOpacity>
-                  
-                  {/* Product Image */}
-                  {item.image_url ? (
-                    <Image 
-                      source={{ uri: item.image_url.startsWith('http') ? item.image_url : `${config.BASE_URL}${item.image_url}` }} 
-                      style={styles.cartItemImage}
-                    />
-                  ) : (
-                    <View style={styles.cartItemImagePlaceholder}>
-                      <IconComponent name="sushi" size={24} color="rgba(0,0,0,0.2)" />
-                    </View>
-                  )}
-                  
-                  {/* Product Name */}
-                  <View style={styles.cartItemNameContainer}>
-                    <Text style={styles.cartItemNameText} numberOfLines={2}>{item.name}</Text>
-                    {item.observation && (
-                      <Text style={styles.cartItemObsText} numberOfLines={1}>📝 {item.observation}</Text>
-                    )}
-                  </View>
-                  
-                  {/* Quantity Controls */}
-                  <View style={styles.cartItemQtyControls}>
-                    <TouchableOpacity 
-                      style={styles.cartQtyBtn}
-                      onPress={() => {
-                        triggerHaptic();
-                        handleRemoveFromCart(item.id, item.observation);
-                      }}
-                    >
-                      <Text style={styles.cartQtyBtnText}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.cartQtyText}>{item.quantity}</Text>
-                    <TouchableOpacity 
-                      style={styles.cartQtyBtn}
-                      onPress={() => {
-                        triggerHaptic();
-                        handleQuickAddInCart(item.id, item.observation);
-                      }}
-                    >
-                      <Text style={styles.cartQtyBtnText}>+</Text>
-                    </TouchableOpacity>
-                  </View>
-                  
-                  {/* Subtotal - Hidden for rodizio items with 0 price */}
-                  <Text style={styles.cartItemSubtotal}>
-                    {parseFloat(item.price) > 0 ? `R$ ${(parseFloat(item.price) * item.quantity).toFixed(2)}` : ''}
-                  </Text>
+            <ScrollView style={styles.cartFullScreenList}>
+              {cart.length === 0 ? (
+                <View style={styles.cartEmptyContainer}>
+                  <ShoppingCart size={60} color="rgba(255,255,255,0.2)" strokeWidth={1.5} />
+                  <Text style={styles.cartEmptyText}>Carrinho vazio</Text>
                 </View>
-              ))}
+              ) : (
+                cart.map((item) => (
+                  <View key={`${item.id}-${item.observation || ''}`} style={styles.cartFullScreenItem}>
+                    {/* Delete Button */}
+                    <TouchableOpacity 
+                      style={styles.cartFullScreenDelete}
+                      onPress={() => {
+                        triggerHaptic();
+                        deleteFromCart(item.id, item.observation);
+                      }}
+                    >
+                      <X size={20} color="#FF5252" strokeWidth={2} />
+                    </TouchableOpacity>
+                    
+                    {/* Product Image */}
+                    {item.image_url ? (
+                      <Image 
+                        source={{ uri: item.image_url.startsWith('http') ? item.image_url : `${config.BASE_URL}${item.image_url}` }} 
+                        style={styles.cartFullScreenImage}
+                      />
+                    ) : (
+                      <View style={styles.cartFullScreenImagePlaceholder}>
+                        <IconComponent name="sushi" size={28} color="rgba(255,255,255,0.3)" />
+                      </View>
+                    )}
+                    
+                    {/* Product Info */}
+                    <View style={styles.cartFullScreenInfo}>
+                      <Text style={styles.cartFullScreenName} numberOfLines={2}>{item.name}</Text>
+                      {item.observation && (
+                        <Text style={styles.cartFullScreenObs} numberOfLines={1}>📝 {item.observation}</Text>
+                      )}
+                      {parseFloat(item.price) > 0 && (
+                        <Text style={styles.cartFullScreenPrice}>R$ {parseFloat(item.price).toFixed(2)}</Text>
+                      )}
+                    </View>
+                    
+                    {/* Quantity Controls */}
+                    <View style={styles.cartFullScreenQtyContainer}>
+                      <TouchableOpacity 
+                        style={styles.cartFullScreenQtyBtn}
+                        onPress={() => {
+                          triggerHaptic();
+                          handleRemoveFromCart(item.id, item.observation);
+                        }}
+                      >
+                        <Minus size={18} color="#FFF" strokeWidth={2.5} />
+                      </TouchableOpacity>
+                      <Text style={styles.cartFullScreenQtyText}>{item.quantity}</Text>
+                      <TouchableOpacity 
+                        style={styles.cartFullScreenQtyBtn}
+                        onPress={() => {
+                          triggerHaptic();
+                          handleQuickAddInCart(item.id, item.observation);
+                        }}
+                      >
+                        <Plus size={18} color="#FFF" strokeWidth={2.5} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ))
+              )}
             </ScrollView>
 
             {/* Footer */}
-            <View style={styles.cartModalFooter}>
-              <View style={styles.cartFooterTotal}>
-                <Text style={styles.cartFooterTotalLabel}>Valor a pagar</Text>
-                <Text style={styles.cartFooterTotalValue}>R$ {getCartTotal().toFixed(2)}</Text>
+            <View style={styles.cartFullScreenFooter}>
+              <View style={styles.cartFullScreenTotalRow}>
+                <Text style={styles.cartFullScreenTotalLabel}>Total</Text>
+                <Text style={styles.cartFullScreenTotalValue}>R$ {getCartTotal().toFixed(2)}</Text>
               </View>
               
-              <TouchableOpacity 
-                style={styles.addMoreItemsButton}
-                onPress={() => {
-                  setShowCart(false);
-                }}
-              >
-                <Text style={styles.addMoreItemsText}>ADICIONAR MAIS ITENS</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={[styles.sendOrderBtn, loading && styles.sendOrderBtnDisabled]}
-                onPress={sendOrder}
-                disabled={loading}
-              >
-                {loading ? (
-                  <ActivityIndicator color="#FFF" />
-                ) : (
-                  <Text style={styles.sendOrderBtnText}>ENVIAR PEDIDO</Text>
-                )}
-              </TouchableOpacity>
+              <View style={styles.cartFullScreenButtons}>
+                <TouchableOpacity 
+                  style={styles.cartFullScreenAddMoreBtn}
+                  onPress={() => setShowCart(false)}
+                >
+                  <Text style={styles.cartFullScreenAddMoreText}>ADICIONAR MAIS</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                  style={[styles.cartFullScreenSendBtn, loading && { opacity: 0.6 }]}
+                  onPress={sendOrder}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ActivityIndicator color="#FFF" />
+                  ) : (
+                    <Text style={styles.cartFullScreenSendText}>ENVIAR PEDIDO</Text>
+                  )}
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -6603,6 +6597,201 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
+  // Cart Full Screen Styles
+  cartFullScreenOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.92)",
+    flexDirection: 'row',
+  },
+  cartFullScreenCloseArea: {
+    width: 120,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartFullScreenCloseCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#FF7043',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartFullScreenPanel: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+    borderTopLeftRadius: 24,
+    borderBottomLeftRadius: 24,
+  },
+  cartFullScreenHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
+  },
+  cartFullScreenTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 1,
+  },
+  cartFullScreenClearBtn: {
+    backgroundColor: 'rgba(255,82,82,0.15)',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255,82,82,0.3)',
+  },
+  cartFullScreenClearText: {
+    color: '#FF5252',
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  cartFullScreenList: {
+    flex: 1,
+    paddingHorizontal: 16,
+  },
+  cartEmptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 80,
+  },
+  cartEmptyText: {
+    color: 'rgba(255,255,255,0.4)',
+    fontSize: 16,
+    marginTop: 16,
+  },
+  cartFullScreenItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 12,
+    padding: 12,
+    marginVertical: 6,
+    gap: 12,
+  },
+  cartFullScreenDelete: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(255,82,82,0.15)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartFullScreenImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+  },
+  cartFullScreenImagePlaceholder: {
+    width: 60,
+    height: 60,
+    borderRadius: 10,
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartFullScreenInfo: {
+    flex: 1,
+  },
+  cartFullScreenName: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    marginBottom: 4,
+  },
+  cartFullScreenObs: {
+    fontSize: 12,
+    color: 'rgba(255,255,255,0.5)',
+    marginBottom: 4,
+  },
+  cartFullScreenPrice: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FF7043',
+  },
+  cartFullScreenQtyContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255,112,67,0.15)',
+    borderRadius: 25,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+  },
+  cartFullScreenQtyBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#FF7043',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartFullScreenQtyText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '700',
+    marginHorizontal: 16,
+    minWidth: 30,
+    textAlign: 'center',
+  },
+  cartFullScreenFooter: {
+    paddingHorizontal: 24,
+    paddingVertical: 20,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
+  },
+  cartFullScreenTotalRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  cartFullScreenTotalLabel: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'rgba(255,255,255,0.7)',
+  },
+  cartFullScreenTotalValue: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#FF7043',
+  },
+  cartFullScreenButtons: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  cartFullScreenAddMoreBtn: {
+    flex: 1,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  cartFullScreenAddMoreText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  cartFullScreenSendBtn: {
+    flex: 1,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  cartFullScreenSendText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+
   imageModalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.92)",
