@@ -1033,28 +1033,21 @@ function MainApp() {
     }
   }, [selectedGroup?.id]);
 
-  // Animate category change - fade effect (darken then appear)
+  // Animate category change and scroll category list to follow
   useEffect(() => {
     if (selectedCategory && selectedCategory !== lastSelectedCategoryRef.current) {
-      const isUserClick = isProgrammaticScrollRef.current;
       lastSelectedCategoryRef.current = selectedCategory;
       
-      // Fade out then fade in animation
+      // Fade in glow animation
       categoryGlowAnim.setValue(0);
+      Animated.timing(categoryGlowAnim, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
       
-      Animated.sequence([
-        // Fade in glow
-        Animated.timing(categoryGlowAnim, {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-      ]).start();
-      
-      // Only scroll category list when user clicks directly on a category
-      if (isUserClick) {
-        scrollToCategoryInList(selectedCategory);
-      }
+      // Always scroll category list to show selected category
+      scrollToCategoryInList(selectedCategory);
     }
   }, [selectedCategory]);
 
