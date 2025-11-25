@@ -1577,13 +1577,13 @@ function MainApp() {
                   <View style={{ 
                     position: 'absolute', 
                     left: '50%', 
-                    transform: [{ translateX: -55 }],
-                    top: -60,
+                    transform: [{ translateX: -60 }],
+                    top: -70,
                   }}>
                     <Image 
-                      source={require('./assets/logo23.png')}
-                      style={{ width: 110, height: 110 }}
-                      resizeMode="cover"
+                      source={require('./assets/logo232.png')}
+                      style={{ width: 120, height: 120 }}
+                      resizeMode="contain"
                     />
                   </View>
                   
@@ -2201,18 +2201,18 @@ function MainApp() {
             {/* Logo in center top */}
             <View style={{
               position: 'absolute',
-              top: -20,
+              top: -22,
               left: '50%',
-              transform: [{ translateX: -25 }],
+              transform: [{ translateX: -28 }],
               zIndex: 10,
             }}>
               <Image 
-                source={require('./assets/logo23.png')}
+                source={require('./assets/logo232.png')}
                 style={{ 
-                  width: 50, 
-                  height: 50,
+                  width: 56, 
+                  height: 56,
                 }}
-                resizeMode="cover"
+                resizeMode="contain"
               />
             </View>
 
@@ -2580,9 +2580,9 @@ function MainApp() {
                 {/* Modal Header */}
                 <View style={styles.rodizioModalHeader}>
                   <Image 
-                    source={require('./assets/logo23.png')}
+                    source={require('./assets/logo232.png')}
                     style={{ width: 55, height: 55, marginRight: 12 }}
-                    resizeMode="cover"
+                    resizeMode="contain"
                   />
                   <View>
                     <Text style={styles.rodizioModalTitle}>
@@ -2875,9 +2875,9 @@ function MainApp() {
             {/* Logo in observation modal */}
             <View style={{ alignItems: 'center', marginBottom: 15 }}>
               <Image 
-                source={require('./assets/logo23.png')}
+                source={require('./assets/logo232.png')}
                 style={{ width: 60, height: 60 }}
-                resizeMode="cover"
+                resizeMode="contain"
               />
             </View>
             <Text style={styles.observationModalTitle}>
@@ -2939,9 +2939,9 @@ function MainApp() {
             {/* Logo in cart header */}
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
               <Image 
-                source={require('./assets/logo23.png')}
+                source={require('./assets/logo232.png')}
                 style={{ width: 45, height: 45 }}
-                resizeMode="cover"
+                resizeMode="contain"
               />
               <Text style={styles.cartTitle}>Carrinho</Text>
             </View>
