@@ -5922,14 +5922,17 @@ const styles = StyleSheet.create({
   // Connection Modal Styles - Simplified
   connectionModalOverlay: {
     flex: 1,
-    backgroundColor: "#1a1a2e",
+    backgroundColor: "#000000",
     justifyContent: "center",
     alignItems: "center",
   },
   connectionModalSimple: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 40,
+    backgroundColor: "#000000",
+    width: "100%",
   },
   connectionTitleSimple: {
     fontSize: 24,
