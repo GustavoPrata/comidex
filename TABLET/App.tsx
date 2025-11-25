@@ -2865,25 +2865,6 @@ function MainApp() {
                 </View>
               )}
             </View>
-            
-            {/* Logo in center top */}
-            <View style={{
-              position: 'absolute',
-              top: -22,
-              left: '50%',
-              transform: [{ translateX: -28 }],
-              zIndex: 10,
-            }}>
-              <Image 
-                source={require('./assets/logo232.png')}
-                style={{ 
-                  width: 56, 
-                  height: 56,
-                  borderRadius: 28,
-                }}
-                resizeMode="cover"
-              />
-            </View>
 
             {/* Center Section - Search */}
             <View style={styles.glassHeaderCenter}>
