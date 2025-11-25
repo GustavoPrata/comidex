@@ -2713,7 +2713,7 @@ function MainApp() {
   // Main Interface - New 3-Column Layout Goomer Style with Apple Glass Design
   return (
     <SafeAreaView style={styles.container} onTouchStart={resetIdleTimer}>
-      <StatusBar style="light" />
+      <StatusBar hidden={true} />
       <AdminPanel />
       
       <View {...panResponderRef.current?.panHandlers} style={{ flex: 1 }}>
