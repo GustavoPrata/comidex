@@ -459,21 +459,9 @@ async function GET(request) {
             if (error) throw error;
             categories = data;
         }
-        // Adicionar categoria especial de bebidas
-        const categoriesWithDrinks = [
-            ...categories || [],
-            {
-                id: 999,
-                name: 'Bebidas',
-                description: 'Bebidas e drinks',
-                active: true,
-                icon: 'wine',
-                order_index: 999
-            }
-        ];
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
-            categories: categoriesWithDrinks
+            categories: categories || []
         });
     } catch (error) {
         console.error('Erro ao buscar categorias:', error);
