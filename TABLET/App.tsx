@@ -3497,33 +3497,6 @@ function MainApp() {
           </Animated.View>
         )}
 
-        {/* View Cart Button - appears when cart has items and no temp items */}
-        {cart.length > 0 && getTempItemsCount() === 0 && (
-          <Animated.View style={[
-            styles.cartFloatingButton,
-            { transform: [{ scale: cartBounceAnim }] }
-          ]}>
-            <TouchableOpacity
-              style={styles.cartFloatingButtonInner}
-              onPress={() => {
-                setShowCart(true);
-                resetIdleTimer();
-                Animated.spring(slideAnim, {
-                  toValue: 0,
-                  useNativeDriver: true,
-                }).start();
-              }}
-            >
-              <View style={styles.cartBadge}>
-                <Text style={styles.cartBadgeText}>{cart.reduce((sum, item) => sum + item.quantity, 0)}</Text>
-              </View>
-              <Text style={styles.cartFloatingButtonText}>Ver Carrinho</Text>
-              <Text style={styles.cartFloatingButtonTotal}>
-                R$ {getCartTotal().toFixed(2)}
-              </Text>
-            </TouchableOpacity>
-          </Animated.View>
-        )}
 
       </View>
 
