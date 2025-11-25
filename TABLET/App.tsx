@@ -5211,11 +5211,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   groupNameGlass: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    lineHeight: 14,
+    lineHeight: 16,
   },
   groupNameActiveGlass: {
     color: '#FF7043',
