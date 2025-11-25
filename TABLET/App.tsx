@@ -2712,7 +2712,7 @@ function MainApp() {
 
   // Main Interface - New 3-Column Layout Goomer Style with Apple Glass Design
   return (
-    <SafeAreaView style={styles.container} onTouchStart={resetIdleTimer}>
+    <View style={styles.container} onTouchStart={resetIdleTimer}>
       <StatusBar hidden={true} />
       <AdminPanel />
       
@@ -2840,20 +2840,7 @@ function MainApp() {
                     />
                   </View>
                   <Text style={styles.compactModeName}>
-                    {/* Dynamic type detection based on linked_groups */}
-                    {(() => {
-                      // Check if it has linked groups with rodízio or a_la_carte type
-                      if (selectedMode.linked_groups && selectedMode.linked_groups.length > 0) {
-                        const groupType = selectedMode.linked_groups[0].type;
-                        if (groupType === 'rodizio') {
-                          return 'Rodízio';
-                        } else if (groupType === 'a_la_carte') {
-                          return 'À La Carte';
-                        }
-                      }
-                      // For other types, use the service type name
-                      return selectedMode.name;
-                    })()}
+                    {selectedMode.name}
                   </Text>
                 </View>
               )}
@@ -3819,7 +3806,7 @@ function MainApp() {
           </View>
         </Animated.View>
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
