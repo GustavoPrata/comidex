@@ -2975,7 +2975,7 @@ function MainApp() {
                     ]}>
                       <IconComponent 
                         name={group.icon || group.name || 'restaurant'} 
-                        size={14} 
+                        size={16} 
                         color={selectedGroup?.id === group.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} 
                       />
                     </View>
@@ -5084,21 +5084,21 @@ const styles = StyleSheet.create({
   },
   // Left Sidebar Styles
   leftSidebarGlass: {
-    width: 65,
+    width: 78,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   sidebarHeader: {
-    paddingHorizontal: 4,
-    paddingVertical: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   sidebarTitle: {
-    fontSize: 8,
+    fontSize: 10,
     fontWeight: '600',
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: 'rgba(255, 255, 255, 0.6)',
     textAlign: 'center',
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -5133,24 +5133,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 2,
-    paddingVertical: 8,
-    marginHorizontal: 4,
-    marginVertical: 2,
-    borderRadius: 8,
+    paddingHorizontal: 4,
+    paddingVertical: 10,
+    marginHorizontal: 5,
+    marginVertical: 3,
+    borderRadius: 10,
     position: 'relative',
   },
   groupItemActiveGlass: {
     backgroundColor: 'rgba(255, 112, 67, 0.15)',
   },
   groupIconContainerGlass: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
+    width: 32,
+    height: 32,
+    borderRadius: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 3,
+    marginBottom: 4,
   },
   groupIconActiveGlass: {
     backgroundColor: 'rgba(255, 112, 67, 0.25)',
@@ -5159,11 +5159,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   groupNameGlass: {
-    fontSize: 8,
+    fontSize: 9,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    lineHeight: 10,
+    lineHeight: 11,
   },
   groupNameActiveGlass: {
     color: '#FF7043',
