@@ -124,10 +124,19 @@ interface Promotion {
 
 const { width, height } = Dimensions.get("window");
 
-// Constants
-const IDLE_TIMEOUT = 120000; // 2 minutes
+// Constants - Defaults (will be overridden by server settings)
+const DEFAULT_IDLE_TIMEOUT = 120000; // 2 minutes
 const KIOSK_PIN = "1234"; // Kiosk admin PIN
 const LONG_PRESS_DURATION = 3000; // 3 seconds for admin menu
+
+// Tablet Settings Interface
+interface TabletSettings {
+  brightness_enabled: boolean;
+  idle_timeout_seconds: number;
+  dim_brightness: number;
+  default_brightness: number;
+  touch_to_wake: boolean;
+}
 
 // Icon Component usando Lucide - IDÊNTICO AO ADMIN
 const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size?: number, color?: string }) => {
@@ -254,6 +263,15 @@ function MainApp() {
   const [isDimmed, setIsDimmed] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [adminPassword, setAdminPassword] = useState("");
+  
+  // Tablet Settings from Server
+  const [tabletSettings, setTabletSettings] = useState<TabletSettings>({
+    brightness_enabled: true,
+    idle_timeout_seconds: 120,
+    dim_brightness: 0.1,
+    default_brightness: 0.8,
+    touch_to_wake: true,
+  });
   const [kioskMode, setKioskMode] = useState(true);
   const [appStats, setAppStats] = useState({
     totalOrders: 0,
@@ -331,6 +349,22 @@ function MainApp() {
     },
   ];
 
+  // Fetch tablet settings from server
+  const fetchTabletSettings = useCallback(async () => {
+    try {
+      const response = await fetch(`${config.API_BASE_URL}/api/mobile/tablet-settings`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success && data.settings) {
+          setTabletSettings(data.settings);
+          console.log('✅ Configurações do tablet carregadas:', data.settings);
+        }
+      }
+    } catch (error) {
+      console.log('⚠️ Usando configurações padrão do tablet');
+    }
+  }, []);
+
   // Brightness management
   const resetIdleTimer = useCallback(async () => {
     lastActivityRef.current = Date.now();
@@ -339,31 +373,33 @@ function MainApp() {
       clearTimeout(idleTimerRef.current);
     }
     
+    // If brightness control is disabled, do nothing
+    if (!tabletSettings.brightness_enabled) {
+      return;
+    }
+    
     // Restore brightness if dimmed
     if (isDimmed) {
       try {
-        await Brightness.setBrightnessAsync(originalBrightness);
+        await Brightness.setBrightnessAsync(tabletSettings.default_brightness);
         setIsDimmed(false);
       } catch (error) {
         console.error('Error restoring brightness:', error);
       }
     }
     
-    // Set timer to dim after 2 minutes of inactivity
+    // Set timer to dim after configured time
+    const timeoutMs = tabletSettings.idle_timeout_seconds * 1000;
     idleTimerRef.current = setTimeout(async () => {
       try {
-        // Save current brightness before dimming
-        const currentBrightness = await Brightness.getBrightnessAsync();
-        setOriginalBrightness(currentBrightness);
-        
-        // Dim to 10% brightness to save battery
-        await Brightness.setBrightnessAsync(0.1);
+        // Dim to configured brightness level
+        await Brightness.setBrightnessAsync(tabletSettings.dim_brightness);
         setIsDimmed(true);
       } catch (error) {
         console.error('Error dimming screen:', error);
       }
-    }, IDLE_TIMEOUT);
-  }, [isDimmed, originalBrightness]);
+    }, timeoutMs);
+  }, [isDimmed, tabletSettings]);
 
   // Pan Responder for touch tracking
   useEffect(() => {
@@ -400,6 +436,7 @@ function MainApp() {
     };
     
     initBrightness();
+    fetchTabletSettings(); // Load tablet settings from server
     loadCategories();
     loadProducts();
     loadTables(); // Load available tables on startup
@@ -431,6 +468,11 @@ function MainApp() {
         console.log('Auto-refresh silencioso:', error);
       }
     }, 5000); // Atualiza a cada 5 segundos sem piscar
+
+    // Reload tablet settings every 30 seconds to sync admin changes
+    const settingsInterval = setInterval(() => {
+      fetchTabletSettings();
+    }, 30000);
     
     // Initialize idle timer
     resetIdleTimer();
@@ -445,11 +487,12 @@ function MainApp() {
     // Cleanup and disable back button in kiosk mode
     const cleanup = () => {
       clearInterval(tablesInterval);
+      clearInterval(settingsInterval);
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current);
       }
       // Restore original brightness when app closes
-      Brightness.setBrightnessAsync(originalBrightness).catch(console.error);
+      Brightness.setBrightnessAsync(tabletSettings.default_brightness).catch(console.error);
     };
     
     if (Platform.OS === 'android' && kioskMode) {
