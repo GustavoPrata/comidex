@@ -1,9 +1,4 @@
 {
-  "/admin/tablet-settings/page": "app/admin/tablet-settings/page.js",
-  "/api/mobile/tablet-settings/route": "app/api/mobile/tablet-settings/route.js",
   "/api/mobile/tablet-status/route": "app/api/mobile/tablet-status/route.js",
-  "/api/notifications/route": "app/api/notifications/route.js",
-  "/api/pos/tables/route": "app/api/pos/tables/route.js",
-  "/page": "app/page.js",
-  "/prompt/page": "app/prompt/page.js"
+  "/api/pos/tables/route": "app/api/pos/tables/route.js"
 }
