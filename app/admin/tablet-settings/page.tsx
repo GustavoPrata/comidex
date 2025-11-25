@@ -138,34 +138,55 @@ export default function TabletSettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-orange-500/10 rounded-lg">
-            <Tablet className="w-6 h-6 text-orange-500" />
+    <div className="min-h-screen relative">
+      {/* Header */}
+      <div className="m-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border border-gray-200 dark:border-gray-700/60 relative shadow-sm rounded-3xl">
+        <div className="px-6 py-4">
+          {/* Top Row: Title and Actions */}
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <div className="p-2 rounded-lg bg-orange-500">
+                <Settings className="h-5 w-5 text-white" />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configurações do Tablet</h1>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button variant="outline" onClick={loadSettings} disabled={isLoading} className="rounded-full">
+                <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+                Atualizar
+              </Button>
+              <Button onClick={saveSettings} disabled={saving} className="bg-orange-500 hover:bg-orange-600 text-white rounded-full">
+                {saving ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4 mr-2" />
+                )}
+                Salvar Configurações
+              </Button>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">Configurações do Tablet</h1>
-            <p className="text-gray-400 text-sm">Gerencie o comportamento dos tablets em tempo real</p>
+
+          {/* Subtitle */}
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            Gerencie o comportamento dos tablets em tempo real
+          </p>
+
+          {/* Summary */}
+          <div className="flex items-center gap-6 text-sm">
+            <div className="flex items-center gap-2">
+              <Sun className="h-4 w-4 text-yellow-500" />
+              <span className="text-gray-600 dark:text-gray-400">Brilho: {brightnessEnabled ? 'Ativado' : 'Desativado'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="h-4 w-4 text-blue-500" />
+              <span className="text-gray-600 dark:text-gray-400">Tempo ocioso: {formatTime(idleTimeoutSeconds)}</span>
+            </div>
           </div>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={loadSettings} disabled={isLoading}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            Atualizar
-          </Button>
-          <Button onClick={saveSettings} disabled={saving} className="bg-orange-500 hover:bg-orange-600">
-            {saving ? (
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            ) : (
-              <Save className="w-4 h-4 mr-2" />
-            )}
-            Salvar Configurações
-          </Button>
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      {/* Content */}
+      <div className="m-4 grid gap-6 md:grid-cols-2">
         <Card className="bg-zinc-900 border-zinc-800">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
@@ -305,53 +326,55 @@ export default function TabletSettingsPage() {
         </Card>
       </div>
 
-      <Card className="bg-zinc-900 border-zinc-800">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Hand className="w-5 h-5 text-orange-500" />
-            Como Funciona
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid gap-4 md:grid-cols-3">
-            <div className="p-4 bg-zinc-800 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
-                  <span className="text-orange-500 font-bold">1</span>
+      <div className="m-4">
+        <Card className="bg-zinc-900 border-zinc-800">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Hand className="w-5 h-5 text-orange-500" />
+              Como Funciona
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="p-4 bg-zinc-800 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                    <span className="text-orange-500 font-bold">1</span>
+                  </div>
+                  <h3 className="font-medium text-white">Inatividade</h3>
                 </div>
-                <h3 className="font-medium text-white">Inatividade</h3>
+                <p className="text-sm text-gray-400">
+                  Após o tempo configurado sem interação, o brilho do tablet é reduzido automaticamente.
+                </p>
               </div>
-              <p className="text-sm text-gray-400">
-                Após o tempo configurado sem interação, o brilho do tablet é reduzido automaticamente.
-              </p>
-            </div>
 
-            <div className="p-4 bg-zinc-800 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
-                  <span className="text-orange-500 font-bold">2</span>
+              <div className="p-4 bg-zinc-800 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                    <span className="text-orange-500 font-bold">2</span>
+                  </div>
+                  <h3 className="font-medium text-white">Toque para Acordar</h3>
                 </div>
-                <h3 className="font-medium text-white">Toque para Acordar</h3>
+                <p className="text-sm text-gray-400">
+                  O cliente pode tocar em qualquer lugar da tela para restaurar o brilho normal.
+                </p>
               </div>
-              <p className="text-sm text-gray-400">
-                O cliente pode tocar em qualquer lugar da tela para restaurar o brilho normal.
-              </p>
-            </div>
 
-            <div className="p-4 bg-zinc-800 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
-                  <span className="text-orange-500 font-bold">3</span>
+              <div className="p-4 bg-zinc-800 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
+                    <span className="text-orange-500 font-bold">3</span>
+                  </div>
+                  <h3 className="font-medium text-white">Sincronização</h3>
                 </div>
-                <h3 className="font-medium text-white">Sincronização</h3>
+                <p className="text-sm text-gray-400">
+                  As configurações são aplicadas em todos os tablets automaticamente ao salvar.
+                </p>
               </div>
-              <p className="text-sm text-gray-400">
-                As configurações são aplicadas em todos os tablets automaticamente ao salvar.
-              </p>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }
