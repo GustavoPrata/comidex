@@ -338,6 +338,8 @@ function MainApp() {
   const [registrationInfo, setRegistrationInfo] = useState<{ name?: string; slots_available?: boolean; current_count?: number; max_tablets?: number } | null>(null);
   const connectionCheckRef = useRef<NodeJS.Timeout | null>(null);
   const isCheckingRef = useRef(false);
+  const connectionModalOpacity = useRef(new Animated.Value(1)).current;
+  const connectionModalClosing = useRef(false);
 
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -447,7 +449,7 @@ function MainApp() {
             setTabletRegistered(true);
             setRegistrationInfo({ name: registerData.tablet?.name });
             setConnectionState('registered');
-            setAppReady(true);
+            // appReady will be set after modal closes with animation
           } else if (registerData.slots_available) {
             // Auto-register the tablet
             console.log('📝 Registrando tablet automaticamente...');
@@ -466,7 +468,7 @@ function MainApp() {
               setTabletRegistered(true);
               setRegistrationInfo({ name: registerResult.tablet?.name });
               setConnectionState('registered');
-              setAppReady(true);
+              // appReady will be set after modal closes with animation
             } else {
               setConnectionState('error');
               setConnectionError(registerResult.message || 'Erro ao registrar tablet');
@@ -492,7 +494,7 @@ function MainApp() {
           console.log('⚠️ Erro na verificação de registro, continuando...', regError);
           setTabletRegistered(true);
           setConnectionState('registered');
-          setAppReady(true);
+          // appReady will be set after modal closes with animation
         }
         
         // Fetch settings silently
@@ -509,9 +511,25 @@ function MainApp() {
           }
         } catch (e) {}
         
-        // Close modal after brief success display
+        // Close modal with smooth fade-out after brief success display
         isCheckingRef.current = false;
-        setTimeout(() => setShowConnectionModal(false), 1000);
+        
+        // Wait 800ms to show success, then fade out
+        setTimeout(() => {
+          if (connectionModalClosing.current) return; // Prevent double animation
+          connectionModalClosing.current = true;
+          
+          Animated.timing(connectionModalOpacity, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }).start(() => {
+            setShowConnectionModal(false);
+            // Only set appReady AFTER modal is fully closed to prevent flickering
+            setAppReady(true);
+          });
+        }, 800);
+        
         return true;
       } else {
         // Server responded but with error - stay in error state without flashing
@@ -1869,11 +1887,11 @@ function MainApp() {
   const ConnectionModal = () => (
     <Modal
       visible={showConnectionModal}
-      animationType="fade"
+      animationType="none"
       transparent={true}
       onRequestClose={() => {}}
     >
-      <View style={styles.connectionModalOverlay}>
+      <Animated.View style={[styles.connectionModalOverlay, { opacity: connectionModalOpacity }]}>
         <View style={styles.connectionModalSimple}>
           <Image
             source={require('./assets/logo232.png')}
@@ -1918,7 +1936,7 @@ function MainApp() {
             </>
           )}
         </View>
-      </View>
+      </Animated.View>
     </Modal>
   );
 
