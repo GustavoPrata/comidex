@@ -251,6 +251,7 @@ function MainApp() {
   const [selectedMode, setSelectedMode] = useState<any>(null);
   const [serviceTypes, setServiceTypes] = useState<any[]>([]);
   const [groups, setGroups] = useState<any[]>([]);
+  const [selectedGroup, setSelectedGroup] = useState<any>(null);
   const [selectedRodizioGroup, setSelectedRodizioGroup] = useState<any>(null);
   
   // Modal de Rodízio (adultos e crianças)
@@ -919,6 +920,15 @@ function MainApp() {
     }
   }, [session?.id]);
 
+  // Reload categories and products when selectedGroup changes
+  useEffect(() => {
+    if (selectedGroup) {
+      console.log(`🔄 Grupo selecionado: ${selectedGroup.name} (ID: ${selectedGroup.id})`);
+      loadCategories(selectedGroup.id);
+      loadProducts(selectedGroup.id);
+    }
+  }, [selectedGroup?.id]);
+
   // Auto-reset after successful order
   const autoResetAfterOrder = useCallback(() => {
     setTimeout(() => {
@@ -1209,15 +1219,16 @@ function MainApp() {
     return null;
   };
 
-  const loadCategories = async () => {
+  const loadCategories = async (groupId?: number | null) => {
     setLoadingCategories(true);
     try {
-      const groupId = getGroupIdFromMode(selectedMode);
-      const url = groupId 
-        ? `${config.CATALOG_API.categories}?group_id=${groupId}`
+      // Use o grupo passado, ou o selectedGroup, ou fallback para o modo
+      const targetGroupId = groupId ?? selectedGroup?.id ?? getGroupIdFromMode(selectedMode);
+      const url = targetGroupId 
+        ? `${config.CATALOG_API.categories}?group_id=${targetGroupId}`
         : config.CATALOG_API.categories;
       
-      console.log(`📦 Carregando categorias do grupo ${groupId}:`, url);
+      console.log(`📦 Carregando categorias do grupo ${targetGroupId}:`, url);
       
       const response = await fetch(url);
       const data = await response.json();
@@ -1228,7 +1239,7 @@ function MainApp() {
           color: config.colors.categoryColors[index % config.colors.categoryColors.length]
         }));
         setCategories(categoriesWithColors);
-        console.log(`✅ ${categoriesWithColors.length} categorias carregadas para grupo ${groupId}`);
+        console.log(`✅ ${categoriesWithColors.length} categorias carregadas para grupo ${targetGroupId}`);
       }
     } catch (error) {
       console.error("Erro ao carregar categorias:", error);
@@ -1238,21 +1249,22 @@ function MainApp() {
     }
   };
 
-  const loadProducts = async () => {
+  const loadProducts = async (groupId?: number | null) => {
     setLoadingProducts(true);
     try {
-      const groupId = getGroupIdFromMode(selectedMode);
-      const url = groupId
-        ? `${config.CATALOG_API.products}?group_id=${groupId}`
+      // Use o grupo passado, ou o selectedGroup, ou fallback para o modo
+      const targetGroupId = groupId ?? selectedGroup?.id ?? getGroupIdFromMode(selectedMode);
+      const url = targetGroupId
+        ? `${config.CATALOG_API.products}?group_id=${targetGroupId}`
         : config.CATALOG_API.products;
       
-      console.log(`📦 Carregando produtos do grupo ${groupId}:`, url);
+      console.log(`📦 Carregando produtos do grupo ${targetGroupId}:`, url);
       
       const response = await fetch(url);
       const data = await response.json();
       if (data.success) {
         setProducts(data.products);
-        console.log(`✅ ${data.products.length} produtos carregados para grupo ${groupId}`);
+        console.log(`✅ ${data.products.length} produtos carregados para grupo ${targetGroupId}`);
       }
     } catch (error) {
       console.error("Erro ao carregar produtos:", error);
@@ -1282,6 +1294,12 @@ function MainApp() {
           }
         });
         setGroups(allGroups);
+        
+        // Auto-select first group if no group is selected yet
+        if (allGroups.length > 0 && !selectedGroup) {
+          setSelectedGroup(allGroups[0]);
+          console.log(`📌 Grupo selecionado automaticamente: ${allGroups[0].name}`);
+        }
         
         // Process service types - ÍCONE JÁ VEM CORRETO DO ADMIN
         const processedTypes = data.serviceTypes.map((type: any) => {
@@ -2820,28 +2838,55 @@ function MainApp() {
 
         {/* 3-Column Main Content Area - Goomer Style with Apple Glass */}
         <View style={styles.mainContentGlass}>
-          {/* Left Sidebar - Groups/Modes */}
+          {/* Left Sidebar - Groups */}
           <BlurView intensity={75} tint="dark" style={styles.leftSidebarGlass}>
             <View style={styles.sidebarHeader}>
-              <Text style={styles.sidebarTitle}>Cardápio</Text>
+              <Text style={styles.sidebarTitle}>Grupos</Text>
             </View>
             <ScrollView 
               showsVerticalScrollIndicator={false}
               style={styles.groupsList}
+              contentContainerStyle={{ paddingBottom: 20 }}
             >
-              {selectedMode && (
-                <View style={styles.selectedModeCompact}>
-                  {/* Compact mode display - icon on top, name below */}
-                  <View style={styles.compactIconContainer}>
-                    <IconComponent 
-                      name={selectedMode.icon || 'restaurant'} 
-                      size={32} 
-                      color="#FF7043"
-                    />
-                  </View>
-                  <Text style={styles.compactModeName}>
-                    {selectedMode.name}
-                  </Text>
+              {groups.length > 0 ? (
+                groups.map((group) => (
+                  <TouchableOpacity
+                    key={group.id}
+                    style={[
+                      styles.groupItemGlass,
+                      selectedGroup?.id === group.id && styles.groupItemActiveGlass
+                    ]}
+                    onPress={() => {
+                      setSelectedGroup(group);
+                      setSelectedCategory(null);
+                      resetIdleTimer();
+                    }}
+                  >
+                    <View style={[
+                      styles.groupIconContainerGlass,
+                      selectedGroup?.id === group.id && styles.groupIconActiveGlass
+                    ]}>
+                      <IconComponent 
+                        name={group.icon_id || 'restaurant'} 
+                        size={24} 
+                        color={selectedGroup?.id === group.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} 
+                      />
+                    </View>
+                    <Text style={[
+                      styles.groupNameGlass,
+                      selectedGroup?.id === group.id && styles.groupNameActiveGlass
+                    ]}>
+                      {group.name}
+                    </Text>
+                    {selectedGroup?.id === group.id && (
+                      <View style={styles.groupActiveIndicator} />
+                    )}
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <View style={styles.loadingCategoriesGlass}>
+                  <ActivityIndicator size="small" color="#FF7043" />
+                  <Text style={styles.loadingTextGlass}>Carregando grupos...</Text>
                 </View>
               )}
             </ScrollView>
