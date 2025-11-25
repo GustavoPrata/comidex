@@ -1908,12 +1908,12 @@ function MainApp() {
                       
                       {/* Table Name - Smaller */}
                       <Text style={{
-                        fontSize: 7,
-                        color: 'rgba(255, 255, 255, 0.4)',
+                        fontSize: 8,
+                        color: 'rgba(255, 255, 255, 0.5)',
                         marginBottom: 2,
                         textAlign: 'center',
                       }}>
-                        {table.name.length > 8 ? table.name.substring(0, 8) + '..' : table.name}
+                        {table.name}
                       </Text>
                       
                       {/* Status Badge - Smaller */}
