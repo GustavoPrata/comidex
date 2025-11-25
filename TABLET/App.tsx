@@ -1705,6 +1705,57 @@ function MainApp() {
     setShowObservationModal(true);
   };
 
+  // Handle remove from cart (decrease quantity or remove)
+  const handleRemoveFromCart = (productId: number) => {
+    resetIdleTimer();
+    const existingItem = cart.find((item) => item.id === productId);
+    
+    if (existingItem) {
+      if (existingItem.quantity > 1) {
+        setCart(
+          cart.map((item) =>
+            item.id === productId
+              ? { ...item, quantity: item.quantity - 1 }
+              : item
+          )
+        );
+      } else {
+        setCart(cart.filter((item) => item.id !== productId));
+      }
+    }
+  };
+
+  // Handle quick add to cart (without observation modal)
+  const handleQuickAddToCart = (product: Product) => {
+    resetIdleTimer();
+    
+    // Bounce animation
+    Animated.sequence([
+      Animated.spring(cartBounceAnim, {
+        toValue: 1.2,
+        useNativeDriver: true,
+      }),
+      Animated.spring(cartBounceAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    const existingItem = cart.find((item) => item.id === product.id && !item.observation);
+
+    if (existingItem) {
+      setCart(
+        cart.map((item) =>
+          item.id === product.id && !item.observation
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        )
+      );
+    } else {
+      setCart([...cart, { ...product, quantity: 1 }]);
+    }
+  };
+
   // Confirm add to cart with observation
   const confirmAddToCart = () => {
     if (selectedProductForObservation) {
@@ -3086,62 +3137,73 @@ function MainApp() {
                     <Text style={styles.emptySubtextGlass}>Tente buscar por outro termo</Text>
                   </View>
                 }
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={styles.productCardGlass}
-                    onPress={() => handleAddToCart(item)}
-                    activeOpacity={0.85}
-                  >
-                    <BlurView intensity={80} tint="dark" style={styles.productCardInnerGlass}>
-                      {/* Product Image - Left Side */}
+                renderItem={({ item }) => {
+                  const itemInCart = cart.find(c => c.id === item.id);
+                  const quantity = itemInCart ? itemInCart.quantity : 0;
+                  
+                  return (
+                    <View style={styles.productCardGlass}>
+                      {/* Product Image - Left Side 16:9 */}
                       {item.image_url ? (
                         <Image source={{ uri: item.image_url }} style={styles.productImageGlass} />
                       ) : (
                         <View style={styles.productImagePlaceholderGlass}>
-                          <IconComponent name="sushi" size={28} color="rgba(255, 255, 255, 0.3)" />
+                          <IconComponent name="sushi" size={32} color="rgba(255, 255, 255, 0.3)" />
                         </View>
                       )}
                       
                       {/* Product Info - Right Side */}
                       <View style={styles.productInfoGlass}>
-                        <Text style={styles.productNameGlass} numberOfLines={2}>
-                          {item.name}
-                        </Text>
+                        {/* Name and Price Row */}
+                        <View style={styles.productNameRow}>
+                          <Text style={styles.productNameGlass} numberOfLines={2}>
+                            {item.name}
+                          </Text>
+                          {parseFloat(item.price) > 0 && (
+                            <Text style={styles.productPriceRight}>
+                              R$ {parseFloat(item.price).toFixed(2)}
+                            </Text>
+                          )}
+                        </View>
                         
+                        {/* Description */}
                         {item.description && (
                           <Text style={styles.productDescriptionGlass} numberOfLines={2}>
                             {item.description}
                           </Text>
                         )}
                         
-                        {/* Price Section */}
-                        <View style={styles.productFooterGlass}>
-                          {parseFloat(item.price) > 0 && (
-                            <View style={styles.priceContainerGlass}>
-                              <Text style={styles.currencyGlass}>R$</Text>
-                              <Text style={styles.priceValueGlass}>
-                                {parseFloat(item.price).toFixed(2)}
-                              </Text>
-                            </View>
-                          )}
-                          
-                          {/* Add Button */}
+                        {/* Quantity Controls */}
+                        <View style={styles.quantityControlsRow}>
                           <TouchableOpacity 
-                            style={styles.addButtonGlass}
+                            style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
+                            onPress={() => {
+                              if (quantity > 0) {
+                                handleRemoveFromCart(item.id);
+                              }
+                              resetIdleTimer();
+                            }}
                             activeOpacity={0.7}
                           >
-                            <LinearGradient
-                              colors={['#FF7043', '#FF5722']}
-                              style={styles.addButtonGradientGlass}
-                            >
-                              <IconComponent name="plus" size={18} color="#FFFFFF" />
-                            </LinearGradient>
+                            <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
+                          </TouchableOpacity>
+                          
+                          <Text style={styles.quantityText}>{quantity}</Text>
+                          
+                          <TouchableOpacity 
+                            style={styles.quantityButtonPlus}
+                            onPress={() => {
+                              handleQuickAddToCart(item);
+                            }}
+                            activeOpacity={0.7}
+                          >
+                            <IconComponent name="plus" size={18} color="#FFFFFF" />
                           </TouchableOpacity>
                         </View>
                       </View>
-                    </BlurView>
-                  </TouchableOpacity>
-                )}
+                    </View>
+                  );
+                }}
               />
             )}
           </View>
@@ -3604,17 +3666,17 @@ function MainApp() {
                 </View>
                 <View style={styles.cartItemQuantity}>
                   <TouchableOpacity
-                    style={styles.quantityButton}
+                    style={styles.cartQuantityButton}
                     onPress={() => updateQuantity(item.id, item.quantity - 1)}
                   >
-                    <Text style={styles.quantityButtonText}>-</Text>
+                    <Text style={styles.cartQuantityButtonText}>-</Text>
                   </TouchableOpacity>
-                  <Text style={styles.quantityText}>{item.quantity}</Text>
+                  <Text style={styles.cartQuantityText}>{item.quantity}</Text>
                   <TouchableOpacity
-                    style={styles.quantityButton}
+                    style={styles.cartQuantityButton}
                     onPress={() => updateQuantity(item.id, item.quantity + 1)}
                   >
-                    <Text style={styles.quantityButtonText}>+</Text>
+                    <Text style={styles.cartQuantityButtonText}>+</Text>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -5323,106 +5385,87 @@ const styles = StyleSheet.create({
   // Product Card Styles - Horizontal Layout
   productCardGlass: {
     width: '100%',
-    marginBottom: 8,
-  },
-  productCardInnerGlass: {
-    borderRadius: 12,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    borderRadius: 8,
+    overflow: 'hidden',
   },
   productImageGlass: {
-    width: 200,
-    height: 112,
+    width: 140,
+    height: 79,
     resizeMode: 'cover',
-    borderRadius: 12,
-    margin: 10,
   },
   productImagePlaceholderGlass: {
-    width: 200,
-    height: 112,
+    width: 140,
+    height: 79,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 12,
-    margin: 10,
-  },
-  premiumBadgeGlass: {
-    position: 'absolute',
-    top: 4,
-    left: 4,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 2,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-    borderRadius: 8,
-  },
-  premiumTextGlass: {
-    fontSize: 8,
-    fontWeight: '700',
-    color: '#FFFFFF',
   },
   productInfoGlass: {
     flex: 1,
     paddingVertical: 8,
-    paddingRight: 12,
+    paddingHorizontal: 12,
     justifyContent: 'center',
+  },
+  productNameRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 4,
   },
   productNameGlass: {
     fontSize: 14,
     fontWeight: '600',
     color: '#FFFFFF',
-    marginBottom: 2,
+    flex: 1,
+    marginRight: 8,
+  },
+  productPriceRight: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#FF7043',
   },
   productDescriptionGlass: {
     fontSize: 11,
     color: 'rgba(255, 255, 255, 0.5)',
-    marginBottom: 4,
+    marginBottom: 8,
     lineHeight: 14,
   },
-  productFooterGlass: {
+  quantityControlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 4,
+    gap: 12,
   },
-  currencyGlass: {
-    fontSize: 11,
-    color: 'rgba(255, 255, 255, 0.6)',
-    marginRight: 2,
-  },
-  priceValueGlass: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#FFFFFF',
-  },
-  rodizioTagGlass: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    backgroundColor: 'rgba(255, 112, 67, 0.15)',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  rodizioTextGlass: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: '#FF7043',
-  },
-  addButtonGlass: {
-    width: 28,
-    height: 28,
-  },
-  addButtonGradientGlass: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+  quantityButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 112, 67, 0.3)',
+  },
+  quantityButtonDisabled: {
+    borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  quantityButtonPlus: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#FF7043',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quantityText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    minWidth: 24,
+    textAlign: 'center',
   },
   headerLeft: {
     flexDirection: "row",
@@ -5853,7 +5896,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 15,
   },
-  quantityButton: {
+  cartQuantityButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
@@ -5861,12 +5904,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  quantityButtonText: {
+  cartQuantityButtonText: {
     fontSize: 20,
     fontWeight: "bold",
     color: config.colors.textPrimary,
   },
-  quantityText: {
+  cartQuantityText: {
     fontSize: 18,
     fontWeight: "bold",
     color: config.colors.textPrimary,
