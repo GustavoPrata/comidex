@@ -3475,34 +3475,62 @@ function MainApp() {
           </View>
         </View>
 
-        {/* Bottom Action Button - Add to Cart */}
+        {/* Add to Cart Button - appears when temp items selected */}
         {getTempItemsCount() > 0 && (
-          <View style={styles.bottomActionBar}>
-            {/* Clear Button */}
+          <Animated.View style={[
+            styles.cartFloatingButtonContainer,
+            { transform: [{ scale: cartBounceAnim }] }
+          ]}>
+            {/* Clear Button - Circle on Left */}
             <TouchableOpacity
-              style={styles.bottomActionClear}
+              style={styles.clearTempButton}
               onPress={() => {
                 triggerHaptic();
                 setTempQuantities({});
                 resetIdleTimer();
               }}
             >
-              <X size={22} color="#FF7043" strokeWidth={2.5} />
+              <X size={20} color="#FFF" strokeWidth={2.5} />
             </TouchableOpacity>
             
-            {/* Add to Cart Button */}
+            {/* Add to Cart Button with concave left edge */}
             <TouchableOpacity
-              style={styles.bottomActionButton}
+              style={styles.addToCartButtonWrapper}
               onPress={() => {
                 triggerHaptic();
                 addTempToCart();
                 resetIdleTimer();
               }}
-              activeOpacity={0.9}
+              activeOpacity={0.85}
             >
-              <Text style={styles.bottomActionText}>Adicionar {getTempItemsCount()} {getTempItemsCount() === 1 ? 'item' : 'itens'}</Text>
+              <Svg width={290} height={56} style={styles.addToCartSvg}>
+                <Defs>
+                  <SvgLinearGradient id="buttonGrad" x1="0" y1="0" x2="1" y2="0">
+                    <Stop offset="0" stopColor="#FF7043" />
+                    <Stop offset="1" stopColor="#F4511E" />
+                  </SvgLinearGradient>
+                </Defs>
+                <Path
+                  d={`
+                    M 32 2
+                    L 260 2
+                    Q 288 2 288 28
+                    Q 288 54 260 54
+                    L 32 54
+                    A 26 26 0 0 0 32 2
+                    Z
+                  `}
+                  fill="url(#buttonGrad)"
+                />
+              </Svg>
+              <View style={styles.addToCartContent}>
+                <View style={styles.cartBadge}>
+                  <Text style={styles.cartBadgeText}>{getTempItemsCount()}</Text>
+                </View>
+                <Text style={styles.cartFloatingButtonText}>Adicionar ao Carrinho</Text>
+              </View>
             </TouchableOpacity>
-          </View>
+          </Animated.View>
         )}
 
 
@@ -6222,46 +6250,50 @@ const styles = StyleSheet.create({
     color: config.colors.textSecondary,
     textAlign: "center",
   },
-  bottomActionBar: {
+  cartFloatingButtonContainer: {
     position: "absolute",
-    bottom: 20,
-    left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 160,
-    width: 320,
+    bottom: 24,
+    left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 155,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    backgroundColor: 'rgba(0,0,0,0.95)',
-    borderRadius: 16,
-    padding: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.4,
-    shadowRadius: 20,
-    elevation: 15,
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 12,
   },
-  bottomActionClear: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255,112,67,0.15)',
+  clearTempButton: {
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#D84315',
     alignItems: 'center',
     justifyContent: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,112,67,0.3)',
+    marginRight: -26,
+    zIndex: 10,
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.25)',
   },
-  bottomActionButton: {
-    flex: 1,
-    height: 48,
-    borderRadius: 12,
-    backgroundColor: '#FF7043',
+  addToCartButtonWrapper: {
+    position: 'relative',
+    width: 290,
+    height: 56,
+  },
+  addToCartSvg: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  addToCartContent: {
+    position: 'absolute',
+    top: 0,
+    left: 60,
+    right: 20,
+    bottom: 0,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  bottomActionText: {
-    color: '#FFF',
-    fontSize: 17,
-    fontWeight: '700',
-    letterSpacing: 0.3,
+    gap: 12,
   },
   cartFloatingButton: {
     position: "absolute",
