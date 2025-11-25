@@ -1033,11 +1033,9 @@ function MainApp() {
     }
   }, [selectedGroup?.id]);
 
-  // Animate category change and scroll category list to follow
+  // Scroll category list to follow selected category
   useEffect(() => {
-    if (selectedCategory && selectedCategory !== lastSelectedCategoryRef.current) {
-      lastSelectedCategoryRef.current = selectedCategory;
-      
+    if (selectedCategory) {
       // Fade in glow animation
       categoryGlowAnim.setValue(0);
       Animated.timing(categoryGlowAnim, {
@@ -1046,7 +1044,7 @@ function MainApp() {
         useNativeDriver: true,
       }).start();
       
-      // Always scroll category list to show selected category
+      // Scroll category list to show selected category
       scrollToCategoryInList(selectedCategory);
     }
   }, [selectedCategory]);
@@ -1944,43 +1942,41 @@ function MainApp() {
     return { length, offset, index };
   };
 
-  // Scroll para categoria quando clicada (user initiated) - OPTIMIZED
+  // Scroll para categoria quando clicada (user initiated) - FIXED
   const scrollToCategory = (categoryId: number) => {
-    // Mark as programmatic scroll to prevent handleProductScroll from fighting
+    // Block scroll detection completely during programmatic scroll
     isProgrammaticScrollRef.current = true;
+    lastSelectedCategoryRef.current = categoryId;
     
     const items = getProductsWithHeaders();
     const index = items.findIndex(item => typeof item === 'object' && 'isHeader' in item && item.categoryId === categoryId);
     
     if (index !== -1 && productListRef.current) {
-      // Use scrollToOffset directly for precise positioning at top
       const layout = getItemLayout(items, index);
       productListRef.current.scrollToOffset({ offset: layout.offset, animated: true });
     }
-    
-    // Release lock after scroll animation completes
+  };
+
+  // Called when scroll animation ends - release lock
+  const handleScrollEnd = () => {
+    // Small delay to ensure scroll is fully complete
     setTimeout(() => {
       isProgrammaticScrollRef.current = false;
-    }, 400);
+    }, 50);
   };
 
-  // Called when scroll momentum ends - release programmatic scroll lock
-  const handleScrollEnd = () => {
-    isProgrammaticScrollRef.current = false;
-  };
-
-  // Detecta categoria visível ao scrollar (user scroll only) - INSTANT
+  // Detecta categoria visível ao scrollar (user scroll only)
   const handleProductScroll = (event: any) => {
     resetIdleTimer();
     
-    // Ignore if this is a programmatic scroll (user clicked a category)
+    // Completely ignore during programmatic scroll
     if (isProgrammaticScrollRef.current) return;
     
     const offsetY = event.nativeEvent.contentOffset.y;
     const items = getProductsWithHeaders();
     if (!items || items.length === 0) return;
     
-    // Find category at current scroll position - INSTANT detection
+    // Find category at current scroll position
     let currentCategoryId: number | null = null;
     let accumulatedHeight = CONTENT_PADDING;
     
@@ -1995,8 +1991,9 @@ function MainApp() {
       }
     }
     
-    // Update instantly when category changes
-    if (currentCategoryId && currentCategoryId !== selectedCategory) {
+    // Only update if different from last selected
+    if (currentCategoryId && currentCategoryId !== lastSelectedCategoryRef.current) {
+      lastSelectedCategoryRef.current = currentCategoryId;
       setSelectedCategory(currentCategoryId);
     }
   };
@@ -3103,17 +3100,6 @@ function MainApp() {
               >
                 <IconComponent name="bill" size={18} color="#FFFFFF" />
                 <Text style={styles.billButtonTextGlass}>Conta</Text>
-              </TouchableOpacity>
-              
-              <TouchableOpacity
-                style={styles.exitButtonGlass}
-                onPress={() => {
-                  setSelectedMode(null);
-                  setCart([]);
-                  resetIdleTimer();
-                }}
-              >
-                <IconComponent name="exit" size={18} color="#FFFFFF" />
               </TouchableOpacity>
             </View>
           </View>
