@@ -3,21 +3,16 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { 
   Tablet,
   Trash2,
   RefreshCw,
   Loader2,
-  Settings,
   Wifi,
   WifiOff,
-  Clock,
-  Save,
-  AlertTriangle
+  Clock
 } from "lucide-react"
 import { toast } from "sonner"
 import {
@@ -45,7 +40,6 @@ export default function TabletsPage() {
   const [tablets, setTablets] = useState<RegisteredTablet[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [maxTablets, setMaxTablets] = useState(20)
-  const [saving, setSaving] = useState(false)
   const [deleteTablet, setDeleteTablet] = useState<RegisteredTablet | null>(null)
   const supabase = createClient()
 
@@ -73,27 +67,6 @@ export default function TabletsPage() {
       toast.error('Erro ao carregar tablets')
     } finally {
       setIsLoading(false)
-    }
-  }
-
-  const saveMaxTablets = async () => {
-    try {
-      setSaving(true)
-      const { error } = await supabase
-        .from('tablet_settings')
-        .update({ 
-          setting_value: maxTablets.toString(),
-          updated_at: new Date().toISOString()
-        })
-        .eq('setting_key', 'max_tablets')
-
-      if (error) throw error
-      toast.success('Limite de tablets atualizado!')
-    } catch (error: any) {
-      console.error('Erro ao salvar:', error)
-      toast.error('Erro ao salvar configuração')
-    } finally {
-      setSaving(false)
     }
   }
 
@@ -209,88 +182,13 @@ export default function TabletsPage() {
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-blue-500/20">
-                <Settings className="h-5 w-5 text-blue-500" />
+                <Tablet className="h-5 w-5 text-blue-500" />
               </div>
               <div>
                 <p className="text-sm text-gray-400">Limite</p>
                 <p className="text-2xl font-bold text-white">{maxTablets}</p>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Settings className="w-5 h-5 text-orange-500" />
-              Limite de Tablets
-            </CardTitle>
-            <CardDescription>
-              Número máximo de tablets que podem ser registrados
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <Label className="text-white mb-2 block">Máximo de tablets</Label>
-                <Input
-                  type="number"
-                  min={1}
-                  max={100}
-                  value={maxTablets}
-                  onChange={(e) => setMaxTablets(parseInt(e.target.value) || 1)}
-                  className="bg-zinc-800 border-zinc-700 text-white"
-                />
-              </div>
-              <Button 
-                onClick={saveMaxTablets} 
-                disabled={saving}
-                className="bg-orange-500 hover:bg-orange-600 mt-6"
-              >
-                {saving ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Save className="w-4 h-4" />
-                )}
-              </Button>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <span className="text-gray-400">Tablets registrados:</span>
-              <Badge className={tablets.length >= maxTablets ? 'bg-red-500' : 'bg-green-500'}>
-                {tablets.length} / {maxTablets}
-              </Badge>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <AlertTriangle className="w-5 h-5 text-orange-500" />
-              Como Funciona
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li className="flex items-start gap-2">
-                <span className="text-orange-500">1.</span>
-                Quando um novo tablet se conecta, ele solicita registro automaticamente
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-orange-500">2.</span>
-                Se houver vagas disponíveis (dentro do limite), o registro é aprovado
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-orange-500">3.</span>
-                Tablets registrados podem acessar o sistema normalmente
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-orange-500">4.</span>
-                Remova tablets não utilizados para liberar vagas
-              </li>
-            </ul>
           </CardContent>
         </Card>
       </div>

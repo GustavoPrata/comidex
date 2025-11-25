@@ -23,7 +23,8 @@ import {
   Image,
   Globe,
   DollarSign,
-  Settings
+  Settings,
+  Tablet
 } from "lucide-react";
 import useSWR, { mutate } from 'swr';
 
@@ -355,11 +356,12 @@ export default function SettingsPage() {
           </div>
         ) : (
           <Tabs defaultValue="general" className="space-y-6">
-            <TabsList className="grid grid-cols-4 w-full max-w-2xl">
+            <TabsList className="grid grid-cols-5 w-full max-w-3xl">
               <TabsTrigger value="general">Geral</TabsTrigger>
               <TabsTrigger value="hours">Horários</TabsTrigger>
               <TabsTrigger value="payment">Pagamento</TabsTrigger>
               <TabsTrigger value="social">Social</TabsTrigger>
+              <TabsTrigger value="tablets">Tablets</TabsTrigger>
             </TabsList>
 
             {/* General Tab */}
@@ -915,8 +917,122 @@ export default function SettingsPage() {
                 </div>
               </div>
             </TabsContent>
+
+            {/* Tablets Tab */}
+            <TabsContent value="tablets" className="space-y-6">
+              <TabletSettingsSection />
+            </TabsContent>
           </Tabs>
         )}
+      </div>
+    </div>
+  );
+}
+
+function TabletSettingsSection() {
+  const supabase = createClient();
+  const [maxTablets, setMaxTablets] = useState(20);
+  const [tabletsCount, setTabletsCount] = useState(0);
+  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadTabletSettings();
+  }, []);
+
+  const loadTabletSettings = async () => {
+    try {
+      const [settingsRes, countRes] = await Promise.all([
+        supabase.from('tablet_settings').select('*').eq('setting_key', 'max_tablets').single(),
+        supabase.from('registered_tablets').select('*', { count: 'exact', head: true })
+      ]);
+
+      if (settingsRes.data) {
+        setMaxTablets(parseInt(settingsRes.data.setting_value) || 20);
+      }
+      setTabletsCount(countRes.count || 0);
+    } catch (error) {
+      console.error('Erro ao carregar configurações de tablets:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const saveMaxTablets = async () => {
+    try {
+      setSaving(true);
+      const { error } = await supabase
+        .from('tablet_settings')
+        .update({ 
+          setting_value: maxTablets.toString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('setting_key', 'max_tablets');
+
+      if (error) throw error;
+      toast.success('Limite de tablets atualizado!');
+    } catch (error: any) {
+      console.error('Erro ao salvar:', error);
+      toast.error('Erro ao salvar configuração');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-6 bg-white dark:bg-gray-900 rounded-lg">
+      <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+        <Tablet className="h-5 w-5 text-orange-500" />
+        Limite de Tablets
+      </h2>
+      
+      <div className="space-y-4">
+        <div>
+          <Label htmlFor="max_tablets">Número máximo de tablets registrados</Label>
+          <div className="flex items-center gap-4 mt-2">
+            <Input
+              id="max_tablets"
+              type="number"
+              min={1}
+              max={100}
+              value={maxTablets}
+              onChange={(e) => setMaxTablets(parseInt(e.target.value) || 1)}
+              className="w-32"
+            />
+            <Button
+              onClick={saveMaxTablets}
+              disabled={saving}
+              className="bg-orange-500 hover:bg-orange-600"
+            >
+              {saving ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4 mr-2" />
+              )}
+              {saving ? '' : 'Salvar'}
+            </Button>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 text-sm">
+          <span className="text-gray-500">Tablets registrados:</span>
+          <span className={`font-medium ${tabletsCount >= maxTablets ? 'text-red-500' : 'text-green-500'}`}>
+            {tabletsCount} / {maxTablets}
+          </span>
+        </div>
+
+        <p className="text-xs text-gray-500 mt-4">
+          Novos tablets serão registrados automaticamente quando se conectarem, 
+          desde que haja vagas disponíveis dentro do limite configurado.
+        </p>
       </div>
     </div>
   );
