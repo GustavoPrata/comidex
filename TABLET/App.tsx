@@ -1976,10 +1976,7 @@ function MainApp() {
     isProgrammaticScrollRef.current = false;
   };
 
-  // Detecta categoria visível ao scrollar (user scroll only) - OPTIMIZED
-  const lastScrollY = useRef(0);
-  const scrollThrottleRef = useRef<NodeJS.Timeout | null>(null);
-  
+  // Detecta categoria visível ao scrollar (user scroll only) - INSTANT
   const handleProductScroll = (event: any) => {
     resetIdleTimer();
     
@@ -1987,40 +1984,28 @@ function MainApp() {
     if (isProgrammaticScrollRef.current) return;
     
     const offsetY = event.nativeEvent.contentOffset.y;
+    const items = getProductsWithHeaders();
+    if (!items || items.length === 0) return;
     
-    // Throttle: only process if scrolled more than 50px
-    if (Math.abs(offsetY - lastScrollY.current) < 50) return;
-    lastScrollY.current = offsetY;
+    // Find category at current scroll position - INSTANT detection
+    let currentCategoryId: number | null = null;
+    let accumulatedHeight = CONTENT_PADDING;
     
-    // Debounce the category detection
-    if (scrollThrottleRef.current) {
-      clearTimeout(scrollThrottleRef.current);
+    for (const item of items) {
+      if (typeof item === 'object' && 'isHeader' in item) {
+        if (accumulatedHeight <= offsetY + 100) {
+          currentCategoryId = item.categoryId;
+        }
+        accumulatedHeight += HEADER_HEIGHT;
+      } else {
+        accumulatedHeight += PRODUCT_HEIGHT;
+      }
     }
     
-    scrollThrottleRef.current = setTimeout(() => {
-      const items = getProductsWithHeaders();
-      if (!items || items.length === 0) return;
-      
-      // Find category at current scroll position
-      let currentCategoryId: number | null = null;
-      let accumulatedHeight = CONTENT_PADDING;
-      
-      for (const item of items) {
-        if (typeof item === 'object' && 'isHeader' in item) {
-          if (accumulatedHeight <= offsetY + 100) {
-            currentCategoryId = item.categoryId;
-          }
-          accumulatedHeight += HEADER_HEIGHT;
-        } else {
-          accumulatedHeight += PRODUCT_HEIGHT;
-        }
-      }
-      
-      // Only update if category changed
-      if (currentCategoryId && currentCategoryId !== selectedCategory) {
-        setSelectedCategory(currentCategoryId);
-      }
-    }, 100);
+    // Update instantly when category changes
+    if (currentCategoryId && currentCategoryId !== selectedCategory) {
+      setSelectedCategory(currentCategoryId);
+    }
   };
 
   const updateQuantity = (productId: number, quantity: number) => {
