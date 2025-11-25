@@ -3597,7 +3597,7 @@ function MainApp() {
                 </View>
               )}
               <View style={styles.imageModalInfoBar}>
-                <Text style={styles.imageModalTitle}>{imageModalProduct.name.toUpperCase()}</Text>
+                <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
                 {imageModalProduct.description && (
                   <Text style={styles.imageModalDescription}>{imageModalProduct.description}</Text>
                 )}
@@ -5874,25 +5874,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-    paddingVertical: 20,
-    paddingHorizontal: 25,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 40,
+    right: 120,
+    backgroundColor: 'rgba(20, 20, 20, 0.95)',
+    paddingVertical: 24,
+    paddingHorizontal: 30,
+    paddingRight: 40,
+    borderTopRightRadius: 0,
   },
   imageModalTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    flexShrink: 0,
+    marginBottom: 8,
+    letterSpacing: 1,
   },
   imageModalDescription: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: 20,
-    flex: 1,
+    color: 'rgba(255, 255, 255, 0.7)',
+    lineHeight: 22,
   },
   cartModal: {
     position: "absolute",
