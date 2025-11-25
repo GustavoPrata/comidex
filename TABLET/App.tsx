@@ -5385,6 +5385,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     flex: 1,
     marginRight: 10,
+    marginBottom: 6,
   },
   productPriceRight: {
     fontSize: 16,
