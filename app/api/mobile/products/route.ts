@@ -11,11 +11,11 @@ export async function GET(request: NextRequest) {
     const group_id = searchParams.get('group_id')
     const mode = searchParams.get('mode') // 'rodizio' ou 'carte'
     
-    let products = []
+    let products: any[] = []
     
     if (group_id) {
-      // Buscar produtos através da tabela ponte
-      const { data, error } = await supabase
+      // Primeiro, tentar buscar produtos através da tabela ponte group_item_settings
+      const { data: groupItemsData, error: groupItemsError } = await supabase
         .from('group_item_settings')
         .select(`
           item_id,
@@ -43,22 +43,61 @@ export async function GET(request: NextRequest) {
         .eq('items.active', true)
         .order('sort_order', { ascending: true })
       
-      if (error) throw error
+      if (groupItemsError) throw groupItemsError
       
-      // Remodelar os dados
-      products = data?.map(item => ({
-        id: item.items.id,
-        name: item.items.name,
-        description: item.items.description,
-        price: item.price_override || item.items.price, // Usar preço override se existir
-        image: item.items.image,
-        category_id: item.items.category_id,
-        active: item.items.active,
-        available: item.is_available,
-        printer_id: item.items.printer_id,
-        categories: item.items.categories,
-        group_id: parseInt(group_id)
-      })) || []
+      // Se encontrou produtos na tabela ponte, usar esses
+      if (groupItemsData && groupItemsData.length > 0) {
+        products = groupItemsData.map(item => ({
+          id: item.items.id,
+          name: item.items.name,
+          description: item.items.description,
+          price: item.price_override || item.items.price,
+          image: item.items.image,
+          category_id: item.items.category_id,
+          active: item.items.active,
+          available: item.is_available,
+          printer_id: item.items.printer_id,
+          categories: item.items.categories,
+          group_id: parseInt(group_id)
+        }))
+      } else {
+        // Se não encontrou na tabela ponte, buscar produtos das categorias associadas ao grupo
+        const { data: groupCategoriesData, error: groupCatError } = await supabase
+          .from('group_categories')
+          .select('category_id')
+          .eq('group_id', group_id)
+          .eq('active', true)
+        
+        if (groupCatError) throw groupCatError
+        
+        if (groupCategoriesData && groupCategoriesData.length > 0) {
+          const categoryIds = groupCategoriesData.map(gc => gc.category_id)
+          
+          // Buscar todos os produtos dessas categorias
+          const { data: itemsData, error: itemsError } = await supabase
+            .from('items')
+            .select('*, categories(name, image)')
+            .in('category_id', categoryIds)
+            .eq('active', true)
+            .order('name', { ascending: true })
+          
+          if (itemsError) throw itemsError
+          
+          products = itemsData?.map(item => ({
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            image: item.image,
+            category_id: item.category_id,
+            active: item.active,
+            available: item.available,
+            printer_id: item.printer_id,
+            categories: item.categories,
+            group_id: parseInt(group_id)
+          })) || []
+        }
+      }
       
       // Filtrar por categoria se especificado
       if (category_id && category_id !== '999') {
