@@ -2,6 +2,7 @@
   "/admin/items/page": "app/admin/items/page.js",
   "/admin/tablet-settings/page": "app/admin/tablet-settings/page.js",
   "/admin/tablets/page": "app/admin/tablets/page.js",
+  "/api/groups/route": "app/api/groups/route.js",
   "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
   "/api/mobile/products/route": "app/api/mobile/products/route.js",
   "/api/mobile/tablet-register/route": "app/api/mobile/tablet-register/route.js",

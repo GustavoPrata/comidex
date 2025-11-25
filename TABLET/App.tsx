@@ -1276,8 +1276,32 @@ function MainApp() {
 
   // FUNÇÃO REMOVIDA - agora usamos direto o ícone que vem do admin
 
+  const loadGroups = async () => {
+    try {
+      console.log("📦 Carregando todos os grupos:", config.CATALOG_API.groups);
+      const response = await fetch(config.CATALOG_API.groups);
+      const data = await response.json();
+      
+      if (Array.isArray(data)) {
+        console.log(`✅ ${data.length} grupos carregados:`, data.map((g: any) => g.name).join(', '));
+        setGroups(data);
+        
+        // Auto-select first group if no group is selected yet
+        if (data.length > 0 && !selectedGroup) {
+          setSelectedGroup(data[0]);
+          console.log(`📌 Grupo selecionado automaticamente: ${data[0].name}`);
+        }
+      }
+    } catch (error) {
+      console.error("❌ Erro ao carregar grupos:", error);
+    }
+  };
+
   const loadServiceTypes = async () => {
     try {
+      // Carregar grupos primeiro
+      await loadGroups();
+      
       // Usar API do POS para buscar service types (single source of truth)
       console.log("📋 Carregando tipos de atendimento da API do POS:", config.POS_API.serviceTypes);
       const response = await fetch(config.POS_API.serviceTypes);
@@ -1285,21 +1309,6 @@ function MainApp() {
       
       if (data.success) {
         console.log("✅ Tipos de atendimento recebidos:", data.serviceTypes);
-        
-        // Extract all groups from service types
-        const allGroups: any[] = [];
-        data.serviceTypes.forEach((type: any) => {
-          if (type.linked_groups && type.linked_groups.length > 0) {
-            allGroups.push(...type.linked_groups);
-          }
-        });
-        setGroups(allGroups);
-        
-        // Auto-select first group if no group is selected yet
-        if (allGroups.length > 0 && !selectedGroup) {
-          setSelectedGroup(allGroups[0]);
-          console.log(`📌 Grupo selecionado automaticamente: ${allGroups[0].name}`);
-        }
         
         // Process service types - ÍCONE JÁ VEM CORRETO DO ADMIN
         const processedTypes = data.serviceTypes.map((type: any) => {

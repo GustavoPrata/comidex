@@ -30,7 +30,8 @@ export const config = {
     categories: `${CATALOG_API_URL}/categories`,    // GET: listar categorias
     products: `${CATALOG_API_URL}/products`,        // GET: listar produtos
     serviceTypes: `${CATALOG_API_URL}/service-types`, // GET: tipos de serviço (rodízio)
-    callWaiter: `${CATALOG_API_URL}/call-waiter`    // POST: chamar garçom
+    callWaiter: `${CATALOG_API_URL}/call-waiter`,   // POST: chamar garçom
+    groups: `${BACKEND_URL}/api/groups`             // GET: listar todos os grupos
   },
   
   // Legacy - será removido após migração completa
