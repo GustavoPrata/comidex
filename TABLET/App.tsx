@@ -3152,7 +3152,7 @@ function MainApp() {
                         </View>
                       )}
                       
-                      {/* Product Info - Right Side */}
+                      {/* Product Info - Center */}
                       <View style={styles.productInfoGlass}>
                         {/* Name and Price Row */}
                         <View style={styles.productNameRow}>
@@ -3172,34 +3172,34 @@ function MainApp() {
                             {item.description}
                           </Text>
                         )}
+                      </View>
+                      
+                      {/* Quantity Controls - Right Side */}
+                      <View style={styles.quantityControlsRow}>
+                        <TouchableOpacity 
+                          style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
+                          onPress={() => {
+                            if (quantity > 0) {
+                              handleRemoveFromCart(item.id);
+                            }
+                            resetIdleTimer();
+                          }}
+                          activeOpacity={0.7}
+                        >
+                          <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
+                        </TouchableOpacity>
                         
-                        {/* Quantity Controls */}
-                        <View style={styles.quantityControlsRow}>
-                          <TouchableOpacity 
-                            style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
-                            onPress={() => {
-                              if (quantity > 0) {
-                                handleRemoveFromCart(item.id);
-                              }
-                              resetIdleTimer();
-                            }}
-                            activeOpacity={0.7}
-                          >
-                            <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
-                          </TouchableOpacity>
-                          
-                          <Text style={styles.quantityText}>{quantity}</Text>
-                          
-                          <TouchableOpacity 
-                            style={styles.quantityButtonPlus}
-                            onPress={() => {
-                              handleQuickAddToCart(item);
-                            }}
-                            activeOpacity={0.7}
-                          >
-                            <IconComponent name="plus" size={18} color="#FFFFFF" />
-                          </TouchableOpacity>
-                        </View>
+                        <Text style={styles.quantityText}>{quantity}</Text>
+                        
+                        <TouchableOpacity 
+                          style={styles.quantityButtonPlus}
+                          onPress={() => {
+                            handleQuickAddToCart(item);
+                          }}
+                          activeOpacity={0.7}
+                        >
+                          <IconComponent name="plus" size={18} color="#FFFFFF" />
+                        </TouchableOpacity>
                       </View>
                     </View>
                   );
@@ -5385,7 +5385,7 @@ const styles = StyleSheet.create({
   // Product Card Styles - Horizontal Layout
   productCardGlass: {
     width: '100%',
-    marginBottom: 10,
+    marginBottom: 12,
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
@@ -5393,20 +5393,20 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   productImageGlass: {
-    width: 140,
-    height: 79,
+    width: 180,
+    height: 100,
     resizeMode: 'cover',
   },
   productImagePlaceholderGlass: {
-    width: 140,
-    height: 79,
+    width: 180,
+    height: 100,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   productInfoGlass: {
     flex: 1,
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: 12,
     justifyContent: 'center',
   },
@@ -5417,32 +5417,32 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   productNameGlass: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '600',
     color: '#FFFFFF',
     flex: 1,
     marginRight: 8,
   },
   productPriceRight: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '700',
     color: '#FF7043',
   },
   productDescriptionGlass: {
-    fontSize: 11,
+    fontSize: 12,
     color: 'rgba(255, 255, 255, 0.5)',
-    marginBottom: 8,
-    lineHeight: 14,
+    lineHeight: 16,
   },
   quantityControlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    gap: 10,
+    paddingRight: 12,
   },
   quantityButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -5453,18 +5453,18 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255, 255, 255, 0.1)',
   },
   quantityButtonPlus: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: '#FF7043',
     alignItems: 'center',
     justifyContent: 'center',
   },
   quantityText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '700',
     color: '#FFFFFF',
-    minWidth: 24,
+    minWidth: 28,
     textAlign: 'center',
   },
   headerLeft: {
