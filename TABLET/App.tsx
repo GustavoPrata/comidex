@@ -3118,10 +3118,9 @@ function MainApp() {
                 groups.map((group) => (
                   <Pressable
                     key={group.id}
-                    style={({ pressed }) => [
+                    style={[
                       styles.groupItemGlass,
-                      selectedGroup?.id === group.id && styles.groupItemActiveGlass,
-                      pressed && styles.groupItemPressed
+                      selectedGroup?.id === group.id && styles.groupItemActiveGlass
                     ]}
                     onPress={() => {
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
@@ -3184,10 +3183,9 @@ function MainApp() {
                     return (
                       <View key={category.id}>
                         <Pressable
-                          style={({ pressed }) => [
+                          style={[
                             styles.categoryFullCard,
-                            isSelected && styles.categoryFullCardActive,
-                            pressed && styles.categoryCardPressed
+                            isSelected && styles.categoryFullCardActive
                           ]}
                           onPress={() => {
                             setSelectedCategory(category.id);
@@ -3345,11 +3343,7 @@ function MainApp() {
                         <View style={styles.productBottomRow}>
                           <View style={styles.quantityControlsRow}>
                             <Pressable 
-                              style={({ pressed }) => [
-                                styles.quantityButton, 
-                                quantity === 0 && styles.quantityButtonDisabled,
-                                pressed && quantity > 0 && styles.buttonPressed
-                              ]}
+                              style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
                               onPress={() => quantity > 0 && handleRemoveFromCart(item.id)}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
@@ -3359,10 +3353,7 @@ function MainApp() {
                             <Text style={styles.quantityText}>{quantity}</Text>
                             
                             <Pressable 
-                              style={({ pressed }) => [
-                                styles.quantityButtonPlus,
-                                pressed && styles.buttonPressedPlus
-                              ]}
+                              style={styles.quantityButtonPlus}
                               onPress={() => handleQuickAddToCart(item)}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
@@ -5712,24 +5703,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF7043',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  buttonPressed: {
-    backgroundColor: 'rgba(255, 112, 67, 0.3)',
-    transform: [{ scale: 0.9 }],
-    borderColor: '#FF7043',
-  },
-  buttonPressedPlus: {
-    backgroundColor: '#FF8A50',
-    transform: [{ scale: 0.9 }],
-  },
-  groupItemPressed: {
-    backgroundColor: 'rgba(255, 112, 67, 0.2)',
-    transform: [{ scale: 0.95 }],
-  },
-  categoryCardPressed: {
-    transform: [{ scale: 0.97 }],
-    borderColor: '#FF7043',
-    opacity: 0.9,
   },
   quantityText: {
     fontSize: 18,
