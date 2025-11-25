@@ -3019,7 +3019,7 @@ function MainApp() {
                       ]}
                       numberOfLines={1}
                     >
-                      {group.name.length > 21 ? group.name.substring(0, 21) + '..' : group.name}
+                      {group.name.length > 25 ? group.name.substring(0, 25) + '..' : group.name}
                     </Text>
                     {selectedGroup?.id === group.id && (
                       <View style={styles.groupActiveIndicator} />
