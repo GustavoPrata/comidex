@@ -2985,9 +2985,8 @@ function MainApp() {
                         selectedGroup?.id === group.id && styles.groupNameActiveGlass
                       ]}
                       numberOfLines={1}
-                      ellipsizeMode="tail"
                     >
-                      {group.name}
+                      {group.name.length > 20 ? group.name.substring(0, 18) + '..' : group.name}
                     </Text>
                     {selectedGroup?.id === group.id && (
                       <View style={styles.groupActiveIndicator} />
