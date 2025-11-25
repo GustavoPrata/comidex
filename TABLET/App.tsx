@@ -863,8 +863,10 @@ function MainApp() {
   // Pan Responder for touch tracking
   useEffect(() => {
     panResponderRef.current = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onMoveShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponder: () => false,
+      onMoveShouldSetPanResponder: () => false,
+      onStartShouldSetPanResponderCapture: () => false,
+      onMoveShouldSetPanResponderCapture: () => false,
       onPanResponderGrant: () => {
         resetIdleTimer();
       },
