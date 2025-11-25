@@ -1573,16 +1573,16 @@ function MainApp() {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
                   <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
                   
-                  {/* Logo in the middle */}
+                  {/* Logo in the middle - Larger and positioned above */}
                   <View style={{ 
                     position: 'absolute', 
                     left: '50%', 
-                    transform: [{ translateX: -35 }],
-                    top: -10,
+                    transform: [{ translateX: -55 }],
+                    top: -60,
                   }}>
                     <Image 
                       source={require('./assets/logo23.png')}
-                      style={{ width: 70, height: 70 }}
+                      style={{ width: 110, height: 110 }}
                       resizeMode="cover"
                     />
                   </View>
@@ -1949,10 +1949,6 @@ function MainApp() {
               )}
               </View>
             </BlurView>
-
-            <TouchableOpacity style={styles.adminButton} onPress={() => setIsLocked(true)}>
-              <Text style={styles.adminButtonText}>Modo Administrador</Text>
-            </TouchableOpacity>
           </Animated.View>
         </View>
       </View>
