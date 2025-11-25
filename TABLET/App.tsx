@@ -5243,7 +5243,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoriesListContent: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 20,
     paddingVertical: 6,
   },
   loadingCategoriesGlass: {
