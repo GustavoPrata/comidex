@@ -3213,8 +3213,7 @@ function MainApp() {
                         <Pressable
                           style={[
                             styles.categoryFullCard,
-                            isSelected && styles.categoryFullCardActive,
-                            !isSelected && styles.categoryFullCardInactive
+                            isSelected && styles.categoryFullCardActive
                           ]}
                           onPress={() => {
                             setSelectedCategory(category.id);
@@ -3225,27 +3224,21 @@ function MainApp() {
                           {category.image ? (
                             <Image 
                               source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
-                              style={[
-                                styles.categoryFullImage,
-                                !isSelected && { opacity: 0.4 }
-                              ]}
+                              style={styles.categoryFullImage}
                             />
                           ) : (
                             <View style={styles.categoryFullImagePlaceholder}>
                               <IconComponent 
                                 name={category.icon || 'sushi'} 
                                 size={28} 
-                                color={isSelected ? '#FF7043' : 'rgba(255, 255, 255, 0.2)'} 
+                                color={isSelected ? '#FF7043' : 'rgba(255, 255, 255, 0.3)'} 
                               />
                             </View>
                           )}
                           
-                          {/* Gradient Overlay - darker for non-selected */}
+                          {/* Gradient Overlay */}
                           <LinearGradient
-                            colors={isSelected 
-                              ? ['transparent', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.9)']
-                              : ['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']
-                            }
+                            colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']}
                             style={styles.categoryGradientOverlay}
                           />
                           
@@ -3254,8 +3247,7 @@ function MainApp() {
                             <Text 
                               style={[
                                 styles.categoryFullName,
-                                isSelected && styles.categoryFullNameActive,
-                                !isSelected && styles.categoryFullNameInactive
+                                isSelected && styles.categoryFullNameActive
                               ]}
                               numberOfLines={2}
                             >
