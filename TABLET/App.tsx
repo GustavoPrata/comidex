@@ -3149,7 +3149,7 @@ function MainApp() {
               handleCallWaiter();
             }}
           >
-            <Bell size={22} color="#FF7043" strokeWidth={2} />
+            <Bell size={22} color="#FFFFFF" strokeWidth={2} />
             <View style={styles.goomerActionTextContainer}>
               <Text style={styles.goomerActionText}>CHAMAR</Text>
               <Text style={styles.goomerActionText}>GARÇOM</Text>
@@ -3168,7 +3168,7 @@ function MainApp() {
               }).start();
             }}
           >
-            <Receipt size={22} color="#FF7043" strokeWidth={2} />
+            <Receipt size={22} color="#FFFFFF" strokeWidth={2} />
             <View style={styles.goomerActionTextContainer}>
               <Text style={styles.goomerActionText}>MINHA</Text>
               <Text style={styles.goomerActionText}>CONTA</Text>
@@ -3190,7 +3190,7 @@ function MainApp() {
             }}
           >
             <View style={styles.goomerCartIconWrap}>
-              <ShoppingCart size={22} color="#FF7043" strokeWidth={2} />
+              <ShoppingCart size={22} color="#FFFFFF" strokeWidth={2} />
               {cart.length > 0 && (
                 <View style={styles.goomerCartBadge}>
                   <Text style={styles.goomerCartBadgeText}>
@@ -5288,7 +5288,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   goomerActionText: {
-    color: '#FF7043',
+    color: '#FFFFFF',
     fontSize: 11,
     fontWeight: '600',
     lineHeight: 14,
