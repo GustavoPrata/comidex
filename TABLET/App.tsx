@@ -3527,7 +3527,7 @@ function MainApp() {
                 <View style={styles.cartBadge}>
                   <Text style={styles.cartBadgeText}>{getTempItemsCount()}</Text>
                 </View>
-                <Text style={styles.cartFloatingButtonText}>Adicionar ao Carrinho</Text>
+                <Text style={styles.cartFloatingButtonText}>ADICIONAR AO CARRINHO</Text>
               </View>
             </TouchableOpacity>
           </Animated.View>
@@ -3902,7 +3902,7 @@ function MainApp() {
                 onPress={confirmAddToCart}
               >
                 <Text style={styles.observationModalButtonConfirmText}>
-                  Adicionar ao Carrinho
+                  ADICIONAR AO CARRINHO
                 </Text>
               </TouchableOpacity>
             </View>
