@@ -3579,7 +3579,7 @@ function MainApp() {
             onPress={() => setShowImageModal(false)}
           >
             <View style={styles.imageModalCloseCircle}>
-              <Text style={styles.imageModalCloseX}>×</Text>
+              <X size={24} color="#333" strokeWidth={2.5} />
             </View>
           </Pressable>
           
@@ -5858,12 +5858,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#D4A574',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  imageModalCloseX: {
-    fontSize: 32,
-    color: '#333',
-    fontWeight: '300',
-    marginTop: -2,
   },
   imageModalPlaceholder: {
     width: width * 0.85,
