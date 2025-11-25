@@ -3579,17 +3579,23 @@ function MainApp() {
             onPress={() => setShowImageModal(false)}
           >
             <View style={styles.imageModalCloseCircle}>
-              <IconComponent name="close" size={28} color="#333" />
+              <Text style={styles.imageModalCloseX}>×</Text>
             </View>
           </Pressable>
           
           {imageModalProduct && (
             <View style={styles.imageModalContent}>
-              <Image 
-                source={{ uri: imageModalProduct.image_url || '' }} 
-                style={styles.imageModalImage}
-                resizeMode="contain"
-              />
+              {imageModalProduct.image_url ? (
+                <Image 
+                  source={{ uri: imageModalProduct.image_url }} 
+                  style={styles.imageModalImage}
+                  resizeMode="contain"
+                />
+              ) : (
+                <View style={styles.imageModalPlaceholder}>
+                  <IconComponent name="sushi" size={80} color="rgba(255, 255, 255, 0.3)" />
+                </View>
+              )}
               <View style={styles.imageModalInfo}>
                 <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
                 {imageModalProduct.description && (
@@ -5852,6 +5858,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#D4A574',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  imageModalCloseX: {
+    fontSize: 32,
+    color: '#333',
+    fontWeight: '300',
+    marginTop: -2,
+  },
+  imageModalPlaceholder: {
+    width: width * 0.85,
+    height: height * 0.55,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 12,
   },
   imageModalContent: {
     flex: 1,
