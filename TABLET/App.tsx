@@ -1992,7 +1992,7 @@ function MainApp() {
   // Welcome Screen - Table Selection
   if (!tableNumber) {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onTouchStart={resetIdleTimer}>
         <StatusBar hidden={true} />
         <ConnectionModal />
         <View style={styles.welcomeContainer}>
@@ -2391,7 +2391,7 @@ function MainApp() {
   // Mode Selection Screen - New Beautiful Design
   if (!selectedMode) {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onTouchStart={resetIdleTimer}>
         <StatusBar hidden={true} />
         <AdminPanel />
         
@@ -2599,7 +2599,7 @@ function MainApp() {
 
   // Main Interface - New 3-Column Layout Goomer Style with Apple Glass Design
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} onTouchStart={resetIdleTimer}>
       <StatusBar style="light" />
       <AdminPanel />
       
