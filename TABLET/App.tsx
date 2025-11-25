@@ -3579,7 +3579,7 @@ function MainApp() {
             onPress={() => setShowImageModal(false)}
           >
             <View style={styles.imageModalCloseCircle}>
-              <X size={24} color="#333" strokeWidth={2.5} />
+              <X size={28} color="#333" strokeWidth={2.5} />
             </View>
           </Pressable>
           
@@ -5176,13 +5176,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
     marginHorizontal: 8,
     marginVertical: 5,
     borderRadius: 14,
     position: 'relative',
-    height: 85,
+    height: 90,
   },
   groupItemActiveGlass: {
     backgroundColor: 'rgba(255, 112, 67, 0.15)',
@@ -5843,39 +5843,41 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.92)",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   imageModalCloseButton: {
     position: 'absolute',
-    top: 30,
-    right: 30,
+    top: 25,
+    right: 25,
     zIndex: 10,
   },
   imageModalCloseCircle: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     backgroundColor: '#D4A574',
     justifyContent: 'center',
     alignItems: 'center',
   },
   imageModalPlaceholder: {
-    width: width - 120,
-    height: height * 0.78,
+    width: width - 140,
+    height: height * 0.72,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginBottom: 100,
   },
   imageModalImage: {
-    width: width - 120,
-    height: height * 0.78,
-    alignSelf: 'flex-start',
+    width: width - 140,
+    height: height * 0.72,
+    marginLeft: 20,
+    marginBottom: 100,
   },
   imageModalInfoBar: {
     position: 'absolute',
-    bottom: 0,
-    left: 0,
+    bottom: 20,
+    left: 20,
     right: 120,
     backgroundColor: 'rgba(20, 20, 20, 0.95)',
     paddingVertical: 24,
