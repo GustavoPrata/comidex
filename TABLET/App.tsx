@@ -2975,14 +2975,17 @@ function MainApp() {
                     ]}>
                       <IconComponent 
                         name={group.icon || group.name || 'restaurant'} 
-                        size={24} 
+                        size={18} 
                         color={selectedGroup?.id === group.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} 
                       />
                     </View>
-                    <Text style={[
-                      styles.groupNameGlass,
-                      selectedGroup?.id === group.id && styles.groupNameActiveGlass
-                    ]}>
+                    <Text 
+                      style={[
+                        styles.groupNameGlass,
+                        selectedGroup?.id === group.id && styles.groupNameActiveGlass
+                      ]}
+                      numberOfLines={2}
+                    >
                       {group.name}
                     </Text>
                     {selectedGroup?.id === group.id && (
@@ -5081,22 +5084,25 @@ const styles = StyleSheet.create({
   },
   // Left Sidebar Styles
   leftSidebarGlass: {
-    width: width * 0.22,
+    width: 90,
     flex: 1,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   sidebarHeader: {
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   sidebarTitle: {
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: 'rgba(255, 255, 255, 0.6)',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   groupsList: {
     flex: 1,
@@ -5125,40 +5131,43 @@ const styles = StyleSheet.create({
     letterSpacing: 0.3,
   },
   groupItemGlass: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    marginHorizontal: 12,
-    marginVertical: 4,
-    borderRadius: 12,
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+    paddingVertical: 10,
+    marginHorizontal: 6,
+    marginVertical: 3,
+    borderRadius: 10,
     position: 'relative',
   },
   groupItemActiveGlass: {
-    backgroundColor: 'rgba(255, 112, 67, 0.12)',
+    backgroundColor: 'rgba(255, 112, 67, 0.15)',
   },
   groupIconContainerGlass: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginBottom: 4,
   },
   groupIconActiveGlass: {
-    backgroundColor: 'rgba(255, 112, 67, 0.2)',
+    backgroundColor: 'rgba(255, 112, 67, 0.25)',
   },
   groupTextContainer: {
     flex: 1,
   },
   groupNameGlass: {
-    fontSize: 15,
+    fontSize: 9,
     fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: 'rgba(255, 255, 255, 0.7)',
+    textAlign: 'center',
+    lineHeight: 11,
   },
   groupNameActiveGlass: {
-    color: '#FFFFFF',
+    color: '#FF7043',
     fontWeight: '600',
   },
   groupDescGlass: {
