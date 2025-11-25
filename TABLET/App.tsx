@@ -5870,6 +5870,7 @@ const styles = StyleSheet.create({
     bottom: 40,
     left: 20,
     right: 20,
+    backgroundColor: 'transparent',
   },
   imageModalTitle: {
     fontSize: 22,
