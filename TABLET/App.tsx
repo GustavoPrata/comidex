@@ -453,6 +453,8 @@ function MainApp() {
   const scaleAnim = useRef(new Animated.Value(0)).current;
   const cartBounceAnim = useRef(new Animated.Value(1)).current;
   const billSlideAnim = useRef(new Animated.Value(height)).current;
+  const productListRef = useRef<FlatList>(null);
+  const categoryPositions = useRef<{[key: number]: number}>({});
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
 
   // Sample promotions data
@@ -1806,12 +1808,79 @@ function MainApp() {
       );
     }
 
-    // Filter by category
-    if (selectedCategory) {
-      filtered = filtered.filter((p) => p.category_id === selectedCategory);
-    }
-
     return filtered;
+  };
+
+  // Organiza produtos por categoria com headers
+  const getProductsWithHeaders = () => {
+    const filtered = getFilteredProducts();
+    const result: (Product | { isHeader: true; categoryId: number; categoryName: string })[] = [];
+    
+    // Agrupa por categoria
+    const grouped: { [key: number]: Product[] } = {};
+    filtered.forEach(product => {
+      const catId = product.category_id;
+      if (!grouped[catId]) {
+        grouped[catId] = [];
+      }
+      grouped[catId].push(product);
+    });
+
+    // Ordena categorias pela ordem em que aparecem
+    const categoryOrder = categories.map(c => c.id);
+    const sortedCategoryIds = Object.keys(grouped)
+      .map(Number)
+      .sort((a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b));
+
+    // Monta lista com headers
+    sortedCategoryIds.forEach(catId => {
+      const cat = categories.find(c => c.id === catId);
+      result.push({
+        isHeader: true,
+        categoryId: catId,
+        categoryName: cat?.name || 'Outros'
+      });
+      result.push(...grouped[catId]);
+    });
+
+    return result;
+  };
+
+  // Scroll para categoria quando clicada
+  const scrollToCategory = (categoryId: number) => {
+    const items = getProductsWithHeaders();
+    const index = items.findIndex(item => 'isHeader' in item && item.categoryId === categoryId);
+    if (index !== -1 && productListRef.current) {
+      productListRef.current.scrollToIndex({ index, animated: true, viewPosition: 0 });
+    }
+  };
+
+  // Detecta categoria visível ao scrollar
+  const handleProductScroll = (event: any) => {
+    resetIdleTimer();
+    const offsetY = event.nativeEvent.contentOffset.y;
+    const items = getProductsWithHeaders();
+    
+    // Encontra qual header está mais próximo do topo
+    let currentCategoryId = selectedCategory;
+    let accumulatedHeight = 0;
+    const headerHeight = 50;
+    const productHeight = 180;
+    
+    for (const item of items) {
+      if ('isHeader' in item) {
+        if (accumulatedHeight <= offsetY + 100) {
+          currentCategoryId = item.categoryId;
+        }
+        accumulatedHeight += headerHeight;
+      } else {
+        accumulatedHeight += productHeight;
+      }
+    }
+    
+    if (currentCategoryId !== selectedCategory) {
+      setSelectedCategory(currentCategoryId);
+    }
   };
 
   const updateQuantity = (productId: number, quantity: number) => {
@@ -3018,7 +3087,10 @@ function MainApp() {
                         styles.categoryFullCard,
                         selectedCategory === category.id && styles.categoryFullCardActive
                       ]}
-                      onPress={() => setSelectedCategory(category.id)}
+                      onPress={() => {
+                        setSelectedCategory(category.id);
+                        scrollToCategory(category.id);
+                      }}
                     >
                       {/* Full Background Image */}
                       {category.image ? (
@@ -3075,12 +3147,18 @@ function MainApp() {
               </View>
             ) : (
               <FlatList
-                data={getFilteredProducts()}
-                keyExtractor={(item) => item.id.toString()}
-                numColumns={1}
+                ref={productListRef}
+                data={getProductsWithHeaders()}
+                keyExtractor={(item, index) => 'isHeader' in item ? `header-${item.categoryId}` : `product-${item.id}`}
                 contentContainerStyle={styles.productsGridGlass}
                 showsVerticalScrollIndicator={false}
-                onScroll={() => resetIdleTimer()}
+                onScroll={handleProductScroll}
+                scrollEventThrottle={16}
+                onScrollToIndexFailed={(info) => {
+                  setTimeout(() => {
+                    productListRef.current?.scrollToIndex({ index: info.index, animated: true });
+                  }, 100);
+                }}
                 ListEmptyComponent={
                   <View style={styles.emptyContainerGlass}>
                     <IconComponent name="restaurant" size={48} color="rgba(255, 255, 255, 0.3)" />
@@ -3089,6 +3167,15 @@ function MainApp() {
                   </View>
                 }
                 renderItem={({ item }) => {
+                  // Render category header
+                  if ('isHeader' in item) {
+                    return (
+                      <View style={styles.categoryHeaderInList}>
+                        <Text style={styles.categoryHeaderText}>{item.categoryName}</Text>
+                      </View>
+                    );
+                  }
+                  
                   const itemInCart = cart.find(c => c.id === item.id);
                   const quantity = itemInCart ? itemInCart.quantity : 0;
                   
@@ -5359,6 +5446,21 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 100,
     flexGrow: 1,
+  },
+  categoryHeaderInList: {
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255, 112, 67, 0.3)',
+    marginBottom: 8,
+    marginTop: 16,
+  },
+  categoryHeaderText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FF7043',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   emptyContainerGlass: {
     flex: 1,
