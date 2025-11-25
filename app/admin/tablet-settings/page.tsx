@@ -167,21 +167,9 @@ export default function TabletSettingsPage() {
           </div>
 
           {/* Subtitle */}
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Gerencie o comportamento dos tablets em tempo real
           </p>
-
-          {/* Summary */}
-          <div className="flex items-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <Sun className="h-4 w-4 text-yellow-500" />
-              <span className="text-gray-600 dark:text-gray-400">Brilho: {brightnessEnabled ? 'Ativado' : 'Desativado'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-blue-500" />
-              <span className="text-gray-600 dark:text-gray-400">Tempo ocioso: {formatTime(idleTimeoutSeconds)}</span>
-            </div>
-          </div>
         </div>
       </div>
 

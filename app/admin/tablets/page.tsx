@@ -256,42 +256,97 @@ export default function TabletsPage() {
             </div>
 
             {/* Subtitle */}
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               Controle remoto e monitoramento da frota de tablets
             </p>
-
-            {/* Summary Stats */}
-            <div className="flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <Signal className="h-4 w-4 text-green-500" />
-                <span className="text-gray-600 dark:text-gray-400">{onlineCount} online</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <WifiOff className="h-4 w-4 text-red-500" />
-                <span className="text-gray-600 dark:text-gray-400">{offlineCount} offline</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Tablet className="h-4 w-4 text-orange-500" />
-                <span className="text-gray-600 dark:text-gray-400">{tablets.length}/{maxTablets} tablets</span>
-              </div>
-              {lowBatteryCount > 0 && (
-                <div className="flex items-center gap-2">
-                  <BatteryLow className="h-4 w-4 text-yellow-500" />
-                  <span className="text-yellow-600 dark:text-yellow-400">{lowBatteryCount} bateria baixa</span>
-                </div>
-              )}
-              {chargingCount > 0 && (
-                <div className="flex items-center gap-2">
-                  <BatteryCharging className="h-4 w-4 text-blue-500" />
-                  <span className="text-gray-600 dark:text-gray-400">{chargingCount} carregando</span>
-                </div>
-              )}
-            </div>
           </div>
         </div>
 
         {/* Content */}
         <div className="m-4 space-y-4">
+        
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-green-500/20">
+                  <Signal className="h-4 w-4 text-green-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Online</p>
+                  <p className="text-xl font-bold text-white">{onlineCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-red-500/20">
+                  <WifiOff className="h-4 w-4 text-red-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Offline</p>
+                  <p className="text-xl font-bold text-white">{offlineCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-orange-500/20">
+                  <Tablet className="h-4 w-4 text-orange-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Total</p>
+                  <p className="text-xl font-bold text-white">{tablets.length}/{maxTablets}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-yellow-500/20">
+                  <BatteryLow className="h-4 w-4 text-yellow-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Bateria Baixa</p>
+                  <p className="text-xl font-bold text-white">{lowBatteryCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-blue-500/20">
+                  <BatteryCharging className="h-4 w-4 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Carregando</p>
+                  <p className="text-xl font-bold text-white">{chargingCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-purple-500/20">
+                  <Settings className="h-4 w-4 text-purple-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Limite</p>
+                  <p className="text-xl font-bold text-white">{maxTablets}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
         {/* Bulk Actions */}
         <Card className="bg-zinc-900 border-zinc-800">
           <CardHeader className="pb-3">
