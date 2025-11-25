@@ -2975,7 +2975,7 @@ function MainApp() {
                     ]}>
                       <IconComponent 
                         name={group.icon || group.name || 'restaurant'} 
-                        size={18} 
+                        size={22} 
                         color={selectedGroup?.id === group.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} 
                       />
                     </View>
@@ -5084,19 +5084,19 @@ const styles = StyleSheet.create({
   },
   // Left Sidebar Styles
   leftSidebarGlass: {
-    width: 85,
+    width: 95,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   sidebarHeader: {
-    paddingHorizontal: 8,
-    paddingVertical: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   sidebarTitle: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.6)',
     textAlign: 'center',
@@ -5133,24 +5133,24 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 6,
-    paddingVertical: 12,
-    marginHorizontal: 6,
-    marginVertical: 4,
-    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 14,
+    marginHorizontal: 8,
+    marginVertical: 5,
+    borderRadius: 14,
     position: 'relative',
   },
   groupItemActiveGlass: {
     backgroundColor: 'rgba(255, 112, 67, 0.15)',
   },
   groupIconContainerGlass: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
+    width: 42,
+    height: 42,
+    borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 5,
+    marginBottom: 6,
   },
   groupIconActiveGlass: {
     backgroundColor: 'rgba(255, 112, 67, 0.25)',
@@ -5159,11 +5159,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   groupNameGlass: {
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    lineHeight: 12,
+    lineHeight: 13,
   },
   groupNameActiveGlass: {
     color: '#FF7043',
