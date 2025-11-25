@@ -296,8 +296,8 @@ function MainApp() {
   // Connection Check States - Simplified
   const [showConnectionModal, setShowConnectionModal] = useState(true);
   const [appReady, setAppReady] = useState(false);
-  const [isConnected, setIsConnected] = useState(false);
-  const [isChecking, setIsChecking] = useState(true);
+  const [connectionState, setConnectionState] = useState<'checking' | 'connected' | 'error'>('checking');
+  const [connectionError, setConnectionError] = useState('');
 
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -358,18 +358,27 @@ function MainApp() {
 
   // Simple connection check - just verify API is reachable
   const checkConnection = useCallback(async () => {
-    setIsChecking(true);
+    // Only set checking on first attempt, not on retries (prevents flashing)
+    if (connectionState !== 'error') {
+      setConnectionState('checking');
+    }
     
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      
       const response = await fetch(`${config.API_BASE_URL}/api/pos/tables`, {
         method: 'GET',
         headers: { 'Accept': 'application/json' },
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
       
       if (response.ok) {
         console.log('✅ Conectado ao servidor!');
-        setIsConnected(true);
-        setIsChecking(false);
+        setConnectionState('connected');
+        setConnectionError('');
         setAppReady(true);
         
         // Fetch settings silently
@@ -389,16 +398,26 @@ function MainApp() {
         // Close modal after brief success display
         setTimeout(() => setShowConnectionModal(false), 800);
         return true;
+      } else {
+        // Server responded but with error
+        setConnectionState('error');
+        setConnectionError('Sistema indisponível. Verifique se o computador está ligado.');
       }
-    } catch (e) {
+    } catch (e: any) {
       console.log('⏳ Aguardando servidor...');
+      setConnectionState('error');
+      
+      if (e.name === 'AbortError') {
+        setConnectionError('Conexão lenta. Verifique sua conexão WiFi.');
+      } else {
+        setConnectionError('Sem conexão. Verifique o WiFi e se o sistema está ligado.');
+      }
     }
     
-    setIsChecking(false);
-    // Retry after 2 seconds
-    setTimeout(() => checkConnection(), 2000);
+    // Retry silently after 3 seconds (don't change state to checking)
+    setTimeout(() => checkConnection(), 3000);
     return false;
-  }, []);
+  }, [connectionState]);
 
   // Fetch tablet settings from server
   const fetchTabletSettings = useCallback(async () => {
@@ -1572,7 +1591,7 @@ function MainApp() {
   };
 
 
-  // Simple Connection Modal - just shows connecting/connected
+  // Simple Connection Modal - shows connecting/connected/error states
   const ConnectionModal = () => (
     <Modal
       visible={showConnectionModal}
@@ -1588,10 +1607,20 @@ function MainApp() {
             resizeMode="contain"
           />
           
-          {isConnected ? (
+          {connectionState === 'connected' ? (
             <>
               <CheckCircle size={48} color="#4CAF50" />
               <Text style={styles.connectionTitleSimple}>Conectado!</Text>
+            </>
+          ) : connectionState === 'error' ? (
+            <>
+              <AlertCircle size={48} color="#FF6B6B" />
+              <Text style={styles.connectionTitleSimple}>Falha na Conexão</Text>
+              <Text style={styles.connectionErrorText}>{connectionError}</Text>
+              <View style={styles.connectionRetrying}>
+                <ActivityIndicator size="small" color={config.colors.primary} />
+                <Text style={styles.connectionRetryingText}>Tentando reconectar...</Text>
+              </View>
             </>
           ) : (
             <>
@@ -5905,12 +5934,34 @@ const styles = StyleSheet.create({
   connectionModalSimple: {
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 40,
   },
   connectionTitleSimple: {
     fontSize: 24,
     fontWeight: "600",
     color: "#FFF",
     marginTop: 20,
+  },
+  connectionErrorText: {
+    fontSize: 16,
+    color: "#AAA",
+    textAlign: "center",
+    marginTop: 12,
+    lineHeight: 22,
+  },
+  connectionRetrying: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 24,
+    backgroundColor: "rgba(255,255,255,0.1)",
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
+  connectionRetryingText: {
+    fontSize: 14,
+    color: "#888",
+    marginLeft: 10,
   },
   // Admin Panel Styles
   adminModalOverlay: {
