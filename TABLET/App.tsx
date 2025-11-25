@@ -456,8 +456,9 @@ function MainApp() {
   const productListRef = useRef<FlatList>(null);
   const categoryListRef = useRef<ScrollView>(null);
   const categoryPositions = useRef<{[key: number]: number}>({});
-  const categoryScaleAnim = useRef(new Animated.Value(1)).current;
-  const categoryGlowAnim = useRef(new Animated.Value(0)).current;
+  const categoryFillAnimations = useRef<{[key: number]: Animated.Value}>({});
+  const scrollDebounceRef = useRef<NodeJS.Timeout | null>(null);
+  const isProgrammaticScrollRef = useRef(false);
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
 
   // Sample promotions data
@@ -1884,27 +1885,37 @@ function MainApp() {
     }
   };
 
-  // Animação quando categoria muda - slide in from right
-  const animateCategoryChange = () => {
-    // Animação de slide: começa fora (direita) e entra
-    categoryScaleAnim.setValue(20); // Começa 20px à direita
-    categoryGlowAnim.setValue(0);
-    
-    Animated.parallel([
-      // Slide in suave
-      Animated.spring(categoryScaleAnim, {
+  // Inicializa animações de preenchimento para cada categoria
+  const getCategoryFillAnim = (categoryId: number): Animated.Value => {
+    if (!categoryFillAnimations.current[categoryId]) {
+      categoryFillAnimations.current[categoryId] = new Animated.Value(0);
+    }
+    return categoryFillAnimations.current[categoryId];
+  };
+
+  // Animação de preenchimento da cor laranja
+  const animateCategoryFill = (newCategoryId: number, oldCategoryId?: number) => {
+    // Fade out da categoria anterior
+    if (oldCategoryId && oldCategoryId !== newCategoryId) {
+      const oldAnim = getCategoryFillAnim(oldCategoryId);
+      oldAnim.stopAnimation();
+      Animated.timing(oldAnim, {
         toValue: 0,
-        friction: 8,
-        tension: 40,
-        useNativeDriver: true,
-      }),
-      // Fade do glow
-      Animated.timing(categoryGlowAnim, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start();
+        duration: 150,
+        useNativeDriver: false,
+      }).start();
+    }
+    
+    // Anima preenchimento da nova categoria (de 0 a 1 = esquerda para direita)
+    const newAnim = getCategoryFillAnim(newCategoryId);
+    newAnim.stopAnimation();
+    newAnim.setValue(0);
+    
+    Animated.timing(newAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: false, // Precisa ser false para animar width
+    }).start();
   };
 
   // Scroll para categoria na lista de categorias (coluna do meio)
@@ -1922,42 +1933,60 @@ function MainApp() {
     const items = getProductsWithHeaders();
     const index = items.findIndex(item => typeof item === 'object' && 'isHeader' in item && item.categoryId === categoryId);
     if (index !== -1 && productListRef.current) {
+      // Marca que é scroll programático para evitar conflito com onScroll
+      isProgrammaticScrollRef.current = true;
       productListRef.current.scrollToIndex({ index, animated: true, viewPosition: 0 });
+      // Libera após animação
+      setTimeout(() => {
+        isProgrammaticScrollRef.current = false;
+      }, 500);
     }
-    animateCategoryChange();
   };
 
-  // Detecta categoria visível ao scrollar
+  // Detecta categoria visível ao scrollar (com debounce)
   const handleProductScroll = (event: any) => {
     resetIdleTimer();
+    
+    // Ignora se é scroll programático (quando usuário clica na categoria)
+    if (isProgrammaticScrollRef.current) return;
+    
     const offsetY = event.nativeEvent.contentOffset.y;
-    const items = getProductsWithHeaders();
     
-    // Se não tem items, não faz nada
-    if (!items || items.length === 0) return;
+    // Debounce de 100ms para evitar atualizações excessivas
+    if (scrollDebounceRef.current) {
+      clearTimeout(scrollDebounceRef.current);
+    }
     
-    // Encontra qual header está mais próximo do topo
-    let currentCategoryId = selectedCategory;
-    let accumulatedHeight = 0;
-    const headerHeight = 50;
-    const productHeight = 180;
-    
-    for (const item of items) {
-      if (typeof item === 'object' && 'isHeader' in item) {
-        if (accumulatedHeight <= offsetY + 100) {
-          currentCategoryId = item.categoryId;
+    scrollDebounceRef.current = setTimeout(() => {
+      const items = getProductsWithHeaders();
+      
+      // Se não tem items, não faz nada
+      if (!items || items.length === 0) return;
+      
+      // Encontra qual header está mais próximo do topo
+      let currentCategoryId = selectedCategory;
+      let accumulatedHeight = 0;
+      const headerHeight = 50;
+      const productHeight = 180;
+      
+      for (const item of items) {
+        if (typeof item === 'object' && 'isHeader' in item) {
+          if (accumulatedHeight <= offsetY + 100) {
+            currentCategoryId = item.categoryId;
+          }
+          accumulatedHeight += headerHeight;
+        } else {
+          accumulatedHeight += productHeight;
         }
-        accumulatedHeight += headerHeight;
-      } else {
-        accumulatedHeight += productHeight;
       }
-    }
-    
-    if (currentCategoryId && currentCategoryId !== selectedCategory) {
-      setSelectedCategory(currentCategoryId);
-      scrollToCategoryInList(currentCategoryId);
-      animateCategoryChange();
-    }
+      
+      if (currentCategoryId && currentCategoryId !== selectedCategory) {
+        const oldCategoryId = selectedCategory ?? undefined;
+        setSelectedCategory(currentCategoryId);
+        scrollToCategoryInList(currentCategoryId);
+        animateCategoryFill(currentCategoryId, oldCategoryId);
+      }
+    }, 100);
   };
 
   const updateQuantity = (productId: number, quantity: number) => {
@@ -3153,23 +3182,19 @@ function MainApp() {
                 <>
                   {categories.map((category) => {
                     const isSelected = selectedCategory === category.id;
+                    const fillAnim = getCategoryFillAnim(category.id);
                     return (
-                      <Animated.View
-                        key={category.id}
-                        style={[
-                          isSelected && {
-                            transform: [{ translateX: categoryScaleAnim }],
-                          }
-                        ]}
-                      >
+                      <View key={category.id}>
                         <Pressable
                           style={[
                             styles.categoryFullCard,
                             isSelected && styles.categoryFullCardActive
                           ]}
                           onPress={() => {
+                            const oldCategoryId = selectedCategory ?? undefined;
                             setSelectedCategory(category.id);
                             scrollToCategory(category.id);
+                            animateCategoryFill(category.id, oldCategoryId);
                           }}
                         >
                           {/* Full Background Image */}
@@ -3207,17 +3232,29 @@ function MainApp() {
                             </Text>
                           </View>
                           
-                          {/* Active Border Glow */}
+                          {/* Animated Orange Fill Effect - fills from left to right */}
+                          <Animated.View 
+                            style={[
+                              styles.categoryFillOverlay,
+                              {
+                                width: fillAnim.interpolate({
+                                  inputRange: [0, 1],
+                                  outputRange: ['0%', '100%'],
+                                }),
+                                opacity: fillAnim.interpolate({
+                                  inputRange: [0, 0.3, 1],
+                                  outputRange: [0, 0.8, 0.3],
+                                }),
+                              }
+                            ]} 
+                          />
+                          
+                          {/* Static Active Border */}
                           {isSelected && (
-                            <Animated.View 
-                              style={[
-                                styles.categoryActiveGlow,
-                                { opacity: categoryGlowAnim }
-                              ]} 
-                            />
+                            <View style={styles.categoryActiveGlow} />
                           )}
                         </Pressable>
-                      </Animated.View>
+                      </View>
                     );
                   })}
                 </>
@@ -5527,7 +5564,17 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(255, 112, 67, 0.15)',
+    borderWidth: 2,
+    borderColor: '#FF7043',
+    borderRadius: 10,
+  },
+  categoryFillOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    backgroundColor: '#FF7043',
+    borderRadius: 10,
   },
   // Right Column - Products Grid
   rightColumnGlass: {
