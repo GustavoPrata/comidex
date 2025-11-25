@@ -3503,7 +3503,7 @@ function MainApp() {
               }}
               activeOpacity={0.85}
             >
-              <Svg width={290} height={56} style={styles.addToCartSvg}>
+              <Svg width={320} height={56} style={styles.addToCartSvg}>
                 <Defs>
                   <SvgLinearGradient id="buttonGrad" x1="0" y1="0" x2="1" y2="0">
                     <Stop offset="0" stopColor="#FF7043" />
@@ -3512,12 +3512,12 @@ function MainApp() {
                 </Defs>
                 <Path
                   d={`
-                    M 32 2
-                    L 260 2
-                    Q 288 2 288 28
-                    Q 288 54 260 54
-                    L 32 54
-                    A 26 26 0 0 0 32 2
+                    M 28 2
+                    L 292 2
+                    Q 318 2 318 28
+                    Q 318 54 292 54
+                    L 28 54
+                    A 26 26 0 0 0 28 2
                     Z
                   `}
                   fill="url(#buttonGrad)"
@@ -6269,14 +6269,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#D84315',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: -26,
+    marginRight: -10,
     zIndex: 10,
     borderWidth: 2,
     borderColor: 'rgba(255,255,255,0.25)',
   },
   addToCartButtonWrapper: {
     position: 'relative',
-    width: 290,
+    width: 320,
     height: 56,
   },
   addToCartSvg: {
@@ -6287,8 +6287,8 @@ const styles = StyleSheet.create({
   addToCartContent: {
     position: 'absolute',
     top: 0,
-    left: 80,
-    right: 16,
+    left: 50,
+    right: 20,
     bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
