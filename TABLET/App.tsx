@@ -456,9 +456,11 @@ function MainApp() {
   const productListRef = useRef<FlatList>(null);
   const categoryListRef = useRef<ScrollView>(null);
   const categoryPositions = useRef<{[key: number]: number}>({});
-  const categoryScaleAnim = useRef(new Animated.Value(1)).current;
+  const categoryScaleAnim = useRef(new Animated.Value(0)).current;
   const categoryGlowAnim = useRef(new Animated.Value(0)).current;
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
+  const isProgrammaticScrollRef = useRef(false);
+  const lastSelectedCategoryRef = useRef<number | null>(null);
 
   // Sample promotions data
   const promotions: Promotion[] = [
@@ -1030,6 +1032,31 @@ function MainApp() {
       console.log(`🔄 Grupo ativo: ${selectedGroup.name} (ID: ${selectedGroup.id})`);
     }
   }, [selectedGroup?.id]);
+
+  // Animate category change - fade effect (darken then appear)
+  useEffect(() => {
+    if (selectedCategory && selectedCategory !== lastSelectedCategoryRef.current) {
+      const isUserClick = isProgrammaticScrollRef.current;
+      lastSelectedCategoryRef.current = selectedCategory;
+      
+      // Fade out then fade in animation
+      categoryGlowAnim.setValue(0);
+      
+      Animated.sequence([
+        // Fade in glow
+        Animated.timing(categoryGlowAnim, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+      ]).start();
+      
+      // Only scroll category list when user clicks directly on a category
+      if (isUserClick) {
+        scrollToCategoryInList(selectedCategory);
+      }
+    }
+  }, [selectedCategory]);
 
   // Auto-reset after successful order
   const autoResetAfterOrder = useCallback(() => {
@@ -1884,29 +1911,6 @@ function MainApp() {
     }
   };
 
-  // Animação quando categoria muda - slide in from right
-  const animateCategoryChange = () => {
-    // Animação de slide: começa fora (direita) e entra
-    categoryScaleAnim.setValue(20); // Começa 20px à direita
-    categoryGlowAnim.setValue(0);
-    
-    Animated.parallel([
-      // Slide in suave
-      Animated.spring(categoryScaleAnim, {
-        toValue: 0,
-        friction: 8,
-        tension: 40,
-        useNativeDriver: true,
-      }),
-      // Fade do glow
-      Animated.timing(categoryGlowAnim, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  };
-
   // Scroll para categoria na lista de categorias (coluna do meio)
   const scrollToCategoryInList = (categoryId: number) => {
     const categoryIndex = categories.findIndex(c => c.id === categoryId);
@@ -1917,19 +1921,35 @@ function MainApp() {
     }
   };
 
-  // Scroll para categoria quando clicada
+  // Scroll para categoria quando clicada (user initiated)
   const scrollToCategory = (categoryId: number) => {
+    // Mark as programmatic scroll to prevent handleProductScroll from fighting
+    isProgrammaticScrollRef.current = true;
+    
     const items = getProductsWithHeaders();
     const index = items.findIndex(item => typeof item === 'object' && 'isHeader' in item && item.categoryId === categoryId);
     if (index !== -1 && productListRef.current) {
       productListRef.current.scrollToIndex({ index, animated: true, viewPosition: 0 });
     }
-    animateCategoryChange();
+    
+    // Release lock after scroll animation completes
+    setTimeout(() => {
+      isProgrammaticScrollRef.current = false;
+    }, 500);
   };
 
-  // Detecta categoria visível ao scrollar
+  // Called when scroll momentum ends - release programmatic scroll lock
+  const handleScrollEnd = () => {
+    isProgrammaticScrollRef.current = false;
+  };
+
+  // Detecta categoria visível ao scrollar (user scroll only)
   const handleProductScroll = (event: any) => {
     resetIdleTimer();
+    
+    // Ignore if this is a programmatic scroll (user clicked a category)
+    if (isProgrammaticScrollRef.current) return;
+    
     const offsetY = event.nativeEvent.contentOffset.y;
     const items = getProductsWithHeaders();
     
@@ -1937,7 +1957,7 @@ function MainApp() {
     if (!items || items.length === 0) return;
     
     // Encontra qual header está mais próximo do topo
-    let currentCategoryId = selectedCategory;
+    let currentCategoryId: number | null = null;
     let accumulatedHeight = 0;
     const headerHeight = 50;
     const productHeight = 180;
@@ -1953,10 +1973,10 @@ function MainApp() {
       }
     }
     
+    // Only update if category changed and is valid
     if (currentCategoryId && currentCategoryId !== selectedCategory) {
       setSelectedCategory(currentCategoryId);
-      scrollToCategoryInList(currentCategoryId);
-      animateCategoryChange();
+      // Animation and scroll handled by useEffect
     }
   };
 
@@ -3154,18 +3174,12 @@ function MainApp() {
                   {categories.map((category) => {
                     const isSelected = selectedCategory === category.id;
                     return (
-                      <Animated.View
-                        key={category.id}
-                        style={[
-                          isSelected && {
-                            transform: [{ translateX: categoryScaleAnim }],
-                          }
-                        ]}
-                      >
+                      <View key={category.id}>
                         <Pressable
                           style={[
                             styles.categoryFullCard,
-                            isSelected && styles.categoryFullCardActive
+                            isSelected && styles.categoryFullCardActive,
+                            !isSelected && styles.categoryFullCardInactive
                           ]}
                           onPress={() => {
                             setSelectedCategory(category.id);
@@ -3176,21 +3190,27 @@ function MainApp() {
                           {category.image ? (
                             <Image 
                               source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
-                              style={styles.categoryFullImage}
+                              style={[
+                                styles.categoryFullImage,
+                                !isSelected && { opacity: 0.4 }
+                              ]}
                             />
                           ) : (
                             <View style={styles.categoryFullImagePlaceholder}>
                               <IconComponent 
                                 name={category.icon || 'sushi'} 
                                 size={28} 
-                                color={isSelected ? '#FF7043' : 'rgba(255, 255, 255, 0.3)'} 
+                                color={isSelected ? '#FF7043' : 'rgba(255, 255, 255, 0.2)'} 
                               />
                             </View>
                           )}
                           
-                          {/* Gradient Overlay */}
+                          {/* Gradient Overlay - darker for non-selected */}
                           <LinearGradient
-                            colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']}
+                            colors={isSelected 
+                              ? ['transparent', 'rgba(0,0,0,0.6)', 'rgba(0,0,0,0.9)']
+                              : ['rgba(0,0,0,0.3)', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']
+                            }
                             style={styles.categoryGradientOverlay}
                           />
                           
@@ -3199,7 +3219,8 @@ function MainApp() {
                             <Text 
                               style={[
                                 styles.categoryFullName,
-                                isSelected && styles.categoryFullNameActive
+                                isSelected && styles.categoryFullNameActive,
+                                !isSelected && styles.categoryFullNameInactive
                               ]}
                               numberOfLines={2}
                             >
@@ -3217,7 +3238,7 @@ function MainApp() {
                             />
                           )}
                         </Pressable>
-                      </Animated.View>
+                      </View>
                     );
                   })}
                 </>
@@ -3245,6 +3266,7 @@ function MainApp() {
                 contentContainerStyle={styles.productsGridGlass}
                 showsVerticalScrollIndicator={false}
                 onScroll={handleProductScroll}
+                onMomentumScrollEnd={handleScrollEnd}
                 scrollEventThrottle={16}
                 onScrollToIndexFailed={(info) => {
                   setTimeout(() => {
@@ -5473,6 +5495,10 @@ const styles = StyleSheet.create({
   categoryFullCardActive: {
     borderColor: '#FF7043',
   },
+  categoryFullCardInactive: {
+    opacity: 0.6,
+    borderColor: 'rgba(60, 60, 60, 0.5)',
+  },
   categoryFullImage: {
     position: 'absolute',
     top: 0,
@@ -5520,6 +5546,9 @@ const styles = StyleSheet.create({
   },
   categoryFullNameActive: {
     color: '#FF7043',
+  },
+  categoryFullNameInactive: {
+    color: 'rgba(255, 255, 255, 0.5)',
   },
   categoryActiveGlow: {
     position: 'absolute',
