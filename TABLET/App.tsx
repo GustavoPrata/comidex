@@ -297,6 +297,7 @@ function MainApp() {
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const lastActivityRef = useRef<number>(Date.now());
   const panResponderRef = useRef<any>(null);
+  const longPressTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Animations
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -400,6 +401,20 @@ function MainApp() {
       }
     }, timeoutMs);
   }, [isDimmed, tabletSettings]);
+
+  // Long press handlers for admin panel
+  const handleLongPressStart = useCallback(() => {
+    longPressTimerRef.current = setTimeout(() => {
+      setShowAdminPanel(true);
+    }, LONG_PRESS_DURATION);
+  }, []);
+
+  const handleLongPressEnd = useCallback(() => {
+    if (longPressTimerRef.current) {
+      clearTimeout(longPressTimerRef.current);
+      longPressTimerRef.current = null;
+    }
+  }, []);
 
   // Pan Responder for touch tracking
   useEffect(() => {
