@@ -6287,8 +6287,8 @@ const styles = StyleSheet.create({
   addToCartContent: {
     position: 'absolute',
     top: 0,
-    left: 60,
-    right: 20,
+    left: 80,
+    right: 16,
     bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
