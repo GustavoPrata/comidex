@@ -92,7 +92,8 @@ const menuItems: MenuItem[] = [
     label: 'Tablet',
     icon: Tablet,
     submenu: [
-      { label: 'Tipos de Atendimento', href: '/admin/tablet-service-types', icon: Receipt }
+      { label: 'Tipos de Atendimento', href: '/admin/tablet-service-types', icon: Receipt },
+      { label: 'Configurações', href: '/admin/tablet-settings', icon: Settings }
     ]
   },
   {
