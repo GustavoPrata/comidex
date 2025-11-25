@@ -3179,14 +3179,8 @@ function MainApp() {
             style={styles.goomerActionBtn} 
             activeOpacity={0.7}
             onPress={() => {
-              if (cart.length > 0) {
-                setShowCart(true);
-                resetIdleTimer();
-                Animated.spring(slideAnim, {
-                  toValue: 0,
-                  useNativeDriver: true,
-                }).start();
-              }
+              setShowCart(true);
+              resetIdleTimer();
             }}
           >
             <View style={styles.goomerCartIconWrap}>
