@@ -1334,6 +1334,10 @@ function MainApp() {
           color: config.colors.categoryColors[index % config.colors.categoryColors.length]
         }));
         setCategories(categoriesWithColors);
+        // Selecionar automaticamente a primeira categoria
+        if (categoriesWithColors.length > 0) {
+          setSelectedCategory(categoriesWithColors[0].id);
+        }
         console.log(`✅ ${categoriesWithColors.length} categorias carregadas para grupo ${targetGroupId}`);
       }
     } catch (error) {
@@ -2996,7 +3000,6 @@ function MainApp() {
                     onPress={() => {
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
                       setSelectedGroup(group);
-                      setSelectedCategory(null);
                       loadCategories(group.id);
                       loadProducts(group.id);
                       resetIdleTimer();
