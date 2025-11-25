@@ -3512,12 +3512,14 @@ function MainApp() {
                 </Defs>
                 <Path
                   d={`
-                    M 28 2
-                    L 292 2
-                    Q 318 2 318 28
-                    Q 318 54 292 54
-                    L 28 54
-                    A 26 26 0 0 0 28 2
+                    M 40 4
+                    Q 24 4 16 14
+                    C 6 26 6 30 16 42
+                    Q 24 52 40 52
+                    L 290 52
+                    Q 316 52 316 28
+                    Q 316 4 290 4
+                    L 40 4
                     Z
                   `}
                   fill="url(#buttonGrad)"
@@ -6269,7 +6271,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 6,
+    marginRight: -6,
     zIndex: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
