@@ -92,6 +92,21 @@ The system is built with a modern web stack. The frontend utilizes **Next.js 15*
 - **Fila de Impressão:** Integração com printer_queues do sistema POS
 - **Virtual Printer:** Teste via página /admin/printer-queue
 
+### 🎛️ Gerenciamento Avançado de Frota (November 25, 2024)
+- **Monitoramento de Bateria:** Cada tablet reporta nível de bateria e status de carregamento em tempo real
+- **Comandos Remotos:** Sistema de comandos assíncronos via API para controle remoto
+- **Ações em Massa:** Recarregar todos, sincronizar configurações, bloquear/desbloquear todos, fechar todos
+- **Controles Individuais:** Menu dropdown por tablet com opções de recarregar, sincronizar, bloquear, desbloquear, fechar, remover
+- **Seleção Múltipla:** Selecionar tablets online para enviar comandos em lote
+- **Histórico de Comandos:** Visualização dos comandos recentes com status (pendente/executado)
+- **Status em Tempo Real:** Indicadores visuais de online/offline, bateria baixa, carregando
+- **Device ID Persistente:** Cada tablet mantém ID único via AsyncStorage (não duplica ao reiniciar)
+
+### 📡 APIs de Gerenciamento de Tablets
+- **`/api/mobile/tablet-commands`**: POST para enviar comandos, GET para buscar pendentes, PATCH para atualizar status
+- **`/api/mobile/tablet-status`**: POST para atualizar status (bateria, versão do app) e receber comandos pendentes
+- **Comandos Suportados:** `reload`, `sync_settings`, `lock`, `unlock`, `exit_app`, `close_app`
+
 ## Running Both Applications
 
 ### Main Application (Next.js)
