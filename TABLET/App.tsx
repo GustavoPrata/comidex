@@ -1921,17 +1921,21 @@ function MainApp() {
     }
   };
 
-  // Constantes de altura para o FlatList
-  const HEADER_HEIGHT = 50;
-  const PRODUCT_HEIGHT = 180;
+  // Constantes de altura para o FlatList (devem corresponder aos estilos)
+  // Header: paddingVertical 12*2 + marginTop 16 + marginBottom 8 + texto ~25 + border 1 = ~74
+  const HEADER_HEIGHT = 74;
+  // Product: minHeight 160 + marginBottom 12 = 172
+  const PRODUCT_HEIGHT = 172;
+  // Padding inicial do container
+  const CONTENT_PADDING = 16;
 
   // getItemLayout para scroll preciso
   const getItemLayout = (data: any, index: number) => {
     if (!data || index < 0) {
-      return { length: PRODUCT_HEIGHT, offset: 0, index };
+      return { length: PRODUCT_HEIGHT, offset: CONTENT_PADDING, index };
     }
     
-    let offset = 0;
+    let offset = CONTENT_PADDING; // Começa com o padding do container
     for (let i = 0; i < index && i < data.length; i++) {
       const item = data[i];
       if (item && typeof item === 'object' && 'isHeader' in item) {
@@ -1999,11 +2003,11 @@ function MainApp() {
       
       // Find category at current scroll position
       let currentCategoryId: number | null = null;
-      let accumulatedHeight = 0;
+      let accumulatedHeight = CONTENT_PADDING;
       
       for (const item of items) {
         if (typeof item === 'object' && 'isHeader' in item) {
-          if (accumulatedHeight <= offsetY + 80) {
+          if (accumulatedHeight <= offsetY + 100) {
             currentCategoryId = item.categoryId;
           }
           accumulatedHeight += HEADER_HEIGHT;
