@@ -1804,34 +1804,9 @@ function MainApp() {
       );
     }
 
-    // Filter by selected service type/mode - ONLY for rodízio groups
-    // Other groups (Bebidas, À La Carte, etc) should show all products regardless of mode
-    if (selectedMode && selectedGroup) {
-      const currentGroup = groups?.find(g => g.id === selectedGroup);
-      
-      // Only apply price filter if the CURRENT GROUP is a rodízio type
-      if (currentGroup?.type === 'rodizio') {
-        // Show only rodízio items (price = 0) for rodízio groups
-        filtered = filtered.filter((p) => parseFloat(p.price) === 0);
-      }
-      // For non-rodízio groups (Bebidas, À La Carte, Vinhos, etc), show ALL products
-    }
-
     // Filter by category
     if (selectedCategory) {
-      if (selectedCategory === 999) {
-        // Bebidas
-        filtered = filtered.filter(
-          (p) =>
-            p.category?.toLowerCase().includes("bebida") ||
-            p.category?.toLowerCase().includes("drink") ||
-            p.name.toLowerCase().includes("suco") ||
-            p.name.toLowerCase().includes("refrigerante") ||
-            p.name.toLowerCase().includes("água")
-        );
-      } else {
-        filtered = filtered.filter((p) => p.category_id === selectedCategory);
-      }
+      filtered = filtered.filter((p) => p.category_id === selectedCategory);
     }
 
     return filtered;
