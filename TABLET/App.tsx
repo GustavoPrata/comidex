@@ -295,6 +295,7 @@ function MainApp() {
 
   // Connection Check States
   const [showConnectionModal, setShowConnectionModal] = useState(true);
+  const [appReady, setAppReady] = useState(false); // Only true when all connections verified
   const [connectionStatus, setConnectionStatus] = useState({
     api: false,
     tables: false,
@@ -439,6 +440,7 @@ function MainApp() {
     
     if (allConnected) {
       console.log('✅ Todas as conexões OK!');
+      setAppReady(true); // Mark app as ready to load data
       setTimeout(() => setShowConnectionModal(false), 1000);
     } else {
       console.log('⚠️ Algumas conexões falharam, tentando novamente em 3s...');
@@ -548,15 +550,13 @@ function MainApp() {
     });
   }, [resetIdleTimer]);
 
-  // Initialize and setup
+  // STEP 1: Initialize connection check FIRST (before anything else)
   useEffect(() => {
     // Initialize brightness control
     const initBrightness = async () => {
       try {
-        // Request permission to control brightness if needed
         const { status } = await Brightness.requestPermissionsAsync();
         if (status === 'granted') {
-          // Get current brightness to store as original
           const current = await Brightness.getBrightnessAsync();
           setOriginalBrightness(current);
           console.log('Brightness control initialized. Current brightness:', current);
@@ -569,43 +569,26 @@ function MainApp() {
     };
     
     initBrightness();
-    checkAllConnections(); // Verify all connections first
+    checkAllConnections(); // ONLY verify connections - don't load data yet
+    
+    // Kiosk mode back button handler
+    if (Platform.OS === 'android' && kioskMode) {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
+      return () => backHandler.remove();
+    }
+  }, []);
+
+  // STEP 2: Only load data AFTER connections are verified
+  useEffect(() => {
+    if (!appReady) return; // Wait until all connections are OK
+    
+    console.log('🚀 App pronto! Carregando dados...');
+    
+    // Now load all data
     loadCategories();
     loadProducts();
-    loadTables(); // Load available tables on startup
-    loadServiceTypes(); // Load service types and groups
-    
-    // Atualização automática silenciosa a cada 5 segundos
-    const tablesInterval = setInterval(async () => {
-      try {
-        const response = await fetch(`${config.API_BASE_URL}/api/pos/tables`);
-        const data = await response.json();
-        
-        if (data.success && data.tables) {
-          // Atualiza silenciosamente sem mostrar loading
-          const currentTables = data.tables;
-          setTables(currentTables);
-          
-          // Mantém o filtro de busca aplicado
-          if (tableSearchText?.trim()) {
-            const filtered = currentTables.filter((t: any) => 
-              t.number.toString().includes(tableSearchText)
-            );
-            setAvailableTables(filtered);
-          } else {
-            setAvailableTables(currentTables);
-          }
-        }
-      } catch (error) {
-        // Falha silenciosa - não mostra erro na atualização automática
-        console.log('Auto-refresh silencioso:', error);
-      }
-    }, 5000); // Atualiza a cada 5 segundos sem piscar
-
-    // Reload tablet settings every 30 seconds to sync admin changes
-    const settingsInterval = setInterval(() => {
-      fetchTabletSettings();
-    }, 30000);
+    loadTables();
+    loadServiceTypes();
     
     // Initialize idle timer
     resetIdleTimer();
@@ -616,28 +599,47 @@ function MainApp() {
       duration: config.animations.slow,
       useNativeDriver: true,
     }).start();
+    
+    // Atualização automática silenciosa a cada 5 segundos
+    const tablesInterval = setInterval(async () => {
+      if (!appReady) return; // Skip if not ready
+      try {
+        const response = await fetch(`${config.API_BASE_URL}/api/pos/tables`);
+        if (!response.ok) return; // Silent fail
+        const data = await response.json();
+        
+        if (data.success && data.tables) {
+          const currentTables = data.tables;
+          setTables(currentTables);
+          
+          if (tableSearchText?.trim()) {
+            const filtered = currentTables.filter((t: any) => 
+              t.number.toString().includes(tableSearchText)
+            );
+            setAvailableTables(filtered);
+          } else {
+            setAvailableTables(currentTables);
+          }
+        }
+      } catch (error) {
+        // Silent fail
+      }
+    }, 5000);
 
-    // Cleanup and disable back button in kiosk mode
-    const cleanup = () => {
+    // Reload tablet settings every 30 seconds
+    const settingsInterval = setInterval(() => {
+      if (appReady) fetchTabletSettings();
+    }, 30000);
+    
+    return () => {
       clearInterval(tablesInterval);
       clearInterval(settingsInterval);
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current);
       }
-      // Restore original brightness when app closes
       Brightness.setBrightnessAsync(tabletSettings.default_brightness).catch(console.error);
     };
-    
-    if (Platform.OS === 'android' && kioskMode) {
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
-      return () => {
-        backHandler.remove();
-        cleanup();
-      };
-    }
-    
-    return cleanup;
-  }, [tableSearchText]); // Adiciona tableSearchText para o setInterval poder usar
+  }, [appReady, tableSearchText]);
 
 
   // Check or create session when table is selected and mode is chosen
