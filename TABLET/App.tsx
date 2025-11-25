@@ -300,6 +300,9 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
       return <ArrowRight size={size} color={color} strokeWidth={2} />;
     case 'bill':
       return <Receipt size={size} color={color} strokeWidth={2} />;
+    case 'cart':
+    case 'shopping-cart':
+      return <ShoppingCart size={size} color={color} strokeWidth={2} />;
     case 'credit-card':
       return <CreditCard size={size} color={color} strokeWidth={2} />;
     case 'money':
@@ -5504,45 +5507,48 @@ const styles = StyleSheet.create({
   cartHeaderButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
-    backgroundColor: 'rgba(76, 175, 80, 0.3)',
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 25,
-    borderWidth: 1,
-    borderColor: 'rgba(76, 175, 80, 0.5)',
+    gap: 10,
+    backgroundColor: '#4CAF50',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 30,
+    shadowColor: '#4CAF50',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 6,
   },
   cartHeaderIconContainer: {
     position: 'relative',
+    width: 24,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cartHeaderBadge: {
     position: 'absolute',
-    top: -8,
-    right: -8,
+    top: -10,
+    right: -10,
     backgroundColor: '#FF5722',
-    minWidth: 18,
-    height: 18,
-    borderRadius: 9,
+    minWidth: 20,
+    height: 20,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 4,
+    paddingHorizontal: 5,
+    borderWidth: 2,
+    borderColor: '#4CAF50',
   },
   cartHeaderBadgeText: {
     color: '#FFF',
     fontSize: 11,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   cartHeaderText: {
     color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-    backgroundColor: 'rgba(255, 112, 67, 0.15)',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255, 112, 67, 0.3)',
+    fontSize: 13,
+    fontWeight: '700',
+    letterSpacing: 1,
   },
   billButtonTextGlass: {
     fontSize: 14,
