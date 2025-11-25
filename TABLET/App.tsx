@@ -3017,9 +3017,9 @@ function MainApp() {
                         styles.groupNameGlass,
                         selectedGroup?.id === group.id && styles.groupNameActiveGlass
                       ]}
-                      numberOfLines={1}
+                      numberOfLines={3}
                     >
-                      {group.name.length > 25 ? group.name.substring(0, 25) + '..' : group.name}
+                      {group.name}
                     </Text>
                     {selectedGroup?.id === group.id && (
                       <View style={styles.groupActiveIndicator} />
@@ -5185,11 +5185,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 8,
-    paddingVertical: 14,
+    paddingVertical: 10,
     marginHorizontal: 8,
     marginVertical: 5,
     borderRadius: 14,
     position: 'relative',
+    height: 85,
   },
   groupItemActiveGlass: {
     backgroundColor: 'rgba(255, 112, 67, 0.15)',
