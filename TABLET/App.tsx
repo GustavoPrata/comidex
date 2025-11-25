@@ -3019,7 +3019,7 @@ function MainApp() {
                       ]}
                       numberOfLines={1}
                     >
-                      {group.name.length > 20 ? group.name.substring(0, 20) + '..' : group.name}
+                      {group.name.length > 21 ? group.name.substring(0, 21) + '..' : group.name}
                     </Text>
                     {selectedGroup?.id === group.id && (
                       <View style={styles.groupActiveIndicator} />
@@ -5135,7 +5135,7 @@ const styles = StyleSheet.create({
   },
   // Left Sidebar Styles
   leftSidebarGlass: {
-    width: 110,
+    width: 130,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
