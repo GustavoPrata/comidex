@@ -5262,9 +5262,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 0,
     right: 0,
+    top: 0,
     bottom: 0,
     paddingHorizontal: 10,
     paddingVertical: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   categoryFullName: {
     fontSize: 15,
@@ -5273,6 +5276,7 @@ const styles = StyleSheet.create({
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 3,
+    textAlign: 'center',
   },
   categoryFullNameActive: {
     color: '#FF7043',
