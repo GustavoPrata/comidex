@@ -3028,47 +3028,53 @@ function MainApp() {
                     <TouchableOpacity
                       key={category.id}
                       style={[
-                        styles.categoryRowCard,
-                        selectedCategory === category.id && styles.categoryRowCardActive
+                        styles.categoryFullCard,
+                        selectedCategory === category.id && styles.categoryFullCardActive
                       ]}
                       onPress={() => {
                         setSelectedCategory(category.id);
                         resetIdleTimer();
                       }}
-                      activeOpacity={0.85}
+                      activeOpacity={0.9}
                     >
-                      {/* Category Image */}
-                      <View style={styles.categoryRowImageContainer}>
-                        {category.image ? (
-                          <Image 
-                            source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
-                            style={styles.categoryRowImage}
+                      {/* Full Background Image */}
+                      {category.image ? (
+                        <Image 
+                          source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
+                          style={styles.categoryFullImage}
+                        />
+                      ) : (
+                        <View style={styles.categoryFullImagePlaceholder}>
+                          <IconComponent 
+                            name={category.icon || 'sushi'} 
+                            size={28} 
+                            color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.3)'} 
                           />
-                        ) : (
-                          <View style={styles.categoryRowImagePlaceholder}>
-                            <IconComponent 
-                              name={category.icon || 'sushi'} 
-                              size={20} 
-                              color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.4)'} 
-                            />
-                          </View>
-                        )}
-                      </View>
+                        </View>
+                      )}
+                      
+                      {/* Gradient Overlay */}
+                      <LinearGradient
+                        colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']}
+                        style={styles.categoryGradientOverlay}
+                      />
                       
                       {/* Category Name */}
-                      <Text 
-                        style={[
-                          styles.categoryRowName,
-                          selectedCategory === category.id && styles.categoryRowNameActive
-                        ]}
-                        numberOfLines={2}
-                      >
-                        {category.name}
-                      </Text>
+                      <View style={styles.categoryFullLabelContainer}>
+                        <Text 
+                          style={[
+                            styles.categoryFullName,
+                            selectedCategory === category.id && styles.categoryFullNameActive
+                          ]}
+                          numberOfLines={2}
+                        >
+                          {category.name}
+                        </Text>
+                      </View>
                       
-                      {/* Active Indicator */}
+                      {/* Active Border Glow */}
                       {selectedCategory === category.id && (
-                        <View style={styles.categoryRowActiveIndicator} />
+                        <View style={styles.categoryActiveGlow} />
                       )}
                     </TouchableOpacity>
                   ))}
@@ -5237,8 +5243,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoriesListContent: {
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    paddingHorizontal: 6,
+    paddingVertical: 6,
   },
   loadingCategoriesGlass: {
     alignItems: 'center',
@@ -5249,54 +5255,71 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.5)',
     marginTop: 8,
   },
-  categoryRowCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(35, 35, 35, 0.9)',
-    marginVertical: 4,
+  categoryFullCard: {
+    height: 70,
+    marginVertical: 3,
     borderRadius: 10,
     overflow: 'hidden',
-    borderWidth: 1.5,
+    position: 'relative',
+    borderWidth: 2,
     borderColor: 'transparent',
   },
-  categoryRowCardActive: {
+  categoryFullCardActive: {
     borderColor: '#FF7043',
-    backgroundColor: 'rgba(255, 112, 67, 0.12)',
   },
-  categoryRowImageContainer: {
-    width: 52,
-    height: 52,
-    overflow: 'hidden',
-  },
-  categoryRowImage: {
+  categoryFullImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
   },
-  categoryRowImagePlaceholder: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(50, 50, 50, 0.9)',
+  categoryFullImagePlaceholder: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(40, 40, 40, 0.95)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  categoryRowName: {
-    flex: 1,
-    fontSize: 13,
-    fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.8)',
+  categoryGradientOverlay: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: '100%',
+  },
+  categoryFullLabelContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     paddingHorizontal: 10,
+    paddingVertical: 8,
   },
-  categoryRowNameActive: {
-    color: '#FF7043',
+  categoryFullName: {
+    fontSize: 13,
     fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.95)',
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
-  categoryRowActiveIndicator: {
-    width: 4,
-    height: '60%',
-    backgroundColor: '#FF7043',
-    borderTopLeftRadius: 3,
-    borderBottomLeftRadius: 3,
+  categoryFullNameActive: {
+    color: '#FF7043',
+  },
+  categoryActiveGlow: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 112, 67, 0.15)',
   },
   // Right Column - Products Grid
   rightColumnGlass: {
