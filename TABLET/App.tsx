@@ -361,6 +361,7 @@ function MainApp() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showCart, setShowCart] = useState(false);
+  const [tempQuantities, setTempQuantities] = useState<Record<number, number>>({});
   const [loading, setLoading] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
@@ -1744,38 +1745,108 @@ function MainApp() {
     setShowObservationModal(true);
   };
 
+  // Increase temp quantity for a product
+  const increaseTempQuantity = (productId: number) => {
+    setTempQuantities(prev => ({
+      ...prev,
+      [productId]: (prev[productId] || 0) + 1
+    }));
+  };
+
+  // Decrease temp quantity for a product
+  const decreaseTempQuantity = (productId: number) => {
+    setTempQuantities(prev => {
+      const current = prev[productId] || 0;
+      if (current <= 1) {
+        const { [productId]: removed, ...rest } = prev;
+        return rest;
+      }
+      return { ...prev, [productId]: current - 1 };
+    });
+  };
+
+  // Get total temp items count
+  const getTempItemsCount = () => {
+    return Object.values(tempQuantities).reduce((sum, qty) => sum + qty, 0);
+  };
+
+  // Add all temp items to cart and clear temp quantities
+  const addTempToCart = () => {
+    const itemsToAdd: CartItem[] = [];
+    
+    Object.entries(tempQuantities).forEach(([productIdStr, quantity]) => {
+      if (quantity > 0) {
+        const productId = parseInt(productIdStr);
+        const product = products.find(p => p.id === productId);
+        if (product) {
+          itemsToAdd.push({ ...product, quantity });
+        }
+      }
+    });
+
+    if (itemsToAdd.length > 0) {
+      setCart(prev => {
+        const newCart = [...prev];
+        itemsToAdd.forEach(item => {
+          const existingIndex = newCart.findIndex(c => c.id === item.id && !c.observation);
+          if (existingIndex >= 0) {
+            newCart[existingIndex].quantity += item.quantity;
+          } else {
+            newCart.push(item);
+          }
+        });
+        return newCart;
+      });
+      
+      // Clear temp quantities
+      setTempQuantities({});
+      
+      // Open cart modal
+      setShowCart(true);
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        useNativeDriver: true,
+      }).start();
+    }
+  };
+
   // Handle remove from cart (decrease quantity or remove)
-  const handleRemoveFromCart = (productId: number) => {
+  const handleRemoveFromCart = (productId: number, observation?: string) => {
     setCart(prev => {
-      const existingItem = prev.find((item) => item.id === productId);
+      const existingItem = prev.find((item) => item.id === productId && item.observation === observation);
       if (!existingItem) return prev;
       
       if (existingItem.quantity > 1) {
         return prev.map((item) =>
-          item.id === productId
+          item.id === productId && item.observation === observation
             ? { ...item, quantity: item.quantity - 1 }
             : item
         );
       } else {
-        return prev.filter((item) => item.id !== productId);
+        return prev.filter((item) => !(item.id === productId && item.observation === observation));
       }
     });
   };
 
-  // Handle quick add to cart (without observation modal)
-  const handleQuickAddToCart = (product: Product) => {
+  // Handle quick add to cart in cart modal
+  const handleQuickAddInCart = (productId: number, observation?: string) => {
     setCart(prev => {
-      const existingItem = prev.find((item) => item.id === product.id && !item.observation);
-      if (existingItem) {
-        return prev.map((item) =>
-          item.id === product.id && !item.observation
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      } else {
-        return [...prev, { ...product, quantity: 1 }];
-      }
+      return prev.map((item) =>
+        item.id === productId && item.observation === observation
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
     });
+  };
+
+  // Delete item from cart completely
+  const deleteFromCart = (productId: number, observation?: string) => {
+    setCart(prev => prev.filter(item => !(item.id === productId && item.observation === observation)));
+  };
+
+  // Clear entire cart
+  const clearCart = () => {
+    setCart([]);
   };
 
   // Confirm add to cart with observation
@@ -3309,8 +3380,8 @@ function MainApp() {
                   // Safety check for product
                   if (!('id' in item)) return null;
                   
-                  const itemInCart = cart.find(c => c.id === item.id);
-                  const quantity = itemInCart ? itemInCart.quantity : 0;
+                  // Use temp quantity (not cart)
+                  const tempQty = tempQuantities[item.id] || 0;
                   
                   return (
                     <View style={styles.productCardGlass}>
@@ -3355,25 +3426,25 @@ function MainApp() {
                         <View style={styles.productBottomRow}>
                           <View style={styles.quantityControlsRow}>
                             <Pressable 
-                              style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
+                              style={[styles.quantityButton, tempQty === 0 && styles.quantityButtonDisabled]}
                               onPress={() => {
-                                if (quantity > 0) {
+                                if (tempQty > 0) {
                                   triggerHaptic();
-                                  handleRemoveFromCart(item.id);
+                                  decreaseTempQuantity(item.id);
                                 }
                               }}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
-                              <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
+                              <IconComponent name="minus" size={18} color={tempQty > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
                             </Pressable>
                             
-                            <Text style={styles.quantityText}>{quantity}</Text>
+                            <Text style={styles.quantityText}>{tempQty}</Text>
                             
                             <Pressable 
                               style={styles.quantityButtonPlus}
                               onPress={() => {
                                 triggerHaptic();
-                                handleQuickAddToCart(item);
+                                increaseTempQuantity(item.id);
                               }}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
@@ -3390,8 +3461,30 @@ function MainApp() {
           </View>
         </View>
 
-        {/* Cart Button */}
-        {cart.length > 0 && (
+        {/* Add to Cart Button - appears when temp items selected */}
+        {getTempItemsCount() > 0 && (
+          <Animated.View style={[
+            styles.cartFloatingButton,
+            { transform: [{ scale: cartBounceAnim }] }
+          ]}>
+            <TouchableOpacity
+              style={styles.addToCartFloatingButton}
+              onPress={() => {
+                triggerHaptic();
+                addTempToCart();
+                resetIdleTimer();
+              }}
+            >
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{getTempItemsCount()}</Text>
+              </View>
+              <Text style={styles.cartFloatingButtonText}>Adicionar ao Carrinho</Text>
+            </TouchableOpacity>
+          </Animated.View>
+        )}
+
+        {/* View Cart Button - appears when cart has items and no temp items */}
+        {cart.length > 0 && getTempItemsCount() === 0 && (
           <Animated.View style={[
             styles.cartFloatingButton,
             { transform: [{ scale: cartBounceAnim }] }
@@ -3408,7 +3501,7 @@ function MainApp() {
               }}
             >
               <View style={styles.cartBadge}>
-                <Text style={styles.cartBadgeText}>{cart.length}</Text>
+                <Text style={styles.cartBadgeText}>{cart.reduce((sum, item) => sum + item.quantity, 0)}</Text>
               </View>
               <Text style={styles.cartFloatingButtonText}>Ver Carrinho</Text>
               <Text style={styles.cartFloatingButtonTotal}>
@@ -3835,100 +3928,147 @@ function MainApp() {
         </View>
       </Modal>
 
-      {/* Cart Modal */}
+      {/* Cart Modal - Goomer Style */}
       <Modal
         visible={showCart}
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         onRequestClose={() => setShowCart(false)}
       >
-        <Animated.View 
-          style={[
-            styles.cartModal,
-            {
-              transform: [{ translateY: slideAnim }]
-            }
-          ]}
-        >
-          <View style={styles.cartHeader}>
-            {/* Logo in cart header */}
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
-              <Image 
-                source={require('./assets/logo232.png')}
-                style={{ width: 45, height: 45, borderRadius: 22.5 }}
-                resizeMode="cover"
-              />
-              <Text style={styles.cartTitle}>Carrinho</Text>
+        <View style={styles.cartModalOverlay}>
+          <View style={styles.cartModalContainer}>
+            {/* Header */}
+            <View style={styles.cartModalHeader}>
+              <TouchableOpacity 
+                style={styles.cartCloseCircle}
+                onPress={() => {
+                  setShowCart(false);
+                  Animated.timing(slideAnim, {
+                    toValue: height,
+                    duration: config.animations.normal,
+                    useNativeDriver: true,
+                  }).start();
+                }}
+              >
+                <X size={24} color="#333" strokeWidth={2.5} />
+              </TouchableOpacity>
+              
+              <Text style={styles.cartModalTitle}>CARRINHO DE COMPRAS</Text>
+              
+              <TouchableOpacity 
+                style={styles.clearCartButton}
+                onPress={() => {
+                  triggerHaptic();
+                  clearCart();
+                }}
+              >
+                <Text style={styles.clearCartButtonText}>LIMPAR CARRINHO</Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => {
-              setShowCart(false);
-              Animated.timing(slideAnim, {
-                toValue: height,
-                duration: config.animations.normal,
-                useNativeDriver: true,
-              }).start();
-            }}>
-              <Text style={styles.cartCloseButton}>✕</Text>
-            </TouchableOpacity>
-          </View>
 
-          <ScrollView style={styles.cartItems}>
-            {cart.map((item) => (
-              <View key={`${item.id}-${item.observation}`} style={styles.cartItem}>
-                <View style={styles.cartItemInfo}>
-                  <Text style={styles.cartItemName}>{item.name}</Text>
-                  {item.observation && (
-                    <Text style={styles.cartItemObservation}>
-                      📝 {item.observation}
-                    </Text>
+            {/* Table Header */}
+            <View style={styles.cartTableHeader}>
+              <Text style={styles.cartTableHeaderText}>Item</Text>
+              <Text style={styles.cartTableHeaderQty}>Qtd</Text>
+              <Text style={styles.cartTableHeaderSubtotal}>Subtotal</Text>
+            </View>
+
+            {/* Cart Items */}
+            <ScrollView style={styles.cartItemsList}>
+              {cart.map((item) => (
+                <View key={`${item.id}-${item.observation || ''}`} style={styles.cartItemRow}>
+                  {/* Delete Button */}
+                  <TouchableOpacity 
+                    style={styles.cartItemDelete}
+                    onPress={() => {
+                      triggerHaptic();
+                      deleteFromCart(item.id, item.observation);
+                    }}
+                  >
+                    <X size={18} color="#999" strokeWidth={2} />
+                  </TouchableOpacity>
+                  
+                  {/* Product Image */}
+                  {item.image_url ? (
+                    <Image 
+                      source={{ uri: item.image_url.startsWith('http') ? item.image_url : `${config.BASE_URL}${item.image_url}` }} 
+                      style={styles.cartItemImage}
+                    />
+                  ) : (
+                    <View style={styles.cartItemImagePlaceholder}>
+                      <IconComponent name="sushi" size={24} color="rgba(0,0,0,0.2)" />
+                    </View>
                   )}
-                  <Text style={styles.cartItemPrice}>
-                    R$ {(parseFloat(item.price) * item.quantity).toFixed(2)}
+                  
+                  {/* Product Name */}
+                  <View style={styles.cartItemNameContainer}>
+                    <Text style={styles.cartItemNameText} numberOfLines={2}>{item.name}</Text>
+                    {item.observation && (
+                      <Text style={styles.cartItemObsText} numberOfLines={1}>📝 {item.observation}</Text>
+                    )}
+                  </View>
+                  
+                  {/* Quantity Controls */}
+                  <View style={styles.cartItemQtyControls}>
+                    <TouchableOpacity 
+                      style={styles.cartQtyBtn}
+                      onPress={() => {
+                        triggerHaptic();
+                        handleRemoveFromCart(item.id, item.observation);
+                      }}
+                    >
+                      <Text style={styles.cartQtyBtnText}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.cartQtyText}>{item.quantity}</Text>
+                    <TouchableOpacity 
+                      style={styles.cartQtyBtn}
+                      onPress={() => {
+                        triggerHaptic();
+                        handleQuickAddInCart(item.id, item.observation);
+                      }}
+                    >
+                      <Text style={styles.cartQtyBtnText}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+                  
+                  {/* Subtotal - Hidden for rodizio items with 0 price */}
+                  <Text style={styles.cartItemSubtotal}>
+                    {parseFloat(item.price) > 0 ? `R$ ${(parseFloat(item.price) * item.quantity).toFixed(2)}` : ''}
                   </Text>
                 </View>
-                <View style={styles.cartItemQuantity}>
-                  <TouchableOpacity
-                    style={styles.cartQuantityButton}
-                    onPress={() => {
-                      triggerHaptic();
-                      updateQuantity(item.id, item.quantity - 1);
-                    }}
-                  >
-                    <Text style={styles.cartQuantityButtonText}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.cartQuantityText}>{item.quantity}</Text>
-                  <TouchableOpacity
-                    style={styles.cartQuantityButton}
-                    onPress={() => {
-                      triggerHaptic();
-                      updateQuantity(item.id, item.quantity + 1);
-                    }}
-                  >
-                    <Text style={styles.cartQuantityButtonText}>+</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ))}
-          </ScrollView>
+              ))}
+            </ScrollView>
 
-          <View style={styles.cartFooter}>
-            <View style={styles.cartTotal}>
-              <Text style={styles.cartTotalLabel}>Total:</Text>
-              <Text style={styles.cartTotalValue}>R$ {getCartTotal().toFixed(2)}</Text>
+            {/* Footer */}
+            <View style={styles.cartModalFooter}>
+              <View style={styles.cartFooterTotal}>
+                <Text style={styles.cartFooterTotalLabel}>Valor a pagar</Text>
+                <Text style={styles.cartFooterTotalValue}>R$ {getCartTotal().toFixed(2)}</Text>
+              </View>
+              
+              <TouchableOpacity 
+                style={styles.addMoreItemsButton}
+                onPress={() => {
+                  setShowCart(false);
+                }}
+              >
+                <Text style={styles.addMoreItemsText}>ADICIONAR MAIS ITENS</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={[styles.sendOrderBtn, loading && styles.sendOrderBtnDisabled]}
+                onPress={sendOrder}
+                disabled={loading}
+              >
+                {loading ? (
+                  <ActivityIndicator color="#FFF" />
+                ) : (
+                  <Text style={styles.sendOrderBtnText}>ENVIAR PEDIDO</Text>
+                )}
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity
-              style={[styles.sendOrderButton, loading && styles.sendOrderButtonDisabled]}
-              onPress={sendOrder}
-              disabled={loading}
-            >
-              {loading ? (
-                <ActivityIndicator color="#FFF" />
-              ) : (
-                <Text style={styles.sendOrderButtonText}>Enviar Pedido</Text>
-              )}
-            </TouchableOpacity>
           </View>
-        </Animated.View>
+        </View>
       </Modal>
 
       {/* Bill Modal */}
@@ -6002,6 +6142,222 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 20,
     fontWeight: "bold",
+  },
+  addToCartFloatingButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#4CAF50",
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderRadius: 30,
+    gap: 12,
+  },
+  cartModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartModalContainer: {
+    width: '85%',
+    maxWidth: 900,
+    maxHeight: '85%',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  cartModalHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#D4A574',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+  },
+  cartCloseCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#F5F5F5',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartModalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFF',
+    letterSpacing: 1,
+  },
+  clearCartButton: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#FFF',
+  },
+  clearCartButtonText: {
+    color: '#FFF',
+    fontSize: 13,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  cartTableHeader: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: '#EBEBEB',
+    borderBottomWidth: 1,
+    borderBottomColor: '#DDD',
+  },
+  cartTableHeaderText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+  },
+  cartTableHeaderQty: {
+    width: 100,
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  cartTableHeaderSubtotal: {
+    width: 100,
+    fontSize: 14,
+    color: '#666',
+    fontWeight: '500',
+    textAlign: 'right',
+  },
+  cartItemsList: {
+    flex: 1,
+    backgroundColor: '#FFF',
+  },
+  cartItemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEE',
+  },
+  cartItemDelete: {
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartItemImage: {
+    width: 70,
+    height: 50,
+    borderRadius: 6,
+    marginLeft: 8,
+    backgroundColor: '#F0F0F0',
+  },
+  cartItemImagePlaceholder: {
+    width: 70,
+    height: 50,
+    borderRadius: 6,
+    marginLeft: 8,
+    backgroundColor: '#F0F0F0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartItemNameContainer: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  cartItemNameText: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#333',
+  },
+  cartItemObsText: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 2,
+  },
+  cartItemQtyControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: 100,
+    justifyContent: 'center',
+  },
+  cartQtyBtn: {
+    width: 32,
+    height: 32,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cartQtyBtnText: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#666',
+  },
+  cartQtyText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
+    minWidth: 30,
+    textAlign: 'center',
+  },
+  cartItemSubtotal: {
+    width: 100,
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#333',
+    textAlign: 'right',
+  },
+  cartModalFooter: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 16,
+    backgroundColor: '#F5F5F5',
+    borderTopWidth: 1,
+    borderTopColor: '#DDD',
+    gap: 16,
+  },
+  cartFooterTotal: {
+    flex: 1,
+  },
+  cartFooterTotalLabel: {
+    fontSize: 13,
+    color: '#888',
+  },
+  cartFooterTotalValue: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#333',
+  },
+  addMoreItemsButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 14,
+    borderRadius: 8,
+    backgroundColor: '#D4A574',
+  },
+  addMoreItemsText: {
+    color: '#FFF',
+    fontSize: 14,
+    fontWeight: '600',
+    letterSpacing: 0.5,
+  },
+  sendOrderBtn: {
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 8,
+    backgroundColor: '#4CAF50',
+  },
+  sendOrderBtnDisabled: {
+    backgroundColor: '#AAA',
+  },
+  sendOrderBtnText: {
+    color: '#FFF',
+    fontSize: 14,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
   waiterButton: {
     position: "absolute",
