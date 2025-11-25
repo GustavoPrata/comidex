@@ -3490,7 +3490,7 @@ function MainApp() {
                 resetIdleTimer();
               }}
             >
-              <X size={20} color="#FFF" strokeWidth={2.5} />
+              <X size={18} color="#FF5722" strokeWidth={2.5} />
             </TouchableOpacity>
             
             {/* Add to Cart Button with concave left edge */}
@@ -6263,16 +6263,19 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   clearTempButton: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: '#D84315',
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: -10,
+    marginRight: -8,
     zIndex: 10,
-    borderWidth: 2,
-    borderColor: 'rgba(255,255,255,0.25)',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 4,
   },
   addToCartButtonWrapper: {
     position: 'relative',
