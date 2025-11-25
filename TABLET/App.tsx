@@ -386,6 +386,8 @@ function MainApp() {
   const [showObservationModal, setShowObservationModal] = useState(false);
   const [selectedProductForObservation, setSelectedProductForObservation] = useState<Product | null>(null);
   const [observationText, setObservationText] = useState("");
+  const [showImageModal, setShowImageModal] = useState(false);
+  const [imageModalProduct, setImageModalProduct] = useState<Product | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<"success" | "error" | "info">("info");
@@ -3092,14 +3094,21 @@ function MainApp() {
                   
                   return (
                     <View style={styles.productCardGlass}>
-                      {/* Product Image - Left Side 16:9 */}
-                      {item.image_url ? (
-                        <Image source={{ uri: item.image_url }} style={styles.productImageGlass} />
-                      ) : (
-                        <View style={styles.productImagePlaceholderGlass}>
-                          <IconComponent name="sushi" size={36} color="rgba(255, 255, 255, 0.3)" />
-                        </View>
-                      )}
+                      {/* Product Image - Left Side 16:9 - Clickable */}
+                      <Pressable 
+                        onPress={() => {
+                          setImageModalProduct(item);
+                          setShowImageModal(true);
+                        }}
+                      >
+                        {item.image_url ? (
+                          <Image source={{ uri: item.image_url }} style={styles.productImageGlass} />
+                        ) : (
+                          <View style={styles.productImagePlaceholderGlass}>
+                            <IconComponent name="sushi" size={36} color="rgba(255, 255, 255, 0.3)" />
+                          </View>
+                        )}
+                      </Pressable>
                       
                       {/* Product Info and Controls - Right Side */}
                       <View style={styles.productRightSection}>
@@ -3554,6 +3563,41 @@ function MainApp() {
               </TouchableOpacity>
             </View>
           </View>
+        </View>
+      </Modal>
+
+      {/* Image Modal - Full Screen Product Image */}
+      <Modal
+        visible={showImageModal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setShowImageModal(false)}
+      >
+        <View style={styles.imageModalOverlay}>
+          <Pressable 
+            style={styles.imageModalCloseButton}
+            onPress={() => setShowImageModal(false)}
+          >
+            <View style={styles.imageModalCloseCircle}>
+              <IconComponent name="close" size={28} color="#333" />
+            </View>
+          </Pressable>
+          
+          {imageModalProduct && (
+            <View style={styles.imageModalContent}>
+              <Image 
+                source={{ uri: imageModalProduct.image_url || '' }} 
+                style={styles.imageModalImage}
+                resizeMode="contain"
+              />
+              <View style={styles.imageModalInfo}>
+                <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
+                {imageModalProduct.description && (
+                  <Text style={styles.imageModalDescription}>{imageModalProduct.description}</Text>
+                )}
+              </View>
+            </View>
+          )}
         </View>
       </Modal>
 
@@ -5788,6 +5832,55 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 16,
     fontWeight: "bold",
+  },
+  imageModalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.92)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  imageModalCloseButton: {
+    position: 'absolute',
+    top: 30,
+    right: 30,
+    zIndex: 10,
+  },
+  imageModalCloseCircle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#D4A574',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageModalContent: {
+    flex: 1,
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 60,
+    paddingBottom: 100,
+  },
+  imageModalImage: {
+    width: width * 0.85,
+    height: height * 0.55,
+  },
+  imageModalInfo: {
+    position: 'absolute',
+    bottom: 40,
+    left: 20,
+    right: 20,
+  },
+  imageModalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginBottom: 8,
+  },
+  imageModalDescription: {
+    fontSize: 15,
+    color: 'rgba(255, 255, 255, 0.8)',
+    lineHeight: 22,
   },
   cartModal: {
     position: "absolute",
