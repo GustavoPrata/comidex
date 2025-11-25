@@ -5238,7 +5238,8 @@ const styles = StyleSheet.create({
   // Apple Glassmorphism Styles
   glassHeader: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingTop: 45,
+    paddingBottom: 16,
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
@@ -5502,7 +5503,11 @@ const styles = StyleSheet.create({
   billButtonGlass: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
+    gap: 8,
+    backgroundColor: 'rgba(255, 112, 67, 0.9)',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 25,
   },
   cartHeaderButton: {
     flexDirection: 'row',
