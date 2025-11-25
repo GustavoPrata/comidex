@@ -353,15 +353,35 @@ function MainApp() {
   // Fetch tablet settings from server
   const fetchTabletSettings = useCallback(async () => {
     try {
-      const response = await fetch(`${config.API_BASE_URL}/api/mobile/tablet-settings`);
+      const url = `${config.API_BASE_URL}/api/mobile/tablet-settings`;
+      console.log('🔧 Buscando configurações do tablet:', url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      
+      console.log('🔧 Response status:', response.status);
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('🔧 Dados recebidos:', JSON.stringify(data));
+        
         if (data.success && data.settings) {
-          setTabletSettings(data.settings);
-          console.log('✅ Configurações do tablet carregadas:', data.settings);
+          setTabletSettings(prev => ({
+            ...prev,
+            ...data.settings
+          }));
+          console.log('✅ Configurações do tablet aplicadas:', data.settings);
         }
+      } else {
+        console.log('⚠️ Resposta não OK:', response.status);
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.log('⚠️ Erro ao buscar configurações:', error?.message || error);
       console.log('⚠️ Usando configurações padrão do tablet');
     }
   }, []);
@@ -1067,7 +1087,7 @@ function MainApp() {
         console.log("⚠️ Não foi possível verificar pedidos (tentando API alternativa)");
         
         // Tentar API alternativa /api/orders
-        const altResponse = await fetch(`${config.BASE_URL}/api/orders`, {
+        const altResponse = await fetch(`${config.API_BASE_URL}/api/orders`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });

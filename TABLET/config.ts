@@ -14,6 +14,9 @@ const POS_API_URL = `${BACKEND_URL}/api/pos`;
 const CATALOG_API_URL = `${BACKEND_URL}/api/mobile`;
 
 export const config = {
+  // Base URL for all API calls
+  API_BASE_URL: BACKEND_URL,
+  
   // POS APIs - Autoridade sobre mesas, sessões e pedidos
   POS_API: {
     tables: `${POS_API_URL}/tables`,      // GET: listar mesas com status real
