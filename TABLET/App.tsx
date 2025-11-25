@@ -2992,10 +2992,9 @@ function MainApp() {
                 groups.map((group) => (
                   <Pressable
                     key={group.id}
-                    style={({ pressed }) => [
+                    style={[
                       styles.groupItemGlass,
-                      selectedGroup?.id === group.id && styles.groupItemActiveGlass,
-                      pressed && { opacity: 0.9 }
+                      selectedGroup?.id === group.id && styles.groupItemActiveGlass
                     ]}
                     onPress={() => {
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
