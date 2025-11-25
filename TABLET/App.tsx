@@ -5085,7 +5085,7 @@ const styles = StyleSheet.create({
   },
   // Left Sidebar Styles
   leftSidebarGlass: {
-    width: 105,
+    width: 120,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
