@@ -1921,6 +1921,32 @@ function MainApp() {
     }
   };
 
+  // Constantes de altura para o FlatList
+  const HEADER_HEIGHT = 50;
+  const PRODUCT_HEIGHT = 180;
+
+  // getItemLayout para scroll preciso
+  const getItemLayout = (data: any, index: number) => {
+    if (!data || index < 0) {
+      return { length: PRODUCT_HEIGHT, offset: 0, index };
+    }
+    
+    let offset = 0;
+    for (let i = 0; i < index && i < data.length; i++) {
+      const item = data[i];
+      if (item && typeof item === 'object' && 'isHeader' in item) {
+        offset += HEADER_HEIGHT;
+      } else {
+        offset += PRODUCT_HEIGHT;
+      }
+    }
+    
+    const item = data[index];
+    const length = (item && typeof item === 'object' && 'isHeader' in item) ? HEADER_HEIGHT : PRODUCT_HEIGHT;
+    
+    return { length, offset, index };
+  };
+
   // Scroll para categoria quando clicada (user initiated)
   const scrollToCategory = (categoryId: number) => {
     // Mark as programmatic scroll to prevent handleProductScroll from fighting
@@ -1928,8 +1954,17 @@ function MainApp() {
     
     const items = getProductsWithHeaders();
     const index = items.findIndex(item => typeof item === 'object' && 'isHeader' in item && item.categoryId === categoryId);
+    
+    console.log(`🎯 Scrolling to category ${categoryId}, index: ${index}`);
+    
     if (index !== -1 && productListRef.current) {
-      productListRef.current.scrollToIndex({ index, animated: true, viewPosition: 0 });
+      try {
+        productListRef.current.scrollToIndex({ index, animated: true, viewPosition: 0 });
+      } catch (e) {
+        console.log('⚠️ scrollToIndex failed, using scrollToOffset');
+        const layout = getItemLayout(items, index);
+        productListRef.current.scrollToOffset({ offset: layout.offset, animated: true });
+      }
     }
     
     // Release lock after scroll animation completes
@@ -3263,15 +3298,17 @@ function MainApp() {
                   if ('id' in item) return `product-${item.id}`;
                   return `item-${index}`;
                 }}
+                getItemLayout={getItemLayout}
                 contentContainerStyle={styles.productsGridGlass}
                 showsVerticalScrollIndicator={false}
                 onScroll={handleProductScroll}
                 onMomentumScrollEnd={handleScrollEnd}
                 scrollEventThrottle={16}
                 onScrollToIndexFailed={(info) => {
-                  setTimeout(() => {
-                    productListRef.current?.scrollToIndex({ index: info.index, animated: true });
-                  }, 100);
+                  console.log('⚠️ scrollToIndexFailed:', info.index);
+                  const items = getProductsWithHeaders();
+                  const layout = getItemLayout(items, info.index);
+                  productListRef.current?.scrollToOffset({ offset: layout.offset, animated: true });
                 }}
                 ListEmptyComponent={
                   <View style={styles.emptyContainerGlass}>
