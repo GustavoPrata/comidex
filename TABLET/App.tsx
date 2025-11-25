@@ -6264,11 +6264,13 @@ const styles = StyleSheet.create({
   addToCartFloatingButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#FF7043",
     paddingHorizontal: 24,
     paddingVertical: 16,
-    borderRadius: 30,
+    borderRadius: 12,
     gap: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   cartModalOverlay: {
     flex: 1,
