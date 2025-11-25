@@ -3182,6 +3182,33 @@ function MainApp() {
                 <IconComponent name="bill" size={18} color="#FFFFFF" />
                 <Text style={styles.billButtonTextGlass}>Conta</Text>
               </TouchableOpacity>
+              
+              {/* Cart Button in Header */}
+              <TouchableOpacity
+                style={styles.cartHeaderButton}
+                onPress={() => {
+                  if (cart.length > 0) {
+                    setShowCart(true);
+                    resetIdleTimer();
+                    Animated.spring(slideAnim, {
+                      toValue: 0,
+                      useNativeDriver: true,
+                    }).start();
+                  }
+                }}
+              >
+                <View style={styles.cartHeaderIconContainer}>
+                  <IconComponent name="cart" size={20} color="#FFFFFF" />
+                  {cart.length > 0 && (
+                    <View style={styles.cartHeaderBadge}>
+                      <Text style={styles.cartHeaderBadgeText}>
+                        {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+                <Text style={styles.cartHeaderText}>CARRINHO</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </BlurView>
@@ -5473,6 +5500,43 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
+  },
+  cartHeaderButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(76, 175, 80, 0.3)',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: 'rgba(76, 175, 80, 0.5)',
+  },
+  cartHeaderIconContainer: {
+    position: 'relative',
+  },
+  cartHeaderBadge: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#FF5722',
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
+  cartHeaderBadgeText: {
+    color: '#FFF',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  cartHeaderText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+    letterSpacing: 0.5,
     backgroundColor: 'rgba(255, 112, 67, 0.15)',
     paddingHorizontal: 14,
     paddingVertical: 8,
