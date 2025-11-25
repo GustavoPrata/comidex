@@ -275,6 +275,7 @@ function MainApp() {
   const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
   const [isCharging, setIsCharging] = useState(false);
   const [pendingReload, setPendingReload] = useState(false);
+  const [isAppClosed, setIsAppClosed] = useState(false);
   
   // Session Management States
   const [session, setSession] = useState<Session | null>(null);
@@ -637,14 +638,21 @@ function MainApp() {
           
         case 'exit_app':
         case 'close_app':
-          console.log('🚪 Comando de fechar recebido (não suportado em Expo)');
-          // Note: BackHandler.exitApp() doesn't work reliably in Expo
-          // The admin will need to use device management tools for this
-          Alert.alert(
-            'Comando Recebido',
-            'O administrador solicitou o fechamento do app. Por favor, feche manualmente.',
-            [{ text: 'OK' }]
-          );
+          console.log('🚪 Comando de fechar app recebido');
+          if (Platform.OS === 'android') {
+            console.log('📱 Fechando app no Android...');
+            BackHandler.exitApp();
+          } else {
+            console.log('📱 Mostrando tela de app fechado (iOS/Web)');
+            setIsAppClosed(true);
+            if (tabletSettings.brightness_enabled) {
+              try {
+                Brightness.setBrightnessAsync(0.1);
+              } catch (e) {
+                console.log('Erro ao ajustar brilho:', e);
+              }
+            }
+          }
           break;
           
         case 'lock':
@@ -1982,6 +1990,93 @@ function MainApp() {
             />
             <TouchableOpacity style={styles.unlockButton} onPress={handleUnlock}>
               <Text style={styles.unlockButtonText}>Desbloquear</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  // App Closed Screen (for iOS/Web where BackHandler.exitApp() doesn't work)
+  if (isAppClosed) {
+    return (
+      <View style={[styles.container, { backgroundColor: '#0a0a0a' }]}>
+        <StatusBar hidden={true} />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 40 }}>
+          <Svg width={100} height={100} viewBox="0 0 24 24" fill="none">
+            <Circle cx="12" cy="12" r="10" stroke="#333" strokeWidth="2"/>
+            <Path d="M8 12h8" stroke="#333" strokeWidth="2" strokeLinecap="round"/>
+          </Svg>
+          <Text style={{ 
+            color: '#444', 
+            fontSize: 28, 
+            fontWeight: '700', 
+            marginTop: 30,
+            textAlign: 'center'
+          }}>
+            App Encerrado
+          </Text>
+          <Text style={{ 
+            color: '#333', 
+            fontSize: 16, 
+            marginTop: 12,
+            textAlign: 'center',
+            lineHeight: 24
+          }}>
+            O administrador encerrou este tablet remotamente.
+          </Text>
+          <View style={{ marginTop: 40, alignItems: 'center' }}>
+            <Text style={{ color: '#555', fontSize: 12, marginBottom: 10 }}>
+              Digite a senha admin para reativar:
+            </Text>
+            <TextInput
+              style={{
+                width: 120,
+                height: 50,
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: 'rgba(255, 112, 67, 0.3)',
+                color: '#FF7043',
+                fontSize: 20,
+                textAlign: 'center',
+                letterSpacing: 8,
+              }}
+              value={password}
+              onChangeText={setPassword}
+              placeholder="••••"
+              placeholderTextColor="#333"
+              secureTextEntry
+              keyboardType="numeric"
+              maxLength={4}
+            />
+            <TouchableOpacity 
+              style={{
+                marginTop: 15,
+                paddingHorizontal: 30,
+                paddingVertical: 12,
+                backgroundColor: password.length === 4 ? 'rgba(255, 112, 67, 0.2)' : 'rgba(255, 112, 67, 0.05)',
+                borderRadius: 12,
+                borderWidth: 1,
+                borderColor: password.length === 4 ? 'rgba(255, 112, 67, 0.5)' : 'rgba(255, 112, 67, 0.2)',
+              }}
+              onPress={() => {
+                if (password === config.ADMIN_PASSWORD) {
+                  setIsAppClosed(false);
+                  setPassword("");
+                  resetIdleTimer();
+                  if (tabletSettings.brightness_enabled) {
+                    Brightness.setBrightnessAsync(tabletSettings.default_brightness);
+                  }
+                } else if (password.length === 4) {
+                  Alert.alert('Erro', 'Senha incorreta');
+                  setPassword("");
+                }
+              }}
+            >
+              <Text style={{ color: '#FF7043', fontSize: 14 }}>
+                Reativar
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
