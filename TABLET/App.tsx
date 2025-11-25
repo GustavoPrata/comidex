@@ -2984,7 +2984,8 @@ function MainApp() {
                         styles.groupNameGlass,
                         selectedGroup?.id === group.id && styles.groupNameActiveGlass
                       ]}
-                      numberOfLines={2}
+                      numberOfLines={1}
+                      ellipsizeMode="tail"
                     >
                       {group.name}
                     </Text>
@@ -5084,7 +5085,7 @@ const styles = StyleSheet.create({
   },
   // Left Sidebar Styles
   leftSidebarGlass: {
-    width: 95,
+    width: 105,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
     backgroundColor: 'rgba(0, 0, 0, 0.4)',
