@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 import { 
   Tablet,
   Trash2,
@@ -12,7 +13,27 @@ import {
   Loader2,
   Wifi,
   WifiOff,
-  Clock
+  Clock,
+  Battery,
+  BatteryCharging,
+  BatteryLow,
+  BatteryMedium,
+  BatteryFull,
+  Power,
+  RotateCcw,
+  Settings,
+  Lock,
+  Unlock,
+  Send,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+  Zap,
+  Monitor,
+  MoreVertical,
+  Signal,
+  Play,
+  Square
 } from "lucide-react"
 import { toast } from "sonner"
 import {
@@ -25,6 +46,19 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface RegisteredTablet {
   id: number
@@ -34,26 +68,43 @@ interface RegisteredTablet {
   status: string
   registered_at: string
   last_seen: string
+  battery_level: number | null
+  is_charging: boolean
+  app_version: string | null
+}
+
+interface TabletCommand {
+  id: number
+  device_id: string | null
+  command: string
+  target_all: boolean
+  status: string
+  created_at: string
+  executed_at: string | null
 }
 
 export default function TabletsPage() {
   const [tablets, setTablets] = useState<RegisteredTablet[]>([])
+  const [recentCommands, setRecentCommands] = useState<TabletCommand[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [maxTablets, setMaxTablets] = useState(20)
   const [deleteTablet, setDeleteTablet] = useState<RegisteredTablet | null>(null)
+  const [sendingCommand, setSendingCommand] = useState<string | null>(null)
+  const [selectedTablets, setSelectedTablets] = useState<Set<number>>(new Set())
   const supabase = createClient()
 
   useEffect(() => {
     loadData()
+    const interval = setInterval(loadData, 5000)
+    return () => clearInterval(interval)
   }, [])
 
   const loadData = async () => {
     try {
-      setIsLoading(true)
-      
-      const [tabletsRes, settingsRes] = await Promise.all([
+      const [tabletsRes, settingsRes, commandsRes] = await Promise.all([
         supabase.from('registered_tablets').select('*').order('registered_at', { ascending: false }),
-        supabase.from('tablet_settings').select('*').eq('setting_key', 'max_tablets').single()
+        supabase.from('tablet_settings').select('*').eq('setting_key', 'max_tablets').single(),
+        supabase.from('tablet_commands').select('*').order('created_at', { ascending: false }).limit(10)
       ])
 
       if (tabletsRes.error) throw tabletsRes.error
@@ -62,11 +113,45 @@ export default function TabletsPage() {
       if (settingsRes.data) {
         setMaxTablets(parseInt(settingsRes.data.setting_value) || 20)
       }
+
+      if (commandsRes.data) {
+        setRecentCommands(commandsRes.data)
+      }
     } catch (error: any) {
       console.error('Erro ao carregar dados:', error)
-      toast.error('Erro ao carregar tablets')
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const sendCommand = async (command: string, deviceId?: string, targetAll: boolean = false) => {
+    const cmdKey = targetAll ? `all_${command}` : `${deviceId}_${command}`
+    setSendingCommand(cmdKey)
+    
+    try {
+      const response = await fetch('/api/mobile/tablet-commands', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          command,
+          device_id: deviceId,
+          target_all: targetAll
+        })
+      })
+
+      const data = await response.json()
+      
+      if (data.success) {
+        toast.success(data.message)
+        loadData()
+      } else {
+        toast.error(data.error || 'Erro ao enviar comando')
+      }
+    } catch (error: any) {
+      console.error('Erro ao enviar comando:', error)
+      toast.error('Erro ao enviar comando')
+    } finally {
+      setSendingCommand(null)
     }
   }
 
@@ -93,7 +178,6 @@ export default function TabletsPage() {
     return date.toLocaleDateString('pt-BR', {
       day: '2-digit',
       month: '2-digit',
-      year: 'numeric',
       hour: '2-digit',
       minute: '2-digit'
     })
@@ -101,11 +185,76 @@ export default function TabletsPage() {
 
   const isOnline = (lastSeen: string) => {
     const diff = Date.now() - new Date(lastSeen).getTime()
-    return diff < 5 * 60 * 1000
+    return diff < 60 * 1000 // Online se visto nos últimos 60 segundos
+  }
+
+  const getTimeSinceLastSeen = (lastSeen: string) => {
+    const diff = Date.now() - new Date(lastSeen).getTime()
+    const minutes = Math.floor(diff / 60000)
+    const hours = Math.floor(minutes / 60)
+    const days = Math.floor(hours / 24)
+    
+    if (diff < 60000) return 'Agora'
+    if (minutes < 60) return `${minutes}min atrás`
+    if (hours < 24) return `${hours}h atrás`
+    return `${days}d atrás`
+  }
+
+  const getBatteryIcon = (level: number | null, isCharging: boolean) => {
+    if (level === null) return <Battery className="w-4 h-4 text-gray-500" />
+    if (isCharging) return <BatteryCharging className="w-4 h-4 text-green-400" />
+    if (level <= 20) return <BatteryLow className="w-4 h-4 text-red-500" />
+    if (level <= 50) return <BatteryMedium className="w-4 h-4 text-yellow-500" />
+    return <BatteryFull className="w-4 h-4 text-green-500" />
+  }
+
+  const getBatteryColor = (level: number | null) => {
+    if (level === null) return 'text-gray-500'
+    if (level <= 20) return 'text-red-500'
+    if (level <= 50) return 'text-yellow-500'
+    return 'text-green-500'
   }
 
   const onlineCount = tablets.filter(t => isOnline(t.last_seen)).length
   const offlineCount = tablets.length - onlineCount
+  const lowBatteryCount = tablets.filter(t => t.battery_level !== null && t.battery_level <= 20).length
+  const chargingCount = tablets.filter(t => t.is_charging).length
+
+  const toggleSelectTablet = (id: number) => {
+    setSelectedTablets(prev => {
+      const newSet = new Set(prev)
+      if (newSet.has(id)) {
+        newSet.delete(id)
+      } else {
+        newSet.add(id)
+      }
+      return newSet
+    })
+  }
+
+  const selectAllOnline = () => {
+    const onlineIds = tablets.filter(t => isOnline(t.last_seen)).map(t => t.id)
+    setSelectedTablets(new Set(onlineIds))
+  }
+
+  const clearSelection = () => {
+    setSelectedTablets(new Set())
+  }
+
+  const sendBulkCommand = async (command: string) => {
+    if (selectedTablets.size === 0) {
+      toast.error('Nenhum tablet selecionado')
+      return
+    }
+
+    const selectedDevices = tablets.filter(t => selectedTablets.has(t.id))
+    
+    for (const tablet of selectedDevices) {
+      await sendCommand(command, tablet.device_id)
+    }
+    
+    clearSelection()
+  }
 
   if (isLoading) {
     return (
@@ -119,181 +268,528 @@ export default function TabletsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="p-2 bg-orange-500/10 rounded-lg">
-            <Tablet className="w-6 h-6 text-orange-500" />
+    <TooltipProvider>
+      <div className="space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-orange-500/10 rounded-lg">
+              <Tablet className="w-6 h-6 text-orange-500" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Gerenciamento de Tablets</h1>
+              <p className="text-gray-400 text-sm">Controle remoto e monitoramento da frota</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white">Tablets Registrados</h1>
-            <p className="text-gray-400 text-sm">Gerencie os dispositivos autorizados</p>
+          <div className="flex gap-2">
+            <Button 
+              variant="outline" 
+              onClick={loadData} 
+              disabled={isLoading}
+              size="sm"
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              Atualizar
+            </Button>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={loadData} disabled={isLoading}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            Atualizar
-          </Button>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-green-500/20">
+                  <Signal className="h-4 w-4 text-green-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Online</p>
+                  <p className="text-xl font-bold text-white">{onlineCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-red-500/20">
+                  <WifiOff className="h-4 w-4 text-red-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Offline</p>
+                  <p className="text-xl font-bold text-white">{offlineCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-orange-500/20">
+                  <Tablet className="h-4 w-4 text-orange-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Total</p>
+                  <p className="text-xl font-bold text-white">{tablets.length}/{maxTablets}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-yellow-500/20">
+                  <BatteryLow className="h-4 w-4 text-yellow-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Bateria Baixa</p>
+                  <p className="text-xl font-bold text-white">{lowBatteryCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-blue-500/20">
+                  <BatteryCharging className="h-4 w-4 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Carregando</p>
+                  <p className="text-xl font-bold text-white">{chargingCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-purple-500/20">
+                  <CheckCircle2 className="h-4 w-4 text-purple-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Selecionados</p>
+                  <p className="text-xl font-bold text-white">{selectedTablets.size}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* Bulk Actions */}
         <Card className="bg-zinc-900 border-zinc-800">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-500/20">
-                <Wifi className="h-5 w-5 text-green-500" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-400">Online</p>
-                <p className="text-2xl font-bold text-white">{onlineCount}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-red-500/20">
-                <WifiOff className="h-5 w-5 text-red-500" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-400">Offline</p>
-                <p className="text-2xl font-bold text-white">{offlineCount}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-orange-500/20">
-                <Tablet className="h-5 w-5 text-orange-500" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-400">Total</p>
-                <p className="text-2xl font-bold text-white">{tablets.length}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-blue-500/20">
-                <Tablet className="h-5 w-5 text-blue-500" />
-              </div>
-              <div>
-                <p className="text-sm text-gray-400">Limite</p>
-                <p className="text-2xl font-bold text-white">{maxTablets}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="bg-zinc-900 border-zinc-800">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-white">
-            <Tablet className="w-5 h-5 text-orange-500" />
-            Dispositivos ({tablets.length})
-          </CardTitle>
-          <CardDescription>
-            Lista de todos os tablets registrados no sistema
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {tablets.length === 0 ? (
-            <div className="text-center py-8">
-              <Tablet className="w-12 h-12 mx-auto mb-3 text-gray-600" />
-              <p className="text-gray-400">Nenhum tablet registrado ainda</p>
-              <p className="text-sm text-gray-500 mt-1">
-                Os tablets serão registrados automaticamente ao se conectarem
-              </p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {tablets.map((tablet) => (
-                <div
-                  key={tablet.id}
-                  className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg border border-zinc-700"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className={`p-2 rounded-lg ${isOnline(tablet.last_seen) ? 'bg-green-500/20' : 'bg-zinc-700'}`}>
-                      {isOnline(tablet.last_seen) ? (
-                        <Wifi className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <WifiOff className="w-5 h-5 text-gray-500" />
-                      )}
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium text-white">{tablet.name}</p>
-                        <Badge 
-                          variant="outline" 
-                          className={isOnline(tablet.last_seen) 
-                            ? 'border-green-500 text-green-500' 
-                            : 'border-gray-500 text-gray-500'
-                          }
-                        >
-                          {isOnline(tablet.last_seen) ? 'Online' : 'Offline'}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center gap-4 mt-1 text-sm text-gray-400">
-                        <span className="font-mono">{tablet.device_id.substring(0, 16)}...</span>
-                        {tablet.ip_address && (
-                          <span>IP: {tablet.ip_address}</span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Clock className="w-3 h-3" />
-                          Registrado: {formatDate(tablet.registered_at)}
-                        </span>
-                        <span>
-                          Último acesso: {formatDate(tablet.last_seen)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
-                    onClick={() => setDeleteTablet(tablet)}
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-white text-base">
+              <Zap className="w-4 h-4 text-orange-500" />
+              Ações em Massa
+            </CardTitle>
+            <CardDescription className="text-sm">
+              Envie comandos para todos os tablets ou apenas os selecionados
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {/* Select buttons */}
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={selectAllOnline}
+                className="border-zinc-700"
+              >
+                <CheckCircle2 className="w-4 h-4 mr-2" />
+                Selecionar Online ({onlineCount})
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={clearSelection}
+                className="border-zinc-700"
+                disabled={selectedTablets.size === 0}
+              >
+                <XCircle className="w-4 h-4 mr-2" />
+                Limpar Seleção
+              </Button>
+              
+              <div className="w-px h-8 bg-zinc-700 mx-2" />
+              
+              {/* Command buttons for ALL */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    variant="default" 
+                    size="sm"
+                    onClick={() => sendCommand('reload', undefined, true)}
+                    disabled={sendingCommand === 'all_reload'}
+                    className="bg-blue-600 hover:bg-blue-700"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    {sendingCommand === 'all_reload' ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <RotateCcw className="w-4 h-4 mr-2" />
+                    )}
+                    Recarregar Todos
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Reinicia o app em todos os tablets online</p>
+                </TooltipContent>
+              </Tooltip>
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    variant="default" 
+                    size="sm"
+                    onClick={() => sendCommand('sync_settings', undefined, true)}
+                    disabled={sendingCommand === 'all_sync_settings'}
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    {sendingCommand === 'all_sync_settings' ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Settings className="w-4 h-4 mr-2" />
+                    )}
+                    Sincronizar Config
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Força todos os tablets a recarregar as configurações</p>
+                </TooltipContent>
+              </Tooltip>
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    variant="default" 
+                    size="sm"
+                    onClick={() => sendCommand('lock', undefined, true)}
+                    disabled={sendingCommand === 'all_lock'}
+                    className="bg-yellow-600 hover:bg-yellow-700"
+                  >
+                    {sendingCommand === 'all_lock' ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Lock className="w-4 h-4 mr-2" />
+                    )}
+                    Bloquear Todos
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Ativa o modo kiosk em todos os tablets</p>
+                </TooltipContent>
+              </Tooltip>
+              
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    variant="destructive" 
+                    size="sm"
+                    onClick={() => sendCommand('exit_app', undefined, true)}
+                    disabled={sendingCommand === 'all_exit_app'}
+                  >
+                    {sendingCommand === 'all_exit_app' ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <Power className="w-4 h-4 mr-2" />
+                    )}
+                    Fechar Todos
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Solicita o fechamento do app em todos os tablets</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            
+            {/* Bulk actions for selected */}
+            {selectedTablets.size > 0 && (
+              <div className="mt-4 pt-4 border-t border-zinc-700">
+                <p className="text-sm text-gray-400 mb-2">
+                  Ações para {selectedTablets.size} tablet(s) selecionado(s):
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => sendBulkCommand('reload')}
+                    className="border-blue-500 text-blue-400 hover:bg-blue-500/10"
+                  >
+                    <RotateCcw className="w-4 h-4 mr-2" />
+                    Recarregar Selecionados
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => sendBulkCommand('sync_settings')}
+                    className="border-purple-500 text-purple-400 hover:bg-purple-500/10"
+                  >
+                    <Settings className="w-4 h-4 mr-2" />
+                    Sincronizar Selecionados
                   </Button>
                 </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-      <AlertDialog open={!!deleteTablet} onOpenChange={() => setDeleteTablet(null)}>
-        <AlertDialogContent className="bg-zinc-900 border-zinc-800">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-white">Remover Tablet</AlertDialogTitle>
-            <AlertDialogDescription className="text-gray-400">
-              Tem certeza que deseja remover o tablet "{deleteTablet?.name}"? 
-              O dispositivo precisará ser registrado novamente para acessar o sistema.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700">
-              Cancelar
-            </AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-500 hover:bg-red-600 text-white"
-              onClick={() => deleteTablet && handleDelete(deleteTablet)}
-            >
-              Remover
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+        {/* Tablets List */}
+        <Card className="bg-zinc-900 border-zinc-800">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-white text-base">
+              <Monitor className="w-4 h-4 text-orange-500" />
+              Dispositivos ({tablets.length})
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {tablets.length === 0 ? (
+              <div className="text-center py-8">
+                <Tablet className="w-12 h-12 mx-auto mb-3 text-gray-600" />
+                <p className="text-gray-400">Nenhum tablet registrado ainda</p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Os tablets serão registrados automaticamente ao se conectarem
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {tablets.map((tablet) => {
+                  const online = isOnline(tablet.last_seen)
+                  const isSelected = selectedTablets.has(tablet.id)
+                  
+                  return (
+                    <div
+                      key={tablet.id}
+                      className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
+                        isSelected 
+                          ? 'bg-orange-500/10 border-orange-500/50' 
+                          : 'bg-zinc-800 border-zinc-700 hover:border-zinc-600'
+                      }`}
+                      onClick={() => toggleSelectTablet(tablet.id)}
+                    >
+                      <div className="flex items-center gap-3">
+                        {/* Selection checkbox */}
+                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
+                          isSelected 
+                            ? 'bg-orange-500 border-orange-500' 
+                            : 'border-zinc-600'
+                        }`}>
+                          {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
+                        </div>
+                        
+                        {/* Status indicator */}
+                        <div className={`relative p-2 rounded-lg ${online ? 'bg-green-500/20' : 'bg-zinc-700'}`}>
+                          {online ? (
+                            <Wifi className="w-4 h-4 text-green-500" />
+                          ) : (
+                            <WifiOff className="w-4 h-4 text-gray-500" />
+                          )}
+                          {online && (
+                            <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                          )}
+                        </div>
+                        
+                        {/* Tablet info */}
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium text-white truncate">{tablet.name}</p>
+                            <Badge 
+                              variant="outline" 
+                              className={`text-xs ${online 
+                                ? 'border-green-500 text-green-500' 
+                                : 'border-gray-500 text-gray-500'
+                              }`}
+                            >
+                              {online ? 'Online' : 'Offline'}
+                            </Badge>
+                            {tablet.app_version && (
+                              <Badge variant="secondary" className="text-xs bg-zinc-700">
+                                v{tablet.app_version}
+                              </Badge>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-3 mt-0.5 text-xs text-gray-400">
+                            <span className="font-mono">{tablet.device_id.substring(0, 20)}...</span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {getTimeSinceLastSeen(tablet.last_seen)}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center gap-3">
+                        {/* Battery */}
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className={`flex items-center gap-1 px-2 py-1 rounded bg-zinc-700/50 ${getBatteryColor(tablet.battery_level)}`}>
+                              {getBatteryIcon(tablet.battery_level, tablet.is_charging)}
+                              <span className="text-sm font-medium">
+                                {tablet.battery_level !== null ? `${tablet.battery_level}%` : '--'}
+                              </span>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>
+                              {tablet.battery_level !== null 
+                                ? `Bateria: ${tablet.battery_level}%${tablet.is_charging ? ' (Carregando)' : ''}`
+                                : 'Bateria não informada'
+                              }
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                        
+                        {/* Individual actions */}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <MoreVertical className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="bg-zinc-800 border-zinc-700">
+                            <DropdownMenuItem 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                sendCommand('reload', tablet.device_id)
+                              }}
+                              className="text-blue-400 focus:text-blue-300"
+                              disabled={!online}
+                            >
+                              <RotateCcw className="w-4 h-4 mr-2" />
+                              Recarregar
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                sendCommand('sync_settings', tablet.device_id)
+                              }}
+                              className="text-purple-400 focus:text-purple-300"
+                              disabled={!online}
+                            >
+                              <Settings className="w-4 h-4 mr-2" />
+                              Sincronizar Config
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-zinc-700" />
+                            <DropdownMenuItem 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                sendCommand('lock', tablet.device_id)
+                              }}
+                              className="text-yellow-400 focus:text-yellow-300"
+                              disabled={!online}
+                            >
+                              <Lock className="w-4 h-4 mr-2" />
+                              Bloquear (Kiosk)
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                sendCommand('unlock', tablet.device_id)
+                              }}
+                              className="text-green-400 focus:text-green-300"
+                              disabled={!online}
+                            >
+                              <Unlock className="w-4 h-4 mr-2" />
+                              Desbloquear
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-zinc-700" />
+                            <DropdownMenuItem 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                sendCommand('exit_app', tablet.device_id)
+                              }}
+                              className="text-orange-400 focus:text-orange-300"
+                              disabled={!online}
+                            >
+                              <Power className="w-4 h-4 mr-2" />
+                              Fechar App
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator className="bg-zinc-700" />
+                            <DropdownMenuItem 
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                setDeleteTablet(tablet)
+                              }}
+                              className="text-red-400 focus:text-red-300"
+                            >
+                              <Trash2 className="w-4 h-4 mr-2" />
+                              Remover Tablet
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Recent Commands */}
+        {recentCommands.length > 0 && (
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-white text-base">
+                <Send className="w-4 h-4 text-orange-500" />
+                Comandos Recentes
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {recentCommands.slice(0, 5).map((cmd) => (
+                  <div 
+                    key={cmd.id}
+                    className="flex items-center justify-between p-2 bg-zinc-800 rounded-lg text-sm"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Badge 
+                        variant="outline" 
+                        className={`text-xs ${
+                          cmd.status === 'executed' 
+                            ? 'border-green-500 text-green-500' 
+                            : 'border-yellow-500 text-yellow-500'
+                        }`}
+                      >
+                        {cmd.status === 'executed' ? 'Executado' : 'Pendente'}
+                      </Badge>
+                      <span className="text-white font-medium">{cmd.command}</span>
+                      <span className="text-gray-400">
+                        {cmd.target_all ? '(Todos)' : `(${cmd.device_id?.substring(0, 15)}...)`}
+                      </span>
+                    </div>
+                    <span className="text-gray-500 text-xs">
+                      {formatDate(cmd.created_at)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Delete Dialog */}
+        <AlertDialog open={!!deleteTablet} onOpenChange={() => setDeleteTablet(null)}>
+          <AlertDialogContent className="bg-zinc-900 border-zinc-800">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-white">Remover Tablet</AlertDialogTitle>
+              <AlertDialogDescription className="text-gray-400">
+                Tem certeza que deseja remover o tablet "{deleteTablet?.name}"? 
+                O dispositivo precisará ser registrado novamente para acessar o sistema.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700">
+                Cancelar
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-500 hover:bg-red-600 text-white"
+                onClick={() => deleteTablet && handleDelete(deleteTablet)}
+              >
+                Remover
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </TooltipProvider>
   )
 }
