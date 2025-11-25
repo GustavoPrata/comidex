@@ -16,6 +16,7 @@
   "/api/pos/service-types/route": "app/api/pos/service-types/route.js",
   "/api/pos/session/route": "app/api/pos/session/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
+  "/api/upload-category-image/route": "app/api/upload-category-image/route.js",
   "/page": "app/page.js",
   "/prompt/page": "app/prompt/page.js"
 }
