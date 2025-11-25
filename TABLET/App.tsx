@@ -3148,14 +3148,14 @@ function MainApp() {
                         <Image source={{ uri: item.image_url }} style={styles.productImageGlass} />
                       ) : (
                         <View style={styles.productImagePlaceholderGlass}>
-                          <IconComponent name="sushi" size={32} color="rgba(255, 255, 255, 0.3)" />
+                          <IconComponent name="sushi" size={36} color="rgba(255, 255, 255, 0.3)" />
                         </View>
                       )}
                       
-                      {/* Product Info - Center */}
-                      <View style={styles.productInfoGlass}>
-                        {/* Name and Price Row */}
-                        <View style={styles.productNameRow}>
+                      {/* Product Info and Controls - Right Side */}
+                      <View style={styles.productRightSection}>
+                        {/* Top Row: Name and Price */}
+                        <View style={styles.productTopRow}>
                           <Text style={styles.productNameGlass} numberOfLines={2}>
                             {item.name}
                           </Text>
@@ -3172,34 +3172,36 @@ function MainApp() {
                             {item.description}
                           </Text>
                         )}
-                      </View>
-                      
-                      {/* Quantity Controls - Right Side */}
-                      <View style={styles.quantityControlsRow}>
-                        <TouchableOpacity 
-                          style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
-                          onPress={() => {
-                            if (quantity > 0) {
-                              handleRemoveFromCart(item.id);
-                            }
-                            resetIdleTimer();
-                          }}
-                          activeOpacity={0.7}
-                        >
-                          <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
-                        </TouchableOpacity>
                         
-                        <Text style={styles.quantityText}>{quantity}</Text>
-                        
-                        <TouchableOpacity 
-                          style={styles.quantityButtonPlus}
-                          onPress={() => {
-                            handleQuickAddToCart(item);
-                          }}
-                          activeOpacity={0.7}
-                        >
-                          <IconComponent name="plus" size={18} color="#FFFFFF" />
-                        </TouchableOpacity>
+                        {/* Bottom Row: Quantity Controls */}
+                        <View style={styles.productBottomRow}>
+                          <View style={styles.quantityControlsRow}>
+                            <TouchableOpacity 
+                              style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
+                              onPress={() => {
+                                if (quantity > 0) {
+                                  handleRemoveFromCart(item.id);
+                                }
+                                resetIdleTimer();
+                              }}
+                              activeOpacity={0.7}
+                            >
+                              <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
+                            </TouchableOpacity>
+                            
+                            <Text style={styles.quantityText}>{quantity}</Text>
+                            
+                            <TouchableOpacity 
+                              style={styles.quantityButtonPlus}
+                              onPress={() => {
+                                handleQuickAddToCart(item);
+                              }}
+                              activeOpacity={0.7}
+                            >
+                              <IconComponent name="plus" size={18} color="#FFFFFF" />
+                            </TouchableOpacity>
+                          </View>
+                        </View>
                       </View>
                     </View>
                   );
@@ -5387,57 +5389,75 @@ const styles = StyleSheet.create({
     width: '100%',
     marginBottom: 12,
     flexDirection: 'row',
-    alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
-    borderRadius: 8,
+    borderRadius: 10,
     overflow: 'hidden',
+    minHeight: 130,
   },
   productImageGlass: {
-    width: 180,
-    height: 100,
+    width: 200,
+    height: 130,
     resizeMode: 'cover',
   },
   productImagePlaceholderGlass: {
-    width: 180,
-    height: 100,
+    width: 200,
+    height: 130,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  productRightSection: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    justifyContent: 'space-between',
+  },
+  productTopRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 6,
+  },
+  productBottomRow: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    marginTop: 'auto',
+  },
   productInfoGlass: {
     flex: 1,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    justifyContent: 'flex-start',
   },
   productNameRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: 4,
+    marginBottom: 6,
   },
   productNameGlass: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '600',
     color: '#FFFFFF',
     flex: 1,
-    marginRight: 8,
+    marginRight: 10,
   },
   productPriceRight: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
     color: '#FF7043',
   },
   productDescriptionGlass: {
-    fontSize: 12,
+    fontSize: 13,
     color: 'rgba(255, 255, 255, 0.5)',
-    lineHeight: 16,
+    lineHeight: 18,
+    flex: 1,
   },
   quantityControlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    paddingRight: 12,
   },
   quantityButton: {
     width: 36,
