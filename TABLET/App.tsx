@@ -3102,7 +3102,7 @@ function MainApp() {
                         }}
                       >
                         {item.image_url ? (
-                          <Image source={{ uri: item.image_url }} style={styles.productImageGlass} />
+                          <Image source={{ uri: item.image_url.startsWith('http') ? item.image_url : `${config.BASE_URL}${item.image_url}` }} style={styles.productImageGlass} />
                         ) : (
                           <View style={styles.productImagePlaceholderGlass}>
                             <IconComponent name="sushi" size={36} color="rgba(255, 255, 255, 0.3)" />
@@ -3587,7 +3587,7 @@ function MainApp() {
             <View style={styles.imageModalContent}>
               {imageModalProduct.image_url ? (
                 <Image 
-                  source={{ uri: imageModalProduct.image_url }} 
+                  source={{ uri: imageModalProduct.image_url.startsWith('http') ? imageModalProduct.image_url : `${config.BASE_URL}${imageModalProduct.image_url}` }} 
                   style={styles.imageModalImage}
                   resizeMode="contain"
                 />
