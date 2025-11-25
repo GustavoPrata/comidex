@@ -401,17 +401,12 @@ function MainApp() {
       } else {
         // Server responded but with error
         setConnectionState('error');
-        setConnectionError('Sistema indisponível. Verifique se o computador está ligado.');
+        setConnectionError('Verifique se o sistema no computador está ligado!');
       }
     } catch (e: any) {
       console.log('⏳ Aguardando servidor...');
       setConnectionState('error');
-      
-      if (e.name === 'AbortError') {
-        setConnectionError('Conexão lenta. Verifique sua conexão WiFi.');
-      } else {
-        setConnectionError('Sem conexão. Verifique o WiFi e se o sistema está ligado.');
-      }
+      setConnectionError('Verifique se o sistema no computador está ligado!');
     }
     
     // Retry silently after 3 seconds (don't change state to checking)
@@ -1615,7 +1610,7 @@ function MainApp() {
           ) : connectionState === 'error' ? (
             <>
               <AlertCircle size={48} color="#FF6B6B" />
-              <Text style={styles.connectionTitleSimple}>Falha na Conexão</Text>
+              <Text style={styles.connectionTitleSimple}>Sistema indisponível!</Text>
               <Text style={styles.connectionErrorText}>{connectionError}</Text>
               <View style={styles.connectionRetrying}>
                 <ActivityIndicator size="small" color={config.colors.primary} />
