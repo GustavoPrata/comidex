@@ -17,7 +17,8 @@ import {
   Hand,
   Settings,
   Loader2,
-  RefreshCw
+  RefreshCw,
+  Vibrate
 } from "lucide-react"
 import { toast } from "sonner"
 
@@ -40,6 +41,7 @@ export default function TabletSettingsPage() {
   const [dimBrightness, setDimBrightness] = useState(0.1)
   const [defaultBrightness, setDefaultBrightness] = useState(0.8)
   const [touchToWake, setTouchToWake] = useState(true)
+  const [hapticEnabled, setHapticEnabled] = useState(true)
 
   useEffect(() => {
     loadSettings()
@@ -74,6 +76,9 @@ export default function TabletSettingsPage() {
             case 'touch_to_wake':
               setTouchToWake(setting.setting_value === 'true')
               break
+            case 'haptic_enabled':
+              setHapticEnabled(setting.setting_value === 'true')
+              break
           }
         })
       }
@@ -95,6 +100,7 @@ export default function TabletSettingsPage() {
         { setting_key: 'dim_brightness', setting_value: dimBrightness.toString() },
         { setting_key: 'default_brightness', setting_value: defaultBrightness.toString() },
         { setting_key: 'touch_to_wake', setting_value: touchToWake.toString() },
+        { setting_key: 'haptic_enabled', setting_value: hapticEnabled.toString() },
       ]
 
       for (const update of updates) {
@@ -209,6 +215,22 @@ export default function TabletSettingsPage() {
               <Switch
                 checked={touchToWake}
                 onCheckedChange={setTouchToWake}
+              />
+            </div>
+
+            <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+              <div className="space-y-0.5">
+                <div className="flex items-center gap-2">
+                  <Vibrate className="w-4 h-4 text-orange-500" />
+                  <Label className="text-gray-900 dark:text-gray-100">Vibração (Feedback Háptico)</Label>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  Vibração ao tocar em grupos, categorias e botões +/-
+                </p>
+              </div>
+              <Switch
+                checked={hapticEnabled}
+                onCheckedChange={setHapticEnabled}
               />
             </div>
           </CardContent>

@@ -182,6 +182,7 @@ interface TabletSettings {
   dim_brightness: number;
   default_brightness: number;
   touch_to_wake: boolean;
+  haptic_enabled: boolean;
 }
 
 // Icon Component usando Lucide - IDÊNTICO AO ADMIN
@@ -406,6 +407,7 @@ function MainApp() {
     dim_brightness: 0.1,
     default_brightness: 0.8,
     touch_to_wake: true,
+    haptic_enabled: true,
   });
   const [kioskMode, setKioskMode] = useState(true);
   const [appStats, setAppStats] = useState({
@@ -1726,6 +1728,13 @@ function MainApp() {
       showToastNotification("Erro ao chamar garçom. Verifique sua conexão.", "error");
     }
   };
+
+  // Haptic feedback helper - easy to use anywhere
+  const triggerHaptic = useCallback(() => {
+    if (tabletSettings.haptic_enabled) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    }
+  }, [tabletSettings.haptic_enabled]);
 
   // Handle add to cart with observation
   const handleAddToCart = (product: Product) => {
@@ -3124,7 +3133,7 @@ function MainApp() {
                       selectedGroup?.id === group.id && styles.groupItemActiveGlass
                     ]}
                     onPress={() => {
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      triggerHaptic();
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
                       setSelectedGroup(group);
                       loadCategories(group.id);
@@ -3190,7 +3199,7 @@ function MainApp() {
                             isSelected && styles.categoryFullCardActive
                           ]}
                           onPress={() => {
-                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                            triggerHaptic();
                             setSelectedCategory(category.id);
                             scrollToCategory(category.id);
                           }}
@@ -3349,7 +3358,7 @@ function MainApp() {
                               style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
                               onPress={() => {
                                 if (quantity > 0) {
-                                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                  triggerHaptic();
                                   handleRemoveFromCart(item.id);
                                 }
                               }}
@@ -3363,7 +3372,7 @@ function MainApp() {
                             <Pressable 
                               style={styles.quantityButtonPlus}
                               onPress={() => {
-                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                triggerHaptic();
                                 handleQuickAddToCart(item);
                               }}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
@@ -3881,7 +3890,7 @@ function MainApp() {
                   <TouchableOpacity
                     style={styles.cartQuantityButton}
                     onPress={() => {
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      triggerHaptic();
                       updateQuantity(item.id, item.quantity - 1);
                     }}
                   >
@@ -3891,7 +3900,7 @@ function MainApp() {
                   <TouchableOpacity
                     style={styles.cartQuantityButton}
                     onPress={() => {
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      triggerHaptic();
                       updateQuantity(item.id, item.quantity + 1);
                     }}
                   >
