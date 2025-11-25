@@ -3481,7 +3481,7 @@ function MainApp() {
             styles.cartFloatingButtonContainer,
             { transform: [{ scale: cartBounceAnim }] }
           ]}>
-            {/* Clear Button - Left side */}
+            {/* Clear Button - Circle on Left */}
             <TouchableOpacity
               style={styles.clearTempButton}
               onPress={() => {
@@ -3490,22 +3490,39 @@ function MainApp() {
                 resetIdleTimer();
               }}
             >
-              <X size={20} color="#FFF" strokeWidth={2.5} />
+              <X size={18} color="#FFF" strokeWidth={2.5} />
             </TouchableOpacity>
             
-            {/* Add to Cart Button */}
+            {/* Add to Cart Button with concave left edge */}
             <TouchableOpacity
-              style={styles.addToCartFloatingButton}
+              style={styles.addToCartButtonWrapper}
               onPress={() => {
                 triggerHaptic();
                 addTempToCart();
                 resetIdleTimer();
               }}
+              activeOpacity={0.8}
             >
-              <View style={styles.cartBadge}>
-                <Text style={styles.cartBadgeText}>{getTempItemsCount()}</Text>
+              <Svg width={260} height={48} style={styles.addToCartSvg}>
+                <Path
+                  d={`
+                    M 24 0
+                    L 236 0
+                    Q 260 0 260 24
+                    Q 260 48 236 48
+                    L 24 48
+                    A 24 24 0 0 0 24 0
+                    Z
+                  `}
+                  fill="#FF7043"
+                />
+              </Svg>
+              <View style={styles.addToCartContent}>
+                <View style={styles.cartBadge}>
+                  <Text style={styles.cartBadgeText}>{getTempItemsCount()}</Text>
+                </View>
+                <Text style={styles.cartFloatingButtonText}>Adicionar ao Carrinho</Text>
               </View>
-              <Text style={styles.cartFloatingButtonText}>Adicionar ao Carrinho</Text>
             </TouchableOpacity>
           </Animated.View>
         )}
@@ -6230,25 +6247,46 @@ const styles = StyleSheet.create({
   cartFloatingButtonContainer: {
     position: "absolute",
     bottom: 20,
-    left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 165,
+    left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 145,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 0,
   },
   clearTempButton: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#FF7043',
+    backgroundColor: '#E65100',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: -8,
-    zIndex: 1,
-    shadowColor: "#FF7043",
+    marginRight: -24,
+    zIndex: 10,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    shadowRadius: 6,
+    elevation: 10,
+  },
+  addToCartButtonWrapper: {
+    position: 'relative',
+    width: 260,
+    height: 48,
+  },
+  addToCartSvg: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  },
+  addToCartContent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingLeft: 20,
+    gap: 10,
   },
   cartFloatingButton: {
     position: "absolute",
@@ -6300,16 +6338,11 @@ const styles = StyleSheet.create({
   addToCartFloatingButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FF7043",
-    paddingHorizontal: 24,
+    backgroundColor: "transparent",
+    paddingLeft: 16,
+    paddingRight: 20,
     paddingVertical: 14,
-    borderRadius: 30,
-    gap: 12,
-    shadowColor: "#FF7043",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 8,
+    gap: 10,
   },
   cartModalOverlay: {
     flex: 1,
