@@ -3570,12 +3570,10 @@ function MainApp() {
       <Modal
         visible={showImageModal}
         animationType="fade"
-        transparent={false}
-        statusBarTranslucent={true}
+        transparent={true}
         onRequestClose={() => setShowImageModal(false)}
       >
         <View style={styles.imageModalOverlay}>
-          <StatusBar hidden={true} />
           <Pressable 
             style={styles.imageModalCloseButton}
             onPress={() => setShowImageModal(false)}
@@ -5843,11 +5841,9 @@ const styles = StyleSheet.create({
   },
   imageModalOverlay: {
     flex: 1,
-    backgroundColor: "#000000",
-    justifyContent: "flex-start",
+    backgroundColor: "rgba(0, 0, 0, 0.92)",
+    justifyContent: "center",
     alignItems: "flex-start",
-    paddingTop: 0,
-    margin: 0,
   },
   imageModalCloseButton: {
     position: 'absolute',
@@ -5865,29 +5861,29 @@ const styles = StyleSheet.create({
   },
   imageModalPlaceholder: {
     width: width - 140,
-    height: height * 0.68,
+    height: height * 0.72,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 20,
-    marginTop: 20,
-    borderRadius: 16,
+    marginBottom: 100,
   },
   imageModalImage: {
     width: width - 140,
-    height: height * 0.68,
+    height: height * 0.72,
     marginLeft: 20,
-    marginTop: 20,
-    borderRadius: 16,
+    marginBottom: 100,
   },
   imageModalInfoBar: {
     position: 'absolute',
-    bottom: 25,
+    bottom: 20,
     left: 20,
-    right: 140,
-    backgroundColor: 'transparent',
-    paddingVertical: 0,
-    paddingHorizontal: 0,
+    right: 120,
+    backgroundColor: 'rgba(20, 20, 20, 0.95)',
+    paddingVertical: 24,
+    paddingHorizontal: 30,
+    paddingRight: 40,
+    borderTopRightRadius: 0,
   },
   imageModalTitle: {
     fontSize: 20,
