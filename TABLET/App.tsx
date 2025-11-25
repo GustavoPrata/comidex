@@ -92,7 +92,20 @@ import {
   Baby,
   ArrowRight,
   Receipt,
-  BarChart3
+  BarChart3,
+  Wine,
+  GlassWater,
+  Beer,
+  Martini,
+  CupSoda,
+  Milk,
+  Soup,
+  Sandwich,
+  IceCream,
+  Cookie,
+  Beef,
+  Fish,
+  Egg
 } from 'lucide-react-native';
 
 // Types
@@ -171,39 +184,113 @@ interface TabletSettings {
 
 // Icon Component usando Lucide - IDÊNTICO AO ADMIN
 const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size?: number, color?: string }) => {
-  // Agora usa os MESMOS ícones Lucide do admin panel!
-  switch(name) {
+  // Normaliza o nome para lowercase para comparação
+  const normalizedName = (name || '').toLowerCase().trim();
+  
+  // Mapeamento de nomes de ícones do banco de dados para Lucide
+  switch(normalizedName) {
+    // Ícones de grupos do banco de dados
+    case 'rodízio premium':
+    case 'rodizio premium':
     case 'crown':
       return <Crown size={size} color={color} strokeWidth={2} />;
-    case 'fire':
-      return <Crown size={size} color={color} strokeWidth={2} />; // Fire não existe, usando Crown temporariamente
+    
+    case 'rodízio tradicional':
+    case 'rodizio tradicional':
     case 'utensils':
       return <Utensils size={size} color={color} strokeWidth={2} />;
+    
+    case 'à la carte':
+    case 'a la carte':
     case 'menu-book':
       return <BookOpen size={size} color={color} strokeWidth={2} />;
+    
+    case 'refrigerante':
     case 'cup-soda':
     case 'cup':
-      return <Coffee size={size} color={color} strokeWidth={2} />;
+    case 'soda':
+      return <CupSoda size={size} color={color} strokeWidth={2} />;
+    
+    case 'coquetel drink':
+    case 'coquetel':
+    case 'cocktail':
+    case 'martini':
+    case 'drink':
+      return <Martini size={size} color={color} strokeWidth={2} />;
+    
+    case 'vinho sake':
+    case 'vinho':
+    case 'wine':
+    case 'sake':
+      return <Wine size={size} color={color} strokeWidth={2} />;
+    
+    case 'cerveja':
+    case 'beer':
+      return <Beer size={size} color={color} strokeWidth={2} />;
+    
+    case 'água':
+    case 'agua':
+    case 'water':
+      return <GlassWater size={size} color={color} strokeWidth={2} />;
+    
+    case 'leite':
+    case 'milk':
+      return <Milk size={size} color={color} strokeWidth={2} />;
+    
+    case 'sopa':
+    case 'soup':
+      return <Soup size={size} color={color} strokeWidth={2} />;
+    
+    case 'sanduíche':
+    case 'sanduiche':
+    case 'sandwich':
+      return <Sandwich size={size} color={color} strokeWidth={2} />;
+    
+    case 'sorvete':
+    case 'ice cream':
+    case 'icecream':
+      return <IceCream size={size} color={color} strokeWidth={2} />;
+    
+    case 'biscoito':
+    case 'cookie':
+      return <Cookie size={size} color={color} strokeWidth={2} />;
+    
+    case 'carne':
+    case 'beef':
+      return <Beef size={size} color={color} strokeWidth={2} />;
+    
+    case 'peixe':
+    case 'fish':
+      return <Fish size={size} color={color} strokeWidth={2} />;
+    
+    case 'ovo':
+    case 'egg':
+      return <Egg size={size} color={color} strokeWidth={2} />;
+    
+    // Ícones gerais
+    case 'fire':
+      return <Crown size={size} color={color} strokeWidth={2} />;
     case 'star':
       return <Star size={size} color={color} strokeWidth={2} />;
     case 'pizza':
       return <Pizza size={size} color={color} strokeWidth={2} />;
     case 'burger':
-      return <Utensils size={size} color={color} strokeWidth={2} />; // Usando Utensils para burger
+      return <Utensils size={size} color={color} strokeWidth={2} />;
     case 'salad':
-      return <Utensils size={size} color={color} strokeWidth={2} />; // Usando Utensils para salad
+      return <Utensils size={size} color={color} strokeWidth={2} />;
     case 'coffee':
+    case 'café':
+    case 'cafe':
       return <Coffee size={size} color={color} strokeWidth={2} />;
     case 'cake':
     case 'dessert':
-      return <Coffee size={size} color={color} strokeWidth={2} />; // Temporário para cake/dessert
+    case 'sobremesa':
+      return <IceCream size={size} color={color} strokeWidth={2} />;
     case 'table':
     case 'chair':
     case 'sushi':
-    case 'drink':
     case 'rice':
-    case 'fish':
-      return <Utensils size={size} color={color} strokeWidth={2} />; // Temporário para estes casos
+      return <Utensils size={size} color={color} strokeWidth={2} />;
     case 'restaurant':
       return <Utensils size={size} color={color} strokeWidth={2} />;
     case 'arrow-right':
@@ -215,7 +302,7 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
     case 'money':
       return <DollarSign size={size} color={color} strokeWidth={2} />;
     case 'pix':
-      return <CreditCard size={size} color={color} strokeWidth={2} />; // Temporário para PIX
+      return <CreditCard size={size} color={color} strokeWidth={2} />;
     case 'check':
       return <CheckCircle size={size} color={color} strokeWidth={2} />;
     case 'admin':
@@ -234,6 +321,13 @@ const IconComponent = ({ name, size = 24, color = "#FFF" }: { name: string, size
       return <User size={size} color={color} strokeWidth={2} />;
     case 'child':
       return <Baby size={size} color={color} strokeWidth={2} />;
+    case 'bebidas':
+      return <CupSoda size={size} color={color} strokeWidth={2} />;
+    case 'bebidas alcoólicas':
+    case 'bebidas alcoolicas':
+      return <Wine size={size} color={color} strokeWidth={2} />;
+    case 'vinhos':
+      return <Wine size={size} color={color} strokeWidth={2} />;
     default:
       return <Utensils size={size} color={color} strokeWidth={2} />; // Ícone padrão
   }
@@ -2876,7 +2970,7 @@ function MainApp() {
                       selectedGroup?.id === group.id && styles.groupIconActiveGlass
                     ]}>
                       <IconComponent 
-                        name={group.icon_id || 'restaurant'} 
+                        name={group.icon || group.name || 'restaurant'} 
                         size={24} 
                         color={selectedGroup?.id === group.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} 
                       />
