@@ -2594,7 +2594,7 @@ function MainApp() {
                         }
                       }}
                       disabled={false}
-                      activeOpacity={0.7}
+                      activeOpacity={0.9}
                     >
                       {/* Table Number in Circle - BIGGER */}
                       <View style={{
@@ -2813,7 +2813,7 @@ function MainApp() {
                       console.log('✅ Tipo de atendimento selecionado:', serviceType.name);
                     }
                   }}
-                  activeOpacity={0.7}
+                  activeOpacity={0.9}
                 >
                   <BlurView intensity={60} tint="dark" style={styles.serviceCardGlass}>
                     {/* Icon Circle */}
@@ -2870,7 +2870,7 @@ function MainApp() {
                 setTableNumber("");
                 resetIdleTimer();
               }}
-              activeOpacity={0.7}
+              activeOpacity={0.9}
             >
               <BlurView intensity={50} tint="dark" style={styles.changeMesaBlurGlass}>
                 <IconComponent name="refresh" size={16} color="#FF7043" />
@@ -2991,7 +2991,7 @@ function MainApp() {
                     style={({ pressed }) => [
                       styles.groupItemGlass,
                       selectedGroup?.id === group.id && styles.groupItemActiveGlass,
-                      pressed && { opacity: 0.7, backgroundColor: 'rgba(255, 112, 67, 0.2)' }
+                      pressed && { opacity: 0.9 }
                     ]}
                     onPress={() => {
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
@@ -3181,7 +3181,7 @@ function MainApp() {
                                 }
                                 resetIdleTimer();
                               }}
-                              activeOpacity={0.7}
+                              activeOpacity={0.9}
                             >
                               <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
                             </TouchableOpacity>
@@ -3193,7 +3193,7 @@ function MainApp() {
                               onPress={() => {
                                 handleQuickAddToCart(item);
                               }}
-                              activeOpacity={0.7}
+                              activeOpacity={0.9}
                             >
                               <IconComponent name="plus" size={18} color="#FFFFFF" />
                             </TouchableOpacity>
