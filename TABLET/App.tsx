@@ -293,18 +293,11 @@ function MainApp() {
   const [selectedServiceType, setSelectedServiceType] = useState<any>(null);
   const [showWaitingModal, setShowWaitingModal] = useState(false);
 
-  // Connection Check States
+  // Connection Check States - Simplified
   const [showConnectionModal, setShowConnectionModal] = useState(true);
-  const [appReady, setAppReady] = useState(false); // Only true when all connections verified
-  const [connectionStatus, setConnectionStatus] = useState({
-    api: false,
-    tables: false,
-    categories: false,
-    settings: false,
-    allConnected: false,
-    checking: true,
-    retryCount: 0,
-  });
+  const [appReady, setAppReady] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
 
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -363,91 +356,48 @@ function MainApp() {
     },
   ];
 
-  // Check all connections on startup
-  const checkAllConnections = useCallback(async () => {
-    console.log('🔌 Verificando conexões...');
-    setConnectionStatus(prev => ({ ...prev, checking: true }));
-    
-    let apiOk = false;
-    let tablesOk = false;
-    let categoriesOk = false;
-    let settingsOk = false;
+  // Simple connection check - just verify API is reachable
+  const checkConnection = useCallback(async () => {
+    setIsChecking(true);
     
     try {
-      // Check API health
-      const apiResponse = await fetch(`${config.API_BASE_URL}/api/pos/tables`, {
+      const response = await fetch(`${config.API_BASE_URL}/api/pos/tables`, {
         method: 'GET',
         headers: { 'Accept': 'application/json' },
       });
-      apiOk = apiResponse.ok;
-      tablesOk = apiResponse.ok;
-      console.log('📡 API:', apiOk ? '✅' : '❌');
-    } catch (e) {
-      console.log('📡 API: ❌ Erro de conexão');
-    }
-    
-    try {
-      // Check categories
-      const catResponse = await fetch(`${config.API_BASE_URL}/api/mobile/categories`, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-      });
-      categoriesOk = catResponse.ok;
-      console.log('📦 Categorias:', categoriesOk ? '✅' : '❌');
-    } catch (e) {
-      console.log('📦 Categorias: ❌ Erro de conexão');
-    }
-    
-    try {
-      // Check settings
-      const settingsResponse = await fetch(`${config.API_BASE_URL}/api/mobile/tablet-settings`, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-      });
-      if (settingsResponse.ok) {
-        const data = await settingsResponse.json();
-        if (data.success && data.settings) {
-          setTabletSettings(prev => ({ ...prev, ...data.settings }));
-          settingsOk = true;
-          console.log('⚙️ Configurações:', '✅', data.settings);
-          
-          // Apply brightness immediately
-          if (data.settings.brightness_enabled && data.settings.default_brightness) {
-            try {
-              await Brightness.setBrightnessAsync(data.settings.default_brightness);
-              console.log('💡 Brilho ajustado para:', data.settings.default_brightness);
-            } catch (e) {
-              console.log('⚠️ Erro ao ajustar brilho inicial');
+      
+      if (response.ok) {
+        console.log('✅ Conectado ao servidor!');
+        setIsConnected(true);
+        setIsChecking(false);
+        setAppReady(true);
+        
+        // Fetch settings silently
+        try {
+          const settingsRes = await fetch(`${config.API_BASE_URL}/api/mobile/tablet-settings`);
+          if (settingsRes.ok) {
+            const data = await settingsRes.json();
+            if (data.success && data.settings) {
+              setTabletSettings(prev => ({ ...prev, ...data.settings }));
+              if (data.settings.brightness_enabled && data.settings.default_brightness) {
+                await Brightness.setBrightnessAsync(data.settings.default_brightness).catch(() => {});
+              }
             }
           }
-        }
+        } catch (e) {}
+        
+        // Close modal after brief success display
+        setTimeout(() => setShowConnectionModal(false), 800);
+        return true;
       }
     } catch (e) {
-      console.log('⚙️ Configurações: ❌ Erro de conexão');
+      console.log('⏳ Aguardando servidor...');
     }
     
-    const allConnected = apiOk && tablesOk && categoriesOk && settingsOk;
-    
-    setConnectionStatus(prev => ({
-      api: apiOk,
-      tables: tablesOk,
-      categories: categoriesOk,
-      settings: settingsOk,
-      allConnected,
-      checking: false,
-      retryCount: prev.retryCount + 1,
-    }));
-    
-    if (allConnected) {
-      console.log('✅ Todas as conexões OK!');
-      setAppReady(true); // Mark app as ready to load data
-      setTimeout(() => setShowConnectionModal(false), 1000);
-    } else {
-      console.log('⚠️ Algumas conexões falharam, tentando novamente em 3s...');
-      setTimeout(() => checkAllConnections(), 3000);
-    }
-    
-    return allConnected;
+    setIsChecking(false);
+    // Retry after 2 seconds
+    setTimeout(() => checkConnection(), 2000);
+    return false;
   }, []);
 
   // Fetch tablet settings from server
@@ -559,17 +509,12 @@ function MainApp() {
         if (status === 'granted') {
           const current = await Brightness.getBrightnessAsync();
           setOriginalBrightness(current);
-          console.log('Brightness control initialized. Current brightness:', current);
-        } else {
-          console.log('Brightness permission not granted');
         }
-      } catch (error) {
-        console.error('Error initializing brightness:', error);
-      }
+      } catch (error) {}
     };
     
     initBrightness();
-    checkAllConnections(); // ONLY verify connections - don't load data yet
+    checkConnection(); // Simple API check
     
     // Kiosk mode back button handler
     if (Platform.OS === 'android' && kioskMode) {
@@ -1627,7 +1572,7 @@ function MainApp() {
   };
 
 
-  // Connection Check Modal Component
+  // Simple Connection Modal - just shows connecting/connected
   const ConnectionModal = () => (
     <Modal
       visible={showConnectionModal}
@@ -1636,82 +1581,25 @@ function MainApp() {
       onRequestClose={() => {}}
     >
       <View style={styles.connectionModalOverlay}>
-        <BlurView intensity={90} tint="dark" style={styles.connectionModalContent}>
-          <View style={styles.connectionModalInner}>
-            {/* Logo */}
-            <Image
-              source={require('./assets/logo232.png')}
-              style={{ width: 80, height: 80, borderRadius: 40, marginBottom: 20 }}
-              resizeMode="contain"
-            />
-            
-            <Text style={styles.connectionTitle}>
-              {connectionStatus.allConnected ? 'Conectado!' : 'Verificando Conexões'}
-            </Text>
-            
-            {connectionStatus.checking ? (
-              <ActivityIndicator size="large" color={config.colors.primary} style={{ marginVertical: 20 }} />
-            ) : (
-              <View style={styles.connectionList}>
-                <View style={styles.connectionItem}>
-                  <View style={[styles.connectionDot, { backgroundColor: connectionStatus.api ? '#4CAF50' : '#F44336' }]} />
-                  <Text style={styles.connectionLabel}>Servidor API</Text>
-                  {connectionStatus.api ? (
-                    <CheckCircle size={20} color="#4CAF50" />
-                  ) : (
-                    <Loader2 size={20} color="#F44336" />
-                  )}
-                </View>
-                
-                <View style={styles.connectionItem}>
-                  <View style={[styles.connectionDot, { backgroundColor: connectionStatus.tables ? '#4CAF50' : '#F44336' }]} />
-                  <Text style={styles.connectionLabel}>Mesas</Text>
-                  {connectionStatus.tables ? (
-                    <CheckCircle size={20} color="#4CAF50" />
-                  ) : (
-                    <Loader2 size={20} color="#F44336" />
-                  )}
-                </View>
-                
-                <View style={styles.connectionItem}>
-                  <View style={[styles.connectionDot, { backgroundColor: connectionStatus.categories ? '#4CAF50' : '#F44336' }]} />
-                  <Text style={styles.connectionLabel}>Cardápio</Text>
-                  {connectionStatus.categories ? (
-                    <CheckCircle size={20} color="#4CAF50" />
-                  ) : (
-                    <Loader2 size={20} color="#F44336" />
-                  )}
-                </View>
-                
-                <View style={styles.connectionItem}>
-                  <View style={[styles.connectionDot, { backgroundColor: connectionStatus.settings ? '#4CAF50' : '#F44336' }]} />
-                  <Text style={styles.connectionLabel}>Configurações</Text>
-                  {connectionStatus.settings ? (
-                    <CheckCircle size={20} color="#4CAF50" />
-                  ) : (
-                    <Loader2 size={20} color="#F44336" />
-                  )}
-                </View>
-              </View>
-            )}
-            
-            {!connectionStatus.allConnected && !connectionStatus.checking && (
-              <View style={styles.connectionRetryInfo}>
-                <Text style={styles.connectionRetryText}>
-                  Tentativa {connectionStatus.retryCount} - Reconectando...
-                </Text>
-                <ActivityIndicator size="small" color={config.colors.primary} style={{ marginTop: 10 }} />
-              </View>
-            )}
-            
-            {connectionStatus.allConnected && (
-              <View style={styles.connectionSuccess}>
-                <CheckCircle size={40} color="#4CAF50" />
-                <Text style={styles.connectionSuccessText}>Pronto para usar!</Text>
-              </View>
-            )}
-          </View>
-        </BlurView>
+        <View style={styles.connectionModalSimple}>
+          <Image
+            source={require('./assets/logo232.png')}
+            style={{ width: 100, height: 100, borderRadius: 50, marginBottom: 24 }}
+            resizeMode="contain"
+          />
+          
+          {isConnected ? (
+            <>
+              <CheckCircle size={48} color="#4CAF50" />
+              <Text style={styles.connectionTitleSimple}>Conectado!</Text>
+            </>
+          ) : (
+            <>
+              <ActivityIndicator size="large" color={config.colors.primary} />
+              <Text style={styles.connectionTitleSimple}>Conectando...</Text>
+            </>
+          )}
+        </View>
       </View>
     </Modal>
   );
@@ -6007,70 +5895,22 @@ const styles = StyleSheet.create({
     marginTop: 5,
     textTransform: "capitalize",
   },
-  // Connection Modal Styles
+  // Connection Modal Styles - Simplified
   connectionModalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.9)",
+    backgroundColor: "#1a1a2e",
     justifyContent: "center",
     alignItems: "center",
   },
-  connectionModalContent: {
-    borderRadius: 25,
-    overflow: 'hidden',
-    width: width * 0.4,
-    maxWidth: 400,
-  },
-  connectionModalInner: {
-    padding: 30,
+  connectionModalSimple: {
     alignItems: "center",
+    justifyContent: "center",
   },
-  connectionTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: config.colors.textPrimary,
-    marginBottom: 10,
-  },
-  connectionList: {
-    width: "100%",
-    marginVertical: 20,
-  },
-  connectionItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 15,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    borderRadius: 12,
-    marginBottom: 10,
-  },
-  connectionDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    marginRight: 12,
-  },
-  connectionLabel: {
-    flex: 1,
-    fontSize: 16,
-    color: config.colors.textPrimary,
-  },
-  connectionRetryInfo: {
-    alignItems: "center",
-    marginTop: 10,
-  },
-  connectionRetryText: {
-    fontSize: 14,
-    color: config.colors.textSecondary,
-  },
-  connectionSuccess: {
-    alignItems: "center",
-    marginTop: 20,
-  },
-  connectionSuccessText: {
-    fontSize: 16,
-    color: "#4CAF50",
-    marginTop: 10,
+  connectionTitleSimple: {
+    fontSize: 24,
     fontWeight: "600",
+    color: "#FFF",
+    marginTop: 20,
   },
   // Admin Panel Styles
   adminModalOverlay: {
