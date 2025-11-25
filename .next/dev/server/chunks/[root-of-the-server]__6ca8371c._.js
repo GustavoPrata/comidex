@@ -428,78 +428,37 @@ async function GET(request) {
         ;
         let products = [];
         if (group_id) {
-            // Primeiro, tentar buscar produtos através da tabela ponte group_item_settings
-            const { data: groupItemsData, error: groupItemsError } = await supabase.from('group_item_settings').select(`
-          item_id,
-          price_override,
-          is_available,
-          sort_order,
-          items!inner (
-            id,
-            name,
-            description,
-            price,
-            image,
-            category_id,
-            active,
-            available,
-            printer_id,
-            categories (
-              name,
-              image
-            )
-          )
-        `).eq('group_id', group_id).eq('is_available', true).eq('items.active', true).order('sort_order', {
-                ascending: true
-            });
-            if (groupItemsError) throw groupItemsError;
-            // Se encontrou produtos na tabela ponte, usar esses
-            if (groupItemsData && groupItemsData.length > 0) {
-                products = groupItemsData.map((item)=>({
-                        id: item.items.id,
-                        name: item.items.name,
-                        description: item.items.description,
-                        price: item.price_override || item.items.price,
-                        image: item.items.image,
-                        category_id: item.items.category_id,
-                        active: item.items.active,
-                        available: item.is_available,
-                        printer_id: item.items.printer_id,
-                        categories: item.items.categories,
-                        group_id: parseInt(group_id)
-                    }));
-            } else {
-                // Se não encontrou na tabela ponte, buscar produtos das categorias associadas ao grupo
-                const { data: groupCategoriesData, error: groupCatError } = await supabase.from('group_categories').select('category_id').eq('group_id', group_id).eq('active', true);
-                if (groupCatError) throw groupCatError;
-                if (groupCategoriesData && groupCategoriesData.length > 0) {
-                    const categoryIds = groupCategoriesData.map((gc)=>gc.category_id);
-                    // Buscar todos os produtos dessas categorias
-                    const { data: itemsData, error: itemsError } = await supabase.from('items').select('*, categories(name, image)').in('category_id', categoryIds).eq('active', true).order('name', {
-                        ascending: true
-                    });
-                    if (itemsError) throw itemsError;
-                    products = itemsData?.map((item)=>({
-                            id: item.id,
-                            name: item.name,
-                            description: item.description,
-                            price: item.price,
-                            image: item.image,
-                            category_id: item.category_id,
-                            active: item.active,
-                            available: item.available,
-                            printer_id: item.printer_id,
-                            categories: item.categories,
-                            group_id: parseInt(group_id)
-                        })) || [];
+            // Buscar as categorias associadas ao grupo
+            const { data: groupCategoriesData, error: groupCatError } = await supabase.from('group_categories').select('category_id').eq('group_id', group_id).eq('active', true);
+            if (groupCatError) throw groupCatError;
+            if (groupCategoriesData && groupCategoriesData.length > 0) {
+                const categoryIds = groupCategoriesData.map((gc)=>gc.category_id);
+                // Buscar todos os produtos dessas categorias diretamente da tabela items
+                let query = supabase.from('items').select('*, categories(name, image)').in('category_id', categoryIds).eq('active', true).order('name', {
+                    ascending: true
+                });
+                // Filtrar por categoria específica se informada
+                if (category_id && category_id !== '999') {
+                    query = query.eq('category_id', parseInt(category_id));
                 }
-            }
-            // Filtrar por categoria se especificado
-            if (category_id && category_id !== '999') {
-                products = products.filter((p)=>p.category_id === parseInt(category_id));
+                const { data: itemsData, error: itemsError } = await query;
+                if (itemsError) throw itemsError;
+                products = itemsData?.map((item)=>({
+                        id: item.id,
+                        name: item.name,
+                        description: item.description,
+                        price: item.price,
+                        image: item.image,
+                        category_id: item.category_id,
+                        active: item.active,
+                        available: item.available,
+                        printer_id: item.printer_id,
+                        categories: item.categories,
+                        group_id: parseInt(group_id)
+                    })) || [];
             }
         } else {
-            // Buscar todos os produtos (comportamento antigo)
+            // Buscar todos os produtos da tabela items
             let query = supabase.from('items').select('*, categories(name, image)').eq('active', true).order('name', {
                 ascending: true
             });
