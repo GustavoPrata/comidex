@@ -5159,11 +5159,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   groupNameGlass: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '500',
     color: 'rgba(255, 255, 255, 0.7)',
     textAlign: 'center',
-    lineHeight: 15,
+    lineHeight: 18,
   },
   groupNameActiveGlass: {
     color: '#FF7043',
