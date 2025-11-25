@@ -454,7 +454,10 @@ function MainApp() {
   const cartBounceAnim = useRef(new Animated.Value(1)).current;
   const billSlideAnim = useRef(new Animated.Value(height)).current;
   const productListRef = useRef<FlatList>(null);
+  const categoryListRef = useRef<ScrollView>(null);
   const categoryPositions = useRef<{[key: number]: number}>({});
+  const categoryScaleAnim = useRef(new Animated.Value(1)).current;
+  const categoryGlowAnim = useRef(new Animated.Value(0)).current;
   const promoSlideAnim = useRef(new Animated.Value(0)).current;
 
   // Sample promotions data
@@ -1881,13 +1884,52 @@ function MainApp() {
     }
   };
 
+  // Animação quando categoria muda
+  const animateCategoryChange = () => {
+    // Reset e anima
+    categoryScaleAnim.setValue(0.95);
+    categoryGlowAnim.setValue(0);
+    
+    Animated.parallel([
+      Animated.spring(categoryScaleAnim, {
+        toValue: 1,
+        friction: 4,
+        tension: 100,
+        useNativeDriver: true,
+      }),
+      Animated.sequence([
+        Animated.timing(categoryGlowAnim, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+        }),
+        Animated.timing(categoryGlowAnim, {
+          toValue: 0,
+          duration: 300,
+          useNativeDriver: true,
+        }),
+      ]),
+    ]).start();
+  };
+
+  // Scroll para categoria na lista de categorias (coluna do meio)
+  const scrollToCategoryInList = (categoryId: number) => {
+    const categoryIndex = categories.findIndex(c => c.id === categoryId);
+    if (categoryIndex !== -1 && categoryListRef.current) {
+      // Cada categoria tem altura de ~76px (70 + margins)
+      const scrollPosition = categoryIndex * 76 - 100; // centraliza um pouco
+      categoryListRef.current.scrollTo({ y: Math.max(0, scrollPosition), animated: true });
+    }
+  };
+
   // Scroll para categoria quando clicada
   const scrollToCategory = (categoryId: number) => {
     const items = getProductsWithHeaders();
-    const index = items.findIndex(item => 'isHeader' in item && item.categoryId === categoryId);
+    const index = items.findIndex(item => typeof item === 'object' && 'isHeader' in item && item.categoryId === categoryId);
     if (index !== -1 && productListRef.current) {
       productListRef.current.scrollToIndex({ index, animated: true, viewPosition: 0 });
     }
+    animateCategoryChange();
   };
 
   // Detecta categoria visível ao scrollar
@@ -1906,7 +1948,7 @@ function MainApp() {
     const productHeight = 180;
     
     for (const item of items) {
-      if ('isHeader' in item) {
+      if (typeof item === 'object' && 'isHeader' in item) {
         if (accumulatedHeight <= offsetY + 100) {
           currentCategoryId = item.categoryId;
         }
@@ -1918,6 +1960,8 @@ function MainApp() {
     
     if (currentCategoryId && currentCategoryId !== selectedCategory) {
       setSelectedCategory(currentCategoryId);
+      scrollToCategoryInList(currentCategoryId);
+      animateCategoryChange();
     }
   };
 
@@ -3099,11 +3143,8 @@ function MainApp() {
 
           {/* Center Column - Categories List */}
           <View style={styles.centerColumnGlass}>
-            <View style={styles.categoriesHeaderGlass}>
-              <Text style={styles.categoriesTitle}>Categorias</Text>
-            </View>
-            
             <ScrollView 
+              ref={categoryListRef}
               showsVerticalScrollIndicator={false}
               style={styles.categoriesListGlass}
               contentContainerStyle={styles.categoriesListContent}
@@ -3116,57 +3157,75 @@ function MainApp() {
               ) : (
                 <>
                   {categories.map((category) => (
-                    <Pressable
+                    <Animated.View
                       key={category.id}
                       style={[
-                        styles.categoryFullCard,
-                        selectedCategory === category.id && styles.categoryFullCardActive
+                        selectedCategory === category.id && {
+                          transform: [{ scale: categoryScaleAnim }],
+                        }
                       ]}
-                      onPress={() => {
-                        setSelectedCategory(category.id);
-                        scrollToCategory(category.id);
-                      }}
                     >
-                      {/* Full Background Image */}
-                      {category.image ? (
-                        <Image 
-                          source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
-                          style={styles.categoryFullImage}
-                        />
-                      ) : (
-                        <View style={styles.categoryFullImagePlaceholder}>
-                          <IconComponent 
-                            name={category.icon || 'sushi'} 
-                            size={28} 
-                            color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.3)'} 
+                      <Pressable
+                        style={[
+                          styles.categoryFullCard,
+                          selectedCategory === category.id && styles.categoryFullCardActive
+                        ]}
+                        onPress={() => {
+                          setSelectedCategory(category.id);
+                          scrollToCategory(category.id);
+                        }}
+                      >
+                        {/* Full Background Image */}
+                        {category.image ? (
+                          <Image 
+                            source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
+                            style={styles.categoryFullImage}
                           />
+                        ) : (
+                          <View style={styles.categoryFullImagePlaceholder}>
+                            <IconComponent 
+                              name={category.icon || 'sushi'} 
+                              size={28} 
+                              color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.3)'} 
+                            />
+                          </View>
+                        )}
+                        
+                        {/* Gradient Overlay */}
+                        <LinearGradient
+                          colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']}
+                          style={styles.categoryGradientOverlay}
+                        />
+                        
+                        {/* Category Name */}
+                        <View style={styles.categoryFullLabelContainer}>
+                          <Text 
+                            style={[
+                              styles.categoryFullName,
+                              selectedCategory === category.id && styles.categoryFullNameActive
+                            ]}
+                            numberOfLines={2}
+                          >
+                            {category.name}
+                          </Text>
                         </View>
-                      )}
-                      
-                      {/* Gradient Overlay */}
-                      <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']}
-                        style={styles.categoryGradientOverlay}
-                      />
-                      
-                      {/* Category Name */}
-                      <View style={styles.categoryFullLabelContainer}>
-                        <Text 
-                          style={[
-                            styles.categoryFullName,
-                            selectedCategory === category.id && styles.categoryFullNameActive
-                          ]}
-                          numberOfLines={2}
-                        >
-                          {category.name}
-                        </Text>
-                      </View>
-                      
-                      {/* Active Border Glow */}
-                      {selectedCategory === category.id && (
-                        <View style={styles.categoryActiveGlow} />
-                      )}
-                    </Pressable>
+                        
+                        {/* Active Border Glow */}
+                        {selectedCategory === category.id && (
+                          <Animated.View 
+                            style={[
+                              styles.categoryActiveGlow,
+                              {
+                                opacity: categoryGlowAnim.interpolate({
+                                  inputRange: [0, 1],
+                                  outputRange: [1, 1.5],
+                                }),
+                              }
+                            ]} 
+                          />
+                        )}
+                      </Pressable>
+                    </Animated.View>
                   ))}
                 </>
               )}
