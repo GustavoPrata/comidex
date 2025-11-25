@@ -5208,7 +5208,7 @@ const styles = StyleSheet.create({
   },
   // Center Column Styles
   centerColumnGlass: {
-    width: width * 0.18,
+    width: width * 0.22,
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
