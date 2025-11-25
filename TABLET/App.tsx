@@ -3503,21 +3503,21 @@ function MainApp() {
               }}
               activeOpacity={0.85}
             >
-              <Svg width={280} height={56} style={styles.addToCartSvg}>
+              <Svg width={290} height={56} style={styles.addToCartSvg}>
                 <Defs>
                   <SvgLinearGradient id="buttonGrad" x1="0" y1="0" x2="1" y2="0">
-                    <Stop offset="0" stopColor="#FF8A65" />
-                    <Stop offset="1" stopColor="#FF5722" />
+                    <Stop offset="0" stopColor="#FF7043" />
+                    <Stop offset="1" stopColor="#F4511E" />
                   </SvgLinearGradient>
                 </Defs>
                 <Path
                   d={`
-                    M 28 0
-                    L 252 0
-                    Q 280 0 280 28
-                    Q 280 56 252 56
-                    L 28 56
-                    A 28 28 0 0 0 28 0
+                    M 32 2
+                    L 260 2
+                    Q 288 2 288 28
+                    Q 288 54 260 54
+                    L 32 54
+                    A 26 26 0 0 0 32 2
                     Z
                   `}
                   fill="url(#buttonGrad)"
@@ -6263,20 +6263,20 @@ const styles = StyleSheet.create({
     elevation: 12,
   },
   clearTempButton: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#BF360C',
+    width: 52,
+    height: 52,
+    borderRadius: 26,
+    backgroundColor: '#D84315',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: -28,
+    marginRight: -26,
     zIndex: 10,
-    borderWidth: 3,
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderWidth: 2,
+    borderColor: 'rgba(255,255,255,0.25)',
   },
   addToCartButtonWrapper: {
     position: 'relative',
-    width: 280,
+    width: 290,
     height: 56,
   },
   addToCartSvg: {
@@ -6287,13 +6287,12 @@ const styles = StyleSheet.create({
   addToCartContent: {
     position: 'absolute',
     top: 0,
-    left: 0,
-    right: 0,
+    left: 40,
+    right: 16,
     bottom: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 24,
     gap: 12,
   },
   cartFloatingButton: {
