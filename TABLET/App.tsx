@@ -6238,7 +6238,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   cartBadge: {
-    backgroundColor: "#FF7043",
+    backgroundColor: "#FFFFFF",
     width: 28,
     height: 28,
     borderRadius: 14,
@@ -6246,7 +6246,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   cartBadgeText: {
-    color: '#FFFFFF',
+    color: '#FF7043',
     fontSize: 14,
     fontWeight: "bold",
   },
@@ -6264,13 +6264,13 @@ const styles = StyleSheet.create({
   addToCartFloatingButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: 'rgba(255,112,67,0.15)',
+    backgroundColor: "#FF7043",
     paddingHorizontal: 24,
     paddingVertical: 16,
-    borderRadius: 30,
+    borderRadius: 12,
     gap: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255,112,67,0.3)',
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   cartModalOverlay: {
     flex: 1,
