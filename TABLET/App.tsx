@@ -3118,96 +3118,93 @@ function MainApp() {
       <AdminPanel />
       
       <View {...panResponderRef.current?.panHandlers} style={{ flex: 1 }}>
-        {/* Glass Header Bar */}
-        <BlurView intensity={85} tint="dark" style={styles.glassHeader}>
-          <View style={styles.glassHeaderContent}>
-            {/* Left Section - Table Info */}
-            <View style={styles.glassHeaderLeft}>
-              <Pressable
-                onLongPress={handleLongPressStart}
-                onPressOut={handleLongPressEnd}
-                delayLongPress={0}
-                style={styles.tableInfoGlass}
-              >
-                <View style={styles.tableIconGlass}>
-                  <IconComponent name="table" size={20} color="#FF7043" />
-                </View>
-                <Text style={styles.tableNumberGlass}>
-                  {parseInt(tableNumber) > 100 ? `Balcão ${tableNumber}` : `Mesa ${tableNumber}`}
-                </Text>
-              </Pressable>
-              
-              {selectedMode && (
-                <View style={styles.modeTagGlass}>
-                  <IconComponent name={selectedMode.icon || 'restaurant'} size={16} color="#FF7043" />
-                  <Text style={styles.modeTagTextGlass}>{selectedMode.name}</Text>
+        {/* Header Bar - Goomer Style */}
+        <View style={styles.goomerHeader}>
+          {/* Left Section */}
+          <Pressable
+            onLongPress={handleLongPressStart}
+            onPressOut={handleLongPressEnd}
+            delayLongPress={0}
+          >
+            <TouchableOpacity style={styles.goomerHeaderBtn} activeOpacity={0.7}>
+              <Search size={20} color="#1a1a1a" strokeWidth={2} />
+              <Text style={styles.goomerHeaderBtnText}>BUSCAR</Text>
+            </TouchableOpacity>
+          </Pressable>
+
+          <View style={styles.goomerTableBadge}>
+            <Text style={styles.goomerTableText}>MESA</Text>
+            <Text style={styles.goomerTableNumber}>{tableNumber}</Text>
+          </View>
+
+          {/* Spacer */}
+          <View style={{ flex: 1 }} />
+
+          {/* Right Section - Action Buttons */}
+          <TouchableOpacity 
+            style={styles.goomerActionBtn} 
+            activeOpacity={0.7}
+            onPress={() => {
+              triggerHaptic();
+              handleCallWaiter();
+            }}
+          >
+            <Bell size={22} color="#C9A86C" strokeWidth={2} />
+            <View style={styles.goomerActionTextContainer}>
+              <Text style={styles.goomerActionText}>CHAMAR</Text>
+              <Text style={styles.goomerActionText}>GARÇOM</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.goomerActionBtn} 
+            activeOpacity={0.7}
+            onPress={() => {
+              setShowBill(true);
+              resetIdleTimer();
+              Animated.spring(billSlideAnim, {
+                toValue: 0,
+                useNativeDriver: true,
+              }).start();
+            }}
+          >
+            <Receipt size={22} color="#C9A86C" strokeWidth={2} />
+            <View style={styles.goomerActionTextContainer}>
+              <Text style={styles.goomerActionText}>MINHA</Text>
+              <Text style={styles.goomerActionText}>CONTA</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.goomerActionBtn} 
+            activeOpacity={0.7}
+            onPress={() => {
+              if (cart.length > 0) {
+                setShowCart(true);
+                resetIdleTimer();
+                Animated.spring(slideAnim, {
+                  toValue: 0,
+                  useNativeDriver: true,
+                }).start();
+              }
+            }}
+          >
+            <View style={styles.goomerCartIconWrap}>
+              <ShoppingCart size={22} color="#C9A86C" strokeWidth={2} />
+              {cart.length > 0 && (
+                <View style={styles.goomerCartBadge}>
+                  <Text style={styles.goomerCartBadgeText}>
+                    {cart.reduce((sum, item) => sum + item.quantity, 0)}
+                  </Text>
                 </View>
               )}
             </View>
-
-            {/* Center Section - Search */}
-            <View style={styles.glassHeaderCenter}>
-              <View style={styles.searchBarGlass}>
-                <Svg width={18} height={18} viewBox="0 0 24 24" fill="none">
-                  <Circle cx="11" cy="11" r="8" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2"/>
-                  <Path d="M19 19l-4-4" stroke="rgba(255, 255, 255, 0.5)" strokeWidth="2" strokeLinecap="round"/>
-                </Svg>
-                <TextInput
-                  style={styles.searchInputGlass}
-                  placeholder="Buscar produtos..."
-                  placeholderTextColor="rgba(255, 255, 255, 0.3)"
-                  value={searchText}
-                  onChangeText={setSearchText}
-                />
-              </View>
+            <View style={styles.goomerActionTextContainer}>
+              <Text style={styles.goomerActionText}>CARRINHO</Text>
+              <Text style={styles.goomerActionText}>DE COMPRAS</Text>
             </View>
-            
-            {/* Right Section - Actions */}
-            <View style={styles.glassHeaderRight}>
-              <TouchableOpacity
-                style={styles.billButtonGlass}
-                onPress={() => {
-                  setShowBill(true);
-                  resetIdleTimer();
-                  Animated.spring(billSlideAnim, {
-                    toValue: 0,
-                    useNativeDriver: true,
-                  }).start();
-                }}
-              >
-                <IconComponent name="bill" size={20} color="#FFFFFF" />
-                <Text style={styles.billButtonTextGlass}>CONTA</Text>
-              </TouchableOpacity>
-              
-              {/* Cart Button in Header */}
-              <TouchableOpacity
-                style={styles.cartHeaderButton}
-                onPress={() => {
-                  if (cart.length > 0) {
-                    setShowCart(true);
-                    resetIdleTimer();
-                    Animated.spring(slideAnim, {
-                      toValue: 0,
-                      useNativeDriver: true,
-                    }).start();
-                  }
-                }}
-              >
-                <View style={styles.cartHeaderIconContainer}>
-                  <IconComponent name="cart" size={20} color="#FFFFFF" />
-                  {cart.length > 0 && (
-                    <View style={styles.cartHeaderBadge}>
-                      <Text style={styles.cartHeaderBadgeText}>
-                        {cart.reduce((sum, item) => sum + item.quantity, 0)}
-                      </Text>
-                    </View>
-                  )}
-                </View>
-                <Text style={styles.cartHeaderText}>CARRINHO</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </BlurView>
+          </TouchableOpacity>
+        </View>
 
         {/* 3-Column Main Content Area - Goomer Style with Apple Glass */}
         <View style={styles.mainContentGlass}>
@@ -5228,6 +5225,86 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   
+  // Goomer Header Styles
+  goomerHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#C9A86C',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    gap: 8,
+  },
+  goomerHeaderBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E8DCC8',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderRadius: 8,
+    gap: 8,
+  },
+  goomerHeaderBtnText: {
+    color: '#1a1a1a',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  goomerTableBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E8DCC8',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
+    gap: 8,
+  },
+  goomerTableText: {
+    color: '#1a1a1a',
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  goomerTableNumber: {
+    color: '#1a1a1a',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  goomerActionBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#2a2a2a',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    gap: 10,
+  },
+  goomerActionTextContainer: {
+    alignItems: 'flex-start',
+  },
+  goomerActionText: {
+    color: '#C9A86C',
+    fontSize: 11,
+    fontWeight: '600',
+    lineHeight: 14,
+  },
+  goomerCartIconWrap: {
+    position: 'relative',
+  },
+  goomerCartBadge: {
+    position: 'absolute',
+    top: -8,
+    right: -8,
+    backgroundColor: '#FFFFFF',
+    minWidth: 18,
+    height: 18,
+    borderRadius: 9,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  goomerCartBadgeText: {
+    color: '#1a1a1a',
+    fontSize: 11,
+    fontWeight: '700',
+  },
+
   // Apple Glassmorphism Styles
   glassHeader: {
     paddingHorizontal: 20,
