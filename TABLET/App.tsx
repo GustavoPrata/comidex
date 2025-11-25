@@ -19,6 +19,7 @@ import {
   BackHandler,
   TouchableWithoutFeedback,
   Pressable,
+  Vibration,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { BlurView } from "expo-blur";
@@ -3123,6 +3124,7 @@ function MainApp() {
                       selectedGroup?.id === group.id && styles.groupItemActiveGlass
                     ]}
                     onPress={() => {
+                      Vibration.vibrate(10);
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
                       setSelectedGroup(group);
                       loadCategories(group.id);
@@ -3188,6 +3190,7 @@ function MainApp() {
                             isSelected && styles.categoryFullCardActive
                           ]}
                           onPress={() => {
+                            Vibration.vibrate(10);
                             setSelectedCategory(category.id);
                             scrollToCategory(category.id);
                           }}
@@ -3344,7 +3347,12 @@ function MainApp() {
                           <View style={styles.quantityControlsRow}>
                             <Pressable 
                               style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
-                              onPress={() => quantity > 0 && handleRemoveFromCart(item.id)}
+                              onPress={() => {
+                                if (quantity > 0) {
+                                  Vibration.vibrate(10);
+                                  handleRemoveFromCart(item.id);
+                                }
+                              }}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
                               <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
@@ -3354,7 +3362,10 @@ function MainApp() {
                             
                             <Pressable 
                               style={styles.quantityButtonPlus}
-                              onPress={() => handleQuickAddToCart(item)}
+                              onPress={() => {
+                                Vibration.vibrate(10);
+                                handleQuickAddToCart(item);
+                              }}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
                               <IconComponent name="plus" size={18} color="#FFFFFF" />
@@ -3869,14 +3880,20 @@ function MainApp() {
                 <View style={styles.cartItemQuantity}>
                   <TouchableOpacity
                     style={styles.cartQuantityButton}
-                    onPress={() => updateQuantity(item.id, item.quantity - 1)}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      updateQuantity(item.id, item.quantity - 1);
+                    }}
                   >
                     <Text style={styles.cartQuantityButtonText}>-</Text>
                   </TouchableOpacity>
                   <Text style={styles.cartQuantityText}>{item.quantity}</Text>
                   <TouchableOpacity
                     style={styles.cartQuantityButton}
-                    onPress={() => updateQuantity(item.id, item.quantity + 1)}
+                    onPress={() => {
+                      Vibration.vibrate(10);
+                      updateQuantity(item.id, item.quantity + 1);
+                    }}
                   >
                     <Text style={styles.cartQuantityButtonText}>+</Text>
                   </TouchableOpacity>
