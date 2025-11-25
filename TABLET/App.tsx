@@ -329,13 +329,15 @@ function MainApp() {
   const [selectedServiceType, setSelectedServiceType] = useState<any>(null);
   const [showWaitingModal, setShowWaitingModal] = useState(false);
 
-  // Connection Check States - Simplified
+  // Connection Check States - Stable (no flickering)
   const [showConnectionModal, setShowConnectionModal] = useState(true);
   const [appReady, setAppReady] = useState(false);
-  const [connectionState, setConnectionState] = useState<'checking' | 'connected' | 'registering' | 'registered' | 'error'>('checking');
+  const [connectionState, setConnectionState] = useState<'initial' | 'checking' | 'connected' | 'registering' | 'registered' | 'error'>('initial');
   const [connectionError, setConnectionError] = useState('');
   const [tabletRegistered, setTabletRegistered] = useState(false);
   const [registrationInfo, setRegistrationInfo] = useState<{ name?: string; slots_available?: boolean; current_count?: number; max_tablets?: number } | null>(null);
+  const connectionCheckRef = useRef<NodeJS.Timeout | null>(null);
+  const isCheckingRef = useRef(false);
 
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -394,10 +396,22 @@ function MainApp() {
     },
   ];
 
-  // Connection check with tablet registration verification
+  // Connection check with tablet registration verification - STABLE (no flickering)
   const checkConnection = useCallback(async () => {
-    // Only set checking on first attempt, not on retries (prevents flashing)
-    if (connectionState !== 'error' && connectionState !== 'registering') {
+    // Prevent concurrent checks
+    if (isCheckingRef.current) {
+      return false;
+    }
+    isCheckingRef.current = true;
+    
+    // Clear any pending retry
+    if (connectionCheckRef.current) {
+      clearTimeout(connectionCheckRef.current);
+      connectionCheckRef.current = null;
+    }
+    
+    // Only show 'checking' on initial load, never during retries
+    if (connectionState === 'initial') {
       setConnectionState('checking');
     }
     
@@ -415,7 +429,11 @@ function MainApp() {
       
       if (response.ok) {
         console.log('✅ Conectado ao servidor!');
-        setConnectionState('connected');
+        
+        // Only update to 'connected' if we're not already past that stage
+        if (connectionState === 'initial' || connectionState === 'checking' || connectionState === 'error') {
+          setConnectionState('connected');
+        }
         setConnectionError('');
         
         // Now check tablet registration
@@ -452,7 +470,8 @@ function MainApp() {
             } else {
               setConnectionState('error');
               setConnectionError(registerResult.message || 'Erro ao registrar tablet');
-              setTimeout(() => checkConnection(), 5000);
+              isCheckingRef.current = false;
+              connectionCheckRef.current = setTimeout(() => checkConnection(), 5000);
               return false;
             }
           } else {
@@ -465,7 +484,8 @@ function MainApp() {
               max_tablets: registerData.max_tablets,
             });
             setConnectionError(`Limite de tablets atingido (${registerData.current_count}/${registerData.max_tablets}). Contate o administrador.`);
-            setTimeout(() => checkConnection(), 10000);
+            isCheckingRef.current = false;
+            connectionCheckRef.current = setTimeout(() => checkConnection(), 10000);
             return false;
           }
         } catch (regError) {
@@ -490,21 +510,28 @@ function MainApp() {
         } catch (e) {}
         
         // Close modal after brief success display
+        isCheckingRef.current = false;
         setTimeout(() => setShowConnectionModal(false), 1000);
         return true;
       } else {
-        // Server responded but with error
-        setConnectionState('error');
-        setConnectionError('Verifique se o sistema no computador está ligado!');
+        // Server responded but with error - stay in error state without flashing
+        if (connectionState !== 'error') {
+          setConnectionState('error');
+          setConnectionError('Verifique se o sistema no computador está ligado!');
+        }
       }
     } catch (e: any) {
       console.log('⏳ Aguardando servidor...');
-      setConnectionState('error');
-      setConnectionError('Verifique se o sistema no computador está ligado!');
+      // Only update error state if not already in error (prevents flickering)
+      if (connectionState !== 'error') {
+        setConnectionState('error');
+        setConnectionError('Verifique se o sistema no computador está ligado!');
+      }
     }
     
-    // Retry silently after 3 seconds (don't change state to checking)
-    setTimeout(() => checkConnection(), 3000);
+    // Retry silently after 3 seconds (state stays as 'error', no flickering)
+    isCheckingRef.current = false;
+    connectionCheckRef.current = setTimeout(() => checkConnection(), 3000);
     return false;
   }, [connectionState, deviceId]);
 
@@ -763,10 +790,23 @@ function MainApp() {
     checkConnection(); // Simple API check
     
     // Kiosk mode back button handler
+    let backHandler: any = null;
     if (Platform.OS === 'android' && kioskMode) {
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
-      return () => backHandler.remove();
+      backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
     }
+    
+    // Cleanup function
+    return () => {
+      // Clear connection check timer on unmount
+      if (connectionCheckRef.current) {
+        clearTimeout(connectionCheckRef.current);
+        connectionCheckRef.current = null;
+      }
+      isCheckingRef.current = false;
+      if (backHandler) {
+        backHandler.remove();
+      }
+    };
   }, [deviceIdLoaded, deviceId]);
 
   // STEP 2: Only load data AFTER connections are verified
@@ -1825,7 +1865,7 @@ function MainApp() {
   };
 
 
-  // Connection Modal - shows connecting/connected/registering/registered/error states
+  // Connection Modal - shows connecting/connected/registering/registered/error states (STABLE - no flickering)
   const ConnectionModal = () => (
     <Modal
       visible={showConnectionModal}
@@ -1844,7 +1884,7 @@ function MainApp() {
           {connectionState === 'registered' ? (
             <>
               <CheckCircle size={48} color="#4CAF50" />
-              <Text style={styles.connectionTitleSimple}>Tablet Registrado!</Text>
+              <Text style={styles.connectionTitleSimple}>Tablet Ativado!</Text>
               {registrationInfo?.name && (
                 <Text style={styles.connectionSubtitle}>{registrationInfo.name}</Text>
               )}
@@ -1852,28 +1892,29 @@ function MainApp() {
           ) : connectionState === 'registering' ? (
             <>
               <ActivityIndicator size="large" color={config.colors.primary} />
-              <Text style={styles.connectionTitleSimple}>Registrando tablet...</Text>
+              <Text style={styles.connectionTitleSimple}>Ativando tablet...</Text>
               <Text style={styles.connectionSubtitle}>Aguarde um momento</Text>
             </>
           ) : connectionState === 'connected' ? (
             <>
               <ActivityIndicator size="large" color={config.colors.primary} />
-              <Text style={styles.connectionTitleSimple}>Verificando registro...</Text>
+              <Text style={styles.connectionTitleSimple}>Verificando ativação...</Text>
             </>
           ) : connectionState === 'error' ? (
             <>
               <AlertCircle size={48} color="#FF6B6B" />
-              <Text style={styles.connectionTitleSimple}>Sistema indisponível!</Text>
+              <Text style={styles.connectionTitleSimple}>Aguardando Sistema</Text>
               <Text style={styles.connectionErrorText}>{connectionError}</Text>
               <View style={styles.connectionRetrying}>
                 <ActivityIndicator size="small" color={config.colors.primary} />
-                <Text style={styles.connectionRetryingText}>Tentando reconectar...</Text>
+                <Text style={styles.connectionRetryingText}>Reconectando automaticamente...</Text>
               </View>
             </>
           ) : (
             <>
               <ActivityIndicator size="large" color={config.colors.primary} />
-              <Text style={styles.connectionTitleSimple}>Conectando...</Text>
+              <Text style={styles.connectionTitleSimple}>Iniciando...</Text>
+              <Text style={styles.connectionSubtitle}>Conectando ao sistema</Text>
             </>
           )}
         </View>
