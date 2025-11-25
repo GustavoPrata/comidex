@@ -3570,10 +3570,12 @@ function MainApp() {
       <Modal
         visible={showImageModal}
         animationType="fade"
-        transparent={true}
+        transparent={false}
         onRequestClose={() => setShowImageModal(false)}
+        statusBarTranslucent={true}
       >
         <View style={styles.imageModalOverlay}>
+          <StatusBar style="light" backgroundColor="transparent" translucent />
           <Pressable 
             style={styles.imageModalCloseButton}
             onPress={() => setShowImageModal(false)}
@@ -5867,12 +5869,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 20,
     marginBottom: 100,
+    borderRadius: 16,
   },
   imageModalImage: {
     width: width - 140,
     height: height * 0.72,
     marginLeft: 20,
     marginBottom: 100,
+    borderRadius: 16,
   },
   imageModalInfoBar: {
     position: 'absolute',
