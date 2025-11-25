@@ -1571,7 +1571,7 @@ function MainApp() {
             <BlurView intensity={80} tint="dark" style={styles.tableSelectionCard}>
               <View style={styles.glassOverlay}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione sua mesa</Text>
+                  <Text style={[styles.tableSelectionTitle, { flex: 0, marginRight: 10 }]}>Selecione a mesa</Text>
                   
                   {/* Logo in the middle - Larger and positioned above */}
                   <View style={{ 
@@ -3492,8 +3492,6 @@ const styles = StyleSheet.create({
   // New Table Selection Styles
   tableSelectionCard: {
     borderRadius: 28,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
     width: "95%",
     marginTop: height * 0.08,
     marginBottom: height * 0.02,
