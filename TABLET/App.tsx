@@ -1711,53 +1711,36 @@ function MainApp() {
 
   // Handle remove from cart (decrease quantity or remove)
   const handleRemoveFromCart = (productId: number) => {
-    resetIdleTimer();
-    const existingItem = cart.find((item) => item.id === productId);
-    
-    if (existingItem) {
+    setCart(prev => {
+      const existingItem = prev.find((item) => item.id === productId);
+      if (!existingItem) return prev;
+      
       if (existingItem.quantity > 1) {
-        setCart(
-          cart.map((item) =>
-            item.id === productId
-              ? { ...item, quantity: item.quantity - 1 }
-              : item
-          )
+        return prev.map((item) =>
+          item.id === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
         );
       } else {
-        setCart(cart.filter((item) => item.id !== productId));
+        return prev.filter((item) => item.id !== productId);
       }
-    }
+    });
   };
 
   // Handle quick add to cart (without observation modal)
   const handleQuickAddToCart = (product: Product) => {
-    resetIdleTimer();
-    
-    // Bounce animation
-    Animated.sequence([
-      Animated.spring(cartBounceAnim, {
-        toValue: 1.2,
-        useNativeDriver: true,
-      }),
-      Animated.spring(cartBounceAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-      }),
-    ]).start();
-
-    const existingItem = cart.find((item) => item.id === product.id && !item.observation);
-
-    if (existingItem) {
-      setCart(
-        cart.map((item) =>
+    setCart(prev => {
+      const existingItem = prev.find((item) => item.id === product.id && !item.observation);
+      if (existingItem) {
+        return prev.map((item) =>
           item.id === product.id && !item.observation
             ? { ...item, quantity: item.quantity + 1 }
             : item
-        )
-      );
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
+        );
+      } else {
+        return [...prev, { ...product, quantity: 1 }];
+      }
+    });
   };
 
   // Confirm add to cart with observation
@@ -3056,17 +3039,13 @@ function MainApp() {
               ) : (
                 <>
                   {categories.map((category) => (
-                    <TouchableOpacity
+                    <Pressable
                       key={category.id}
                       style={[
                         styles.categoryFullCard,
                         selectedCategory === category.id && styles.categoryFullCardActive
                       ]}
-                      onPress={() => {
-                        setSelectedCategory(category.id);
-                        resetIdleTimer();
-                      }}
-                      activeOpacity={0.9}
+                      onPress={() => setSelectedCategory(category.id)}
                     >
                       {/* Full Background Image */}
                       {category.image ? (
@@ -3107,7 +3086,7 @@ function MainApp() {
                       {selectedCategory === category.id && (
                         <View style={styles.categoryActiveGlow} />
                       )}
-                    </TouchableOpacity>
+                    </Pressable>
                   ))}
                 </>
               )}
@@ -3175,30 +3154,21 @@ function MainApp() {
                         {/* Bottom Row: Quantity Controls */}
                         <View style={styles.productBottomRow}>
                           <View style={styles.quantityControlsRow}>
-                            <TouchableOpacity 
+                            <Pressable 
                               style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
-                              onPress={() => {
-                                if (quantity > 0) {
-                                  handleRemoveFromCart(item.id);
-                                }
-                                resetIdleTimer();
-                              }}
-                              activeOpacity={0.9}
+                              onPress={() => quantity > 0 && handleRemoveFromCart(item.id)}
                             >
                               <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
-                            </TouchableOpacity>
+                            </Pressable>
                             
                             <Text style={styles.quantityText}>{quantity}</Text>
                             
-                            <TouchableOpacity 
+                            <Pressable 
                               style={styles.quantityButtonPlus}
-                              onPress={() => {
-                                handleQuickAddToCart(item);
-                              }}
-                              activeOpacity={0.9}
+                              onPress={() => handleQuickAddToCart(item)}
                             >
                               <IconComponent name="plus" size={18} color="#FFFFFF" />
-                            </TouchableOpacity>
+                            </Pressable>
                           </View>
                         </View>
                       </View>
