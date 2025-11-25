@@ -3490,7 +3490,7 @@ function MainApp() {
                 resetIdleTimer();
               }}
             >
-              <X size={18} color="#FFF" strokeWidth={2.5} />
+              <X size={20} color="#FFF" strokeWidth={2.5} />
             </TouchableOpacity>
             
             {/* Add to Cart Button with concave left edge */}
@@ -3501,20 +3501,26 @@ function MainApp() {
                 addTempToCart();
                 resetIdleTimer();
               }}
-              activeOpacity={0.8}
+              activeOpacity={0.85}
             >
-              <Svg width={260} height={48} style={styles.addToCartSvg}>
+              <Svg width={280} height={56} style={styles.addToCartSvg}>
+                <Defs>
+                  <SvgLinearGradient id="buttonGrad" x1="0" y1="0" x2="1" y2="0">
+                    <Stop offset="0" stopColor="#FF8A65" />
+                    <Stop offset="1" stopColor="#FF5722" />
+                  </SvgLinearGradient>
+                </Defs>
                 <Path
                   d={`
-                    M 24 0
-                    L 236 0
-                    Q 260 0 260 24
-                    Q 260 48 236 48
-                    L 24 48
-                    A 24 24 0 0 0 24 0
+                    M 28 0
+                    L 252 0
+                    Q 280 0 280 28
+                    Q 280 56 252 56
+                    L 28 56
+                    A 28 28 0 0 0 28 0
                     Z
                   `}
-                  fill="#FF7043"
+                  fill="url(#buttonGrad)"
                 />
               </Svg>
               <View style={styles.addToCartContent}>
@@ -6246,30 +6252,32 @@ const styles = StyleSheet.create({
   },
   cartFloatingButtonContainer: {
     position: "absolute",
-    bottom: 20,
-    left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 145,
+    bottom: 24,
+    left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 155,
     flexDirection: 'row',
     alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 12,
   },
   clearTempButton: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: '#E65100',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#BF360C',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: -24,
+    marginRight: -28,
     zIndex: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 10,
+    borderWidth: 3,
+    borderColor: 'rgba(255,255,255,0.2)',
   },
   addToCartButtonWrapper: {
     position: 'relative',
-    width: 260,
-    height: 48,
+    width: 280,
+    height: 56,
   },
   addToCartSvg: {
     position: 'absolute',
@@ -6285,8 +6293,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingLeft: 20,
-    gap: 10,
+    paddingLeft: 24,
+    gap: 12,
   },
   cartFloatingButton: {
     position: "absolute",
@@ -6313,22 +6321,30 @@ const styles = StyleSheet.create({
   },
   cartBadge: {
     backgroundColor: "#FFFFFF",
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
   },
   cartBadgeText: {
-    color: '#FF7043',
-    fontSize: 14,
-    fontWeight: "bold",
+    color: '#E65100',
+    fontSize: 15,
+    fontWeight: "800",
   },
   cartFloatingButtonText: {
     color: "#FFF",
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: "700",
-    letterSpacing: 0.5,
+    letterSpacing: 0.3,
+    textShadowColor: 'rgba(0,0,0,0.15)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
   },
   cartFloatingButtonTotal: {
     color: "#FFF",
