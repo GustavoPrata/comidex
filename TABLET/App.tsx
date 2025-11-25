@@ -19,8 +19,8 @@ import {
   BackHandler,
   TouchableWithoutFeedback,
   Pressable,
-  Vibration,
 } from "react-native";
+import * as Haptics from 'expo-haptics';
 import { StatusBar } from "expo-status-bar";
 import { BlurView } from "expo-blur";
 import { LinearGradient } from 'expo-linear-gradient';
@@ -3124,7 +3124,7 @@ function MainApp() {
                       selectedGroup?.id === group.id && styles.groupItemActiveGlass
                     ]}
                     onPress={() => {
-                      Vibration.vibrate(10);
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
                       setSelectedGroup(group);
                       loadCategories(group.id);
@@ -3190,7 +3190,7 @@ function MainApp() {
                             isSelected && styles.categoryFullCardActive
                           ]}
                           onPress={() => {
-                            Vibration.vibrate(10);
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                             setSelectedCategory(category.id);
                             scrollToCategory(category.id);
                           }}
@@ -3349,7 +3349,7 @@ function MainApp() {
                               style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
                               onPress={() => {
                                 if (quantity > 0) {
-                                  Vibration.vibrate(10);
+                                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                                   handleRemoveFromCart(item.id);
                                 }
                               }}
@@ -3363,7 +3363,7 @@ function MainApp() {
                             <Pressable 
                               style={styles.quantityButtonPlus}
                               onPress={() => {
-                                Vibration.vibrate(10);
+                                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                                 handleQuickAddToCart(item);
                               }}
                               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
@@ -3881,7 +3881,7 @@ function MainApp() {
                   <TouchableOpacity
                     style={styles.cartQuantityButton}
                     onPress={() => {
-                      Vibration.vibrate(10);
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                       updateQuantity(item.id, item.quantity - 1);
                     }}
                   >
@@ -3891,7 +3891,7 @@ function MainApp() {
                   <TouchableOpacity
                     style={styles.cartQuantityButton}
                     onPress={() => {
-                      Vibration.vibrate(10);
+                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                       updateQuantity(item.id, item.quantity + 1);
                     }}
                   >
