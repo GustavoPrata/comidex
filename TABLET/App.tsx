@@ -5238,8 +5238,8 @@ const styles = StyleSheet.create({
   // Apple Glassmorphism Styles
   glassHeader: {
     paddingHorizontal: 20,
-    paddingTop: 50,
-    paddingBottom: 18,
+    paddingTop: 12,
+    paddingBottom: 12,
     backgroundColor: 'rgba(255,255,255,0.08)',
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
