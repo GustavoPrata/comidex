@@ -3094,7 +3094,7 @@ function MainApp() {
               <FlatList
                 data={getFilteredProducts()}
                 keyExtractor={(item) => item.id.toString()}
-                numColumns={2}
+                numColumns={1}
                 contentContainerStyle={styles.productsGridGlass}
                 showsVerticalScrollIndicator={false}
                 onScroll={() => resetIdleTimer()}
@@ -3112,12 +3112,12 @@ function MainApp() {
                     activeOpacity={0.85}
                   >
                     <BlurView intensity={80} tint="dark" style={styles.productCardInnerGlass}>
-                      {/* Product Image */}
+                      {/* Product Image - Left Side */}
                       {item.image_url ? (
                         <Image source={{ uri: item.image_url }} style={styles.productImageGlass} />
                       ) : (
                         <View style={styles.productImagePlaceholderGlass}>
-                          <IconComponent name="sushi" size={36} color="rgba(255, 255, 255, 0.3)" />
+                          <IconComponent name="sushi" size={28} color="rgba(255, 255, 255, 0.3)" />
                         </View>
                       )}
                       
@@ -3127,12 +3127,12 @@ function MainApp() {
                           colors={['#FFD700', '#FFA000']}
                           style={styles.premiumBadgeGlass}
                         >
-                          <IconComponent name="star" size={12} color="#FFFFFF" />
+                          <IconComponent name="star" size={10} color="#FFFFFF" />
                           <Text style={styles.premiumTextGlass}>PREMIUM</Text>
                         </LinearGradient>
                       )}
                       
-                      {/* Product Info */}
+                      {/* Product Info - Right Side */}
                       <View style={styles.productInfoGlass}>
                         <Text style={styles.productNameGlass} numberOfLines={2}>
                           {item.name}
@@ -3155,7 +3155,7 @@ function MainApp() {
                             </View>
                           ) : (
                             <View style={styles.rodizioTagGlass}>
-                              <IconComponent name="fire" size={14} color="#FF7043" />
+                              <IconComponent name="fire" size={12} color="#FF7043" />
                               <Text style={styles.rodizioTextGlass}>Rodízio</Text>
                             </View>
                           )}
@@ -3169,7 +3169,7 @@ function MainApp() {
                               colors={['#FF7043', '#FF5722']}
                               style={styles.addButtonGradientGlass}
                             >
-                              <IconComponent name="plus" size={20} color="#FFFFFF" />
+                              <IconComponent name="plus" size={18} color="#FFFFFF" />
                             </LinearGradient>
                           </TouchableOpacity>
                         </View>
@@ -5353,66 +5353,74 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.4)',
     marginTop: 4,
   },
-  // Product Card Styles
+  // Product Card Styles - Horizontal Layout
   productCardGlass: {
-    flex: 1,
-    margin: 8,
-    maxWidth: '45%',
+    width: '100%',
+    marginBottom: 8,
   },
   productCardInnerGlass: {
-    borderRadius: 16,
+    borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   productImageGlass: {
-    width: '100%',
-    height: 140,
+    width: 70,
+    height: 70,
     resizeMode: 'cover',
+    borderRadius: 8,
+    margin: 8,
   },
   productImagePlaceholderGlass: {
-    width: '100%',
-    height: 140,
+    width: 70,
+    height: 70,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 8,
+    margin: 8,
   },
   premiumBadgeGlass: {
     position: 'absolute',
-    top: 8,
-    right: 8,
+    top: 4,
+    left: 4,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    gap: 2,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 8,
   },
   premiumTextGlass: {
-    fontSize: 10,
+    fontSize: 8,
     fontWeight: '700',
     color: '#FFFFFF',
   },
   productInfoGlass: {
-    padding: 12,
+    flex: 1,
+    paddingVertical: 8,
+    paddingRight: 12,
+    justifyContent: 'center',
   },
   productNameGlass: {
     fontSize: 14,
     fontWeight: '600',
     color: '#FFFFFF',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   productDescriptionGlass: {
     fontSize: 11,
     color: 'rgba(255, 255, 255, 0.5)',
-    marginBottom: 8,
+    marginBottom: 4,
     lineHeight: 14,
   },
   productFooterGlass: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 8,
+    marginTop: 4,
   },
   currencyGlass: {
     fontSize: 11,
@@ -5439,13 +5447,13 @@ const styles = StyleSheet.create({
     color: '#FF7043',
   },
   addButtonGlass: {
-    width: 32,
-    height: 32,
+    width: 28,
+    height: 28,
   },
   addButtonGradientGlass: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
