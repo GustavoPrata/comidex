@@ -3149,7 +3149,7 @@ function MainApp() {
               handleCallWaiter();
             }}
           >
-            <Bell size={22} color="#C9A86C" strokeWidth={2} />
+            <Bell size={22} color="#FF7043" strokeWidth={2} />
             <View style={styles.goomerActionTextContainer}>
               <Text style={styles.goomerActionText}>CHAMAR</Text>
               <Text style={styles.goomerActionText}>GARÇOM</Text>
@@ -3168,7 +3168,7 @@ function MainApp() {
               }).start();
             }}
           >
-            <Receipt size={22} color="#C9A86C" strokeWidth={2} />
+            <Receipt size={22} color="#FF7043" strokeWidth={2} />
             <View style={styles.goomerActionTextContainer}>
               <Text style={styles.goomerActionText}>MINHA</Text>
               <Text style={styles.goomerActionText}>CONTA</Text>
@@ -3190,7 +3190,7 @@ function MainApp() {
             }}
           >
             <View style={styles.goomerCartIconWrap}>
-              <ShoppingCart size={22} color="#C9A86C" strokeWidth={2} />
+              <ShoppingCart size={22} color="#FF7043" strokeWidth={2} />
               {cart.length > 0 && (
                 <View style={styles.goomerCartBadge}>
                   <Text style={styles.goomerCartBadgeText}>
@@ -5229,7 +5229,7 @@ const styles = StyleSheet.create({
   goomerHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#C9A86C',
+    backgroundColor: '#FF7043',
     paddingHorizontal: 8,
     paddingVertical: 8,
     gap: 8,
@@ -5237,7 +5237,7 @@ const styles = StyleSheet.create({
   goomerHeaderBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E8DCC8',
+    backgroundColor: '#FFE0D6',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 8,
@@ -5251,7 +5251,7 @@ const styles = StyleSheet.create({
   goomerTableBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#E8DCC8',
+    backgroundColor: '#FFE0D6',
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
@@ -5280,7 +5280,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   goomerActionText: {
-    color: '#C9A86C',
+    color: '#FF7043',
     fontSize: 11,
     fontWeight: '600',
     lineHeight: 14,
