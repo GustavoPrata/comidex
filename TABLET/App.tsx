@@ -1582,8 +1582,12 @@ function MainApp() {
                   }}>
                     <Image 
                       source={require('./assets/logo232.png')}
-                      style={{ width: 120, height: 120 }}
-                      resizeMode="contain"
+                      style={{ 
+                        width: 120, 
+                        height: 120,
+                        borderRadius: 60,
+                      }}
+                      resizeMode="cover"
                     />
                   </View>
                   
@@ -2211,8 +2215,9 @@ function MainApp() {
                 style={{ 
                   width: 56, 
                   height: 56,
+                  borderRadius: 28,
                 }}
-                resizeMode="contain"
+                resizeMode="cover"
               />
             </View>
 
@@ -2581,8 +2586,8 @@ function MainApp() {
                 <View style={styles.rodizioModalHeader}>
                   <Image 
                     source={require('./assets/logo232.png')}
-                    style={{ width: 55, height: 55, marginRight: 12 }}
-                    resizeMode="contain"
+                    style={{ width: 55, height: 55, marginRight: 12, borderRadius: 27.5 }}
+                    resizeMode="cover"
                   />
                   <View>
                     <Text style={styles.rodizioModalTitle}>
@@ -2876,8 +2881,8 @@ function MainApp() {
             <View style={{ alignItems: 'center', marginBottom: 15 }}>
               <Image 
                 source={require('./assets/logo232.png')}
-                style={{ width: 60, height: 60 }}
-                resizeMode="contain"
+                style={{ width: 60, height: 60, borderRadius: 30 }}
+                resizeMode="cover"
               />
             </View>
             <Text style={styles.observationModalTitle}>
@@ -2940,8 +2945,8 @@ function MainApp() {
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
               <Image 
                 source={require('./assets/logo232.png')}
-                style={{ width: 45, height: 45 }}
-                resizeMode="contain"
+                style={{ width: 45, height: 45, borderRadius: 22.5 }}
+                resizeMode="cover"
               />
               <Text style={styles.cartTitle}>Carrinho</Text>
             </View>
