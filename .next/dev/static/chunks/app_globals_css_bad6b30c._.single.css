@@ -2429,15 +2429,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   background-color: #713f124d;
 }
 
-.bg-zinc-700 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(63 63 70 / var(--tw-bg-opacity, 1));
-}
-
-.bg-zinc-700\/50 {
-  background-color: #3f3f4680;
-}
-
 .bg-zinc-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(39 39 42 / var(--tw-bg-opacity, 1));
@@ -4716,6 +4707,10 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .dark\:bg-gray-700:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:bg-gray-700\/50:is(.dark *) {
+  background-color: #37415180;
 }
 
 .dark\:bg-gray-800:is(.dark *) {

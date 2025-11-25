@@ -148,7 +148,7 @@ export default function TabletSettingsPage() {
               <div className="p-2 rounded-lg bg-orange-500">
                 <Tablet className="h-5 w-5 text-white" />
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configurações do Tablet</h1>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Tela do Tablet</h1>
             </div>
             <div className="flex items-center gap-3">
               <Button variant="outline" onClick={loadSettings} disabled={isLoading} className="rounded-full">
@@ -175,21 +175,21 @@ export default function TabletSettingsPage() {
 
       {/* Content */}
       <div className="m-4 grid gap-6 md:grid-cols-2">
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100">
               <Settings className="w-5 h-5 text-orange-500" />
               Controle de Brilho
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600 dark:text-gray-400">
               Configure o comportamento do brilho automático nos tablets
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label className="text-white">Ativar controle de brilho</Label>
-                <p className="text-sm text-gray-400">
+                <Label className="text-gray-900 dark:text-gray-100">Ativar controle de brilho</Label>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Diminui o brilho automaticamente após inatividade
                 </p>
               </div>
@@ -201,8 +201,8 @@ export default function TabletSettingsPage() {
 
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
-                <Label className="text-white">Toque para acordar</Label>
-                <p className="text-sm text-gray-400">
+                <Label className="text-gray-900 dark:text-gray-100">Toque para acordar</Label>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Qualquer toque na tela restaura o brilho
                 </p>
               </div>
@@ -214,21 +214,21 @@ export default function TabletSettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100">
               <Clock className="w-5 h-5 text-orange-500" />
               Tempo de Inatividade
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600 dark:text-gray-400">
               Tempo até o brilho diminuir automaticamente
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="text-white">Tempo: {formatTime(idleTimeoutSeconds)}</Label>
-                <span className="text-sm text-gray-400">{idleTimeoutSeconds}s</span>
+                <Label className="text-gray-900 dark:text-gray-100">Tempo: {formatTime(idleTimeoutSeconds)}</Label>
+                <span className="text-sm text-gray-600 dark:text-gray-400">{idleTimeoutSeconds}s</span>
               </div>
               <Slider
                 value={[idleTimeoutSeconds]}
@@ -238,7 +238,7 @@ export default function TabletSettingsPage() {
                 step={30}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-500">
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-500">
                 <span>30s</span>
                 <span>5min</span>
                 <span>10min</span>
@@ -247,20 +247,20 @@ export default function TabletSettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100">
               <Sun className="w-5 h-5 text-orange-500" />
               Brilho Padrão
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600 dark:text-gray-400">
               Nível de brilho durante uso normal
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="text-white">Brilho: {Math.round(defaultBrightness * 100)}%</Label>
+                <Label className="text-gray-900 dark:text-gray-100">Brilho: {Math.round(defaultBrightness * 100)}%</Label>
                 <Sun className="w-5 h-5 text-yellow-400" />
               </div>
               <Slider
@@ -271,7 +271,7 @@ export default function TabletSettingsPage() {
                 step={5}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-500">
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-500">
                 <span>20%</span>
                 <span>60%</span>
                 <span>100%</span>
@@ -280,20 +280,20 @@ export default function TabletSettingsPage() {
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100">
               <Moon className="w-5 h-5 text-orange-500" />
               Brilho Reduzido
             </CardTitle>
-            <CardDescription>
+            <CardDescription className="text-gray-600 dark:text-gray-400">
               Nível de brilho quando o tablet está inativo
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <Label className="text-white">Brilho: {Math.round(dimBrightness * 100)}%</Label>
+                <Label className="text-gray-900 dark:text-gray-100">Brilho: {Math.round(dimBrightness * 100)}%</Label>
                 <Moon className="w-5 h-5 text-blue-400" />
               </div>
               <Slider
@@ -304,7 +304,7 @@ export default function TabletSettingsPage() {
                 step={5}
                 className="w-full"
               />
-              <div className="flex justify-between text-xs text-gray-500">
+              <div className="flex justify-between text-xs text-gray-500 dark:text-gray-500">
                 <span>5%</span>
                 <span>25%</span>
                 <span>50%</span>
@@ -315,47 +315,47 @@ export default function TabletSettingsPage() {
       </div>
 
       <div className="m-4">
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100">
               <Hand className="w-5 h-5 text-orange-500" />
               Como Funciona
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid gap-4 md:grid-cols-3">
-              <div className="p-4 bg-zinc-800 rounded-lg">
+              <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
                     <span className="text-orange-500 font-bold">1</span>
                   </div>
-                  <h3 className="font-medium text-white">Inatividade</h3>
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100">Inatividade</h3>
                 </div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   Após o tempo configurado sem interação, o brilho do tablet é reduzido automaticamente.
                 </p>
               </div>
 
-              <div className="p-4 bg-zinc-800 rounded-lg">
+              <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
                     <span className="text-orange-500 font-bold">2</span>
                   </div>
-                  <h3 className="font-medium text-white">Toque para Acordar</h3>
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100">Toque para Acordar</h3>
                 </div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   O cliente pode tocar em qualquer lugar da tela para restaurar o brilho normal.
                 </p>
               </div>
 
-              <div className="p-4 bg-zinc-800 rounded-lg">
+              <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-8 h-8 bg-orange-500/20 rounded-full flex items-center justify-center">
                     <span className="text-orange-500 font-bold">3</span>
                   </div>
-                  <h3 className="font-medium text-white">Sincronização</h3>
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100">Sincronização</h3>
                 </div>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   As configurações são aplicadas em todos os tablets automaticamente ao salvar.
                 </p>
               </div>

@@ -267,80 +267,80 @@ export default function TabletsPage() {
         
         {/* Stats Cards */}
         <div className="grid grid-cols-2 md:grid-cols-6 gap-3">
-          <Card className="bg-zinc-900 border-zinc-800">
+          <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-green-500/20">
                   <Signal className="h-4 w-4 text-green-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Online</p>
-                  <p className="text-xl font-bold text-white">{onlineCount}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Online</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">{onlineCount}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-zinc-900 border-zinc-800">
+          <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-red-500/20">
                   <WifiOff className="h-4 w-4 text-red-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Offline</p>
-                  <p className="text-xl font-bold text-white">{offlineCount}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Offline</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">{offlineCount}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-zinc-900 border-zinc-800">
+          <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-orange-500/20">
                   <Tablet className="h-4 w-4 text-orange-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Total</p>
-                  <p className="text-xl font-bold text-white">{tablets.length}/{maxTablets}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Total</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">{tablets.length}/{maxTablets}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-zinc-900 border-zinc-800">
+          <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-yellow-500/20">
                   <BatteryLow className="h-4 w-4 text-yellow-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Bateria Baixa</p>
-                  <p className="text-xl font-bold text-white">{lowBatteryCount}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Bateria Baixa</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">{lowBatteryCount}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-zinc-900 border-zinc-800">
+          <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-blue-500/20">
                   <BatteryCharging className="h-4 w-4 text-blue-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Carregando</p>
-                  <p className="text-xl font-bold text-white">{chargingCount}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Carregando</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">{chargingCount}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-zinc-900 border-zinc-800">
+          <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
             <CardContent className="p-3">
               <div className="flex items-center gap-2">
                 <div className="p-1.5 rounded-lg bg-purple-500/20">
                   <Settings className="h-4 w-4 text-purple-500" />
                 </div>
                 <div>
-                  <p className="text-xs text-gray-400">Limite</p>
-                  <p className="text-xl font-bold text-white">{maxTablets}</p>
+                  <p className="text-xs text-gray-600 dark:text-gray-400">Limite</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-gray-100">{maxTablets}</p>
                 </div>
               </div>
             </CardContent>
@@ -348,13 +348,13 @@ export default function TabletsPage() {
         </div>
 
         {/* Bulk Actions */}
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-white text-base">
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100 text-base">
               <Zap className="w-4 h-4 text-orange-500" />
               Ações em Massa
             </CardTitle>
-            <CardDescription className="text-sm">
+            <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
               Envie comandos para todos os tablets de uma vez
             </CardDescription>
           </CardHeader>
@@ -429,9 +429,9 @@ export default function TabletsPage() {
         </Card>
 
         {/* Tablets List */}
-        <Card className="bg-zinc-900 border-zinc-800">
+        <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
           <CardHeader className="pb-3">
-            <CardTitle className="flex items-center gap-2 text-white text-base">
+            <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100 text-base">
               <Monitor className="w-4 h-4 text-orange-500" />
               Dispositivos ({tablets.length})
             </CardTitle>
@@ -439,8 +439,8 @@ export default function TabletsPage() {
           <CardContent>
             {tablets.length === 0 ? (
               <div className="text-center py-8">
-                <Tablet className="w-12 h-12 mx-auto mb-3 text-gray-600" />
-                <p className="text-gray-400">Nenhum tablet registrado ainda</p>
+                <Tablet className="w-12 h-12 mx-auto mb-3 text-gray-400 dark:text-gray-600" />
+                <p className="text-gray-600 dark:text-gray-400">Nenhum tablet registrado ainda</p>
                 <p className="text-sm text-gray-500 mt-1">
                   Os tablets serão registrados automaticamente ao se conectarem
                 </p>
@@ -453,11 +453,11 @@ export default function TabletsPage() {
                   return (
                     <div
                       key={tablet.id}
-                      className="flex items-center justify-between p-3 rounded-lg border bg-zinc-800 border-zinc-700"
+                      className="flex items-center justify-between p-3 rounded-lg border bg-gray-50 dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                     >
                       <div className="flex items-center gap-3">
                         {/* Status indicator */}
-                        <div className={`relative p-2 rounded-lg ${online ? 'bg-green-500/20' : 'bg-zinc-700'}`}>
+                        <div className={`relative p-2 rounded-lg ${online ? 'bg-green-500/20' : 'bg-gray-200 dark:bg-gray-700'}`}>
                           {online ? (
                             <Wifi className="w-4 h-4 text-green-500" />
                           ) : (
@@ -471,7 +471,7 @@ export default function TabletsPage() {
                         {/* Tablet info */}
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <p className="font-medium text-white truncate">{tablet.name}</p>
+                            <p className="font-medium text-gray-900 dark:text-gray-100 truncate">{tablet.name}</p>
                             <Badge 
                               variant="outline" 
                               className={`text-xs ${online 
@@ -482,7 +482,7 @@ export default function TabletsPage() {
                               {online ? 'Online' : 'Offline'}
                             </Badge>
                             {tablet.app_version && (
-                              <Badge variant="secondary" className="text-xs bg-zinc-700">
+                              <Badge variant="secondary" className="text-xs bg-gray-200 dark:bg-gray-700">
                                 v{tablet.app_version}
                               </Badge>
                             )}
@@ -501,7 +501,7 @@ export default function TabletsPage() {
                         {/* Battery */}
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <div className={`flex items-center gap-1 px-2 py-1 rounded bg-zinc-700/50 ${getBatteryColor(tablet.battery_level)}`}>
+                            <div className={`flex items-center gap-1 px-2 py-1 rounded bg-gray-200 dark:bg-gray-700/50 ${getBatteryColor(tablet.battery_level)}`}>
                               {getBatteryIcon(tablet.battery_level, tablet.is_charging)}
                               <span className="text-sm font-medium">
                                 {tablet.battery_level !== null ? `${tablet.battery_level}%` : '--'}
@@ -525,7 +525,7 @@ export default function TabletsPage() {
                               <MoreVertical className="w-4 h-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="bg-zinc-800 border-zinc-700">
+                          <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                             <DropdownMenuItem 
                               onClick={(e) => {
                                 e.stopPropagation()
@@ -548,7 +548,7 @@ export default function TabletsPage() {
                               <Settings className="w-4 h-4 mr-2" />
                               Sincronizar Config
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-zinc-700" />
+                            <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
                             <DropdownMenuItem 
                               onClick={(e) => {
                                 e.stopPropagation()
@@ -560,7 +560,7 @@ export default function TabletsPage() {
                               <Power className="w-4 h-4 mr-2" />
                               Fechar App
                             </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-zinc-700" />
+                            <DropdownMenuSeparator className="bg-gray-200 dark:bg-gray-700" />
                             <DropdownMenuItem 
                               onClick={(e) => {
                                 e.stopPropagation()
@@ -584,9 +584,9 @@ export default function TabletsPage() {
 
         {/* Recent Commands */}
         {recentCommands.length > 0 && (
-          <Card className="bg-zinc-900 border-zinc-800">
+          <Card className="bg-white dark:bg-gray-900/95 border-gray-200 dark:border-gray-700/60 shadow-sm">
             <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-white text-base">
+              <CardTitle className="flex items-center gap-2 text-gray-900 dark:text-gray-100 text-base">
                 <Send className="w-4 h-4 text-orange-500" />
                 Comandos Recentes
               </CardTitle>
@@ -596,7 +596,7 @@ export default function TabletsPage() {
                 {recentCommands.slice(0, 5).map((cmd) => (
                   <div 
                     key={cmd.id}
-                    className="flex items-center justify-between p-2 bg-zinc-800 rounded-lg text-sm"
+                    className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded-lg text-sm"
                   >
                     <div className="flex items-center gap-2">
                       <Badge 
@@ -609,8 +609,8 @@ export default function TabletsPage() {
                       >
                         {cmd.status === 'executed' ? 'Executado' : 'Pendente'}
                       </Badge>
-                      <span className="text-white font-medium">{cmd.command}</span>
-                      <span className="text-gray-400">
+                      <span className="text-gray-900 dark:text-gray-100 font-medium">{cmd.command}</span>
+                      <span className="text-gray-600 dark:text-gray-400">
                         {cmd.target_all ? '(Todos)' : `(${cmd.device_id?.substring(0, 15)}...)`}
                       </span>
                     </div>
