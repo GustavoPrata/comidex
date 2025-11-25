@@ -3043,9 +3043,6 @@ function MainApp() {
         <View style={styles.mainContentGlass}>
           {/* Left Sidebar - Groups */}
           <View style={styles.leftSidebarGlass}>
-            <View style={styles.sidebarHeader}>
-              <Text style={styles.sidebarTitle}>Grupos</Text>
-            </View>
             <ScrollView 
               showsVerticalScrollIndicator={false}
               style={styles.groupsList}
