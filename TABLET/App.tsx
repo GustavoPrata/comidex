@@ -2940,7 +2940,7 @@ function MainApp() {
         {/* 3-Column Main Content Area - Goomer Style with Apple Glass */}
         <View style={styles.mainContentGlass}>
           {/* Left Sidebar - Groups */}
-          <BlurView intensity={75} tint="dark" style={styles.leftSidebarGlass}>
+          <View style={styles.leftSidebarGlass}>
             <View style={styles.sidebarHeader}>
               <Text style={styles.sidebarTitle}>Grupos</Text>
             </View>
@@ -2951,12 +2951,12 @@ function MainApp() {
             >
               {groups.length > 0 ? (
                 groups.map((group) => (
-                  <TouchableOpacity
+                  <Pressable
                     key={group.id}
-                    activeOpacity={0.6}
-                    style={[
+                    style={({ pressed }) => [
                       styles.groupItemGlass,
-                      selectedGroup?.id === group.id && styles.groupItemActiveGlass
+                      selectedGroup?.id === group.id && styles.groupItemActiveGlass,
+                      pressed && { opacity: 0.7, backgroundColor: 'rgba(255, 112, 67, 0.2)' }
                     ]}
                     onPress={() => {
                       console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
@@ -2986,7 +2986,7 @@ function MainApp() {
                     {selectedGroup?.id === group.id && (
                       <View style={styles.groupActiveIndicator} />
                     )}
-                  </TouchableOpacity>
+                  </Pressable>
                 ))
               ) : (
                 <View style={styles.loadingCategoriesGlass}>
@@ -2995,7 +2995,7 @@ function MainApp() {
                 </View>
               )}
             </ScrollView>
-          </BlurView>
+          </View>
 
           {/* Center Column - Categories */}
           <View style={styles.centerColumnGlass}>
@@ -5083,6 +5083,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   },
   sidebarHeader: {
     paddingHorizontal: 20,
