@@ -4269,11 +4269,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
   color: rgb(147 197 253 / var(--tw-text-opacity, 1));
 }
 
-.focus\:text-green-300:focus {
-  --tw-text-opacity: 1;
-  color: rgb(134 239 172 / var(--tw-text-opacity, 1));
-}
-
 .focus\:text-orange-300:focus {
   --tw-text-opacity: 1;
   color: rgb(253 186 116 / var(--tw-text-opacity, 1));
@@ -4287,11 +4282,6 @@ input:is(.dark *), textarea:is(.dark *), select:is(.dark *) {
 .focus\:text-red-300:focus {
   --tw-text-opacity: 1;
   color: rgb(252 165 165 / var(--tw-text-opacity, 1));
-}
-
-.focus\:text-yellow-300:focus {
-  --tw-text-opacity: 1;
-  color: rgb(253 224 71 / var(--tw-text-opacity, 1));
 }
 
 .focus\:outline-none:focus {

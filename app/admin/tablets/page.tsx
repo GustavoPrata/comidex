@@ -22,8 +22,6 @@ import {
   Power,
   RotateCcw,
   Settings,
-  Lock,
-  Unlock,
   Send,
   CheckCircle2,
   XCircle,
@@ -386,28 +384,6 @@ export default function TabletsPage() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button 
-                    variant="default" 
-                    size="sm"
-                    onClick={() => sendCommand('lock', undefined, true)}
-                    disabled={sendingCommand === 'all_lock'}
-                    className="bg-yellow-600 hover:bg-yellow-700"
-                  >
-                    {sendingCommand === 'all_lock' ? (
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    ) : (
-                      <Lock className="w-4 h-4 mr-2" />
-                    )}
-                    Bloquear Todos
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Ativa o modo kiosk em todos os tablets</p>
-                </TooltipContent>
-              </Tooltip>
-              
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button 
                     variant="destructive" 
                     size="sm"
                     onClick={() => sendCommand('exit_app', undefined, true)}
@@ -548,29 +524,6 @@ export default function TabletsPage() {
                             >
                               <Settings className="w-4 h-4 mr-2" />
                               Sincronizar Config
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-zinc-700" />
-                            <DropdownMenuItem 
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                sendCommand('lock', tablet.device_id)
-                              }}
-                              className="text-yellow-400 focus:text-yellow-300"
-                              disabled={!online}
-                            >
-                              <Lock className="w-4 h-4 mr-2" />
-                              Bloquear (Kiosk)
-                            </DropdownMenuItem>
-                            <DropdownMenuItem 
-                              onClick={(e) => {
-                                e.stopPropagation()
-                                sendCommand('unlock', tablet.device_id)
-                              }}
-                              className="text-green-400 focus:text-green-300"
-                              disabled={!online}
-                            >
-                              <Unlock className="w-4 h-4 mr-2" />
-                              Desbloquear
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-zinc-700" />
                             <DropdownMenuItem 
