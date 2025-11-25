@@ -1812,44 +1812,73 @@ function MainApp() {
   };
 
   // Organiza produtos por categoria com headers
-  const getProductsWithHeaders = () => {
-    const filtered = getFilteredProducts();
-    
-    // Se não tem produtos ou categorias, retorna vazio
-    if (!filtered || filtered.length === 0 || !categories || categories.length === 0) {
+  const getProductsWithHeaders = (): (Product | { isHeader: true; categoryId: number; categoryName: string })[] => {
+    try {
+      const filtered = getFilteredProducts();
+      
+      // Se não tem produtos ou categorias, retorna vazio
+      if (!filtered || !Array.isArray(filtered) || filtered.length === 0) {
+        return [];
+      }
+      
+      if (!categories || !Array.isArray(categories) || categories.length === 0) {
+        return filtered; // Retorna produtos sem headers se não há categorias
+      }
+      
+      const result: (Product | { isHeader: true; categoryId: number; categoryName: string })[] = [];
+      
+      // Agrupa por categoria
+      const grouped: { [key: number]: Product[] } = {};
+      for (const product of filtered) {
+        if (product && product.category_id != null) {
+          const catId = product.category_id;
+          if (!grouped[catId]) {
+            grouped[catId] = [];
+          }
+          grouped[catId].push(product);
+        }
+      }
+
+      // Ordena categorias pela ordem em que aparecem
+      const categoryOrder = categories.map(c => c.id);
+      const groupedKeys = Object.keys(grouped);
+      
+      if (groupedKeys.length === 0) {
+        return [];
+      }
+      
+      const sortedCategoryIds = groupedKeys
+        .map(Number)
+        .filter(id => !isNaN(id))
+        .sort((a, b) => {
+          const indexA = categoryOrder.indexOf(a);
+          const indexB = categoryOrder.indexOf(b);
+          return (indexA === -1 ? 999 : indexA) - (indexB === -1 ? 999 : indexB);
+        });
+
+      // Monta lista com headers
+      for (const catId of sortedCategoryIds) {
+        const cat = categories.find(c => c.id === catId);
+        const categoryProducts = grouped[catId];
+        
+        if (categoryProducts && categoryProducts.length > 0) {
+          result.push({
+            isHeader: true,
+            categoryId: catId,
+            categoryName: cat?.name || 'Outros'
+          });
+          
+          for (const product of categoryProducts) {
+            result.push(product);
+          }
+        }
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Erro em getProductsWithHeaders:', error);
       return [];
     }
-    
-    const result: (Product | { isHeader: true; categoryId: number; categoryName: string })[] = [];
-    
-    // Agrupa por categoria
-    const grouped: { [key: number]: Product[] } = {};
-    filtered.forEach(product => {
-      const catId = product.category_id;
-      if (!grouped[catId]) {
-        grouped[catId] = [];
-      }
-      grouped[catId].push(product);
-    });
-
-    // Ordena categorias pela ordem em que aparecem
-    const categoryOrder = categories.map(c => c.id);
-    const sortedCategoryIds = Object.keys(grouped)
-      .map(Number)
-      .sort((a, b) => categoryOrder.indexOf(a) - categoryOrder.indexOf(b));
-
-    // Monta lista com headers
-    sortedCategoryIds.forEach(catId => {
-      const cat = categories.find(c => c.id === catId);
-      result.push({
-        isHeader: true,
-        categoryId: catId,
-        categoryName: cat?.name || 'Outros'
-      });
-      result.push(...grouped[catId]);
-    });
-
-    return result;
   };
 
   // Scroll para categoria quando clicada
