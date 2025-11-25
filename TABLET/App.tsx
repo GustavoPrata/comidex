@@ -3490,7 +3490,7 @@ function MainApp() {
                 resetIdleTimer();
               }}
             >
-              <X size={18} color="#FF5722" strokeWidth={2.5} />
+              <X size={18} color="#FF5722" strokeWidth={3.5} />
             </TouchableOpacity>
             
             {/* Add to Cart Button with concave left edge */}
