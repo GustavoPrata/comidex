@@ -27,7 +27,35 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
 import { useKeepAwake } from 'expo-keep-awake';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { config } from './config';
+
+const DEVICE_ID_KEY = '@tablet_device_id';
+
+const generateUniqueDeviceId = (): string => {
+  const timestamp = Date.now().toString(36);
+  const randomPart1 = Math.random().toString(36).substring(2, 10);
+  const randomPart2 = Math.random().toString(36).substring(2, 10);
+  return `tablet_${timestamp}_${randomPart1}${randomPart2}`;
+};
+
+const getOrCreateDeviceId = async (): Promise<string> => {
+  try {
+    const existingId = await AsyncStorage.getItem(DEVICE_ID_KEY);
+    if (existingId) {
+      console.log('📱 Device ID carregado do armazenamento:', existingId);
+      return existingId;
+    }
+    
+    const newId = generateUniqueDeviceId();
+    await AsyncStorage.setItem(DEVICE_ID_KEY, newId);
+    console.log('📱 Novo Device ID gerado e salvo:', newId);
+    return newId;
+  } catch (error) {
+    console.error('Erro ao obter/criar device ID:', error);
+    return generateUniqueDeviceId();
+  }
+};
 // Import Lucide icons para ter os mesmos ícones do admin
 import {
   Crown,
@@ -235,9 +263,8 @@ function MainApp() {
   const [loading, setLoading] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingProducts, setLoadingProducts] = useState(true);
-  const [deviceId] = useState<string>(
-    "tablet_" + Math.random().toString(36).substring(7)
-  );
+  const [deviceId, setDeviceId] = useState<string>("");
+  const [deviceIdLoaded, setDeviceIdLoaded] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
   
@@ -572,8 +599,20 @@ function MainApp() {
     });
   }, [resetIdleTimer]);
 
-  // STEP 1: Initialize connection check FIRST (before anything else)
+  // STEP 0: Load persistent device ID on app start
   useEffect(() => {
+    const initDeviceId = async () => {
+      const id = await getOrCreateDeviceId();
+      setDeviceId(id);
+      setDeviceIdLoaded(true);
+    };
+    initDeviceId();
+  }, []);
+
+  // STEP 1: Initialize connection check AFTER device ID is loaded
+  useEffect(() => {
+    if (!deviceIdLoaded || !deviceId) return; // Wait for device ID
+    
     // Initialize brightness control
     const initBrightness = async () => {
       try {
@@ -593,7 +632,7 @@ function MainApp() {
       const backHandler = BackHandler.addEventListener('hardwareBackPress', () => true);
       return () => backHandler.remove();
     }
-  }, []);
+  }, [deviceIdLoaded, deviceId]);
 
   // STEP 2: Only load data AFTER connections are verified
   useEffect(() => {
