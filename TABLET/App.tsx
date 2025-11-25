@@ -1814,6 +1814,12 @@ function MainApp() {
   // Organiza produtos por categoria com headers
   const getProductsWithHeaders = () => {
     const filtered = getFilteredProducts();
+    
+    // Se não tem produtos ou categorias, retorna vazio
+    if (!filtered || filtered.length === 0 || !categories || categories.length === 0) {
+      return [];
+    }
+    
     const result: (Product | { isHeader: true; categoryId: number; categoryName: string })[] = [];
     
     // Agrupa por categoria
@@ -1861,6 +1867,9 @@ function MainApp() {
     const offsetY = event.nativeEvent.contentOffset.y;
     const items = getProductsWithHeaders();
     
+    // Se não tem items, não faz nada
+    if (!items || items.length === 0) return;
+    
     // Encontra qual header está mais próximo do topo
     let currentCategoryId = selectedCategory;
     let accumulatedHeight = 0;
@@ -1878,7 +1887,7 @@ function MainApp() {
       }
     }
     
-    if (currentCategoryId !== selectedCategory) {
+    if (currentCategoryId && currentCategoryId !== selectedCategory) {
       setSelectedCategory(currentCategoryId);
     }
   };
