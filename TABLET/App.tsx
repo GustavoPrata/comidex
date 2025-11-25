@@ -5229,7 +5229,7 @@ const styles = StyleSheet.create({
   goomerHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1a1a1a',
+    backgroundColor: '#000000',
     paddingHorizontal: 12,
     paddingVertical: 10,
     gap: 10,
