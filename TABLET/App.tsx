@@ -3584,25 +3584,25 @@ function MainApp() {
           </Pressable>
           
           {imageModalProduct && (
-            <View style={styles.imageModalContent}>
+            <>
               {imageModalProduct.image_url ? (
                 <Image 
                   source={{ uri: imageModalProduct.image_url.startsWith('http') ? imageModalProduct.image_url : `${config.BASE_URL}${imageModalProduct.image_url}` }} 
                   style={styles.imageModalImage}
-                  resizeMode="contain"
+                  resizeMode="cover"
                 />
               ) : (
                 <View style={styles.imageModalPlaceholder}>
                   <IconComponent name="sushi" size={80} color="rgba(255, 255, 255, 0.3)" />
                 </View>
               )}
-              <View style={styles.imageModalInfo}>
-                <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
+              <View style={styles.imageModalInfoBar}>
+                <Text style={styles.imageModalTitle}>{imageModalProduct.name.toUpperCase()}</Text>
                 {imageModalProduct.description && (
                   <Text style={styles.imageModalDescription}>{imageModalProduct.description}</Text>
                 )}
               </View>
-            </View>
+            </>
           )}
         </View>
       </Modal>
@@ -5860,42 +5860,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageModalPlaceholder: {
-    width: width * 0.85,
-    height: height * 0.55,
+    width: '100%',
+    height: height * 0.75,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 12,
-  },
-  imageModalContent: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: 60,
-    paddingBottom: 100,
   },
   imageModalImage: {
-    width: width * 0.85,
-    height: height * 0.55,
+    width: '100%',
+    height: height * 0.75,
   },
-  imageModalInfo: {
+  imageModalInfoBar: {
     position: 'absolute',
-    bottom: 40,
-    left: 20,
-    right: 20,
-    backgroundColor: 'transparent',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    paddingVertical: 20,
+    paddingHorizontal: 25,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 40,
   },
   imageModalTitle: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 8,
+    flexShrink: 0,
   },
   imageModalDescription: {
-    fontSize: 15,
+    fontSize: 14,
     color: 'rgba(255, 255, 255, 0.8)',
-    lineHeight: 22,
+    lineHeight: 20,
+    flex: 1,
   },
   cartModal: {
     position: "absolute",
