@@ -3102,17 +3102,6 @@ function MainApp() {
                         </View>
                       )}
                       
-                      {/* Premium Badge */}
-                      {item.is_premium && (
-                        <LinearGradient
-                          colors={['#FFD700', '#FFA000']}
-                          style={styles.premiumBadgeGlass}
-                        >
-                          <IconComponent name="star" size={10} color="#FFFFFF" />
-                          <Text style={styles.premiumTextGlass}>PREMIUM</Text>
-                        </LinearGradient>
-                      )}
-                      
                       {/* Product Info - Right Side */}
                       <View style={styles.productInfoGlass}>
                         <Text style={styles.productNameGlass} numberOfLines={2}>
@@ -3127,17 +3116,12 @@ function MainApp() {
                         
                         {/* Price Section */}
                         <View style={styles.productFooterGlass}>
-                          {parseFloat(item.price) > 0 ? (
+                          {parseFloat(item.price) > 0 && (
                             <View style={styles.priceContainerGlass}>
                               <Text style={styles.currencyGlass}>R$</Text>
                               <Text style={styles.priceValueGlass}>
                                 {parseFloat(item.price).toFixed(2)}
                               </Text>
-                            </View>
-                          ) : (
-                            <View style={styles.rodizioTagGlass}>
-                              <IconComponent name="fire" size={12} color="#FF7043" />
-                              <Text style={styles.rodizioTextGlass}>Rodízio</Text>
                             </View>
                           )}
                           
