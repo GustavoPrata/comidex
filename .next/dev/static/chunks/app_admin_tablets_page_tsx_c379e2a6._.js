@@ -6,7 +6,7 @@
   "static/chunks/node_modules_@supabase_storage-js_dist_module_434fd12f._.js",
   "static/chunks/node_modules_@supabase_auth-js_dist_module_e6c70351._.js",
   "static/chunks/node_modules_@radix-ui_react-icons_dist_react-icons_esm_ed175a16.js",
-  "static/chunks/node_modules_deee81dd._.js"
+  "static/chunks/node_modules_50277a09._.js"
 ],
     source: "dynamic"
 });

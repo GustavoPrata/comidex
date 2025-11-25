@@ -90,7 +90,6 @@ export default function TabletsPage() {
   const [maxTablets, setMaxTablets] = useState(20)
   const [deleteTablet, setDeleteTablet] = useState<RegisteredTablet | null>(null)
   const [sendingCommand, setSendingCommand] = useState<string | null>(null)
-  const [selectedTablets, setSelectedTablets] = useState<Set<number>>(new Set())
   const supabase = createClient()
 
   useEffect(() => {
@@ -220,42 +219,6 @@ export default function TabletsPage() {
   const lowBatteryCount = tablets.filter(t => t.battery_level !== null && t.battery_level <= 20).length
   const chargingCount = tablets.filter(t => t.is_charging).length
 
-  const toggleSelectTablet = (id: number) => {
-    setSelectedTablets(prev => {
-      const newSet = new Set(prev)
-      if (newSet.has(id)) {
-        newSet.delete(id)
-      } else {
-        newSet.add(id)
-      }
-      return newSet
-    })
-  }
-
-  const selectAllOnline = () => {
-    const onlineIds = tablets.filter(t => isOnline(t.last_seen)).map(t => t.id)
-    setSelectedTablets(new Set(onlineIds))
-  }
-
-  const clearSelection = () => {
-    setSelectedTablets(new Set())
-  }
-
-  const sendBulkCommand = async (command: string) => {
-    if (selectedTablets.size === 0) {
-      toast.error('Nenhum tablet selecionado')
-      return
-    }
-
-    const selectedDevices = tablets.filter(t => selectedTablets.has(t.id))
-    
-    for (const tablet of selectedDevices) {
-      await sendCommand(command, tablet.device_id)
-    }
-    
-    clearSelection()
-  }
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-[60vh]">
@@ -361,19 +324,6 @@ export default function TabletsPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="bg-zinc-900 border-zinc-800">
-            <CardContent className="p-3">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 rounded-lg bg-purple-500/20">
-                  <CheckCircle2 className="h-4 w-4 text-purple-500" />
-                </div>
-                <div>
-                  <p className="text-xs text-gray-400">Selecionados</p>
-                  <p className="text-xl font-bold text-white">{selectedTablets.size}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Bulk Actions */}
@@ -384,35 +334,11 @@ export default function TabletsPage() {
               Ações em Massa
             </CardTitle>
             <CardDescription className="text-sm">
-              Envie comandos para todos os tablets ou apenas os selecionados
+              Envie comandos para todos os tablets de uma vez
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2">
-              {/* Select buttons */}
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={selectAllOnline}
-                className="border-zinc-700"
-              >
-                <CheckCircle2 className="w-4 h-4 mr-2" />
-                Selecionar Online ({onlineCount})
-              </Button>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={clearSelection}
-                className="border-zinc-700"
-                disabled={selectedTablets.size === 0}
-              >
-                <XCircle className="w-4 h-4 mr-2" />
-                Limpar Seleção
-              </Button>
-              
-              <div className="w-px h-8 bg-zinc-700 mx-2" />
-              
-              {/* Command buttons for ALL */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button 
@@ -500,35 +426,6 @@ export default function TabletsPage() {
                 </TooltipContent>
               </Tooltip>
             </div>
-            
-            {/* Bulk actions for selected */}
-            {selectedTablets.size > 0 && (
-              <div className="mt-4 pt-4 border-t border-zinc-700">
-                <p className="text-sm text-gray-400 mb-2">
-                  Ações para {selectedTablets.size} tablet(s) selecionado(s):
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => sendBulkCommand('reload')}
-                    className="border-blue-500 text-blue-400 hover:bg-blue-500/10"
-                  >
-                    <RotateCcw className="w-4 h-4 mr-2" />
-                    Recarregar Selecionados
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => sendBulkCommand('sync_settings')}
-                    className="border-purple-500 text-purple-400 hover:bg-purple-500/10"
-                  >
-                    <Settings className="w-4 h-4 mr-2" />
-                    Sincronizar Selecionados
-                  </Button>
-                </div>
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -553,28 +450,13 @@ export default function TabletsPage() {
               <div className="space-y-2">
                 {tablets.map((tablet) => {
                   const online = isOnline(tablet.last_seen)
-                  const isSelected = selectedTablets.has(tablet.id)
                   
                   return (
                     <div
                       key={tablet.id}
-                      className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
-                        isSelected 
-                          ? 'bg-orange-500/10 border-orange-500/50' 
-                          : 'bg-zinc-800 border-zinc-700 hover:border-zinc-600'
-                      }`}
-                      onClick={() => toggleSelectTablet(tablet.id)}
+                      className="flex items-center justify-between p-3 rounded-lg border bg-zinc-800 border-zinc-700"
                     >
                       <div className="flex items-center gap-3">
-                        {/* Selection checkbox */}
-                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
-                          isSelected 
-                            ? 'bg-orange-500 border-orange-500' 
-                            : 'border-zinc-600'
-                        }`}>
-                          {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
-                        </div>
-                        
                         {/* Status indicator */}
                         <div className={`relative p-2 rounded-lg ${online ? 'bg-green-500/20' : 'bg-zinc-700'}`}>
                           {online ? (

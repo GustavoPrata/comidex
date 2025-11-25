@@ -890,8 +890,6 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$re
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/lock.js [app-client] (ecmascript) <export default as Lock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2d$open$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Unlock$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/lock-open.js [app-client] (ecmascript) <export default as Unlock>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$send$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Send$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/send.js [app-client] (ecmascript) <export default as Send>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-client] (ecmascript) <export default as CheckCircle2>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-x.js [app-client] (ecmascript) <export default as XCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zap.js [app-client] (ecmascript) <export default as Zap>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$monitor$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Monitor$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/monitor.js [app-client] (ecmascript) <export default as Monitor>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$ellipsis$2d$vertical$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__MoreVertical$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/ellipsis-vertical.js [app-client] (ecmascript) <export default as MoreVertical>");
@@ -921,7 +919,6 @@ function TabletsPage() {
     const [maxTablets, setMaxTablets] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(20);
     const [deleteTablet, setDeleteTablet] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     const [sendingCommand, setSendingCommand] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
-    const [selectedTablets, setSelectedTablets] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(new Set());
     const supabase = (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$client$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createClient"])();
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "TabletsPage.useEffect": ()=>{
@@ -1027,35 +1024,35 @@ function TabletsPage() {
             className: "w-4 h-4 text-gray-500"
         }, void 0, false, {
             fileName: "[project]/app/admin/tablets/page.tsx",
-            lineNumber: 204,
+            lineNumber: 203,
             columnNumber: 32
         }, this);
         if (isCharging) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$battery$2d$charging$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BatteryCharging$3e$__["BatteryCharging"], {
             className: "w-4 h-4 text-green-400"
         }, void 0, false, {
             fileName: "[project]/app/admin/tablets/page.tsx",
-            lineNumber: 205,
+            lineNumber: 204,
             columnNumber: 28
         }, this);
         if (level <= 20) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$battery$2d$low$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BatteryLow$3e$__["BatteryLow"], {
             className: "w-4 h-4 text-red-500"
         }, void 0, false, {
             fileName: "[project]/app/admin/tablets/page.tsx",
-            lineNumber: 206,
+            lineNumber: 205,
             columnNumber: 29
         }, this);
         if (level <= 50) return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$battery$2d$medium$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BatteryMedium$3e$__["BatteryMedium"], {
             className: "w-4 h-4 text-yellow-500"
         }, void 0, false, {
             fileName: "[project]/app/admin/tablets/page.tsx",
-            lineNumber: 207,
+            lineNumber: 206,
             columnNumber: 29
         }, this);
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$battery$2d$full$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BatteryFull$3e$__["BatteryFull"], {
             className: "w-4 h-4 text-green-500"
         }, void 0, false, {
             fileName: "[project]/app/admin/tablets/page.tsx",
-            lineNumber: 208,
+            lineNumber: 207,
             columnNumber: 12
         }, this);
     };
@@ -1069,35 +1066,6 @@ function TabletsPage() {
     const offlineCount = tablets.length - onlineCount;
     const lowBatteryCount = tablets.filter((t)=>t.battery_level !== null && t.battery_level <= 20).length;
     const chargingCount = tablets.filter((t)=>t.is_charging).length;
-    const toggleSelectTablet = (id)=>{
-        setSelectedTablets((prev)=>{
-            const newSet = new Set(prev);
-            if (newSet.has(id)) {
-                newSet.delete(id);
-            } else {
-                newSet.add(id);
-            }
-            return newSet;
-        });
-    };
-    const selectAllOnline = ()=>{
-        const onlineIds = tablets.filter((t)=>isOnline(t.last_seen)).map((t)=>t.id);
-        setSelectedTablets(new Set(onlineIds));
-    };
-    const clearSelection = ()=>{
-        setSelectedTablets(new Set());
-    };
-    const sendBulkCommand = async (command)=>{
-        if (selectedTablets.size === 0) {
-            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["toast"].error('Nenhum tablet selecionado');
-            return;
-        }
-        const selectedDevices = tablets.filter((t)=>selectedTablets.has(t.id));
-        for (const tablet of selectedDevices){
-            await sendCommand(command, tablet.device_id);
-        }
-        clearSelection();
-    };
     if (isLoading) {
         return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "flex items-center justify-center h-[60vh]",
@@ -1108,7 +1076,7 @@ function TabletsPage() {
                         className: "w-8 h-8 animate-spin mx-auto mb-2 text-orange-500"
                     }, void 0, false, {
                         fileName: "[project]/app/admin/tablets/page.tsx",
-                        lineNumber: 263,
+                        lineNumber: 226,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1116,18 +1084,18 @@ function TabletsPage() {
                         children: "Carregando tablets..."
                     }, void 0, false, {
                         fileName: "[project]/app/admin/tablets/page.tsx",
-                        lineNumber: 264,
+                        lineNumber: 227,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/tablets/page.tsx",
-                lineNumber: 262,
+                lineNumber: 225,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/admin/tablets/page.tsx",
-            lineNumber: 261,
+            lineNumber: 224,
             columnNumber: 7
         }, this);
     }
@@ -1147,12 +1115,12 @@ function TabletsPage() {
                                         className: "w-6 h-6 text-orange-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 277,
+                                        lineNumber: 240,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 276,
+                                    lineNumber: 239,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1162,7 +1130,7 @@ function TabletsPage() {
                                             children: "Gerenciamento de Tablets"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 280,
+                                            lineNumber: 243,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1170,19 +1138,19 @@ function TabletsPage() {
                                             children: "Controle remoto e monitoramento da frota"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 281,
+                                            lineNumber: 244,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 279,
+                                    lineNumber: 242,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 275,
+                            lineNumber: 238,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1197,25 +1165,25 @@ function TabletsPage() {
                                         className: `w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 291,
+                                        lineNumber: 254,
                                         columnNumber: 15
                                     }, this),
                                     "Atualizar"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 285,
+                                lineNumber: 248,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 284,
+                            lineNumber: 247,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tablets/page.tsx",
-                    lineNumber: 274,
+                    lineNumber: 237,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1234,12 +1202,12 @@ function TabletsPage() {
                                                 className: "h-4 w-4 text-green-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 303,
+                                                lineNumber: 266,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 302,
+                                            lineNumber: 265,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1249,7 +1217,7 @@ function TabletsPage() {
                                                     children: "Online"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 306,
+                                                    lineNumber: 269,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1257,29 +1225,29 @@ function TabletsPage() {
                                                     children: onlineCount
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 307,
+                                                    lineNumber: 270,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 305,
+                                            lineNumber: 268,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 301,
+                                    lineNumber: 264,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 300,
+                                lineNumber: 263,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 299,
+                            lineNumber: 262,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1295,12 +1263,12 @@ function TabletsPage() {
                                                 className: "h-4 w-4 text-red-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 316,
+                                                lineNumber: 279,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 315,
+                                            lineNumber: 278,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1310,7 +1278,7 @@ function TabletsPage() {
                                                     children: "Offline"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 319,
+                                                    lineNumber: 282,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1318,29 +1286,29 @@ function TabletsPage() {
                                                     children: offlineCount
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 320,
+                                                    lineNumber: 283,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 318,
+                                            lineNumber: 281,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 314,
+                                    lineNumber: 277,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 313,
+                                lineNumber: 276,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 312,
+                            lineNumber: 275,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1356,12 +1324,12 @@ function TabletsPage() {
                                                 className: "h-4 w-4 text-orange-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 329,
+                                                lineNumber: 292,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 328,
+                                            lineNumber: 291,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1371,7 +1339,7 @@ function TabletsPage() {
                                                     children: "Total"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 332,
+                                                    lineNumber: 295,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1383,29 +1351,29 @@ function TabletsPage() {
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 333,
+                                                    lineNumber: 296,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 331,
+                                            lineNumber: 294,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 327,
+                                    lineNumber: 290,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 326,
+                                lineNumber: 289,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 325,
+                            lineNumber: 288,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1421,12 +1389,12 @@ function TabletsPage() {
                                                 className: "h-4 w-4 text-yellow-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 342,
+                                                lineNumber: 305,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 341,
+                                            lineNumber: 304,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1436,7 +1404,7 @@ function TabletsPage() {
                                                     children: "Bateria Baixa"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 345,
+                                                    lineNumber: 308,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1444,29 +1412,29 @@ function TabletsPage() {
                                                     children: lowBatteryCount
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 346,
+                                                    lineNumber: 309,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 344,
+                                            lineNumber: 307,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 340,
+                                    lineNumber: 303,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 339,
+                                lineNumber: 302,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 338,
+                            lineNumber: 301,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1482,12 +1450,12 @@ function TabletsPage() {
                                                 className: "h-4 w-4 text-blue-500"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 355,
+                                                lineNumber: 318,
                                                 columnNumber: 19
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 354,
+                                            lineNumber: 317,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1497,7 +1465,7 @@ function TabletsPage() {
                                                     children: "Carregando"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 358,
+                                                    lineNumber: 321,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1505,96 +1473,35 @@ function TabletsPage() {
                                                     children: chargingCount
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 359,
+                                                    lineNumber: 322,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 357,
+                                            lineNumber: 320,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 353,
+                                    lineNumber: 316,
                                     columnNumber: 15
                                 }, this)
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 352,
+                                lineNumber: 315,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 351,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
-                            className: "bg-zinc-900 border-zinc-800",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                                className: "p-3",
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex items-center gap-2",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "p-1.5 rounded-lg bg-purple-500/20",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                className: "h-4 w-4 text-purple-500"
-                                            }, void 0, false, {
-                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 368,
-                                                columnNumber: 19
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 367,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-xs text-gray-400",
-                                                    children: "Selecionados"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 371,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                    className: "text-xl font-bold text-white",
-                                                    children: selectedTablets.size
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 372,
-                                                    columnNumber: 19
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 370,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 366,
-                                    columnNumber: 15
-                                }, this)
-                            }, void 0, false, {
-                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 365,
-                                columnNumber: 13
-                            }, this)
-                        }, void 0, false, {
-                            fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 364,
+                            lineNumber: 314,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tablets/page.tsx",
-                    lineNumber: 298,
+                    lineNumber: 261,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -1610,390 +1517,268 @@ function TabletsPage() {
                                             className: "w-4 h-4 text-orange-500"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 383,
+                                            lineNumber: 333,
                                             columnNumber: 15
                                         }, this),
                                         "Ações em Massa"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 382,
+                                    lineNumber: 332,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardDescription"], {
                                     className: "text-sm",
-                                    children: "Envie comandos para todos os tablets ou apenas os selecionados"
+                                    children: "Envie comandos para todos os tablets de uma vez"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 386,
+                                    lineNumber: 336,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 381,
+                            lineNumber: 331,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "flex flex-wrap gap-2",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                            variant: "outline",
-                                            size: "sm",
-                                            onClick: selectAllOnline,
-                                            className: "border-zinc-700",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                    className: "w-4 h-4 mr-2"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 399,
-                                                    columnNumber: 17
-                                                }, this),
-                                                "Selecionar Online (",
-                                                onlineCount,
-                                                ")"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 393,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                            variant: "outline",
-                                            size: "sm",
-                                            onClick: clearSelection,
-                                            className: "border-zinc-700",
-                                            disabled: selectedTablets.size === 0,
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__["XCircle"], {
-                                                    className: "w-4 h-4 mr-2"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 409,
-                                                    columnNumber: 17
-                                                }, this),
-                                                "Limpar Seleção"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 402,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "w-px h-8 bg-zinc-700 mx-2"
-                                        }, void 0, false, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 413,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
-                                                    asChild: true,
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                        variant: "default",
-                                                        size: "sm",
-                                                        onClick: ()=>sendCommand('reload', undefined, true),
-                                                        disabled: sendingCommand === 'all_reload',
-                                                        className: "bg-blue-600 hover:bg-blue-700",
-                                                        children: [
-                                                            sendingCommand === 'all_reload' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
-                                                                className: "w-4 h-4 mr-2 animate-spin"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 426,
-                                                                columnNumber: 23
-                                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rotate$2d$ccw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RotateCcw$3e$__["RotateCcw"], {
-                                                                className: "w-4 h-4 mr-2"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 428,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            "Recarregar Todos"
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 418,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 417,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        children: "Reinicia o app em todos os tablets online"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 434,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 433,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 416,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
-                                                    asChild: true,
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                        variant: "default",
-                                                        size: "sm",
-                                                        onClick: ()=>sendCommand('sync_settings', undefined, true),
-                                                        disabled: sendingCommand === 'all_sync_settings',
-                                                        className: "bg-purple-600 hover:bg-purple-700",
-                                                        children: [
-                                                            sendingCommand === 'all_sync_settings' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
-                                                                className: "w-4 h-4 mr-2 animate-spin"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 448,
-                                                                columnNumber: 23
-                                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {
-                                                                className: "w-4 h-4 mr-2"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 450,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            "Sincronizar Config"
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 440,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 439,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        children: "Força todos os tablets a recarregar as configurações"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 456,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 455,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 438,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
-                                                    asChild: true,
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                        variant: "default",
-                                                        size: "sm",
-                                                        onClick: ()=>sendCommand('lock', undefined, true),
-                                                        disabled: sendingCommand === 'all_lock',
-                                                        className: "bg-yellow-600 hover:bg-yellow-700",
-                                                        children: [
-                                                            sendingCommand === 'all_lock' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
-                                                                className: "w-4 h-4 mr-2 animate-spin"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 470,
-                                                                columnNumber: 23
-                                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__["Lock"], {
-                                                                className: "w-4 h-4 mr-2"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 472,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            "Bloquear Todos"
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 462,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 461,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        children: "Ativa o modo kiosk em todos os tablets"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 478,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 477,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 460,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
-                                                    asChild: true,
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                        variant: "destructive",
-                                                        size: "sm",
-                                                        onClick: ()=>sendCommand('exit_app', undefined, true),
-                                                        disabled: sendingCommand === 'all_exit_app',
-                                                        children: [
-                                                            sendingCommand === 'all_exit_app' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
-                                                                className: "w-4 h-4 mr-2 animate-spin"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 491,
-                                                                columnNumber: 23
-                                                            }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$power$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Power$3e$__["Power"], {
-                                                                className: "w-4 h-4 mr-2"
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 493,
-                                                                columnNumber: 23
-                                                            }, this),
-                                                            "Fechar Todos"
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 484,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 483,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        children: "Solicita o fechamento do app em todos os tablets"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 499,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 498,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 482,
-                                            columnNumber: 15
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 391,
-                                    columnNumber: 13
-                                }, this),
-                                selectedTablets.size > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "mt-4 pt-4 border-t border-zinc-700",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "text-sm text-gray-400 mb-2",
-                                            children: [
-                                                "Ações para ",
-                                                selectedTablets.size,
-                                                " tablet(s) selecionado(s):"
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 507,
-                                            columnNumber: 17
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "flex flex-wrap gap-2",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                    variant: "outline",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex flex-wrap gap-2",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
+                                                asChild: true,
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                    variant: "default",
                                                     size: "sm",
-                                                    onClick: ()=>sendBulkCommand('reload'),
-                                                    className: "border-blue-500 text-blue-400 hover:bg-blue-500/10",
+                                                    onClick: ()=>sendCommand('reload', undefined, true),
+                                                    disabled: sendingCommand === 'all_reload',
+                                                    className: "bg-blue-600 hover:bg-blue-700",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rotate$2d$ccw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RotateCcw$3e$__["RotateCcw"], {
+                                                        sendingCommand === 'all_reload' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                            className: "w-4 h-4 mr-2 animate-spin"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/tablets/page.tsx",
+                                                            lineNumber: 352,
+                                                            columnNumber: 23
+                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$rotate$2d$ccw$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__RotateCcw$3e$__["RotateCcw"], {
                                                             className: "w-4 h-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                                            lineNumber: 517,
-                                                            columnNumber: 21
+                                                            lineNumber: 354,
+                                                            columnNumber: 23
                                                         }, this),
-                                                        "Recarregar Selecionados"
+                                                        "Recarregar Todos"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 511,
+                                                    lineNumber: 344,
                                                     columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                                                    variant: "outline",
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 343,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    children: "Reinicia o app em todos os tablets online"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/tablets/page.tsx",
+                                                    lineNumber: 360,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 359,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/tablets/page.tsx",
+                                        lineNumber: 342,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
+                                                asChild: true,
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                    variant: "default",
                                                     size: "sm",
-                                                    onClick: ()=>sendBulkCommand('sync_settings'),
-                                                    className: "border-purple-500 text-purple-400 hover:bg-purple-500/10",
+                                                    onClick: ()=>sendCommand('sync_settings', undefined, true),
+                                                    disabled: sendingCommand === 'all_sync_settings',
+                                                    className: "bg-purple-600 hover:bg-purple-700",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {
+                                                        sendingCommand === 'all_sync_settings' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                            className: "w-4 h-4 mr-2 animate-spin"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/tablets/page.tsx",
+                                                            lineNumber: 374,
+                                                            columnNumber: 23
+                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$settings$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Settings$3e$__["Settings"], {
                                                             className: "w-4 h-4 mr-2"
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                                            lineNumber: 526,
-                                                            columnNumber: 21
+                                                            lineNumber: 376,
+                                                            columnNumber: 23
                                                         }, this),
-                                                        "Sincronizar Selecionados"
+                                                        "Sincronizar Config"
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                    lineNumber: 520,
+                                                    lineNumber: 366,
                                                     columnNumber: 19
                                                 }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                            lineNumber: 510,
-                                            columnNumber: 17
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/app/admin/tablets/page.tsx",
-                                    lineNumber: 506,
-                                    columnNumber: 15
-                                }, this)
-                            ]
-                        }, void 0, true, {
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 365,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    children: "Força todos os tablets a recarregar as configurações"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/tablets/page.tsx",
+                                                    lineNumber: 382,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 381,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/tablets/page.tsx",
+                                        lineNumber: 364,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
+                                                asChild: true,
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                    variant: "default",
+                                                    size: "sm",
+                                                    onClick: ()=>sendCommand('lock', undefined, true),
+                                                    disabled: sendingCommand === 'all_lock',
+                                                    className: "bg-yellow-600 hover:bg-yellow-700",
+                                                    children: [
+                                                        sendingCommand === 'all_lock' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                            className: "w-4 h-4 mr-2 animate-spin"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/tablets/page.tsx",
+                                                            lineNumber: 396,
+                                                            columnNumber: 23
+                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$lock$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Lock$3e$__["Lock"], {
+                                                            className: "w-4 h-4 mr-2"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/tablets/page.tsx",
+                                                            lineNumber: 398,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        "Bloquear Todos"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/admin/tablets/page.tsx",
+                                                    lineNumber: 388,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 387,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    children: "Ativa o modo kiosk em todos os tablets"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/tablets/page.tsx",
+                                                    lineNumber: 404,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 403,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/tablets/page.tsx",
+                                        lineNumber: 386,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Tooltip"], {
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipTrigger"], {
+                                                asChild: true,
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                                                    variant: "destructive",
+                                                    size: "sm",
+                                                    onClick: ()=>sendCommand('exit_app', undefined, true),
+                                                    disabled: sendingCommand === 'all_exit_app',
+                                                    children: [
+                                                        sendingCommand === 'all_exit_app' ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$loader$2d$circle$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Loader2$3e$__["Loader2"], {
+                                                            className: "w-4 h-4 mr-2 animate-spin"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/tablets/page.tsx",
+                                                            lineNumber: 417,
+                                                            columnNumber: 23
+                                                        }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$power$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Power$3e$__["Power"], {
+                                                            className: "w-4 h-4 mr-2"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/app/admin/tablets/page.tsx",
+                                                            lineNumber: 419,
+                                                            columnNumber: 23
+                                                        }, this),
+                                                        "Fechar Todos"
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/app/admin/tablets/page.tsx",
+                                                    lineNumber: 410,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 409,
+                                                columnNumber: 17
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
+                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    children: "Solicita o fechamento do app em todos os tablets"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/app/admin/tablets/page.tsx",
+                                                    lineNumber: 425,
+                                                    columnNumber: 19
+                                                }, this)
+                                            }, void 0, false, {
+                                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                                lineNumber: 424,
+                                                columnNumber: 17
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/app/admin/tablets/page.tsx",
+                                        lineNumber: 408,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/app/admin/tablets/page.tsx",
+                                lineNumber: 341,
+                                columnNumber: 13
+                            }, this)
+                        }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 390,
+                            lineNumber: 340,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tablets/page.tsx",
-                    lineNumber: 380,
+                    lineNumber: 330,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2008,7 +1793,7 @@ function TabletsPage() {
                                         className: "w-4 h-4 text-orange-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 539,
+                                        lineNumber: 436,
                                         columnNumber: 15
                                     }, this),
                                     "Dispositivos (",
@@ -2017,12 +1802,12 @@ function TabletsPage() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 538,
+                                lineNumber: 435,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 537,
+                            lineNumber: 434,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2033,7 +1818,7 @@ function TabletsPage() {
                                         className: "w-12 h-12 mx-auto mb-3 text-gray-600"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 546,
+                                        lineNumber: 443,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2041,7 +1826,7 @@ function TabletsPage() {
                                         children: "Nenhum tablet registrado ainda"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 547,
+                                        lineNumber: 444,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -2049,40 +1834,24 @@ function TabletsPage() {
                                         children: "Os tablets serão registrados automaticamente ao se conectarem"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 548,
+                                        lineNumber: 445,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 545,
+                                lineNumber: 442,
                                 columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "space-y-2",
                                 children: tablets.map((tablet)=>{
                                     const online = isOnline(tablet.last_seen);
-                                    const isSelected = selectedTablets.has(tablet.id);
                                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: `flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${isSelected ? 'bg-orange-500/10 border-orange-500/50' : 'bg-zinc-800 border-zinc-700 hover:border-zinc-600'}`,
-                                        onClick: ()=>toggleSelectTablet(tablet.id),
+                                        className: "flex items-center justify-between p-3 rounded-lg border bg-zinc-800 border-zinc-700",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex items-center gap-3",
                                                 children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                        className: `w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${isSelected ? 'bg-orange-500 border-orange-500' : 'border-zinc-600'}`,
-                                                        children: isSelected && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
-                                                            className: "w-3 h-3 text-white"
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/tablets/page.tsx",
-                                                            lineNumber: 575,
-                                                            columnNumber: 42
-                                                        }, this)
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 570,
-                                                        columnNumber: 25
-                                                    }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                         className: `relative p-2 rounded-lg ${online ? 'bg-green-500/20' : 'bg-zinc-700'}`,
                                                         children: [
@@ -2090,26 +1859,26 @@ function TabletsPage() {
                                                                 className: "w-4 h-4 text-green-500"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 581,
+                                                                lineNumber: 463,
                                                                 columnNumber: 29
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$wifi$2d$off$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__WifiOff$3e$__["WifiOff"], {
                                                                 className: "w-4 h-4 text-gray-500"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 583,
+                                                                lineNumber: 465,
                                                                 columnNumber: 29
                                                             }, this),
                                                             online && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                 className: "absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full animate-pulse"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 586,
+                                                                lineNumber: 468,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 579,
+                                                        lineNumber: 461,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2123,7 +1892,7 @@ function TabletsPage() {
                                                                         children: tablet.name
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 593,
+                                                                        lineNumber: 475,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2132,7 +1901,7 @@ function TabletsPage() {
                                                                         children: online ? 'Online' : 'Offline'
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 594,
+                                                                        lineNumber: 476,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     tablet.app_version && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$badge$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Badge"], {
@@ -2144,13 +1913,13 @@ function TabletsPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 604,
+                                                                        lineNumber: 486,
                                                                         columnNumber: 31
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 592,
+                                                                lineNumber: 474,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2164,7 +1933,7 @@ function TabletsPage() {
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 610,
+                                                                        lineNumber: 492,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2174,32 +1943,32 @@ function TabletsPage() {
                                                                                 className: "w-3 h-3"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                                lineNumber: 612,
+                                                                                lineNumber: 494,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             getTimeSinceLastSeen(tablet.last_seen)
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 611,
+                                                                        lineNumber: 493,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 609,
+                                                                lineNumber: 491,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 591,
+                                                        lineNumber: 473,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 568,
+                                                lineNumber: 459,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2218,18 +1987,18 @@ function TabletsPage() {
                                                                             children: tablet.battery_level !== null ? `${tablet.battery_level}%` : '--'
                                                                         }, void 0, false, {
                                                                             fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                            lineNumber: 625,
+                                                                            lineNumber: 507,
                                                                             columnNumber: 31
                                                                         }, this)
                                                                     ]
                                                                 }, void 0, true, {
                                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                    lineNumber: 623,
+                                                                    lineNumber: 505,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 622,
+                                                                lineNumber: 504,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$tooltip$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TooltipContent"], {
@@ -2237,18 +2006,18 @@ function TabletsPage() {
                                                                     children: tablet.battery_level !== null ? `Bateria: ${tablet.battery_level}%${tablet.is_charging ? ' (Carregando)' : ''}` : 'Bateria não informada'
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                    lineNumber: 631,
+                                                                    lineNumber: 513,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 630,
+                                                                lineNumber: 512,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 621,
+                                                        lineNumber: 503,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenu"], {
@@ -2264,17 +2033,17 @@ function TabletsPage() {
                                                                         className: "w-4 h-4"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 644,
+                                                                        lineNumber: 526,
                                                                         columnNumber: 31
                                                                     }, this)
                                                                 }, void 0, false, {
                                                                     fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                    lineNumber: 643,
+                                                                    lineNumber: 525,
                                                                     columnNumber: 29
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 642,
+                                                                lineNumber: 524,
                                                                 columnNumber: 27
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuContent"], {
@@ -2293,14 +2062,14 @@ function TabletsPage() {
                                                                                 className: "w-4 h-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                                lineNumber: 656,
+                                                                                lineNumber: 538,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             "Recarregar"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 648,
+                                                                        lineNumber: 530,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -2315,21 +2084,21 @@ function TabletsPage() {
                                                                                 className: "w-4 h-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                                lineNumber: 667,
+                                                                                lineNumber: 549,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             "Sincronizar Config"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 659,
+                                                                        lineNumber: 541,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {
                                                                         className: "bg-zinc-700"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 670,
+                                                                        lineNumber: 552,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -2344,14 +2113,14 @@ function TabletsPage() {
                                                                                 className: "w-4 h-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                                lineNumber: 679,
+                                                                                lineNumber: 561,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             "Bloquear (Kiosk)"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 671,
+                                                                        lineNumber: 553,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -2366,21 +2135,21 @@ function TabletsPage() {
                                                                                 className: "w-4 h-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                                lineNumber: 690,
+                                                                                lineNumber: 572,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             "Desbloquear"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 682,
+                                                                        lineNumber: 564,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {
                                                                         className: "bg-zinc-700"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 693,
+                                                                        lineNumber: 575,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -2395,21 +2164,21 @@ function TabletsPage() {
                                                                                 className: "w-4 h-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                                lineNumber: 702,
+                                                                                lineNumber: 584,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             "Fechar App"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 694,
+                                                                        lineNumber: 576,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {
                                                                         className: "bg-zinc-700"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 705,
+                                                                        lineNumber: 587,
                                                                         columnNumber: 29
                                                                     }, this),
                                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuItem"], {
@@ -2423,55 +2192,55 @@ function TabletsPage() {
                                                                                 className: "w-4 h-4 mr-2"
                                                                             }, void 0, false, {
                                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                                lineNumber: 713,
+                                                                                lineNumber: 595,
                                                                                 columnNumber: 31
                                                                             }, this),
                                                                             "Remover Tablet"
                                                                         ]
                                                                     }, void 0, true, {
                                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                        lineNumber: 706,
+                                                                        lineNumber: 588,
                                                                         columnNumber: 29
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                                lineNumber: 647,
+                                                                lineNumber: 529,
                                                                 columnNumber: 27
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 641,
+                                                        lineNumber: 523,
                                                         columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 619,
+                                                lineNumber: 501,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, tablet.id, true, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 559,
+                                        lineNumber: 455,
                                         columnNumber: 21
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 553,
+                                lineNumber: 450,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 543,
+                            lineNumber: 440,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tablets/page.tsx",
-                    lineNumber: 536,
+                    lineNumber: 433,
                     columnNumber: 9
                 }, this),
                 recentCommands.length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Card"], {
@@ -2486,19 +2255,19 @@ function TabletsPage() {
                                         className: "w-4 h-4 text-orange-500"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 732,
+                                        lineNumber: 614,
                                         columnNumber: 17
                                     }, this),
                                     "Comandos Recentes"
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 731,
+                                lineNumber: 613,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 730,
+                            lineNumber: 612,
                             columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -2516,7 +2285,7 @@ function TabletsPage() {
                                                         children: cmd.status === 'executed' ? 'Executado' : 'Pendente'
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 744,
+                                                        lineNumber: 626,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2524,7 +2293,7 @@ function TabletsPage() {
                                                         children: cmd.command
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 754,
+                                                        lineNumber: 636,
                                                         columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2532,13 +2301,13 @@ function TabletsPage() {
                                                         children: cmd.target_all ? '(Todos)' : `(${cmd.device_id?.substring(0, 15)}...)`
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                                        lineNumber: 755,
+                                                        lineNumber: 637,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 743,
+                                                lineNumber: 625,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2546,29 +2315,29 @@ function TabletsPage() {
                                                 children: formatDate(cmd.created_at)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                                lineNumber: 759,
+                                                lineNumber: 641,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, cmd.id, true, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 739,
+                                        lineNumber: 621,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 737,
+                                lineNumber: 619,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/tablets/page.tsx",
-                            lineNumber: 736,
+                            lineNumber: 618,
                             columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/tablets/page.tsx",
-                    lineNumber: 729,
+                    lineNumber: 611,
                     columnNumber: 11
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialog"], {
@@ -2584,7 +2353,7 @@ function TabletsPage() {
                                         children: "Remover Tablet"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 773,
+                                        lineNumber: 655,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogDescription"], {
@@ -2596,13 +2365,13 @@ function TabletsPage() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 774,
+                                        lineNumber: 656,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 772,
+                                lineNumber: 654,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogFooter"], {
@@ -2612,7 +2381,7 @@ function TabletsPage() {
                                         children: "Cancelar"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 780,
+                                        lineNumber: 662,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$alert$2d$dialog$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["AlertDialogAction"], {
@@ -2621,39 +2390,39 @@ function TabletsPage() {
                                         children: "Remover"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/tablets/page.tsx",
-                                        lineNumber: 783,
+                                        lineNumber: 665,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/tablets/page.tsx",
-                                lineNumber: 779,
+                                lineNumber: 661,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/app/admin/tablets/page.tsx",
-                        lineNumber: 771,
+                        lineNumber: 653,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/app/admin/tablets/page.tsx",
-                    lineNumber: 770,
+                    lineNumber: 652,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/app/admin/tablets/page.tsx",
-            lineNumber: 272,
+            lineNumber: 235,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/app/admin/tablets/page.tsx",
-        lineNumber: 271,
+        lineNumber: 234,
         columnNumber: 5
     }, this);
 }
-_s(TabletsPage, "abLFfBewsh800kZlfiOkEhuA7g0=");
+_s(TabletsPage, "Gb2ZybFOgBMB8mSv0xmaBD+Ez1k=");
 _c = TabletsPage;
 var _c;
 __turbopack_context__.k.register(_c, "TabletsPage");
