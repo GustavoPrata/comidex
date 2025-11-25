@@ -1748,16 +1748,16 @@ function MainApp() {
     setShowObservationModal(true);
   };
 
-  // Increase temp quantity for a product
-  const increaseTempQuantity = (productId: number) => {
+  // Increase temp quantity for a product - optimized for instant response
+  const increaseTempQuantity = useCallback((productId: number) => {
     setTempQuantities(prev => ({
       ...prev,
       [productId]: (prev[productId] || 0) + 1
     }));
-  };
+  }, []);
 
-  // Decrease temp quantity for a product
-  const decreaseTempQuantity = (productId: number) => {
+  // Decrease temp quantity for a product - optimized for instant response
+  const decreaseTempQuantity = useCallback((productId: number) => {
     setTempQuantities(prev => {
       const current = prev[productId] || 0;
       if (current <= 1) {
@@ -1766,7 +1766,7 @@ function MainApp() {
       }
       return { ...prev, [productId]: current - 1 };
     });
-  };
+  }, []);
 
   // Get total temp items count
   const getTempItemsCount = () => {
@@ -3441,13 +3441,15 @@ function MainApp() {
                           <View style={styles.quantityControlsRow}>
                             <Pressable 
                               style={[styles.quantityButton, tempQty === 0 && styles.quantityButtonDisabled]}
-                              onPress={() => {
+                              onPressIn={() => {
                                 if (tempQty > 0) {
-                                  triggerHaptic();
                                   decreaseTempQuantity(item.id);
+                                  triggerHaptic();
                                 }
                               }}
-                              hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+                              hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                              android_disableSound={true}
+                              delayLongPress={100}
                             >
                               <IconComponent name="minus" size={18} color={tempQty > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
                             </Pressable>
@@ -3456,11 +3458,13 @@ function MainApp() {
                             
                             <Pressable 
                               style={styles.quantityButtonPlus}
-                              onPress={() => {
-                                triggerHaptic();
+                              onPressIn={() => {
                                 increaseTempQuantity(item.id);
+                                triggerHaptic();
                               }}
-                              hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+                              hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                              android_disableSound={true}
+                              delayLongPress={100}
                             >
                               <IconComponent name="plus" size={18} color="#FFFFFF" />
                             </Pressable>
@@ -4031,25 +4035,27 @@ function MainApp() {
                     
                     {/* Quantity Controls */}
                     <View style={styles.cartFullScreenQtyContainer}>
-                      <TouchableOpacity 
+                      <Pressable 
                         style={styles.cartFullScreenQtyBtn}
-                        onPress={() => {
-                          triggerHaptic();
+                        onPressIn={() => {
                           handleRemoveFromCart(item.id, item.observation);
+                          triggerHaptic();
                         }}
+                        hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                       >
                         <Minus size={18} color="#FFF" strokeWidth={2.5} />
-                      </TouchableOpacity>
+                      </Pressable>
                       <Text style={styles.cartFullScreenQtyText}>{item.quantity}</Text>
-                      <TouchableOpacity 
+                      <Pressable 
                         style={styles.cartFullScreenQtyBtn}
-                        onPress={() => {
-                          triggerHaptic();
+                        onPressIn={() => {
                           handleQuickAddInCart(item.id, item.observation);
+                          triggerHaptic();
                         }}
+                        hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                       >
                         <Plus size={18} color="#FFF" strokeWidth={2.5} />
-                      </TouchableOpacity>
+                      </Pressable>
                     </View>
                   </View>
                 ))
@@ -6102,41 +6108,41 @@ const styles = StyleSheet.create({
     color: config.colors.textPrimary,
   },
   categoriesContainer: {
-    maxHeight: 100,
-    marginBottom: 10,
+    maxHeight: 80,
+    marginBottom: 8,
   },
   categoriesContent: {
-    paddingHorizontal: 15,
-    gap: 8,
+    paddingHorizontal: 12,
+    gap: 6,
   },
   categoryCard: {
     alignItems: "center",
-    padding: 10,
-    borderRadius: 16,
+    padding: 8,
+    borderRadius: 12,
     backgroundColor: 'rgba(30, 30, 30, 0.75)',
 
     borderWidth: 1,
     borderColor: "transparent",
-    marginRight: 8,
-    minWidth: 80,
+    marginRight: 6,
+    minWidth: 65,
   },
   categoryCardActive: {
     borderColor: config.colors.primary,
     backgroundColor: config.colors.primary + "10",
   },
   categoryIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 6,
+    marginBottom: 4,
   },
   categoryIconText: {
-    fontSize: 22,
+    fontSize: 18,
   },
   categoryName: {
-    fontSize: 11,
+    fontSize: 9,
     color: config.colors.textSecondary,
     fontWeight: "600",
   },
@@ -6269,7 +6275,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 8,
+    marginRight: -42,
     zIndex: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
