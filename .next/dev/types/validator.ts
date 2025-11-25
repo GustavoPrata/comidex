@@ -461,6 +461,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/api/mobile/tablet-commands/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/tablet-commands">> = Specific
+  const handler = {} as typeof import("../../../app/api/mobile/tablet-commands/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/api/mobile/tablet-register/route.ts
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/tablet-register">> = Specific
@@ -474,6 +483,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/tablet-settings">> = Specific
   const handler = {} as typeof import("../../../app/api/mobile/tablet-settings/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/mobile/tablet-status/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/tablet-status">> = Specific
+  const handler = {} as typeof import("../../../app/api/mobile/tablet-status/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

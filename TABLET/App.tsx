@@ -26,9 +26,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Path, Circle, Rect, LinearGradient as SvgLinearGradient, Defs, Stop } from 'react-native-svg';
 import * as Brightness from 'expo-brightness';
+import * as Battery from 'expo-battery';
 import { useKeepAwake } from 'expo-keep-awake';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { config } from './config';
+
+const APP_VERSION = '1.0.0';
 
 const DEVICE_ID_KEY = '@tablet_device_id';
 
@@ -267,6 +270,11 @@ function MainApp() {
   const [deviceIdLoaded, setDeviceIdLoaded] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  
+  // Battery & Remote Command States
+  const [batteryLevel, setBatteryLevel] = useState<number | null>(null);
+  const [isCharging, setIsCharging] = useState(false);
+  const [pendingReload, setPendingReload] = useState(false);
   
   // Session Management States
   const [session, setSession] = useState<Session | null>(null);
@@ -535,6 +543,128 @@ function MainApp() {
     }
   }, []);
 
+  // Battery monitoring
+  const updateBatteryStatus = useCallback(async () => {
+    try {
+      const level = await Battery.getBatteryLevelAsync();
+      const state = await Battery.getBatteryStateAsync();
+      
+      setBatteryLevel(Math.round(level * 100));
+      setIsCharging(state === Battery.BatteryState.CHARGING || state === Battery.BatteryState.FULL);
+    } catch (error) {
+      console.log('⚠️ Erro ao obter bateria:', error);
+    }
+  }, []);
+
+  // Send status to server and check for commands
+  const sendStatusAndCheckCommands = useCallback(async () => {
+    if (!deviceId || !appReady) return;
+    
+    try {
+      const level = await Battery.getBatteryLevelAsync().catch(() => null);
+      const state = await Battery.getBatteryStateAsync().catch(() => Battery.BatteryState.UNKNOWN);
+      
+      const batteryPercent = level ? Math.round(level * 100) : null;
+      const charging = state === Battery.BatteryState.CHARGING || state === Battery.BatteryState.FULL;
+      
+      if (batteryPercent !== null) {
+        setBatteryLevel(batteryPercent);
+        setIsCharging(charging);
+      }
+      
+      const response = await fetch(`${config.API_BASE_URL}/api/mobile/tablet-status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          device_id: deviceId,
+          battery_level: batteryPercent,
+          is_charging: charging,
+          app_version: APP_VERSION
+        })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        
+        // Process pending commands
+        if (data.commands && data.commands.length > 0) {
+          for (const cmd of data.commands) {
+            await executeCommand(cmd);
+          }
+        }
+      }
+    } catch (error) {
+      console.log('⚠️ Erro ao enviar status:', error);
+    }
+  }, [deviceId, appReady]);
+
+  // Execute remote command
+  const executeCommand = useCallback(async (command: { id: number; command: string }) => {
+    console.log('🎮 Executando comando:', command.command);
+    
+    try {
+      // Mark command as executed
+      await fetch(`${config.API_BASE_URL}/api/mobile/tablet-commands`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          command_id: command.id,
+          status: 'executed',
+          device_id: deviceId
+        })
+      });
+      
+      switch (command.command) {
+        case 'reload':
+          console.log('🔄 Recarregando aplicativo...');
+          setPendingReload(true);
+          // Reset all states to initial
+          setTableNumber("");
+          setSelectedTable(null);
+          setSession(null);
+          setCart([]);
+          setSelectedMode(null);
+          loadCategories();
+          loadProducts();
+          loadTables();
+          setPendingReload(false);
+          break;
+          
+        case 'sync_settings':
+          console.log('⚙️ Sincronizando configurações...');
+          fetchTabletSettings();
+          break;
+          
+        case 'exit_app':
+        case 'close_app':
+          console.log('🚪 Comando de fechar recebido (não suportado em Expo)');
+          // Note: BackHandler.exitApp() doesn't work reliably in Expo
+          // The admin will need to use device management tools for this
+          Alert.alert(
+            'Comando Recebido',
+            'O administrador solicitou o fechamento do app. Por favor, feche manualmente.',
+            [{ text: 'OK' }]
+          );
+          break;
+          
+        case 'lock':
+          console.log('🔒 Bloqueando tablet...');
+          setKioskMode(true);
+          break;
+          
+        case 'unlock':
+          console.log('🔓 Desbloqueando tablet...');
+          setKioskMode(false);
+          break;
+          
+        default:
+          console.log('⚠️ Comando desconhecido:', command.command);
+      }
+    } catch (error) {
+      console.log('⚠️ Erro ao executar comando:', error);
+    }
+  }, [deviceId, fetchTabletSettings]);
+
   // Brightness management
   const resetIdleTimer = useCallback(async () => {
     lastActivityRef.current = Date.now();
@@ -687,15 +817,22 @@ function MainApp() {
       if (appReady) fetchTabletSettings();
     }, 30000);
     
+    // Send status and check for commands every 10 seconds
+    sendStatusAndCheckCommands(); // Initial call
+    const statusInterval = setInterval(() => {
+      if (appReady && deviceId) sendStatusAndCheckCommands();
+    }, 10000);
+    
     return () => {
       clearInterval(tablesInterval);
       clearInterval(settingsInterval);
+      clearInterval(statusInterval);
       if (idleTimerRef.current) {
         clearTimeout(idleTimerRef.current);
       }
       Brightness.setBrightnessAsync(tabletSettings.default_brightness).catch(console.error);
     };
-  }, [appReady, tableSearchText]);
+  }, [appReady, tableSearchText, deviceId, sendStatusAndCheckCommands]);
 
 
   // Check or create session when table is selected and mode is chosen
