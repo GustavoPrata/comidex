@@ -5860,15 +5860,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageModalPlaceholder: {
-    width: '100%',
-    height: height * 0.75,
+    width: width - 120,
+    height: height * 0.78,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf: 'flex-start',
   },
   imageModalImage: {
-    width: '100%',
-    height: height * 0.75,
+    width: width - 120,
+    height: height * 0.78,
+    alignSelf: 'flex-start',
   },
   imageModalInfoBar: {
     position: 'absolute',
