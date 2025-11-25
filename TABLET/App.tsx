@@ -3158,7 +3158,12 @@ function MainApp() {
               <FlatList
                 ref={productListRef}
                 data={getProductsWithHeaders()}
-                keyExtractor={(item, index) => 'isHeader' in item ? `header-${item.categoryId}` : `product-${item.id}`}
+                keyExtractor={(item, index) => {
+                  if (!item) return `item-${index}`;
+                  if (typeof item === 'object' && 'isHeader' in item) return `header-${item.categoryId}`;
+                  if ('id' in item) return `product-${item.id}`;
+                  return `item-${index}`;
+                }}
                 contentContainerStyle={styles.productsGridGlass}
                 showsVerticalScrollIndicator={false}
                 onScroll={handleProductScroll}
@@ -3176,14 +3181,20 @@ function MainApp() {
                   </View>
                 }
                 renderItem={({ item }) => {
+                  // Safety check
+                  if (!item) return null;
+                  
                   // Render category header
-                  if ('isHeader' in item) {
+                  if (typeof item === 'object' && 'isHeader' in item) {
                     return (
                       <View style={styles.categoryHeaderInList}>
                         <Text style={styles.categoryHeaderText}>{item.categoryName}</Text>
                       </View>
                     );
                   }
+                  
+                  // Safety check for product
+                  if (!('id' in item)) return null;
                   
                   const itemInCart = cart.find(c => c.id === item.id);
                   const quantity = itemInCart ? itemInCart.quantity : 0;
