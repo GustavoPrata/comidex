@@ -1014,12 +1014,10 @@ function MainApp() {
     }
   }, [session?.id]);
 
-  // Reload categories and products when selectedGroup changes
+  // Log when group changes (loading is done directly in onPress for faster response)
   useEffect(() => {
     if (selectedGroup) {
-      console.log(`🔄 Grupo selecionado: ${selectedGroup.name} (ID: ${selectedGroup.id})`);
-      loadCategories(selectedGroup.id);
-      loadProducts(selectedGroup.id);
+      console.log(`🔄 Grupo ativo: ${selectedGroup.name} (ID: ${selectedGroup.id})`);
     }
   }, [selectedGroup?.id]);
 
@@ -2955,17 +2953,17 @@ function MainApp() {
                 groups.map((group) => (
                   <TouchableOpacity
                     key={group.id}
+                    activeOpacity={0.6}
                     style={[
                       styles.groupItemGlass,
                       selectedGroup?.id === group.id && styles.groupItemActiveGlass
                     ]}
                     onPress={() => {
-                      if (selectedGroup?.id !== group.id) {
-                        setSelectedGroup(group);
-                        setSelectedCategory(null);
-                        loadCategories(group.id);
-                        loadProducts(group.id);
-                      }
+                      console.log(`👆 Clique no grupo: ${group.name} (ID: ${group.id})`);
+                      setSelectedGroup(group);
+                      setSelectedCategory(null);
+                      loadCategories(group.id);
+                      loadProducts(group.id);
                       resetIdleTimer();
                     }}
                   >
