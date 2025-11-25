@@ -55,22 +55,9 @@ export async function GET(request: NextRequest) {
       categories = data
     }
 
-    // Adicionar categoria especial de bebidas
-    const categoriesWithDrinks = [
-      ...(categories || []),
-      {
-        id: 999,
-        name: 'Bebidas',
-        description: 'Bebidas e drinks',
-        active: true,
-        icon: 'wine',
-        order_index: 999
-      }
-    ]
-
     return NextResponse.json({
       success: true,
-      categories: categoriesWithDrinks
+      categories: categories || []
     })
   } catch (error: any) {
     console.error('Erro ao buscar categorias:', error)
