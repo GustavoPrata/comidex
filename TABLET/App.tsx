@@ -5841,14 +5841,9 @@ const styles = StyleSheet.create({
   },
   imageModalOverlay: {
     flex: 1,
-    backgroundColor: "#000000",
+    backgroundColor: "rgba(0, 0, 0, 0.92)",
     justifyContent: "center",
     alignItems: "flex-start",
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
   },
   imageModalCloseButton: {
     position: 'absolute',
@@ -5872,14 +5867,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 20,
     marginBottom: 100,
-    borderRadius: 16,
   },
   imageModalImage: {
     width: width - 140,
     height: height * 0.72,
     marginLeft: 20,
     marginBottom: 100,
-    borderRadius: 16,
   },
   imageModalInfoBar: {
     position: 'absolute',
