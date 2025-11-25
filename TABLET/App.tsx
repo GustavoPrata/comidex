@@ -3037,12 +3037,9 @@ function MainApp() {
 
           {/* Center Column - Categories List */}
           <View style={styles.centerColumnGlass}>
-            <BlurView intensity={70} tint="dark" style={styles.categoriesHeaderGlass}>
+            <View style={styles.categoriesHeaderGlass}>
               <Text style={styles.categoriesTitle}>Categorias</Text>
-              <View style={styles.categoriesCount}>
-                <Text style={styles.categoriesCountText}>{categories.length}</Text>
-              </View>
-            </BlurView>
+            </View>
             
             <ScrollView 
               showsVerticalScrollIndicator={false}
@@ -5244,18 +5241,18 @@ const styles = StyleSheet.create({
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
   },
   categoriesHeaderGlass: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     paddingVertical: 14,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255, 255, 255, 0.08)',
   },
   categoriesTitle: {
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: 'rgba(255, 255, 255, 0.6)',
+    textAlign: 'center',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
   },
   categoriesCount: {
     backgroundColor: 'rgba(255, 112, 67, 0.15)',
