@@ -1804,21 +1804,17 @@ function MainApp() {
       );
     }
 
-    // Filter by selected service type/mode
-    if (selectedMode) {
-      // Check if it's a rodízio service type
-      const linkedGroup = selectedMode.linked_group_id && groups ? 
-        groups.find(g => g.id === selectedMode.linked_group_id) : null;
+    // Filter by selected service type/mode - ONLY for rodízio groups
+    // Other groups (Bebidas, À La Carte, etc) should show all products regardless of mode
+    if (selectedMode && selectedGroup) {
+      const currentGroup = groups?.find(g => g.id === selectedGroup);
       
-      if (linkedGroup?.type === 'rodizio') {
-        // Show only rodízio items (price = 0)
+      // Only apply price filter if the CURRENT GROUP is a rodízio type
+      if (currentGroup?.type === 'rodizio') {
+        // Show only rodízio items (price = 0) for rodízio groups
         filtered = filtered.filter((p) => parseFloat(p.price) === 0);
-      } else if (selectedMode.name?.toLowerCase().includes('carte') || 
-                 selectedMode.name?.toLowerCase().includes('à la carte')) {
-        // Show only à la carte items (price > 0)
-        filtered = filtered.filter((p) => parseFloat(p.price) > 0);
       }
-      // For other service types, show all products
+      // For non-rodízio groups (Bebidas, À La Carte, Vinhos, etc), show ALL products
     }
 
     // Filter by category
