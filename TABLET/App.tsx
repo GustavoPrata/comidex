@@ -5243,7 +5243,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   categoriesListContent: {
-    paddingHorizontal: 6,
+    paddingHorizontal: 12,
     paddingVertical: 6,
   },
   loadingCategoriesGlass: {
@@ -5303,7 +5303,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   categoryFullName: {
-    fontSize: 13,
+    fontSize: 15,
     fontWeight: '600',
     color: 'rgba(255, 255, 255, 0.95)',
     textShadowColor: 'rgba(0, 0, 0, 0.8)',
