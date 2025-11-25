@@ -3127,7 +3127,7 @@ function MainApp() {
             delayLongPress={0}
           >
             <TouchableOpacity style={styles.goomerHeaderBtn} activeOpacity={0.7}>
-              <Search size={20} color="#1a1a1a" strokeWidth={2} />
+              <Search size={20} color="#FF7043" strokeWidth={2} />
               <Text style={styles.goomerHeaderBtnText}>BUSCAR</Text>
             </TouchableOpacity>
           </Pressable>
@@ -5229,52 +5229,60 @@ const styles = StyleSheet.create({
   goomerHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FF7043',
-    paddingHorizontal: 8,
-    paddingVertical: 8,
-    gap: 8,
+    backgroundColor: '#1a1a1a',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.1)',
   },
   goomerHeaderBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFE0D6',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 8,
     gap: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
   },
   goomerHeaderBtnText: {
-    color: '#1a1a1a',
+    color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '600',
   },
   goomerTableBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFE0D6',
+    backgroundColor: 'rgba(255,255,255,0.08)',
     paddingHorizontal: 20,
     paddingVertical: 12,
     borderRadius: 8,
     gap: 8,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
   },
   goomerTableText: {
-    color: '#1a1a1a',
+    color: 'rgba(255,255,255,0.7)',
     fontSize: 14,
     fontWeight: '500',
   },
   goomerTableNumber: {
-    color: '#1a1a1a',
+    color: '#FF7043',
     fontSize: 18,
     fontWeight: '700',
   },
   goomerActionBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#2a2a2a',
+    backgroundColor: 'rgba(255,112,67,0.15)',
     paddingHorizontal: 16,
     paddingVertical: 10,
     borderRadius: 8,
     gap: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255,112,67,0.3)',
   },
   goomerActionTextContainer: {
     alignItems: 'flex-start',
