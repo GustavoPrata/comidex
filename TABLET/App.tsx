@@ -638,20 +638,17 @@ function MainApp() {
           
         case 'exit_app':
         case 'close_app':
-          console.log('🚪 Comando de fechar app recebido');
+          console.log('🚪 Comando de fechar app recebido - Encerrando...');
+          setIsAppClosed(true);
+          try {
+            await Brightness.setBrightnessAsync(0);
+          } catch (e) {
+            console.log('Erro ao ajustar brilho:', e);
+          }
           if (Platform.OS === 'android') {
-            console.log('📱 Fechando app no Android...');
-            BackHandler.exitApp();
-          } else {
-            console.log('📱 Mostrando tela de app fechado (iOS/Web)');
-            setIsAppClosed(true);
-            if (tabletSettings.brightness_enabled) {
-              try {
-                Brightness.setBrightnessAsync(0.1);
-              } catch (e) {
-                console.log('Erro ao ajustar brilho:', e);
-              }
-            }
+            setTimeout(() => {
+              BackHandler.exitApp();
+            }, 500);
           }
           break;
           
@@ -1997,89 +1994,51 @@ function MainApp() {
     );
   }
 
-  // App Closed Screen (for iOS/Web where BackHandler.exitApp() doesn't work)
+  // App Closed Screen - Completely black screen that looks like app is off
   if (isAppClosed) {
     return (
-      <View style={[styles.container, { backgroundColor: '#0a0a0a' }]}>
+      <View style={{ flex: 1, backgroundColor: '#000000' }}>
         <StatusBar hidden={true} />
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 40 }}>
-          <Svg width={100} height={100} viewBox="0 0 24 24" fill="none">
-            <Circle cx="12" cy="12" r="10" stroke="#333" strokeWidth="2"/>
-            <Path d="M8 12h8" stroke="#333" strokeWidth="2" strokeLinecap="round"/>
-          </Svg>
-          <Text style={{ 
-            color: '#444', 
-            fontSize: 28, 
-            fontWeight: '700', 
-            marginTop: 30,
-            textAlign: 'center'
-          }}>
-            App Encerrado
-          </Text>
-          <Text style={{ 
-            color: '#333', 
-            fontSize: 16, 
-            marginTop: 12,
-            textAlign: 'center',
-            lineHeight: 24
-          }}>
-            O administrador encerrou este tablet remotamente.
-          </Text>
-          <View style={{ marginTop: 40, alignItems: 'center' }}>
-            <Text style={{ color: '#555', fontSize: 12, marginBottom: 10 }}>
-              Digite a senha admin para reativar:
+        <Pressable 
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          onLongPress={() => {
+            Brightness.setBrightnessAsync(0.3);
+          }}
+          delayLongPress={3000}
+        >
+          <View style={{ alignItems: 'center', opacity: 0.15 }}>
+            <Text style={{ color: '#222', fontSize: 10, marginBottom: 20 }}>
+              Segure 3s para reativar
             </Text>
             <TextInput
               style={{
-                width: 120,
-                height: 50,
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                borderRadius: 12,
-                borderWidth: 1,
-                borderColor: 'rgba(255, 112, 67, 0.3)',
-                color: '#FF7043',
-                fontSize: 20,
+                width: 100,
+                height: 40,
+                backgroundColor: '#111',
+                borderRadius: 8,
+                color: '#333',
+                fontSize: 16,
                 textAlign: 'center',
-                letterSpacing: 8,
+                letterSpacing: 6,
               }}
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(text) => {
+                setPassword(text);
+                if (text === config.ADMIN_PASSWORD) {
+                  setIsAppClosed(false);
+                  setPassword("");
+                  resetIdleTimer();
+                  Brightness.setBrightnessAsync(tabletSettings.default_brightness);
+                }
+              }}
               placeholder="••••"
-              placeholderTextColor="#333"
+              placeholderTextColor="#222"
               secureTextEntry
               keyboardType="numeric"
               maxLength={4}
             />
-            <TouchableOpacity 
-              style={{
-                marginTop: 15,
-                paddingHorizontal: 30,
-                paddingVertical: 12,
-                backgroundColor: password.length === 4 ? 'rgba(255, 112, 67, 0.2)' : 'rgba(255, 112, 67, 0.05)',
-                borderRadius: 12,
-                borderWidth: 1,
-                borderColor: password.length === 4 ? 'rgba(255, 112, 67, 0.5)' : 'rgba(255, 112, 67, 0.2)',
-              }}
-              onPress={() => {
-                if (password === config.ADMIN_PASSWORD) {
-                  setIsAppClosed(false);
-                  setPassword("");
-                  resetIdleTimer();
-                  if (tabletSettings.brightness_enabled) {
-                    Brightness.setBrightnessAsync(tabletSettings.default_brightness);
-                  }
-                } else if (password.length === 4) {
-                  Alert.alert('Erro', 'Senha incorreta');
-                  setPassword("");
-                }
-              }}
-            >
-              <Text style={{ color: '#FF7043', fontSize: 14 }}>
-                Reativar
-              </Text>
-            </TouchableOpacity>
           </View>
-        </View>
+        </Pressable>
       </View>
     );
   }
