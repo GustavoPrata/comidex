@@ -3157,6 +3157,7 @@ function MainApp() {
                             <Pressable 
                               style={[styles.quantityButton, quantity === 0 && styles.quantityButtonDisabled]}
                               onPress={() => quantity > 0 && handleRemoveFromCart(item.id)}
+                              hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
                               <IconComponent name="minus" size={18} color={quantity > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
                             </Pressable>
@@ -3166,6 +3167,7 @@ function MainApp() {
                             <Pressable 
                               style={styles.quantityButtonPlus}
                               onPress={() => handleQuickAddToCart(item)}
+                              hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
                             >
                               <IconComponent name="plus" size={18} color="#FFFFFF" />
                             </Pressable>
