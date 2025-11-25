@@ -146,7 +146,7 @@ export default function TabletSettingsPage() {
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-lg bg-orange-500">
-                <Settings className="h-5 w-5 text-white" />
+                <Tablet className="h-5 w-5 text-white" />
               </div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Configurações do Tablet</h1>
             </div>
