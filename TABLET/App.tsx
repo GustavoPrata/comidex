@@ -4988,6 +4988,7 @@ const styles = StyleSheet.create({
   // Left Sidebar Styles
   leftSidebarGlass: {
     width: width * 0.22,
+    flex: 1,
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
   },
@@ -5083,6 +5084,7 @@ const styles = StyleSheet.create({
   // Center Column Styles
   centerColumnGlass: {
     width: width * 0.25,
+    flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.03)',
     borderRightWidth: 1,
     borderRightColor: 'rgba(255, 255, 255, 0.08)',
@@ -5172,6 +5174,7 @@ const styles = StyleSheet.create({
   // Right Column - Products Grid
   rightColumnGlass: {
     flex: 1,
+    height: '100%',
     backgroundColor: 'rgba(0, 0, 0, 0.3)',
   },
   loadingProductsGlass: {
@@ -5181,6 +5184,8 @@ const styles = StyleSheet.create({
   },
   productsGridGlass: {
     padding: 16,
+    paddingBottom: 100,
+    flexGrow: 1,
   },
   emptyContainerGlass: {
     flex: 1,
