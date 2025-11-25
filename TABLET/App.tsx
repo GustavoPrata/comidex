@@ -3478,9 +3478,22 @@ function MainApp() {
         {/* Add to Cart Button - appears when temp items selected */}
         {getTempItemsCount() > 0 && (
           <Animated.View style={[
-            styles.cartFloatingButton,
+            styles.cartFloatingButtonContainer,
             { transform: [{ scale: cartBounceAnim }] }
           ]}>
+            {/* Clear Button - Left side */}
+            <TouchableOpacity
+              style={styles.clearTempButton}
+              onPress={() => {
+                triggerHaptic();
+                setTempQuantities({});
+                resetIdleTimer();
+              }}
+            >
+              <X size={20} color="#FFF" strokeWidth={2.5} />
+            </TouchableOpacity>
+            
+            {/* Add to Cart Button */}
             <TouchableOpacity
               style={styles.addToCartFloatingButton}
               onPress={() => {
@@ -6214,13 +6227,36 @@ const styles = StyleSheet.create({
     color: config.colors.textSecondary,
     textAlign: "center",
   },
+  cartFloatingButtonContainer: {
+    position: "absolute",
+    bottom: 20,
+    left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 165,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 0,
+  },
+  clearTempButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#FF7043',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: -8,
+    zIndex: 1,
+    shadowColor: "#FF7043",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
   cartFloatingButton: {
     position: "absolute",
     bottom: 20,
     left: 130 + (width * 0.30) + ((width - 130 - (width * 0.30)) / 2) - 140,
     width: 280,
     backgroundColor: '#FF7043',
-    borderRadius: 12,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.2)',
     shadowColor: "#FF7043",
@@ -6266,11 +6302,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FF7043",
     paddingHorizontal: 24,
-    paddingVertical: 16,
-    borderRadius: 12,
+    paddingVertical: 14,
+    borderRadius: 30,
     gap: 12,
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+    shadowColor: "#FF7043",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
   },
   cartModalOverlay: {
     flex: 1,

@@ -1,4 +1,9 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/admin/tablet-settings/page": "app/admin/tablet-settings/page.js",
+  "/api/mobile/tablet-settings/route": "app/api/mobile/tablet-settings/route.js",
   "/api/mobile/tablet-status/route": "app/api/mobile/tablet-status/route.js",
-  "/api/pos/tables/route": "app/api/pos/tables/route.js"
+  "/api/pos/tables/route": "app/api/pos/tables/route.js",
+  "/page": "app/page.js",
+  "/prompt/page": "app/prompt/page.js"
 }
