@@ -3164,13 +3164,6 @@ function MainApp() {
             
             {/* Right Section - Actions */}
             <View style={styles.glassHeaderRight}>
-              {session && sessionTotal > 0 && (
-                <View style={styles.totalBadgeGlass}>
-                  <Text style={styles.totalLabelGlass}>Total</Text>
-                  <Text style={styles.totalValueGlass}>R$ {sessionTotal.toFixed(2)}</Text>
-                </View>
-              )}
-              
               <TouchableOpacity
                 style={styles.billButtonGlass}
                 onPress={() => {
@@ -3182,8 +3175,8 @@ function MainApp() {
                   }).start();
                 }}
               >
-                <IconComponent name="bill" size={18} color="#FFFFFF" />
-                <Text style={styles.billButtonTextGlass}>Conta</Text>
+                <IconComponent name="bill" size={20} color="#FFFFFF" />
+                <Text style={styles.billButtonTextGlass}>CONTA</Text>
               </TouchableOpacity>
               
               {/* Cart Button in Header */}
