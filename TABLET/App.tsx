@@ -3209,23 +3209,6 @@ function MainApp() {
           </Animated.View>
         )}
 
-        {/* Waiter Button */}
-        <Animated.View style={[
-          styles.waiterButton,
-          {
-            transform: [{ scale: waiterButtonAnim }],
-            opacity: waiterButtonAnim,
-          }
-        ]}>
-          <TouchableOpacity
-            style={styles.waiterButtonInner}
-            onPress={callWaiter}
-          >
-            <Text style={styles.waiterButtonIcon}>🔔</Text>
-            <Text style={styles.waiterButtonText}>Chamar</Text>
-            <Text style={styles.waiterButtonText}>Garçom</Text>
-          </TouchableOpacity>
-        </Animated.View>
       </View>
 
       {/* Rodízio Selection Modal - Apple Glass Style */}
