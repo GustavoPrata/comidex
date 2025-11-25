@@ -322,6 +322,19 @@ export default function TabletsPage() {
               </div>
             </CardContent>
           </Card>
+          <Card className="bg-zinc-900 border-zinc-800">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-purple-500/20">
+                  <Settings className="h-4 w-4 text-purple-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-gray-400">Limite</p>
+                  <p className="text-xl font-bold text-white">{maxTablets}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Bulk Actions */}

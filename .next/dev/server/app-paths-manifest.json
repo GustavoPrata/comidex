@@ -1,5 +1,4 @@
 {
-  "/api/mobile/tablet-settings/route": "app/api/mobile/tablet-settings/route.js",
   "/api/mobile/tablet-status/route": "app/api/mobile/tablet-status/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
   "/page": "app/page.js",
