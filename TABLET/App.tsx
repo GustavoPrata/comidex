@@ -126,6 +126,7 @@ interface Category {
   description?: string;
   icon?: string;
   color?: string;
+  image?: string;
 }
 
 interface CartItem extends Product {
@@ -3002,7 +3003,7 @@ function MainApp() {
             </ScrollView>
           </View>
 
-          {/* Center Column - Categories */}
+          {/* Center Column - Categories Grid */}
           <View style={styles.centerColumnGlass}>
             <BlurView intensity={70} tint="dark" style={styles.categoriesHeaderGlass}>
               <Text style={styles.categoriesTitle}>Categorias</Text>
@@ -3014,6 +3015,7 @@ function MainApp() {
             <ScrollView 
               showsVerticalScrollIndicator={false}
               style={styles.categoriesListGlass}
+              contentContainerStyle={styles.categoriesGridContent}
             >
               {loadingCategories ? (
                 <View style={styles.loadingCategoriesGlass}>
@@ -3021,42 +3023,51 @@ function MainApp() {
                   <Text style={styles.loadingTextGlass}>Carregando...</Text>
                 </View>
               ) : (
-                <>
-                  {/* Category List */}
+                <View style={styles.categoriesGrid}>
                   {categories.map((category) => (
                     <TouchableOpacity
                       key={category.id}
                       style={[
-                        styles.categoryItemGlass,
-                        selectedCategory === category.id && styles.categoryItemActiveGlass
+                        styles.categoryCardCompact,
+                        selectedCategory === category.id && styles.categoryCardCompactActive
                       ]}
                       onPress={() => {
                         setSelectedCategory(category.id);
                         resetIdleTimer();
                       }}
+                      activeOpacity={0.8}
                     >
-                      <View style={[
-                        styles.categoryIconGlass,
-                        selectedCategory === category.id && styles.categoryIconActiveGlass
-                      ]}>
-                        <IconComponent 
-                          name={category.icon || 'sushi'} 
-                          size={20} 
-                          color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} 
+                      {category.image ? (
+                        <Image 
+                          source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
+                          style={styles.categoryImageCompact}
                         />
-                      </View>
-                      <Text style={[
-                        styles.categoryNameGlass,
-                        selectedCategory === category.id && styles.categoryNameActiveGlass
-                      ]}>
-                        {category.name}
-                      </Text>
-                      {selectedCategory === category.id && (
-                        <View style={styles.categoryActiveBar} />
+                      ) : (
+                        <View style={styles.categoryImagePlaceholder}>
+                          <IconComponent 
+                            name={category.icon || 'sushi'} 
+                            size={22} 
+                            color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.5)'} 
+                          />
+                        </View>
                       )}
+                      {selectedCategory === category.id && (
+                        <View style={styles.categoryCardOverlay} />
+                      )}
+                      <View style={styles.categoryCardLabel}>
+                        <Text 
+                          style={[
+                            styles.categoryCardText,
+                            selectedCategory === category.id && styles.categoryCardTextActive
+                          ]}
+                          numberOfLines={2}
+                        >
+                          {category.name}
+                        </Text>
+                      </View>
                     </TouchableOpacity>
                   ))}
-                </>
+                </View>
               )}
             </ScrollView>
           </View>
@@ -5220,6 +5231,14 @@ const styles = StyleSheet.create({
   categoriesListGlass: {
     flex: 1,
   },
+  categoriesGridContent: {
+    padding: 8,
+  },
+  categoriesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+  },
   loadingCategoriesGlass: {
     alignItems: 'center',
     paddingVertical: 30,
@@ -5229,50 +5248,57 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.5)',
     marginTop: 8,
   },
-  categoryItemGlass: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    marginHorizontal: 12,
-    marginVertical: 3,
-    borderRadius: 10,
-    position: 'relative',
+  categoryCardCompact: {
+    width: '46%',
+    aspectRatio: 1.2,
+    margin: '2%',
+    borderRadius: 12,
+    overflow: 'hidden',
+    backgroundColor: 'rgba(30, 30, 30, 0.8)',
+    borderWidth: 2,
+    borderColor: 'transparent',
   },
-  categoryItemActiveGlass: {
-    backgroundColor: 'rgba(255, 112, 67, 0.1)',
+  categoryCardCompactActive: {
+    borderColor: '#FF7043',
+    backgroundColor: 'rgba(255, 112, 67, 0.15)',
   },
-  categoryIconGlass: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
+  categoryImageCompact: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+  },
+  categoryImagePlaceholder: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(40, 40, 40, 0.9)',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
   },
-  categoryIconActiveGlass: {
-    backgroundColor: 'rgba(255, 112, 67, 0.2)',
-  },
-  categoryNameGlass: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.7)',
-    flex: 1,
-  },
-  categoryNameActiveGlass: {
-    color: '#FFFFFF',
-    fontWeight: '600',
-  },
-  categoryActiveBar: {
+  categoryCardOverlay: {
     position: 'absolute',
+    top: 0,
+    left: 0,
     right: 0,
-    top: '30%',
-    bottom: '30%',
-    width: 3,
-    backgroundColor: '#FF7043',
-    borderTopLeftRadius: 2,
-    borderBottomLeftRadius: 2,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 112, 67, 0.25)',
+  },
+  categoryCardLabel: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+  },
+  categoryCardText: {
+    fontSize: 11,
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.85)',
+    textAlign: 'center',
+  },
+  categoryCardTextActive: {
+    color: '#FF7043',
   },
   // Right Column - Products Grid
   rightColumnGlass: {
