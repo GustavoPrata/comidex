@@ -1884,31 +1884,26 @@ function MainApp() {
     }
   };
 
-  // Animação quando categoria muda
+  // Animação quando categoria muda - slide in from right
   const animateCategoryChange = () => {
-    // Reset e anima
-    categoryScaleAnim.setValue(0.95);
+    // Animação de slide: começa fora (direita) e entra
+    categoryScaleAnim.setValue(20); // Começa 20px à direita
     categoryGlowAnim.setValue(0);
     
     Animated.parallel([
+      // Slide in suave
       Animated.spring(categoryScaleAnim, {
-        toValue: 1,
-        friction: 4,
-        tension: 100,
+        toValue: 0,
+        friction: 8,
+        tension: 40,
         useNativeDriver: true,
       }),
-      Animated.sequence([
-        Animated.timing(categoryGlowAnim, {
-          toValue: 1,
-          duration: 200,
-          useNativeDriver: true,
-        }),
-        Animated.timing(categoryGlowAnim, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]),
+      // Fade do glow
+      Animated.timing(categoryGlowAnim, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true,
+      }),
     ]).start();
   };
 
@@ -3156,77 +3151,75 @@ function MainApp() {
                 </View>
               ) : (
                 <>
-                  {categories.map((category) => (
-                    <Animated.View
-                      key={category.id}
-                      style={[
-                        selectedCategory === category.id && {
-                          transform: [{ scale: categoryScaleAnim }],
-                        }
-                      ]}
-                    >
-                      <Pressable
+                  {categories.map((category) => {
+                    const isSelected = selectedCategory === category.id;
+                    return (
+                      <Animated.View
+                        key={category.id}
                         style={[
-                          styles.categoryFullCard,
-                          selectedCategory === category.id && styles.categoryFullCardActive
+                          isSelected && {
+                            transform: [{ translateX: categoryScaleAnim }],
+                          }
                         ]}
-                        onPress={() => {
-                          setSelectedCategory(category.id);
-                          scrollToCategory(category.id);
-                        }}
                       >
-                        {/* Full Background Image */}
-                        {category.image ? (
-                          <Image 
-                            source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
-                            style={styles.categoryFullImage}
-                          />
-                        ) : (
-                          <View style={styles.categoryFullImagePlaceholder}>
-                            <IconComponent 
-                              name={category.icon || 'sushi'} 
-                              size={28} 
-                              color={selectedCategory === category.id ? '#FF7043' : 'rgba(255, 255, 255, 0.3)'} 
+                        <Pressable
+                          style={[
+                            styles.categoryFullCard,
+                            isSelected && styles.categoryFullCardActive
+                          ]}
+                          onPress={() => {
+                            setSelectedCategory(category.id);
+                            scrollToCategory(category.id);
+                          }}
+                        >
+                          {/* Full Background Image */}
+                          {category.image ? (
+                            <Image 
+                              source={{ uri: category.image.startsWith('http') ? category.image : `${config.BASE_URL}${category.image}` }} 
+                              style={styles.categoryFullImage}
                             />
-                          </View>
-                        )}
-                        
-                        {/* Gradient Overlay */}
-                        <LinearGradient
-                          colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']}
-                          style={styles.categoryGradientOverlay}
-                        />
-                        
-                        {/* Category Name */}
-                        <View style={styles.categoryFullLabelContainer}>
-                          <Text 
-                            style={[
-                              styles.categoryFullName,
-                              selectedCategory === category.id && styles.categoryFullNameActive
-                            ]}
-                            numberOfLines={2}
-                          >
-                            {category.name}
-                          </Text>
-                        </View>
-                        
-                        {/* Active Border Glow */}
-                        {selectedCategory === category.id && (
-                          <Animated.View 
-                            style={[
-                              styles.categoryActiveGlow,
-                              {
-                                opacity: categoryGlowAnim.interpolate({
-                                  inputRange: [0, 1],
-                                  outputRange: [1, 1.5],
-                                }),
-                              }
-                            ]} 
+                          ) : (
+                            <View style={styles.categoryFullImagePlaceholder}>
+                              <IconComponent 
+                                name={category.icon || 'sushi'} 
+                                size={28} 
+                                color={isSelected ? '#FF7043' : 'rgba(255, 255, 255, 0.3)'} 
+                              />
+                            </View>
+                          )}
+                          
+                          {/* Gradient Overlay */}
+                          <LinearGradient
+                            colors={['transparent', 'rgba(0,0,0,0.7)', 'rgba(0,0,0,0.95)']}
+                            style={styles.categoryGradientOverlay}
                           />
-                        )}
-                      </Pressable>
-                    </Animated.View>
-                  ))}
+                          
+                          {/* Category Name */}
+                          <View style={styles.categoryFullLabelContainer}>
+                            <Text 
+                              style={[
+                                styles.categoryFullName,
+                                isSelected && styles.categoryFullNameActive
+                              ]}
+                              numberOfLines={2}
+                            >
+                              {category.name}
+                            </Text>
+                          </View>
+                          
+                          {/* Active Border Glow */}
+                          {isSelected && (
+                            <Animated.View 
+                              style={[
+                                styles.categoryActiveGlow,
+                                { opacity: categoryGlowAnim }
+                              ]} 
+                            />
+                          )}
+                        </Pressable>
+                      </Animated.View>
+                    );
+                  })}
                 </>
               )}
             </ScrollView>
