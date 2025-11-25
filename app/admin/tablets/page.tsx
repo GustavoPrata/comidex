@@ -1,150 +1,401 @@
-"use client";
+'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tablet, Wifi, WifiOff, Battery, Settings, Plus } from "lucide-react";
+import { useState, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Badge } from "@/components/ui/badge"
+import { 
+  Tablet,
+  Trash2,
+  RefreshCw,
+  Loader2,
+  Settings,
+  Wifi,
+  WifiOff,
+  Clock,
+  Save,
+  AlertTriangle
+} from "lucide-react"
+import { toast } from "sonner"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+
+interface RegisteredTablet {
+  id: number
+  device_id: string
+  name: string
+  ip_address: string | null
+  status: string
+  registered_at: string
+  last_seen: string
+}
 
 export default function TabletsPage() {
-  const tablets = [
-    { 
-      id: 1, 
-      name: "Tablet Mesa 1-5", 
-      status: "online", 
-      battery: 85, 
-      lastSeen: "Agora" 
-    },
-    { 
-      id: 2, 
-      name: "Tablet Mesa 6-10", 
-      status: "online", 
-      battery: 62, 
-      lastSeen: "2 min atrás" 
-    },
-    { 
-      id: 3, 
-      name: "Tablet Mesa 11-15", 
-      status: "offline", 
-      battery: 45, 
-      lastSeen: "15 min atrás" 
-    },
-    { 
-      id: 4, 
-      name: "Tablet Balcão", 
-      status: "online", 
-      battery: 92, 
-      lastSeen: "Agora" 
-    },
-  ];
+  const [tablets, setTablets] = useState<RegisteredTablet[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [maxTablets, setMaxTablets] = useState(20)
+  const [saving, setSaving] = useState(false)
+  const [deleteTablet, setDeleteTablet] = useState<RegisteredTablet | null>(null)
+  const supabase = createClient()
 
-  const getBatteryColor = (level: number) => {
-    if (level > 60) return "text-green-500";
-    if (level > 30) return "text-orange-500";
-    return "text-red-500";
-  };
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  const loadData = async () => {
+    try {
+      setIsLoading(true)
+      
+      const [tabletsRes, settingsRes] = await Promise.all([
+        supabase.from('registered_tablets').select('*').order('registered_at', { ascending: false }),
+        supabase.from('tablet_settings').select('*').eq('setting_key', 'max_tablets').single()
+      ])
+
+      if (tabletsRes.error) throw tabletsRes.error
+      if (tabletsRes.data) setTablets(tabletsRes.data)
+      
+      if (settingsRes.data) {
+        setMaxTablets(parseInt(settingsRes.data.setting_value) || 20)
+      }
+    } catch (error: any) {
+      console.error('Erro ao carregar dados:', error)
+      toast.error('Erro ao carregar tablets')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const saveMaxTablets = async () => {
+    try {
+      setSaving(true)
+      const { error } = await supabase
+        .from('tablet_settings')
+        .update({ 
+          setting_value: maxTablets.toString(),
+          updated_at: new Date().toISOString()
+        })
+        .eq('setting_key', 'max_tablets')
+
+      if (error) throw error
+      toast.success('Limite de tablets atualizado!')
+    } catch (error: any) {
+      console.error('Erro ao salvar:', error)
+      toast.error('Erro ao salvar configuração')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleDelete = async (tablet: RegisteredTablet) => {
+    try {
+      const { error } = await supabase
+        .from('registered_tablets')
+        .delete()
+        .eq('id', tablet.id)
+
+      if (error) throw error
+      
+      setTablets(prev => prev.filter(t => t.id !== tablet.id))
+      toast.success(`Tablet "${tablet.name}" removido com sucesso!`)
+      setDeleteTablet(null)
+    } catch (error: any) {
+      console.error('Erro ao remover tablet:', error)
+      toast.error('Erro ao remover tablet')
+    }
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
+
+  const isOnline = (lastSeen: string) => {
+    const diff = Date.now() - new Date(lastSeen).getTime()
+    return diff < 5 * 60 * 1000
+  }
+
+  const onlineCount = tablets.filter(t => isOnline(t.last_seen)).length
+  const offlineCount = tablets.length - onlineCount
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="text-center">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto mb-2 text-orange-500" />
+          <p className="text-gray-400">Carregando tablets...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Tablets</h1>
-        <Button className="bg-orange-500 hover:bg-orange-600 text-white">
-          <Plus className="h-4 w-4 mr-2" />
-          Adicionar Tablet
-        </Button>
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-orange-500/10 rounded-lg">
+            <Tablet className="w-6 h-6 text-orange-500" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Tablets Registrados</h1>
+            <p className="text-gray-400 text-sm">Gerencie os dispositivos autorizados</p>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={loadData} disabled={isLoading}>
+            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+            Atualizar
+          </Button>
+        </div>
       </div>
 
-      {/* Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <Card className="bg-zinc-900 border-zinc-800">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/20">
-                <Wifi className="h-5 w-5 text-green-600" />
+              <div className="p-2 rounded-lg bg-green-500/20">
+                <Wifi className="h-5 w-5 text-green-500" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Online</p>
-                <p className="text-2xl font-bold">3</p>
+                <p className="text-sm text-gray-400">Online</p>
+                <p className="text-2xl font-bold text-white">{onlineCount}</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-zinc-900 border-zinc-800">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-red-100 dark:bg-red-900/20">
-                <WifiOff className="h-5 w-5 text-red-600" />
+              <div className="p-2 rounded-lg bg-red-500/20">
+                <WifiOff className="h-5 w-5 text-red-500" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Offline</p>
-                <p className="text-2xl font-bold">1</p>
+                <p className="text-sm text-gray-400">Offline</p>
+                <p className="text-2xl font-bold text-white">{offlineCount}</p>
               </div>
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="bg-zinc-900 border-zinc-800">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/20">
-                <Tablet className="h-5 w-5 text-orange-600" />
+              <div className="p-2 rounded-lg bg-orange-500/20">
+                <Tablet className="h-5 w-5 text-orange-500" />
               </div>
               <div>
-                <p className="text-sm text-gray-500">Total</p>
-                <p className="text-2xl font-bold">4</p>
+                <p className="text-sm text-gray-400">Total</p>
+                <p className="text-2xl font-bold text-white">{tablets.length}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="bg-zinc-900 border-zinc-800">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-blue-500/20">
+                <Settings className="h-5 w-5 text-blue-500" />
+              </div>
+              <div>
+                <p className="text-sm text-gray-400">Limite</p>
+                <p className="text-2xl font-bold text-white">{maxTablets}</p>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Grid de Tablets */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {tablets.map((tablet) => (
-          <Card key={tablet.id}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Tablet className="h-5 w-5 text-gray-500" />
-                  <CardTitle className="text-base">{tablet.name}</CardTitle>
-                </div>
-                <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
-                  <Settings className="h-4 w-4" />
-                </Button>
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="bg-zinc-900 border-zinc-800">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Settings className="w-5 h-5 text-orange-500" />
+              Limite de Tablets
+            </CardTitle>
+            <CardDescription>
+              Número máximo de tablets que podem ser registrados
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <Label className="text-white mb-2 block">Máximo de tablets</Label>
+                <Input
+                  type="number"
+                  min={1}
+                  max={100}
+                  value={maxTablets}
+                  onChange={(e) => setMaxTablets(parseInt(e.target.value) || 1)}
+                  className="bg-zinc-800 border-zinc-700 text-white"
+                />
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Status</span>
-                  {tablet.status === "online" ? (
-                    <Badge className="bg-green-500 text-white">
-                      <Wifi className="h-3 w-3 mr-1" />
-                      Online
-                    </Badge>
-                  ) : (
-                    <Badge variant="destructive">
-                      <WifiOff className="h-3 w-3 mr-1" />
-                      Offline
-                    </Badge>
-                  )}
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Bateria</span>
-                  <div className="flex items-center gap-2">
-                    <Battery className={`h-4 w-4 ${getBatteryColor(tablet.battery)}`} />
-                    <span className={`text-sm font-medium ${getBatteryColor(tablet.battery)}`}>
-                      {tablet.battery}%
-                    </span>
+              <Button 
+                onClick={saveMaxTablets} 
+                disabled={saving}
+                className="bg-orange-500 hover:bg-orange-600 mt-6"
+              >
+                {saving ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+              </Button>
+            </div>
+            <div className="flex items-center gap-2 text-sm">
+              <span className="text-gray-400">Tablets registrados:</span>
+              <Badge className={tablets.length >= maxTablets ? 'bg-red-500' : 'bg-green-500'}>
+                {tablets.length} / {maxTablets}
+              </Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-zinc-900 border-zinc-800">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <AlertTriangle className="w-5 h-5 text-orange-500" />
+              Como Funciona
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li className="flex items-start gap-2">
+                <span className="text-orange-500">1.</span>
+                Quando um novo tablet se conecta, ele solicita registro automaticamente
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-orange-500">2.</span>
+                Se houver vagas disponíveis (dentro do limite), o registro é aprovado
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-orange-500">3.</span>
+                Tablets registrados podem acessar o sistema normalmente
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-orange-500">4.</span>
+                Remova tablets não utilizados para liberar vagas
+              </li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="bg-zinc-900 border-zinc-800">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Tablet className="w-5 h-5 text-orange-500" />
+            Dispositivos ({tablets.length})
+          </CardTitle>
+          <CardDescription>
+            Lista de todos os tablets registrados no sistema
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {tablets.length === 0 ? (
+            <div className="text-center py-8">
+              <Tablet className="w-12 h-12 mx-auto mb-3 text-gray-600" />
+              <p className="text-gray-400">Nenhum tablet registrado ainda</p>
+              <p className="text-sm text-gray-500 mt-1">
+                Os tablets serão registrados automaticamente ao se conectarem
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3">
+              {tablets.map((tablet) => (
+                <div
+                  key={tablet.id}
+                  className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg border border-zinc-700"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className={`p-2 rounded-lg ${isOnline(tablet.last_seen) ? 'bg-green-500/20' : 'bg-zinc-700'}`}>
+                      {isOnline(tablet.last_seen) ? (
+                        <Wifi className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <WifiOff className="w-5 h-5 text-gray-500" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-white">{tablet.name}</p>
+                        <Badge 
+                          variant="outline" 
+                          className={isOnline(tablet.last_seen) 
+                            ? 'border-green-500 text-green-500' 
+                            : 'border-gray-500 text-gray-500'
+                          }
+                        >
+                          {isOnline(tablet.last_seen) ? 'Online' : 'Offline'}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-4 mt-1 text-sm text-gray-400">
+                        <span className="font-mono">{tablet.device_id.substring(0, 16)}...</span>
+                        {tablet.ip_address && (
+                          <span>IP: {tablet.ip_address}</span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3" />
+                          Registrado: {formatDate(tablet.registered_at)}
+                        </span>
+                        <span>
+                          Último acesso: {formatDate(tablet.last_seen)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                    onClick={() => setDeleteTablet(tablet)}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-500">Última Atividade</span>
-                  <span className="text-sm">{tablet.lastSeen}</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <AlertDialog open={!!deleteTablet} onOpenChange={() => setDeleteTablet(null)}>
+        <AlertDialogContent className="bg-zinc-900 border-zinc-800">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white">Remover Tablet</AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-400">
+              Tem certeza que deseja remover o tablet "{deleteTablet?.name}"? 
+              O dispositivo precisará ser registrado novamente para acessar o sistema.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-zinc-800 text-white border-zinc-700 hover:bg-zinc-700">
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-500 hover:bg-red-600 text-white"
+              onClick={() => deleteTablet && handleDelete(deleteTablet)}
+            >
+              Remover
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
-  );
+  )
 }

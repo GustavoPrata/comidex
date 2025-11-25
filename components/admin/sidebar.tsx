@@ -92,6 +92,7 @@ const menuItems: MenuItem[] = [
     label: 'Tablet',
     icon: Tablet,
     submenu: [
+      { label: 'Dispositivos', href: '/admin/tablets', icon: Tablet },
       { label: 'Tipos de Atendimento', href: '/admin/tablet-service-types', icon: Receipt },
       { label: 'Configurações', href: '/admin/tablet-settings', icon: Settings }
     ]

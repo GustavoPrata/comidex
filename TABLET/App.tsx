@@ -296,8 +296,10 @@ function MainApp() {
   // Connection Check States - Simplified
   const [showConnectionModal, setShowConnectionModal] = useState(true);
   const [appReady, setAppReady] = useState(false);
-  const [connectionState, setConnectionState] = useState<'checking' | 'connected' | 'error'>('checking');
+  const [connectionState, setConnectionState] = useState<'checking' | 'connected' | 'registering' | 'registered' | 'error'>('checking');
   const [connectionError, setConnectionError] = useState('');
+  const [tabletRegistered, setTabletRegistered] = useState(false);
+  const [registrationInfo, setRegistrationInfo] = useState<{ name?: string; slots_available?: boolean; current_count?: number; max_tablets?: number } | null>(null);
 
   // Timers and Refs
   const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -356,10 +358,10 @@ function MainApp() {
     },
   ];
 
-  // Simple connection check - just verify API is reachable
+  // Connection check with tablet registration verification
   const checkConnection = useCallback(async () => {
     // Only set checking on first attempt, not on retries (prevents flashing)
-    if (connectionState !== 'error') {
+    if (connectionState !== 'error' && connectionState !== 'registering') {
       setConnectionState('checking');
     }
     
@@ -379,7 +381,63 @@ function MainApp() {
         console.log('✅ Conectado ao servidor!');
         setConnectionState('connected');
         setConnectionError('');
-        setAppReady(true);
+        
+        // Now check tablet registration
+        try {
+          const registerCheckRes = await fetch(`${config.API_BASE_URL}/api/mobile/tablet-register?device_id=${deviceId}`);
+          const registerData = await registerCheckRes.json();
+          
+          if (registerData.registered) {
+            // Tablet is already registered
+            console.log('✅ Tablet já registrado:', registerData.tablet?.name);
+            setTabletRegistered(true);
+            setRegistrationInfo({ name: registerData.tablet?.name });
+            setConnectionState('registered');
+            setAppReady(true);
+          } else if (registerData.slots_available) {
+            // Auto-register the tablet
+            console.log('📝 Registrando tablet automaticamente...');
+            setConnectionState('registering');
+            
+            const registerRes = await fetch(`${config.API_BASE_URL}/api/mobile/tablet-register`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ device_id: deviceId }),
+            });
+            
+            const registerResult = await registerRes.json();
+            
+            if (registerResult.success) {
+              console.log('✅ Tablet registrado com sucesso:', registerResult.tablet?.name);
+              setTabletRegistered(true);
+              setRegistrationInfo({ name: registerResult.tablet?.name });
+              setConnectionState('registered');
+              setAppReady(true);
+            } else {
+              setConnectionState('error');
+              setConnectionError(registerResult.message || 'Erro ao registrar tablet');
+              setTimeout(() => checkConnection(), 5000);
+              return false;
+            }
+          } else {
+            // No slots available
+            console.log('❌ Limite de tablets atingido');
+            setConnectionState('error');
+            setRegistrationInfo({
+              slots_available: false,
+              current_count: registerData.current_count,
+              max_tablets: registerData.max_tablets,
+            });
+            setConnectionError(`Limite de tablets atingido (${registerData.current_count}/${registerData.max_tablets}). Contate o administrador.`);
+            setTimeout(() => checkConnection(), 10000);
+            return false;
+          }
+        } catch (regError) {
+          console.log('⚠️ Erro na verificação de registro, continuando...', regError);
+          setTabletRegistered(true);
+          setConnectionState('registered');
+          setAppReady(true);
+        }
         
         // Fetch settings silently
         try {
@@ -396,7 +454,7 @@ function MainApp() {
         } catch (e) {}
         
         // Close modal after brief success display
-        setTimeout(() => setShowConnectionModal(false), 800);
+        setTimeout(() => setShowConnectionModal(false), 1000);
         return true;
       } else {
         // Server responded but with error
@@ -412,7 +470,7 @@ function MainApp() {
     // Retry silently after 3 seconds (don't change state to checking)
     setTimeout(() => checkConnection(), 3000);
     return false;
-  }, [connectionState]);
+  }, [connectionState, deviceId]);
 
   // Fetch tablet settings from server
   const fetchTabletSettings = useCallback(async () => {
@@ -1586,7 +1644,7 @@ function MainApp() {
   };
 
 
-  // Simple Connection Modal - shows connecting/connected/error states
+  // Connection Modal - shows connecting/connected/registering/registered/error states
   const ConnectionModal = () => (
     <Modal
       visible={showConnectionModal}
@@ -1602,10 +1660,24 @@ function MainApp() {
             resizeMode="contain"
           />
           
-          {connectionState === 'connected' ? (
+          {connectionState === 'registered' ? (
             <>
               <CheckCircle size={48} color="#4CAF50" />
-              <Text style={styles.connectionTitleSimple}>Conectado!</Text>
+              <Text style={styles.connectionTitleSimple}>Tablet Registrado!</Text>
+              {registrationInfo?.name && (
+                <Text style={styles.connectionSubtitle}>{registrationInfo.name}</Text>
+              )}
+            </>
+          ) : connectionState === 'registering' ? (
+            <>
+              <ActivityIndicator size="large" color={config.colors.primary} />
+              <Text style={styles.connectionTitleSimple}>Registrando tablet...</Text>
+              <Text style={styles.connectionSubtitle}>Aguarde um momento</Text>
+            </>
+          ) : connectionState === 'connected' ? (
+            <>
+              <ActivityIndicator size="large" color={config.colors.primary} />
+              <Text style={styles.connectionTitleSimple}>Verificando registro...</Text>
             </>
           ) : connectionState === 'error' ? (
             <>
@@ -5939,6 +6011,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#FFF",
     marginTop: 20,
+  },
+  connectionSubtitle: {
+    fontSize: 16,
+    color: "#AAA",
+    marginTop: 8,
   },
   connectionErrorText: {
     fontSize: 16,
