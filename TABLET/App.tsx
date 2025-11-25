@@ -2960,8 +2960,12 @@ function MainApp() {
                       selectedGroup?.id === group.id && styles.groupItemActiveGlass
                     ]}
                     onPress={() => {
-                      setSelectedGroup(group);
-                      setSelectedCategory(null);
+                      if (selectedGroup?.id !== group.id) {
+                        setSelectedGroup(group);
+                        setSelectedCategory(null);
+                        loadCategories(group.id);
+                        loadProducts(group.id);
+                      }
                       resetIdleTimer();
                     }}
                   >
@@ -3015,34 +3019,6 @@ function MainApp() {
                 </View>
               ) : (
                 <>
-                  {/* All Categories Option */}
-                  <TouchableOpacity
-                    style={[
-                      styles.categoryItemGlass,
-                      !selectedCategory && styles.categoryItemActiveGlass
-                    ]}
-                    onPress={() => {
-                      setSelectedCategory(null);
-                      resetIdleTimer();
-                    }}
-                  >
-                    <View style={[
-                      styles.categoryIconGlass,
-                      !selectedCategory && styles.categoryIconActiveGlass
-                    ]}>
-                      <IconComponent name="restaurant" size={20} color={!selectedCategory ? '#FF7043' : 'rgba(255, 255, 255, 0.6)'} />
-                    </View>
-                    <Text style={[
-                      styles.categoryNameGlass,
-                      !selectedCategory && styles.categoryNameActiveGlass
-                    ]}>
-                      Todos os Pratos
-                    </Text>
-                    {!selectedCategory && (
-                      <View style={styles.categoryActiveBar} />
-                    )}
-                  </TouchableOpacity>
-
                   {/* Category List */}
                   {categories.map((category) => (
                     <TouchableOpacity
