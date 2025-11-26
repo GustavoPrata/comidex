@@ -6872,7 +6872,7 @@ const styles = StyleSheet.create({
   imageModalCloseButton: {
     position: 'absolute',
     top: '50%',
-    right: 50,
+    right: 30,
     zIndex: 10,
     transform: [{ translateY: -35 }],
   },
