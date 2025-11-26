@@ -6819,8 +6819,6 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   cartFullScreenIncluded: {
-    color: '#4CAF50',
-    fontWeight: '600',
     fontStyle: 'italic',
   },
   cartFullScreenQtyContainer: {
