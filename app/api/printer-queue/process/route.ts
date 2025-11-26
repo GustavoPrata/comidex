@@ -24,9 +24,8 @@ export async function POST(request: NextRequest) {
           orders (
             id,
             table_id,
-            tables (
+            restaurant_tables (
               id,
-              name,
               number
             )
           )
@@ -67,19 +66,19 @@ export async function POST(request: NextRequest) {
         const orderItem = job.order_items
         const item = orderItem?.items
         const order = orderItem?.orders
-        const table = order?.tables
+        const table = order?.restaurant_tables
         
         // Validar impressora
         if (!printer || !printer.active) {
           await supabase
             .from('printer_queue')
             .update({ 
-              status: 'failed',
+              status: 'error',
               error_message: 'Impressora não encontrada ou inativa'
             })
             .eq('id', job.id)
           failed++
-          results.push({ id: job.id, status: 'failed', error: 'Impressora não encontrada' })
+          results.push({ id: job.id, status: 'error', error: 'Impressora não encontrada' })
           continue
         }
         
@@ -89,16 +88,38 @@ export async function POST(request: NextRequest) {
           await supabase
             .from('printer_queue')
             .update({ 
-              status: 'failed',
+              status: 'error',
               error_message: 'Dados do pedido incompletos ou produto inexistente'
             })
             .eq('id', job.id)
           failed++
-          results.push({ id: job.id, status: 'failed', error: 'Dados incompletos' })
+          results.push({ id: job.id, status: 'error', error: 'Dados incompletos' })
           continue
         }
         
-        // Atualizar status para 'printing' apenas após validações
+        // Se for impressora de rede, testar conexão primeiro
+        if (!printer.is_local && printer.ip_address && printer.ip_address !== 'LOCAL') {
+          const isReachable = await printerService.testPrinterConnection(
+            printer.ip_address,
+            parseInt(printer.port) || 9100
+          );
+          
+          if (!isReachable) {
+            console.error(`❌ Job ${job.id}: Impressora ${printer.name} não alcançável em ${printer.ip_address}:${printer.port || 9100}`);
+            await supabase
+              .from('printer_queue')
+              .update({
+                status: 'error',
+                error_message: `Impressora não alcançável via rede (${printer.ip_address}:${printer.port || 9100})`
+              })
+              .eq('id', job.id);
+            failed++;
+            results.push({ id: job.id, status: 'error', error: 'Impressora não alcançável' });
+            continue;
+          }
+        }
+        
+        // Atualizar status para 'printing' apenas após validações e teste de conexão
         await supabase
           .from('printer_queue')
           .update({ status: 'printing' })
@@ -108,7 +129,7 @@ export async function POST(request: NextRequest) {
           itemName: item.name || 'Item',
           quantity: orderItem.quantity || 1,
           notes: orderItem.notes || '',
-          tableName: table?.name || table?.number || 'Mesa',
+          tableName: table?.number || 'Mesa',
           orderId: order?.id || job.id,
           timestamp: new Date().toLocaleString('pt-BR')
         })
@@ -129,12 +150,12 @@ export async function POST(request: NextRequest) {
           await supabase
             .from('printer_queue')
             .update({ 
-              status: 'failed',
+              status: 'error',
               error_message: 'Falha ao comunicar com a impressora'
             })
             .eq('id', job.id)
           failed++
-          results.push({ id: job.id, status: 'failed', error: 'Falha na comunicação' })
+          results.push({ id: job.id, status: 'error', error: 'Falha na comunicação' })
         }
         
       } catch (error: any) {
@@ -143,12 +164,12 @@ export async function POST(request: NextRequest) {
         await supabase
           .from('printer_queue')
           .update({ 
-            status: 'failed',
+            status: 'error',
             error_message: error.message || 'Erro desconhecido'
           })
           .eq('id', job.id)
         failed++
-        results.push({ id: job.id, status: 'failed', error: error.message })
+        results.push({ id: job.id, status: 'error', error: error.message })
       }
     }
     

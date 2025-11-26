@@ -1,0 +1,3 @@
+{
+  "/api/printer-queue/process/route": "app/api/printer-queue/process/route.js"
+}
