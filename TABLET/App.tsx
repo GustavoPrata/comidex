@@ -3960,36 +3960,53 @@ function MainApp() {
         onRequestClose={() => setShowImageModal(false)}
       >
         <View style={styles.imageModalOverlay}>
+          {/* Close Button on Left Side - Same as Cart */}
           <Pressable 
-            style={styles.imageModalCloseButton}
+            style={styles.imageModalCloseArea}
             onPress={() => setShowImageModal(false)}
           >
             <View style={styles.imageModalCloseCircle}>
-              <X size={28} color="#000" strokeWidth={2.5} />
+              <X size={28} color="#333" strokeWidth={2.5} />
             </View>
           </Pressable>
-          
-          {imageModalProduct && (
-            <>
-              {imageModalProduct.image_url ? (
-                <Image 
-                  source={{ uri: imageModalProduct.image_url.startsWith('http') ? imageModalProduct.image_url : `${config.BASE_URL}${imageModalProduct.image_url}` }} 
-                  style={styles.imageModalImage}
-                  resizeMode="cover"
-                />
-              ) : (
-                <View style={styles.imageModalPlaceholder}>
-                  <IconComponent name="sushi" size={80} color="rgba(255, 255, 255, 0.3)" />
-                </View>
-              )}
-              <View style={styles.imageModalInfoBar}>
-                <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
-                {imageModalProduct.description && (
-                  <Text style={styles.imageModalDescription}>{imageModalProduct.description}</Text>
+
+          {/* Image Panel on Right Side */}
+          <View style={styles.imageModalPanel}>
+            {imageModalProduct && (
+              <>
+                {/* Image */}
+                {imageModalProduct.image_url ? (
+                  <Image 
+                    source={{ uri: imageModalProduct.image_url.startsWith('http') ? imageModalProduct.image_url : `${config.BASE_URL}${imageModalProduct.image_url}` }} 
+                    style={styles.imageModalImage}
+                    resizeMode="cover"
+                  />
+                ) : (
+                  <View style={styles.imageModalPlaceholder}>
+                    <IconComponent name="sushi" size={100} color="rgba(255, 255, 255, 0.3)" />
+                  </View>
                 )}
-              </View>
-            </>
-          )}
+                
+                {/* Info Bar with Name, Description and Price */}
+                <View style={styles.imageModalInfoBar}>
+                  <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
+                  {imageModalProduct.description && (
+                    <Text style={styles.imageModalDescription}>{imageModalProduct.description}</Text>
+                  )}
+                  <View style={styles.imageModalPriceRow}>
+                    <Text style={styles.imageModalPrice}>
+                      R$ {(imageModalProduct.price || 0).toFixed(2)}
+                    </Text>
+                    {imageModalProduct.included_in_rodizio && (
+                      <View style={styles.imageModalRodizioTag}>
+                        <Text style={styles.imageModalRodizioText}>Incluído no Rodízio</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+              </>
+            )}
+          </View>
         </View>
       </Modal>
 
@@ -7201,16 +7218,13 @@ const styles = StyleSheet.create({
   imageModalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.92)",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    flexDirection: 'column',
+    flexDirection: 'row',
   },
-  imageModalCloseButton: {
-    position: 'absolute',
-    top: '50%',
-    right: 30,
-    zIndex: 10,
-    transform: [{ translateY: -35 }],
+  imageModalCloseArea: {
+    width: 120,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   imageModalCloseCircle: {
     width: 70,
@@ -7220,47 +7234,65 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  imageModalPanel: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+    borderTopLeftRadius: 24,
+    borderBottomLeftRadius: 24,
+    overflow: 'hidden',
+  },
   imageModalPlaceholder: {
-    width: width - 140,
-    height: height * 0.65,
+    flex: 1,
     backgroundColor: 'rgba(255, 255, 255, 0.05)',
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 20,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
   },
   imageModalImage: {
-    width: width - 140,
-    height: height * 0.65,
-    marginLeft: 20,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
+    flex: 1,
+    width: '100%',
   },
   imageModalInfoBar: {
-    width: width - 140,
-    marginLeft: 20,
-    backgroundColor: 'rgba(20, 20, 20, 0.95)',
-    paddingVertical: 20,
-    paddingHorizontal: 25,
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    paddingVertical: 24,
+    paddingHorizontal: 30,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.1)',
   },
   imageModalTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 8,
-    letterSpacing: 1,
+    marginBottom: 10,
+    letterSpacing: 0.5,
   },
   imageModalDescription: {
-    fontSize: 14,
+    fontSize: 15,
     color: 'rgba(255, 255, 255, 0.7)',
-    lineHeight: 22,
+    lineHeight: 24,
+    marginBottom: 16,
+  },
+  imageModalPriceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  imageModalPrice: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#FF7043',
+  },
+  imageModalRodizioTag: {
+    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(76, 175, 80, 0.4)',
+  },
+  imageModalRodizioText: {
+    fontSize: 13,
+    color: '#4CAF50',
+    fontWeight: '600',
   },
   cartModal: {
     position: "absolute",
