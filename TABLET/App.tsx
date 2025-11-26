@@ -3988,7 +3988,7 @@ function MainApp() {
                   clearCart();
                 }}
               >
-                <Trash2 size={16} color="#FF5252" strokeWidth={2} />
+                <Trash2 size={16} color="#FFF" strokeWidth={2.5} />
                 <Text style={styles.cartFullScreenClearText}>LIMPAR CARRINHO</Text>
               </TouchableOpacity>
             </View>
@@ -4088,6 +4088,7 @@ function MainApp() {
                   style={styles.cartFullScreenAddMoreBtn}
                   onPress={() => setShowCart(false)}
                 >
+                  <Plus size={18} color="#FF7043" strokeWidth={2.5} />
                   <Text style={styles.cartFullScreenAddMoreText}>ADICIONAR MAIS</Text>
                 </TouchableOpacity>
                 
@@ -4099,7 +4100,10 @@ function MainApp() {
                   {loading ? (
                     <ActivityIndicator color="#FFF" />
                   ) : (
-                    <Text style={styles.cartFullScreenSendText}>ENVIAR PEDIDO</Text>
+                    <>
+                      <CheckCircle size={18} color="#FFF" strokeWidth={2.5} />
+                      <Text style={styles.cartFullScreenSendText}>ENVIAR PEDIDO</Text>
+                    </>
                   )}
                 </TouchableOpacity>
               </View>
@@ -6731,18 +6735,17 @@ const styles = StyleSheet.create({
   cartFullScreenClearBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 6,
-    backgroundColor: 'rgba(255,82,82,0.12)',
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(255,82,82,0.25)',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FF5252',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 25,
   },
   cartFullScreenClearText: {
-    color: '#FF5252',
-    fontSize: 12,
-    fontWeight: '600',
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '700',
   },
   cartFullScreenList: {
     flex: 1,
@@ -6872,24 +6875,30 @@ const styles = StyleSheet.create({
   },
   cartFullScreenAddMoreBtn: {
     flex: 1,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    paddingVertical: 16,
-    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+    gap: 8,
+    backgroundColor: 'rgba(255,112,67,0.15)',
+    paddingVertical: 16,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#FF7043',
   },
   cartFullScreenAddMoreText: {
-    color: '#FFFFFF',
+    color: '#FF7043',
     fontSize: 14,
     fontWeight: '700',
   },
   cartFullScreenSendBtn: {
     flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 8,
     backgroundColor: '#4CAF50',
     paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
+    borderRadius: 25,
   },
   cartFullScreenSendText: {
     color: '#FFFFFF',
