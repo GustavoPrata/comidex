@@ -404,6 +404,8 @@ function MainApp() {
   const [selectedWaiterRequest, setSelectedWaiterRequest] = useState<number | null>(null);
   const [waiterRequestNote, setWaiterRequestNote] = useState("");
   const waiterModalAnim = useRef(new Animated.Value(width)).current;
+  const cartModalAnim = useRef(new Animated.Value(width)).current;
+  const imageModalAnim = useRef(new Animated.Value(width)).current;
 
   // Brightness Control and Kiosk Mode States
   const [originalBrightness, setOriginalBrightness] = useState(1);
@@ -1750,6 +1752,54 @@ function MainApp() {
     });
   };
 
+  // Open cart modal with animation
+  const openCartModal = () => {
+    resetIdleTimer();
+    setShowCart(true);
+    Animated.spring(cartModalAnim, {
+      toValue: 0,
+      friction: 8,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Close cart modal with animation
+  const closeCartModal = () => {
+    Animated.timing(cartModalAnim, {
+      toValue: width,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowCart(false);
+    });
+  };
+
+  // Open image modal with animation
+  const openImageModal = (product: any) => {
+    resetIdleTimer();
+    setImageModalProduct(product);
+    setShowImageModal(true);
+    Animated.spring(imageModalAnim, {
+      toValue: 0,
+      friction: 8,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Close image modal with animation
+  const closeImageModal = () => {
+    Animated.timing(imageModalAnim, {
+      toValue: width,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowImageModal(false);
+      setImageModalProduct(null);
+    });
+  };
+
   // Call waiter function with request type
   const callWaiter = async (requestTypeId?: number, requestTypeName?: string) => {
     resetIdleTimer();
@@ -1869,12 +1919,8 @@ function MainApp() {
       // Clear temp quantities
       setTempQuantities({});
       
-      // Open cart modal
-      setShowCart(true);
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        useNativeDriver: true,
-      }).start();
+      // Open cart modal with animation
+      openCartModal();
     }
   };
 
@@ -2207,7 +2253,7 @@ function MainApp() {
         setSessionTotal(prevTotal => prevTotal + orderTotal);
         
         setCart([]);
-        setShowCart(false);
+        closeCartModal();
         
         // Reload orders
         loadSessionOrders();
@@ -3218,10 +3264,7 @@ function MainApp() {
           <TouchableOpacity 
             style={styles.goomerActionBtn} 
             activeOpacity={0.7}
-            onPress={() => {
-              setShowCart(true);
-              resetIdleTimer();
-            }}
+            onPress={openCartModal}
           >
             <View style={styles.goomerCartIconWrap}>
               <ShoppingCart size={22} color="#FFFFFF" strokeWidth={2} />
@@ -3441,10 +3484,7 @@ function MainApp() {
                     <View style={styles.productCardGlass}>
                       {/* Product Image - Left Side 16:9 - Clickable */}
                       <Pressable 
-                        onPress={() => {
-                          setImageModalProduct(item);
-                          setShowImageModal(true);
-                        }}
+                        onPress={() => openImageModal(item)}
                       >
                         {item.image_url ? (
                           <Image source={{ uri: item.image_url.startsWith('http') ? item.image_url : `${config.BASE_URL}${item.image_url}` }} style={styles.productImageGlass} />
@@ -3957,21 +3997,21 @@ function MainApp() {
         visible={showImageModal}
         animationType="fade"
         transparent={true}
-        onRequestClose={() => setShowImageModal(false)}
+        onRequestClose={closeImageModal}
       >
         <View style={styles.imageModalOverlay}>
           {/* Close Button on Left Side - Same as Cart */}
           <Pressable 
             style={styles.imageModalCloseArea}
-            onPress={() => setShowImageModal(false)}
+            onPress={closeImageModal}
           >
             <View style={styles.imageModalCloseCircle}>
               <X size={28} color="#333" strokeWidth={2.5} />
             </View>
           </Pressable>
 
-          {/* Image Panel on Right Side */}
-          <View style={styles.imageModalPanel}>
+          {/* Image Panel on Right Side with Animation */}
+          <Animated.View style={[styles.imageModalPanel, { transform: [{ translateX: imageModalAnim }] }]}>
             {imageModalProduct && (
               <>
                 {/* Image */}
@@ -4008,7 +4048,7 @@ function MainApp() {
                 </View>
               </>
             )}
-          </View>
+          </Animated.View>
         </View>
       </Modal>
 
@@ -4017,21 +4057,21 @@ function MainApp() {
         visible={showCart}
         animationType="fade"
         transparent={true}
-        onRequestClose={() => setShowCart(false)}
+        onRequestClose={closeCartModal}
       >
         <View style={styles.cartFullScreenOverlay}>
           {/* Close Button on Left Side */}
           <Pressable 
             style={styles.cartFullScreenCloseArea}
-            onPress={() => setShowCart(false)}
+            onPress={closeCartModal}
           >
             <View style={styles.cartFullScreenCloseCircle}>
               <X size={28} color="#333" strokeWidth={2.5} />
             </View>
           </Pressable>
 
-          {/* Cart Panel on Right Side */}
-          <View style={styles.cartFullScreenPanel}>
+          {/* Cart Panel on Right Side with Animation */}
+          <Animated.View style={[styles.cartFullScreenPanel, { transform: [{ translateX: cartModalAnim }] }]}>
             {/* Header */}
             <View style={styles.cartFullScreenHeader}>
               <View style={styles.cartHeaderLeft}>
@@ -4140,7 +4180,7 @@ function MainApp() {
               <View style={styles.cartFullScreenButtons}>
                 <TouchableOpacity 
                   style={styles.cartFullScreenAddMoreBtn}
-                  onPress={() => setShowCart(false)}
+                  onPress={closeCartModal}
                 >
                   <Plus size={18} color="#FF7043" strokeWidth={2.5} />
                   <Text style={styles.cartFullScreenAddMoreText}>ADICIONAR MAIS</Text>
@@ -4162,7 +4202,7 @@ function MainApp() {
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </Animated.View>
         </View>
       </Modal>
 
