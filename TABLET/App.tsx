@@ -2152,44 +2152,19 @@ function MainApp() {
         // Auto-reset after order
         autoResetAfterOrder();
         
-        // Show enhanced success message with print status
-        const printStatusIcon = data.print_status === 'sent_to_kitchen' ? '✅' : '⚠️';
-        const printStatusMessage = data.print_status === 'sent_to_kitchen' 
-          ? 'Pedido enviado para cozinha!' 
-          : 'Pedido criado (impressora não configurada)';
-        
-        const estimatedTime = data.order?.estimated_preparation_time 
-          ? `\nTempo estimado: ${data.order.estimated_preparation_time}` 
-          : '';
-        
-        const printJobsInfo = data.order?.print_jobs_count > 0
-          ? `\n${data.order.print_jobs_count} impressora(s) notificada(s)`
-          : '';
+        // Show success screen directly without alert
+        setShowSuccess(true);
+        Animated.spring(scaleAnim, {
+          toValue: 1,
+          friction: 3,
+          tension: 40,
+          useNativeDriver: true,
+        }).start();
 
-        Alert.alert(
-          `${printStatusIcon} Pedido Confirmado`,
-          `${printStatusMessage}\n\nPedido #${data.order.numero}\nMesa: ${tableNumber}${estimatedTime}${printJobsInfo}\n\n${data.message || 'Pedido processado com sucesso!'}`,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                setShowSuccess(true);
-                // Success animation
-                Animated.spring(scaleAnim, {
-                  toValue: 1,
-                  friction: 3,
-                  tension: 40,
-                  useNativeDriver: true,
-                }).start();
-
-                setTimeout(() => {
-                  setShowSuccess(false);
-                  scaleAnim.setValue(0);
-                }, 4000);
-              }
-            }
-          ]
-        );
+        setTimeout(() => {
+          setShowSuccess(false);
+          scaleAnim.setValue(0);
+        }, 4000);
       } else {
         Alert.alert("❌ Erro", data.error || data.message || "Erro ao enviar pedido");
       }
