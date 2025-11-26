@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       .limit(10)
     
     if (fetchError) {
-      console.error('Erro ao buscar jobs pendentes:', fetchError)
+      console.error('❌ Erro ao buscar jobs pendentes:', fetchError)
       throw fetchError
     }
     
@@ -64,7 +64,12 @@ export async function POST(request: NextRequest) {
     for (const job of pendingJobs) {
       try {
         const printer = job.printers
+        const orderItem = job.order_items
+        const item = orderItem?.items
+        const order = orderItem?.orders
+        const table = order?.tables
         
+        // Validar impressora
         if (!printer || !printer.active) {
           await supabase
             .from('printer_queue')
@@ -78,20 +83,31 @@ export async function POST(request: NextRequest) {
           continue
         }
         
+        // Validar se dados essenciais existem
+        if (!orderItem || !item) {
+          console.error(`❌ Job ${job.id}: Dados incompletos (order_item ou item ausente)`)
+          await supabase
+            .from('printer_queue')
+            .update({ 
+              status: 'failed',
+              error_message: 'Dados do pedido incompletos ou produto inexistente'
+            })
+            .eq('id', job.id)
+          failed++
+          results.push({ id: job.id, status: 'failed', error: 'Dados incompletos' })
+          continue
+        }
+        
+        // Atualizar status para 'printing' apenas após validações
         await supabase
           .from('printer_queue')
           .update({ status: 'printing' })
           .eq('id', job.id)
         
-        const orderItem = job.order_items
-        const item = orderItem?.items
-        const order = orderItem?.orders
-        const table = order?.tables
-        
         const printData = printerService.createOrderItemPrint({
-          itemName: item?.name || 'Item',
-          quantity: orderItem?.quantity || 1,
-          notes: orderItem?.notes || '',
+          itemName: item.name || 'Item',
+          quantity: orderItem.quantity || 1,
+          notes: orderItem.notes || '',
           tableName: table?.name || table?.number || 'Mesa',
           orderId: order?.id || job.id,
           timestamp: new Date().toLocaleString('pt-BR')
