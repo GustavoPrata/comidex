@@ -1728,6 +1728,7 @@ function MainApp() {
   const openWaiterModal = () => {
     resetIdleTimer();
     loadWaiterRequestTypes();
+    waiterModalAnim.setValue(width);
     setShowWaiterModal(true);
     setSelectedWaiterRequest(null);
     setWaiterRequestNote("");
@@ -1755,6 +1756,7 @@ function MainApp() {
   // Open cart modal with animation
   const openCartModal = () => {
     resetIdleTimer();
+    cartModalAnim.setValue(width);
     setShowCart(true);
     Animated.spring(cartModalAnim, {
       toValue: 0,
@@ -1778,6 +1780,7 @@ function MainApp() {
   // Open image modal with animation
   const openImageModal = (product: any) => {
     resetIdleTimer();
+    imageModalAnim.setValue(width);
     setImageModalProduct(product);
     setShowImageModal(true);
     Animated.spring(imageModalAnim, {
