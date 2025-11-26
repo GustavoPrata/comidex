@@ -346,17 +346,6 @@ export default function WaiterRequestsPage() {
                       <div className="flex items-center gap-3">
                         {isEditing ? (
                           <>
-                            <button
-                              type="button"
-                              onClick={() => setFormData({ ...formData, has_quantity: !formData.has_quantity })}
-                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
-                                formData.has_quantity
-                                  ? 'bg-orange-500 hover:bg-orange-600 text-white'
-                                  : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
-                              }`}
-                            >
-                              {formData.has_quantity ? 'Qtd ✓' : 'Qtd'}
-                            </button>
                             <Button 
                               size="sm" 
                               variant="ghost" 
@@ -377,18 +366,46 @@ export default function WaiterRequestsPage() {
                         ) : (
                           <>
                             <button
-                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch('/api/admin/waiter-requests', {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ ...request, has_quantity: !request.has_quantity })
+                                  });
+                                  if (res.ok) {
+                                    toast.success('Atualizado!');
+                                    loadRequests();
+                                  }
+                                } catch (e) {
+                                  toast.error('Erro ao atualizar');
+                                }
+                              }}
+                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
                                 request.has_quantity
-                                  ? 'bg-orange-500 text-white'
-                                  : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                                  ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                                  : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-600'
                               }`}
-                              disabled
                             >
-                              Qtd
+                              Quantidade
                             </button>
                             <button
-                              onClick={() => handleToggleActive(request)}
-                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                              onClick={async () => {
+                                try {
+                                  const res = await fetch('/api/admin/waiter-requests', {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ ...request, active: !request.active })
+                                  });
+                                  if (res.ok) {
+                                    toast.success('Atualizado!');
+                                    loadRequests();
+                                  }
+                                } catch (e) {
+                                  toast.error('Erro ao atualizar');
+                                }
+                              }}
+                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all cursor-pointer ${
                                 request.active 
                                   ? 'bg-green-600 hover:bg-green-700 text-white' 
                                   : 'bg-red-500 hover:bg-red-600 text-white'

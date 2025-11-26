@@ -3,7 +3,6 @@
   "/api/admin/waiter-requests/route": "app/api/admin/waiter-requests/route.js",
   "/api/mobile/tablet-settings/route": "app/api/mobile/tablet-settings/route.js",
   "/api/mobile/tablet-status/route": "app/api/mobile/tablet-status/route.js",
-  "/api/mobile/waiter-requests/route": "app/api/mobile/waiter-requests/route.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
