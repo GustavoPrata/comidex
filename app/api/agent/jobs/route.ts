@@ -1,0 +1,102 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { createClient } from '@/lib/supabase/server';
+
+const VALID_AGENT_TOKENS = process.env.AGENT_TOKENS?.split(',') || ['comidex-agent-2024'];
+
+export async function GET(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization');
+    const token = authHeader?.replace('Bearer ', '');
+    
+    if (!token || !VALID_AGENT_TOKENS.includes(token)) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const agentName = request.headers.get('x-agent-name') || 'Unknown';
+    const agentVersion = request.headers.get('x-agent-version') || '0.0.0';
+
+    const supabase = await createClient();
+
+    const { data: jobs, error } = await supabase
+      .from('printer_queues')
+      .select(`
+        id,
+        printer_id,
+        document_type,
+        status,
+        priority,
+        copies,
+        notes,
+        order_item_id,
+        created_at,
+        order_items (
+          id,
+          quantity,
+          notes,
+          items (
+            id,
+            name
+          ),
+          orders (
+            id,
+            table_sessions (
+              tables (
+                id,
+                name
+              )
+            )
+          )
+        )
+      `)
+      .eq('status', 'pending')
+      .order('priority', { ascending: false })
+      .order('created_at', { ascending: true })
+      .limit(10);
+
+    if (error) {
+      console.error('Error fetching jobs:', error);
+      return NextResponse.json({ success: false, error: 'Database error' }, { status: 500 });
+    }
+
+    const formattedJobs = (jobs || []).map((job: any) => {
+      const orderItem = job.order_items;
+      const item = orderItem?.items;
+      const order = orderItem?.orders;
+      const tableSession = order?.table_sessions;
+      const table = tableSession?.tables;
+
+      return {
+        id: job.id,
+        printer_id: job.printer_id,
+        document_type: job.document_type,
+        status: job.status,
+        table_name: table?.name || 'Mesa ?',
+        item_name: item?.name || 'Item desconhecido',
+        quantity: orderItem?.quantity || 1,
+        notes: orderItem?.notes || job.notes || '',
+        order_id: order?.id || 0,
+        created_at: job.created_at,
+        data: ''
+      };
+    });
+
+    await supabase
+      .from('printer_queues')
+      .update({ 
+        status: 'printing',
+        started_at: new Date().toISOString()
+      })
+      .in('id', formattedJobs.map((j: any) => j.id));
+
+    console.log(`[Agent: ${agentName} v${agentVersion}] Fetched ${formattedJobs.length} jobs`);
+
+    return NextResponse.json({ 
+      success: true, 
+      jobs: formattedJobs 
+    });
+
+  } catch (error) {
+    console.error('Agent jobs error:', error);
+    return NextResponse.json({ success: false, error: 'Internal error' }, { status: 500 });
+  }
+}
