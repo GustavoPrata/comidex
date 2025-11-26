@@ -397,6 +397,13 @@ function MainApp() {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
   const [toastType, setToastType] = useState<"success" | "error" | "info">("info");
+  
+  // Waiter Request Modal States
+  const [showWaiterModal, setShowWaiterModal] = useState(false);
+  const [waiterRequestTypes, setWaiterRequestTypes] = useState<any[]>([]);
+  const [selectedWaiterRequest, setSelectedWaiterRequest] = useState<number | null>(null);
+  const [waiterRequestNote, setWaiterRequestNote] = useState("");
+  const waiterModalAnim = useRef(new Animated.Value(width)).current;
 
   // Brightness Control and Kiosk Mode States
   const [originalBrightness, setOriginalBrightness] = useState(1);
@@ -1702,34 +1709,90 @@ function MainApp() {
     }, 3000);
   };
 
-  // Call waiter function
-  const callWaiter = async () => {
+  // Load waiter request types from server
+  const loadWaiterRequestTypes = async () => {
+    try {
+      const response = await fetch(config.CATALOG_API.waiterRequests);
+      if (response.ok) {
+        const data = await response.json();
+        setWaiterRequestTypes(data);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar tipos de solicitação:", error);
+    }
+  };
+
+  // Open waiter modal
+  const openWaiterModal = () => {
+    resetIdleTimer();
+    loadWaiterRequestTypes();
+    setShowWaiterModal(true);
+    setSelectedWaiterRequest(null);
+    setWaiterRequestNote("");
+    Animated.spring(waiterModalAnim, {
+      toValue: 0,
+      friction: 8,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  // Close waiter modal
+  const closeWaiterModal = () => {
+    Animated.timing(waiterModalAnim, {
+      toValue: width,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => {
+      setShowWaiterModal(false);
+      setSelectedWaiterRequest(null);
+      setWaiterRequestNote("");
+    });
+  };
+
+  // Call waiter function with request type
+  const callWaiter = async (requestTypeId?: number, requestTypeName?: string) => {
     resetIdleTimer();
     try {
+      const requestType = requestTypeId 
+        ? waiterRequestTypes.find(r => r.id === requestTypeId)
+        : null;
+      
+      let message = `Mesa ${tableNumber} está chamando o garçom`;
+      if (requestType) {
+        message = `Mesa ${tableNumber}: ${requestType.name}`;
+        if (waiterRequestNote.trim()) {
+          message += ` - ${waiterRequestNote.trim()}`;
+        }
+      }
+
       const response = await fetch(config.CATALOG_API.callWaiter, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           table_number: tableNumber,
           session_id: session?.id,
-          message: `Mesa ${tableNumber} está chamando o garçom`,
+          message: message,
+          request_type_id: requestTypeId,
+          request_type_name: requestTypeName || requestType?.name,
+          note: waiterRequestNote.trim() || null,
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        showToastNotification("🔔 Garçom foi chamado! Aguarde um momento.", "success");
-        // Vibration feedback if available
-        if (window.navigator && window.navigator.vibrate) {
-          window.navigator.vibrate(200);
+        closeWaiterModal();
+        showToastNotification("🔔 Solicitação enviada! Aguarde um momento.", "success");
+        if (tabletSettings.haptic_enabled) {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         }
       } else {
-        showToastNotification("Erro ao chamar garçom. Tente novamente.", "error");
+        showToastNotification("Erro ao enviar solicitação. Tente novamente.", "error");
       }
     } catch (error) {
       console.error("Erro ao chamar garçom:", error);
-      showToastNotification("Erro ao chamar garçom. Verifique sua conexão.", "error");
+      showToastNotification("Erro ao enviar solicitação. Verifique sua conexão.", "error");
     }
   };
 
@@ -3123,7 +3186,7 @@ function MainApp() {
             activeOpacity={0.7}
             onPress={() => {
               triggerHaptic();
-              handleCallWaiter();
+              openWaiterModal();
             }}
           >
             <Bell size={22} color="#FFFFFF" strokeWidth={2} />
@@ -4081,6 +4144,117 @@ function MainApp() {
               </View>
             </View>
           </View>
+        </View>
+      </Modal>
+
+      {/* Waiter Request Modal - Full Screen Right Side */}
+      <Modal
+        visible={showWaiterModal}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={closeWaiterModal}
+      >
+        <View style={styles.waiterModalOverlay}>
+          {/* Close Button on Left Side - Larger space */}
+          <Pressable 
+            style={styles.waiterModalCloseArea}
+            onPress={closeWaiterModal}
+          >
+            <View style={styles.waiterModalCloseCircle}>
+              <X size={28} color="#333" strokeWidth={2.5} />
+            </View>
+          </Pressable>
+
+          {/* Request Panel on Right Side */}
+          <Animated.View 
+            style={[
+              styles.waiterModalPanel,
+              { transform: [{ translateX: waiterModalAnim }] }
+            ]}
+          >
+            {/* Header */}
+            <View style={styles.waiterModalHeader}>
+              <View style={styles.waiterModalHeaderLeft}>
+                <Bell size={24} color="#FF7043" strokeWidth={2} />
+                <Text style={styles.waiterModalTitle}>CHAMAR GARÇOM</Text>
+              </View>
+            </View>
+
+            {/* Request Types */}
+            <ScrollView style={styles.waiterModalList} showsVerticalScrollIndicator={false}>
+              <Text style={styles.waiterModalSubtitle}>O que você precisa?</Text>
+              
+              <View style={styles.waiterModalGrid}>
+                {waiterRequestTypes.map((request) => (
+                  <TouchableOpacity
+                    key={request.id}
+                    style={[
+                      styles.waiterModalItem,
+                      selectedWaiterRequest === request.id && styles.waiterModalItemSelected,
+                      { borderColor: request.color || '#FF7043' }
+                    ]}
+                    onPress={() => {
+                      triggerHaptic();
+                      setSelectedWaiterRequest(
+                        selectedWaiterRequest === request.id ? null : request.id
+                      );
+                    }}
+                    activeOpacity={0.7}
+                  >
+                    <View 
+                      style={[
+                        styles.waiterModalItemIcon,
+                        { backgroundColor: (request.color || '#FF7043') + '20' }
+                      ]}
+                    >
+                      <Bell size={24} color={request.color || '#FF7043'} strokeWidth={2} />
+                    </View>
+                    <Text style={styles.waiterModalItemName}>{request.name}</Text>
+                    {selectedWaiterRequest === request.id && (
+                      <View style={[styles.waiterModalCheckmark, { backgroundColor: request.color || '#FF7043' }]}>
+                        <CheckCircle size={16} color="#FFF" strokeWidth={2.5} />
+                      </View>
+                    )}
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              {/* Note Input */}
+              <View style={styles.waiterModalNoteContainer}>
+                <Text style={styles.waiterModalNoteLabel}>Observação (opcional)</Text>
+                <TextInput
+                  style={styles.waiterModalNoteInput}
+                  placeholder="Digite uma observação..."
+                  placeholderTextColor="rgba(255,255,255,0.4)"
+                  value={waiterRequestNote}
+                  onChangeText={setWaiterRequestNote}
+                  multiline
+                  maxLength={200}
+                />
+              </View>
+            </ScrollView>
+
+            {/* Footer */}
+            <View style={styles.waiterModalFooter}>
+              <TouchableOpacity
+                style={[
+                  styles.waiterModalSendBtn,
+                  !selectedWaiterRequest && styles.waiterModalSendBtnDisabled
+                ]}
+                onPress={() => {
+                  if (selectedWaiterRequest) {
+                    const request = waiterRequestTypes.find(r => r.id === selectedWaiterRequest);
+                    callWaiter(selectedWaiterRequest, request?.name);
+                  }
+                }}
+                disabled={!selectedWaiterRequest}
+                activeOpacity={0.7}
+              >
+                <Bell size={20} color="#FFF" strokeWidth={2} />
+                <Text style={styles.waiterModalSendText}>CHAMAR AGORA</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
         </View>
       </Modal>
 
@@ -6877,6 +7051,151 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 14,
     fontWeight: '700',
+  },
+
+  // Waiter Request Modal Styles
+  waiterModalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.92)",
+    flexDirection: 'row',
+  },
+  waiterModalCloseArea: {
+    width: 200,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  waiterModalCloseCircle: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#FF7043',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  waiterModalPanel: {
+    flex: 1,
+    backgroundColor: '#1a1a1a',
+    borderTopLeftRadius: 24,
+    borderBottomLeftRadius: 24,
+    maxWidth: width * 0.55,
+  },
+  waiterModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 24,
+    paddingVertical: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(255,255,255,0.02)',
+  },
+  waiterModalHeaderLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  waiterModalTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    letterSpacing: 1,
+  },
+  waiterModalList: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingTop: 16,
+  },
+  waiterModalSubtitle: {
+    fontSize: 16,
+    color: 'rgba(255,255,255,0.7)',
+    marginBottom: 16,
+  },
+  waiterModalGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  waiterModalItem: {
+    width: '48%',
+    backgroundColor: 'rgba(255,255,255,0.05)',
+    borderRadius: 16,
+    padding: 16,
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: 'transparent',
+    position: 'relative',
+  },
+  waiterModalItemSelected: {
+    backgroundColor: 'rgba(255,255,255,0.1)',
+  },
+  waiterModalItemIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  waiterModalItemName: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+  waiterModalCheckmark: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  waiterModalNoteContainer: {
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  waiterModalNoteLabel: {
+    fontSize: 14,
+    color: 'rgba(255,255,255,0.6)',
+    marginBottom: 8,
+  },
+  waiterModalNoteInput: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 12,
+    padding: 14,
+    color: '#FFFFFF',
+    fontSize: 15,
+    minHeight: 80,
+    textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
+  },
+  waiterModalFooter: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(255,255,255,0.08)',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  waiterModalSendBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 10,
+    backgroundColor: '#FF7043',
+    paddingVertical: 16,
+    borderRadius: 25,
+  },
+  waiterModalSendBtnDisabled: {
+    backgroundColor: 'rgba(255,112,67,0.4)',
+  },
+  waiterModalSendText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
 
   imageModalOverlay: {

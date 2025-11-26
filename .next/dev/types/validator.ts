@@ -272,6 +272,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../../app/admin/waiter-requests/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/admin/waiter-requests">> = Specific
+  const handler = {} as typeof import("../../../app/admin/waiter-requests/page.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../../app/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/">> = Specific
@@ -312,6 +321,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/admin/populate-database">> = Specific
   const handler = {} as typeof import("../../../app/api/admin/populate-database/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/admin/waiter-requests/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/admin/waiter-requests">> = Specific
+  const handler = {} as typeof import("../../../app/api/admin/waiter-requests/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check
@@ -492,6 +510,15 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/tablet-status">> = Specific
   const handler = {} as typeof import("../../../app/api/mobile/tablet-status/route.js")
+  type __Check = __IsExpected<typeof handler>
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../../app/api/mobile/waiter-requests/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/mobile/waiter-requests">> = Specific
+  const handler = {} as typeof import("../../../app/api/mobile/waiter-requests/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

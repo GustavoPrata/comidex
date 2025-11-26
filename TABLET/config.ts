@@ -32,6 +32,7 @@ export const config = {
     products: `${CATALOG_API_URL}/products`,        // GET: listar produtos
     serviceTypes: `${CATALOG_API_URL}/service-types`, // GET: tipos de serviço (rodízio)
     callWaiter: `${CATALOG_API_URL}/call-waiter`,   // POST: chamar garçom
+    waiterRequests: `${CATALOG_API_URL}/waiter-requests`, // GET: tipos de solicitação ao garçom
     groups: `${BACKEND_URL}/api/groups`             // GET: listar todos os grupos
   },
   
