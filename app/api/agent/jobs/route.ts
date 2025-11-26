@@ -14,8 +14,14 @@ export async function GET(request: NextRequest) {
 
     const agentName = request.headers.get('x-agent-name') || 'Unknown';
     const agentVersion = request.headers.get('x-agent-version') || '0.0.0';
+    const agentMode = request.headers.get('x-agent-mode') || 'single';
 
     const supabase = await createClient();
+
+    const { data: printers } = await supabase
+      .from('printers')
+      .select('id, name, ip_address, port, connection_type, location, status')
+      .eq('status', 'online');
 
     const { data: jobs, error } = await supabase
       .from('printer_queues')
@@ -29,6 +35,14 @@ export async function GET(request: NextRequest) {
         notes,
         order_item_id,
         created_at,
+        printers (
+          id,
+          name,
+          ip_address,
+          port,
+          connection_type,
+          location
+        ),
         order_items (
           id,
           quantity,
@@ -64,10 +78,15 @@ export async function GET(request: NextRequest) {
       const order = orderItem?.orders;
       const tableSession = order?.table_sessions;
       const table = tableSession?.tables;
+      const printer = job.printers;
 
       return {
         id: job.id,
         printer_id: job.printer_id,
+        printer_name: printer?.name || 'Impressora',
+        printer_ip: printer?.ip_address || '',
+        printer_port: printer?.port || 9100,
+        printer_type: printer?.connection_type || 'network',
         document_type: job.document_type,
         status: job.status,
         table_name: table?.name || 'Mesa ?',
@@ -80,19 +99,22 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    await supabase
-      .from('printer_queues')
-      .update({ 
-        status: 'printing',
-        started_at: new Date().toISOString()
-      })
-      .in('id', formattedJobs.map((j: any) => j.id));
+    if (formattedJobs.length > 0) {
+      await supabase
+        .from('printer_queues')
+        .update({ 
+          status: 'printing',
+          started_at: new Date().toISOString()
+        })
+        .in('id', formattedJobs.map((j: any) => j.id));
+    }
 
-    console.log(`[Agent: ${agentName} v${agentVersion}] Fetched ${formattedJobs.length} jobs`);
+    console.log(`[Agent: ${agentName} v${agentVersion} mode:${agentMode}] Fetched ${formattedJobs.length} jobs, ${printers?.length || 0} printers`);
 
     return NextResponse.json({ 
       success: true, 
-      jobs: formattedJobs 
+      jobs: formattedJobs,
+      printers: printers || []
     });
 
   } catch (error) {

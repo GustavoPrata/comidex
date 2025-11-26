@@ -18,7 +18,7 @@ if %ERRORLEVEL% NEQ 0 (
 echo Compilando para Windows AMD64...
 set GOOS=windows
 set GOARCH=amd64
-go build -ldflags="-s -w" -o comidex-printer-agent.exe main.go
+go build -ldflags="-s -w" -o comidex-printer-bridge.exe main.go
 
 if %ERRORLEVEL% EQU 0 (
     echo.

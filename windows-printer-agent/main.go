@@ -20,27 +20,37 @@ import (
 )
 
 const (
-	VERSION       = "1.0.0"
+	VERSION       = "2.0.0"
 	CONFIG_FILE   = "comidex-printer.json"
 	POLL_INTERVAL = 3 * time.Second
 )
 
 type Config struct {
-	ServerURL   string `json:"server_url"`
-	AgentToken  string `json:"agent_token"`
-	AgentName   string `json:"agent_name"`
-	PrinterName string `json:"printer_name"`
-	PrinterType string `json:"printer_type"` // "windows" or "network"
-	PrinterIP   string `json:"printer_ip"`   // For network printers
-	PrinterPort int    `json:"printer_port"` // Default 9100
+	ServerURL  string `json:"server_url"`
+	AgentToken string `json:"agent_token"`
+	AgentName  string `json:"agent_name"`
+}
+
+type Printer struct {
+	ID       int    `json:"id"`
+	Name     string `json:"name"`
+	IP       string `json:"ip_address"`
+	Port     int    `json:"port"`
+	Type     string `json:"connection_type"` // "network" or "usb"
+	Location string `json:"location"`
+	Status   string `json:"status"`
 }
 
 type PrintJob struct {
 	ID           int    `json:"id"`
 	PrinterID    int    `json:"printer_id"`
+	PrinterName  string `json:"printer_name"`
+	PrinterIP    string `json:"printer_ip"`
+	PrinterPort  int    `json:"printer_port"`
+	PrinterType  string `json:"printer_type"`
 	DocumentType string `json:"document_type"`
 	Status       string `json:"status"`
-	Data         string `json:"data"` // Base64 encoded ESC/POS
+	Data         string `json:"data"`
 	TableName    string `json:"table_name"`
 	ItemName     string `json:"item_name"`
 	Quantity     int    `json:"quantity"`
@@ -50,8 +60,9 @@ type PrintJob struct {
 }
 
 type JobsResponse struct {
-	Success bool       `json:"success"`
-	Jobs    []PrintJob `json:"jobs"`
+	Success  bool       `json:"success"`
+	Jobs     []PrintJob `json:"jobs"`
+	Printers []Printer  `json:"printers"`
 }
 
 type JobResultRequest struct {
@@ -61,15 +72,14 @@ type JobResultRequest struct {
 }
 
 var (
-	modwinspool            = syscall.NewLazyDLL("winspool.drv")
-	procOpenPrinterW       = modwinspool.NewProc("OpenPrinterW")
-	procClosePrinter       = modwinspool.NewProc("ClosePrinter")
-	procStartDocPrinterW   = modwinspool.NewProc("StartDocPrinterW")
-	procEndDocPrinter      = modwinspool.NewProc("EndDocPrinter")
-	procStartPagePrinter   = modwinspool.NewProc("StartPagePrinter")
-	procEndPagePrinter     = modwinspool.NewProc("EndPagePrinter")
-	procWritePrinter       = modwinspool.NewProc("WritePrinter")
-	procEnumPrintersW      = modwinspool.NewProc("EnumPrintersW")
+	modwinspool          = syscall.NewLazyDLL("winspool.drv")
+	procOpenPrinterW     = modwinspool.NewProc("OpenPrinterW")
+	procClosePrinter     = modwinspool.NewProc("ClosePrinter")
+	procStartDocPrinterW = modwinspool.NewProc("StartDocPrinterW")
+	procEndDocPrinter    = modwinspool.NewProc("EndDocPrinter")
+	procStartPagePrinter = modwinspool.NewProc("StartPagePrinter")
+	procEndPagePrinter   = modwinspool.NewProc("EndPagePrinter")
+	procWritePrinter     = modwinspool.NewProc("WritePrinter")
 )
 
 type DOC_INFO_1 struct {
@@ -78,11 +88,14 @@ type DOC_INFO_1 struct {
 	Datatype   *uint16
 }
 
+var printerCache = make(map[int]Printer)
+
 func main() {
-	fmt.Println("╔══════════════════════════════════════════════════════╗")
-	fmt.Println("║       ComideX Printer Agent v" + VERSION + "                  ║")
-	fmt.Println("║       Conectando impressora local ao sistema         ║")
-	fmt.Println("╚══════════════════════════════════════════════════════╝")
+	clearScreen()
+	fmt.Println("╔══════════════════════════════════════════════════════════════╗")
+	fmt.Println("║       ComideX Printer Bridge v" + VERSION + "                        ║")
+	fmt.Println("║       Proxy de Impressoras Local → Replit                    ║")
+	fmt.Println("╚══════════════════════════════════════════════════════════════╝")
 	fmt.Println()
 
 	config, err := loadOrCreateConfig()
@@ -91,19 +104,29 @@ func main() {
 	}
 
 	fmt.Printf("📡 Servidor: %s\n", config.ServerURL)
-	fmt.Printf("🖨️  Impressora: %s (%s)\n", config.PrinterName, config.PrinterType)
-	fmt.Printf("🔄 Intervalo de polling: %v\n\n", POLL_INTERVAL)
+	fmt.Printf("🏷️  Agente: %s\n", config.AgentName)
+	fmt.Printf("🔄 Intervalo: %v\n\n", POLL_INTERVAL)
 
-	if config.PrinterType == "windows" && runtime.GOOS == "windows" {
-		testWindowsPrinter(config.PrinterName)
-	}
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+	fmt.Println("📋 MODO BRIDGE: Todas as impressoras configuradas no admin")
+	fmt.Println("   serão acessíveis através deste agente!")
+	fmt.Println("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
+	fmt.Println()
 
-	fmt.Println("✅ Agente iniciado! Aguardando jobs de impressão...")
+	fmt.Println("✅ Bridge iniciado! Conectando ao servidor...")
 	fmt.Println("   Pressione Ctrl+C para sair\n")
 
 	for {
 		processJobs(config)
 		time.Sleep(POLL_INTERVAL)
+	}
+}
+
+func clearScreen() {
+	if runtime.GOOS == "windows" {
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
 	}
 }
 
@@ -116,72 +139,28 @@ func loadOrCreateConfig() (*Config, error) {
 
 	data, err := os.ReadFile(configPath)
 	if err != nil {
-		fmt.Println("⚙️  Configuração não encontrada. Vamos criar uma nova!")
+		fmt.Println("⚙️  Primeira execução - Configuração do Bridge")
 		fmt.Println()
 
-		config := &Config{
-			PrinterPort: 9100,
-		}
+		config := &Config{}
 
 		fmt.Print("URL do servidor Replit (ex: https://seu-app.replit.app): ")
 		fmt.Scanln(&config.ServerURL)
 		config.ServerURL = strings.TrimSpace(config.ServerURL)
 		config.ServerURL = strings.TrimSuffix(config.ServerURL, "/")
 
-		fmt.Print("Token do agente (fornecido pelo admin): ")
+		fmt.Print("Token do agente (padrão: comidex-agent-2024): ")
 		fmt.Scanln(&config.AgentToken)
 		config.AgentToken = strings.TrimSpace(config.AgentToken)
+		if config.AgentToken == "" {
+			config.AgentToken = "comidex-agent-2024"
+		}
 
-		fmt.Print("Nome deste agente (ex: Cozinha-PC): ")
+		fmt.Print("Nome deste PC/Bridge (ex: Restaurante-PC): ")
 		fmt.Scanln(&config.AgentName)
 		config.AgentName = strings.TrimSpace(config.AgentName)
-
-		fmt.Println("\nTipo de impressora:")
-		fmt.Println("  1. Impressora Windows (USB ou compartilhada)")
-		fmt.Println("  2. Impressora de rede (IP direto)")
-		fmt.Print("Escolha (1 ou 2): ")
-		var choice string
-		fmt.Scanln(&choice)
-
-		if choice == "2" {
-			config.PrinterType = "network"
-			fmt.Print("IP da impressora: ")
-			fmt.Scanln(&config.PrinterIP)
-			config.PrinterIP = strings.TrimSpace(config.PrinterIP)
-			fmt.Print("Porta (enter para 9100): ")
-			var portStr string
-			fmt.Scanln(&portStr)
-			if portStr != "" {
-				fmt.Sscanf(portStr, "%d", &config.PrinterPort)
-			}
-		} else {
-			config.PrinterType = "windows"
-			if runtime.GOOS == "windows" {
-				printers := listWindowsPrinters()
-				if len(printers) > 0 {
-					fmt.Println("\nImpressoras disponíveis:")
-					for i, p := range printers {
-						fmt.Printf("  %d. %s\n", i+1, p)
-					}
-					fmt.Print("Escolha o número ou digite o nome: ")
-					var printerChoice string
-					fmt.Scanln(&printerChoice)
-					var idx int
-					if _, err := fmt.Sscanf(printerChoice, "%d", &idx); err == nil && idx > 0 && idx <= len(printers) {
-						config.PrinterName = printers[idx-1]
-					} else {
-						config.PrinterName = strings.TrimSpace(printerChoice)
-					}
-				} else {
-					fmt.Print("Nome da impressora: ")
-					fmt.Scanln(&config.PrinterName)
-					config.PrinterName = strings.TrimSpace(config.PrinterName)
-				}
-			} else {
-				fmt.Print("Nome da impressora: ")
-				fmt.Scanln(&config.PrinterName)
-				config.PrinterName = strings.TrimSpace(config.PrinterName)
-			}
+		if config.AgentName == "" {
+			config.AgentName = "Bridge-Principal"
 		}
 
 		jsonData, err := json.MarshalIndent(config, "", "  ")
@@ -216,23 +195,24 @@ func processJobs(config *Config) {
 	req.Header.Set("Authorization", "Bearer "+config.AgentToken)
 	req.Header.Set("X-Agent-Name", config.AgentName)
 	req.Header.Set("X-Agent-Version", VERSION)
+	req.Header.Set("X-Agent-Mode", "bridge")
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Printf("❌ Erro ao conectar ao servidor: %v", err)
+		log.Printf("❌ Erro ao conectar: %v", err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		body, _ := io.ReadAll(resp.Body)
-		log.Printf("❌ Erro do servidor (%d): %s", resp.StatusCode, string(body))
+		log.Printf("❌ Erro (%d): %s", resp.StatusCode, string(body))
 		return
 	}
 
 	var jobsResp JobsResponse
 	if err := json.NewDecoder(resp.Body).Decode(&jobsResp); err != nil {
-		log.Printf("Erro ao decodificar resposta: %v", err)
+		log.Printf("Erro ao decodificar: %v", err)
 		return
 	}
 
@@ -240,16 +220,40 @@ func processJobs(config *Config) {
 		return
 	}
 
+	for _, printer := range jobsResp.Printers {
+		printerCache[printer.ID] = printer
+	}
+
+	if len(jobsResp.Printers) > 0 && len(jobsResp.Jobs) == 0 {
+		printPrinterStatus(jobsResp.Printers)
+	}
+
 	for _, job := range jobsResp.Jobs {
-		fmt.Printf("📄 Job #%d: %s (Mesa: %s)\n", job.ID, job.ItemName, job.TableName)
+		printer := getPrinter(job)
+		
+		fmt.Printf("\n📄 Job #%d\n", job.ID)
+		fmt.Printf("   🖨️  Impressora: %s (%s)\n", printer.Name, printer.IP)
+		fmt.Printf("   🍽️  Mesa: %s\n", job.TableName)
+		fmt.Printf("   📝 Item: %dx %s\n", job.Quantity, job.ItemName)
 
 		var printErr error
-		if config.PrinterType == "network" {
-			printErr = printToNetworkPrinter(config.PrinterIP, config.PrinterPort, job)
-		} else if runtime.GOOS == "windows" {
-			printErr = printToWindowsPrinter(config.PrinterName, job)
+		
+		if printer.Type == "usb" || printer.Type == "windows" {
+			if runtime.GOOS == "windows" {
+				printErr = printToWindowsPrinter(printer.Name, job)
+			} else {
+				printErr = printToLPR(printer.Name, job)
+			}
 		} else {
-			printErr = printToLPR(config.PrinterName, job)
+			ip := printer.IP
+			if ip == "" {
+				ip = job.PrinterIP
+			}
+			port := printer.Port
+			if port == 0 {
+				port = 9100
+			}
+			printErr = printToNetworkPrinter(ip, port, job)
 		}
 
 		status := "printed"
@@ -257,12 +261,48 @@ func processJobs(config *Config) {
 		if printErr != nil {
 			status = "failed"
 			errorMsg = printErr.Error()
-			fmt.Printf("   ❌ Falha: %v\n", printErr)
+			fmt.Printf("   ❌ FALHA: %v\n", printErr)
 		} else {
 			fmt.Println("   ✅ Impresso com sucesso!")
 		}
 
 		reportJobResult(config, job.ID, status, errorMsg)
+	}
+}
+
+var lastPrinterPrint time.Time
+
+func printPrinterStatus(printers []Printer) {
+	if time.Since(lastPrinterPrint) < 30*time.Second {
+		return
+	}
+	lastPrinterPrint = time.Now()
+
+	fmt.Println("\n🖨️  Impressoras conectadas via Bridge:")
+	for _, p := range printers {
+		status := "🟢"
+		if p.Status == "offline" {
+			status = "🔴"
+		}
+		connInfo := p.IP
+		if p.Type == "usb" || p.Type == "windows" {
+			connInfo = "USB/Windows"
+		}
+		fmt.Printf("   %s %s (%s) - %s\n", status, p.Name, connInfo, p.Location)
+	}
+	fmt.Println()
+}
+
+func getPrinter(job PrintJob) Printer {
+	if p, ok := printerCache[job.PrinterID]; ok {
+		return p
+	}
+	return Printer{
+		ID:   job.PrinterID,
+		Name: job.PrinterName,
+		IP:   job.PrinterIP,
+		Port: job.PrinterPort,
+		Type: job.PrinterType,
 	}
 }
 
@@ -279,7 +319,6 @@ func reportJobResult(config *Config, jobID int, status, errorMsg string) {
 
 	req, err := http.NewRequest("POST", config.ServerURL+"/api/agent/jobs/result", bytes.NewBuffer(jsonData))
 	if err != nil {
-		log.Printf("Erro ao criar request de resultado: %v", err)
 		return
 	}
 
@@ -288,28 +327,36 @@ func reportJobResult(config *Config, jobID int, status, errorMsg string) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Printf("Erro ao reportar resultado: %v", err)
 		return
 	}
-	defer resp.Body.Close()
+	resp.Body.Close()
 }
 
 func printToNetworkPrinter(ip string, port int, job PrintJob) error {
+	if ip == "" {
+		return fmt.Errorf("IP da impressora não configurado")
+	}
+
 	addr := fmt.Sprintf("%s:%d", ip, port)
 	conn, err := net.DialTimeout("tcp", addr, 5*time.Second)
 	if err != nil {
-		return fmt.Errorf("não foi possível conectar à impressora: %v", err)
+		return fmt.Errorf("não conectou em %s: %v", addr, err)
 	}
 	defer conn.Close()
 
-	data, err := base64.StdEncoding.DecodeString(job.Data)
-	if err != nil {
+	var data []byte
+	if job.Data != "" {
+		data, err = base64.StdEncoding.DecodeString(job.Data)
+		if err != nil {
+			data = generateESCPOS(job)
+		}
+	} else {
 		data = generateESCPOS(job)
 	}
 
 	_, err = conn.Write(data)
 	if err != nil {
-		return fmt.Errorf("erro ao enviar dados: %v", err)
+		return fmt.Errorf("erro ao enviar: %v", err)
 	}
 
 	return nil
@@ -317,7 +364,7 @@ func printToNetworkPrinter(ip string, port int, job PrintJob) error {
 
 func printToWindowsPrinter(printerName string, job PrintJob) error {
 	if runtime.GOOS != "windows" {
-		return fmt.Errorf("impressão Windows não suportada neste SO")
+		return fmt.Errorf("não é Windows")
 	}
 
 	printerNamePtr, err := syscall.UTF16PtrFromString(printerName)
@@ -332,11 +379,11 @@ func printToWindowsPrinter(printerName string, job PrintJob) error {
 		0,
 	)
 	if ret == 0 {
-		return fmt.Errorf("não foi possível abrir a impressora: %v", err)
+		return fmt.Errorf("impressora '%s' não encontrada", printerName)
 	}
 	defer procClosePrinter.Call(hPrinter)
 
-	docName, _ := syscall.UTF16PtrFromString(fmt.Sprintf("ComideX Job #%d", job.ID))
+	docName, _ := syscall.UTF16PtrFromString(fmt.Sprintf("ComideX #%d", job.ID))
 	datatype, _ := syscall.UTF16PtrFromString("RAW")
 
 	docInfo := DOC_INFO_1{
@@ -345,50 +392,57 @@ func printToWindowsPrinter(printerName string, job PrintJob) error {
 		Datatype:   datatype,
 	}
 
-	ret, _, err = procStartDocPrinterW.Call(
-		hPrinter,
-		1,
-		uintptr(unsafe.Pointer(&docInfo)),
-	)
+	ret, _, _ = procStartDocPrinterW.Call(hPrinter, 1, uintptr(unsafe.Pointer(&docInfo)))
 	if ret == 0 {
-		return fmt.Errorf("não foi possível iniciar documento: %v", err)
+		return fmt.Errorf("erro ao iniciar documento")
 	}
 	defer procEndDocPrinter.Call(hPrinter)
 
 	ret, _, _ = procStartPagePrinter.Call(hPrinter)
 	if ret == 0 {
-		return fmt.Errorf("não foi possível iniciar página")
+		return fmt.Errorf("erro ao iniciar página")
 	}
 	defer procEndPagePrinter.Call(hPrinter)
 
-	data, err := base64.StdEncoding.DecodeString(job.Data)
-	if err != nil {
+	var data []byte
+	if job.Data != "" {
+		data, err = base64.StdEncoding.DecodeString(job.Data)
+		if err != nil {
+			data = generateESCPOS(job)
+		}
+	} else {
 		data = generateESCPOS(job)
 	}
 
 	var written uint32
-	ret, _, err = procWritePrinter.Call(
+	ret, _, _ = procWritePrinter.Call(
 		hPrinter,
 		uintptr(unsafe.Pointer(&data[0])),
 		uintptr(len(data)),
 		uintptr(unsafe.Pointer(&written)),
 	)
 	if ret == 0 {
-		return fmt.Errorf("erro ao escrever dados: %v", err)
+		return fmt.Errorf("erro ao escrever dados")
 	}
 
 	return nil
 }
 
 func printToLPR(printerName string, job PrintJob) error {
-	data, err := base64.StdEncoding.DecodeString(job.Data)
-	if err != nil {
+	var data []byte
+	var err error
+	
+	if job.Data != "" {
+		data, err = base64.StdEncoding.DecodeString(job.Data)
+		if err != nil {
+			data = generateESCPOS(job)
+		}
+	} else {
 		data = generateESCPOS(job)
 	}
 
 	cmd := exec.Command("lpr", "-P", printerName)
 	cmd.Stdin = bytes.NewReader(data)
-
 	return cmd.Run()
 }
 
@@ -427,50 +481,4 @@ func generateESCPOS(job PrintJob) []byte {
 	buf.Write([]byte{0x1D, 0x56, 0x41, 0x03})
 
 	return buf.Bytes()
-}
-
-func listWindowsPrinters() []string {
-	if runtime.GOOS != "windows" {
-		return nil
-	}
-
-	var printers []string
-
-	cmd := exec.Command("wmic", "printer", "get", "name")
-	output, err := cmd.Output()
-	if err != nil {
-		return printers
-	}
-
-	lines := strings.Split(string(output), "\n")
-	for _, line := range lines {
-		line = strings.TrimSpace(line)
-		if line != "" && line != "Name" {
-			printers = append(printers, line)
-		}
-	}
-
-	return printers
-}
-
-func testWindowsPrinter(printerName string) {
-	printerNamePtr, err := syscall.UTF16PtrFromString(printerName)
-	if err != nil {
-		fmt.Printf("⚠️  Aviso: Nome da impressora inválido: %v\n", err)
-		return
-	}
-
-	var hPrinter uintptr
-	ret, _, _ := procOpenPrinterW.Call(
-		uintptr(unsafe.Pointer(printerNamePtr)),
-		uintptr(unsafe.Pointer(&hPrinter)),
-		0,
-	)
-	if ret == 0 {
-		fmt.Printf("⚠️  Aviso: Impressora '%s' não encontrada ou inacessível\n", printerName)
-		fmt.Println("   Verifique se o nome está correto e a impressora está instalada.")
-		return
-	}
-	procClosePrinter.Call(hPrinter)
-	fmt.Printf("✅ Impressora '%s' encontrada e acessível\n", printerName)
 }

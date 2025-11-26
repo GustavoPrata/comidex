@@ -1,129 +1,160 @@
-# ComideX Printer Agent para Windows
+# ComideX Printer Bridge para Windows
 
-Executável Windows que conecta sua impressora local ao sistema ComideX rodando no Replit.
+**Proxy de impressoras** que conecta TODAS as suas impressoras locais ao sistema ComideX no Replit - similar ao ngrok!
 
 ## Como Funciona
 
 ```
-[Replit/Nuvem]              [Seu PC Windows]           [Impressora]
-    │                            │                          │
-    │   ◄─── Busca jobs ───      │                          │
-    │   ─── Envia dados ───►     │                          │
-    │                            │   ── Imprime ──►         │
-    │   ◄─── Confirma ────       │                          │
+┌─────────────────────────────────────────────────────────────────────┐
+│                         REPLIT (Nuvem)                              │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐          │
+│  │ Admin Panel  │    │  POS/Tablet  │    │ Fila Impress │          │
+│  │ Configura IP │    │ Envia pedido │    │   Pendente   │          │
+│  │192.168.1.100 │    │              │    │              │          │
+│  └──────────────┘    └──────────────┘    └──────────────┘          │
+└─────────────────────────────────────────────────────────────────────┘
+                              │
+                              │ Internet
+                              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                      SEU PC WINDOWS                                 │
+│  ┌──────────────────────────────────────────────────────────────┐  │
+│  │              ComideX Printer Bridge v2.0                     │  │
+│  │        Busca jobs → Envia para IP configurado               │  │
+│  └──────────────────────────────────────────────────────────────┘  │
+│                    │                    │                           │
+│                    ▼                    ▼                           │
+│  ┌──────────────────────┐    ┌──────────────────────┐              │
+│  │ 🖨️ Impressora Cozinha │    │ 🖨️ Impressora Bar    │              │
+│  │   192.168.1.100       │    │   192.168.1.101      │              │
+│  └──────────────────────┘    └──────────────────────┘              │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
-O agente roda no seu PC Windows, busca os pedidos pendentes no servidor Replit a cada 3 segundos, e envia para sua impressora local.
+## Vantagens
+
+- ✅ **Configure os IPs no Admin** - A mesma tela de sempre
+- ✅ **Funciona na sua rede local** - O Bridge faz a ponte
+- ✅ **Múltiplas impressoras** - Quantas quiser, cada uma com seu IP
+- ✅ **Sem portas abertas** - Só o Bridge precisa de internet
+- ✅ **Simples de usar** - Execute uma vez e pronto
 
 ## Instalação
 
-### Opção 1: Baixar .exe Pré-compilado
-1. Baixe o arquivo `comidex-printer-agent.exe` (será disponibilizado)
-2. Coloque numa pasta fácil de acessar
+### 1. Baixe e Compile
 
-### Opção 2: Compilar Você Mesmo
 1. Instale Go: https://go.dev/dl/
-2. Baixe os arquivos `main.go` e `build.bat`
+2. Baixe `main.go` e `build.bat`
 3. Execute `build.bat`
-4. O arquivo `comidex-printer-agent.exe` será criado
+4. Arquivo `comidex-printer-bridge.exe` será criado
 
-## Configuração Inicial
+### 2. Primeira Execução
 
-Na primeira execução, o agente pedirá:
-
-1. **URL do servidor Replit**: 
-   - Exemplo: `https://seu-app.replit.app`
-   - É a URL onde seu sistema ComideX está rodando
-
-2. **Token do agente**:
-   - Token padrão: `comidex-agent-2024`
-   - (Você pode configurar tokens personalizados no servidor)
-
-3. **Nome do agente**:
-   - Exemplo: `Cozinha-PC` ou `Bar-Impressora`
-   - Ajuda a identificar qual PC está conectado
-
-4. **Tipo de impressora**:
-   - **Windows (USB/Compartilhada)**: Para impressoras instaladas no Windows
-   - **Rede (IP direto)**: Para impressoras com IP fixo na rede local
-
-## Executar
-
-Basta dar duplo-clique no `comidex-printer-agent.exe`
-
-Você verá:
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║       ComideX Printer Agent v1.0.0                           ║
-║       Conectando impressora local ao sistema                 ║
+║       ComideX Printer Bridge v2.0.0                          ║
+║       Proxy de Impressoras Local → Replit                    ║
 ╚══════════════════════════════════════════════════════════════╝
 
+⚙️  Primeira execução - Configuração do Bridge
+
+URL do servidor Replit: https://seu-app.replit.app
+Token do agente (padrão: comidex-agent-2024): [Enter]
+Nome deste PC/Bridge: Restaurante-Principal
+
+✅ Configuração salva!
+```
+
+### 3. Configure as Impressoras no Admin
+
+No painel admin do ComideX (`/admin/printers`):
+
+1. Adicione suas impressoras
+2. Coloque o **IP da rede local** (ex: 192.168.1.100)
+3. Porta: 9100 (padrão para impressoras térmicas)
+4. Tipo: "network" para rede ou "usb" para USB
+
+### 4. Execute o Bridge
+
+Duplo-clique no `.exe` e deixe rodando:
+
+```
 📡 Servidor: https://seu-app.replit.app
-🖨️  Impressora: EPSON TM-T20 (windows)
-🔄 Intervalo de polling: 3s
+🏷️  Agente: Restaurante-Principal
+🔄 Intervalo: 3s
 
-✅ Impressora 'EPSON TM-T20' encontrada e acessível
-✅ Agente iniciado! Aguardando jobs de impressão...
-   Pressione Ctrl+C para sair
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📋 MODO BRIDGE: Todas as impressoras configuradas no admin
+   serão acessíveis através deste agente!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-📄 Job #123: Yakissoba (Mesa: 15)
+🖨️  Impressoras conectadas via Bridge:
+   🟢 Cozinha (192.168.1.100) - Cozinha Principal
+   🟢 Bar (192.168.1.101) - Bar/Bebidas
+   🟢 Caixa (192.168.1.102) - Recepção
+
+📄 Job #123
+   🖨️  Impressora: Cozinha (192.168.1.100)
+   🍽️  Mesa: 15
+   📝 Item: 2x Yakissoba
    ✅ Impresso com sucesso!
 ```
 
-## Executar como Serviço Windows
+## Tipos de Impressora Suportados
 
-Para executar automaticamente quando o Windows iniciar:
+### Impressora de Rede (Recomendado)
+- IP fixo na rede local (ex: 192.168.1.100)
+- Porta 9100 (padrão ESC/POS)
+- Funciona com Epson, Elgin, Bematech, etc.
 
-1. Crie um atalho do `comidex-printer-agent.exe`
-2. Pressione `Win+R`, digite `shell:startup` e Enter
-3. Mova o atalho para a pasta que abriu
+### Impressora USB/Windows
+- Configure o **nome exato** da impressora no Windows
+- Use tipo "usb" ou "windows" no admin
+- O Bridge envia via Windows Print Spooler
 
 ## Configuração Avançada
 
-O arquivo de configuração `comidex-printer.json` é criado automaticamente na mesma pasta do .exe:
+O arquivo `comidex-printer.json` é criado automaticamente:
 
 ```json
 {
   "server_url": "https://seu-app.replit.app",
   "agent_token": "comidex-agent-2024",
-  "agent_name": "Cozinha-PC",
-  "printer_name": "EPSON TM-T20",
-  "printer_type": "windows",
-  "printer_ip": "",
-  "printer_port": 9100
+  "agent_name": "Restaurante-Principal"
 }
 ```
 
-Para reconfigura, delete o arquivo e execute o agente novamente.
+Para reconfigurar, delete o arquivo e execute novamente.
 
-## Impressoras Suportadas
+## Executar no Startup do Windows
 
-- ✅ Impressoras térmicas ESC/POS (Epson, Elgin, Bematech, etc.)
-- ✅ Impressoras USB instaladas no Windows
-- ✅ Impressoras de rede com porta 9100 (RAW)
-- ✅ Impressoras compartilhadas na rede Windows
+1. Pressione `Win+R`
+2. Digite `shell:startup` e Enter
+3. Crie um atalho do `.exe` nessa pasta
 
 ## Solução de Problemas
 
-### "Impressora não encontrada"
-- Verifique se a impressora está instalada no Windows
-- Vá em Painel de Controle → Dispositivos e Impressoras
-- Use exatamente o nome que aparece lá
+### "Não conectou em 192.168.x.x"
+- Verifique se a impressora está ligada
+- Teste ping: `ping 192.168.1.100`
+- Verifique se a porta 9100 está aberta
+- Algumas impressoras usam porta diferente
+
+### "Impressora não encontrada" (USB)
+- Verifique o nome exato no Painel de Controle
+- O nome deve ser idêntico ao configurado
 
 ### "Erro ao conectar ao servidor"
-- Verifique a URL do servidor
-- Verifique sua conexão com a internet
-- Certifique-se que o servidor Replit está rodando
+- Verifique a URL do Replit
+- Verifique sua conexão com internet
 
 ### "Unauthorized"
-- Verifique o token do agente
-- O token padrão é `comidex-agent-2024`
+- Token padrão: `comidex-agent-2024`
+- Ou configure `AGENT_TOKENS` no servidor
 
-## Tokens Personalizados (Servidor)
+## Segurança
 
-Para usar tokens personalizados, configure a variável de ambiente no Replit:
-```
-AGENT_TOKENS=token1,token2,token3
-```
-
-Cada restaurante/computador pode ter seu próprio token para maior segurança.
+- O Bridge só lê jobs e reporta resultados
+- Não expõe portas na sua rede
+- Conexão HTTPS com o servidor
+- Token de autenticação configurável
