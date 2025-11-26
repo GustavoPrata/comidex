@@ -82,18 +82,7 @@ const availableIcons = [
   { name: 'Pizza', icon: Pizza },
 ]
 
-const availableColors = [
-  { name: 'Laranja', value: '#FF7043' },
-  { name: 'Azul', value: '#3B82F6' },
-  { name: 'Ciano', value: '#06B6D4' },
-  { name: 'Roxo', value: '#8B5CF6' },
-  { name: 'Verde', value: '#22C55E' },
-  { name: 'Vermelho', value: '#EF4444' },
-  { name: 'Amarelo', value: '#F59E0B' },
-  { name: 'Verde Claro', value: '#10B981' },
-  { name: 'Cinza', value: '#64748B' },
-  { name: 'Rosa', value: '#EC4899' },
-]
+const ORANGE_COLOR = '#FF7043'
 
 function getIconComponent(iconName: string) {
   const found = availableIcons.find(i => i.name === iconName)
@@ -111,7 +100,6 @@ export default function WaiterRequestsPage() {
     name: '',
     description: '',
     icon: 'HelpCircle',
-    color: '#FF7043',
     active: true
   })
 
@@ -147,6 +135,7 @@ export default function WaiterRequestsPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
+          color: ORANGE_COLOR,
           sort_order: requests.length
         })
       })
@@ -155,7 +144,7 @@ export default function WaiterRequestsPage() {
 
       toast.success('Solicitação criada com sucesso!')
       setShowAddDialog(false)
-      setFormData({ name: '', description: '', icon: 'HelpCircle', color: '#FF7043', active: true })
+      setFormData({ name: '', description: '', icon: 'HelpCircle', active: true })
       loadRequests()
     } catch (error: any) {
       console.error('Erro ao criar solicitação:', error)
@@ -171,7 +160,10 @@ export default function WaiterRequestsPage() {
       const res = await fetch('/api/admin/waiter-requests', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(request)
+        body: JSON.stringify({
+          ...request,
+          color: ORANGE_COLOR
+        })
       })
 
       if (!res.ok) throw new Error('Erro ao atualizar')
@@ -215,14 +207,13 @@ export default function WaiterRequestsPage() {
       name: request.name,
       description: request.description || '',
       icon: request.icon,
-      color: request.color,
       active: request.active
     })
   }
 
   const cancelEditing = () => {
     setEditingId(null)
-    setFormData({ name: '', description: '', icon: 'HelpCircle', color: '#FF7043', active: true })
+    setFormData({ name: '', description: '', icon: 'HelpCircle', active: true })
   }
 
   const saveEditing = async () => {
@@ -232,7 +223,8 @@ export default function WaiterRequestsPage() {
 
     await handleUpdate({
       ...request,
-      ...formData
+      ...formData,
+      color: ORANGE_COLOR
     })
   }
 
@@ -314,13 +306,13 @@ export default function WaiterRequestsPage() {
 
                       <div 
                         className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
-                        style={{ backgroundColor: request.color + '20' }}
+                        style={{ backgroundColor: ORANGE_COLOR + '20' }}
                       >
-                        <IconComponent className="w-6 h-6" style={{ color: request.color }} />
+                        <IconComponent className="w-6 h-6" style={{ color: ORANGE_COLOR }} />
                       </div>
 
                       {isEditing ? (
-                        <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
                           <Input
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -347,21 +339,6 @@ export default function WaiterRequestsPage() {
                                   </SelectItem>
                                 )
                               })}
-                            </SelectContent>
-                          </Select>
-                          <Select value={formData.color} onValueChange={(v) => setFormData({ ...formData, color: v })}>
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {availableColors.map((color) => (
-                                <SelectItem key={color.value} value={color.value}>
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-4 h-4 rounded-full" style={{ backgroundColor: color.value }} />
-                                    <span>{color.name}</span>
-                                  </div>
-                                </SelectItem>
-                              ))}
                             </SelectContent>
                           </Select>
                         </div>
@@ -448,46 +425,26 @@ export default function WaiterRequestsPage() {
                 placeholder="Ex: Solicitar copo adicional"
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label>Ícone</Label>
-                <Select value={formData.icon} onValueChange={(v) => setFormData({ ...formData, icon: v })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableIcons.map((icon) => {
-                      const Icon = icon.icon
-                      return (
-                        <SelectItem key={icon.name} value={icon.name}>
-                          <div className="flex items-center gap-2">
-                            <Icon className="w-4 h-4" />
-                            <span>{icon.name}</span>
-                          </div>
-                        </SelectItem>
-                      )
-                    })}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label>Cor</Label>
-                <Select value={formData.color} onValueChange={(v) => setFormData({ ...formData, color: v })}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableColors.map((color) => (
-                      <SelectItem key={color.value} value={color.value}>
+            <div className="space-y-2">
+              <Label>Ícone</Label>
+              <Select value={formData.icon} onValueChange={(v) => setFormData({ ...formData, icon: v })}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableIcons.map((icon) => {
+                    const Icon = icon.icon
+                    return (
+                      <SelectItem key={icon.name} value={icon.name}>
                         <div className="flex items-center gap-2">
-                          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: color.value }} />
-                          <span>{color.name}</span>
+                          <Icon className="w-4 h-4" />
+                          <span>{icon.name}</span>
                         </div>
                       </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                    )
+                  })}
+                </SelectContent>
+              </Select>
             </div>
           </div>
           <DialogFooter>

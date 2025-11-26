@@ -648,48 +648,7 @@ const availableIcons = [
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$pizza$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Pizza$3e$__["Pizza"]
     }
 ];
-const availableColors = [
-    {
-        name: 'Laranja',
-        value: '#FF7043'
-    },
-    {
-        name: 'Azul',
-        value: '#3B82F6'
-    },
-    {
-        name: 'Ciano',
-        value: '#06B6D4'
-    },
-    {
-        name: 'Roxo',
-        value: '#8B5CF6'
-    },
-    {
-        name: 'Verde',
-        value: '#22C55E'
-    },
-    {
-        name: 'Vermelho',
-        value: '#EF4444'
-    },
-    {
-        name: 'Amarelo',
-        value: '#F59E0B'
-    },
-    {
-        name: 'Verde Claro',
-        value: '#10B981'
-    },
-    {
-        name: 'Cinza',
-        value: '#64748B'
-    },
-    {
-        name: 'Rosa',
-        value: '#EC4899'
-    }
-];
+const ORANGE_COLOR = '#FF7043';
 function getIconComponent(iconName) {
     const found = availableIcons.find((i)=>i.name === iconName);
     return found ? found.icon : __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$help$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__HelpCircle$3e$__["HelpCircle"];
@@ -704,7 +663,6 @@ function WaiterRequestsPage() {
         name: '',
         description: '',
         icon: 'HelpCircle',
-        color: '#FF7043',
         active: true
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
@@ -738,6 +696,7 @@ function WaiterRequestsPage() {
                 },
                 body: JSON.stringify({
                     ...formData,
+                    color: ORANGE_COLOR,
                     sort_order: requests.length
                 })
             });
@@ -748,7 +707,6 @@ function WaiterRequestsPage() {
                 name: '',
                 description: '',
                 icon: 'HelpCircle',
-                color: '#FF7043',
                 active: true
             });
             loadRequests();
@@ -767,7 +725,10 @@ function WaiterRequestsPage() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(request)
+                body: JSON.stringify({
+                    ...request,
+                    color: ORANGE_COLOR
+                })
             });
             if (!res.ok) throw new Error('Erro ao atualizar');
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$dist$2f$index$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["toast"].success('Solicitação atualizada!');
@@ -806,7 +767,6 @@ function WaiterRequestsPage() {
             name: request.name,
             description: request.description || '',
             icon: request.icon,
-            color: request.color,
             active: request.active
         });
     };
@@ -816,7 +776,6 @@ function WaiterRequestsPage() {
             name: '',
             description: '',
             icon: 'HelpCircle',
-            color: '#FF7043',
             active: true
         });
     };
@@ -826,7 +785,8 @@ function WaiterRequestsPage() {
         if (!request) return;
         await handleUpdate({
             ...request,
-            ...formData
+            ...formData,
+            color: ORANGE_COLOR
         });
     };
     if (isLoading) {
@@ -839,7 +799,7 @@ function WaiterRequestsPage() {
                         className: "w-8 h-8 animate-spin mx-auto mb-2 text-orange-500"
                     }, void 0, false, {
                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                        lineNumber: 243,
+                        lineNumber: 235,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -847,18 +807,18 @@ function WaiterRequestsPage() {
                         children: "Carregando solicitações..."
                     }, void 0, false, {
                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                        lineNumber: 244,
+                        lineNumber: 236,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                lineNumber: 242,
+                lineNumber: 234,
                 columnNumber: 9
             }, this)
         }, void 0, false, {
             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-            lineNumber: 241,
+            lineNumber: 233,
             columnNumber: 7
         }, this);
     }
@@ -882,12 +842,12 @@ function WaiterRequestsPage() {
                                                 className: "h-5 w-5 text-white"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                lineNumber: 257,
+                                                lineNumber: 249,
                                                 columnNumber: 17
                                             }, this)
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 256,
+                                            lineNumber: 248,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -895,13 +855,13 @@ function WaiterRequestsPage() {
                                             children: "Solicitações do Tablet"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 259,
+                                            lineNumber: 251,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 255,
+                                    lineNumber: 247,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -917,14 +877,14 @@ function WaiterRequestsPage() {
                                                     className: `w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 263,
+                                                    lineNumber: 255,
                                                     columnNumber: 17
                                                 }, this),
                                                 "Atualizar"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 262,
+                                            lineNumber: 254,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -935,26 +895,26 @@ function WaiterRequestsPage() {
                                                     className: "w-4 h-4 mr-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 267,
+                                                    lineNumber: 259,
                                                     columnNumber: 17
                                                 }, this),
                                                 "Nova Solicitação"
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 266,
+                                            lineNumber: 258,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 261,
+                                    lineNumber: 253,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                            lineNumber: 254,
+                            lineNumber: 246,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -962,18 +922,18 @@ function WaiterRequestsPage() {
                             children: "Configure as opções que aparecem quando o cliente chama o garçom no tablet"
                         }, void 0, false, {
                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                            lineNumber: 272,
+                            lineNumber: 264,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                    lineNumber: 253,
+                    lineNumber: 245,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                lineNumber: 252,
+                lineNumber: 244,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -988,7 +948,7 @@ function WaiterRequestsPage() {
                                     children: "Tipos de Solicitação"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 281,
+                                    lineNumber: 273,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardDescription"], {
@@ -996,13 +956,13 @@ function WaiterRequestsPage() {
                                     children: "Arraste para reordenar. Clique no lápis para editar."
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 282,
+                                    lineNumber: 274,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                            lineNumber: 280,
+                            lineNumber: 272,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["CardContent"], {
@@ -1013,14 +973,14 @@ function WaiterRequestsPage() {
                                         className: "w-12 h-12 mx-auto mb-3 opacity-30"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                        lineNumber: 289,
+                                        lineNumber: 281,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                         children: "Nenhuma solicitação cadastrada"
                                     }, void 0, false, {
                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                        lineNumber: 290,
+                                        lineNumber: 282,
                                         columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1032,20 +992,20 @@ function WaiterRequestsPage() {
                                                 className: "w-4 h-4 mr-2"
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                lineNumber: 292,
+                                                lineNumber: 284,
                                                 columnNumber: 19
                                             }, this),
                                             "Adicionar primeira solicitação"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                        lineNumber: 291,
+                                        lineNumber: 283,
                                         columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                lineNumber: 288,
+                                lineNumber: 280,
                                 columnNumber: 15
                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: "space-y-3",
@@ -1061,36 +1021,36 @@ function WaiterRequestsPage() {
                                                     className: "w-5 h-5"
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 312,
+                                                    lineNumber: 304,
                                                     columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                lineNumber: 311,
+                                                lineNumber: 303,
                                                 columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "w-12 h-12 rounded-xl flex items-center justify-center shrink-0",
                                                 style: {
-                                                    backgroundColor: request.color + '20'
+                                                    backgroundColor: ORANGE_COLOR + '20'
                                                 },
                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(IconComponent, {
                                                     className: "w-6 h-6",
                                                     style: {
-                                                        color: request.color
+                                                        color: ORANGE_COLOR
                                                     }
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 319,
+                                                    lineNumber: 311,
                                                     columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                lineNumber: 315,
+                                                lineNumber: 307,
                                                 columnNumber: 23
                                             }, this),
                                             isEditing ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                className: "flex-1 grid grid-cols-2 md:grid-cols-4 gap-4",
+                                                className: "flex-1 grid grid-cols-1 md:grid-cols-3 gap-4",
                                                 children: [
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
                                                         value: formData.name,
@@ -1101,7 +1061,7 @@ function WaiterRequestsPage() {
                                                         placeholder: "Nome"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                        lineNumber: 324,
+                                                        lineNumber: 316,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1113,7 +1073,7 @@ function WaiterRequestsPage() {
                                                         placeholder: "Descrição"
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                        lineNumber: 329,
+                                                        lineNumber: 321,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
@@ -1126,12 +1086,12 @@ function WaiterRequestsPage() {
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
                                                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
                                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                    lineNumber: 336,
+                                                                    lineNumber: 328,
                                                                     columnNumber: 31
                                                                 }, this)
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 335,
+                                                                lineNumber: 327,
                                                                 columnNumber: 29
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
@@ -1146,106 +1106,43 @@ function WaiterRequestsPage() {
                                                                                     className: "w-4 h-4"
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                    lineNumber: 344,
+                                                                                    lineNumber: 336,
                                                                                     columnNumber: 39
                                                                                 }, this),
                                                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                                                                     children: icon.name
                                                                                 }, void 0, false, {
                                                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                    lineNumber: 345,
+                                                                                    lineNumber: 337,
                                                                                     columnNumber: 39
                                                                                 }, this)
                                                                             ]
                                                                         }, void 0, true, {
                                                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                            lineNumber: 343,
+                                                                            lineNumber: 335,
                                                                             columnNumber: 37
                                                                         }, this)
                                                                     }, icon.name, false, {
                                                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                        lineNumber: 342,
+                                                                        lineNumber: 334,
                                                                         columnNumber: 35
                                                                     }, this);
                                                                 })
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 338,
+                                                                lineNumber: 330,
                                                                 columnNumber: 29
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                        lineNumber: 334,
-                                                        columnNumber: 27
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
-                                                        value: formData.color,
-                                                        onValueChange: (v)=>setFormData({
-                                                                ...formData,
-                                                                color: v
-                                                            }),
-                                                        children: [
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
-                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
-                                                                    fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                    lineNumber: 354,
-                                                                    columnNumber: 31
-                                                                }, this)
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 353,
-                                                                columnNumber: 29
-                                                            }, this),
-                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
-                                                                children: availableColors.map((color)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                        value: color.value,
-                                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                            className: "flex items-center gap-2",
-                                                                            children: [
-                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                    className: "w-4 h-4 rounded-full",
-                                                                                    style: {
-                                                                                        backgroundColor: color.value
-                                                                                    }
-                                                                                }, void 0, false, {
-                                                                                    fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                    lineNumber: 360,
-                                                                                    columnNumber: 37
-                                                                                }, this),
-                                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                    children: color.name
-                                                                                }, void 0, false, {
-                                                                                    fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                    lineNumber: 361,
-                                                                                    columnNumber: 37
-                                                                                }, this)
-                                                                            ]
-                                                                        }, void 0, true, {
-                                                                            fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                            lineNumber: 359,
-                                                                            columnNumber: 35
-                                                                        }, this)
-                                                                    }, color.value, false, {
-                                                                        fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                        lineNumber: 358,
-                                                                        columnNumber: 33
-                                                                    }, this))
-                                                            }, void 0, false, {
-                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 356,
-                                                                columnNumber: 29
-                                                            }, this)
-                                                        ]
-                                                    }, void 0, true, {
-                                                        fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                        lineNumber: 352,
+                                                        lineNumber: 326,
                                                         columnNumber: 27
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                lineNumber: 323,
+                                                lineNumber: 315,
                                                 columnNumber: 25
                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: "flex-1",
@@ -1255,7 +1152,7 @@ function WaiterRequestsPage() {
                                                         children: request.name
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                        lineNumber: 370,
+                                                        lineNumber: 347,
                                                         columnNumber: 27
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -1263,13 +1160,13 @@ function WaiterRequestsPage() {
                                                         children: request.description
                                                     }, void 0, false, {
                                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                        lineNumber: 371,
+                                                        lineNumber: 348,
                                                         columnNumber: 27
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                lineNumber: 369,
+                                                lineNumber: 346,
                                                 columnNumber: 25
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1285,12 +1182,12 @@ function WaiterRequestsPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 384,
+                                                                lineNumber: 361,
                                                                 columnNumber: 31
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 378,
+                                                            lineNumber: 355,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1302,18 +1199,18 @@ function WaiterRequestsPage() {
                                                                 className: "w-4 h-4 animate-spin"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 392,
+                                                                lineNumber: 369,
                                                                 columnNumber: 41
                                                             }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$save$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Save$3e$__["Save"], {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 392,
+                                                                lineNumber: 369,
                                                                 columnNumber: 88
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 386,
+                                                            lineNumber: 363,
                                                             columnNumber: 29
                                                         }, this)
                                                     ]
@@ -1324,7 +1221,7 @@ function WaiterRequestsPage() {
                                                             onCheckedChange: ()=>handleToggleActive(request)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 397,
+                                                            lineNumber: 374,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1336,12 +1233,12 @@ function WaiterRequestsPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 407,
+                                                                lineNumber: 384,
                                                                 columnNumber: 31
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 401,
+                                                            lineNumber: 378,
                                                             columnNumber: 29
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1353,47 +1250,47 @@ function WaiterRequestsPage() {
                                                                 className: "w-4 h-4"
                                                             }, void 0, false, {
                                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 415,
+                                                                lineNumber: 392,
                                                                 columnNumber: 31
                                                             }, this)
                                                         }, void 0, false, {
                                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 409,
+                                                            lineNumber: 386,
                                                             columnNumber: 29
                                                         }, this)
                                                     ]
                                                 }, void 0, true)
                                             }, void 0, false, {
                                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                lineNumber: 375,
+                                                lineNumber: 352,
                                                 columnNumber: 23
                                             }, this)
                                         ]
                                     }, request.id, true, {
                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                        lineNumber: 303,
+                                        lineNumber: 295,
                                         columnNumber: 21
                                     }, this);
                                 })
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                lineNumber: 297,
+                                lineNumber: 289,
                                 columnNumber: 15
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                            lineNumber: 286,
+                            lineNumber: 278,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                    lineNumber: 279,
+                    lineNumber: 271,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                lineNumber: 278,
+                lineNumber: 270,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Dialog"], {
@@ -1407,12 +1304,12 @@ function WaiterRequestsPage() {
                                 children: "Nova Solicitação"
                             }, void 0, false, {
                                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                lineNumber: 432,
+                                lineNumber: 409,
                                 columnNumber: 13
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                            lineNumber: 431,
+                            lineNumber: 408,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1425,7 +1322,7 @@ function WaiterRequestsPage() {
                                             children: "Nome *"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 436,
+                                            lineNumber: 413,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1437,13 +1334,13 @@ function WaiterRequestsPage() {
                                             placeholder: "Ex: Copo Extra"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 437,
+                                            lineNumber: 414,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 435,
+                                    lineNumber: 412,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1453,7 +1350,7 @@ function WaiterRequestsPage() {
                                             children: "Descrição"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 444,
+                                            lineNumber: 421,
                                             columnNumber: 15
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Input"], {
@@ -1465,186 +1362,98 @@ function WaiterRequestsPage() {
                                             placeholder: "Ex: Solicitar copo adicional"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 445,
+                                            lineNumber: 422,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 443,
+                                    lineNumber: 420,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "grid grid-cols-2 gap-4",
+                                    className: "space-y-2",
                                     children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-2",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
-                                                    children: "Ícone"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 453,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
-                                                    value: formData.icon,
-                                                    onValueChange: (v)=>setFormData({
-                                                            ...formData,
-                                                            icon: v
-                                                        }),
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
-                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 456,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 455,
-                                                            columnNumber: 19
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
-                                                            children: availableIcons.map((icon)=>{
-                                                                const Icon = icon.icon;
-                                                                return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                    value: icon.name,
-                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "flex items-center gap-2",
-                                                                        children: [
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
-                                                                                className: "w-4 h-4"
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                lineNumber: 464,
-                                                                                columnNumber: 29
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                children: icon.name
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                lineNumber: 465,
-                                                                                columnNumber: 29
-                                                                            }, this)
-                                                                        ]
-                                                                    }, void 0, true, {
-                                                                        fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                        lineNumber: 463,
-                                                                        columnNumber: 27
-                                                                    }, this)
-                                                                }, icon.name, false, {
-                                                                    fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                    lineNumber: 462,
-                                                                    columnNumber: 25
-                                                                }, this);
-                                                            })
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 458,
-                                                            columnNumber: 19
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 454,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
+                                            children: "Ícone"
+                                        }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 452,
+                                            lineNumber: 429,
                                             columnNumber: 15
                                         }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "space-y-2",
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
+                                            value: formData.icon,
+                                            onValueChange: (v)=>setFormData({
+                                                    ...formData,
+                                                    icon: v
+                                                }),
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$label$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Label"], {
-                                                    children: "Cor"
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
+                                                        fileName: "[project]/app/admin/waiter-requests/page.tsx",
+                                                        lineNumber: 432,
+                                                        columnNumber: 19
+                                                    }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 474,
+                                                    lineNumber: 431,
                                                     columnNumber: 17
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Select"], {
-                                                    value: formData.color,
-                                                    onValueChange: (v)=>setFormData({
-                                                            ...formData,
-                                                            color: v
-                                                        }),
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectTrigger"], {
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectValue"], {}, void 0, false, {
-                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                lineNumber: 477,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 476,
-                                                            columnNumber: 19
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
-                                                            children: availableColors.map((color)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
-                                                                    value: color.value,
-                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "flex items-center gap-2",
-                                                                        children: [
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                className: "w-4 h-4 rounded-full",
-                                                                                style: {
-                                                                                    backgroundColor: color.value
-                                                                                }
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                lineNumber: 483,
-                                                                                columnNumber: 27
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                                children: color.name
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                                lineNumber: 484,
-                                                                                columnNumber: 27
-                                                                            }, this)
-                                                                        ]
-                                                                    }, void 0, true, {
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectContent"], {
+                                                    children: availableIcons.map((icon)=>{
+                                                        const Icon = icon.icon;
+                                                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$select$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["SelectItem"], {
+                                                            value: icon.name,
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "flex items-center gap-2",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(Icon, {
+                                                                        className: "w-4 h-4"
+                                                                    }, void 0, false, {
                                                                         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                        lineNumber: 482,
-                                                                        columnNumber: 25
+                                                                        lineNumber: 440,
+                                                                        columnNumber: 27
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                        children: icon.name
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/app/admin/waiter-requests/page.tsx",
+                                                                        lineNumber: 441,
+                                                                        columnNumber: 27
                                                                     }, this)
-                                                                }, color.value, false, {
-                                                                    fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                                    lineNumber: 481,
-                                                                    columnNumber: 23
-                                                                }, this))
-                                                        }, void 0, false, {
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/app/admin/waiter-requests/page.tsx",
+                                                                lineNumber: 439,
+                                                                columnNumber: 25
+                                                            }, this)
+                                                        }, icon.name, false, {
                                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                            lineNumber: 479,
-                                                            columnNumber: 19
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
+                                                            lineNumber: 438,
+                                                            columnNumber: 23
+                                                        }, this);
+                                                    })
+                                                }, void 0, false, {
                                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                                    lineNumber: 475,
+                                                    lineNumber: 434,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 473,
+                                            lineNumber: 430,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 451,
+                                    lineNumber: 428,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                            lineNumber: 434,
+                            lineNumber: 411,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$dialog$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["DialogFooter"], {
@@ -1655,7 +1464,7 @@ function WaiterRequestsPage() {
                                     children: "Cancelar"
                                 }, void 0, false, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 494,
+                                    lineNumber: 451,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Button"], {
@@ -1667,43 +1476,43 @@ function WaiterRequestsPage() {
                                             className: "w-4 h-4 mr-2 animate-spin"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 498,
+                                            lineNumber: 455,
                                             columnNumber: 25
                                         }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$plus$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__$3c$export__default__as__Plus$3e$__["Plus"], {
                                             className: "w-4 h-4 mr-2"
                                         }, void 0, false, {
                                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                            lineNumber: 498,
+                                            lineNumber: 455,
                                             columnNumber: 77
                                         }, this),
                                         "Adicionar"
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                                    lineNumber: 497,
+                                    lineNumber: 454,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                            lineNumber: 493,
+                            lineNumber: 450,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                    lineNumber: 430,
+                    lineNumber: 407,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/app/admin/waiter-requests/page.tsx",
-                lineNumber: 429,
+                lineNumber: 406,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/app/admin/waiter-requests/page.tsx",
-        lineNumber: 251,
+        lineNumber: 243,
         columnNumber: 5
     }, this);
 }
