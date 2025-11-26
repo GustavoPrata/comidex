@@ -312,7 +312,7 @@ export default function WaiterRequestsPage() {
                       </div>
 
                       {isEditing ? (
-                        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                           <Input
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -336,32 +336,27 @@ export default function WaiterRequestsPage() {
                               })}
                             </SelectContent>
                           </Select>
-                          <button
-                            type="button"
-                            onClick={() => setFormData({ ...formData, has_quantity: !formData.has_quantity })}
-                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-all border ${
-                              formData.has_quantity
-                                ? 'bg-orange-500 text-white border-orange-500'
-                                : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600'
-                            }`}
-                          >
-                            {formData.has_quantity ? '✓ Com Quantidade' : 'Sem Quantidade'}
-                          </button>
                         </div>
                       ) : (
-                        <div className="flex-1 flex items-center gap-3">
+                        <div className="flex-1">
                           <h3 className="font-medium text-gray-900 dark:text-gray-100">{request.name}</h3>
-                          {request.has_quantity && (
-                            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400">
-                              Qtd
-                            </span>
-                          )}
                         </div>
                       )}
 
                       <div className="flex items-center gap-3">
                         {isEditing ? (
                           <>
+                            <button
+                              type="button"
+                              onClick={() => setFormData({ ...formData, has_quantity: !formData.has_quantity })}
+                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                                formData.has_quantity
+                                  ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                                  : 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+                              }`}
+                            >
+                              {formData.has_quantity ? 'Qtd ✓' : 'Qtd'}
+                            </button>
                             <Button 
                               size="sm" 
                               variant="ghost" 
@@ -381,6 +376,16 @@ export default function WaiterRequestsPage() {
                           </>
                         ) : (
                           <>
+                            <button
+                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                                request.has_quantity
+                                  ? 'bg-orange-500 text-white'
+                                  : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                              }`}
+                              disabled
+                            >
+                              Qtd
+                            </button>
                             <button
                               onClick={() => handleToggleActive(request)}
                               className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
