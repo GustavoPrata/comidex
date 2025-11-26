@@ -1733,10 +1733,12 @@ function MainApp() {
     }
   };
 
-  // Haptic feedback helper - easy to use anywhere
+  // Haptic feedback helper - non-blocking, executes async
   const triggerHaptic = useCallback(() => {
     if (tabletSettings.haptic_enabled) {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      queueMicrotask(() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      });
     }
   }, [tabletSettings.haptic_enabled]);
 
@@ -3443,13 +3445,12 @@ function MainApp() {
                               style={[styles.quantityButton, tempQty === 0 && styles.quantityButtonDisabled]}
                               onPressIn={() => {
                                 if (tempQty > 0) {
-                                  decreaseTempQuantity(item.id);
                                   triggerHaptic();
+                                  decreaseTempQuantity(item.id);
                                 }
                               }}
                               hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                               android_disableSound={true}
-                              delayLongPress={100}
                             >
                               <IconComponent name="minus" size={18} color={tempQty > 0 ? "#FF7043" : "rgba(255,255,255,0.3)"} />
                             </Pressable>
@@ -3459,12 +3460,11 @@ function MainApp() {
                             <Pressable 
                               style={styles.quantityButtonPlus}
                               onPressIn={() => {
-                                increaseTempQuantity(item.id);
                                 triggerHaptic();
+                                increaseTempQuantity(item.id);
                               }}
                               hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
                               android_disableSound={true}
-                              delayLongPress={100}
                             >
                               <IconComponent name="plus" size={18} color="#FFFFFF" />
                             </Pressable>
@@ -4038,10 +4038,11 @@ function MainApp() {
                       <Pressable 
                         style={styles.cartFullScreenQtyBtn}
                         onPressIn={() => {
-                          handleRemoveFromCart(item.id, item.observation);
                           triggerHaptic();
+                          handleRemoveFromCart(item.id, item.observation);
                         }}
-                        hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+                        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                        android_disableSound={true}
                       >
                         <Minus size={18} color="#FFF" strokeWidth={2.5} />
                       </Pressable>
@@ -4049,10 +4050,11 @@ function MainApp() {
                       <Pressable 
                         style={styles.cartFullScreenQtyBtn}
                         onPressIn={() => {
-                          handleQuickAddInCart(item.id, item.observation);
                           triggerHaptic();
+                          handleQuickAddInCart(item.id, item.observation);
                         }}
-                        hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+                        hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                        android_disableSound={true}
                       >
                         <Plus size={18} color="#FFF" strokeWidth={2.5} />
                       </Pressable>
