@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { 
   Save, 
   Plus,
@@ -349,7 +348,7 @@ export default function WaiterRequestsPage() {
                         </div>
                       )}
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         {isEditing ? (
                           <>
                             <Button 
@@ -371,25 +370,31 @@ export default function WaiterRequestsPage() {
                           </>
                         ) : (
                           <>
-                            <Switch
-                              checked={request.active}
-                              onCheckedChange={() => handleToggleActive(request)}
-                            />
+                            <button
+                              onClick={() => handleToggleActive(request)}
+                              className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                                request.active 
+                                  ? 'bg-green-600 hover:bg-green-700 text-white' 
+                                  : 'bg-red-500 hover:bg-red-600 text-white'
+                              }`}
+                            >
+                              {request.active ? 'Ativo' : 'Inativo'}
+                            </button>
                             <Button 
                               size="sm" 
                               variant="ghost" 
                               onClick={() => startEditing(request)}
-                              className="text-gray-500 hover:text-orange-500"
+                              className="hover:bg-orange-50 dark:hover:bg-orange-900/20"
                             >
-                              <Pencil className="w-4 h-4" />
+                              <Pencil className="w-4 h-4 text-gray-600 dark:text-gray-400" />
                             </Button>
                             <Button 
                               size="sm" 
                               variant="ghost" 
                               onClick={() => handleDelete(request.id)}
-                              className="text-gray-500 hover:text-red-500"
+                              className="hover:bg-red-50 dark:hover:bg-red-900/20"
                             >
-                              <Trash2 className="w-4 h-4" />
+                              <Trash2 className="w-4 h-4 text-red-500" />
                             </Button>
                           </>
                         )}

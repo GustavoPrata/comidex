@@ -1,11 +1,11 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/admin/waiter-requests/page": "app/admin/waiter-requests/page.js",
-  "/api/mobile/tablet-settings/route": "app/api/mobile/tablet-settings/route.js",
+  "/api/admin/waiter-requests/route": "app/api/admin/waiter-requests/route.js",
   "/api/mobile/tablet-status/route": "app/api/mobile/tablet-status/route.js",
-  "/api/mobile/waiter-requests/route": "app/api/mobile/waiter-requests/route.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
+  "/api/restaurant/route": "app/api/restaurant/route.js",
   "/page": "app/page.js",
+  "/pos/page": "app/pos/page.js",
   "/prompt/page": "app/prompt/page.js"
 }
