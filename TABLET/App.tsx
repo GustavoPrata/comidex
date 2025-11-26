@@ -431,7 +431,7 @@ function MainApp() {
   // Waiter Request Modal States
   const [showWaiterModal, setShowWaiterModal] = useState(false);
   const [waiterRequestTypes, setWaiterRequestTypes] = useState<any[]>([]);
-  const [selectedWaiterRequest, setSelectedWaiterRequest] = useState<number | null>(null);
+  const [selectedWaiterRequests, setSelectedWaiterRequests] = useState<{ [id: number]: number }>({});
   const [waiterRequestNote, setWaiterRequestNote] = useState("");
   const waiterModalAnim = useRef(new Animated.Value(width)).current;
   const cartModalAnim = useRef(new Animated.Value(width)).current;
@@ -1764,7 +1764,7 @@ function MainApp() {
     waiterModalAnim.setValue(width);
     setIsClosingWaiter(false);
     setShowWaiterModal(true);
-    setSelectedWaiterRequest(null);
+    setSelectedWaiterRequests({});
     setWaiterRequestNote("");
     Animated.spring(waiterModalAnim, {
       toValue: 0,
@@ -1783,7 +1783,7 @@ function MainApp() {
       useNativeDriver: true,
     }).start(() => {
       setShowWaiterModal(false);
-      setSelectedWaiterRequest(null);
+      setSelectedWaiterRequests({});
       setWaiterRequestNote("");
       setIsClosingWaiter(false);
     });
@@ -1846,19 +1846,32 @@ function MainApp() {
   };
 
   // Call waiter function with request type
-  const callWaiter = async (requestTypeId?: number, requestTypeName?: string) => {
+  const callWaiter = async () => {
     resetIdleTimer();
     try {
-      const requestType = requestTypeId 
-        ? waiterRequestTypes.find(r => r.id === requestTypeId)
-        : null;
-      
-      let message = `Mesa ${tableNumber} está chamando o garçom`;
-      if (requestType) {
-        message = `Mesa ${tableNumber}: ${requestType.name}`;
-        if (waiterRequestNote.trim()) {
-          message += ` - ${waiterRequestNote.trim()}`;
-        }
+      const selectedItems = Object.entries(selectedWaiterRequests)
+        .filter(([_, qty]) => qty > 0)
+        .map(([id, qty]) => {
+          const request = waiterRequestTypes.find(r => r.id === parseInt(id));
+          return {
+            id: parseInt(id),
+            name: request?.name || '',
+            quantity: qty,
+            has_quantity: request?.has_quantity || false
+          };
+        });
+
+      if (selectedItems.length === 0) return;
+
+      const itemsText = selectedItems.map(item => 
+        item.has_quantity && item.quantity > 1 
+          ? `${item.quantity}x ${item.name}` 
+          : item.name
+      ).join(', ');
+
+      let message = `Mesa ${tableNumber}: ${itemsText}`;
+      if (waiterRequestNote.trim()) {
+        message += ` - ${waiterRequestNote.trim()}`;
       }
 
       const response = await fetch(config.CATALOG_API.callWaiter, {
@@ -1868,8 +1881,7 @@ function MainApp() {
           table_number: tableNumber,
           session_id: session?.id,
           message: message,
-          request_type_id: requestTypeId,
-          request_type_name: requestTypeName || requestType?.name,
+          items: selectedItems,
           note: waiterRequestNote.trim() || null,
         }),
       });
@@ -4297,26 +4309,77 @@ function MainApp() {
               <View style={styles.waiterModalGrid}>
                 {waiterRequestTypes.map((request) => {
                   const IconComponent = WAITER_ICON_MAP[request.icon] || Bell;
+                  const quantity = selectedWaiterRequests[request.id] || 0;
+                  const isSelected = quantity > 0;
+
+                  const handleToggle = () => {
+                    triggerHaptic();
+                    if (request.has_quantity) {
+                      if (quantity === 0) {
+                        setSelectedWaiterRequests(prev => ({ ...prev, [request.id]: 1 }));
+                      }
+                    } else {
+                      setSelectedWaiterRequests(prev => {
+                        if (prev[request.id]) {
+                          const { [request.id]: _, ...rest } = prev;
+                          return rest;
+                        }
+                        return { ...prev, [request.id]: 1 };
+                      });
+                    }
+                  };
+
+                  const handleIncrement = () => {
+                    triggerHaptic();
+                    setSelectedWaiterRequests(prev => ({ ...prev, [request.id]: (prev[request.id] || 0) + 1 }));
+                  };
+
+                  const handleDecrement = () => {
+                    triggerHaptic();
+                    setSelectedWaiterRequests(prev => {
+                      const newQty = (prev[request.id] || 0) - 1;
+                      if (newQty <= 0) {
+                        const { [request.id]: _, ...rest } = prev;
+                        return rest;
+                      }
+                      return { ...prev, [request.id]: newQty };
+                    });
+                  };
+
                   return (
                     <TouchableOpacity
                       key={request.id}
                       style={[
                         styles.waiterModalItem,
-                        selectedWaiterRequest === request.id && styles.waiterModalItemSelected,
+                        isSelected && styles.waiterModalItemSelected,
                       ]}
-                      onPress={() => {
-                        triggerHaptic();
-                        setSelectedWaiterRequest(
-                          selectedWaiterRequest === request.id ? null : request.id
-                        );
-                      }}
+                      onPress={handleToggle}
                       activeOpacity={0.7}
                     >
                       <View style={styles.waiterModalItemIcon}>
                         <IconComponent size={24} color="#FF7043" strokeWidth={2} />
                       </View>
                       <Text style={styles.waiterModalItemName}>{request.name}</Text>
-                      {selectedWaiterRequest === request.id && (
+                      
+                      {request.has_quantity && isSelected ? (
+                        <View style={styles.waiterModalQuantityRow}>
+                          <TouchableOpacity
+                            style={styles.waiterModalQtyBtn}
+                            onPress={handleDecrement}
+                            activeOpacity={0.7}
+                          >
+                            <Minus size={16} color="#FFF" strokeWidth={2.5} />
+                          </TouchableOpacity>
+                          <Text style={styles.waiterModalQtyText}>{quantity}</Text>
+                          <TouchableOpacity
+                            style={styles.waiterModalQtyBtn}
+                            onPress={handleIncrement}
+                            activeOpacity={0.7}
+                          >
+                            <Plus size={16} color="#FFF" strokeWidth={2.5} />
+                          </TouchableOpacity>
+                        </View>
+                      ) : isSelected && (
                         <View style={styles.waiterModalCheckmark}>
                           <CheckCircle size={16} color="#FFF" strokeWidth={2.5} />
                         </View>
@@ -4346,15 +4409,14 @@ function MainApp() {
               <TouchableOpacity
                 style={[
                   styles.waiterModalSendBtn,
-                  !selectedWaiterRequest && styles.waiterModalSendBtnDisabled
+                  Object.keys(selectedWaiterRequests).length === 0 && styles.waiterModalSendBtnDisabled
                 ]}
                 onPress={() => {
-                  if (selectedWaiterRequest) {
-                    const request = waiterRequestTypes.find(r => r.id === selectedWaiterRequest);
-                    callWaiter(selectedWaiterRequest, request?.name);
+                  if (Object.keys(selectedWaiterRequests).length > 0) {
+                    callWaiter();
                   }
                 }}
-                disabled={!selectedWaiterRequest}
+                disabled={Object.keys(selectedWaiterRequests).length === 0}
                 activeOpacity={0.7}
               >
                 <Bell size={20} color="#FFF" strokeWidth={2} />
@@ -7261,6 +7323,27 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FF7043',
+  },
+  waiterModalQuantityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 8,
+    gap: 12,
+  },
+  waiterModalQtyBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#FF7043',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  waiterModalQtyText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    minWidth: 24,
+    textAlign: 'center',
   },
   waiterModalNoteContainer: {
     marginTop: 20,
