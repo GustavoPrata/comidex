@@ -4067,9 +4067,9 @@ function MainApp() {
                       </View>
                       
                       {/* Subtotal - Right */}
-                      {subtotal > 0 && (
-                        <Text style={styles.cartFullScreenSubtotal}>R$ {subtotal.toFixed(2)}</Text>
-                      )}
+                      <Text style={[styles.cartFullScreenSubtotal, subtotal === 0 && styles.cartFullScreenIncluded]}>
+                        {subtotal > 0 ? `R$ ${subtotal.toFixed(2)}` : 'Incluso'}
+                      </Text>
                     </View>
                   );
                 })
@@ -6820,6 +6820,11 @@ const styles = StyleSheet.create({
     color: '#FF7043',
     minWidth: 90,
     textAlign: 'right',
+  },
+  cartFullScreenIncluded: {
+    color: '#4CAF50',
+    fontWeight: '600',
+    fontStyle: 'italic',
   },
   cartFullScreenQtyContainer: {
     flexDirection: 'row',
