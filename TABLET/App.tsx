@@ -4034,9 +4034,6 @@ function MainApp() {
                         {item.observation && (
                           <Text style={styles.cartFullScreenObs} numberOfLines={1}>📝 {item.observation}</Text>
                         )}
-                        {parseFloat(item.price) > 0 && (
-                          <Text style={styles.cartFullScreenUnitPrice}>R$ {parseFloat(item.price).toFixed(2)} un.</Text>
-                        )}
                       </View>
                       
                       {/* Quantity Controls */}
