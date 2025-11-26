@@ -7079,7 +7079,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   waiterModalCloseArea: {
-    width: 200,
+    width: 120,
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -7097,7 +7097,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#1a1a1a',
     borderTopLeftRadius: 24,
     borderBottomLeftRadius: 24,
-    maxWidth: width * 0.55,
   },
   waiterModalHeader: {
     flexDirection: 'row',
