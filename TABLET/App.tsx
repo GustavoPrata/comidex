@@ -3989,20 +3989,22 @@ function MainApp() {
                 
                 {/* Info Bar with Name, Description and Price */}
                 <View style={styles.imageModalInfoBar}>
-                  <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
+                  <View style={styles.imageModalTitleRow}>
+                    <Text style={styles.imageModalTitle}>{imageModalProduct.name}</Text>
+                    {imageModalProduct.price > 0 && (
+                      <Text style={styles.imageModalPrice}>
+                        R$ {imageModalProduct.price.toFixed(2)}
+                      </Text>
+                    )}
+                  </View>
                   {imageModalProduct.description && (
                     <Text style={styles.imageModalDescription}>{imageModalProduct.description}</Text>
                   )}
-                  <View style={styles.imageModalPriceRow}>
-                    <Text style={styles.imageModalPrice}>
-                      R$ {(imageModalProduct.price || 0).toFixed(2)}
-                    </Text>
-                    {imageModalProduct.included_in_rodizio && (
-                      <View style={styles.imageModalRodizioTag}>
-                        <Text style={styles.imageModalRodizioText}>Incluído no Rodízio</Text>
-                      </View>
-                    )}
-                  </View>
+                  {imageModalProduct.included_in_rodizio && (
+                    <View style={styles.imageModalRodizioTag}>
+                      <Text style={styles.imageModalRodizioText}>Incluído no Rodízio</Text>
+                    </View>
+                  )}
                 </View>
               </>
             )}
@@ -7258,28 +7260,30 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: 'rgba(255,255,255,0.1)',
   },
+  imageModalTitleRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
   imageModalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFFFFF',
-    marginBottom: 10,
     letterSpacing: 0.5,
+    flex: 1,
   },
   imageModalDescription: {
     fontSize: 15,
     color: 'rgba(255, 255, 255, 0.7)',
     lineHeight: 24,
-    marginBottom: 16,
-  },
-  imageModalPriceRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
+    marginBottom: 12,
   },
   imageModalPrice: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '700',
     color: '#FF7043',
+    marginLeft: 16,
   },
   imageModalRodizioTag: {
     backgroundColor: 'rgba(76, 175, 80, 0.2)',
