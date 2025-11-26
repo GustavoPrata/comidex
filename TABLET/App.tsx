@@ -106,8 +106,38 @@ import {
   Cookie,
   Beef,
   Fish,
-  Egg
+  Egg,
+  Snowflake,
+  Sparkles,
+  Flame,
+  Droplet,
+  Leaf,
+  Layers,
+  HelpCircle,
+  Salad
 } from 'lucide-react-native';
+
+const WAITER_ICON_MAP: { [key: string]: any } = {
+  GlassWater,
+  Snowflake,
+  UtensilsCrossed: Utensils,
+  Sparkles,
+  Flame,
+  Droplet,
+  Leaf,
+  Layers,
+  MessageCircle,
+  HelpCircle,
+  Coffee,
+  IceCream,
+  Wine,
+  Beer,
+  Soup,
+  Salad,
+  Sandwich,
+  Pizza,
+  Bell,
+};
 
 // Types
 interface Product {
@@ -4265,38 +4295,35 @@ function MainApp() {
               <Text style={styles.waiterModalSubtitle}>O que você precisa?</Text>
               
               <View style={styles.waiterModalGrid}>
-                {waiterRequestTypes.map((request) => (
-                  <TouchableOpacity
-                    key={request.id}
-                    style={[
-                      styles.waiterModalItem,
-                      selectedWaiterRequest === request.id && styles.waiterModalItemSelected,
-                      { borderColor: request.color || '#FF7043' }
-                    ]}
-                    onPress={() => {
-                      triggerHaptic();
-                      setSelectedWaiterRequest(
-                        selectedWaiterRequest === request.id ? null : request.id
-                      );
-                    }}
-                    activeOpacity={0.7}
-                  >
-                    <View 
+                {waiterRequestTypes.map((request) => {
+                  const IconComponent = WAITER_ICON_MAP[request.icon] || Bell;
+                  return (
+                    <TouchableOpacity
+                      key={request.id}
                       style={[
-                        styles.waiterModalItemIcon,
-                        { backgroundColor: (request.color || '#FF7043') + '20' }
+                        styles.waiterModalItem,
+                        selectedWaiterRequest === request.id && styles.waiterModalItemSelected,
                       ]}
+                      onPress={() => {
+                        triggerHaptic();
+                        setSelectedWaiterRequest(
+                          selectedWaiterRequest === request.id ? null : request.id
+                        );
+                      }}
+                      activeOpacity={0.7}
                     >
-                      <Bell size={24} color={request.color || '#FF7043'} strokeWidth={2} />
-                    </View>
-                    <Text style={styles.waiterModalItemName}>{request.name}</Text>
-                    {selectedWaiterRequest === request.id && (
-                      <View style={[styles.waiterModalCheckmark, { backgroundColor: request.color || '#FF7043' }]}>
-                        <CheckCircle size={16} color="#FFF" strokeWidth={2.5} />
+                      <View style={styles.waiterModalItemIcon}>
+                        <IconComponent size={24} color="#FF7043" strokeWidth={2} />
                       </View>
-                    )}
-                  </TouchableOpacity>
-                ))}
+                      <Text style={styles.waiterModalItemName}>{request.name}</Text>
+                      {selectedWaiterRequest === request.id && (
+                        <View style={styles.waiterModalCheckmark}>
+                          <CheckCircle size={16} color="#FFF" strokeWidth={2.5} />
+                        </View>
+                      )}
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
 
               {/* Note Input */}
@@ -7206,7 +7233,8 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   waiterModalItemSelected: {
-    backgroundColor: 'rgba(255,255,255,0.1)',
+    backgroundColor: 'rgba(255,112,67,0.15)',
+    borderColor: '#FF7043',
   },
   waiterModalItemIcon: {
     width: 56,
@@ -7215,6 +7243,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 12,
+    backgroundColor: 'rgba(255,112,67,0.2)',
   },
   waiterModalItemName: {
     fontSize: 14,
@@ -7231,6 +7260,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FF7043',
   },
   waiterModalNoteContainer: {
     marginTop: 20,
