@@ -5,6 +5,7 @@
   "/api/mobile/tablet-status/route": "app/api/mobile/tablet-status/route.js",
   "/api/notifications/route": "app/api/notifications/route.js",
   "/api/pos/tables/route": "app/api/pos/tables/route.js",
+  "/api/prompt-message/route": "app/api/prompt-message/route.js",
   "/api/restaurant/route": "app/api/restaurant/route.js",
   "/page": "app/page.js",
   "/pos/page": "app/pos/page.js",

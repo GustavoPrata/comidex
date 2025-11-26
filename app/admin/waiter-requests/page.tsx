@@ -367,17 +367,26 @@ export default function WaiterRequestsPage() {
                           <>
                             <button
                               onClick={async () => {
+                                const newValue = !request.has_quantity;
+                                setRequests(prev => prev.map(r => 
+                                  r.id === request.id ? { ...r, has_quantity: newValue } : r
+                                ));
                                 try {
                                   const res = await fetch('/api/admin/waiter-requests', {
                                     method: 'PUT',
                                     headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ ...request, has_quantity: !request.has_quantity })
+                                    body: JSON.stringify({ ...request, has_quantity: newValue })
                                   });
-                                  if (res.ok) {
-                                    toast.success('Atualizado!');
-                                    loadRequests();
+                                  if (!res.ok) {
+                                    setRequests(prev => prev.map(r => 
+                                      r.id === request.id ? { ...r, has_quantity: !newValue } : r
+                                    ));
+                                    toast.error('Erro ao atualizar');
                                   }
                                 } catch (e) {
+                                  setRequests(prev => prev.map(r => 
+                                    r.id === request.id ? { ...r, has_quantity: !newValue } : r
+                                  ));
                                   toast.error('Erro ao atualizar');
                                 }
                               }}
@@ -391,17 +400,26 @@ export default function WaiterRequestsPage() {
                             </button>
                             <button
                               onClick={async () => {
+                                const newValue = !request.active;
+                                setRequests(prev => prev.map(r => 
+                                  r.id === request.id ? { ...r, active: newValue } : r
+                                ));
                                 try {
                                   const res = await fetch('/api/admin/waiter-requests', {
                                     method: 'PUT',
                                     headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify({ ...request, active: !request.active })
+                                    body: JSON.stringify({ ...request, active: newValue })
                                   });
-                                  if (res.ok) {
-                                    toast.success('Atualizado!');
-                                    loadRequests();
+                                  if (!res.ok) {
+                                    setRequests(prev => prev.map(r => 
+                                      r.id === request.id ? { ...r, active: !newValue } : r
+                                    ));
+                                    toast.error('Erro ao atualizar');
                                   }
                                 } catch (e) {
+                                  setRequests(prev => prev.map(r => 
+                                    r.id === request.id ? { ...r, active: !newValue } : r
+                                  ));
                                   toast.error('Erro ao atualizar');
                                 }
                               }}
