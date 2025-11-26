@@ -406,6 +406,9 @@ function MainApp() {
   const waiterModalAnim = useRef(new Animated.Value(width)).current;
   const cartModalAnim = useRef(new Animated.Value(width)).current;
   const imageModalAnim = useRef(new Animated.Value(width)).current;
+  const [isClosingCart, setIsClosingCart] = useState(false);
+  const [isClosingImage, setIsClosingImage] = useState(false);
+  const [isClosingWaiter, setIsClosingWaiter] = useState(false);
 
   // Brightness Control and Kiosk Mode States
   const [originalBrightness, setOriginalBrightness] = useState(1);
@@ -1729,6 +1732,7 @@ function MainApp() {
     resetIdleTimer();
     loadWaiterRequestTypes();
     waiterModalAnim.setValue(width);
+    setIsClosingWaiter(false);
     setShowWaiterModal(true);
     setSelectedWaiterRequest(null);
     setWaiterRequestNote("");
@@ -1742,6 +1746,7 @@ function MainApp() {
 
   // Close waiter modal
   const closeWaiterModal = () => {
+    setIsClosingWaiter(true);
     Animated.timing(waiterModalAnim, {
       toValue: width,
       duration: 300,
@@ -1750,6 +1755,7 @@ function MainApp() {
       setShowWaiterModal(false);
       setSelectedWaiterRequest(null);
       setWaiterRequestNote("");
+      setIsClosingWaiter(false);
     });
   };
 
@@ -1757,6 +1763,7 @@ function MainApp() {
   const openCartModal = () => {
     resetIdleTimer();
     cartModalAnim.setValue(width);
+    setIsClosingCart(false);
     setShowCart(true);
     Animated.spring(cartModalAnim, {
       toValue: 0,
@@ -1768,12 +1775,14 @@ function MainApp() {
 
   // Close cart modal with animation
   const closeCartModal = () => {
+    setIsClosingCart(true);
     Animated.timing(cartModalAnim, {
       toValue: width,
       duration: 300,
       useNativeDriver: true,
     }).start(() => {
       setShowCart(false);
+      setIsClosingCart(false);
     });
   };
 
@@ -1781,6 +1790,7 @@ function MainApp() {
   const openImageModal = (product: any) => {
     resetIdleTimer();
     imageModalAnim.setValue(width);
+    setIsClosingImage(false);
     setImageModalProduct(product);
     setShowImageModal(true);
     Animated.spring(imageModalAnim, {
@@ -1793,6 +1803,7 @@ function MainApp() {
 
   // Close image modal with animation
   const closeImageModal = () => {
+    setIsClosingImage(true);
     Animated.timing(imageModalAnim, {
       toValue: width,
       duration: 300,
@@ -1800,6 +1811,7 @@ function MainApp() {
     }).start(() => {
       setShowImageModal(false);
       setImageModalProduct(null);
+      setIsClosingImage(false);
     });
   };
 
@@ -4004,14 +4016,16 @@ function MainApp() {
       >
         <View style={styles.imageModalOverlay}>
           {/* Close Button on Left Side - Same as Cart */}
-          <Pressable 
-            style={styles.imageModalCloseArea}
-            onPress={closeImageModal}
-          >
-            <View style={styles.imageModalCloseCircle}>
-              <X size={28} color="#333" strokeWidth={2.5} />
-            </View>
-          </Pressable>
+          {!isClosingImage && (
+            <Pressable 
+              style={styles.imageModalCloseArea}
+              onPress={closeImageModal}
+            >
+              <View style={styles.imageModalCloseCircle}>
+                <X size={28} color="#333" strokeWidth={2.5} />
+              </View>
+            </Pressable>
+          )}
 
           {/* Image Panel on Right Side with Animation */}
           <Animated.View style={[styles.imageModalPanel, { transform: [{ translateX: imageModalAnim }] }]}>
@@ -4064,14 +4078,16 @@ function MainApp() {
       >
         <View style={styles.cartFullScreenOverlay}>
           {/* Close Button on Left Side */}
-          <Pressable 
-            style={styles.cartFullScreenCloseArea}
-            onPress={closeCartModal}
-          >
-            <View style={styles.cartFullScreenCloseCircle}>
-              <X size={28} color="#333" strokeWidth={2.5} />
-            </View>
-          </Pressable>
+          {!isClosingCart && (
+            <Pressable 
+              style={styles.cartFullScreenCloseArea}
+              onPress={closeCartModal}
+            >
+              <View style={styles.cartFullScreenCloseCircle}>
+                <X size={28} color="#333" strokeWidth={2.5} />
+              </View>
+            </Pressable>
+          )}
 
           {/* Cart Panel on Right Side with Animation */}
           <Animated.View style={[styles.cartFullScreenPanel, { transform: [{ translateX: cartModalAnim }] }]}>
@@ -4218,14 +4234,16 @@ function MainApp() {
       >
         <View style={styles.waiterModalOverlay}>
           {/* Close Button on Left Side - Larger space */}
-          <Pressable 
-            style={styles.waiterModalCloseArea}
-            onPress={closeWaiterModal}
-          >
-            <View style={styles.waiterModalCloseCircle}>
-              <X size={28} color="#333" strokeWidth={2.5} />
-            </View>
-          </Pressable>
+          {!isClosingWaiter && (
+            <Pressable 
+              style={styles.waiterModalCloseArea}
+              onPress={closeWaiterModal}
+            >
+              <View style={styles.waiterModalCloseCircle}>
+                <X size={28} color="#333" strokeWidth={2.5} />
+              </View>
+            </Pressable>
+          )}
 
           {/* Request Panel on Right Side */}
           <Animated.View 
