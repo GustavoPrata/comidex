@@ -3927,7 +3927,7 @@ function MainApp() {
             onPress={() => setShowImageModal(false)}
           >
             <View style={styles.imageModalCloseCircle}>
-              <X size={20} color="#FF5722" strokeWidth={3.5} />
+              <X size={28} color="#000" strokeWidth={2.5} />
             </View>
           </Pressable>
           
@@ -6874,20 +6874,15 @@ const styles = StyleSheet.create({
     top: '50%',
     right: 50,
     zIndex: 10,
-    transform: [{ translateY: -22 }],
+    transform: [{ translateY: -35 }],
   },
   imageModalCloseCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: '#FFFFFF',
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#FF7043',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 4,
   },
   imageModalPlaceholder: {
     width: width - 140,
