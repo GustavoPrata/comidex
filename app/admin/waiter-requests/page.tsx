@@ -97,7 +97,6 @@ export default function WaiterRequestsPage() {
   
   const [formData, setFormData] = useState({
     name: '',
-    description: '',
     icon: 'HelpCircle',
     active: true
   })
@@ -143,7 +142,7 @@ export default function WaiterRequestsPage() {
 
       toast.success('Solicitação criada com sucesso!')
       setShowAddDialog(false)
-      setFormData({ name: '', description: '', icon: 'HelpCircle', active: true })
+      setFormData({ name: '', icon: 'HelpCircle', active: true })
       loadRequests()
     } catch (error: any) {
       console.error('Erro ao criar solicitação:', error)
@@ -204,7 +203,6 @@ export default function WaiterRequestsPage() {
     setEditingId(request.id)
     setFormData({
       name: request.name,
-      description: request.description || '',
       icon: request.icon,
       active: request.active
     })
@@ -212,7 +210,7 @@ export default function WaiterRequestsPage() {
 
   const cancelEditing = () => {
     setEditingId(null)
-    setFormData({ name: '', description: '', icon: 'HelpCircle', active: true })
+    setFormData({ name: '', icon: 'HelpCircle', active: true })
   }
 
   const saveEditing = async () => {
@@ -311,16 +309,11 @@ export default function WaiterRequestsPage() {
                       </div>
 
                       {isEditing ? (
-                        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                           <Input
                             value={formData.name}
                             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             placeholder="Nome"
-                          />
-                          <Input
-                            value={formData.description}
-                            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            placeholder="Descrição"
                           />
                           <Select value={formData.icon} onValueChange={(v) => setFormData({ ...formData, icon: v })}>
                             <SelectTrigger>
@@ -344,7 +337,6 @@ export default function WaiterRequestsPage() {
                       ) : (
                         <div className="flex-1">
                           <h3 className="font-medium text-gray-900 dark:text-gray-100">{request.name}</h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">{request.description}</p>
                         </div>
                       )}
 
@@ -420,14 +412,6 @@ export default function WaiterRequestsPage() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 placeholder="Ex: Copo Extra"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Descrição</Label>
-              <Input
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Ex: Solicitar copo adicional"
               />
             </div>
             <div className="space-y-2">
