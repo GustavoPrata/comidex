@@ -1,5 +1,4 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/admin/tablet-settings/page": "app/admin/tablet-settings/page.js",
   "/api/groups/route": "app/api/groups/route.js",
   "/api/mobile/categories/route": "app/api/mobile/categories/route.js",
