@@ -124,6 +124,8 @@ export default function PrinterQueuePage() {
   const [clearQueueDialog, setClearQueueDialog] = useState(false);
   const [previewJob, setPreviewJob] = useState<PrintJob | null>(null);
   const [showPrintPreview, setShowPrintPreview] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [autoProcess, setAutoProcess] = useState(true);
 
   // Carregar dados da fila
   const loadQueue = useCallback(async () => {
@@ -322,6 +324,51 @@ export default function PrinterQueuePage() {
       toast.error('Erro ao deletar job');
     }
   };
+
+  // Processar fila de impressão (enviar para impressora real)
+  const processQueue = async () => {
+    if (processing) return;
+    
+    try {
+      setProcessing(true);
+      const response = await fetch('/api/printer-queue/process', {
+        method: 'POST'
+      });
+      
+      const result = await response.json();
+      
+      if (result.success) {
+        if (result.processed > 0) {
+          toast.success(`${result.processed} impressão(ões) enviada(s) com sucesso!`);
+        }
+        if (result.failed > 0) {
+          toast.error(`${result.failed} impressão(ões) falharam`);
+        }
+        await loadQueue();
+      } else {
+        toast.error(result.error || 'Erro ao processar fila');
+      }
+    } catch (error) {
+      console.error('Erro ao processar fila:', error);
+      toast.error('Erro ao processar fila de impressão');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  // Auto-processar fila a cada 3 segundos
+  useEffect(() => {
+    if (!autoProcess) return;
+    
+    const hasPending = jobs.some(j => j.status === 'pending');
+    if (!hasPending) return;
+    
+    const interval = setInterval(() => {
+      processQueue();
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [autoProcess, jobs]);
 
   // Retry automático para jobs falhados
   useEffect(() => {
@@ -716,7 +763,31 @@ export default function PrinterQueuePage() {
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 border-r pr-3">
+            <Switch
+              checked={autoProcess}
+              onCheckedChange={setAutoProcess}
+              id="auto-process"
+            />
+            <Label htmlFor="auto-process" className="text-sm text-orange-600 font-medium">
+              Auto-imprimir
+            </Label>
+          </div>
+          
+          <Button
+            onClick={processQueue}
+            disabled={processing || stats.pending === 0}
+            className="gap-2 bg-orange-500 hover:bg-orange-600 text-white"
+          >
+            {processing ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4" />
+            )}
+            {processing ? 'Imprimindo...' : 'Imprimir Agora'}
+          </Button>
+
+          <div className="flex items-center gap-2 border-l pl-3">
             <Switch
               checked={autoRefresh}
               onCheckedChange={setAutoRefresh}

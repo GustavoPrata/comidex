@@ -680,6 +680,48 @@ class ThermalPrinterService {
         commands.push(ESC_POS.CUT_PARTIAL);
         return Buffer.concat(commands);
     }
+    // Criar comando para item individual da fila
+    createOrderItemPrint(data) {
+        const commands = [];
+        // Inicializar
+        commands.push(ESC_POS.INIT);
+        // Cabeçalho
+        commands.push(ESC_POS.ALIGN_CENTER);
+        commands.push(ESC_POS.TEXT_DOUBLE);
+        commands.push(Buffer.from('PEDIDO COZINHA\n'));
+        commands.push(ESC_POS.TEXT_NORMAL);
+        commands.push(ESC_POS.LINE_FEED);
+        // Mesa e hora
+        commands.push(ESC_POS.ALIGN_LEFT);
+        commands.push(ESC_POS.BOLD_ON);
+        commands.push(Buffer.from(`MESA: ${data.tableName}\n`));
+        commands.push(ESC_POS.BOLD_OFF);
+        commands.push(Buffer.from(`Pedido #${data.orderId}\n`));
+        commands.push(Buffer.from(`${data.timestamp}\n`));
+        commands.push(ESC_POS.LINE_FEED);
+        // Linha separadora
+        commands.push(Buffer.from('================================\n'));
+        // Item
+        commands.push(ESC_POS.TEXT_DOUBLE_HEIGHT);
+        commands.push(ESC_POS.BOLD_ON);
+        commands.push(Buffer.from(`${data.quantity}x ${data.itemName}\n`));
+        commands.push(ESC_POS.BOLD_OFF);
+        commands.push(ESC_POS.TEXT_NORMAL);
+        // Observações
+        if (data.notes) {
+            commands.push(ESC_POS.LINE_FEED);
+            commands.push(Buffer.from(`OBS: ${data.notes}\n`));
+        }
+        // Rodapé
+        commands.push(ESC_POS.LINE_FEED);
+        commands.push(Buffer.from('================================\n'));
+        commands.push(ESC_POS.LINE_FEED);
+        commands.push(ESC_POS.LINE_FEED);
+        // Beep e corte
+        commands.push(ESC_POS.BEEP);
+        commands.push(ESC_POS.CUT_PARTIAL);
+        return Buffer.concat(commands);
+    }
     // Criar comando de pedido
     createOrderPrint(order) {
         const commands = [];
