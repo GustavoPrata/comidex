@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     if (status === 'failed') {
       const { data: job } = await supabase
-        .from('printer_queues')
+        .from('printer_queue')
         .select('retry_count')
         .eq('id', job_id)
         .single();
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     }
 
     const { error } = await supabase
-      .from('printer_queues')
+      .from('printer_queue')
       .update(updateData)
       .eq('id', job_id);
 

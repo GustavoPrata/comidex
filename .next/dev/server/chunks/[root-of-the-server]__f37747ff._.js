@@ -435,8 +435,10 @@ async function GET(request) {
         }
         const agentName = request.headers.get('x-agent-name') || 'Unknown';
         const agentVersion = request.headers.get('x-agent-version') || '0.0.0';
+        const agentMode = request.headers.get('x-agent-mode') || 'single';
         const supabase = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$lib$2f$supabase$2f$server$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createClient"])();
-        const { data: jobs, error } = await supabase.from('printer_queues').select(`
+        const { data: printers } = await supabase.from('printers').select('id, name, ip_address, port, type, active').eq('active', true);
+        const { data: jobs, error } = await supabase.from('printer_queue').select(`
         id,
         printer_id,
         document_type,
@@ -446,23 +448,12 @@ async function GET(request) {
         notes,
         order_item_id,
         created_at,
-        order_items (
+        printers (
           id,
-          quantity,
-          notes,
-          items (
-            id,
-            name
-          ),
-          orders (
-            id,
-            table_sessions (
-              tables (
-                id,
-                name
-              )
-            )
-          )
+          name,
+          ip_address,
+          port,
+          type
         )
       `).eq('status', 'pending').order('priority', {
             ascending: false
@@ -478,19 +469,73 @@ async function GET(request) {
                 status: 500
             });
         }
+        const jobIds = (jobs || []).map((j)=>j.order_item_id).filter(Boolean);
+        let orderItemsMap = {};
+        if (jobIds.length > 0) {
+            const { data: orderItems } = await supabase.from('order_items').select(`
+          id,
+          quantity,
+          notes,
+          order_id,
+          items (
+            id,
+            name
+          )
+        `).in('id', jobIds);
+            if (orderItems) {
+                for (const item of orderItems){
+                    orderItemsMap[item.id] = item;
+                }
+            }
+        }
+        const orderIds = Object.values(orderItemsMap).map((oi)=>oi.order_id).filter(Boolean);
+        let ordersMap = {};
+        if (orderIds.length > 0) {
+            const { data: orders } = await supabase.from('orders').select(`
+          id,
+          table_session_id
+        `).in('id', orderIds);
+            if (orders) {
+                for (const order of orders){
+                    ordersMap[order.id] = order;
+                }
+            }
+        }
+        const sessionIds = Object.values(ordersMap).map((o)=>o.table_session_id).filter(Boolean);
+        let sessionsMap = {};
+        if (sessionIds.length > 0) {
+            const { data: sessions } = await supabase.from('table_sessions').select(`
+          id,
+          table_id,
+          tables (
+            id,
+            name
+          )
+        `).in('id', sessionIds);
+            if (sessions) {
+                for (const session of sessions){
+                    sessionsMap[session.id] = session;
+                }
+            }
+        }
         const formattedJobs = (jobs || []).map((job)=>{
-            const orderItem = job.order_items;
+            const printer = job.printers;
+            const orderItem = job.order_item_id ? orderItemsMap[job.order_item_id] : null;
             const item = orderItem?.items;
-            const order = orderItem?.orders;
-            const tableSession = order?.table_sessions;
-            const table = tableSession?.tables;
+            const order = orderItem?.order_id ? ordersMap[orderItem.order_id] : null;
+            const session = order?.table_session_id ? sessionsMap[order.table_session_id] : null;
+            const table = session?.tables;
             return {
                 id: job.id,
                 printer_id: job.printer_id,
+                printer_name: printer?.name || 'Impressora',
+                printer_ip: printer?.ip_address || '',
+                printer_port: printer?.port || 9100,
+                printer_type: printer?.type || 'network',
                 document_type: job.document_type,
                 status: job.status,
                 table_name: table?.name || 'Mesa ?',
-                item_name: item?.name || 'Item desconhecido',
+                item_name: item?.name || job.notes || 'Item',
                 quantity: orderItem?.quantity || 1,
                 notes: orderItem?.notes || job.notes || '',
                 order_id: order?.id || 0,
@@ -498,14 +543,17 @@ async function GET(request) {
                 data: ''
             };
         });
-        await supabase.from('printer_queues').update({
-            status: 'printing',
-            started_at: new Date().toISOString()
-        }).in('id', formattedJobs.map((j)=>j.id));
-        console.log(`[Agent: ${agentName} v${agentVersion}] Fetched ${formattedJobs.length} jobs`);
+        if (formattedJobs.length > 0) {
+            await supabase.from('printer_queue').update({
+                status: 'printing',
+                started_at: new Date().toISOString()
+            }).in('id', formattedJobs.map((j)=>j.id));
+        }
+        console.log(`[Agent: ${agentName} v${agentVersion} mode:${agentMode}] Fetched ${formattedJobs.length} jobs, ${printers?.length || 0} printers`);
         return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
             success: true,
-            jobs: formattedJobs
+            jobs: formattedJobs,
+            printers: printers || []
         });
     } catch (error) {
         console.error('Agent jobs error:', error);
