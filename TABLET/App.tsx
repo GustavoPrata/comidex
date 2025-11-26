@@ -4005,6 +4005,17 @@ function MainApp() {
                   const subtotal = parseFloat(item.price) * item.quantity;
                   return (
                     <View key={`${item.id}-${item.observation || ''}`} style={styles.cartFullScreenItem}>
+                      {/* Delete Button - Left */}
+                      <TouchableOpacity 
+                        style={styles.cartFullScreenDelete}
+                        onPress={() => {
+                          triggerHaptic();
+                          deleteFromCart(item.id, item.observation);
+                        }}
+                      >
+                        <Trash2 size={18} color="#FF5252" strokeWidth={2} />
+                      </TouchableOpacity>
+                      
                       {/* Product Image */}
                       {item.image_url ? (
                         <Image 
@@ -4028,48 +4039,37 @@ function MainApp() {
                         )}
                       </View>
                       
-                      {/* Quantity Controls + Subtotal */}
-                      <View style={styles.cartFullScreenRightSection}>
-                        <View style={styles.cartFullScreenQtyContainer}>
-                          <Pressable 
-                            style={styles.cartFullScreenQtyBtn}
-                            onPressIn={() => {
-                              triggerHaptic();
-                              handleRemoveFromCart(item.id, item.observation);
-                            }}
-                            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                            android_disableSound={true}
-                          >
-                            <Minus size={16} color="#FFF" strokeWidth={2.5} />
-                          </Pressable>
-                          <Text style={styles.cartFullScreenQtyText}>{item.quantity}</Text>
-                          <Pressable 
-                            style={styles.cartFullScreenQtyBtn}
-                            onPressIn={() => {
-                              triggerHaptic();
-                              handleQuickAddInCart(item.id, item.observation);
-                            }}
-                            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                            android_disableSound={true}
-                          >
-                            <Plus size={16} color="#FFF" strokeWidth={2.5} />
-                          </Pressable>
-                        </View>
-                        {subtotal > 0 && (
-                          <Text style={styles.cartFullScreenSubtotal}>R$ {subtotal.toFixed(2)}</Text>
-                        )}
+                      {/* Quantity Controls */}
+                      <View style={styles.cartFullScreenQtyContainer}>
+                        <Pressable 
+                          style={styles.cartFullScreenQtyBtn}
+                          onPressIn={() => {
+                            triggerHaptic();
+                            handleRemoveFromCart(item.id, item.observation);
+                          }}
+                          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                          android_disableSound={true}
+                        >
+                          <Minus size={16} color="#FFF" strokeWidth={2.5} />
+                        </Pressable>
+                        <Text style={styles.cartFullScreenQtyText}>{item.quantity}</Text>
+                        <Pressable 
+                          style={styles.cartFullScreenQtyBtn}
+                          onPressIn={() => {
+                            triggerHaptic();
+                            handleQuickAddInCart(item.id, item.observation);
+                          }}
+                          hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                          android_disableSound={true}
+                        >
+                          <Plus size={16} color="#FFF" strokeWidth={2.5} />
+                        </Pressable>
                       </View>
                       
-                      {/* Delete Button */}
-                      <TouchableOpacity 
-                        style={styles.cartFullScreenDelete}
-                        onPress={() => {
-                          triggerHaptic();
-                          deleteFromCart(item.id, item.observation);
-                        }}
-                      >
-                        <Trash2 size={18} color="#FF5252" strokeWidth={2} />
-                      </TouchableOpacity>
+                      {/* Subtotal - Right */}
+                      {subtotal > 0 && (
+                        <Text style={styles.cartFullScreenSubtotal}>R$ {subtotal.toFixed(2)}</Text>
+                      )}
                     </View>
                   );
                 })
@@ -6814,14 +6814,12 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: 'rgba(255,255,255,0.5)',
   },
-  cartFullScreenRightSection: {
-    alignItems: 'center',
-    gap: 6,
-  },
   cartFullScreenSubtotal: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '700',
     color: '#FF7043',
+    minWidth: 90,
+    textAlign: 'right',
   },
   cartFullScreenQtyContainer: {
     flexDirection: 'row',
