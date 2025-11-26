@@ -1427,30 +1427,32 @@ export default function PrintersPage() {
             <DialogTitle>
               Impressoras Locais Detectadas
             </DialogTitle>
-            <DialogDescription>
-              {discovering ? (
-                <div className="flex items-center gap-2">
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  <span>
-                    Detectando impressoras instaladas no sistema...
-                  </span>
-                </div>
-              ) : (
-                <>
-                  {discoveredPrinters.length > 0 ? (
+            <DialogDescription asChild>
+              <div>
+                {discovering ? (
+                  <div className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     <span>
-                      Encontradas {discoveredPrinters.length} impressoras
-                      {discoveredPrinters.some((p: any) => p.isLocal) && (
-                        <span className="text-orange-600 font-semibold ml-1">
-                          (instaladas no {discoveredPrinters[0]?.os || 'sistema'})
-                        </span>
-                      )}
+                      Detectando impressoras instaladas no sistema...
                     </span>
-                  ) : (
-                    'Nenhuma impressora encontrada'
-                  )}
-                </>
-              )}
+                  </div>
+                ) : (
+                  <>
+                    {discoveredPrinters.length > 0 ? (
+                      <span>
+                        Encontradas {discoveredPrinters.length} impressoras
+                        {discoveredPrinters.some((p: any) => p.isLocal) && (
+                          <span className="text-orange-600 font-semibold ml-1">
+                            (instaladas no {discoveredPrinters[0]?.os || 'sistema'})
+                          </span>
+                        )}
+                      </span>
+                    ) : (
+                      'Nenhuma impressora encontrada'
+                    )}
+                  </>
+                )}
+              </div>
             </DialogDescription>
           </DialogHeader>
           
