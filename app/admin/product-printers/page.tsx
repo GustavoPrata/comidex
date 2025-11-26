@@ -33,7 +33,9 @@ import {
   Settings,
   Layers,
   ShoppingBag,
-  FileQuestion
+  FileQuestion,
+  ChevronLeft,
+  ChevronRight
 } from "lucide-react";
 
 const supabase = createClient();
@@ -91,6 +93,10 @@ export default function ProductPrintersPage() {
   // Selection states
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [bulkPrinter, setBulkPrinter] = useState('');
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 20;
 
   // Load data
   const loadData = async () => {
@@ -172,6 +178,17 @@ export default function ProductPrintersPage() {
     
     return matchesSearch && matchesGroup && matchesCategory && matchesPrinter && matchesStatus;
   });
+
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedItems = filteredItems.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedGroup, selectedCategory, selectedPrinter, filterStatus]);
 
   // Get categories for selected group
   const filteredCategories = selectedGroup === 'all' 
@@ -372,6 +389,10 @@ export default function ProductPrintersPage() {
   const totalItems = items.length;
   const itemsWithPrinter = items.filter(item => item.printer_id).length;
   const itemsWithoutPrinter = items.filter(item => !item.printer_id).length;
+  
+  // Selection state calculations
+  const allSelected = filteredItems.length > 0 && selectedItems.length === filteredItems.length;
+  const someSelected = selectedItems.length > 0 && !allSelected;
 
   return (
     <div className="min-h-screen">
@@ -613,9 +634,30 @@ export default function ProductPrintersPage() {
               </Button>
             </div>
             
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Mostrando {filteredItems.length} de {items.length} produtos
-            </p>
+            <div className="flex items-center gap-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Página {currentPage} de {totalPages || 1} • Mostrando {startIndex + 1}-{Math.min(endIndex, filteredItems.length)} de {filteredItems.length} produtos
+              </p>
+              
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages || totalPages === 0}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
           </div>
 
           {/* Items Table */}
@@ -625,16 +667,28 @@ export default function ProductPrintersPage() {
                 <thead className="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
                   <tr>
                     <th className="p-3 text-left">
-                      <Checkbox
-                        checked={selectedItems.length === filteredItems.length && filteredItems.length > 0}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            selectAllFiltered();
-                          } else {
-                            clearSelection();
-                          }
-                        }}
-                      />
+                      <div className="flex flex-col items-start">
+                        <Checkbox
+                          checked={allSelected}
+                          onCheckedChange={(checked) => {
+                            if (checked) {
+                              selectAllFiltered();
+                            } else {
+                              clearSelection();
+                            }
+                          }}
+                        />
+                        {allSelected && (
+                          <span className="text-xs text-green-600 dark:text-green-400 mt-1">
+                            Todos filtrados
+                          </span>
+                        )}
+                        {someSelected && !allSelected && (
+                          <span className="text-xs text-orange-600 dark:text-orange-400 mt-1">
+                            Parcial
+                          </span>
+                        )}
+                      </div>
                     </th>
                     <th className="p-3 text-left text-sm font-medium text-gray-700 dark:text-gray-300">
                       Produto
@@ -654,7 +708,7 @@ export default function ProductPrintersPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {filteredItems.map(item => {
+                  {paginatedItems.map(item => {
                     const category = categories.find(c => c.id === item.category_id);
                     const group = groups.find(g => g.id === item.group_id);
                     const printer = item.printer_id 
@@ -752,6 +806,57 @@ export default function ProductPrintersPage() {
               )}
             </div>
           </div>
+
+          {/* Pagination Footer */}
+          {filteredItems.length > 0 && (
+            <div className="flex justify-between items-center mt-4">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Exibindo {startIndex + 1} a {Math.min(endIndex, filteredItems.length)} de {filteredItems.length} produtos
+              </p>
+              
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(1)}
+                  disabled={currentPage === 1}
+                >
+                  Primeira
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4 mr-1" />
+                  Anterior
+                </Button>
+                
+                <span className="text-sm text-gray-700 dark:text-gray-300 px-3">
+                  Página {currentPage} de {totalPages}
+                </span>
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                >
+                  Próxima
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  Última
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
